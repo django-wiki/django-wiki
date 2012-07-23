@@ -15,7 +15,7 @@ Installation
 
     pip install git+git://github.com/benjaoming/django-wiki.git
 
-After that, add `wiki` to `settings.INSTALLED_APPS`.
+After that, add `'wiki'` to `settings.INSTALLED_APPS`.
 
 Background
 ----------
@@ -34,6 +34,7 @@ Q&A
 
  * **Why is the module named just "wiki"?** Because "pip install wiki" returns "No distributions at all found for wiki"! :)
  * **What markup language will you use?** The markup engine will be pluggable, but Markdown will be the built-in supported one.
+ * **Why not use django-reversion?** It's a great project, but if the wiki has to grow ambitious, someone will have to optimize its behavior, and using a third-party application for something as crucial as the revision system is a no-go in this regard.
 
 Dependencies
 ------------
