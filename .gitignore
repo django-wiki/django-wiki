@@ -10,5 +10,12 @@ pip-log.txt
 #Translations
 *.mo
 
+#Eclipse
+.project
+.pydevproject
+
+#Virtualenv
+virtualenv
+
 #Mr Developer
 .mr.developer.cfg
