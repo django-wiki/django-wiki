@@ -13,6 +13,7 @@ pip-log.txt
 #Eclipse
 .project
 .pydevproject
+.settings
 
 #Virtualenv
 virtualenv

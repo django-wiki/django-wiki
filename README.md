@@ -5,7 +5,7 @@ This is where it all begins. In 4 weeks we should have a wiki system appealing t
 
  * **Be pluggable and light-weight.** Don't integrate optional features in the core.
  * **Be open.** Make an extension API that allows the ecology of the wiki to grow. After all, Wikipedia consists of some [680 extensions](http://svn.wikimedia.org/viewvc/mediawiki/trunk/extensions/) written for MediaWiki.
- * **Be smart.** [This is](https://upload.wikimedia.org/wikipedia/commons/8/88/MediaWiki_database_schema_1-19_%28r102798%29.png) the map of tables in MediaWiki. We don't want that.
+ * **Be smart.** [This is](https://upload.wikimedia.org/wikipedia/commons/8/88/MediaWiki_database_schema_1-19_%28r102798%29.png) the map of tables in MediaWiki - we'll understand the choices of other wiki projects and make our own. After-all, this is a Django project.
  * **Be simple.** The source code should explain itself.
 
 Background
@@ -23,4 +23,13 @@ Q&A
 
  * **Why is the module named just "wiki"?** Because "pip install wiki" returns "No distributions at all found for wiki"! :)
  * **What markup language will you use?** The markup engine will be pluggable, but Markdown will be the built-in supported one.
+
+Dependencies
+------------
+
+So far the dependencies are:
+
+ * [django=>1.4](http://www.djangoproject.com)
+ * [django-south 2.2](http://south.aeracode.org/)
+ * [Markdown](https://github.com/waylan/Python-Markdown)
 
