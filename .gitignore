@@ -1,4 +1,11 @@
 *.pyc
+build
+dist
+*.egg-info
+
+#Docs
+docs/_build
+docs/_build/*
 
 # Installer logs
 pip-log.txt

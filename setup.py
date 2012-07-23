@@ -41,6 +41,8 @@ setup(
     zip_safe = False,
     install_requires=[
         'Django>=1.4',
+        'markdown',
+        'south',
       ],
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
