@@ -44,4 +44,11 @@ So far the dependencies are:
  * [django=>1.4](http://www.djangoproject.com)
  * [django-south](http://south.aeracode.org/)
  * [Markdown>=2.2.0](https://github.com/waylan/Python-Markdown)
+ * [django-mptt>=0.5](https://github.com/django-mptt/django-mptt)
+
+Acknowledgements
+----------------
+
+ * The people at [edX](http://www.edxonline.org/) & MIT for finding and supporting the project both financially and with ideas.
+ * [django-cms](https://github.com/divio/django-cms) for venturing where no django app has gone before in terms of well-planned features and high standards. It's a very big inspiration.
 
