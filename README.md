@@ -1,6 +1,8 @@
 django-wiki
 ===========
 
+*2012-07-23*
+
 This is where it all begins. In 4 weeks we should have a wiki system appealing to any kind of Django developer out there. Here is the manifest (so far):
 
  * **Be pluggable and light-weight.** Don't integrate optional features in the core.
@@ -8,10 +10,19 @@ This is where it all begins. In 4 weeks we should have a wiki system appealing t
  * **Be smart.** [This is](https://upload.wikimedia.org/wikipedia/commons/8/88/MediaWiki_database_schema_1-19_%28r102798%29.png) the map of tables in MediaWiki - we'll understand the choices of other wiki projects and make our own. After-all, this is a Django project.
  * **Be simple.** The source code should explain itself.
 
+Installation
+------------
+
+    pip install git+git://github.com/benjaoming/django-wiki.git
+
+After that, add `wiki` to `settings.INSTALLED_APPS`.
+
 Background
 ----------
 
-Django-wiki is a rewrite of [django-simplewiki](http://code.google.com/p/django-simple-wiki/), a project from 2009 that aimed to be a base system for a wiki. It proposed that the user should customize the wiki by overwriting templates, but soon learned that the only customization that people did was by forking the whole project. We don't want that.
+Django-wiki is a rewrite of [django-simplewiki](http://code.google.com/p/django-simple-wiki/), a project from 2009 that aimed to be a base system for a wiki. It proposed that the user should customize the wiki by overwriting templates, but soon learned that the only customization that really took place was that people forked the entire project. We don't want that for django-wiki, we want it to be modular and extendable.
+
+As of now, Django has existed for too long without a proper wiki application. The dream of django-wiki is to become a contestant alongside Mediawiki, so that Django developers can stick to the Django platform even when facing tough challenges such as implementing a wiki.
 
 Contributing
 ------------
@@ -30,6 +41,6 @@ Dependencies
 So far the dependencies are:
 
  * [django=>1.4](http://www.djangoproject.com)
- * [django-south 2.2](http://south.aeracode.org/)
- * [Markdown](https://github.com/waylan/Python-Markdown)
+ * [django-south](http://south.aeracode.org/)
+ * [Markdown>=2.2.0](https://github.com/waylan/Python-Markdown)
 
