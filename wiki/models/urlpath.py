@@ -13,8 +13,8 @@ class URLPath(MPTTModel):
     Strategy: Very few fields go here, as most has to be managed through an
     article's revision. As a side-effect, the URL resolution remains slim and swift.
     """
-    article = models.ForeignKey('Article',
-                                verbosen_name=_(u'article'),
+    article = models.ForeignKey('wiki.Article',
+                                verbose_name=_(u'article'),
                                 help_text=_(u'Article to be displayed for this path'))
     slug = models.SlugField(verbose_name=_(u'slug'))
     site = models.ForeignKey(Site)
@@ -36,6 +36,7 @@ class URLPath(MPTTModel):
         verbose_name = _(u'URL path')
         verbose_name_plural = _(u'URL paths')
         unique_together = ('site', 'parent', 'slug')
+        app_label = settings.APP_LABEL
         
     @classmethod
     def get_by_path(cls, path):
