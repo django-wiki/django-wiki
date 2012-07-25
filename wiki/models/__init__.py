@@ -4,7 +4,7 @@ from django.conf import settings as django_settings
 from django.core.exceptions import ImproperlyConfigured
 import warnings
 
-from article import Article, ArticleRevision, ObjectForArticle
+from article import Article, ArticleRevision, ArticleForObject
 from urlpath import URLPath
 
 ######################
