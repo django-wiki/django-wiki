@@ -6,7 +6,3 @@ class NoRootURL(Exception):
 # If there is more than one...
 class MultipleRootURLs(Exception):
     pass
-
-class IllegalFileExtension(Exception):
-    """File extension on upload is not allowed"""
-    pass

@@ -19,6 +19,7 @@ class Article(models.Model):
                                             help_text=_(u'The revision being displayed for this article. If you need to do a roll-back, simply change the value of this field.'),
                                             )
     
+    created = models.DateTimeField(auto_now_add=True, verbose_name=_(u'created'),)
     modified = models.DateTimeField(auto_now=True, verbose_name=_(u'modified'),
                                     help_text=_(u'Article properties last modified'))
 
@@ -34,8 +35,6 @@ class Article(models.Model):
     group_write = models.BooleanField(default=True, verbose_name=_(u'group write access'))
     other_read = models.BooleanField(default=True, verbose_name=_(u'others read access'))
     other_write = models.BooleanField(default=True, verbose_name=_(u'others write access'))
-    
-    attachments = models.ManyToManyField('Attachment', blank=True, verbose_name=_(u'attachments'))
     
     def can_read(self, user=None, group=None):
         if self.other_read:
@@ -177,6 +176,8 @@ class BaseRevision(models.Model):
         super(BaseRevision, self).save(*args, **kwargs)
             
 class ArticleRevision(BaseRevision):
+    """This is where main revision data is stored. To make it easier to
+    copy, do NEVER create m2m relationships."""
     
     article = models.ForeignKey('Article', on_delete=models.CASCADE,
                                 verbose_name=_(u'article'))
@@ -203,14 +204,18 @@ class ArticleRevision(BaseRevision):
     def __unicode__(self):
         return "%s (%d)" % (self.article.title, self.revision_number)
     
-    def inherit_predecessor(self, revision):
+    def inherit_predecessor(self, article):
         """
         Inherit certain properties from predecessor because it's very
-        convenient. Remember to always call this method before setting properties :)"""
-        self.title = revision.title
-        self.deleted = revision.deleted
-        self.locked = revision.locked
-        self.redirect = revision.redirect
+        convenient. Remember to always call this method before 
+        setting properties :)"""
+        predecessor = article.current_revision
+        self.article = predecessor.article
+        self.content = predecessor.content
+        self.title = predecessor.title
+        self.deleted = predecessor.deleted
+        self.locked = predecessor.locked
+        self.redirect = predecessor.redirect
     
     def save(self, *args, **kwargs):
         super(ArticleRevision, self).save(*args, **kwargs)
@@ -221,65 +226,3 @@ class ArticleRevision(BaseRevision):
             if not self.title:
                 self.title = self.article.title
 
-def upload_path(instance, filename):
-    from os import path
-    try:
-        extension = filename.split(".")[-1]
-    except IndexError:
-        raise exceptions.IllegalFileExtension()
-    if not extension.lower() in map(lambda x: x.lower(), settings.FILE_EXTENTIONS):
-        raise exceptions.IllegalFileExtension()
-    upload_path = settings.UPLOAD_PATH
-    upload_path = upload_path.replace('%aid', str(instance.original_article.id))
-    if settings.UPLOAD_PATH_OBSCURIFY:
-        import random, hashlib
-        m=hashlib.md5(str(random.randint(0,100000000000000)))
-        upload_path = path.join(upload_path, m.hexdigest())
-    return path.join(upload_path, filename + '.upload')
-    
-class Attachment(models.Model):
-    
-    # The article on which the file was originally uploaded.
-    # Used to apply permissions.
-    original_article = models.ForeignKey('Article', on_delete=models.SET_NULL,
-                                         verbose_name=_(u'original article'), null=True, blank=True,
-                                         related_name='original_attachment_set')
-    
-    current_revision = models.OneToOneField('AttachmentRevision', 
-                                            verbose_name=_(u'current revision'),
-                                            blank=True, null=True, related_name='current_set',
-                                            help_text=_(u'The revision of this attachment currently in use (on all articles using the attachment)'),
-                                            )
-    
-    class Meta:
-        app_label = settings.APP_LABEL
-
-class AttachmentRevision(BaseRevision):
-    
-    attachment = models.ForeignKey('Attachment')
-
-    file = models.FileField(upload_to=upload_path, #@ReservedAssignment
-                            verbose_name=_(u'file'))
-    
-    original_filename = models.CharField(max_length=256, verbose_name=_(u'original filename'))
-    
-    overwritten = models.BooleanField(default=False)
-
-    class Meta:
-        app_label = settings.APP_LABEL
-
-class Image(models.Model):
-    
-    article = models.ForeignKey('Article', on_delete=models.CASCADE,
-                                verbose_name=_(u'article'))
-    
-    image = models.ImageField(upload_to=settings.IMAGE_PATH)
-    
-    caption = models.CharField(max_length=2056)
-    
-    def render_caption(self):
-        """Returns a rendered version of the caption. Should only use a
-        subset of the rendering machine."""
-        pass
-    
-    

@@ -85,6 +85,8 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'south',
     'wiki',
+    'wiki.plugins.images',
+    'wiki.plugins.attachments',
     'mptt',
 )
 

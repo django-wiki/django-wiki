@@ -1,15 +1,47 @@
 from django.contrib import admin
 from django.contrib.contenttypes.generic import GenericTabularInline
+from django.utils.translation import ugettext_lazy as _
 from mptt.admin import MPTTModelAdmin
 
-import models
 from django import forms
 from django.forms.widgets import HiddenInput
+from django.core.urlresolvers import get_callable
+
+import models
+from conf import settings
 
 class ArticleObjectAdmin(GenericTabularInline):
     model = models.ArticleForObject
     extra = 1
     max_num = 1
+
+class ArticleRevisionForm(forms.ModelForm):
+    
+    class Meta:
+        model = models.ArticleRevision
+        
+    def __init__(self, *args, **kwargs):
+        super(ArticleRevisionForm, self).__init__(*args, **kwargs)
+        EditorClass = get_callable(settings.EDITOR)
+        Editor = EditorClass(instance=self.instance)
+        self.fields['content'].widget = Editor.get_admin_widget()
+
+class ArticleRevisionAdmin(admin.ModelAdmin):
+    form = ArticleRevisionForm
+    class Media:
+        js = get_callable(settings.EDITOR).AdminMedia.js
+        css = get_callable(settings.EDITOR).AdminMedia.css
+
+class ArticleRevisionInline(admin.TabularInline):
+    model = models.ArticleRevision
+    form = ArticleRevisionForm
+    fk_name = 'article'
+    extra = 1
+    fields = ('content', 'title',  'deleted', 'locked',)
+    
+    class Media:
+        js = get_callable(settings.EDITOR).AdminMedia.js
+        css = get_callable(settings.EDITOR).AdminMedia.css
 
 class ArticleForm(forms.ModelForm):
 
@@ -24,12 +56,6 @@ class ArticleForm(forms.ModelForm):
         else:
             self.fields['current_revision'].queryset = models.ArticleRevision.objects.get_empty_query_set()
             self.fields['current_revision'].widget = HiddenInput()
-            
-class ArticleRevisionInline(admin.TabularInline):
-    model = models.ArticleRevision
-    fk_name = 'article'
-    extra = 1
-    fields = ('content', 'title', 'user', 'user_message', 'deleted', 'locked', 'redirect')
 
 class ArticleAdmin(admin.ModelAdmin):
     inlines = [ArticleRevisionInline]
@@ -38,13 +64,14 @@ class ArticleAdmin(admin.ModelAdmin):
 class URLPathAdmin(MPTTModelAdmin):
     inlines = [ArticleObjectAdmin]
     list_filter = ('site', 'articles__article__current_revision__deleted',
-                   'articles__article__current_revision__created',
+                   'articles__article__created',
                    'articles__article__modified')
-    list_display = ('__unicode__', 'article', 'created')
-
-class ArticleRevisionAdmin(admin.ModelAdmin):
-    pass
-
+    list_display = ('__unicode__', 'article', 'get_created')
+    
+    def get_created(self, instance):
+        return instance.article.created
+    get_created.short_description = _(u'created')
+    
 admin.site.register(models.URLPath, URLPathAdmin)
 admin.site.register(models.Article, ArticleAdmin)
 admin.site.register(models.ArticleRevision, ArticleRevisionAdmin)
