@@ -4,8 +4,9 @@ from django.conf import settings as django_settings
 from django.core.exceptions import ImproperlyConfigured
 import warnings
 
-from article import Article, ArticleRevision, ArticleForObject
-from urlpath import URLPath
+# TODO: Don't use wildcards
+from article import *
+from urlpath import *
 
 ######################
 # Configuration stuff

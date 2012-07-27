@@ -6,25 +6,36 @@ from django.contrib.contenttypes import generic
 from django.contrib.auth.models import User, Group
 
 from wiki.conf import settings
+from wiki.core import exceptions
 
 class Article(models.Model):
     
     title = models.CharField(max_length=512, verbose_name=_(u'title'), 
-                             null=False, blank=False)
-    current_revision = models.ForeignKey('ArticleRevision', 
-                                         verbose_name=_(u'current revision'),
-                                         blank=True, null=True, related_name='current_set')
+                             null=False, blank=False, help_text=_(u'Initial title of the article. '
+                                                                  'May be overridden with revision titles.'))
+    current_revision = models.OneToOneField('ArticleRevision', 
+                                            verbose_name=_(u'current revision'),
+                                            blank=True, null=True, related_name='current_set',
+                                            help_text=_(u'The revision being displayed for this article. If you need to do a roll-back, simply change the value of this field.'),
+                                            )
     
+    modified = models.DateTimeField(auto_now=True, verbose_name=_(u'modified'),
+                                    help_text=_(u'Article properties last modified'))
+
     owner = models.ForeignKey(User, verbose_name=_('owner'),
-                              blank=True, null=True)
+                              blank=True, null=True,
+                              help_text=_(u'The owner of the article, usually the creator. The owner always has both read and write access.'),)
     
     group = models.ForeignKey(Group, verbose_name=_('group'),
-                              blank=True, null=True)
+                              blank=True, null=True,
+                              help_text=_(u'Like in a UNIX file system, permissions can be given to a user according to group membership. Groups are handled through the Django auth system.'),)
     
-    group_read = models.BooleanField(default=True)
-    group_write = models.BooleanField(default=True)
-    other_read = models.BooleanField(default=True)
-    other_write = models.BooleanField(default=True)
+    group_read = models.BooleanField(default=True, verbose_name=_(u'group read access'))
+    group_write = models.BooleanField(default=True, verbose_name=_(u'group write access'))
+    other_read = models.BooleanField(default=True, verbose_name=_(u'others read access'))
+    other_write = models.BooleanField(default=True, verbose_name=_(u'others write access'))
+    
+    attachments = models.ManyToManyField('Attachment', blank=True, verbose_name=_(u'attachments'))
     
     def can_read(self, user=None, group=None):
         if self.other_read:
@@ -113,8 +124,13 @@ class Article(models.Model):
     class Meta:
         app_label = settings.APP_LABEL
     
+    def render_contents(self):
+        if not self.current_revision:
+            return ""
+        
+    
 class ArticleForObject(models.Model):
-    article = models.ForeignKey('Article')    
+    article = models.ForeignKey('Article', on_delete=models.CASCADE)
     # Same as django.contrib.comments
     content_type   = models.ForeignKey(ContentType,
                                        verbose_name=_('content type'),
@@ -130,18 +146,53 @@ class ArticleForObject(models.Model):
         verbose_name_plural = _(u'Articles for object')
         # Do not allow several objects
         unique_together = ('content_type', 'object_id')
+
+class BaseRevision(models.Model):
     
-class ArticleRevision(models.Model):
+    revision_number = models.IntegerField(editable=False, verbose_name=_(u'revision number'))
+
+    user_message = models.CharField(blank=True, max_length=2056)
+    automatic_log = models.TextField(blank=True, editable=False,)
     
-    article = models.ForeignKey('Article', on_delete=models.CASCADE,)
-    revision_number = models.IntegerField()
+    ip_address  = models.IPAddressField(_('IP address'), blank=True, null=True, editable=False)
+    user        = models.ForeignKey(User, verbose_name=_('user'),
+                                    blank=True, null=True)    
+    
+    modified = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        abstract = True
+        app_label = settings.APP_LABEL
+        get_latest_by = ('revision_number',)
+    
+    def save(self, *args, **kwargs):
+        if not self.revision_number:
+            try:
+                previous_revision = self.article.articlerevision_set.latest()
+                self.revision_number = previous_revision.revision_number + 1
+            except ArticleRevision.DoesNotExist:
+                self.revision_number = 1
+            
+        super(BaseRevision, self).save(*args, **kwargs)
+            
+class ArticleRevision(BaseRevision):
+    
+    article = models.ForeignKey('Article', on_delete=models.CASCADE,
+                                verbose_name=_(u'article'))
     
     # This is where the content goes, with whatever markup language is used
-    content = models.TextField(blank=True)
+    content = models.TextField(blank=True, verbose_name=_(u'article contents'))
     
+    # This title is automatically set from either the article's title or
+    # the last used revision...
+    title = models.CharField(max_length=512, verbose_name=_(u'article title'), 
+                             null=False, blank=False, help_text=_(u'Each revision contains a title field that must be filled out, even if the title has not changed'))
+
     # Simple properties
-    deleted = models.BooleanField(verbose_name=_(u'Article has been deleted'))
-    
+    deleted = models.BooleanField(verbose_name=_(u'article deleted'))
+    locked  = models.BooleanField(verbose_name=_(u'article locked'))
+
     # Allow a revision to redirect to another *article*. This 
     # way, we can redirects and still maintain old content.
     redirect = models.ForeignKey('Article', null=True, blank=True,
@@ -149,16 +200,86 @@ class ArticleRevision(models.Model):
                                  help_text=_(u'If set, the article will redirect to the contents of another article.'),
                                  related_name='redirect_set')
     
-    # User details
-    ip_address  = models.IPAddressField(_('IP address'), blank=True, null=True)
-    user        = models.ForeignKey(User, verbose_name=_('user'),
-                                    blank=True, null=True)
+    def __unicode__(self):
+        return "%s (%d)" % (self.article.title, self.revision_number)
     
-    # Various stuff
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
+    def inherit_predecessor(self, revision):
+        """
+        Inherit certain properties from predecessor because it's very
+        convenient. Remember to always call this method before setting properties :)"""
+        self.title = revision.title
+        self.deleted = revision.deleted
+        self.locked = revision.locked
+        self.redirect = revision.redirect
+    
+    def save(self, *args, **kwargs):
+        super(ArticleRevision, self).save(*args, **kwargs)
+        if not self.article.current_revision:
+            # If I'm saved from Django admin, then article.current_revision is me!
+            self.article.current_revision = self
+            self.article.save()
+            if not self.title:
+                self.title = self.article.title
+
+def upload_path(instance, filename):
+    from os import path
+    try:
+        extension = filename.split(".")[-1]
+    except IndexError:
+        raise exceptions.IllegalFileExtension()
+    if not extension.lower() in map(lambda x: x.lower(), settings.FILE_EXTENTIONS):
+        raise exceptions.IllegalFileExtension()
+    upload_path = settings.UPLOAD_PATH
+    upload_path = upload_path.replace('%aid', str(instance.original_article.id))
+    if settings.UPLOAD_PATH_OBSCURIFY:
+        import random, hashlib
+        m=hashlib.md5(str(random.randint(0,100000000000000)))
+        upload_path = path.join(upload_path, m.hexdigest())
+    return path.join(upload_path, filename + '.upload')
+    
+class Attachment(models.Model):
+    
+    # The article on which the file was originally uploaded.
+    # Used to apply permissions.
+    original_article = models.ForeignKey('Article', on_delete=models.SET_NULL,
+                                         verbose_name=_(u'original article'), null=True, blank=True,
+                                         related_name='original_attachment_set')
+    
+    current_revision = models.OneToOneField('AttachmentRevision', 
+                                            verbose_name=_(u'current revision'),
+                                            blank=True, null=True, related_name='current_set',
+                                            help_text=_(u'The revision of this attachment currently in use (on all articles using the attachment)'),
+                                            )
     
     class Meta:
         app_label = settings.APP_LABEL
-        get_latest_by = ('id',)
+
+class AttachmentRevision(BaseRevision):
+    
+    attachment = models.ForeignKey('Attachment')
+
+    file = models.FileField(upload_to=upload_path, #@ReservedAssignment
+                            verbose_name=_(u'file'))
+    
+    original_filename = models.CharField(max_length=256, verbose_name=_(u'original filename'))
+    
+    overwritten = models.BooleanField(default=False)
+
+    class Meta:
+        app_label = settings.APP_LABEL
+
+class Image(models.Model):
+    
+    article = models.ForeignKey('Article', on_delete=models.CASCADE,
+                                verbose_name=_(u'article'))
+    
+    image = models.ImageField(upload_to=settings.IMAGE_PATH)
+    
+    caption = models.CharField(max_length=2056)
+    
+    def render_caption(self):
+        """Returns a rendered version of the caption. Should only use a
+        subset of the rendering machine."""
+        pass
+    
     
