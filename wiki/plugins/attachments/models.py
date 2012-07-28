@@ -18,7 +18,11 @@ class Attachment(ReusablePlugin):
                                             blank=True, null=True, related_name='current_set',
                                             help_text=_(u'The revision of this attachment currently in use (on all articles using the attachment)'),
                                             )
-
+    
+    original_filename = models.CharField(max_length=256, verbose_name=_(u'original filename'), blank=True, null=True)
+    
+    description = models.TextField(blank=True)
+    
     class Meta:
         verbose_name = _(u'attachment')
         verbose_name_plural = _(u'attachments')
@@ -26,12 +30,26 @@ class Attachment(ReusablePlugin):
         
 def upload_path(instance, filename):
     from os import path
+    
+    
     try:
         extension = filename.split(".")[-1]
     except IndexError:
+        # No extension
         raise IllegalFileExtension()
-    if not extension.lower() in map(lambda x: x.lower(), settings.FILE_EXTENTIONS):
+    
+    # Must be an allowed extension
+    if not extension.lower() in map(lambda x: x.lower(), settings.FILE_EXTENSIONS):
         raise IllegalFileExtension()
+    
+    # Has to match original extension filename
+    if instance.attachment and instance.attachment.original_filename:
+        original_extension = ".".split(instance.attachment.original_filename)[-1]
+        if not extension.lower() == original_extension:
+            raise IllegalFileExtension("File extension has to be %s" % original_extension)
+    elif instance.attachment:
+        instance.attachment.original_filename = filename
+        
     upload_path = settings.UPLOAD_PATH
     upload_path = upload_path.replace('%aid', str(instance.original_article.id))
     if settings.UPLOAD_PATH_OBSCURIFY:
@@ -39,7 +57,7 @@ def upload_path(instance, filename):
         m=hashlib.md5(str(random.randint(0,100000000000000)))
         upload_path = path.join(upload_path, m.hexdigest())
     return path.join(upload_path, filename + '.upload')
-        
+    
 class AttachmentRevision(BaseRevision):
     
     attachment = models.ForeignKey('Attachment')
@@ -47,10 +65,6 @@ class AttachmentRevision(BaseRevision):
     file = models.FileField(upload_to=upload_path, #@ReservedAssignment
                             verbose_name=_(u'file'))
     
-    original_filename = models.CharField(max_length=256, verbose_name=_(u'original filename'))
-    
-    overwritten = models.BooleanField(default=False)
-
     class Meta:
         verbose_name = _(u'attachment revision')
         verbose_name_plural = _(u'attachment revisions')

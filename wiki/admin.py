@@ -23,8 +23,8 @@ class ArticleRevisionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ArticleRevisionForm, self).__init__(*args, **kwargs)
         EditorClass = get_callable(settings.EDITOR)
-        Editor = EditorClass(instance=self.instance)
-        self.fields['content'].widget = Editor.get_admin_widget()
+        editor = EditorClass(instance=self.instance)
+        self.fields['content'].widget = editor.get_admin_widget()
 
 class ArticleRevisionAdmin(admin.ModelAdmin):
     form = ArticleRevisionForm

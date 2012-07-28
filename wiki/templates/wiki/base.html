@@ -1,0 +1,85 @@
+{% load sekizai_tags %}<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block page-title %}{% endblock %} ~~ django-wiki ^_^</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="www.django-wiki.org">
+
+    <!-- Le styles -->
+    <link href="{{ STATIC_URL }}wiki/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    <link href="{{ STATIC_URL }}wiki/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    
+    <script src="{{ STATIC_URL }}wiki/js/jquery.min.js"></script>
+    {% render_block "css" %}
+    {% render_block "js" %}
+    
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="{% url wiki:root %}">django-wiki</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      
+      {% block wiki_contents %}
+      <h1>Bootstrap starter template</h1>
+      <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
+      {% endblock %}
+
+      <footer style="margin: 50px 0">
+        <p>Powered by django-wiki: <a href="http://www.django-wiki.org">www.django-wiki.org</a></p>
+        <p>This is open source, <a href="http://www.gnu.org/licenses/quick-guide-gplv3.html">GPLv3</a>. <a href="https://github.com/benjaoming/django-wiki">Fork me on Github.</a></p>
+      </footer>
+    </div> <!-- /container -->
+
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!--
+    <script src="{{ STATIC_URL }}wiki/bootstrap/js/bootstrap-transition.js"></script>
+    <script src="{{ STATIC_URL }}wiki/bootstrap/js/bootstrap-alert.js"></script>
+    <script src="{{ STATIC_URL }}wiki/bootstrap/js/bootstrap-modal.js"></script>
+    <script src="{{ STATIC_URL }}wiki/bootstrap/js/bootstrap-dropdown.js"></script>
+    <script src="{{ STATIC_URL }}wiki/bootstrap/js/bootstrap-scrollspy.js"></script>
+    <script src="{{ STATIC_URL }}wiki/bootstrap/js/bootstrap-tab.js"></script>
+    <script src="{{ STATIC_URL }}wiki/bootstrap/js/bootstrap-tooltip.js"></script>
+    <script src="{{ STATIC_URL }}wiki/bootstrap/js/bootstrap-popover.js"></script>
+    <script src="{{ STATIC_URL }}wiki/bootstrap/js/bootstrap-button.js"></script>
+    <script src="{{ STATIC_URL }}wiki/bootstrap/js/bootstrap-collapse.js"></script>
+    <script src="{{ STATIC_URL }}wiki/bootstrap/js/bootstrap-carousel.js"></script>
+    <script src="{{ STATIC_URL }}wiki/bootstrap/js/bootstrap-typeahead.js"></script>
+    -->
+  </body>
+</html>
+

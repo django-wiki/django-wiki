@@ -1,0 +1,11 @@
+{% extends "wiki/base.html" %}
+{% load wiki_tags %}
+
+{% block wiki_contents %}
+
+  {% block page-title %}{{ article.current_revision.title }}{% endblock %}
+
+  {% wiki_article urlpath %}
+
+{% endblock %}
+

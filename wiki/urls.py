@@ -2,7 +2,9 @@
 from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns('',
-    url('^$', 'wiki.views.index', name='index'),   
+    url('^$', 'wiki.views.root', name='root'),   
+    url('^create-root/$', 'wiki.views.root_create', name='root_create'),   
+    url('(.*)', 'wiki.views.get_url', name='get_url'),   
 )
 
 def get_pattern(app_name="wiki", namespace="wiki"):

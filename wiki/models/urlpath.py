@@ -31,6 +31,7 @@ class URLPath(MPTTModel):
     
     @property
     def path(self):
+        if not self.parent: return ""
         return "/".join([obj.slug for obj in self.get_ancestors(include_self=True)])
     
     @classmethod
@@ -39,9 +40,9 @@ class URLPath(MPTTModel):
         root_nodes = cls.objects.root_nodes().filter(site=site)
         no_paths = root_nodes.count()
         if no_paths == 0:
-            raise NoRootURL
+            raise NoRootURL("You need to create a root article on site '%s'" % site)
         if no_paths > 1:
-            raise MultipleRootURLs
+            raise MultipleRootURLs("Somehow you have multiple roots on %s" % site)
         return root_nodes[0]
 
     class MPTTMeta:
@@ -101,13 +102,17 @@ class URLPath(MPTTModel):
     @classmethod
     def create_root(cls, site=None):
         if not site: site = Site.objects.get_current()
-        if not cls.objects.root_nodes().filter(site=site):
+        root_nodes = cls.objects.root_nodes().filter(site=site)
+        if not root_nodes:
             # (get_or_create does not work for MPTT models??)
             root = cls.objects.create(site=site)
             article = Article()
             article.add_revision(ArticleRevision(), save=True)
             article.add_object_relation(root)
-    
+        else:
+            root = root_nodes[0]
+        return root
+        
     @property
     def article(self):
         try:

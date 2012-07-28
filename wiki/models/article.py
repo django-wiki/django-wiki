@@ -6,7 +6,6 @@ from django.contrib.contenttypes import generic
 from django.contrib.auth.models import User, Group
 
 from wiki.conf import settings
-from wiki.core import exceptions
 
 class Article(models.Model):
     
@@ -109,7 +108,7 @@ class Article(models.Model):
         has_parent_field = hasattr(obj, 'parent')
         rel = ArticleForObject.objects.get_or_create(article=self,
                                                      content_type=content_type,
-                                                     object_pk=obj.pk,
+                                                     object_id=obj.id,
                                                      has_parent_method=has_parent_field)
         return rel
     

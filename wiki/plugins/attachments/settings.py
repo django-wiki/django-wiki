@@ -12,4 +12,4 @@ UPLOAD_PATH_OBSCURIFY = getattr(django_settings, 'WIKI_UPLOAD_PATH_OBSCURIFY', T
 # No files are saved without appending ".upload" to the file to ensure that
 # your web server never actually executes some script.
 # Case insensitive.
-FILE_EXTENTIONS = getattr(django_settings, 'WIKI_FILE_EXTENTIONS', ['pdf', 'doc', 'odt', 'docx', 'txt'])
+FILE_EXTENSIONS = getattr(django_settings, 'WIKI_FILE_EXTENSIONS', ['pdf', 'doc', 'odt', 'docx', 'txt'])

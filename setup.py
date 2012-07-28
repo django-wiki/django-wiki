@@ -42,6 +42,7 @@ setup(
     install_requires=[
         'Django>=1.4',
         'markdown',
+        'django-sekizai',
         'south',
       ],
     classifiers=[

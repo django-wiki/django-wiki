@@ -15,6 +15,9 @@ from urlpath import *
 if not 'mptt' in django_settings.INSTALLED_APPS:
     raise ImproperlyConfigured('django-wiki: needs mptt in INSTALLED_APPS')
 
+if not 'sekizai' in django_settings.INSTALLED_APPS:
+    raise ImproperlyConfigured('django-wiki: needs sekizai in INSTALLED_APPS')
+
 if not 'django.contrib.contenttypes' in django_settings.INSTALLED_APPS:
     raise ImproperlyConfigured('django-wiki: needs django.contrib.contenttypes in INSTALLED_APPS')
 
