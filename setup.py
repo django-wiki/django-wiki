@@ -44,6 +44,7 @@ setup(
         'markdown',
         'django-sekizai',
         'south',
+        'django-mptt',
       ],
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',

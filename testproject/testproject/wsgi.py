@@ -14,6 +14,12 @@ framework.
 
 """
 import os
+import sys
+
+PROJECT_PATH = os.path.abspath(os.path.split(__file__)[0])
+PROJECT_PARENT = os.path.abspath(os.path.split(PROJECT_PATH)[0])
+sys.path.append(PROJECT_PATH)
+sys.path.append(PROJECT_PARENT)
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "testproject.settings")
 
