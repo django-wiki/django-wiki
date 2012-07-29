@@ -46,7 +46,7 @@ So far the dependencies are:
  * [django-south](http://south.aeracode.org/)
  * [Markdown>=2.2.0](https://github.com/waylan/Python-Markdown)
  * [django-mptt>=0.5](https://github.com/django-mptt/django-mptt)
- * [django-sekiza](https://github.com/ojii/django-sekizai/)
+ * [django-sekizai](https://github.com/ojii/django-sekizai/)
 
 Acknowledgements
 ----------------
