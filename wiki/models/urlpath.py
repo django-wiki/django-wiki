@@ -92,22 +92,23 @@ class URLPath(MPTTModel):
         parent = cls.root()
         for slug in slugs:
             if settings.URL_CASE_SENSITIVE:
-                parent = parent.get_children.get(slug=slug)
+                parent = parent.get_children().get(slug=slug)
             else:
-                parent = parent.get_children.get(slug__iexact=slug)
+                parent = parent.get_children().get(slug__iexact=slug)
             level += 1
         
         return parent
     
     @classmethod
-    def create_root(cls, site=None):
+    def create_root(cls, site=None, title="Root", content=""):
         if not site: site = Site.objects.get_current()
         root_nodes = cls.objects.root_nodes().filter(site=site)
         if not root_nodes:
             # (get_or_create does not work for MPTT models??)
             root = cls.objects.create(site=site)
-            article = Article()
-            article.add_revision(ArticleRevision(), save=True)
+            article = Article(title=title)
+            article.add_revision(ArticleRevision(title=title, content=content),
+                                 save=True)
             article.add_object_relation(root)
         else:
             root = root_nodes[0]

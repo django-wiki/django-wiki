@@ -2,17 +2,22 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>{% block page-title %}{% endblock %} ~~ django-wiki ^_^</title>
+    <title>{% block pagetitle %}{% endblock %} | django-wiki \/\/</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="www.django-wiki.org">
 
     <!-- Le styles -->
     <link href="{{ STATIC_URL }}wiki/bootstrap/css/bootstrap.css" rel="stylesheet">
+    
+    <!-- TODO: Put all this stuff in Less -->
     <style>
-      body {
-        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-      }
+      #id_title {font-size: 20px; height: 25px; padding: 10px; width: 400px;}
+      
+      .form-horizontal label { font-size: 18px; font-weight: bold; color: #777;}
+      
+      .asteriskField { font-size: 20px; }
+      
     </style>
     <link href="{{ STATIC_URL }}wiki/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
     
@@ -29,6 +34,9 @@
 
   <body>
 
+    {% block wiki_body %}
+    
+    {% block navbar %}
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
@@ -48,28 +56,43 @@
         </div>
       </div>
     </div>
+    {% endblock %}
 
-    <div class="container">
-      
+    <div class="container" style="margin-top: 60px;">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">
+            <a class="close" data-dismiss="alert" href="#">&times;</a>
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+      {% block wiki_breadcrumbs %}{% endblock %}
       {% block wiki_contents %}
       <h1>Bootstrap starter template</h1>
       <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
       {% endblock %}
-
-      <footer style="margin: 50px 0">
-        <p>Powered by django-wiki: <a href="http://www.django-wiki.org">www.django-wiki.org</a></p>
-        <p>This is open source, <a href="http://www.gnu.org/licenses/quick-guide-gplv3.html">GPLv3</a>. <a href="https://github.com/benjaoming/django-wiki">Fork me on Github.</a></p>
+      
+      <div style="padding: 50px 0;">
+      <footer>
+        <hr />
+        <a href="https://github.com/benjaoming/django-wiki" class="pull-right"><img src="{{ STATIC_URL }}img/github_icon.png" /></a>
+        <p>Powered by <a href="http://www.django-wiki.org">django-wiki</a>, an open source application under the <a href="http://www.gnu.org/licenses/quick-guide-gplv3.html">GPLv3</a> license. Let knowledge be the cure.</p>
+        <div style="clear: both"></div>
       </footer>
+      </div>
+
     </div> <!-- /container -->
 
+    {% endblock %}
 
+    <script src="{{ STATIC_URL }}wiki/bootstrap/js/bootstrap-modal.js"></script>
+    <script src="{{ STATIC_URL }}wiki/bootstrap/js/bootstrap-alert.js"></script>
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <!--
     <script src="{{ STATIC_URL }}wiki/bootstrap/js/bootstrap-transition.js"></script>
-    <script src="{{ STATIC_URL }}wiki/bootstrap/js/bootstrap-alert.js"></script>
-    <script src="{{ STATIC_URL }}wiki/bootstrap/js/bootstrap-modal.js"></script>
     <script src="{{ STATIC_URL }}wiki/bootstrap/js/bootstrap-dropdown.js"></script>
     <script src="{{ STATIC_URL }}wiki/bootstrap/js/bootstrap-scrollspy.js"></script>
     <script src="{{ STATIC_URL }}wiki/bootstrap/js/bootstrap-tab.js"></script>
@@ -80,6 +103,7 @@
     <script src="{{ STATIC_URL }}wiki/bootstrap/js/bootstrap-carousel.js"></script>
     <script src="{{ STATIC_URL }}wiki/bootstrap/js/bootstrap-typeahead.js"></script>
     -->
+
   </body>
 </html>
 

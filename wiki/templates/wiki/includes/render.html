@@ -1,0 +1,11 @@
+{% load wiki_tags i18n cache %}
+
+{% block wiki_contents %}
+  {% if not preview %}
+  {% cache 500 article article.current_revision.id %}
+    {{ article.render }}
+  {% endcache %}
+  {% else %}
+    {{ content }}
+  {% endif %}
+{% endblock %}

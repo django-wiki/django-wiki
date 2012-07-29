@@ -6,21 +6,38 @@ register = template.Library()
 
 from wiki import models
 
-@register.inclusion_tag('wiki/article/render.html')
-def wiki_article(obj):
-    
+# Cache for looking up objects for articles... article_for_object is
+# called more than once per page in multiple template blocks.
+_cache = {}
+
+@register.assignment_tag(takes_context=True)
+def article_for_object(context, obj):
     if not isinstance(obj, Model):
         raise TypeError("A Wiki article can only be associated to a Django Model instance, not %s" % type(obj))
     
     content_type = ContentType.objects.get_for_model(obj)
-    try:
-        article = models.ArticleForObject.objects.get(content_type=content_type, object_id=obj.pk).article
-    except models.ArticleForObject.DoesNotExist:
-        article = None
     
+    # TODO: This is disabled for now, as it should only fire once per request
+    # Maybe store cache in the request object?
+    if True or not obj in _cache.keys():
+        try:
+            article = models.ArticleForObject.objects.get(content_type=content_type, object_id=obj.pk).article
+        except models.ArticleForObject.DoesNotExist:
+            article = None
+        _cache[obj] = article
+    return _cache[obj]
+
+@register.inclusion_tag('wiki/includes/render.html')
+def wiki_render(article, preview_content=None):
+    
+    if preview_content:
+        content = article.render(preview_content=preview_content)
+    else:
+        content = None
     return {
-        'obj': obj,
         'article': article,
+        'content': content,
+        'preview': not preview_content is None,
     }
 
 @register.inclusion_tag('wiki/includes/form.html', takes_context=True)
@@ -32,3 +49,13 @@ def wiki_form(context, form_obj):
     return {
         'form': form_obj,
     }
+
+@register.filter(takes_context=True)
+def can_read(context, obj):
+    """Articles and plugins have a can_read method..."""
+    return obj.can_read(context.user)
+
+@register.filter(takes_context=True)
+def can_write(context, obj):
+    """Articles and plugins have a can_write method..."""
+    return obj.can_write(context.user)

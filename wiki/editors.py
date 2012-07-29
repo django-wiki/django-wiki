@@ -4,6 +4,9 @@ from django.utils.html import conditional_escape
 from django.utils.encoding import force_unicode
 from django.forms.util import flatatt
 
+from conf import settings
+from django.core.urlresolvers import get_callable
+
 class BaseEditor():
     # The editor id can be used for conditional testing. If you write your
     # own editor class, you can use the same editor_id as some editor 
@@ -53,7 +56,7 @@ class MarkItUpWidget(forms.Widget):
     def render(self, name, value, attrs=None):
         if value is None: value = ''
         final_attrs = self.build_attrs(attrs, name=name)
-        return mark_safe(u'<textarea%s>%s</textarea>' % (flatatt(final_attrs),
+        return mark_safe(u'<div><textarea%s>%s</textarea></div>' % (flatatt(final_attrs),
                 conditional_escape(force_unicode(value))))
 
 class MarkItUp(BaseEditor):
@@ -84,3 +87,6 @@ class MarkItUp(BaseEditor):
               "wiki/markitup/jquery.markitup.js",
               "wiki/markitup/sets/frontend/set.js",
               )
+
+EditorClass = get_callable(settings.EDITOR)
+editor = EditorClass()

@@ -1,0 +1,6 @@
+{% extends "wiki/base.html" %}
+{% load wiki_tags i18n %}
+{% block wiki_body %}
+<h1 class="page-header">{{ title }}</h1>
+{% wiki_render article content %}
+{% endblock %}

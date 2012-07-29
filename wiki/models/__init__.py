@@ -21,6 +21,9 @@ if not 'sekizai' in django_settings.INSTALLED_APPS:
 if not 'django.contrib.contenttypes' in django_settings.INSTALLED_APPS:
     raise ImproperlyConfigured('django-wiki: needs django.contrib.contenttypes in INSTALLED_APPS')
 
+if not 'django.contrib.auth.context_processors.auth' in django_settings.TEMPLATE_CONTEXT_PROCESSORS:
+    raise ImproperlyConfigured('django-wiki: needs django.contrib.auth.context_processors.auth in TEMPLATE_CONTEXT_PROCESSORS')
+
 ######################
 # Warnings
 ######################

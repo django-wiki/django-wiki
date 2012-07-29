@@ -4,7 +4,7 @@
 {% block pagetitle %}{% article_for_object urlpath as article %}{{ article.current_revision.title }}{% endblock %}
 
 {% block wiki_breadcrumbs %}
-{% include "wiki/includes/breadcrumbs.html" %}
+  {% include "wiki/includes/breadcrumbs.html" %}
 {% endblock %}
 
 {% block wiki_contents %}
@@ -14,26 +14,35 @@
   {% if article %}
     <div class="tabbable tabs-top" style="margin-top: 40px;">
       <ul class="nav nav-tabs">
-        {% with "view" as selected %}
+        {% with "history" as selected %}
           {% include "wiki/includes/article_menu.html" %}
         {% endwith %}
-        <li><h1 style="margin-top: -10px;">{{ article.current_revision.title }}</h1></li>
+        <li>
+          <h1 style="margin-top: -10px;">
+            {{ article.current_revision.title }}
+          </h1>
+        </li>
       </ul>
       <div class="tab-content">
-        {% wiki_render article %}
+        
+        <form method="POST" class="form-horizontal">
+          <div class="form-actions">
+            <button type="submit" name="save" value="1" class="btn btn-large btn-primary" onclick="this.form.target=''; this.form.action='{% url wiki:edit_url urlpath.path %}'">
+              <span class="icon-ok"></span>
+              {% trans "Save changes" %}
+            </button>
+          </div>
+        </form>
+
       </div>
     </div>
 
     <div class="tabbable tabs-below" style="margin-top: 20px;">
       <ul class="nav nav-tabs">
-        {% with "view" as selected %}
-          {% include "wiki/includes/article_menu.html" %}
-        {% endwith %}
         <li style="margin-top: 10px;"><em>{% trans "Article last modified:" %} {{ article.current_revision.modified }}</em></li>
       </ul>
     </div>
     
-   
   {% else %}
     {% trans "An article for this path does not exist." %}
   {% endif %}

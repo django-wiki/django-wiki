@@ -5,9 +5,13 @@
 
 /*label[for=id_content] {float: none; clear: both; width: 100%; display: block;}*/
 
-.markItUp {max-width: 600px; padding: 0; width: 100%;}
+.markItUp {padding: 0; width: auto;}
 
-.markItUpContainer {}
+textarea.markItUp {font-size: 16px; padding: 10px; float: none; display: block; width: 100%; }
+
+.markItUpHeader {float: none; display: block; }
+
+.markItUpContainer {margin-right: 40px;;}
 
 .markItUp .markItUpButton1 a {
 	background-image:url(images/h1.png); 

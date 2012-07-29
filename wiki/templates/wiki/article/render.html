@@ -1,7 +1,0 @@
-{% load wiki_tags i18n cache %}
-
-{% block wiki_contents %}
-  {% cache 500 article.current_revision %}
-      {{ article.render }}
-  {% endcache %}
-{% endblock %}

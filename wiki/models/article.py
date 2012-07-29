@@ -5,7 +5,10 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.contrib.auth.models import User, Group
 
+from markdown import markdown
+
 from wiki.conf import settings
+from django.utils.safestring import mark_safe
 
 class Article(models.Model):
     
@@ -122,9 +125,14 @@ class Article(models.Model):
     class Meta:
         app_label = settings.APP_LABEL
     
-    def render_contents(self):
+    def render(self, preview_content=None):
         if not self.current_revision:
             return ""
+        if preview_content:
+            content = preview_content
+        else:
+            content = self.current_revision.content
+        return mark_safe(markdown(content))
         
     
 class ArticleForObject(models.Model):
@@ -201,7 +209,7 @@ class ArticleRevision(BaseRevision):
                                  related_name='redirect_set')
     
     def __unicode__(self):
-        return "%s (%d)" % (self.article.title, self.revision_number)
+        return "%s (%d)" % (self.title, self.revision_number)
     
     def inherit_predecessor(self, article):
         """
