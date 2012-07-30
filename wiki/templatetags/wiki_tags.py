@@ -50,12 +50,12 @@ def wiki_form(context, form_obj):
         'form': form_obj,
     }
 
-@register.filter(takes_context=True)
-def can_read(context, obj):
+@register.filter
+def can_read(obj, user):
     """Articles and plugins have a can_read method..."""
-    return obj.can_read(context.user)
+    return obj.can_read(user)
 
-@register.filter(takes_context=True)
-def can_write(context, obj):
+@register.filter
+def can_write(obj, user):
     """Articles and plugins have a can_write method..."""
-    return obj.can_write(context.user)
+    return obj.can_write(user)

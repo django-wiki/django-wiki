@@ -15,6 +15,8 @@ EDITOR = getattr(django_settings, 'WIKI_EDITOR', 'wiki.editors.MarkItUp')
 # and all their content.
 LOST_AND_FOUND_SLUG = getattr(django_settings, 'WIKI_LOST_AND_FOUND_SLUG', 'lost-and-found')
 
+LOG_IPS_ANONYMOUS = getattr(django_settings, 'WIKI_LOG_IPS_ANONYMOUS', True)
+LOG_IPS_USERS = getattr(django_settings, 'WIKI_LOG_IPS_USERS', False)
 
 ####################
 # PLANNED SETTINGS #
@@ -25,9 +27,6 @@ MAX_REVISIONS = getattr(django_settings, 'WIKI_MAX_REVISIONS', 100)
 
 # Maximum age of revisions in days, 0=unlimited
 MAX_REVISION_AGE = getattr(django_settings, 'MAX_REVISION_AGE', 365)
-
-LOG_IPS_ANONYMOUS = getattr(django_settings, 'WIKI_LOG_IPS_ANONYMOUS', True)
-LOG_IPS_USERS = getattr(django_settings, 'WIKI_LOG_IPS_USERS', False)
 
 # Maximum allowed revisions per minute for any given user or IP
 REVISIONS_PER_MINUTE = getattr(django_settings, 'WIKI_REVISIONS_PER_MINUTE', 3)

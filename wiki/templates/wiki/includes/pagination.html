@@ -1,0 +1,9 @@
+{% load i18n %}
+{% if is_paginated %}
+<div class="pagination">
+  <ul>
+    {% for pc in paginator.page_range %}
+    <li class="{% if pc == page_obj.number %} active{% endif %}"><a href="?page={{ pc }}">{{ pc }}</a></li>
+    {% endfor %}
+  </ul>
+{% endif %}

@@ -102,6 +102,7 @@ class Article(models.Model):
         except ArticleRevision.DoesNotExist:
             new_revision.revision_number = 0
         new_revision.article = self
+        new_revision.previous_revision = self.current_revision
         if save: new_revision.save()
         self.current_revision = new_revision
         if save: self.save()
@@ -157,7 +158,7 @@ class BaseRevision(models.Model):
     
     revision_number = models.IntegerField(editable=False, verbose_name=_(u'revision number'))
 
-    user_message = models.CharField(blank=True, max_length=2056)
+    user_message = models.TextField(blank=True,)
     automatic_log = models.TextField(blank=True, editable=False,)
     
     ip_address  = models.IPAddressField(_('IP address'), blank=True, null=True, editable=False)
@@ -167,21 +168,14 @@ class BaseRevision(models.Model):
     modified = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     
+    previous_revision = models.ForeignKey('self', blank=True, null=True)
+    
     class Meta:
         abstract = True
         app_label = settings.APP_LABEL
         get_latest_by = ('revision_number',)
+        ordering = ('created',)
     
-    def save(self, *args, **kwargs):
-        if not self.revision_number:
-            try:
-                previous_revision = self.article.articlerevision_set.latest()
-                self.revision_number = previous_revision.revision_number + 1
-            except ArticleRevision.DoesNotExist:
-                self.revision_number = 1
-            
-        super(BaseRevision, self).save(*args, **kwargs)
-            
 class ArticleRevision(BaseRevision):
     """This is where main revision data is stored. To make it easier to
     copy, do NEVER create m2m relationships."""
@@ -233,3 +227,12 @@ class ArticleRevision(BaseRevision):
             if not self.title:
                 self.title = self.article.title
 
+        if not self.revision_number:
+            try:
+                previous_revision = self.article.articlerevision_set.latest()
+                self.revision_number = previous_revision.revision_number + 1
+            except ArticleRevision.DoesNotExist:
+                self.revision_number = 1
+            
+        super(BaseRevision, self).save(*args, **kwargs)
+            

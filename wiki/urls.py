@@ -1,13 +1,18 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls.defaults import patterns, url
 
+import views
+
 urlpatterns = patterns('',
     url('^$', 'wiki.views.root', name='root', kwargs={'path': ''}),   
     url('^create-root/$', 'wiki.views.root_create', name='root_create'),   
-    url('^(?P<path>.*)/?_edit/$', 'wiki.views.edit', name='edit_url'),   
-    url('^(?P<path>.*)/?_preview/$', 'wiki.views.preview', name='preview_url'),   
-    url('^(?P<path>.*)/?_history/$', 'wiki.views.history', name='history_url'),   
-    url('(.*)', 'wiki.views.get_url', name='get_url'),   
+    url('^_revision/diff/(\d+)/$', 'wiki.views.diff', name='diff'),   
+    url('^_revision/change/(?P<article_id>\d+)/(?P<revision_id>\d+)/$', 'wiki.views.change_revision', name='change_revision'),   
+    url('^(?P<path>.+/|)_edit/$', 'wiki.views.edit', name='edit_url'),   
+    url('^(?P<path>.+/|)_preview/$', 'wiki.views.preview', name='preview_url'),   
+    url('^(?P<path>.+/|)_history/$', views.History.as_view(), name='history_url'),   
+    url('^(?P<path>.+/|)_revision/change/(?P<revision_id>\d+)/$', 'wiki.views.change_revision', name='change_revision_url'),   
+    url('^(?P<path>.+/|)$', 'wiki.views.get_url', name='get_url'),   
 )
 
 def get_pattern(app_name="wiki", namespace="wiki"):

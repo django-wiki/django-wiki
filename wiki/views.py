@@ -2,15 +2,20 @@
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template.context import RequestContext
 from django.contrib.auth.decorators import permission_required
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, Http404
 from django.utils.translation import ugettext as _
 
-import models
-import forms
-import editors
+from wiki import models
+from wiki import forms
+from wiki import editors
+from wiki.conf import settings
+
 from wiki.core.exceptions import NoRootURL
 from django.contrib import messages
 from django.views.generic.list import ListView
+import difflib
+from wiki.decorators import json_view
+from django.utils.decorators import method_decorator
 
 def get_article(func=None, can_read=True, can_write=False):
     """Intercepts the keyword args path or article_id and looks up an article,
@@ -78,6 +83,12 @@ def edit(request, article, template_file="wiki/edit.html", urlpath=None):
             revision.inherit_predecessor(article)
             revision.title = edit_form.cleaned_data['title']
             revision.content = edit_form.cleaned_data['content']
+            if request.user:
+                revision.user = request.user
+                if settings.LOG_IPS_USERS:
+                    revision.ip_address = request.META.get('REMOTE_ADDR', None)
+            elif settings.LOG_IPS_ANONYMOUS:
+                revision.ip_address = request.META.get('REMOTE_ADDR', None)
             article.add_revision(revision)
             messages.success(request, _(u'A new revision of the article was succesfully added.'))
             if not urlpath is None:
@@ -95,12 +106,38 @@ def edit(request, article, template_file="wiki/edit.html", urlpath=None):
                                  'editor': editors.editor})
     return render_to_response(template_file, c)
 
-@get_article(can_read=True)
-def history(request, article, template_file="wiki/history.html", urlpath=None):
+class History(ListView):
     
-    c = RequestContext(request, {'article': article,
-                                 'urlpath': urlpath,})
-    return render_to_response(template_file, c)
+    template_name="wiki/history.html"
+    allow_empty = True
+    context_object_name = 'revisions'
+    paginate_by = 10
+    
+    def get_queryset(self):
+        return models.ArticleRevision.objects.filter(article=self.article).order_by('-created')
+    
+    def get_context_data(self, **kwargs):
+        kwargs['urlpath'] = self.urlpath
+        kwargs['article'] = self.article
+        return super(History, self).get_context_data(**kwargs)
+    
+    @method_decorator(get_article)
+    def dispatch(self, request, article, *args, **kwargs):
+        self.urlpath = kwargs.pop('urlpath', None)
+        self.article = article
+        return super(History, self).dispatch(request, *args, **kwargs)
+
+@get_article(can_write=True)
+def change_revision(request, article, revision_id=None, urlpath=None):
+    revision = get_object_or_404(models.ArticleRevision, article=article, id=revision_id)
+    article.current_revision = revision
+    article.save()
+    messages.success(request, _(u'The article %s is now set to display revision #%d') % (revision.title, revision.revision_number))
+    if urlpath:
+        return redirect("wiki:history_url", urlpath.path)
+    else:
+        # TODO: Where to go if not a urlpath object?
+        pass
     
 @permission_required('wiki.add_article')
 def root_create(request):
@@ -119,4 +156,28 @@ def root_create(request):
 
 def get_url(request, path):
     
-    path = models.URLPath.get_by_path(path)
+    try:
+        path = models.URLPath.get_by_path(path)
+    except models.URLPath.DoesNotExist:
+        raise Http404()
+
+@json_view
+def diff(request, revision_id, other_revision_id=None):
+    
+    revision = get_object_or_404(models.ArticleRevision, id=revision_id)
+    
+    if not other_revision_id:
+        older_revisions = revision.article.articlerevision_set.filter(revision_number__lt=revision.revision_number)
+        if older_revisions:
+            other_revision = older_revisions[0]
+        else:
+            other_revision = None
+    
+    isjunk = lambda x: x in "     \n"
+    baseText = other_revision.content if other_revision else ""
+    newText = revision.content
+    
+    opcodes = difflib.SequenceMatcher(isjunk, baseText, newText).get_opcodes()
+    return dict(baseTextLines=baseText, newTextLines=newText, opcodes=opcodes,
+                baseTextName=other_revision.title, newTextName=revision.title)    
+    

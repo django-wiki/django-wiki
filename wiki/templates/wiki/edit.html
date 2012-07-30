@@ -1,7 +1,7 @@
 {% extends "wiki/base.html" %}
 {% load wiki_tags i18n %}
 
-{% block pagetitle %}{% article_for_object urlpath as article %}{{ article.current_revision.title }}{% endblock %}
+{% block pagetitle %}{% trans "Edit" %}: {% article_for_object urlpath as article %}{{ article.current_revision.title }}{% endblock %}
 
 {% block wiki_breadcrumbs %}
   {% include "wiki/includes/breadcrumbs.html" %}

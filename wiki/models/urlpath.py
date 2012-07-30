@@ -32,7 +32,7 @@ class URLPath(MPTTModel):
     @property
     def path(self):
         if not self.parent: return ""
-        return "/".join([obj.slug for obj in self.get_ancestors(include_self=True)])
+        return "/".join([obj.slug for obj in self.get_ancestors(include_self=True)]) + "/"
     
     @classmethod
     def root(cls):
