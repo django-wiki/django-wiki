@@ -184,7 +184,13 @@ def diff(request, revision_id, other_revision_id=None):
     
     differ = difflib.Differ(charjunk=difflib.IS_CHARACTER_JUNK)
     diff = differ.compare(baseText.splitlines(1), newText.splitlines(1))
-    return dict(diff=list(diff))
+    
+    other_changes = []
+    
+    if not other_revision or other_revision.title != revision.title:
+        other_changes.append((_(u'New title'), revision.title))
+    
+    return dict(diff=list(diff), other_changes=other_changes)
 
 @get_article(can_write=True)
 def merge(request, article, revision_id, urlpath=None, template_file="wiki/preview_inline.html", preview=False):
