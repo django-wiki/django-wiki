@@ -1,0 +1,25 @@
+{% extends "wiki/base.html" %}
+{% load wiki_tags i18n sekizai_tags %}
+
+{% block page-title %}{% trans "Add new article" %}{% endblock %}
+
+{% block wiki_contents %}
+  {% include "wiki/includes/editormedia.html" %}
+  <h1 class="page-header">{% trans "Add new article" %}</h1>
+  
+  <form method="POST" class="form-horizontal">
+    {% wiki_form create_form %}
+    <div class="form-actions">
+        <a href="{% url wiki:get_url parent_urlpath.path %}" class="btn btn-large">
+          <span class="icon-circle-arrow-left"></span>
+          {% trans "Go back" %}
+        </a>
+        <button type="submit" name="save_changes" class="btn btn-primary btn-large">
+          <span class="icon-plus"></span>
+          {% trans "Create article" %}
+        </button>
+    </div>  
+  </form>
+
+{% endblock %}
+

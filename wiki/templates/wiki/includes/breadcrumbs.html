@@ -6,6 +6,6 @@
   <span class="divider">/</span>
   <li class="active"><a href="{% url wiki:get_url urlpath.path %}">{{ urlpath.article.current_revision.title }}</a></li>
   <span class="divider">/</span>
-  <li><a href="{% url wiki:get_url urlpath.path %}">{% trans "+ Add article" %}</a></li>
+  <li><a href="{% url wiki:create_url urlpath.path %}">{% trans "+ Add article" %}</a></li>
 </ul>
 

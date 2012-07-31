@@ -13,6 +13,7 @@ from wiki.models.article import ArticleRevision, ArticleForObject
 from django.contrib.contenttypes import generic
 from django.core.exceptions import ValidationError
 from django.db.models.signals import pre_delete
+from django.core.urlresolvers import reverse
 
 class URLPath(MPTTModel):
     """
@@ -32,7 +33,7 @@ class URLPath(MPTTModel):
     @property
     def path(self):
         if not self.parent: return ""
-        return "/".join([obj.slug for obj in self.get_ancestors(include_self=True)]) + "/"
+        return "/".join([obj.slug if obj.slug else "" for obj in self.get_ancestors(include_self=True).exclude(parent=None)]) + "/"
     
     @classmethod
     def root(cls):
@@ -82,6 +83,7 @@ class URLPath(MPTTModel):
         Accepts paths both starting with and without '/'
         """
         path = path.lstrip("/")
+        path = path.rstrip("/")
         
         # Root page requested
         if not path:
@@ -90,6 +92,7 @@ class URLPath(MPTTModel):
         slugs = path.split('/')
         level = 1
         parent = cls.root()
+        print parent, slugs
         for slug in slugs:
             if settings.URL_CASE_SENSITIVE:
                 parent = parent.get_children().get(slug=slug)
@@ -98,6 +101,9 @@ class URLPath(MPTTModel):
             level += 1
         
         return parent
+    
+    def get_absolute_url(self):
+        return reverse('wiki:get_url', args=(self.path,))
     
     @classmethod
     def create_root(cls, site=None, title="Root", content=""):
@@ -114,6 +120,16 @@ class URLPath(MPTTModel):
             root = root_nodes[0]
         return root
         
+    @classmethod
+    def create_article(cls, parent, slug, site=None, title="Root", content="", user_message=None):
+        if not site: site = Site.objects.get_current()
+        newpath = cls.objects.create(site=site, parent=parent, slug=slug)
+        article = Article(title=title)
+        article.add_revision(ArticleRevision(title=title, content=content, user_message=user_message),
+                             save=True)
+        article.add_object_relation(newpath)
+        return newpath
+
     @property
     def article(self):
         try:

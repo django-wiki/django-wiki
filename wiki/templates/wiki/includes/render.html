@@ -6,6 +6,6 @@
     {{ article.render }}
   {% endcache %}
   {% else %}
-    {{ content }}
+    {{ content|default:"" }}
   {% endif %}
 {% endblock %}

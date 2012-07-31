@@ -33,6 +33,9 @@
     tr.delete td {
       background-color: #FDC;
     }
+    tr.equal td {
+      background-color: #F2F2F2;
+    }
     
     .diff-container td {
       white-space: pre; font-family: monospace;
@@ -40,11 +43,14 @@
     .diff-container td,
     .diff-container th {
       padding: 2px 7px;
-      border-right: 1px solid #CCC;    
+      border-right: 1px solid #DDD;    
     }
     .diff-container td:last-child,
     .diff-container th:last-child {
       border-right: none;
+    }
+    .diff-container table {
+      border-top: 1px solid #DDD;    
     }
   </style>
   {% endaddtoblock %}
@@ -126,6 +132,7 @@
           
           {% include "wiki/includes/pagination.html" %}
           
+          {% if revisions.count > 1 and not is_paginated %}
           <div class="form-actions">
             <div class="pull-right">
               {% if article|can_write:user %}
@@ -195,7 +202,9 @@
               {% endif %}
             </div>
           </div>
-
+          
+          {% endif %}
+          
         </form>
 
       </div>

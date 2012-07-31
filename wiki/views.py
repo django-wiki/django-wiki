@@ -2,7 +2,7 @@
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template.context import RequestContext
 from django.contrib.auth.decorators import permission_required
-from django.http import HttpResponseForbidden, Http404
+from django.http import Http404
 from django.utils.translation import ugettext as _
 
 from wiki import models
@@ -10,43 +10,14 @@ from wiki import forms
 from wiki import editors
 from wiki.conf import settings
 
-from wiki.core.exceptions import NoRootURL
 from django.contrib import messages
 from django.views.generic.list import ListView
 import difflib
 from wiki.decorators import json_view
 from django.utils.decorators import method_decorator
+from django.views.generic.edit import FormView
 
-def get_article(func=None, can_read=True, can_write=False):
-    """Intercepts the keyword args path or article_id and looks up an article,
-    calling the decorated func with this ID."""
-    
-    def the_func(request, *args, **kwargs):
-
-        path = kwargs.pop('path', None)
-        article_id = kwargs.pop('article_id', None)
-        
-        urlpath = None
-        if not path is None:
-            try:
-                urlpath = models.URLPath.get_by_path(path)
-            except NoRootURL:
-                return redirect('wiki:root_create')
-            article = urlpath.article
-        elif article_id:
-            article = get_object_or_404(models.Article, id=article_id)
-        
-        if not article.can_write(request.user):
-            raise HttpResponseForbidden()
-        
-        kwargs['urlpath'] = urlpath
-        
-        return func(request, article, *args, **kwargs)
-    
-    if func:
-        return the_func
-    else:
-        return lambda func: get_article(func, can_read=can_read, can_write=can_write)
+from wiki.decorators import get_article
 
 @get_article(can_read=True)
 def preview(request, article, urlpath=None, template_file="wiki/preview_inline.html"):
@@ -116,6 +87,42 @@ def edit(request, article, template_file="wiki/edit.html", urlpath=None):
                                  'editor': editors.editor})
     return render_to_response(template_file, c)
 
+class Create(FormView):
+    
+    form_class = forms.CreateForm
+    template_name="wiki/create.html"
+    
+    @method_decorator(get_article(can_write=True))
+    def dispatch(self, request, article, *args, **kwargs):
+        self.urlpath = kwargs.pop('urlpath', None)
+        self.article = article
+        return super(Create, self).dispatch(request, *args, **kwargs)
+    
+    def get_form(self, form_class):
+        """
+        Returns an instance of the form to be used in this view.
+        """
+        return form_class(self.urlpath, **self.get_form_kwargs())
+    
+    def form_valid(self, form):
+        self.newpath = models.URLPath.create_article(self.urlpath,
+                                                     form.cleaned_data['slug'],
+                                                     title=form.cleaned_data['title'],
+                                                     content=form.cleaned_data['content'],
+                                                     user_message=form.cleaned_data['summary'])
+        messages.success(self.request, _(u"New article '%s' created.") % self.newpath.article.title)
+        return self.get_success_url()
+    
+    def get_success_url(self):
+        return redirect('wiki:get_url', self.newpath.path)
+    
+    def get_context_data(self, **kwargs):
+        kwargs['parent_urlpath'] = self.urlpath
+        kwargs['parent_article'] = self.article
+        kwargs['create_form'] = kwargs.pop('form', None)
+        kwargs['editor'] = editors.editor
+        return super(Create, self).get_context_data(**kwargs)
+    
 class History(ListView):
     
     template_name="wiki/history.html"
@@ -131,7 +138,7 @@ class History(ListView):
         kwargs['article'] = self.article
         return super(History, self).get_context_data(**kwargs)
     
-    @method_decorator(get_article)
+    @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, *args, **kwargs):
         self.urlpath = kwargs.pop('urlpath', None)
         self.article = article
@@ -164,12 +171,12 @@ def root_create(request):
                                  'editor': editors.editor,})
     return render_to_response("wiki/article/create_root.html", c)
 
-def get_url(request, path):
+@get_article(can_read=True)
+def get_url(request, article, template_file="wiki/article.html", urlpath=None):
     
-    try:
-        path = models.URLPath.get_by_path(path)
-    except models.URLPath.DoesNotExist:
-        raise Http404()
+    c = RequestContext(request, {'urlpath': urlpath,
+                                 'article': article,})
+    return render_to_response(template_file, c)
 
 @json_view
 def diff(request, revision_id, other_revision_id=None):

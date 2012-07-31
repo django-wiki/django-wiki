@@ -1,17 +1,4 @@
-{% load sekizai_tags wiki_tags %}
-{% addtoblock "js" %}
-  {% for js in editor.Media.js %}
-    <script type="text/javascript" src="{{ STATIC_URL }}{{ js }}"></script>
-  {% endfor %}
-{% endaddtoblock %}
-
-{% addtoblock "css" %}
-  {% for media, srcs in editor.Media.css.items %}
-    {% for src in srcs %}
-      <link rel="stylesheet" media="{{ media }}" href="{{ STATIC_URL }}{{ src }}" />
-    {% endfor %}
-  {% endfor %}
-{% endaddtoblock %}
+{% load wiki_tags %}
+{% include "wiki/includes/editormedia.html" %}
 
 {% wiki_form edit_form %}
-
