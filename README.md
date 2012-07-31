@@ -3,8 +3,8 @@ django-wiki
 
 *2012-07-27*
 
-!THIS IS A WORK IN PROGRESS
----------------------------
+NB!! *THIS IS A WORK IN PROGRESS*
+---------------------------------
 
 This is where it all begins. In less than 4 weeks we should have a wiki system appealing to any kind of Django developer out there. Here is the manifest (so far):
 
