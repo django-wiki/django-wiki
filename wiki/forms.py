@@ -17,6 +17,9 @@ class EditForm(forms.Form):
     content = forms.CharField(label=_(u'Contents'),
                               required=False, widget=editors.editor.get_widget())
     
+    summary = forms.CharField(label=_(u'Summary'), help_text=_(u'Give a short reason for your edit, which will be stated in the revision log.'),
+                              required=False)
+    
     def __init__(self, instance, *args, **kwargs):
         
         self.preview = kwargs.pop('preview', False)

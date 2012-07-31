@@ -20,18 +20,17 @@ function jsonWrapper(url, callback) {
 
 function get_diff_json(url, put_in_element) {
   jsonWrapper(url, function (data) {
-    alert(data.opcodes);
-    put_in_element.find('.diff-container').empty();
-    $(put_in_element).find('.diff-container').append(diffview.buildView({
-      baseTextLines: data.baseTextLines,
-      newTextLines: data.newTextLines,
-      opcodes: data.opcodes,
-      baseTextName: data.baseTextName,
-      newTextName: data.newTextName,
-      contextSize: 0,
-      viewType: 0
-    }));
-    put_in_element.find('.diff-container').show('fast', function() {put_in_element.collapse('show');});
-    alert(put_in_element.find('.diff-container').html());
+    if (!$(put_in_element).find('.diff-container tbody').length > 0) {
+      $(put_in_element).parentsUntil('.accordion').find('.progress').show(0 , function() {
+        tbody = pydifferviewer.as_tbody({differ_output: data.diff});
+        $(put_in_element).find('.diff-container table').append(
+          tbody
+        );
+        put_in_element.find('.diff-container').show('fast', function() {put_in_element.collapse('show');});
+        $(put_in_element).parentsUntil('.accordion').find('.progress').detach();
+      });
+    } else {
+      put_in_element.find('.diff-container').show('fast', function() {put_in_element.collapse('toggle');});
+    }
   });
 }

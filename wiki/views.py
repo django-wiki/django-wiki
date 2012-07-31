@@ -54,15 +54,24 @@ def preview(request, article, urlpath=None, template_file="wiki/preview_inline.h
     content = article.current_revision.content
     title = article.current_revision.title
     
+    revision_id = request.GET.get('revision_id', None)
+    revision = None
+    
     if request.method == 'POST':
         edit_form = forms.EditForm(article.current_revision, request.POST, preview=True)
         if edit_form.is_valid():
             title = edit_form.cleaned_data['title']
             content = edit_form.cleaned_data['content']
     
+    elif revision_id:
+        revision = get_object_or_404(models.ArticleRevision, article=article, id=revision_id)
+        title = revision.title
+        content = revision.content
+    
     c = RequestContext(request, {'urlpath': urlpath,
                                  'article': article,
                                  'title': title,
+                                 'revision': revision,
                                  'content': content})
     return render_to_response(template_file, c)
 
@@ -83,6 +92,7 @@ def edit(request, article, template_file="wiki/edit.html", urlpath=None):
             revision.inherit_predecessor(article)
             revision.title = edit_form.cleaned_data['title']
             revision.content = edit_form.cleaned_data['content']
+            revision.user_message = edit_form.cleaned_data['summary']
             if request.user:
                 revision.user = request.user
                 if settings.LOG_IPS_USERS:
@@ -169,14 +179,49 @@ def diff(request, revision_id, other_revision_id=None):
     if not other_revision_id:
         other_revision = revision.previous_revision
     
-    isjunk = lambda x: x in " "
     baseText = other_revision.content if other_revision else ""
     newText = revision.content
     
-    opcodes = difflib.SequenceMatcher(baseText, newText, autojunk=True).get_opcodes()
-    return dict(baseTextLines=baseText.split("\n") if baseText else [], 
-                newTextLines=newText.split("\n") if newText else [],
-                opcodes=opcodes,
-                baseTextName=(other_revision.title + " (%d)" % other_revision.revision_number) if other_revision else _(u"(none)"),
-                newTextName=revision.title + " (%d)" % revision.revision_number)
+    differ = difflib.Differ(charjunk=difflib.IS_CHARACTER_JUNK)
+    diff = differ.compare(baseText.splitlines(1), newText.splitlines(1))
+    return dict(diff=list(diff))
+
+@get_article(can_write=True)
+def merge(request, article, revision_id, urlpath=None, template_file="wiki/preview_inline.html", preview=False):
     
+    revision = get_object_or_404(models.ArticleRevision, article=article, id=revision_id)
+    
+    baseText = article.current_revision.content if article.current_revision else ""
+    newText = revision.content
+    
+    differ = difflib.Differ(charjunk=difflib.IS_CHARACTER_JUNK)
+    diff = differ.compare(baseText.splitlines(1), newText.splitlines(1))
+    
+    content = "".join([l[2:] for l in diff])
+    
+    # Save new revision
+    if not preview:
+        new_revision = models.ArticleRevision()
+        new_revision.inherit_predecessor(article)
+        new_revision.title=article.current_revision.title
+        new_revision.content=content
+        new_revision.automatic_log = (_(u'Merge between Revision #%(r1)d and Revision #%(r2)d') % 
+                                      {'r1': revision.revision_number, 
+                                       'r2': article.current_revision.revision_number})
+        article.add_revision(new_revision, save=True)
+        messages.success(request, _(u'A new revision was created: Merge between Revision #%(r1)d and Revision #%(r2)d') % 
+                         {'r1': revision.revision_number,
+                          'r2': article.current_revision.revision_number})
+        if urlpath:
+            return redirect('wiki:edit_url', urlpath.path)
+        
+    
+    c = RequestContext(request, {'article': article,
+                                 'title': article.current_revision.title,
+                                 'revision': None,
+                                 'merge1': revision,
+                                 'merge2': article.current_revision,
+                                 'merge': True,
+                                 'content': content})
+    return render_to_response(template_file, c)
+

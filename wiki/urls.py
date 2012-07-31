@@ -6,8 +6,13 @@ import views
 urlpatterns = patterns('',
     url('^$', 'wiki.views.root', name='root', kwargs={'path': ''}),   
     url('^create-root/$', 'wiki.views.root_create', name='root_create'),   
-    url('^_revision/diff/(\d+)/$', 'wiki.views.diff', name='diff'),   
+    url('^_revision/diff/(\d+)/$', 'wiki.views.diff', name='diff'),
+    
+    # This one doesn't work because it don't know where to redirect after...   
     url('^_revision/change/(?P<article_id>\d+)/(?P<revision_id>\d+)/$', 'wiki.views.change_revision', name='change_revision'),   
+    
+    url('^_revision/preview/(?P<article_id>\d+)/$', 'wiki.views.preview', name='preview_revision'),   
+    url('^_revision/merge/(?P<article_id>\d+)/(?P<revision_id>\d+)/preview/$', 'wiki.views.merge', name='merge_revision_preview', kwargs={'preview': True}),   
     url('^(?P<path>.+/|)_edit/$', 'wiki.views.edit', name='edit_url'),   
     url('^(?P<path>.+/|)_preview/$', 'wiki.views.preview', name='preview_url'),   
     url('^(?P<path>.+/|)_history/$', views.History.as_view(), name='history_url'),   
