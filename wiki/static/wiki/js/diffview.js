@@ -1,8 +1,4 @@
 /*
-This is a modified version of Chas Emerick's original diffview.
-
-It's been modified for jQuery and configurability.
-
 This is part of jsdifflib v1.0. <http://github.com/cemerick/jsdifflib>
 
 Copyright 2007 - 2011 Chas Emerick <cemerick@snowtide.com>. All rights reserved.
@@ -113,7 +109,11 @@ diffview = {
 		function addCells (row, tidx, tend, textLines, change) {
 			if (tidx < tend) {
 				row.appendChild(telt("th", (tidx + 1).toString()));
-				row.appendChild(ctelt("td", change, textLines[tidx].replace(/\t/g, "\u00a0\u00a0\u00a0\u00a0")));
+				if (textLines.length > tidx) {
+  				row.appendChild(ctelt("td", change, textLines[tidx].replace(/\t/g, "\u00a0\u00a0\u00a0\u00a0")));
+  			} else {
+  				row.appendChild(ctelt("td", change, ""));
+  			}
 				return tidx + 1;
 			} else {
 				row.appendChild(document.createElement("th"));
@@ -135,7 +135,7 @@ diffview = {
 			var be = code[2];
 			var n = code[3];
 			var ne = code[4];
-			var rowcnt = Math.max(be - b, ne - n);
+			var rowcnt = opcodes.length;
 			var toprows = [];
 			var botrows = [];
 			for (var i = 0; i < rowcnt; i++) {

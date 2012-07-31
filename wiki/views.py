@@ -167,17 +167,16 @@ def diff(request, revision_id, other_revision_id=None):
     revision = get_object_or_404(models.ArticleRevision, id=revision_id)
     
     if not other_revision_id:
-        older_revisions = revision.article.articlerevision_set.filter(revision_number__lt=revision.revision_number)
-        if older_revisions:
-            other_revision = older_revisions[0]
-        else:
-            other_revision = None
+        other_revision = revision.previous_revision
     
-    isjunk = lambda x: x in "     \n"
+    isjunk = lambda x: x in " "
     baseText = other_revision.content if other_revision else ""
     newText = revision.content
     
-    opcodes = difflib.SequenceMatcher(isjunk, baseText, newText).get_opcodes()
-    return dict(baseTextLines=baseText, newTextLines=newText, opcodes=opcodes,
-                baseTextName=other_revision.title, newTextName=revision.title)    
+    opcodes = difflib.SequenceMatcher(baseText, newText, autojunk=True).get_opcodes()
+    return dict(baseTextLines=baseText.split("\n") if baseText else [], 
+                newTextLines=newText.split("\n") if newText else [],
+                opcodes=opcodes,
+                baseTextName=(other_revision.title + " (%d)" % other_revision.revision_number) if other_revision else _(u"(none)"),
+                newTextName=revision.title + " (%d)" % revision.revision_number)
     

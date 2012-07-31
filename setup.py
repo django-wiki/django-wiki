@@ -9,17 +9,15 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 
-template_patterns = [
-    'templates/*.html',
-    'templates/*/*.html',
-    'templates/*/*/*.html',
-    'static/*.js',
-    'static/*.css',
-    'static/*/*.js',
-    'static/*/*.css',
-    'static/*/*/*.js',
-    'static/*/*/*.css',
-]
+def build_media_pattern(base_folder, file_extension):
+    return ["%s/%s*.%s" % (base_folder, "*/"*x, file_extension) for x in range(5)]
+
+template_patterns = ( build_media_pattern("templates", "html") +
+                      build_media_pattern("static", "js") +
+                      build_media_pattern("static", "css") +
+                      build_media_pattern("static", "png") + 
+                      build_media_pattern("static", "jpeg") + 
+                      build_media_pattern("static", "gif"))
 
 packages = find_packages()
 

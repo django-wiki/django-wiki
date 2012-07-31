@@ -219,20 +219,18 @@ class ArticleRevision(BaseRevision):
         self.redirect = predecessor.redirect
     
     def save(self, *args, **kwargs):
-        super(ArticleRevision, self).save(*args, **kwargs)
-        if not self.article.current_revision:
-            # If I'm saved from Django admin, then article.current_revision is me!
-            self.article.current_revision = self
-            self.article.save()
-            if not self.title:
-                self.title = self.article.title
-
         if not self.revision_number:
             try:
                 previous_revision = self.article.articlerevision_set.latest()
                 self.revision_number = previous_revision.revision_number + 1
             except ArticleRevision.DoesNotExist:
                 self.revision_number = 1
-            
-        super(BaseRevision, self).save(*args, **kwargs)
-            
+
+        super(ArticleRevision, self).save(*args, **kwargs)
+        
+        if not self.article.current_revision:
+            # If I'm saved from Django admin, then article.current_revision is me!
+            self.article.current_revision = self
+            self.article.save()
+            if not self.title:
+                self.title = self.article.title

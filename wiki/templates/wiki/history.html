@@ -1,5 +1,5 @@
 {% extends "wiki/base.html" %}
-{% load wiki_tags i18n %}
+{% load wiki_tags i18n sekizai_tags %}
 
 {% block pagetitle %}{% trans "History" %}: {% article_for_object urlpath as article %}{{ article.current_revision.title }}{% endblock %}
 
@@ -8,6 +8,12 @@
 {% endblock %}
 
 {% block wiki_contents %}
+
+  {% addtoblock "js" %}
+  <script type="text/javascript" src="{{ STATIC_URL }}wiki/js/diffview.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}wiki/js/diff.js"></script>
+  <script type="text/javascript">$(document).ready(function() {$('.collapse').collapse()});</script>
+  {% endaddtoblock %}
 
   {% article_for_object urlpath as article %}
 
@@ -26,12 +32,12 @@
       <div class="tab-content">
         
         <form method="POST">
-          
+                    
           {% for revision in revisions %}
             <div class="accordion" id="accordion{{ revision.revision_number }}">
               <div class="accordion-group">
                 <div class="accordion-heading">
-                  <a class="accordion-toggle" style="float: left;" data-toggle="collapse" data-parent="#accordion{{ revision.revision_number }}" href="#collapse{{ revision.revision_number }}">
+                  <a class="accordion-toggle" style="float: left;" href="#collapse{{ revision.revision_number }}" onclick="get_diff_json('{% url wiki:diff revision.id %}', $('#collapse{{ revision.revision_number }}'))">
                     {{ revision.created }} (#{{ revision.revision_number }}) by {% if revision.user %}{{ revision.user }}{% else %}{% if user.is_superuser %}{{ revision.ip_address|default:"anonymous (IP not logged)" }}{% else %}{% trans "anonymous (IP logged)" %}{% endif %}{% endif %}
                     {% if revision == article.current_revision %}
                       <strong>*</strong>
@@ -56,18 +62,12 @@
                   </div>
                   <div style="clear: both"></div>
                 </div>
-                <div id="collapse{{ revision.revision_number }}" class="accordion-body collapse">
-                  <div class="accordion-inner">
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                  </div>
+                <div id="collapse{{ revision.revision_number }}" class="accordion-body collapse in">
+                  <div class="accordion-inner"><div class="diff-container"></div></div>
                 </div>
               </div>
             </div>
           {% endfor %}
-          
-          <script type="text/javascript">
-            $(".collapse").collapse()
-          </script>
           
           {% include "wiki/includes/pagination.html" %}
           

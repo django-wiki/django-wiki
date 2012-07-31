@@ -9,8 +9,6 @@ $.ajaxSetup({
 });
 
 function jsonWrapper(url, callback) {
-  if (failureTimeoutSet)
-    return;
   $.getJSON(url, function(data) {
     if (data == null) {
       ajaxError();
@@ -20,20 +18,20 @@ function jsonWrapper(url, callback) {
   });
 }
 
-function diffUsingPython(url, put_in_element) {
+function get_diff_json(url, put_in_element) {
   jsonWrapper(url, function (data) {
-    try {
-      while (diffoutputdiv.firstChild) diffoutputdiv.removeChild(diffoutputdiv.firstChild);
-      $(put_in_element).appendChild(diffview.buildView({
-        baseTextLines: data.baseTextLines,
-        newTextLines: data.newTextLines,
-        opcodes: data.opcodes,
-        baseTextName: data.baseTextName,
-        newTextName: data.newTextName,
-        contextSize: contextSize
-      }));
-    } catch (ex) {
-      alert("An error occurred updating the diff view:\n" + ex.toString());
-    }
-  }
+    alert(data.opcodes);
+    put_in_element.find('.diff-container').empty();
+    $(put_in_element).find('.diff-container').append(diffview.buildView({
+      baseTextLines: data.baseTextLines,
+      newTextLines: data.newTextLines,
+      opcodes: data.opcodes,
+      baseTextName: data.baseTextName,
+      newTextName: data.newTextName,
+      contextSize: 0,
+      viewType: 0
+    }));
+    put_in_element.find('.diff-container').show('fast', function() {put_in_element.collapse('show');});
+    alert(put_in_element.find('.diff-container').html());
+  });
 }
