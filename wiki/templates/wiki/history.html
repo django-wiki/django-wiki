@@ -86,7 +86,7 @@
                       {% trans "Preview this version" %}
                     </a>
                     {% else %}
-                    <button type="submit" class="btn" onclick="$('#previewModal').modal('show'); this.form.target='previewWindow'; this.form.action='{% url wiki:preview_revision article.id %}'; $('#previewModal .switch-to-revision').prop('href', '{% url wiki:change_revision_url urlpath.path revision.id %}')">
+                    <button type="submit" class="btn" onclick="$('#previewModal').modal('show'); this.form.target='previewWindow'; this.form.action='{% url wiki:preview_revision article.id %}'; $('#previewModal .switch-to-revision').attr('href', '{% url wiki:change_revision_url urlpath.path revision.id %}')">
                       <span class="icon-eye-open"></span>
                       {% trans "Preview this version" %}
                     </button>
@@ -96,7 +96,7 @@
                       {% trans "Show changes" %}
                     </a>
                     
-                    <input type="radio"{% if revision == article.current_revision %} disabled="true"{% endif %} style="margin: 0 10px;" value="{{ revision.id }}" name="revision_id" switch-button-href="{% url wiki:change_revision_url urlpath.path revision.id %}" merge-button-href="{% url wiki:merge_revision_preview article.id revision.id %}" />
+                    <input type="radio"{% if revision == article.current_revision %} disabled="true"{% endif %} style="margin: 0 10px;" value="{{ revision.id }}" name="revision_id" switch-button-href="{% url wiki:change_revision_url urlpath.path revision.id %}" merge-button-href="{% url wiki:merge_revision_preview article.id revision.id %}" merge-button-commit-href="{% url wiki:merge_revision_url urlpath.path revision.id %}" />
                     
                   </div>
                   <div style="clear: both"></div>
@@ -107,7 +107,7 @@
                       <dt>{% trans "User message:" %}</dt>
                       <dd>{{ revision.user_message|default:"-" }}</dd>
                       <dt>{% trans "Auto log:" %}</dt>
-                      <dd>{{ revision.automatic_log|default:"-" }}</dd>
+                      <dd>{{ revision.automatic_log|default:"-"|linebreaksbr }}</dd>
                     </dl>
                     <table class="table table-condensed" style="margin: 0; border-collapse: collapse;">
                       <thead>
@@ -129,7 +129,7 @@
           <div class="form-actions">
             <div class="pull-right">
               {% if article|can_write:user %}
-                <button type="submit" name="preview" value="1" class="btn btn-large" onclick="$('#mergeModal').modal('show'); this.form.target='mergeWindow'; this.form.action=$('input[type=radio]:checked').attr('merge-button-href')">
+                <button type="submit" name="preview" value="1" class="btn btn-large" onclick="$('#mergeModal').modal('show'); this.form.target='mergeWindow'; this.form.action=$('input[type=radio]:checked').attr('merge-button-href'); $('.merge-revision-commit').attr('href', $('input[type=radio]:checked').attr('merge-button-commit-href'))">
                   <span class="icon-random"></span>
                   {% trans "Merge selected with current..." %}
                 </button>
@@ -183,7 +183,7 @@
                 {% trans "Back to history view" %}
               </a>
               {% if article|can_write:user %}
-              <a href="#" class="btn btn-large btn-primary switch-to-revision">
+              <a href="#" class="btn btn-large btn-primary merge-revision-commit">
                 <span class="icon-file"></span>
                 {% trans "Create new merged version" %}
               </a>                    

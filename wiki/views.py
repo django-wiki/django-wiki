@@ -201,17 +201,18 @@ def merge(request, article, revision_id, urlpath=None, template_file="wiki/previ
     
     # Save new revision
     if not preview:
+        old_revision = article.current_revision
         new_revision = models.ArticleRevision()
         new_revision.inherit_predecessor(article)
         new_revision.title=article.current_revision.title
         new_revision.content=content
         new_revision.automatic_log = (_(u'Merge between Revision #%(r1)d and Revision #%(r2)d') % 
                                       {'r1': revision.revision_number, 
-                                       'r2': article.current_revision.revision_number})
+                                       'r2': old_revision.revision_number})
         article.add_revision(new_revision, save=True)
         messages.success(request, _(u'A new revision was created: Merge between Revision #%(r1)d and Revision #%(r2)d') % 
                          {'r1': revision.revision_number,
-                          'r2': article.current_revision.revision_number})
+                          'r2': old_revision.revision_number})
         if urlpath:
             return redirect('wiki:edit_url', urlpath.path)
         
