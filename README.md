@@ -5,7 +5,7 @@ django-wiki
 
 Demo here:
 
-[wiki.overtag.dk](http://wiki.overtag.dk)
+[wiki.overtag.dk](http://wiki.overtag.dk) - login to admin interface: admin/admin
 
 NB!! *THIS IS A WORK IN PROGRESS*
 ---------------------------------
