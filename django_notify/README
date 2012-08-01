@@ -1,4 +1,0 @@
-This application should live outside django-wiki. 
-It will! But only as soon as there's time to package it separately...
-
-TODO: Missing email functionality and some easy-to-use template tags and templates to override.
