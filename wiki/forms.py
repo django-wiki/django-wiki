@@ -3,6 +3,7 @@ from django.utils.translation import ugettext as _
 
 import editors
 from django.utils.safestring import mark_safe
+from wiki import models
 
 class CreateRoot(forms.Form):
     
@@ -55,9 +56,10 @@ class CreateForm(forms.Form):
     def __init__(self, urlpath_parent, *args, **kwargs):
         super(CreateForm, self).__init__(*args, **kwargs)
         self.fields['slug'].widget = TextInputPrepend(prepend='/'+urlpath_parent.path)
+        self.urlpath_parent = urlpath_parent
     
     title = forms.CharField(label=_(u'Title'),)
-    slug = forms.SlugField(label=_(u'Slug'), help_text=_(u"Use only alphanumeric characters and '-' or '_'."),)
+    slug = forms.SlugField(label=_(u'Slug'), help_text=_(u"This will be the address where your article can be found. Use only alphanumeric characters and '-' or '_'."),)
     content = forms.CharField(label=_(u'Contents'),
                               required=False, widget=editors.editor.get_widget())
     
@@ -68,4 +70,6 @@ class CreateForm(forms.Form):
         slug = self.cleaned_data['slug']
         if slug[0] == "_":
             raise forms.ValidationError(_(u'A slug may not begin with an underscore.'))
+        if models.URLPath.objects.filter(slug=slug, parent=self.urlpath_parent):
+            raise forms.ValidationError(_(u'A slug named "%s" already exists.') % slug)
         return slug

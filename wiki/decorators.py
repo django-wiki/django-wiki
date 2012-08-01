@@ -1,5 +1,6 @@
 from django.utils import simplejson as json
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseForbidden,\
+    HttpResponseNotFound
 
 import models
 from wiki.core.exceptions import NoRootURL
@@ -29,6 +30,13 @@ def get_article(func=None, can_read=True, can_write=False):
                 urlpath = models.URLPath.get_by_path(path)
             except NoRootURL:
                 return redirect('wiki:root_create')
+            except models.URLPath.DoesNotExist:
+                try:
+                    path = "/".join(filter(lambda x: x!="", path.split("/"),)[:-1])
+                    parent = models.URLPath.get_by_path(path)
+                    return redirect("wiki:create_url", parent.path)
+                except models.URLPath.DoesNotExist:
+                    return HttpResponseNotFound("This article was not found. This page should look nicer.")
             article = urlpath.article
         elif article_id:
             article = get_object_or_404(models.Article, id=article_id)

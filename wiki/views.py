@@ -2,7 +2,6 @@
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template.context import RequestContext
 from django.contrib.auth.decorators import permission_required
-from django.http import Http404
 from django.utils.translation import ugettext as _
 
 from wiki import models
@@ -105,11 +104,21 @@ class Create(FormView):
         return form_class(self.urlpath, **self.get_form_kwargs())
     
     def form_valid(self, form):
+        user=None
+        ip_address = None
+        if self.request.user:
+            user = self.request.user
+            if settings.LOG_IPS_USERS:
+                ip_address = self.request.META.get('REMOTE_ADDR', None)
+        elif settings.LOG_IPS_ANONYMOUS:
+            ip_address = self.request.META.get('REMOTE_ADDR', None)
         self.newpath = models.URLPath.create_article(self.urlpath,
                                                      form.cleaned_data['slug'],
                                                      title=form.cleaned_data['title'],
                                                      content=form.cleaned_data['content'],
-                                                     user_message=form.cleaned_data['summary'])
+                                                     user_message=form.cleaned_data['summary'],
+                                                     user=user,
+                                                     ip_address=ip_address)
         messages.success(self.request, _(u"New article '%s' created.") % self.newpath.article.title)
         return self.get_success_url()
     

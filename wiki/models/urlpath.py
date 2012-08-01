@@ -92,7 +92,6 @@ class URLPath(MPTTModel):
         slugs = path.split('/')
         level = 1
         parent = cls.root()
-        print parent, slugs
         for slug in slugs:
             if settings.URL_CASE_SENSITIVE:
                 parent = parent.get_children().get(slug=slug)
@@ -106,14 +105,14 @@ class URLPath(MPTTModel):
         return reverse('wiki:get_url', args=(self.path,))
     
     @classmethod
-    def create_root(cls, site=None, title="Root", content=""):
+    def create_root(cls, site=None, title="Root", **kwargs):
         if not site: site = Site.objects.get_current()
         root_nodes = cls.objects.root_nodes().filter(site=site)
         if not root_nodes:
             # (get_or_create does not work for MPTT models??)
             root = cls.objects.create(site=site)
             article = Article(title=title)
-            article.add_revision(ArticleRevision(title=title, content=content),
+            article.add_revision(ArticleRevision(title=title, **kwargs),
                                  save=True)
             article.add_object_relation(root)
         else:
@@ -121,11 +120,11 @@ class URLPath(MPTTModel):
         return root
         
     @classmethod
-    def create_article(cls, parent, slug, site=None, title="Root", content="", user_message=None):
+    def create_article(cls, parent, slug, site=None, title="Root", **kwargs):
         if not site: site = Site.objects.get_current()
         newpath = cls.objects.create(site=site, parent=parent, slug=slug)
         article = Article(title=title)
-        article.add_revision(ArticleRevision(title=title, content=content, user_message=user_message),
+        article.add_revision(ArticleRevision(title=title, **kwargs),
                              save=True)
         article.add_object_relation(newpath)
         return newpath
