@@ -1,26 +1,29 @@
 {% load i18n wiki_tags %}
-  <li style="float: right;">
-    <a href="#">
-      <span class="icon-wrench"></span>
-      {% trans "Settings" %}
-    </a>
-  </li>
-  <li style="float: right;"{% if selected == "history" %} class="active"{% endif %}>
-    <a href="{% url wiki:history_url urlpath.path %}">
-      <span class="icon-time"></span>
-      {% trans "Changes" %}
-    </a>
-  </li>
-  <li style="float: right;"{% if selected == "edit" %} class="active"{% endif %}>
-    <a href="{% url wiki:edit_url urlpath.path %}">
-      <span class="icon-edit"></span>
-      {% trans "Edit" %}
-    </a>
-  </li>
-  <li{% if selected == "view" %} class="active"{% endif %} style="float: right;">
-    <a href="{% url wiki:get_url urlpath.path %}">
-      <span class="icon-home"></span>
-      {% trans "View" %}
-    </a>
-  </li>
+
+<li class="pull-right{% if selected == "settings" %} active{% endif %}">
+  {% if not user.is_anonymous %}
+  <a href="{% url wiki:settings_url urlpath.path %}">
+    <span class="icon-wrench"></span>
+    {% trans "Settings" %}
+  </a>
+  {% endif %}
+</li>
+<li class="pull-right{% if selected == "history" %} active{% endif %}">
+  <a href="{% url wiki:history_url urlpath.path %}">
+    <span class="icon-time"></span>
+    {% trans "Changes" %}
+  </a>
+</li>
+<li class="pull-right{% if selected == "edit" %} active{% endif %}">
+  <a href="{% url wiki:edit_url urlpath.path %}">
+    <span class="icon-edit"></span>
+    {% trans "Edit" %}
+  </a>
+</li>
+<li class="pull-right{% if selected == "view" %} active{% endif %}">
+  <a href="{% url wiki:get_url urlpath.path %}">
+    <span class="icon-home"></span>
+    {% trans "View" %}
+  </a>
+</li>
 

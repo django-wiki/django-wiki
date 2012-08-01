@@ -14,10 +14,10 @@
   {% if article %}
     <div class="tabbable tabs-top" style="margin-top: 40px;">
       <ul class="nav nav-tabs">
+        <li style="float: left"><h1 style="margin-top: -10px;">{{ article.current_revision.title }}</h1></li>
         {% with "view" as selected %}
           {% include "wiki/includes/article_menu.html" %}
         {% endwith %}
-        <li><h1 style="margin-top: -10px;">{{ article.current_revision.title }}</h1></li>
       </ul>
       <div class="tab-content">
         {% wiki_render article %}

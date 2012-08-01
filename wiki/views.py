@@ -17,6 +17,9 @@ from django.utils.decorators import method_decorator
 from django.views.generic.edit import FormView
 
 from wiki.decorators import get_article
+from django.views.generic.base import TemplateView
+
+from wiki.core import plugins_registry
 
 @get_article(can_read=True)
 def preview(request, article, urlpath=None, template_file="wiki/preview_inline.html"):
@@ -132,6 +135,37 @@ class Create(FormView):
         kwargs['editor'] = editors.editor
         return super(Create, self).get_context_data(**kwargs)
     
+class Settings(TemplateView):
+    
+    permission_form_class = forms.PermissionsForm
+    template_name="wiki/settings.html"
+    
+    @method_decorator(get_article(can_read=True))
+    def dispatch(self, request, article, *args, **kwargs):
+        self.urlpath = kwargs.pop('urlpath', None)
+        self.article = article
+        return super(Settings, self).dispatch(request, *args, **kwargs)
+    
+    def get_forms(self,):
+        """
+        Return all settings forms that can be filled in
+        """
+        settings_forms = plugins_registry._settings_forms
+        if (self.request.user and self.request.user.is_superuser or 
+            self.article.owner == self.request.user):
+            settings_forms.append(self.permission_form_class)
+        settings_forms.sort(key=lambda form: form.settings_order)
+        return settings_forms
+    
+    def get_success_url(self):
+        return redirect('wiki:settings_url', self.urlpath.path)
+    
+    def get_context_data(self, **kwargs):
+        kwargs['urlpath'] = self.urlpath
+        kwargs['article'] = self.article
+        kwargs['forms'] = [F(self.article) for F in self.get_forms()]
+        return kwargs
+
 class History(ListView):
     
     template_name="wiki/history.html"

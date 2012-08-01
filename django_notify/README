@@ -1,0 +1,2 @@
+This application should live outside django-wiki. 
+It will as soon as there's time to package it separately.

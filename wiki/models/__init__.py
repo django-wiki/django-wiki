@@ -8,6 +8,8 @@ import warnings
 from article import *
 from urlpath import *
 
+# TODO: Should the below stuff be executed a more logical place?
+
 ######################
 # Configuration stuff
 ######################
@@ -30,4 +32,13 @@ if not 'django.contrib.auth.context_processors.auth' in django_settings.TEMPLATE
 
 if not 'south' in django_settings.INSTALLED_APPS:
     warnings.warn("django-wiki: No south in your INSTALLED_APPS. This is highly discouraged.")
-    
+
+
+######################
+# PLUGINS
+######################
+
+from wiki.core.plugins_load import load_wiki_plugins
+
+load_wiki_plugins()
+

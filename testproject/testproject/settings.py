@@ -96,9 +96,11 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'south',
     'sekizai',
+    'django_notify',
     'wiki',
     'wiki.plugins.images',
     'wiki.plugins.attachments',
+    'wiki.plugins.notifications',
     'mptt',
 )
 
