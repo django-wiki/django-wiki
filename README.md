@@ -10,7 +10,7 @@ Demo here:
 NB!! *THIS IS A WORK IN PROGRESS*
 ---------------------------------
 
-This is where it all begins. In less than <s>4</s> 3 weeks we should have a wiki system appealing to any kind of Django developer out there. Here is the manifest (so far):
+This is where it all begins. In less than *3* weeks we should have a wiki system appealing to any kind of Django developer out there. Here is the manifest (so far):
 
  * **Be pluggable and light-weight.** Don't integrate optional features in the core.
  * **Be open.** Make an extension API that allows the ecology of the wiki to grow. After all, Wikipedia consists of some [680 extensions](http://svn.wikimedia.org/viewvc/mediawiki/trunk/extensions/) written for MediaWiki.
