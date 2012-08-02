@@ -1,5 +1,6 @@
 {% extends "wiki/base.html" %}
 {% load wiki_tags i18n %}
+{% load url from future %}
 
 {% block pagetitle %}{% trans "Settings" %}: {% article_for_object urlpath as article %}{{ article.current_revision.title }}{% endblock %}
 
@@ -32,7 +33,7 @@
             {% wiki_form form %}
           </div>
           <div class="form-actions">
-            <button type="submit" name="save" value="1" class="btn btn-large btn-primary" onclick="this.form.target=''; this.form.action='{% url wiki:edit_url urlpath.path %}'">
+            <button type="submit" name="save" value="1" class="btn btn-large btn-primary" onclick="this.form.target=''; this.form.action='{% url 'wiki:edit_url' urlpath.path %}'">
               <span class="icon-ok"></span>
               {% trans "Save changes" %}
             </button>

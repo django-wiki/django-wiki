@@ -1,5 +1,6 @@
 {% extends "wiki/base.html" %}
 {% load wiki_tags i18n %}
+{% load url from future %}
 
 {% block pagetitle %}{% trans "Edit" %}: {% article_for_object urlpath as article %}{{ article.current_revision.title }}{% endblock %}
 
@@ -28,11 +29,11 @@
         <form method="POST" class="form-horizontal">
           {% include "wiki/includes/editor.html" %}
           <div class="form-actions">
-              <button type="submit" name="preview" value="1" class="btn btn-large" onclick="$('#previewModal').modal('show'); this.form.target='previewWindow'; this.form.action='{% url wiki:preview_url urlpath.path %}'">
+              <button type="submit" name="preview" value="1" class="btn btn-large" onclick="$('#previewModal').modal('show'); this.form.target='previewWindow'; this.form.action='{% url 'wiki:preview_url' urlpath.path %}'">
                 <span class="icon-eye-open"></span>
                 {% trans "Preview" %}
               </button>
-              <button type="submit" name="save" value="1" class="btn btn-large btn-primary" onclick="this.form.target=''; this.form.action='{% url wiki:edit_url urlpath.path %}'">
+              <button type="submit" name="save" value="1" class="btn btn-large btn-primary" onclick="this.form.target=''; this.form.action='{% url 'wiki:edit_url' urlpath.path %}'">
                 <span class="icon-ok"></span>
                 {% trans "Save changes" %}
               </button>
@@ -52,7 +53,7 @@
                 <span class="icon-circle-arrow-left"></span>
                 {% trans "Back to editor" %}
               </a>
-              <button type="submit" name="save" value="1" class="btn btn-large btn-primary" onclick="this.form.target=''; this.form.action='{% url wiki:edit_url urlpath.path %}'">
+              <button type="submit" name="save" value="1" class="btn btn-large btn-primary" onclick="this.form.target=''; this.form.action='{% url 'wiki:edit_url' urlpath.path %}'">
                 <span class="icon-ok"></span>
                 {% trans "Save changes" %}
               </button>

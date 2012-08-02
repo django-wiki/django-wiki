@@ -1,4 +1,4 @@
-{% load sekizai_tags %}<!DOCTYPE html>
+{% load sekizai_tags %}{% load url from future %}<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -49,7 +49,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="{% url wiki:root %}">django-wiki</a>
+          <a class="brand" href="{% url 'wiki:root' %}">django-wiki</a>
           <div class="nav-collapse">
             <ul class="nav">
               <li class="active"><a href="#">Home</a></li>

@@ -1,11 +1,11 @@
-{% load i18n %}<ul class="breadcrumb">
+{% load i18n %}{% load url from future %}<ul class="breadcrumb">
   {% for ancestor in urlpath.get_ancestors.all %}
     <span class="divider">/</span>
-    <a href="{% url wiki:get_url ancestor.path %}"><li>{{ ancestor.article.current_revision.title }}</li></a>
+    <a href="{% url 'wiki:get_url' ancestor.path %}"><li>{{ ancestor.article.current_revision.title }}</li></a>
   {% endfor %}
   <span class="divider">/</span>
-  <li class="active"><a href="{% url wiki:get_url urlpath.path %}">{{ urlpath.article.current_revision.title }}</a></li>
+  <li class="active"><a href="{% url 'wiki:get_url' urlpath.path %}">{{ urlpath.article.current_revision.title }}</a></li>
   <span class="divider">/</span>
-  <li><a href="{% url wiki:create_url urlpath.path %}">{% trans "+ Add article" %}</a></li>
+  <li><a href="{% url 'wiki:create_url' urlpath.path %}">{% trans "+ Add article" %}</a></li>
 </ul>
 
