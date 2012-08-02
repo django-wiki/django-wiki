@@ -1,5 +1,6 @@
 {% extends "wiki/base.html" %}
 {% load wiki_tags i18n sekizai_tags %}
+{% load url from future %}
 
 {% block pagetitle %}{% trans "History" %}: {% article_for_object urlpath as article %}{{ article.current_revision.title }}{% endblock %}
 
@@ -76,7 +77,7 @@
             <div class="accordion" id="accordion{{ revision.revision_number }}">
               <div class="accordion-group">
                 <div class="accordion-heading">
-                  <a class="accordion-toggle" style="float: left;" href="#collapse{{ revision.revision_number }}" onclick="get_diff_json('{% url wiki:diff revision.id %}', $('#collapse{{ revision.revision_number }}'))">
+                  <a class="accordion-toggle" style="float: left;" href="#collapse{{ revision.revision_number }}" onclick="get_diff_json('{% url 'wiki:diff' revision.id %}', $('#collapse{{ revision.revision_number }}'))">
                     {{ revision.created }} (#{{ revision.revision_number }}) by {% if revision.user %}{{ revision.user }}{% else %}{% if user.is_superuser %}{{ revision.ip_address|default:"anonymous (IP not logged)" }}{% else %}{% trans "anonymous (IP logged)" %}{% endif %}{% endif %}
                     {% if revision == article.current_revision %}
                       <strong>*</strong>
@@ -92,17 +93,17 @@
                       {% trans "Preview this version" %}
                     </a>
                     {% else %}
-                    <button type="submit" class="btn" onclick="$('#previewModal').modal('show'); this.form.target='previewWindow'; this.form.action='{% url wiki:preview_revision article.id %}'; $('#previewModal .switch-to-revision').attr('href', '{% url wiki:change_revision_url urlpath.path revision.id %}')">
+                    <button type="submit" class="btn" onclick="$('#previewModal').modal('show'); this.form.target='previewWindow'; this.form.action='{% url 'wiki:preview_revision' article.id %}'; $('#previewModal .switch-to-revision').attr('href', '{% url 'wiki:change_revision_url' urlpath.path revision.id %}')">
                       <span class="icon-eye-open"></span>
                       {% trans "Preview this version" %}
                     </button>
                     {% endif %}
-                    <a class="btn btn-info" href="#collapse{{ revision.revision_number }}" onclick="get_diff_json('{% url wiki:diff revision.id %}', $('#collapse{{ revision.revision_number }}'))">
+                    <a class="btn btn-info" href="#collapse{{ revision.revision_number }}" onclick="get_diff_json('{% url 'wiki:diff' revision.id %}', $('#collapse{{ revision.revision_number }}'))">
                       <span class="icon-list-alt"></span>
                       {% trans "Show changes" %}
                     </a>
                     
-                    <input type="radio"{% if revision == article.current_revision %} disabled="true"{% endif %} style="margin: 0 10px;" value="{{ revision.id }}" name="revision_id" switch-button-href="{% url wiki:change_revision_url urlpath.path revision.id %}" merge-button-href="{% url wiki:merge_revision_preview article.id revision.id %}" merge-button-commit-href="{% url wiki:merge_revision_url urlpath.path revision.id %}" />
+                    <input type="radio"{% if revision == article.current_revision %} disabled="true"{% endif %} style="margin: 0 10px;" value="{{ revision.id }}" name="revision_id" switch-button-href="{% url 'wiki:change_revision_url' urlpath.path revision.id %}" merge-button-href="{% url 'wiki:merge_revision_preview' article.id revision.id %}" merge-button-commit-href="{% url 'wiki:merge_revision_url' urlpath.path revision.id %}" />
                     
                   </div>
                   <div style="clear: both"></div>

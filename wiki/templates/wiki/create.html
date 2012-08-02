@@ -1,5 +1,6 @@
 {% extends "wiki/base.html" %}
 {% load wiki_tags i18n sekizai_tags %}
+{% load url from future %}
 
 {% block pagetitle %}{% trans "Add new article" %}{% endblock %}
 
@@ -10,7 +11,7 @@
   <form method="POST" class="form-horizontal">
     {% wiki_form create_form %}
     <div class="form-actions">
-        <a href="{% url wiki:get_url parent_urlpath.path %}" class="btn btn-large">
+        <a href="{% url 'wiki:get_url' parent_urlpath.path %}" class="btn btn-large">
           <span class="icon-circle-arrow-left"></span>
           {% trans "Go back" %}
         </a>
