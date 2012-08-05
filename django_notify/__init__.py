@@ -26,12 +26,10 @@ def notify(message, key, target_object=None, url=None):
         if not isinstance(target_object, Model):
             raise TypeError(_(u"You supplied a target_object that's not an instance of a django Model."))
         object_id = target_object.id
-        content_type = ContentType.get_object_for_this_type(target_object)
     else:
         object_id = None
-        content_type = None
         
     objects = models.Notification.create_notifications(key, object_id=object_id, 
-                                                       content_type=content_type)
+                                                       message=message, url=url)
     return len(objects)
     

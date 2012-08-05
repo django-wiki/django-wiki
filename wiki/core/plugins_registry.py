@@ -1,3 +1,4 @@
+from django.utils.importlib import import_module
 _cache = {}
 
 _settings_forms = []
@@ -17,4 +18,10 @@ def register(PluginClass):
     
     settings_form = getattr(PluginClass, 'settings_form', None)
     if settings_form:
+        if isinstance(settings_form, basestring):
+            klassname = settings_form.split(".")[-1]
+            modulename = ".".join(settings_form.split(".")[:-1])
+            form_module = import_module(modulename)
+            settings_form = getattr(form_module, klassname)
         _settings_forms.append(settings_form)
+    

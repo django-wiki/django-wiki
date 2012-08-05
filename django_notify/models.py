@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from django.db.models import Q
 from django.contrib.auth.models import User
@@ -15,12 +16,18 @@ class NotificationType(models.Model):
                              blank=True, null=True)
     content_type = models.ForeignKey(ContentType, blank=True, null=True)
     
+    def __unicode__(self):
+        return self.key
+    
 class Settings(models.Model):
     
     user = models.ForeignKey(User)
     interval = models.SmallIntegerField(choices=settings.INTERVALS, verbose_name=_(u'interval'),
                                         default=settings.INTERVALS_DEFAULT)
-
+    
+    def __unicode__(self):
+        return self.user
+    
 class Subscription(models.Model):
     
     settings = models.ForeignKey(Settings)
@@ -28,6 +35,9 @@ class Subscription(models.Model):
     object_id = models.CharField(max_length=64, null=True, blank=True, 
                                  help_text=_(u'Leave this blank to subscribe to any kind of object'))
     send_emails = models.BooleanField(default=True)
+
+    def __unicode__(self):
+        return _("Subscription for: %s") % self.settings.user
 
 class Notification(models.Model):
     
@@ -43,15 +53,20 @@ class Notification(models.Model):
         if not key or not isinstance(key, str):
             raise KeyError('No notification key (string) specified.')
         
-        notification_type = NotificationType.objects.get_or_create(key=key)
+        object_id = kwargs.pop('object_id', None)
         
         objects_created = []
-        for subscription in Subscription.objects.filter(Q(key=key)|Q(key=None),
-                                                        notification_type=notification_type,
-                                                        ):
+        subscriptions = Subscription.objects.filter(Q(notification_type__key=key) | 
+                                                    Q(notification_type__key=None),)
+        if object_id:
+            subscriptions = subscriptions.filter(Q(object_id=object_id) |
+                                                 Q(object_id=None))
+        for subscription in subscriptions:
             objects_created.append(
                cls.objects.create(subscription=subscription, **kwargs)
             )
         
         return objects_created
-        
+    
+    def __unicode__(self):
+        return "%s: %s" % (self.subscription.settings.user, self.message)
