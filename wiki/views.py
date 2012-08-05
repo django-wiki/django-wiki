@@ -166,24 +166,48 @@ class Settings(TemplateView):
         self.article = article
         return super(Settings, self).dispatch(request, *args, **kwargs)
     
-    def get_forms(self,):
+    def get_form_classes(self,):
         """
         Return all settings forms that can be filled in
         """
-        settings_forms = plugins_registry._settings_forms
+        settings_forms = [F for F in plugins_registry._settings_forms]
         if (self.request.user and self.request.user.is_superuser or 
             self.article.owner == self.request.user):
             settings_forms.append(self.permission_form_class)
         settings_forms.sort(key=lambda form: form.settings_order)
+        for i in range(len(settings_forms)):
+            setattr(settings_forms[i], 'action', 'form%d' % i)
         return settings_forms
     
+    def post(self, *args, **kwargs):
+        self.forms = []
+        for Form in self.get_form_classes():
+            if Form.action == self.request.GET.get('f', None):
+                form = Form(self.article, self.request.user,self.request.POST)
+                if form.is_valid():
+                    form.save()
+                    usermessage = form.get_usermessage()
+                    if usermessage:
+                        messages.success(self.request, usermessage)
+                    return redirect('wiki:settings_url', self.urlpath.path)
+            else:
+                form = Form(self.article, self.request.user)
+            self.forms.append(form)
+        return super(Settings, self).get(*args, **kwargs)
+    
+    def get(self, *args, **kwargs):
+        self.forms = []
+        for Form in self.get_form_classes():
+            self.forms.append(Form(self.article, self.request.user))
+        return super(Settings, self).get(*args, **kwargs)
+
     def get_success_url(self):
         return redirect('wiki:settings_url', self.urlpath.path)
     
     def get_context_data(self, **kwargs):
         kwargs['urlpath'] = self.urlpath
         kwargs['article'] = self.article
-        kwargs['forms'] = [F(self.article) for F in self.get_forms()]
+        kwargs['forms'] = self.forms
         return kwargs
 
 class History(ListView):

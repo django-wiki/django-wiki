@@ -10,7 +10,7 @@ def read(fname):
 
 
 def build_media_pattern(base_folder, file_extension):
-    return ["%s/%s*.%s" % (base_folder, "*/"*x, file_extension) for x in range(5)]
+    return ["%s/%s*.%s" % (base_folder, "*/"*x, file_extension) for x in range(10)]
 
 template_patterns = ( build_media_pattern("templates", "html") +
                       build_media_pattern("static", "js") +

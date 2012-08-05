@@ -18,9 +18,8 @@ class NotificationType(models.Model):
 class Settings(models.Model):
     
     user = models.ForeignKey(User)
-    interval = models.SmallIntegerField(choices=settings.INTERVALS, verbose_name=_(u'interval'))
-    send_emails = models.BooleanField(default=True)
-    send_emails_type = models.ManyToManyField(NotificationType)
+    interval = models.SmallIntegerField(choices=settings.INTERVALS, verbose_name=_(u'interval'),
+                                        default=settings.INTERVALS_DEFAULT)
 
 class Subscription(models.Model):
     
@@ -28,6 +27,7 @@ class Subscription(models.Model):
     notification_type = models.ForeignKey(NotificationType)
     object_id = models.CharField(max_length=64, null=True, blank=True, 
                                  help_text=_(u'Leave this blank to subscribe to any kind of object'))
+    send_emails = models.BooleanField(default=True)
 
 class Notification(models.Model):
     

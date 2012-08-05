@@ -27,13 +27,13 @@
       <div class="tab-content">
         
         {% for form in forms %}
-        <form method="POST" class="form-horizontal" id="settings_form">
+        <form method="POST" class="form-horizontal" id="settings_form" action="?f={{form.action}}">
           <h2>{{ form.settings_form_headline }}</h2>
           <div class="well">
             {% wiki_form form %}
           </div>
           <div class="form-actions">
-            <button type="submit" name="save" value="1" class="btn btn-large btn-primary" onclick="this.form.target=''; this.form.action='{% url 'wiki:edit_url' urlpath.path %}'">
+            <button type="submit" name="save" value="1" class="btn btn-large btn-primary">
               <span class="icon-ok"></span>
               {% trans "Save changes" %}
             </button>

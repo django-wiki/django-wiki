@@ -22,6 +22,8 @@ INTERVALS = getattr(django_settings, "NOTIFY_INTERVALS",
                      (DAILY, _(u'daily')),
                      (WEEKLY, _(u'weekly'))])
 
+INTERVALS_DEFAULT = INSTANTLY
+
 # Minimum logging and digital garbage! Don't save too much crap!
 
 # After how many days should viewed notifications be deleted?

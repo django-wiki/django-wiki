@@ -49,7 +49,6 @@ class EditForm(forms.Form):
                 data = kwargs.get('data', None)
             if data:
                 self.presumed_revision = data.get('current_revision', None)
-                print self.initial_revision.id, self.presumed_revision
                 if not str(self.presumed_revision) == str(self.initial_revision.id):
                     newdata = {}
                     for k,v in data.items():
@@ -81,12 +80,13 @@ class SelectWidgetBootstrap(forms.Select):
         function setBtnGroupVal(elem) {
             selected_a = $(elem).parentsUntil('ul').find('a[selected]');
             if (selected_a.length > 0) {
-                val = $(elem).parentsUntil('ul').find('a[selected]').attr('data-value');
-                label = $(elem).parentsUntil('ul').find('a[selected]').html();
+                val = selected_a.attr('data-value');
+                label = selected_a.html();
             } else {
                 $(elem).parentsUntil('ul').find('a').first().attr('selected', 'selected');
                 setBtnGroupVal(elem);
             }
+            alert(val);
             $(elem).val(val);
             $(elem).parents('.btn-group').find('.btn-group-label').html(label);
         }
@@ -97,7 +97,8 @@ class SelectWidgetBootstrap(forms.Select):
             $('.btn-group-form li a').click(function() {
                 $(this).parent().siblings().find('a').attr('selected', '');
                 $(this).attr('selected', 'selected');
-                setBtnGroupVal(this);
+                setBtnGroupVal($(this).parentsUntil('div').parent().find('input.btn-group-value').first());
+                alert($(this).parentsUntil('div').parent().find('input.btn-group-value').first().val());
             });
         })
     </script>
@@ -137,7 +138,7 @@ class SelectWidgetBootstrap(forms.Select):
     def render_option(self, selected_choices, option_value, option_label):
         option_value = force_unicode(option_value)
         selected_html = (option_value in selected_choices) and u' selected="selected"' or ''
-        return u'<li><a href="#" data-value="%s"%s>%s</a></li>' % (
+        return u'<li><a href="javascript:void(0)" data-value="%s"%s>%s</a></li>' % (
             escape(option_value), selected_html,
             conditional_escape(force_unicode(option_label)))
 
@@ -200,8 +201,22 @@ class PermissionsForm(forms.ModelForm):
     group = forms.ModelChoiceField(models.Group.objects.all(), widget=SelectWidgetBootstrap(),
                                    empty_label=_(u'(none)'), required=False)
     
-    def __init__(self, article, *args, **kwargs):
-        return super(PermissionsForm, self).__init__(*args, **kwargs)
+    def get_usermessage(self):
+        if self.changed_data:
+            return _('Your permission settings were updated.')
+        else:
+            return _('Your permission settings were unchanged, so nothing saved.')
+    
+    def __init__(self, article, user, *args, **kwargs):
+        self.article = article
+        self.user = user
+        kwargs['instance'] = article
+        super(PermissionsForm, self).__init__(*args, **kwargs)
+        print self.data
+        if user.is_superuser:
+            self.fields['group'].queryset = models.Group.objects.all()
+        else:
+            self.fields['group'].queryset = models.Group.objects.filter(user=user)
     
     class Meta:
         model = models.Article
