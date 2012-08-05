@@ -79,7 +79,7 @@ class Edit(FormView):
         revision.title = form.cleaned_data['title']
         revision.content = form.cleaned_data['content']
         revision.user_message = form.cleaned_data['summary']
-        if self.request.user:
+        if not self.request.user.is_anonymous:
             revision.user = self.request.user
             if settings.LOG_IPS_USERS:
                 revision.ip_address = self.request.META.get('REMOTE_ADDR', None)
@@ -129,7 +129,7 @@ class Create(FormView):
     def form_valid(self, form):
         user=None
         ip_address = None
-        if self.request.user:
+        if not self.request.user.is_anonymous:
             user = self.request.user
             if settings.LOG_IPS_USERS:
                 ip_address = self.request.META.get('REMOTE_ADDR', None)
