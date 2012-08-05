@@ -78,27 +78,26 @@ class SelectWidgetBootstrap(forms.Select):
     js = ("""
     <script type="text/javascript">
         function setBtnGroupVal(elem) {
-            selected_a = $(elem).parentsUntil('ul').find('a[selected]');
+            btngroup = $(elem).parents('.btn-group');
+            selected_a = btngroup.find('a[selected]');
             if (selected_a.length > 0) {
                 val = selected_a.attr('data-value');
                 label = selected_a.html();
             } else {
-                $(elem).parentsUntil('ul').find('a').first().attr('selected', 'selected');
+                btngroup.find('a').first().attr('selected', 'selected');
                 setBtnGroupVal(elem);
             }
-            alert(val);
-            $(elem).val(val);
-            $(elem).parents('.btn-group').find('.btn-group-label').html(label);
+            btngroup.find('input').val(val);
+            btngroup.find('.btn-group-label').html(label);
         }
         $(document).ready(function() {
             $('.btn-group-form input').each(function() {
                 setBtnGroupVal(this);
             });
             $('.btn-group-form li a').click(function() {
-                $(this).parent().siblings().find('a').attr('selected', '');
-                $(this).attr('selected', 'selected');
-                setBtnGroupVal($(this).parentsUntil('div').parent().find('input.btn-group-value').first());
-                alert($(this).parentsUntil('div').parent().find('input.btn-group-value').first().val());
+                $(this).parent().siblings().find('a').attr('selected', false);
+                $(this).attr('selected', true);
+                setBtnGroupVal(this);
             });
         })
     </script>
