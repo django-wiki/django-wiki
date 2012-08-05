@@ -121,6 +121,8 @@ class Article(models.Model):
         return ArticleForObject.objects.get(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj)).article
     
     def __unicode__(self):
+        if self.current_revision:
+            return self.current_revision.title
         return self.title
     
     class Meta:

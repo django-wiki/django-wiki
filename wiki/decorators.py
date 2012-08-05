@@ -5,6 +5,7 @@ from django.http import HttpResponse, HttpResponseForbidden,\
 import models
 from wiki.core.exceptions import NoRootURL
 from django.shortcuts import redirect, get_object_or_404
+from django.core.urlresolvers import reverse
 
 def json_view(func):
     def wrap(request, *a, **kw):
@@ -32,9 +33,10 @@ def get_article(func=None, can_read=True, can_write=False):
                 return redirect('wiki:root_create')
             except models.URLPath.DoesNotExist:
                 try:
-                    path = "/".join(filter(lambda x: x!="", path.split("/"),)[:-1])
+                    pathlist = filter(lambda x: x!="", path.split("/"),)
+                    path = "/".join(pathlist[:-1])
                     parent = models.URLPath.get_by_path(path)
-                    return redirect("wiki:create_url", parent.path)
+                    return redirect(reverse("wiki:create_url", args=(parent.path,)) + "?slug=%s" % pathlist[-1])
                 except models.URLPath.DoesNotExist:
                     return HttpResponseNotFound("This article was not found. This page should look nicer.")
             article = urlpath.article

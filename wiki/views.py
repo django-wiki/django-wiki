@@ -20,6 +20,7 @@ from wiki.decorators import get_article
 from django.views.generic.base import TemplateView
 
 from wiki.core import plugins_registry
+from wiki.core.diff import simple_merge
 
 @get_article(can_read=True)
 def preview(request, article, urlpath=None, template_file="wiki/preview_inline.html"):
@@ -55,39 +56,54 @@ def root(request, article, template_file="wiki/article.html", urlpath=None):
                                  'article': article,})
     return render_to_response(template_file, c)
 
-@get_article(can_write=True)
-def edit(request, article, template_file="wiki/edit.html", urlpath=None):
+class Edit(FormView):
     
-    if request.method == 'POST':
-        edit_form = forms.EditForm(article.current_revision, request.POST)
-        if edit_form.is_valid():
-            revision = models.ArticleRevision()
-            revision.inherit_predecessor(article)
-            revision.title = edit_form.cleaned_data['title']
-            revision.content = edit_form.cleaned_data['content']
-            revision.user_message = edit_form.cleaned_data['summary']
-            if request.user:
-                revision.user = request.user
-                if settings.LOG_IPS_USERS:
-                    revision.ip_address = request.META.get('REMOTE_ADDR', None)
-            elif settings.LOG_IPS_ANONYMOUS:
-                revision.ip_address = request.META.get('REMOTE_ADDR', None)
-            article.add_revision(revision)
-            messages.success(request, _(u'A new revision of the article was succesfully added.'))
-            if not urlpath is None:
-                return redirect("wiki:get_url", urlpath.path)
-            # TODO: Where to go if it's a different object? It's probably
-            # an ajax callback, so we don't care... but should perhaps return
-            # a status
-            return
-    else:
-        edit_form = forms.EditForm(article.current_revision)
+    form_class = forms.EditForm
+    template_name="wiki/edit.html"
     
-    c = RequestContext(request, {'article': article,
-                                 'urlpath': urlpath,
-                                 'edit_form': edit_form,
-                                 'editor': editors.editor})
-    return render_to_response(template_file, c)
+    @method_decorator(get_article(can_write=True))
+    def dispatch(self, request, article, *args, **kwargs):
+        self.urlpath = kwargs.pop('urlpath', None)
+        self.article = article
+        return super(Edit, self).dispatch(request, *args, **kwargs)
+    
+    def get_form(self, form_class):
+        """
+        Returns an instance of the form to be used in this view.
+        """
+        return form_class(self.article.current_revision, **self.get_form_kwargs())
+    
+    def form_valid(self, form):
+        revision = models.ArticleRevision()
+        revision.inherit_predecessor(self.article)
+        revision.title = form.cleaned_data['title']
+        revision.content = form.cleaned_data['content']
+        revision.user_message = form.cleaned_data['summary']
+        if self.request.user:
+            revision.user = self.request.user
+            if settings.LOG_IPS_USERS:
+                revision.ip_address = self.request.META.get('REMOTE_ADDR', None)
+        elif settings.LOG_IPS_ANONYMOUS:
+            revision.ip_address = self.request.META.get('REMOTE_ADDR', None)
+        self.article.add_revision(revision)
+        messages.success(self.request, _(u'A new revision of the article was succesfully added.'))
+        return self.get_success_url()
+    
+    def get_success_url(self):
+        if not self.urlpath is None:
+            return redirect("wiki:get_url", self.urlpath.path)
+        # TODO: Where to go if it's a different object? It's probably
+        # an ajax callback, so we don't care... but should perhaps return
+        # a status
+        return
+    
+    def get_context_data(self, **kwargs):
+        kwargs['urlpath'] = self.urlpath
+        kwargs['article'] = self.article
+        kwargs['edit_form'] = kwargs.pop('form', None)
+        kwargs['editor'] = editors.editor
+        return super(Edit, self).get_context_data(**kwargs)
+
 
 class Create(FormView):
     
@@ -104,7 +120,11 @@ class Create(FormView):
         """
         Returns an instance of the form to be used in this view.
         """
-        return form_class(self.urlpath, **self.get_form_kwargs())
+        kwargs = self.get_form_kwargs()
+        initial = kwargs.get('initial', {})
+        initial['slug'] = self.request.GET.get('slug', None)
+        kwargs['initial'] = initial
+        return form_class(self.urlpath, **kwargs)
     
     def form_valid(self, form):
         user=None
@@ -247,13 +267,10 @@ def merge(request, article, revision_id, urlpath=None, template_file="wiki/previ
     
     revision = get_object_or_404(models.ArticleRevision, article=article, id=revision_id)
     
-    baseText = article.current_revision.content if article.current_revision else ""
-    newText = revision.content
+    current_text = article.current_revision.content if article.current_revision else ""
+    new_text = revision.content
     
-    differ = difflib.Differ(charjunk=difflib.IS_CHARACTER_JUNK)
-    diff = differ.compare(baseText.splitlines(1), newText.splitlines(1))
-    
-    content = "".join([l[2:] for l in diff])
+    content = simple_merge(current_text, new_text)
     
     # Save new revision
     if not preview:

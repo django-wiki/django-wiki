@@ -8,6 +8,7 @@ from wiki import models
 from django.forms.util import flatatt
 from django.utils.encoding import force_unicode
 from django.utils.html import escape, conditional_escape
+from wiki.core.diff import simple_merge
 
 class CreateRoot(forms.Form):
     
@@ -26,22 +27,47 @@ class EditForm(forms.Form):
     summary = forms.CharField(label=_(u'Summary'), help_text=_(u'Give a short reason for your edit, which will be stated in the revision log.'),
                               required=False)
     
-    def __init__(self, instance, *args, **kwargs):
+    current_revision = forms.IntegerField(required=False, widget=forms.HiddenInput())
+    
+    def __init__(self, current_revision, *args, **kwargs):
         
         self.preview = kwargs.pop('preview', False)
-        if instance:
-            initial = {'content': instance.content,
-                       'title': instance.title,}
+        self.initial_revision = current_revision
+        self.presumed_revision = None
+        if current_revision:
+            initial = {'content': current_revision.content,
+                       'title': current_revision.title,
+                       'current_revision': current_revision.id}
             initial.update(kwargs.get('initial', {}))
+            
+            # Manipulate any data put in args[0] such that the current_revision
+            # is reset to match the actual current revision.
+            data = None
+            if len(args) > 0:
+                data = args[0]
+            if not data:
+                data = kwargs.get('data', None)
+            if data:
+                self.presumed_revision = data.get('current_revision', None)
+                print self.initial_revision.id, self.presumed_revision
+                if not str(self.presumed_revision) == str(self.initial_revision.id):
+                    newdata = {}
+                    for k,v in data.items():
+                        newdata[k] = v
+                    newdata['current_revision'] = self.initial_revision.id
+                    newdata['content'] = simple_merge(self.initial_revision.content,
+                                                      data.get('content', ""))
+                    kwargs['data'] = newdata
+                
             kwargs['initial'] = initial
-        
-        self.instance = instance
         
         super(EditForm, self).__init__(*args, **kwargs)
     
     def clean(self):
         cd = self.cleaned_data
-        if cd['title'] == self.instance.title and cd['content'] == self.instance.content:
+        if not str(self.initial_revision.id) == str(self.presumed_revision):
+            raise forms.ValidationError(_(u'While you were editing, someone else changed the revision. Your contents have been automatically merged with the new contents. Please review the text below.'))
+        if cd['title'] == self.initial_revision.title and cd['content'] == self.initial_revision.content:
             raise forms.ValidationError(_(u'No changes made. Nothing to save.'))
         return cd
 
