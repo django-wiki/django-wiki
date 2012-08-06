@@ -2,7 +2,6 @@ from django.utils import simplejson as json
 from django.http import HttpResponse, HttpResponseForbidden,\
     HttpResponseNotFound
 
-import models
 from wiki.core.exceptions import NoRootURL
 from django.shortcuts import redirect, get_object_or_404
 from django.core.urlresolvers import reverse
@@ -21,10 +20,11 @@ def get_article(func=None, can_read=True, can_write=False):
     calling the decorated func with this ID."""
     
     def the_func(request, *args, **kwargs):
+        import models
 
         path = kwargs.pop('path', None)
         article_id = kwargs.pop('article_id', None)
-        
+
         urlpath = None
         if not path is None:
             try:

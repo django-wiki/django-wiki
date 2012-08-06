@@ -1,5 +1,16 @@
 {% load i18n wiki_tags %}{% load url from future %}
 
+{% for plugin in plugins %}
+  {% if plugin.article_tab %}
+    <li class="pull-right{% if selected == plugin.slug %} active{% endif %}">
+      <a href="{% url 'wiki:plugin_url' urlpath.path plugin.slug %}">
+        <span class="{{ plugin.article_tab.1 }}"></span>
+        {{ plugin.article_tab.0 }}
+      </a>
+    </li>  
+  {% endif %}
+{% endfor %}
+
 <li class="pull-right{% if selected == "settings" %} active{% endif %}">
   {% if not user.is_anonymous %}
   <a href="{% url 'wiki:settings_url' urlpath.path %}">

@@ -8,6 +8,9 @@ from wiki import models
 from wiki import forms
 from wiki import editors
 from wiki.conf import settings
+from wiki.core import plugins_registry
+
+from mixins import ArticleMixin
 
 from django.contrib import messages
 from django.views.generic.list import ListView
@@ -17,9 +20,8 @@ from django.utils.decorators import method_decorator
 from django.views.generic.edit import FormView
 
 from wiki.decorators import get_article
-from django.views.generic.base import TemplateView
+from django.views.generic.base import TemplateView, View
 
-from wiki.core import plugins_registry
 from wiki.core.diff import simple_merge
 
 @get_article(can_read=True)
@@ -49,23 +51,14 @@ def preview(request, article, urlpath=None, template_file="wiki/preview_inline.h
                                  'content': content})
     return render_to_response(template_file, c)
 
-@get_article(can_read=True)
-def root(request, article, template_file="wiki/article.html", urlpath=None):
-    
-    c = RequestContext(request, {'urlpath': urlpath,
-                                 'article': article,})
-    return render_to_response(template_file, c)
-
-class Edit(FormView):
+class Edit(FormView, ArticleMixin):
     
     form_class = forms.EditForm
     template_name="wiki/edit.html"
     
     @method_decorator(get_article(can_write=True))
     def dispatch(self, request, article, *args, **kwargs):
-        self.urlpath = kwargs.pop('urlpath', None)
-        self.article = article
-        return super(Edit, self).dispatch(request, *args, **kwargs)
+        return super(Edit, self).dispatch(request, article, *args, **kwargs)
     
     def get_form(self, form_class):
         """
@@ -98,23 +91,19 @@ class Edit(FormView):
         return
     
     def get_context_data(self, **kwargs):
-        kwargs['urlpath'] = self.urlpath
-        kwargs['article'] = self.article
         kwargs['edit_form'] = kwargs.pop('form', None)
         kwargs['editor'] = editors.editor
         return super(Edit, self).get_context_data(**kwargs)
 
 
-class Create(FormView):
+class Create(FormView, ArticleMixin):
     
     form_class = forms.CreateForm
     template_name="wiki/create.html"
     
     @method_decorator(get_article(can_write=True))
     def dispatch(self, request, article, *args, **kwargs):
-        self.urlpath = kwargs.pop('urlpath', None)
-        self.article = article
-        return super(Create, self).dispatch(request, *args, **kwargs)
+        return super(Create, self).dispatch(request, article, *args, **kwargs)
     
     def get_form(self, form_class):
         """
@@ -155,16 +144,22 @@ class Create(FormView):
         kwargs['editor'] = editors.editor
         return super(Create, self).get_context_data(**kwargs)
     
-class Settings(TemplateView):
+class Plugin(View):
+    
+    def dispatch(self, request, path=None, slug=None, **kwargs):
+        kwargs['path'] = path
+        for plugin in plugins_registry._cache.values():
+            if getattr(plugin, 'slug', None) == slug:
+                return plugin.article_view(request, **kwargs)
+
+class Settings(ArticleMixin, TemplateView):
     
     permission_form_class = forms.PermissionsForm
     template_name="wiki/settings.html"
     
     @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, *args, **kwargs):
-        self.urlpath = kwargs.pop('urlpath', None)
-        self.article = article
-        return super(Settings, self).dispatch(request, *args, **kwargs)
+        return super(Settings, self).dispatch(request, article, *args, **kwargs)
     
     def get_form_classes(self,):
         """
@@ -205,12 +200,10 @@ class Settings(TemplateView):
         return redirect('wiki:settings_url', self.urlpath.path)
     
     def get_context_data(self, **kwargs):
-        kwargs['urlpath'] = self.urlpath
-        kwargs['article'] = self.article
         kwargs['forms'] = self.forms
-        return kwargs
+        return super(Settings, self).get_context_data(**kwargs)
 
-class History(ListView):
+class History(ListView, ArticleMixin):
     
     template_name="wiki/history.html"
     allow_empty = True
@@ -221,15 +214,16 @@ class History(ListView):
         return models.ArticleRevision.objects.filter(article=self.article).order_by('-created')
     
     def get_context_data(self, **kwargs):
-        kwargs['urlpath'] = self.urlpath
-        kwargs['article'] = self.article
-        return super(History, self).get_context_data(**kwargs)
+        # Is this a bit of a hack? Use better inheritance?
+        kwargs_article = ArticleMixin.get_context_data(self, **kwargs)
+        kwargs_listview = ListView.get_context_data(self, **kwargs)
+        kwargs.update(kwargs_article)
+        kwargs.update(kwargs_listview)
+        return kwargs
     
     @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, *args, **kwargs):
-        self.urlpath = kwargs.pop('urlpath', None)
-        self.article = article
-        return super(History, self).dispatch(request, *args, **kwargs)
+        return super(History, self).dispatch(request, article, *args, **kwargs)
 
 @get_article(can_write=True)
 def change_revision(request, article, revision_id=None, urlpath=None):
@@ -258,13 +252,14 @@ def root_create(request):
                                  'editor': editors.editor,})
     return render_to_response("wiki/article/create_root.html", c)
 
-@get_article(can_read=True)
-def get_url(request, article, template_file="wiki/article.html", urlpath=None):
-    
-    c = RequestContext(request, {'urlpath': urlpath,
-                                 'article': article,})
-    return render_to_response(template_file, c)
+class ArticleView(ArticleMixin, TemplateView, ):
 
+    template_name="wiki/article.html"
+    
+    @method_decorator(get_article(can_read=True))
+    def dispatch(self, request, article, *args, **kwargs):
+        return super(ArticleView, self).dispatch(request, article, *args, **kwargs)
+        
 @json_view
 def diff(request, revision_id, other_revision_id=None):
     

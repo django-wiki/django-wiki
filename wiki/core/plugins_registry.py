@@ -24,4 +24,4 @@ def register(PluginClass):
             form_module = import_module(modulename)
             settings_form = getattr(form_module, klassname)
         _settings_forms.append(settings_form)
-    
+        

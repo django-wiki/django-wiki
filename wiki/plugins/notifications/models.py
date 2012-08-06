@@ -19,14 +19,14 @@ class ArticleSubscription(wiki_models.pluginbase.ArticlePlugin, Subscription):
                  'type': self.notification_type.label})
 
 def post_article_save(instance, **kwargs):
-    if kwargs.get('created', False):
+    if kwargs.get('created', True):
         urlpath = wiki_models.URLPath.objects.filter(articles=instance)
         if urlpath:
             url = reverse('wiki:get_url', urlpath.path)
         else:
             url = None
         notify(_(u'New article created: %s') % instance.title, settings.ARTICLE_CREATE,
-               target_object=instance.id, url=url)
+               target_object=instance, url=url)
 
 def post_article_revision_save(instance, **kwargs):
     if kwargs.get('created', False):

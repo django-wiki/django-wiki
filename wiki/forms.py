@@ -3,7 +3,7 @@ from django import forms
 from django.utils.translation import ugettext as _
 from itertools import chain
 
-import editors
+from editors import editor
 from django.utils.safestring import mark_safe
 from wiki import models
 from django.forms.util import flatatt
@@ -16,14 +16,14 @@ class CreateRoot(forms.Form):
     title = forms.CharField(label=_(u'Title'), help_text=_(u'Initial title of the article. May be overridden with revision titles.'))
     content = forms.CharField(label=_(u'Type in some contents'),
                               help_text=_(u'This is just the initial contents of your article. After creating it, you can use more complex features like adding plugins, meta data, related articles etc...'),
-                              required=False, widget=editors.editor.get_widget())
+                              required=False, widget=editor.get_widget())
     
 
 class EditForm(forms.Form):
     
     title = forms.CharField(label=_(u'Title'),)
     content = forms.CharField(label=_(u'Contents'),
-                              required=False, widget=editors.editor.get_widget())
+                              required=False, widget=editor.get_widget())
     
     summary = forms.CharField(label=_(u'Summary'), help_text=_(u'Give a short reason for your edit, which will be stated in the revision log.'),
                               required=False)
@@ -178,7 +178,7 @@ class CreateForm(forms.Form):
     title = forms.CharField(label=_(u'Title'),)
     slug = forms.SlugField(label=_(u'Slug'), help_text=_(u"This will be the address where your article can be found. Use only alphanumeric characters and '-' or '_'."),)
     content = forms.CharField(label=_(u'Contents'),
-                              required=False, widget=editors.editor.get_widget())
+                              required=False, widget=editor.get_widget())
     
     summary = forms.CharField(label=_(u'Summary'), help_text=_(u"Write a brief message for the article's history log."),
                               required=False)

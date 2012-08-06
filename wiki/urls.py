@@ -1,26 +1,27 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls.defaults import patterns, url
 
-import views
+from wiki.views import article
 
 urlpatterns = patterns('',
-    url('^$', 'wiki.views.root', name='root', kwargs={'path': ''}),   
-    url('^create-root/$', 'wiki.views.root_create', name='root_create'),   
-    url('^_revision/diff/(\d+)/$', 'wiki.views.diff', name='diff'),
+    url('^$', article.ArticleView.as_view(), name='root', kwargs={'path': ''}),   
+    url('^create-root/$', 'wiki.views.article.root_create', name='root_create'),   
+    url('^_revision/diff/(\d+)/$', 'wiki.views.article.diff', name='diff'),
     
     # This one doesn't work because it don't know where to redirect after...   
-    url('^_revision/change/(?P<article_id>\d+)/(?P<revision_id>\d+)/$', 'wiki.views.change_revision', name='change_revision'),   
+    url('^_revision/change/(?P<article_id>\d+)/(?P<revision_id>\d+)/$', 'wiki.views.article.change_revision', name='change_revision'),   
     
-    url('^_revision/preview/(?P<article_id>\d+)/$', 'wiki.views.preview', name='preview_revision'),   
-    url('^_revision/merge/(?P<article_id>\d+)/(?P<revision_id>\d+)/preview/$', 'wiki.views.merge', name='merge_revision_preview', kwargs={'preview': True}),   
-    url('^(?P<path>.+/|)_create/$', views.Create.as_view(), name='create_url'),   
-    url('^(?P<path>.+/|)_edit/$', views.Edit.as_view(), name='edit_url'),   
-    url('^(?P<path>.+/|)_preview/$', 'wiki.views.preview', name='preview_url'),   
-    url('^(?P<path>.+/|)_history/$', views.History.as_view(), name='history_url'),   
-    url('^(?P<path>.+/|)_settings/$', views.Settings.as_view(), name='settings_url'),   
-    url('^(?P<path>.+/|)_revision/change/(?P<revision_id>\d+)/$', 'wiki.views.change_revision', name='change_revision_url'),   
-    url('^(?P<path>.+/|)_revision/merge/(?P<revision_id>\d+)/$', 'wiki.views.merge', name='merge_revision_url'),   
-    url('^(?P<path>.+/|)$', 'wiki.views.get_url', name='get_url'),   
+    url('^_revision/preview/(?P<article_id>\d+)/$', 'wiki.views.article.preview', name='preview_revision'),   
+    url('^_revision/merge/(?P<article_id>\d+)/(?P<revision_id>\d+)/preview/$', 'wiki.views.article.merge', name='merge_revision_preview', kwargs={'preview': True}),   
+    url('^(?P<path>.+/|)_create/$', article.Create.as_view(), name='create_url'),   
+    url('^(?P<path>.+/|)_edit/$', article.Edit.as_view(), name='edit_url'),   
+    url('^(?P<path>.+/|)_preview/$', 'wiki.views.article.preview', name='preview_url'),   
+    url('^(?P<path>.+/|)_history/$', article.History.as_view(), name='history_url'),   
+    url('^(?P<path>.+/|)_settings/$', article.Settings.as_view(), name='settings_url'),   
+    url('^(?P<path>.+/|)_revision/change/(?P<revision_id>\d+)/$', 'wiki.views.article.change_revision', name='change_revision_url'),   
+    url('^(?P<path>.+/|)_revision/merge/(?P<revision_id>\d+)/$', 'wiki.views.article.merge', name='merge_revision_url'),   
+    url('^(?P<path>.+/|)_plugin/(?P<slug>\w+)/$', article.Plugin.as_view(), name='plugin_url'),   
+    url('^(?P<path>.+/|)$', article.ArticleView.as_view(), name='get_url'),   
 )
 
 def get_pattern(app_name="wiki", namespace="wiki"):

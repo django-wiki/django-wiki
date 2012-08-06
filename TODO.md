@@ -1,10 +1,14 @@
 Not implemented - will be ASAP
 ==============================
 
- * Permission system in settings tab
- * Notification system
+ * Permission system in settings tab **Done**
+ * Notification system **Almost done**
  * Simple user account handling: login/register etc.
-
+ * Implement notifications, revision log messages and user messages thoroughly
+ * Attachment plugin **In the making**
+ * Image plugin
+ * Example plugin
+ 
 Ideas
 =====
 
@@ -19,5 +23,6 @@ Management script
 =================
 
  * Cleanup deleted Image's image files
- * Cleanup revisions
+ * Cleanup attachments
+ * Cleanup revisions + plugin revisions
 
