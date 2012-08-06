@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.utils.importlib import import_module
 _cache = {}
 

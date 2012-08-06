@@ -1,100 +1,31 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render_to_response, redirect, get_object_or_404
-from django.template.context import RequestContext
-from django.contrib.auth.decorators import permission_required
-from django.utils.translation import ugettext as _
-
-from wiki import models
-from wiki import forms
-from wiki import editors
-from wiki.conf import settings
-from wiki.core import plugins_registry
-
-from mixins import ArticleMixin
+import difflib
 
 from django.contrib import messages
-from django.views.generic.list import ListView
-import difflib
-from wiki.decorators import json_view
+from django.contrib.auth.decorators import permission_required
+from django.shortcuts import render_to_response, redirect, get_object_or_404
+from django.template.context import RequestContext
 from django.utils.decorators import method_decorator
-from django.views.generic.edit import FormView
-
-from wiki.decorators import get_article
+from django.utils.translation import ugettext as _
 from django.views.generic.base import TemplateView, View
+from django.views.generic.edit import FormView
+from django.views.generic.list import ListView
 
+from wiki.views.mixins import ArticleMixin
+from wiki import editors, forms, models
+from wiki.conf import settings
+from wiki.core import plugins_registry
 from wiki.core.diff import simple_merge
+from wiki.decorators import get_article, json_view
 
-@get_article(can_read=True)
-def preview(request, article, urlpath=None, template_file="wiki/preview_inline.html"):
-    
-    content = article.current_revision.content
-    title = article.current_revision.title
-    
-    revision_id = request.GET.get('revision_id', None)
-    revision = None
-    
-    if request.method == 'POST':
-        edit_form = forms.EditForm(article.current_revision, request.POST, preview=True)
-        if edit_form.is_valid():
-            title = edit_form.cleaned_data['title']
-            content = edit_form.cleaned_data['content']
-    
-    elif revision_id:
-        revision = get_object_or_404(models.ArticleRevision, article=article, id=revision_id)
-        title = revision.title
-        content = revision.content
-    
-    c = RequestContext(request, {'urlpath': urlpath,
-                                 'article': article,
-                                 'title': title,
-                                 'revision': revision,
-                                 'content': content})
-    return render_to_response(template_file, c)
+class ArticleView(ArticleMixin, TemplateView, ):
 
-class Edit(FormView, ArticleMixin):
+    template_name="wiki/article.html"
     
-    form_class = forms.EditForm
-    template_name="wiki/edit.html"
-    
-    @method_decorator(get_article(can_write=True))
+    @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, *args, **kwargs):
-        return super(Edit, self).dispatch(request, article, *args, **kwargs)
-    
-    def get_form(self, form_class):
-        """
-        Returns an instance of the form to be used in this view.
-        """
-        return form_class(self.article.current_revision, **self.get_form_kwargs())
-    
-    def form_valid(self, form):
-        revision = models.ArticleRevision()
-        revision.inherit_predecessor(self.article)
-        revision.title = form.cleaned_data['title']
-        revision.content = form.cleaned_data['content']
-        revision.user_message = form.cleaned_data['summary']
-        if not self.request.user.is_anonymous:
-            revision.user = self.request.user
-            if settings.LOG_IPS_USERS:
-                revision.ip_address = self.request.META.get('REMOTE_ADDR', None)
-        elif settings.LOG_IPS_ANONYMOUS:
-            revision.ip_address = self.request.META.get('REMOTE_ADDR', None)
-        self.article.add_revision(revision)
-        messages.success(self.request, _(u'A new revision of the article was succesfully added.'))
-        return self.get_success_url()
-    
-    def get_success_url(self):
-        if not self.urlpath is None:
-            return redirect("wiki:get_url", self.urlpath.path)
-        # TODO: Where to go if it's a different object? It's probably
-        # an ajax callback, so we don't care... but should perhaps return
-        # a status
-        return
-    
-    def get_context_data(self, **kwargs):
-        kwargs['edit_form'] = kwargs.pop('form', None)
-        kwargs['editor'] = editors.editor
-        return super(Edit, self).get_context_data(**kwargs)
-
+        return super(ArticleView, self).dispatch(request, article, *args, **kwargs)
+        
 
 class Create(FormView, ArticleMixin):
     
@@ -144,6 +75,75 @@ class Create(FormView, ArticleMixin):
         kwargs['editor'] = editors.editor
         return super(Create, self).get_context_data(**kwargs)
     
+
+class Edit(FormView, ArticleMixin):
+    
+    form_class = forms.EditForm
+    template_name="wiki/edit.html"
+    
+    @method_decorator(get_article(can_write=True))
+    def dispatch(self, request, article, *args, **kwargs):
+        return super(Edit, self).dispatch(request, article, *args, **kwargs)
+    
+    def get_form(self, form_class):
+        """
+        Returns an instance of the form to be used in this view.
+        """
+        return form_class(self.article.current_revision, **self.get_form_kwargs())
+    
+    def form_valid(self, form):
+        revision = models.ArticleRevision()
+        revision.inherit_predecessor(self.article)
+        revision.title = form.cleaned_data['title']
+        revision.content = form.cleaned_data['content']
+        revision.user_message = form.cleaned_data['summary']
+        if not self.request.user.is_anonymous:
+            revision.user = self.request.user
+            if settings.LOG_IPS_USERS:
+                revision.ip_address = self.request.META.get('REMOTE_ADDR', None)
+        elif settings.LOG_IPS_ANONYMOUS:
+            revision.ip_address = self.request.META.get('REMOTE_ADDR', None)
+        self.article.add_revision(revision)
+        messages.success(self.request, _(u'A new revision of the article was succesfully added.'))
+        return self.get_success_url()
+    
+    def get_success_url(self):
+        if not self.urlpath is None:
+            return redirect("wiki:get_url", self.urlpath.path)
+        # TODO: Where to go if it's a different object? It's probably
+        # an ajax callback, so we don't care... but should perhaps return
+        # a status
+        return
+    
+    def get_context_data(self, **kwargs):
+        kwargs['edit_form'] = kwargs.pop('form', None)
+        kwargs['editor'] = editors.editor
+        return super(Edit, self).get_context_data(**kwargs)
+
+
+class History(ListView, ArticleMixin):
+    
+    template_name="wiki/history.html"
+    allow_empty = True
+    context_object_name = 'revisions'
+    paginate_by = 10
+    
+    def get_queryset(self):
+        return models.ArticleRevision.objects.filter(article=self.article).order_by('-created')
+    
+    def get_context_data(self, **kwargs):
+        # Is this a bit of a hack? Use better inheritance?
+        kwargs_article = ArticleMixin.get_context_data(self, **kwargs)
+        kwargs_listview = ListView.get_context_data(self, **kwargs)
+        kwargs.update(kwargs_article)
+        kwargs.update(kwargs_listview)
+        return kwargs
+    
+    @method_decorator(get_article(can_read=True))
+    def dispatch(self, request, article, *args, **kwargs):
+        return super(History, self).dispatch(request, article, *args, **kwargs)
+
+
 class Plugin(View):
     
     def dispatch(self, request, path=None, slug=None, **kwargs):
@@ -203,28 +203,8 @@ class Settings(ArticleMixin, TemplateView):
         kwargs['forms'] = self.forms
         return super(Settings, self).get_context_data(**kwargs)
 
-class History(ListView, ArticleMixin):
-    
-    template_name="wiki/history.html"
-    allow_empty = True
-    context_object_name = 'revisions'
-    paginate_by = 10
-    
-    def get_queryset(self):
-        return models.ArticleRevision.objects.filter(article=self.article).order_by('-created')
-    
-    def get_context_data(self, **kwargs):
-        # Is this a bit of a hack? Use better inheritance?
-        kwargs_article = ArticleMixin.get_context_data(self, **kwargs)
-        kwargs_listview = ListView.get_context_data(self, **kwargs)
-        kwargs.update(kwargs_article)
-        kwargs.update(kwargs_listview)
-        return kwargs
-    
-    @method_decorator(get_article(can_read=True))
-    def dispatch(self, request, article, *args, **kwargs):
-        return super(History, self).dispatch(request, article, *args, **kwargs)
 
+# TODO: Throw in a class-based view
 @get_article(can_write=True)
 def change_revision(request, article, revision_id=None, urlpath=None):
     revision = get_object_or_404(models.ArticleRevision, article=article, id=revision_id)
@@ -236,30 +216,35 @@ def change_revision(request, article, revision_id=None, urlpath=None):
     else:
         # TODO: Where to go if not a urlpath object?
         pass
+
+# TODO: Throw in a class-based view
+@get_article(can_read=True)
+def preview(request, article, urlpath=None, template_file="wiki/preview_inline.html"):
     
-@permission_required('wiki.add_article')
-def root_create(request):
+    content = article.current_revision.content
+    title = article.current_revision.title
+    
+    revision_id = request.GET.get('revision_id', None)
+    revision = None
+    
     if request.method == 'POST':
-        create_form = forms.CreateRoot(request.POST)
-        if create_form.is_valid():
-            root = models.URLPath.create_root(title=create_form.cleaned_data["title"],
-                                              content=create_form.cleaned_data["content"])
-            return redirect("wiki:root")
-    else:
-        create_form = forms.CreateRoot()
+        edit_form = forms.EditForm(article.current_revision, request.POST, preview=True)
+        if edit_form.is_valid():
+            title = edit_form.cleaned_data['title']
+            content = edit_form.cleaned_data['content']
     
-    c = RequestContext(request, {'create_form': create_form,
-                                 'editor': editors.editor,})
-    return render_to_response("wiki/article/create_root.html", c)
-
-class ArticleView(ArticleMixin, TemplateView, ):
-
-    template_name="wiki/article.html"
+    elif revision_id:
+        revision = get_object_or_404(models.ArticleRevision, article=article, id=revision_id)
+        title = revision.title
+        content = revision.content
     
-    @method_decorator(get_article(can_read=True))
-    def dispatch(self, request, article, *args, **kwargs):
-        return super(ArticleView, self).dispatch(request, article, *args, **kwargs)
-        
+    c = RequestContext(request, {'urlpath': urlpath,
+                                 'article': article,
+                                 'title': title,
+                                 'revision': revision,
+                                 'content': content})
+    return render_to_response(template_file, c)
+
 @json_view
 def diff(request, revision_id, other_revision_id=None):
     
@@ -281,6 +266,7 @@ def diff(request, revision_id, other_revision_id=None):
     
     return dict(diff=list(diff), other_changes=other_changes)
 
+# TODO: Throw in a class-based view
 @get_article(can_write=True)
 def merge(request, article, revision_id, urlpath=None, template_file="wiki/preview_inline.html", preview=False):
     
@@ -317,4 +303,19 @@ def merge(request, article, revision_id, urlpath=None, template_file="wiki/previ
                                  'merge': True,
                                  'content': content})
     return render_to_response(template_file, c)
+
+@permission_required('wiki.add_article')
+def root_create(request):
+    if request.method == 'POST':
+        create_form = forms.CreateRoot(request.POST)
+        if create_form.is_valid():
+            models.URLPath.create_root(title=create_form.cleaned_data["title"],
+                                       content=create_form.cleaned_data["content"])
+            return redirect("wiki:root")
+    else:
+        create_form = forms.CreateRoot()
+    
+    c = RequestContext(request, {'create_form': create_form,
+                                 'editor': editors.editor,})
+    return render_to_response("wiki/article/create_root.html", c)
 

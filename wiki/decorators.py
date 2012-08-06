@@ -1,10 +1,11 @@
+# -*- coding: utf-8 -*-
+from django.core.urlresolvers import reverse
+from django.shortcuts import redirect, get_object_or_404
 from django.utils import simplejson as json
 from django.http import HttpResponse, HttpResponseForbidden,\
     HttpResponseNotFound
 
 from wiki.core.exceptions import NoRootURL
-from django.shortcuts import redirect, get_object_or_404
-from django.core.urlresolvers import reverse
 
 def json_view(func):
     def wrap(request, *a, **kw):

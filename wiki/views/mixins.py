@@ -1,7 +1,11 @@
 from django.views.generic.base import TemplateResponseMixin
+
 from wiki.core import plugins_registry
 
 class ArticleMixin(TemplateResponseMixin):
+    """A mixin that receives an article object as a parameter (usually from a wiki
+    decorator) and puts this information as an instance attribute and in the
+    template context."""
     
     def dispatch(self, request, article, *args, **kwargs):
         self.urlpath = kwargs.pop('urlpath', None)

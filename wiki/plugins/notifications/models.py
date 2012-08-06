@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-from django_notify.models import Subscription
+from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import signals
 
-from wiki import models as wiki_models
-
 from django_notify import notify
-from django.core.urlresolvers import reverse
+from django_notify.models import Subscription
+
+from wiki import models as wiki_models
 
 import settings
 

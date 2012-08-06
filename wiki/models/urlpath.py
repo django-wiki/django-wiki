@@ -1,19 +1,18 @@
 # -*- coding: utf-8 -*-
-from django.db import models
-from django.utils.translation import ugettext_lazy as _, ugettext
-from django.contrib.sites.models import Site
-from mptt.models import MPTTModel
-from mptt.fields import TreeForeignKey
-
-from wiki.core.exceptions import NoRootURL, MultipleRootURLs
-from wiki.conf import settings
-
-from article import Article
-from wiki.models.article import ArticleRevision, ArticleForObject
 from django.contrib.contenttypes import generic
+from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
-from django.db.models.signals import pre_delete
 from django.core.urlresolvers import reverse
+from django.db import models
+from django.db.models.signals import pre_delete
+from django.utils.translation import ugettext_lazy as _, ugettext
+
+from mptt.fields import TreeForeignKey
+from mptt.models import MPTTModel
+
+from wiki.conf import settings
+from wiki.core.exceptions import NoRootURL, MultipleRootURLs
+from wiki.models.article import ArticleRevision, ArticleForObject, Article
 
 class URLPath(MPTTModel):
     """
