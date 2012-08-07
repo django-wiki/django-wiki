@@ -1,13 +1,23 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls.defaults import patterns, url
 
-from wiki.views import article
+from wiki.views import article, accounts
+from wiki.conf import settings
 
 urlpatterns = patterns('',
     url('^$', article.ArticleView.as_view(), name='root', kwargs={'path': ''}),   
     url('^create-root/$', 'wiki.views.article.root_create', name='root_create'),   
     url('^_revision/diff/(\d+)/$', 'wiki.views.article.diff', name='diff'),
-    
+)
+
+if settings.ACCOUNT_HANDLING:
+    urlpatterns += patterns('',
+        url('^_accounts/sign-up/$', accounts.Signup.as_view(), name='signup'),   
+        url('^_accounts/logout/$', accounts.Logout.as_view(), name='logout'),   
+        url('^_accounts/login/$', accounts.Login.as_view(), name='login'),   
+    )
+
+urlpatterns += patterns('',
     # This one doesn't work because it don't know where to redirect after...   
     url('^_revision/change/(?P<article_id>\d+)/(?P<revision_id>\d+)/$', 'wiki.views.article.change_revision', name='change_revision'),   
     

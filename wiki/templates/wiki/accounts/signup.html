@@ -1,0 +1,16 @@
+{% extends "wiki/base.html" %}
+{% load i18n wiki_tags %}
+{% block pagetitle %}{% trans "Log in" %}{% endblock %}
+
+{% block wiki_contents %}
+<h1 class="page-header">{% trans "Sign up" %}</h1>
+<form method="POST" class="form-horizontal">
+{% wiki_form form %}
+<div class="form-actions">
+    <button type="submit" name="save_changes" class="btn btn-primary btn-large">
+      <span class="icon-plus"></span>
+      {% trans "Sign me up..." %}
+    </button>
+</div>
+</form>
+{% endblock %}
