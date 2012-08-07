@@ -8,6 +8,12 @@ Not implemented - will be ASAP
  * Attachment plugin **In the making**
  * Image plugin
  * Example plugin
+ * Bot editing detection. Don't let anyone edit more than once every other minute.
+ * Article deletion
+ * Key-value meta data
+ * Index views for urlpaths
+ * Searching
+ * South migrations
  
 Ideas
 =====
