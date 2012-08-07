@@ -23,7 +23,16 @@ Installation
 
     pip install git+git://github.com/benjaoming/django-wiki.git
 
-After that, add `'wiki'` to `settings.INSTALLED_APPS`.
+After that, add `'wiki'` and `'django_notify'` to `settings.INSTALLED_APPS`.
+
+Plugins
+------------
+
+Add the following to your `settings.INSTALLED_APPS` to enable some nifty plugins:
+
+ * `'wiki.plugins.attachments'`
+ * `'wiki.plugins.images'`
+ * `'wiki.plugins.notifications'`
 
 Background
 ----------
