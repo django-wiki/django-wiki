@@ -1,4 +1,4 @@
-{% load sekizai_tags %}{% load url from future %}<!DOCTYPE html>
+{% load sekizai_tags i18n %}{% load url from future %}<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -22,10 +22,16 @@
       
       .asteriskField { font-size: 20px; margin-left: 5px; }
       
+      .notification-list .since {
+        font-size: 80%;
+        color: #CCC;
+      }
+      
     </style>
     <link href="{{ STATIC_URL }}wiki/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
     
     <script src="{{ STATIC_URL }}wiki/js/jquery.min.js"></script>
+    <script src="{{ STATIC_URL }}wiki/js/core.js"></script>
     {% render_block "css" %}
     {% render_block "js" %}
     
@@ -50,11 +56,21 @@
             <span class="icon-bar"></span>
           </a>
           <a class="brand" href="{% url 'wiki:root' %}">django-wiki</a>
+          <div class="pull-right">
+            {% if user %}
+              {% include "wiki/plugins/notifications/menubaritem.html" %}
+            {% else %}
+            <ul class="nav">
+              <li>
+                <a href="{% url 'admin:index' %}">{% trans "Log in" %}</a>
+              </li>
+            </ul>
+            {% endif %}
+          </div>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
+              <li class="active"><a href="/">Home</a></li>
+              <li><a href="https://github.com/benjaoming/django-wiki" target="_blank">About</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>

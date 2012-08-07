@@ -4,8 +4,9 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
-import settings
 from django.contrib.contenttypes.models import ContentType
+
+from django_notify import settings
 
 class NotificationType(models.Model):
     """
@@ -19,6 +20,11 @@ class NotificationType(models.Model):
     def __unicode__(self):
         return self.key
     
+    class Meta:
+        db_tablespace = settings.DB_TABLESPACE
+        verbose_name = _(u'type')
+        verbose_name_plural = _(u'types')
+    
 class Settings(models.Model):
     
     user = models.ForeignKey(User)
@@ -28,6 +34,11 @@ class Settings(models.Model):
     def __unicode__(self):
         return self.user
     
+    class Meta:
+        db_tablespace = settings.DB_TABLESPACE        
+        verbose_name = _(u'settings')
+        verbose_name_plural = _(u'settings')
+
 class Subscription(models.Model):
     
     settings = models.ForeignKey(Settings)
@@ -38,6 +49,11 @@ class Subscription(models.Model):
 
     def __unicode__(self):
         return _("Subscription for: %s") % self.settings.user
+
+    class Meta:
+        db_tablespace = settings.DB_TABLESPACE
+        verbose_name = _(u'notification type')
+        verbose_name_plural = _(u'notification types')
 
 class Notification(models.Model):
     
@@ -70,3 +86,8 @@ class Notification(models.Model):
     
     def __unicode__(self):
         return "%s: %s" % (self.subscription.settings.user, self.message)
+
+    class Meta:
+        db_tablespace = settings.DB_TABLESPACE
+        verbose_name = _(u'notification')
+        verbose_name_plural = _(u'notifications')

@@ -2,6 +2,9 @@ from django.conf import settings as django_settings
 
 _ = lambda x: x
 
+# don't change this :)
+DB_TABLESPACE = 'notify'
+
 # You need to switch this setting on, otherwise nothing will happen :)
 ENABLED = getattr(django_settings, "NOTIFY_ENABLED", True)
 

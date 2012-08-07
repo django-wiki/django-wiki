@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from django.utils.translation import ugettext as _
-from itertools import chain
-
-from editors import editor
 from django.utils.safestring import mark_safe
-from wiki import models
 from django.forms.util import flatatt
 from django.utils.encoding import force_unicode
 from django.utils.html import escape, conditional_escape
+
+from itertools import chain
+
+from wiki import models
+from wiki.editors import editor
 from wiki.core.diff import simple_merge
 
 class CreateRoot(forms.Form):
