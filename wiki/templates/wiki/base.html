@@ -57,8 +57,22 @@
           </a>
           <a class="brand" href="{% url 'wiki:root' %}">django-wiki</a>
           <div class="pull-right">
-            {% if user %}
+            {% if user.is_authenticated %}
+            <ul class="nav">
               {% include "wiki/plugins/notifications/menubaritem.html" %}
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <span class="icon-user"></span>
+                  {{ user }}
+                  <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a href="{% url 'admin:logout' %}">{% trans "Log out" %}</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
             {% else %}
             <ul class="nav">
               <li>
