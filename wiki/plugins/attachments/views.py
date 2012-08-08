@@ -25,11 +25,12 @@ class AttachmentView(ArticleMixin, FormView):
             self.attachments = models.Attachment.objects.filter(articles=article).order_by('current_revision__deleted', 'original_filename')
         else:
             self.attachments = models.Attachment.active_objects.filter(articles=article)
+        
+        # Fixing some weird transaction issue caused by adding commit_manually to form_valid
         return super(AttachmentView, self).dispatch(request, article, *args, **kwargs)
     
     @transaction.commit_manually
     def form_valid(self, form):
-        
         try:
             attachment_revision = form.save(commit=False)
             attachment = models.Attachment()
@@ -41,12 +42,11 @@ class AttachmentView(ArticleMixin, FormView):
             attachment_revision.set_from_request(self.request)
             attachment_revision.save()
             messages.success(self.request, _(u'%s was successfully added.') % attachment_revision.get_filename())
-            transaction.commit()
         except models.IllegalFileExtension, e:
             transaction.rollback()
             messages.error(self.request, _(u'Your file could not be saved: %s') % e)
-            transaction.commit()
         
+        transaction.commit()
         if self.urlpath:
             return redirect("wiki:attachments_index", self.urlpath.path)
         # TODO: What if no urlpath?        
