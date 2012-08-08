@@ -1,5 +1,7 @@
 from django.conf import settings as django_settings
 
+SLUG = "attachments"
+
 # Where to store article attachments, relative to MEDIA_ROOT
 UPLOAD_PATH = getattr(django_settings, 'WIKI_UPLOAD_PATH', 'wiki/uploads/%aid/')
 

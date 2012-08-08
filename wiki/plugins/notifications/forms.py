@@ -1,10 +1,11 @@
 from django import forms
 from django.utils.translation import ugettext as _
 
-import settings
 from django_notify.models import Settings, NotificationType
 from django.contrib.contenttypes.models import ContentType
 from django.utils.safestring import mark_safe
+
+from wiki.plugins.notifications import ARTICLE_EDIT
 
 class SubscriptionForm(forms.Form):
     
@@ -19,7 +20,7 @@ class SubscriptionForm(forms.Form):
         self.user = user
         initial = kwargs.pop('initial', None)
         self.settings = Settings.objects.get_or_create(user=user,)[0]
-        self.notification_type = NotificationType.objects.get_or_create(key=settings.ARTICLE_EDIT,
+        self.notification_type = NotificationType.objects.get_or_create(key=ARTICLE_EDIT,
                                                                         content_type=ContentType.objects.get_for_model(article))[0]
         self.edit_notifications=models.ArticleSubscription.objects.filter(settings=self.settings, 
                                                                           article=article,

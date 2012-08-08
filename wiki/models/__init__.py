@@ -23,6 +23,9 @@ if not 'sekizai' in django_settings.INSTALLED_APPS:
 if not 'django_notify' in django_settings.INSTALLED_APPS:
     raise ImproperlyConfigured('django-wiki: needs django_notify in INSTALLED_APPS')
 
+if not 'django.contrib.humanize' in django_settings.INSTALLED_APPS:
+    raise ImproperlyConfigured('django-wiki: needs django.contrib.humanize in INSTALLED_APPS')
+
 if not 'django.contrib.contenttypes' in django_settings.INSTALLED_APPS:
     raise ImproperlyConfigured('django-wiki: needs django.contrib.contenttypes in INSTALLED_APPS')
 

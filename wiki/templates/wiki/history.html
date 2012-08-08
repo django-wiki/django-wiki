@@ -76,7 +76,7 @@
               <div class="accordion-group">
                 <div class="accordion-heading">
                   <a class="accordion-toggle" style="float: left;" href="#collapse{{ revision.revision_number }}" onclick="get_diff_json('{% url 'wiki:diff' revision.id %}', $('#collapse{{ revision.revision_number }}'))">
-                    {{ revision.created }} (#{{ revision.revision_number }}) by {% if revision.user %}{{ revision.user }}{% else %}{% if user.is_superuser %}{{ revision.ip_address|default:"anonymous (IP not logged)" }}{% else %}{% trans "anonymous (IP logged)" %}{% endif %}{% endif %}
+                    {{ revision.created }} (#{{ revision.revision_number }}) by {% if revision.user %}{{ revision.user }}{% else %}{% if user|is_moderator %}{{ revision.ip_address|default:"anonymous (IP not logged)" }}{% else %}{% trans "anonymous (IP logged)" %}{% endif %}{% endif %}
                     {% if revision == article.current_revision %}
                       <strong>*</strong>
                     {% endif %}

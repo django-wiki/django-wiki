@@ -127,6 +127,11 @@ class Article(models.Model):
     
     class Meta:
         app_label = settings.APP_LABEL
+        permissions = (
+            ("moderator", "Can edit all articles and lock/unlock/restore"),
+            ("admin", "Can change ownership of any article"),
+            ("grant", "Can assign permissions to other users"),
+        )
     
     def render(self, preview_content=None):
         if not self.current_revision:
@@ -172,6 +177,20 @@ class BaseRevision(models.Model):
     
     previous_revision = models.ForeignKey('self', blank=True, null=True)
     
+    # NOTE! The semantics of these fields are not related to the revision itself
+    # but the actual related object. If the latest revision says "deleted=True" then
+    # the related object should be regarded as deleted.
+    deleted = models.BooleanField(verbose_name=_(u'deleted'))
+    locked  = models.BooleanField(verbose_name=_(u'locked'))
+
+    def set_from_request(self, request):
+        if request.user.is_authenticated():
+            self.user = request.user
+            if settings.LOG_IPS_USERS:
+                self.ip_address = request.META.get('REMOTE_ADDR', None)
+        elif settings.LOG_IPS_ANONYMOUS:
+            self.ip_address = request.META.get('REMOTE_ADDR', None)
+    
     class Meta:
         abstract = True
         app_label = settings.APP_LABEL
@@ -192,10 +211,6 @@ class ArticleRevision(BaseRevision):
     # the last used revision...
     title = models.CharField(max_length=512, verbose_name=_(u'article title'), 
                              null=False, blank=False, help_text=_(u'Each revision contains a title field that must be filled out, even if the title has not changed'))
-
-    # Simple properties
-    deleted = models.BooleanField(verbose_name=_(u'article deleted'))
-    locked  = models.BooleanField(verbose_name=_(u'article locked'))
 
     # Allow a revision to redirect to another *article*. This 
     # way, we can redirects and still maintain old content.
@@ -227,6 +242,9 @@ class ArticleRevision(BaseRevision):
                 self.revision_number = previous_revision.revision_number + 1
             except ArticleRevision.DoesNotExist:
                 self.revision_number = 1
+
+        if not self.previous_revision and self.article.current_revision != self:
+            self.previous_revision = self.article.current_revision
 
         super(ArticleRevision, self).save(*args, **kwargs)
         

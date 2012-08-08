@@ -1,27 +1,27 @@
+# -*- coding: utf-8 -*-
+from django.conf.urls.defaults import patterns, url
 from django.utils.translation import ugettext as _
-from django.views.generic.base import TemplateView
-from django.utils.decorators import method_decorator
 
 from wiki.core import plugins_registry
-from wiki.views.mixins import ArticleMixin
-from wiki.decorators import get_article
+from wiki.plugins.attachments import views
+from wiki.plugins.attachments import settings
 
-class AttachmentView(ArticleMixin, TemplateView):
-
-    template_name="wiki/plugins/attachments/tab.html"
-    
-    @method_decorator(get_article(can_read=True))
-    def dispatch(self, request, article, *args, **kwargs):
-        return super(AttachmentView, self).dispatch(request, article, *args, **kwargs)
-    
-    
 class AttachmentPlugin(plugins_registry.BasePlugin):
     
     #settings_form = 'wiki.plugins.notifications.forms.SubscriptionForm'
     
-    slug = 'attachments'
+    slug = settings.SLUG
+    urlpatterns = patterns('',
+        url('^$', views.AttachmentView.as_view(), name='attachments_index'),
+        url('^replace/(?P<attachment_id>\d+)/$', views.AttachmentReplaceView.as_view(), name='attachments_replace'),
+        url('^history/(?P<attachment_id>\d+)/$', views.AttachmentHistoryView.as_view(), name='attachments_history'),
+        url('^download/(?P<attachment_id>\d+)/$', views.AttachmentDownloadView.as_view(), name='attachments_download'),
+        url('^delete/(?P<attachment_id>\d+)/$', views.AttachmentDeleteView.as_view(), name='attachments_delete'),
+        url('^download/(?P<attachment_id>\d+)/revision/(?P<revision_id>\d+)/$', views.AttachmentDownloadView.as_view(), name='attachments_download'),
+        url('^change/(?P<attachment_id>\d+)/revision/(?P<revision_id>\d+)/$', views.AttachmentChangeRevisionView.as_view(), name='attachments_revision_change'),
+    )
     article_tab = (_(u'Attachments'), "icon-file")
-    article_view = AttachmentView().dispatch
+    article_view = views.AttachmentView().dispatch
     article_template_append = 'wiki/plugins/attachments/append.html'
     
     def __init__(self):

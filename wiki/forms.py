@@ -214,7 +214,7 @@ class PermissionsForm(forms.ModelForm):
         kwargs['instance'] = article
         super(PermissionsForm, self).__init__(*args, **kwargs)
         print self.data
-        if user.is_superuser:
+        if user.has_perm("wiki.admin"):
             self.fields['group'].queryset = models.Group.objects.all()
         else:
             self.fields['group'].queryset = models.Group.objects.filter(user=user)

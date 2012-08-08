@@ -1,0 +1,338 @@
+/media/FAIR
+
+camara  install           intranet    mediawiki 
+data    install.20111008  lost+found  ubuntu 
+
+
+fair@NICE:~$ cd /media/FAIR/install 
+fair@NICE:/media/FAIR/install$ sudo ./install.sh 
+sudo: unable to resolve host NICE 
+[sudo] password for fair: 
+--------------------------------------- 
+Starting FAIR install 
+--------------------------------------- 
+--------------------------------------- 
+Putting external drive in /etc/fstab 
+--------------------------------------- 
+Already present! 
+--------------------------------------- 
+Configuring the network on eth0 
+--------------------------------------- 
+Disabling network manager... 
+stop: Unknown job: network-manager 
+Creating static network configuration... 
+ * Reconfiguring network interfaces...                                   [ OK ] 
+Overwriting /etc/hosts 
+--------------------------------------- 
+Setting up local repository 
+--------------------------------------- 
+Ign file: lucid Release.gpg 
+Ign file:/var/www/ubuntu/ lucid/main Translation-en_US 
+Ign file:/var/www/ubuntu/ lucid/restricted Translation-en_US 
+Ign file:/var/www/ubuntu/ lucid/universe Translation-en_US 
+Ign file:/var/www/ubuntu/ lucid/multiverse Translation-en_US 
+Ign file: lucid-security Release.gpg 
+Ign file:/var/www/ubuntu/ lucid-security/main Translation-en_US 
+Ign file:/var/www/ubuntu/ lucid-security/restricted Translation-en_US 
+Ign file:/var/www/ubuntu/ lucid-security/universe Translation-en_US 
+Ign file:/var/www/ubuntu/ lucid-security/multiverse Translation-en_US 
+Ign file: lucid-updates Release.gpg 
+Ign file:/var/www/ubuntu/ lucid-updates/main Translation-en_US 
+Ign file:/var/www/ubuntu/ lucid-updates/restricted Translation-en_US 
+Ign file:/var/www/ubuntu/ lucid-updates/universe Translation-en_US 
+Ign file:/var/www/ubuntu/ lucid-updates/multiverse Translation-en_US 
+Ign file: lucid Release 
+Ign file: lucid-security Release 
+Ign file: lucid-updates Release 
+Ign file: lucid/main Packages 
+Ign file: lucid/restricted Packages 
+Ign file: lucid/universe Packages 
+Ign file: lucid/multiverse Packages 
+Ign file: lucid-security/main Packages 
+Ign file: lucid-security/restricted Packages 
+Ign file: lucid-security/universe Packages 
+Ign file: lucid-security/multiverse Packages 
+Ign file: lucid-updates/main Packages 
+Ign file: lucid-updates/restricted Packages 
+Ign file: lucid-updates/universe Packages 
+Ign file: lucid-updates/multiverse Packages 
+Ign file: lucid/main Packages 
+Ign file: lucid/restricted Packages 
+Ign file: lucid/universe Packages 
+Ign file: lucid/multiverse Packages 
+Ign file: lucid-security/main Packages 
+Ign file: lucid-security/restricted Packages 
+Ign file: lucid-security/universe Packages 
+Ign file: lucid-security/multiverse Packages 
+Ign file: lucid-updates/main Packages 
+Ign file: lucid-updates/restricted Packages 
+Ign file: lucid-updates/universe Packages 
+Ign file: lucid-updates/multiverse Packages 
+Err file: lucid/main Packages 
+  File not found 
+Err file: lucid/restricted Packages 
+  File not found 
+Err file: lucid/universe Packages 
+  File not found 
+Err file: lucid/multiverse Packages 
+  File not found 
+Err file: lucid-security/main Packages 
+  File not found 
+Err file: lucid-security/restricted Packages 
+  File not found 
+Err file: lucid-security/universe Packages 
+  File not found 
+Err file: lucid-security/multiverse Packages 
+  File not found 
+Err file: lucid-updates/main Packages 
+  File not found 
+Err file: lucid-updates/restricted Packages 
+  File not found 
+Err file: lucid-updates/universe Packages 
+  File not found 
+Err file: lucid-updates/multiverse Packages 
+  File not found 
+W: Failed to fetch file:/var/www/ubuntu/dists/lucid/main/binary-i386/Packages.gz  File not found 
+
+W: Failed to fetch file:/var/www/ubuntu/dists/lucid/restricted/binary-i386/Packages.gz  File not found 
+
+W: Failed to fetch file:/var/www/ubuntu/dists/lucid/universe/binary-i386/Packages.gz  File not found 
+
+W: Failed to fetch file:/var/www/ubuntu/dists/lucid/multiverse/binary-i386/Packages.gz  File not found 
+
+W: Failed to fetch file:/var/www/ubuntu/dists/lucid-security/main/binary-i386/Packages.gz  File not found 
+ 
+W: Failed to fetch file:/var/www/ubuntu/dists/lucid-security/restricted/binary-i386/Packages.gz  File not found 
+
+W: Failed to fetch file:/var/www/ubuntu/dists/lucid-security/universe/binary-i386/Packages.gz  File not found 
+
+W: Failed to fetch file:/var/www/ubuntu/dists/lucid-security/multiverse/binary-i386/Packages.gz  File not found 
+
+W: Failed to fetch file:/var/www/ubuntu/dists/lucid-updates/main/binary-i386/Packages.gz  File not found 
+
+W: Failed to fetch file:/var/www/ubuntu/dists/lucid-updates/restricted/binary-i386/Packages.gz  File not found 
+
+W: Failed to fetch file:/var/www/ubuntu/dists/lucid-updates/universe/binary-i386/Packages.gz  File not found 
+
+W: Failed to fetch file:/var/www/ubuntu/dists/lucid-updates/multiverse/binary-i386/Packages.gz  File not found 
+
+E: Some index files failed to download, they have been ignored, or old ones used instead. 
+--------------------------------------- 
+Installing rc.local                    
+--------------------------------------- 
+--------------------------------------- 
+Installing dnsmasq DHCP & DNS server   
+--------------------------------------- 
+Reading package lists... 
+Building dependency tree... 
+Reading state information... 
+Package dnsmasq is not available, but is referred to by another package. 
+This may mean that the package is missing, has been obsoleted, or 
+is only available from another source 
+E: Package dnsmasq has no installation candidate 
+Creating configuration file /etc/dnsmasq.d/fair 
+./install.sh: line 68: /etc/dnsmasq.d/fair: No such file or directory 
+./install.sh: line 69: /etc/init.d/dnsmasq: No such file or directory 
+--------------------------------------- 
+Copying TFTP root directory            
+--------------------------------------- 
+Copying tftp root directory... can take up to a couple of minutes... 
+--------------------------------------- 
+Installing apache2 http server         
+--------------------------------------- 
+Reading package lists... 
+Building dependency tree... 
+Reading state information... 
+E: Couldn't find package apache2 
+Creating links for our repository 
+ln: accessing `/var/www/ubuntu': Not a directory 
+ln: accessing `/var/www/pool': Not a directory 
+Creating links for the NICE & FAIR intranet 
+ln: accessing `/var/www/intranet': Not a directory 
+Copying Kickstart configuration file 
+cp: accessing `/var/www/': Not a directory 
+cp: accessing `/var/www/': Not a directory 
+Creating virtual hosts for the repository and the intranet... 
+./install.sh: line 101: /etc/apache2/sites-available/repo: No such file or directory 
+./install.sh: line 102: /etc/apache2/sites-available/intranet: No such file or directory 
+./install.sh: line 103: a2ensite: command not found 
+./install.sh: line 104: a2ensite: command not found 
+./install.sh: line 105: /etc/init.d/apache2: No such file or directory 
+--------------------------------------- 
+Installing NFS server                  
+--------------------------------------- 
+Blacklisting IPv6 modules due to a bug 
+Switching off IPv6 
+Creating a teacher account and a shared NFS folder 
+useradd: user 'teacher' already exists 
+mkdir: cannot create directory `/home/teacher/materials': File exists 
+Reading package lists... 
+Building dependency tree... 
+Reading state information... 
+E: Couldn't find package nfs-kernel-server 
+./install.sh: line 128: /etc/init.d/nfs-kernel-server: No such file or directory 
+--------------------------------------- 
+Installing NTP time server             
+--------------------------------------- 
+Reading package lists... 
+Building dependency tree... 
+Reading state information... 
+Package ntp is not available, but is referred to by another package. 
+This may mean that the package is missing, has been obsoleted, or 
+is only available from another source 
+E: Package ntp has no installation candidate 
+Copying NTP configuration... 
+./install.sh: line 136: /etc/init.d/ntp: No such file or directory 
+--------------------------------------- 
+Creating postinstall package           
+--------------------------------------- 
+Making SSH keys for server admin 
+postinstall/ 
+postinstall/install_create_homes.sh 
+postinstall/copy.sh 
+postinstall/sources.list 
+postinstall/packages.remove.lst 
+postinstall/lost+found/ 
+postinstall/local/ 
+postinstall/local/nm-applet.desktop 
+postinstall/local/printers.conf 
+postinstall/local/gnome-power-manager.desktop 
+postinstall/local/teacher/ 
+postinstall/local/teacher/.apps/ 
+postinstall/local/teacher/.apps/internet.sh 
+postinstall/local/teacher/.apps/intranet.sh 
+postinstall/local/teacher/Desktop/ 
+postinstall/local/packages.install.lst 
+postinstall/local/HP-LaserJet-5000.ppd 
+postinstall/local/final.sh 
+postinstall/etc.gdm.custom.conf 
+postinstall/student/ 
+postinstall/student/.local/ 
+postinstall/student/.local/share/ 
+postinstall/student/.local/share/desktop-directories/ 
+postinstall/student/.local/share/desktop-directories/Settings-System.directory 
+postinstall/student/.local/share/desktop-directories/Settings.directory 
+postinstall/student/.config/ 
+postinstall/student/.config/menus/ 
+postinstall/student/.config/menus/settings.menu 
+postinstall/student/.config/menus/applications-merged/ 
+postinstall/student/.config/menus/applications.menu 
+postinstall/student/Desktop/ 
+postinstall/student/Desktop/START HERE!.desktop 
+postinstall/student/.ssh/ 
+postinstall/student/.ssh/authorized_keys 
+postinstall/teacher/ 
+postinstall/teacher/.apps/ 
+postinstall/teacher/.apps/fair-teacher-tools/ 
+postinstall/teacher/.apps/fair-teacher-tools/sharescreen/ 
+postinstall/teacher/.apps/fair-teacher-tools/sharescreen/main.py 
+postinstall/teacher/.apps/fair-teacher-tools/sharescreen/glade/ 
+postinstall/teacher/.apps/fair-teacher-tools/sharescreen/glade/mainwindow.glade 
+postinstall/teacher/.apps/fair-teacher-tools/shutdown/ 
+postinstall/teacher/.apps/fair-teacher-tools/shutdown/main.py 
+postinstall/teacher/.apps/fair-teacher-tools/shutdown/deploy.pyc 
+postinstall/teacher/.apps/fair-teacher-tools/shutdown/glade/ 
+postinstall/teacher/.apps/fair-teacher-tools/shutdown/glade/mainwindow.glade 
+postinstall/teacher/.apps/fair-teacher-tools/shutdown/deploy.py 
+postinstall/teacher/.apps/fair-teacher-tools/.project 
+postinstall/teacher/.apps/fair-teacher-tools/.pydevproject 
+postinstall/teacher/Desktop/ 
+postinstall/teacher/Desktop/Let students see your screen!.desktop 
+postinstall/teacher/Desktop/START HERE!.desktop 
+postinstall/teacher/Desktop/Shutdown all computers.desktop 
+postinstall/teacher/Desktop/Wikipedia.desktop 
+postinstall/teacher/.ssh/ 
+postinstall/teacher/.ssh/id_rsa.pub 
+postinstall/teacher/.ssh/id_rsa 
+postinstall/teacher/.ssh/known_hosts 
+postinstall/mount_shares 
+postinstall/packages.install.lst 
+postinstall/server_id_rsa.pub 
+postinstall/postinstall.sh 
+postinstall/start.sh 
+postinstall/etc.gnome.defaults.list 
+postinstall/create_homes.sh 
+--------------------------------------- 
+Installing MySQL and PHP               
+--------------------------------------- 
+Reading package lists... 
+Building dependency tree... 
+Reading state information... 
+E: Couldn't find package mysql-server 
+Linking MySQL data dir to /var/lib/mysql 
+Setting owner to mysql 
+chown: invalid user: `mysql.mysql' 
+Installing apparmor configuration 
+ * Reloading AppArmor profiles                                                  Skipping profile in /etc/apparmor.d/disable: usr.bin.firefox 
+                                                                         [ OK ] 
+Creating new /etc/mysql/my.cnf 
+cp: cannot create regular file `/etc/mysql/my.cnf': No such file or directory 
+Restarting MySQL 
+stop: Unknown job: mysql 
+start: Unknown job: mysql 
+--------------------------------------- 
+Copying Wikipedia files                
+--------------------------------------- 
+Copying document root into /var/www/wiki 
+rm: cannot remove `/media/FAIR/mediawiki/images': No such file or directory 
+cp: accessing `/var/www/wiki/': Not a directory 
+ln: accessing `/var/www/wiki/images': Not a directory 
+Copying configuration file LocalSettings.php into /var/www/wiki/ 
+./install.sh: line 183: /var/www/wiki/LocalSettings.php: Not a directory 
+Creating virtual host 
+./install.sh: line 186: /etc/apache2/sites-available/wikipedia: No such file or directory 
+./install.sh: line 187: a2ensite: command not found 
+./install.sh: line 188: /etc/init.d/apache2: No such file or directory 
+--------------------------------------- 
+Installing ImageMagick                 
+--------------------------------------- 
+Reading package lists... 
+Building dependency tree... 
+Reading state information... 
+imagemagick is already the newest version. 
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded. 
+--------------------------------------- 
+Installing extra optional stuff        
+--------------------------------------- 
+Installing ping_clients.py 
+update-rc.d: warning: ping_clients start runlevel arguments (3 4 5) do not match LSB Default-Start values (2 3 4 5) 
+update-rc.d: warning: ping_clients stop runlevel arguments (0 1 2 6) do not match LSB Default-Stop values (0 1 6) 
+ System start/stop links for /etc/init.d/ping_clients already exist. 
+Reading package lists... 
+Building dependency tree... 
+Reading state information... 
+Package openssh-server is not available, but is referred to by another package. 
+This may mean that the package is missing, has been obsoleted, or 
+is only available from another source 
+E: Package openssh-server has no installation candidate 
+fair@NICE:/media/FAIR/install$ ls /media/FAIR 
+camara  install           intranet    mediawiki 
+data    install.20111008  lost+found  ubuntu 
+fair@NICE:/media/FAIR/install$ ls /media/FAIR/data 
+factbook  khansite  mysql  schools_wikipedia  why_democracy  wikipedia_images 
+fair@NICE:/media/FAIR/install$ ls /media/FAIR/ubuntu 
+dk.archive.ubuntu.com  edubuntu-dvd  ubuntu-10.04-desktop-i386.iso 
+fair@NICE:/media/FAIR/install$ du -sh /media/FAIR/ubuntu 
+41G	/media/FAIR/ubuntu 
+fair@NICE:/media/FAIR/install$ gedit /media/FAIR/install/install.sh 
+fair@NICE:/media/FAIR/install$ ls /media/FAIR/install 
+deploy                                 ks.cfg 
+edubuntu.seed                          ks_eth0.cfg 
+etc.apache2.sites-available.intranet   ks_eth1.cfg 
+etc.apache2.sites-available.repo       make_postinstall.sh 
+etc.apache2.sites-available.wikipedia  masquerade.sh 
+etc.apparmor.d.usr.sbin.mysqld         ping_clients 
+etc.default.tftpd-hpa                  ping_clients.py 
+etc.dnsmasq.d.fair                     postinstall 
+etc.exports                            postinstall.chinsapo 
+etc.hosts                              postinstall.local 
+etc.modprobe.d.fair.conf               postinstall_new 
+etc.mysql.my.cnf                       postinstall.robertblake 
+etc.network.interfaces                 postinstall.tar.gz 
+etc.ntp.conf                           sources.list 
+etc.rc.local                           test 
+fix_pls_files.sh                       tftp 
+index.html                             wikipedia_cleanup.sql 
+install.sh                             wikipedia.LocalSettings.php 
+fair@NICE:/media/FAIR/install$ gedit /media/FAIR/install/install.sh 
+fair@NICE:/media/FAIR/install$ 

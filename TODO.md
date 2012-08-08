@@ -2,10 +2,10 @@ Not implemented - will be ASAP
 ==============================
 
  * Permission system in settings tab **Done**
- * Notification system **Almost done**
- * Simple user account handling: login/register etc.
+ * Notification system **Almost done** (email notifications)
+ * Simple user account handling: login/register etc. **Done**
  * Implement notifications, revision log messages and user messages thoroughly
- * Attachment plugin **In the making**
+ * Attachment plugin **Almost done** (needs to be able to add attachments from other articles.. a simple search function)
  * Image plugin
  * Example plugin
  * Bot editing detection. Don't let anyone edit more than once every other minute.
@@ -13,7 +13,9 @@ Not implemented - will be ASAP
  * Key-value meta data
  * Index views for urlpaths
  * Searching
- * South migrations
+ * South migrations **Soon**
+ * View source for read-only articles + locked status
+ * Global moderator permission **Almost done** (need to add grant form for users with *grant* permissions)
  
 Ideas
 =====
@@ -31,4 +33,9 @@ Management script
  * Cleanup deleted Image's image files
  * Cleanup attachments
  * Cleanup revisions + plugin revisions
+ * django_notify: send out email notifications
 
+Postponed
+=================
+
+* Make dependency on django_notify optional

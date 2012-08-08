@@ -86,6 +86,7 @@ TEMPLATE_CONTEXT_PROCESSORS =(
 )
 
 INSTALLED_APPS = (
+    'django.contrib.humanize',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',

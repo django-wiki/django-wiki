@@ -6,9 +6,9 @@ from django.db.models import signals
 from django_notify import notify
 from django_notify.models import Subscription
 
-from wiki import models as wiki_models
+from wiki.plugins.notifications import ARTICLE_CREATE, ARTICLE_EDIT
 
-import settings
+from wiki import models as wiki_models
 
 class ArticleSubscription(wiki_models.pluginbase.ArticlePlugin, Subscription):
     
@@ -25,7 +25,7 @@ def post_article_save(instance, **kwargs):
             url = reverse('wiki:get_url', urlpath.path)
         else:
             url = None
-        notify(_(u'New article created: %s') % instance.title, settings.ARTICLE_CREATE,
+        notify(_(u'New article created: %s') % instance.title, ARTICLE_CREATE,
                target_object=instance, url=url)
 
 def post_article_revision_save(instance, **kwargs):
@@ -35,7 +35,7 @@ def post_article_revision_save(instance, **kwargs):
             url = reverse('wiki:get_url', args=(urlpath.path,))
         except wiki_models.URLPath.DoesNotExist:
             url = None
-        notify(_(u'Article modified: %s') % instance.title, settings.ARTICLE_EDIT,
+        notify(_(u'Article modified: %s') % instance.title, ARTICLE_EDIT,
                target_object=instance.article, url=url)
 
 # Create notifications when new articles are saved. We do NOT care

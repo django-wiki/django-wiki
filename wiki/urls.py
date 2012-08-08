@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls.defaults import patterns, url, include
 
 from wiki.views import article, accounts
 from wiki.conf import settings
+from wiki.core import plugins_registry
 
 urlpatterns = patterns('',
     url('^$', article.ArticleView.as_view(), name='root', kwargs={'path': ''}),   
@@ -29,8 +30,18 @@ urlpatterns += patterns('',
     url('^(?P<path>.+/|)_history/$', article.History.as_view(), name='history_url'),   
     url('^(?P<path>.+/|)_settings/$', article.Settings.as_view(), name='settings_url'),   
     url('^(?P<path>.+/|)_revision/change/(?P<revision_id>\d+)/$', 'wiki.views.article.change_revision', name='change_revision_url'),   
-    url('^(?P<path>.+/|)_revision/merge/(?P<revision_id>\d+)/$', 'wiki.views.article.merge', name='merge_revision_url'),   
+    url('^(?P<path>.+/|)_revision/merge/(?P<revision_id>\d+)/$', 'wiki.views.article.merge', name='merge_revision_url'),
     url('^(?P<path>.+/|)_plugin/(?P<slug>\w+)/$', article.Plugin.as_view(), name='plugin_url'),   
+)
+for plugin in plugins_registry._cache.values():
+    slug = getattr(plugin, 'slug', None)
+    plugin_urlpatterns = getattr(plugin, 'urlpatterns', None)
+    if slug and plugin_urlpatterns:
+        urlpatterns += patterns('',
+            url('^(?P<path>.+/|)_plugin/'+slug+'/', include(plugin_urlpatterns)),   
+        )
+
+urlpatterns += patterns('',
     url('^(?P<path>.+/|)$', article.ArticleView.as_view(), name='get_url'),   
 )
 

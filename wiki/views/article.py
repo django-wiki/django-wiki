@@ -2,7 +2,6 @@
 import difflib
 
 from django.contrib import messages
-from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.decorators import method_decorator
@@ -17,6 +16,7 @@ from wiki.conf import settings
 from wiki.core import plugins_registry
 from wiki.core.diff import simple_merge
 from wiki.decorators import get_article, json_view
+from django.core.urlresolvers import reverse
 
 class ArticleView(ArticleMixin, TemplateView, ):
 
@@ -97,12 +97,7 @@ class Edit(FormView, ArticleMixin):
         revision.title = form.cleaned_data['title']
         revision.content = form.cleaned_data['content']
         revision.user_message = form.cleaned_data['summary']
-        if not self.request.user.is_anonymous:
-            revision.user = self.request.user
-            if settings.LOG_IPS_USERS:
-                revision.ip_address = self.request.META.get('REMOTE_ADDR', None)
-        elif settings.LOG_IPS_ANONYMOUS:
-            revision.ip_address = self.request.META.get('REMOTE_ADDR', None)
+        revision.set_from_request(self.request)
         self.article.add_revision(revision)
         messages.success(self.request, _(u'A new revision of the article was succesfully added.'))
         return self.get_success_url()
@@ -166,7 +161,7 @@ class Settings(ArticleMixin, TemplateView):
         Return all settings forms that can be filled in
         """
         settings_forms = [F for F in plugins_registry._settings_forms]
-        if (self.request.user and self.request.user.is_superuser or 
+        if (self.request.user.has_perm('wiki.admin') or 
             self.article.owner == self.request.user):
             settings_forms.append(self.permission_form_class)
         settings_forms.sort(key=lambda form: form.settings_order)
@@ -304,8 +299,9 @@ def merge(request, article, revision_id, urlpath=None, template_file="wiki/previ
                                  'content': content})
     return render_to_response(template_file, c)
 
-@permission_required('wiki.add_article')
 def root_create(request):
+    if not request.user.has_perm('wiki.add_article'):
+        return redirect(reverse("wiki:login") + "?next=" + reverse("wiki:root_create"))
     if request.method == 'POST':
         create_form = forms.CreateRoot(request.POST)
         if create_form.is_valid():

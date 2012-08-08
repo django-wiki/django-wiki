@@ -1,11 +1,11 @@
 django-wiki
 ===========
 
-*Last update: 2012-08-01*
+*Last update: 2012-08-08*
 
-Demo here:
+Demo here, sign up for an account to see the notification system.
 
-[wiki.overtag.dk](http://wiki.overtag.dk) - login to admin interface: admin/admin
+[wiki.overtag.dk](http://wiki.overtag.dk)
 
 NB!! *THIS IS A WORK IN PROGRESS*
 ---------------------------------

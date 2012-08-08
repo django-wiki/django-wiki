@@ -60,3 +60,8 @@ def can_read(obj, user):
 def can_write(obj, user):
     """Articles and plugins have a can_write method..."""
     return obj.can_write(user)
+
+@register.filter
+def is_moderator(user):
+    """Tells if a user is a moderator"""
+    return user.has_perm('wiki.moderator')

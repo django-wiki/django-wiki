@@ -26,32 +26,32 @@ class ArticlePlugin(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name=_(u"created"))
     modified = models.DateTimeField(auto_now=True, verbose_name=_(u"created"))
     
+    deleted = models.BooleanField(default=False)
+
     class Meta:
         abstract = True
 
-class ReusablePlugin(models.Model):
+class ReusablePlugin(ArticlePlugin):
     
     # The article on which the plugin was originally created.
     # Used to apply permissions.
-    original_article = models.ForeignKey(Article, on_delete=models.SET_NULL,
-                                         verbose_name=_(u'original article'), null=True, blank=True,
-                                         related_name='original_plugin_set',
-                                         help_text=_(u'Permissions are inherited from this article'))
+    ArticlePlugin.article.verbose_name=_(u'original article')
+    ArticlePlugin.article.help_text=_(u'Permissions are inherited from this article')
+    ArticlePlugin.article.on_delete=models.SET_NULL
+    ArticlePlugin.article.null = True
+    ArticlePlugin.article.blank = True
     
-    articles = models.ManyToManyField(Article)
-
-    created = models.DateTimeField(auto_now_add=True, verbose_name=_(u"created"))
-    modified = models.DateTimeField(auto_now=True, verbose_name=_(u"created"))
+    articles = models.ManyToManyField(Article, related_name='shared_plugins_set')
     
     # Permission methods - you may override these, if they don't fit your logic.
     def can_read(self, *args, **kwargs):
-        if self.original_article:
-            return self.original_article.can_read(*args, **kwargs)
+        if self.article:
+            return self.article.can_read(*args, **kwargs)
         return False
     
     def can_write(self, *args, **kwargs):
-        if self.original_article:
-            return self.original_article.can_write(*args, **kwargs)
+        if self.article:
+            return self.article.can_write(*args, **kwargs)
         return False
     
     class Meta:
@@ -60,10 +60,10 @@ class ReusablePlugin(models.Model):
     def save(self, *args, **kwargs):
         
         # Automatically make the original article the first one in the added set
-        if not self.original_article:
+        if not self.article:
             articles = self.articles.all()
             if articles.count() == 0:
-                self.original_article = articles[0]
+                self.article = articles[0]
             
         super(ReusablePlugin, self).save(*args, **kwargs)
     
@@ -111,9 +111,3 @@ class RevisionPlugin(models.Model):
     class Meta:
         abstract = True
     
-    def get_editor_media(self, editor):
-        if editor == 'markitup':
-            pass
-        if editor == 'markitup':
-            pass
-
