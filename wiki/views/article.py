@@ -44,7 +44,9 @@ class Create(FormView, ArticleMixin):
         initial = kwargs.get('initial', {})
         initial['slug'] = self.request.GET.get('slug', None)
         kwargs['initial'] = initial
-        return form_class(self.urlpath, **kwargs)
+        form = form_class(self.urlpath, **kwargs)
+        form.fields['slug'].widget = forms.TextInputPrepend(prepend='/'+self.urlpath.path)        
+        return form
     
     def form_valid(self, form):
         user=None

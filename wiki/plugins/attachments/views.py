@@ -8,11 +8,11 @@ from wiki.views.mixins import ArticleMixin
 from wiki.decorators import get_article
 from wiki.plugins.attachments import forms
 from wiki.plugins.attachments import models
-from wiki.plugins.attachments import settings
 from django.contrib import messages
 from django.views.generic.base import TemplateView, View
 from wiki.core.http import send_file
 from django.http import Http404
+from django.db import transaction
 
 class AttachmentView(ArticleMixin, FormView):
     
@@ -27,21 +27,28 @@ class AttachmentView(ArticleMixin, FormView):
             self.attachments = models.Attachment.active_objects.filter(articles=article)
         return super(AttachmentView, self).dispatch(request, article, *args, **kwargs)
     
+    @transaction.commit_manually
     def form_valid(self, form):
         
-        attachment_revision = form.save(commit=False)
-        attachment = models.Attachment()
-        attachment.article = self.article
-        attachment.original_filename = attachment_revision.get_filename()
-        attachment.save()
-        attachment.articles.add(self.article)
-        attachment_revision.attachment = attachment
-        attachment_revision.set_from_request(self.request)
-        attachment_revision.save()
+        try:
+            attachment_revision = form.save(commit=False)
+            attachment = models.Attachment()
+            attachment.article = self.article
+            attachment.original_filename = attachment_revision.get_filename()
+            attachment.save()
+            attachment.articles.add(self.article)
+            attachment_revision.attachment = attachment
+            attachment_revision.set_from_request(self.request)
+            attachment_revision.save()
+            transaction.commit()
+            messages.success(self.request, _(u'%s was successfully added.') % attachment_revision.get_filename())
+        except models.IllegalFileExtension, e:
+            transaction.rollback()
+            messages.error(self.request, _(u'Your file could not be saved: %s') % e)
         
-        messages.success(self.request, _(u'%s was successfully added.') % attachment_revision.get_filename())
-        
-        return redirect("wiki:plugin_url", self.urlpath.path, settings.SLUG)
+        if self.urlpath:
+            return redirect("wiki:attachments_index", self.urlpath.path)
+        # TODO: What if no urlpath?        
     
     def get_context_data(self, **kwargs):
         kwargs['attachments'] = self.attachments
@@ -87,7 +94,7 @@ class AttachmentReplaceView(ArticleMixin, FormView):
         
         messages.success(self.request, _(u'%s uploaded and replaces old attachment.') % attachment_revision.get_filename())
         if self.urlpath:
-            return redirect("wiki:attachments_index", self.urlpath.path, settings.SLUG)
+            return redirect("wiki:attachments_index", self.urlpath.path)
         # TODO: What if we do not have a urlpath?
         
     
@@ -155,7 +162,10 @@ class AttachmentDeleteView(ArticleMixin, FormView):
     
     @method_decorator(get_article(can_write=True))
     def dispatch(self, request, article, attachment_id, *args, **kwargs):
-        self.attachment = get_object_or_404(models.Attachment.active_objects, id=attachment_id, articles=article)
+        if request.user.has_perm("wiki.moderator"):
+            self.attachment = get_object_or_404(models.Attachment, id=attachment_id, articles=article)
+        else:
+            self.attachment = get_object_or_404(models.Attachment.active_objects, id=attachment_id, articles=article)
         return super(AttachmentDeleteView, self).dispatch(request, article, *args, **kwargs)
     
     def form_valid(self, form):
@@ -165,8 +175,8 @@ class AttachmentDeleteView(ArticleMixin, FormView):
             revision.attachment = self.attachment
             revision.set_from_request(self.request)
             revision.deleted = True
-            revision.file = self.attachment.current_revision.file
-            revision.description = self.attachment.current_revision.description
+            revision.file = self.attachment.current_revision.file if self.attachment.current_revision else None
+            revision.description = self.attachment.current_revision.description if self.attachment.current_revision else ""
             revision.save()
             self.attachment.current_revision = revision
             self.attachment.save()

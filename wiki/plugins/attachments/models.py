@@ -30,6 +30,9 @@ class Attachment(ReusablePlugin):
         verbose_name = _(u'attachment')
         verbose_name_plural = _(u'attachments')
         app_label = wiki_settings.APP_LABEL
+    
+    def __unicode__(self):
+        return "%s: %s" % (self.article.current_revision.title, self.original_filename)    
         
 def upload_path(instance, filename):
     from os import path
@@ -41,8 +44,8 @@ def upload_path(instance, filename):
     
     # Must be an allowed extension
     if not extension.lower() in map(lambda x: x.lower(), settings.FILE_EXTENSIONS):
-        raise IllegalFileExtension("The following filename is illegal: %s. Extension has to be on of %s" % 
-                                   (filename, str(settings.FILE_EXTENSIONS)))
+        raise IllegalFileExtension("The following filename is illegal: %s. Extension has to be one of %s" % 
+                                   (filename, ", ".join(settings.FILE_EXTENSIONS)))
 
     # Has to match original extension filename
     if instance.id and instance.attachment and instance.attachment.original_filename:
@@ -78,26 +81,47 @@ class AttachmentRevision(BaseRevision):
         app_label = wiki_settings.APP_LABEL
         
     def get_filename(self):
+        """Used to retrieve the filename of a revision.
+        But attachment.original_filename should always be used in the frontend
+        such that filenames stay consistent."""
+        # TODO: Perhaps we can let file names change when files are replaced?
         if not self.file:
             return None
         filename = self.file.path.split("/")[-1]
         return ".".join(filename.split(".")[:-1])
-
+    
+    def get_size(self):
+        """Used to retrieve the file size and not cause exceptions."""
+        try:
+            return self.file.size
+        except ValueError:
+            return None
+    
     def save(self, *args, **kwargs):
+        if (not self.id and
+            not self.previous_revision and 
+            self.attachment and
+            self.attachment.current_revision and 
+            self.attachment.current_revision != self):
+            
+            self.previous_revision = self.attachment.current_revision
+
         if not self.revision_number:
             try:
                 previous_revision = self.attachment.attachmentrevision_set.latest()
                 self.revision_number = previous_revision.revision_number + 1
             # NB! The above should not raise the below exception, but somehow it does.
-            except Attachment.DoesNotExist:
+            except AttachmentRevision.DoesNotExist, Attachment.DoesNotExist:
                 self.revision_number = 1
         
-        if not self.previous_revision and self.attachment.current_revision != self:
-            self.previous_revision = self.attachment.current_revision
-
         super(AttachmentRevision, self).save(*args, **kwargs)
         
         if not self.attachment.current_revision:
             # If I'm saved from Django admin, then article.current_revision is me!
             self.attachment.current_revision = self
             self.attachment.save()
+
+    def __unicode__(self):
+        return "%s: %s (r%d)" % (self.attachment.article.current_revision.title, 
+                                 self.attachment.original_filename,
+                                 self.revision_number)    

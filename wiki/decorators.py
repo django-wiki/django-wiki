@@ -3,19 +3,16 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseForbidden,\
     HttpResponseNotFound
+from django.utils import simplejson as json
 
 from wiki.core.exceptions import NoRootURL
-from django.core import serializers
-
-JSONSerializer = serializers.get_serializer("json")
 
 def json_view(func):
-    def wrap(request, *a, **kw):
-        obj = func(request, *a, **kw)
-        json_serializer = JSONSerializer()
-        json_serializer.serialize(obj)
-        data = json_serializer.getvalue()
-        response = HttpResponse(mimetype='application/json')
+    def wrap(request, *args, **kwargs):
+        obj = func(request, *args, **kwargs)
+        data = json.dumps(obj, ensure_ascii=False)
+        status = kwargs.get('status', 200)
+        response = HttpResponse(mimetype='application/json', status=status)
         response.write(data)
         return response
     return wrap

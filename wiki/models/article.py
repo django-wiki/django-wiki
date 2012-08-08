@@ -236,15 +236,20 @@ class ArticleRevision(BaseRevision):
         self.redirect = predecessor.redirect
     
     def save(self, *args, **kwargs):
+        if (not self.id and
+            not self.previous_revision and 
+            self.attachment and
+            self.attachment.current_revision and 
+            self.attachment.current_revision != self):
+            
+            self.previous_revision = self.attachment.current_revision
+
         if not self.revision_number:
             try:
                 previous_revision = self.article.articlerevision_set.latest()
                 self.revision_number = previous_revision.revision_number + 1
             except ArticleRevision.DoesNotExist:
                 self.revision_number = 1
-
-        if not self.previous_revision and self.article.current_revision != self:
-            self.previous_revision = self.article.current_revision
 
         super(ArticleRevision, self).save(*args, **kwargs)
         
