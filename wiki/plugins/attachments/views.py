@@ -40,11 +40,12 @@ class AttachmentView(ArticleMixin, FormView):
             attachment_revision.attachment = attachment
             attachment_revision.set_from_request(self.request)
             attachment_revision.save()
-            transaction.commit()
             messages.success(self.request, _(u'%s was successfully added.') % attachment_revision.get_filename())
+            transaction.commit()
         except models.IllegalFileExtension, e:
             transaction.rollback()
             messages.error(self.request, _(u'Your file could not be saved: %s') % e)
+            transaction.commit()
         
         if self.urlpath:
             return redirect("wiki:attachments_index", self.urlpath.path)
