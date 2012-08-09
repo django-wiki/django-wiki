@@ -12,7 +12,8 @@ class NotificationType(models.Model):
     """
     Notification types are added on-the-fly by the
     applications adding new notifications"""
-    key = models.CharField(max_length=128, primary_key=True, verbose_name=_(u'unique key'))
+    key = models.CharField(max_length=128, primary_key=True, verbose_name=_(u'unique key'),
+                           unique=True)
     label = models.CharField(max_length=128, verbose_name=_(u'verbose name'),
                              blank=True, null=True)
     content_type = models.ForeignKey(ContentType, blank=True, null=True)
@@ -32,7 +33,7 @@ class Settings(models.Model):
                                         default=settings.INTERVALS_DEFAULT)
     
     def __unicode__(self):
-        return self.user
+        return _(u"Settings for %s") % self.user.username
     
     class Meta:
         db_tablespace = settings.DB_TABLESPACE        
@@ -48,12 +49,12 @@ class Subscription(models.Model):
     send_emails = models.BooleanField(default=True)
 
     def __unicode__(self):
-        return _("Subscription for: %s") % self.settings.user
+        return _("Subscription for: %s") % str(self.settings.user.username)
 
     class Meta:
         db_tablespace = settings.DB_TABLESPACE
-        verbose_name = _(u'notification type')
-        verbose_name_plural = _(u'notification types')
+        verbose_name = _(u'subscription')
+        verbose_name_plural = _(u'subscriptions')
 
 class Notification(models.Model):
     
@@ -85,7 +86,7 @@ class Notification(models.Model):
         return objects_created
     
     def __unicode__(self):
-        return "%s: %s" % (self.subscription.settings.user, self.message)
+        return "%s: %s" % (str(self.subscription.settings.user), self.message)
 
     class Meta:
         db_tablespace = settings.DB_TABLESPACE
