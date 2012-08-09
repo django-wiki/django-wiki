@@ -13,6 +13,7 @@ from django.views.generic.base import TemplateView, View
 from wiki.core.http import send_file
 from django.http import Http404
 from django.db import transaction
+import os
 
 class AttachmentView(ArticleMixin, FormView):
     
@@ -29,6 +30,7 @@ class AttachmentView(ArticleMixin, FormView):
         # Fixing some weird transaction issue caused by adding commit_manually to form_valid
         return super(AttachmentView, self).dispatch(request, article, *args, **kwargs)
     
+    # WARNING! The below decorator silences other exceptions that may occur!
     @transaction.commit_manually
     def form_valid(self, form):
         try:
@@ -45,6 +47,9 @@ class AttachmentView(ArticleMixin, FormView):
         except models.IllegalFileExtension, e:
             transaction.rollback()
             messages.error(self.request, _(u'Your file could not be saved: %s') % e)
+        except IOError:
+            transaction.rollback()
+            messages.error(self.request, _(u'Your file could not be saved, probably because of a permission error on the web server.'))
         
         transaction.commit()
         if self.urlpath:
