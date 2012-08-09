@@ -69,6 +69,7 @@ class Create(FormView, ArticleMixin):
                                                          ip_address=ip_address)
             messages.success(self.request, _(u"New article '%s' created.") % self.newpath.article.title)
         
+            transaction.commit()
         # TODO: Handle individual exceptions better and give good feedback.
         except Exception, e:
             transaction.rollback()
@@ -79,8 +80,9 @@ class Create(FormView, ArticleMixin):
             transaction.commit()
             return redirect('wiki:get_url', '')
             
+        url = self.get_success_url()
         transaction.commit()
-        return self.get_success_url()
+        return url
     
     def get_success_url(self):
         return redirect('wiki:get_url', self.newpath.path)
