@@ -1,11 +1,41 @@
-{% load i18n %}{% load url from future %}<ul class="breadcrumb">
+{% load i18n %}{% load url from future %}
+<ul class="breadcrumb pull-left" class="">
   {% for ancestor in urlpath.get_ancestors.all %}
     <span class="divider">/</span>
-    <a href="{% url 'wiki:get_url' ancestor.path %}"><li>{{ ancestor.article.current_revision.title }}</li></a>
+    <li><a href="{% url 'wiki:get_url' ancestor.path %}">{{ ancestor.article.current_revision.title }}</a></li>
   {% endfor %}
   <span class="divider">/</span>
   <li class="active"><a href="{% url 'wiki:get_url' urlpath.path %}">{{ urlpath.article.current_revision.title }}</a></li>
   <span class="divider">/</span>
-  <li><a href="{% url 'wiki:create_url' urlpath.path %}">{% trans "+ Add article" %}</a></li>
 </ul>
+<div class="pull-left" style="margin-left: 10px;">
+  <div class="btn-group">
+    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="padding: 7px;">
+      <span class="icon-list"></span>
+    <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+      {% for child in urlpath.get_children %}
+        <li>
+        <a href="{% url 'wiki:get_url' child.path %}">
+          {{ child.article.current_revision.title }}
+        </a>
+        </li>
+      {% endfor %}
+      <li class="divider"></li>
+      <li>
+        <a href="">{% trans "List sub-pages" %} &raquo;</a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="pull-left" style="margin-left: 10px;">
+    <a class="btn" href="{% url 'wiki:create_url' urlpath.path %}" style="padding: 7px;">
+      <span class="icon-plus"></span>
+      {% trans "Add article" %}
+    </a>
+</div>
+
+<div style="clear: both"></div>
+        
 

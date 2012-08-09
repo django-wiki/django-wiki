@@ -1,5 +1,6 @@
 {% extends "wiki/base.html" %}
 {% load wiki_tags i18n %}
+{% load url from future %}
 
 {% block pagetitle %}{% article_for_object urlpath as article %}{{ article.current_revision.title }}{% endblock %}
 
@@ -12,9 +13,11 @@
   {% article_for_object urlpath as article %}
 
   {% if article %}
-    <div class="tabbable tabs-top" style="margin-top: 40px;">
+    <div class="tabbable tabs-top" style="margin-top: 20px;">
       <ul class="nav nav-tabs">
-        <li style="float: left"><h1 style="margin-top: -10px;">{{ article.current_revision.title }}</h1></li>
+        <li style="float: left">
+          <h1 style="margin-top: -10px;">{{ article.current_revision.title }}</h1>
+        </li>
         {% with "view" as selected %}
           {% include "wiki/includes/article_menu.html" %}
         {% endwith %}

@@ -4,6 +4,8 @@ _cache = {}
 
 _settings_forms = []
 
+_markdown_extensions = []
+
 class BasePlugin(object):
     #settings_form = YourForm
     pass
@@ -25,6 +27,11 @@ def register(PluginClass):
             form_module = import_module(modulename)
             settings_form = getattr(form_module, klassname)
         _settings_forms.append(settings_form)
-
+    
+    _markdown_extensions.extend(getattr(PluginClass, 'markdown_extensions', []))        
+    
 def get_plugins():
     return _cache
+
+def get_markdown_extensions():
+    return _markdown_extensions

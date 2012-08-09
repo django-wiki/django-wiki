@@ -6,9 +6,8 @@ from django.db import models
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
-from markdown import markdown
-
 from wiki.conf import settings
+from wiki.core import article_markdown, plugins_registry
 from wiki import managers
 
 class Article(models.Model):
@@ -148,7 +147,8 @@ class Article(models.Model):
             content = preview_content
         else:
             content = self.current_revision.content
-        return mark_safe(markdown(content))
+        extensions = plugins_registry.get_markdown_extensions()
+        return mark_safe(article_markdown(content, self, extensions=extensions))
         
     
 class ArticleForObject(models.Model):

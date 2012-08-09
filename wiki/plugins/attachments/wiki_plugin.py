@@ -6,6 +6,7 @@ from wiki.core import plugins_registry
 from wiki.plugins.attachments import views
 from wiki.plugins.attachments import models
 from wiki.plugins.attachments import settings
+from wiki.plugins.attachments.markdown_extensions import AttachmentExtension
 from wiki.plugins.notifications import ARTICLE_EDIT
 
 class AttachmentPlugin(plugins_registry.BasePlugin):
@@ -36,6 +37,8 @@ class AttachmentPlugin(plugins_registry.BasePlugin):
                       'created': True,
                       'get_article': lambda obj: obj.attachment.article}
                      ]
+    
+    markdown_extensions = [AttachmentExtension()]
     
     def __init__(self):
         #print "I WAS LOADED!"

@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, get_object_or_404
-from django.http import HttpResponse, HttpResponseForbidden,\
-    HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound
 from django.utils import simplejson as json
 
 from wiki.core.exceptions import NoRootURL
