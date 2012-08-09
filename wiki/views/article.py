@@ -221,7 +221,7 @@ def preview(request, article, urlpath=None, template_file="wiki/preview_inline.h
     content = article.current_revision.content
     title = article.current_revision.title
     
-    revision_id = request.GET.get('revision_id', None)
+    revision_id = request.GET.get('r', None)
     revision = None
     
     if request.method == 'POST':
