@@ -26,14 +26,14 @@ urlpatterns += patterns('',
     url('^_revision/merge/(?P<article_id>\d+)/(?P<revision_id>\d+)/preview/$', 'wiki.views.article.merge', name='merge_revision_preview', kwargs={'preview': True}),   
     
     # Paths decided by article_ids
-    url('^(?P<article_id>\d+)/create/$', article.Create.as_view(), name='create_url'),   
-    url('^(?P<article_id>\d+)/edit/$', article.Edit.as_view(), name='edit_url'),   
-    url('^(?P<article_id>\d+)/preview/$', 'wiki.views.article.preview', name='preview_url'),   
-    url('^(?P<article_id>\d+)/history/$', article.History.as_view(), name='history_url'),   
-    url('^(?P<article_id>\d+)/settings/$', article.Settings.as_view(), name='settings_url'),   
-    url('^(?P<article_id>\d+)/revision/change/(?P<revision_id>\d+)/$', 'wiki.views.article.change_revision', name='change_revision_url'),   
-    url('^(?P<article_id>\d+)/revision/merge/(?P<revision_id>\d+)/$', 'wiki.views.article.merge', name='merge_revision_url'),
-    url('^(?P<article_id>\d+)/plugin/(?P<slug>\w+)/$', article.Plugin.as_view(), name='plugin_url'),   
+    url('^(?P<article_id>\d+)/$', article.ArticleView.as_view(), name='get'),   
+    url('^(?P<article_id>\d+)/edit/$', article.Edit.as_view(), name='edit'),   
+    url('^(?P<article_id>\d+)/preview/$', 'wiki.views.article.preview', name='preview'),   
+    url('^(?P<article_id>\d+)/history/$', article.History.as_view(), name='history'),   
+    url('^(?P<article_id>\d+)/settings/$', article.Settings.as_view(), name='settings'),   
+    url('^(?P<article_id>\d+)/revision/change/(?P<revision_id>\d+)/$', 'wiki.views.article.change_revision', name='change_revision'),   
+    url('^(?P<article_id>\d+)/revision/merge/(?P<revision_id>\d+)/$', 'wiki.views.article.merge', name='merge_revision'),
+    url('^(?P<article_id>\d+)/plugin/(?P<slug>\w+)/$', article.Plugin.as_view(), name='plugin'),
 
 )
 
@@ -42,6 +42,8 @@ for plugin in plugins_registry._cache.values():
     plugin_urlpatterns = getattr(plugin, 'urlpatterns', None)
     if slug and plugin_urlpatterns:
         urlpatterns += patterns('',
+            url('^(?P<path>.+/|)_plugin/'+slug+'/', include(plugin_urlpatterns)),   
+            url('^(?P<article_id>\d+)(?P<path>)/plugin/'+slug+'/', include(plugin_urlpatterns)),   
             url('^(?P<article_id>\d+)/plugin/'+slug+'/', include(plugin_urlpatterns)),   
         )
 
@@ -57,13 +59,6 @@ urlpatterns += patterns('',
     url('^(?P<path>.+/|)_plugin/(?P<slug>\w+)/$', article.Plugin.as_view(), name='plugin_url'),   
 
 )
-for plugin in plugins_registry._cache.values():
-    slug = getattr(plugin, 'slug', None)
-    plugin_urlpatterns = getattr(plugin, 'urlpatterns', None)
-    if slug and plugin_urlpatterns:
-        urlpatterns += patterns('',
-            url('^(?P<path>.+/|)_plugin/'+slug+'/', include(plugin_urlpatterns)),   
-        )
 
 urlpatterns += patterns('',
     url('^(?P<path>.+/|)$', article.ArticleView.as_view(), name='get_url'),   

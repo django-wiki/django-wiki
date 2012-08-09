@@ -27,7 +27,7 @@ class AttachmentPreprocessor(markdown.preprocessors.Preprocessor):
                 attachment = models.Attachment.objects.get(article=self.markdown.article,
                                                            id=attachment_id)
                 url = reverse('wiki:attachments_download', kwargs={'article_id': self.markdown.article.id,
-                                                                   'attachment_id':attachment.id})
+                                                                   'attachment_id':attachment.id,})
                 line = line.replace(m.group(1), u"""<span class="attachment"><a href="%s" title="%s">%s</a>""" % 
                                     (url, _(u"Click to download file"), attachment.original_filename))
             new_text.append(line)

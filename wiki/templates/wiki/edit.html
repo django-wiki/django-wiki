@@ -2,7 +2,7 @@
 {% load wiki_tags i18n %}
 {% load url from future %}
 
-{% block pagetitle %}{% trans "Edit" %}: {% article_for_object urlpath as article %}{{ article.current_revision.title }}{% endblock %}
+{% block pagetitle %}{% trans "Edit" %}: {{ article.current_revision.title }}{% endblock %}
 
 {% block wiki_breadcrumbs %}
   {% include "wiki/includes/breadcrumbs.html" %}
@@ -10,10 +10,7 @@
 
 {% block wiki_contents %}
 
-  {% article_for_object urlpath as article %}
-
-  {% if article %}
-    <div class="tabbable tabs-top" style="margin-top: 40px;">
+    <div class="tabbable tabs-top" style="margin-top: 20px;">
       <ul class="nav nav-tabs">
         {% with "edit" as selected %}
           {% include "wiki/includes/article_menu.html" %}
@@ -69,10 +66,6 @@
         <li style="margin-top: 10px;"><em>{% trans "Article last modified:" %} {{ article.current_revision.modified }}</em></li>
       </ul>
     </div>
-    
-  {% else %}
-    {% trans "An article for this path does not exist." %}
-  {% endif %}
   
 {% endblock %}
 

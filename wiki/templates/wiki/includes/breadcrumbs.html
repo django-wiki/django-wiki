@@ -1,11 +1,12 @@
 {% load i18n %}{% load url from future %}
+{% if urlpath %}
 <ul class="breadcrumb pull-left" class="">
   {% for ancestor in urlpath.get_ancestors.all %}
     <span class="divider">/</span>
     <li><a href="{% url 'wiki:get_url' ancestor.path %}">{{ ancestor.article.current_revision.title }}</a></li>
   {% endfor %}
   <span class="divider">/</span>
-  <li class="active"><a href="{% url 'wiki:get_url' urlpath.path %}">{{ urlpath.article.current_revision.title }}</a></li>
+  <li class="active"><a href="{% url 'wiki:get_url' urlpath.path %}">{{ article.current_revision.title }}</a></li>
   <span class="divider">/</span>
 </ul>
 <div class="pull-left" style="margin-left: 10px;">
@@ -35,7 +36,5 @@
       {% trans "Add article" %}
     </a>
 </div>
-
 <div style="clear: both"></div>
-        
-
+{% endif %}
