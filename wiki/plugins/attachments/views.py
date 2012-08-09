@@ -3,6 +3,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.views.generic.edit import FormView 
+from django.db.models import Q
 
 from wiki.views.mixins import ArticleMixin
 from wiki.decorators import get_article
@@ -13,6 +14,7 @@ from django.views.generic.base import TemplateView, View
 from wiki.core.http import send_file
 from django.http import Http404
 from django.db import transaction
+from django.views.generic.list import ListView
 
 class AttachmentView(ArticleMixin, FormView):
     
@@ -57,6 +59,7 @@ class AttachmentView(ArticleMixin, FormView):
     
     def get_context_data(self, **kwargs):
         kwargs['attachments'] = self.attachments
+        kwargs['search_form'] = forms.SearchForm()
         return super(AttachmentView, self).get_context_data(**kwargs)
 
 
@@ -76,6 +79,7 @@ class AttachmentHistoryView(ArticleMixin, TemplateView):
         kwargs['attachment'] = self.attachment
         kwargs['revisions'] = self.attachment.attachmentrevision_set.all().order_by('-revision_number')
         return super(AttachmentHistoryView, self).get_context_data(**kwargs)
+
 
 class AttachmentReplaceView(ArticleMixin, FormView):
     
@@ -160,6 +164,26 @@ class AttachmentChangeRevisionView(ArticleMixin, View):
             pass
 
 
+class AttachmentAddView(ArticleMixin, View):
+    
+    @method_decorator(get_article(can_write=True))
+    def dispatch(self, request, article, attachment_id, *args, **kwargs):
+        self.attachment = get_object_or_404(models.Attachment.active_objects.can_write(request.user), id=attachment_id)
+        return super(AttachmentAddView, self).dispatch(request, article, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        self.attachment.articles.add(self.article)
+        self.attachment.save()
+        messages.success(self.request, _(u'Added a reference to "%(att)s" from "%(art)s".') % 
+                         {'att': self.attachment.original_filename,
+                          'art': self.article.current_revision.title})        
+        if self.urlpath:
+            return redirect("wiki:attachments_index", path=self.urlpath.path)
+        # TODO: What if this hasn't got a urlpath.
+        else:
+            pass
+
+
 class AttachmentDeleteView(ArticleMixin, FormView):
     
     form_class = forms.DeleteForm
@@ -197,3 +221,37 @@ class AttachmentDeleteView(ArticleMixin, FormView):
     def get_context_data(self, **kwargs):
         kwargs['attachment'] = self.attachment
         return super(AttachmentDeleteView, self).get_context_data(**kwargs)
+
+
+class AttachmentSearchView(ArticleMixin, ListView):
+    
+    template_name="wiki/plugins/attachments/search.html"
+    allow_empty = True
+    context_object_name = 'attachments'
+    paginate_by = 10
+    
+    @method_decorator(get_article(can_write=True))
+    def dispatch(self, request, article, *args, **kwargs):
+        return super(AttachmentSearchView, self).dispatch(request, article, *args, **kwargs)
+    
+    def get_queryset(self):
+        self.query = self.request.GET.get('query', None)
+        if not self.query:
+            qs = models.Attachment.active_objects.get_empty_query_set()
+        else:
+            qs = models.Attachment.active_objects.can_read(self.request.user)
+            qs = qs.filter(Q(original_filename__contains=self.query) |
+                           Q(current_revision__description__contains=self.query) |
+                           Q(article__current_revision__title__contains=self.query))
+        qs = qs.exclude(articles=self.article)
+        return qs
+    
+    def get_context_data(self, **kwargs):
+        # Is this a bit of a hack? Use better inheritance?
+        kwargs_article = ArticleMixin.get_context_data(self, **kwargs)
+        kwargs_listview = ListView.get_context_data(self, **kwargs)
+        kwargs['search_form'] = forms.SearchForm(self.request.GET)
+        kwargs['query'] = self.query
+        kwargs.update(kwargs_article)
+        kwargs.update(kwargs_listview)
+        return kwargs

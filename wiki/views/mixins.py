@@ -9,7 +9,7 @@ class ArticleMixin(TemplateResponseMixin):
     
     def dispatch(self, request, article, *args, **kwargs):
         self.urlpath = kwargs.pop('urlpath', None)
-        self.article = article
+        self.article = article        
         return super(ArticleMixin, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):

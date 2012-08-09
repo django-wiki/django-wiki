@@ -13,6 +13,8 @@ class AttachmentPlugin(plugins_registry.BasePlugin):
     slug = settings.SLUG
     urlpatterns = patterns('',
         url('^$', views.AttachmentView.as_view(), name='attachments_index'),
+        url('^search/$', views.AttachmentSearchView.as_view(), name='attachments_search'),
+        url('^add/(?P<attachment_id>\d+)/$', views.AttachmentAddView.as_view(), name='attachments_add'),
         url('^replace/(?P<attachment_id>\d+)/$', views.AttachmentReplaceView.as_view(), name='attachments_replace'),
         url('^history/(?P<attachment_id>\d+)/$', views.AttachmentHistoryView.as_view(), name='attachments_history'),
         url('^download/(?P<attachment_id>\d+)/$', views.AttachmentDownloadView.as_view(), name='attachments_download'),

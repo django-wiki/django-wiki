@@ -76,7 +76,7 @@ class URLPath(MPTTModel):
         super(URLPath, self).clean(*args, **kwargs)
     
     @classmethod
-    def get_by_path(cls, path):
+    def get_by_path(cls, path, select_related=False):
         """
         Strategy: Don't handle all kinds of weird cases. Be strict.
         Accepts paths both starting with and without '/'
@@ -97,6 +97,13 @@ class URLPath(MPTTModel):
             else:
                 parent = parent.get_children().get(slug__iexact=slug)
             level += 1
+        
+        # TODO: Is this the way to do it?
+        if select_related:
+            parent.get_children_mptt = parent.get_children
+            parent.get_ancestors_mptt = parent.get_children
+            parent.get_children = lambda *a: parent.get_children_mptt().select_related()
+            parent.get_ancestors = lambda *a: parent.get_ancestors_mptt().select_related()
         
         return parent
     

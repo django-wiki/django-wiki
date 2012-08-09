@@ -36,6 +36,7 @@
         <ul>
           {% for a in attachment.articles.all %}<li>{{ a.current_revision.title }}</li>{% endfor %}
         </ul>
+        <hr />
         {% else %}
         <p class="lead">
           {% blocktrans with attachment.original_filename as filename %}

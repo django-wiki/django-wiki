@@ -1,0 +1,106 @@
+{% extends "wiki/base.html" %}
+{% load wiki_tags i18n humanize %}
+{% load url from future %}
+
+{% block pagetitle %}{% trans "Add file to" %} "{{ article.current_revision.title }}"{% endblock %}
+
+{% block wiki_breadcrumbs %}
+  {% include "wiki/includes/breadcrumbs.html" %}
+{% endblock %}
+
+{% block wiki_contents %}
+
+  {% article_for_object urlpath as article %}
+
+  {% if article %}
+    <div class="tabbable tabs-top" style="margin-top: 40px;">
+      <ul class="nav nav-tabs">
+        {% with "attachments" as selected %}
+          {% include "wiki/includes/article_menu.html" %}
+        {% endwith %}
+        <li>
+          <h1 style="margin-top: -10px;">
+            {{ article.current_revision.title }}
+          </h1>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <h2>{% trans "Add existing attachment to" %} {{ article.current_revision.title }}</h2>
+  
+        <form method="GET" action="{% url 'wiki:attachments_search' path=urlpath.path %}" class="form-search">
+          {{ search_form.query }}
+          <button class="btn">
+            <span class="icon-search"></span>
+            {% trans "Search files and articles" %}
+          </button>
+        </form>
+
+        {% if attachments %}
+        <table class="table table-striped table-bordered">
+          <tr>
+            <th>{% trans "File" %}</th>
+            <th>{% trans "Main article" %}</th>
+            <th>{% trans "Date" %}</th>
+            <th>{% trans "Uploaded by" %}</th>
+            <th>{% trans "Size" %}</th>
+            <th style="text-align: right">{% trans "Action" %}</th>
+          </tr>
+        {% for attachment in attachments %}
+          <tr>
+            <td>
+              <h4>{{ attachment.original_filename }}</h4>
+              {{ attachment.current_revision.description|default:_("<em>No description</em>")|safe }}
+            </td>
+            <td>
+              <strong>{{ attachment.article.current_revision.title }}</strong>
+            </td>
+            <td>
+              {{ attachment.current_revision.created }}
+              {% if attachment.current_revision.deleted %}<span class="badge badge-important">{% trans "deleted" %}</span>{% endif %}
+            </td>
+            <td>
+              {% if attachment.current_revision.user %}{{ attachment.current_revision.user }}{% else %}{% if user|is_moderator %}{{ attachment.current_revision.ip_address|default:"anonymous (IP not logged)" }}{% else %}{% trans "anonymous (IP logged)" %}{% endif %}{% endif %}
+            </td>
+            <td>{{ attachment.current_revision.file.size|filesizeformat }}</td>
+            <td style="text-align: right">
+              <form method="POST" action="{% url 'wiki:attachments_add' path=urlpath.path attachment_id=attachment.id %}">
+                {% csrf_token %}
+                <a href="{% url 'wiki:attachments_download' path=urlpath.path attachment_id=attachment.id %}" class="btn">
+                  <span class="icon-download"></span>
+                  {% trans "Download" %}
+                </a>
+                <button class="btn btn-primary">
+                  <span class="icon-plus"></span>
+                {% trans "Add to article" %}
+                </button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+        </table>
+        {% else %}
+          <p><em>{% trans "Your search did not return any results" %}</em></p>
+        {% endif %}
+        
+        {% with query as appended_value and "query" as appended_key %}
+        {% include "wiki/includes/pagination.html" %}
+        {% endwith %}
+        
+        <p>
+          <a href="{% url 'wiki:attachments_index' path=urlpath.path %}"><span class="icon-arrow-left"></span> {% trans "Go back" %}</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="tabbable tabs-below" style="margin-top: 20px;">
+      <ul class="nav nav-tabs">
+        <li style="margin-top: 10px;"><em>{% trans "Article last modified:" %} {{ article.current_revision.modified }}</em></li>
+      </ul>
+    </div>
+    
+  {% else %}
+    {% trans "An article for this path does not exist." %}
+  {% endif %}
+  
+{% endblock %}
+

@@ -9,8 +9,17 @@ from django.utils.translation import ugettext_lazy as _
 from markdown import markdown
 
 from wiki.conf import settings
+from wiki import managers
 
 class Article(models.Model):
+    
+    objects = managers.PermissionArticleManager()
+    active_objects = managers.ActiveObjectsManager()
+    
+    @classmethod
+    def objects_can_read(cls, user, objects):
+        if user.has_perm("wiki.moderator"):
+            return objects
     
     title = models.CharField(max_length=512, verbose_name=_(u'title'), 
                              null=False, blank=False, help_text=_(u'Initial title of the article. '
@@ -238,11 +247,11 @@ class ArticleRevision(BaseRevision):
     def save(self, *args, **kwargs):
         if (not self.id and
             not self.previous_revision and 
-            self.attachment and
-            self.attachment.current_revision and 
-            self.attachment.current_revision != self):
+            self.article and
+            self.article.current_revision and 
+            self.article.current_revision != self):
             
-            self.previous_revision = self.attachment.current_revision
+            self.previous_revision = self.article.current_revision
 
         if not self.revision_number:
             try:

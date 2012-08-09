@@ -26,11 +26,25 @@ def get_article(func=None, can_read=True, can_write=False):
 
         path = kwargs.pop('path', None)
         article_id = kwargs.pop('article_id', None)
-
+        
+        if can_read:
+            articles = models.Article.objects.can_read(request.user)
+        if can_write:
+            articles = models.Article.objects.can_write(request.user)
+        
+        # TODO: Is this the way to do it?
+        articles = articles.select_related()
+        
         urlpath = None
-        if not path is None:
+        if article_id:
+            article = get_object_or_404(articles, id=article_id)
             try:
-                urlpath = models.URLPath.get_by_path(path)
+                urlpath = models.URLPath.objects.get(articles=article)
+            except models.URLPath.DoesNotExist, models.URLPath.MultipleObjectsReturned:
+                urlpath = None
+        else:
+            try:
+                urlpath = models.URLPath.get_by_path(path, select_related=True)
             except NoRootURL:
                 return redirect('wiki:root_create')
             except models.URLPath.DoesNotExist:
@@ -40,13 +54,10 @@ def get_article(func=None, can_read=True, can_write=False):
                     parent = models.URLPath.get_by_path(path)
                     return redirect(reverse("wiki:create_url", args=(parent.path,)) + "?slug=%s" % pathlist[-1])
                 except models.URLPath.DoesNotExist:
-                    return HttpResponseNotFound("This article was not found. This page should look nicer.")
-            article = urlpath.article
-        elif article_id:
-            article = get_object_or_404(models.Article, id=article_id)
-        
-        if not article.can_write(request.user):
-            raise HttpResponseForbidden()
+                    # TODO: Make a nice page
+                    return HttpResponseNotFound("This article was not found, and neither was the parent. This page should look nicer.")
+            # TODO: If the article is not found but it exists, there is a permission error!
+            article = get_object_or_404(articles, id=urlpath.article.id)
         
         kwargs['urlpath'] = urlpath
         

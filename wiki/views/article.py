@@ -17,6 +17,7 @@ from wiki.core import plugins_registry
 from wiki.core.diff import simple_merge
 from wiki.decorators import get_article, json_view
 from django.core.urlresolvers import reverse
+from django.db import transaction
 
 class ArticleView(ArticleMixin, TemplateView, ):
 
@@ -48,6 +49,7 @@ class Create(FormView, ArticleMixin):
         form.fields['slug'].widget = forms.TextInputPrepend(prepend='/'+self.urlpath.path)        
         return form
     
+    @transaction.commit_manually
     def form_valid(self, form):
         user=None
         ip_address = None
@@ -57,14 +59,27 @@ class Create(FormView, ArticleMixin):
                 ip_address = self.request.META.get('REMOTE_ADDR', None)
         elif settings.LOG_IPS_ANONYMOUS:
             ip_address = self.request.META.get('REMOTE_ADDR', None)
-        self.newpath = models.URLPath.create_article(self.urlpath,
-                                                     form.cleaned_data['slug'],
-                                                     title=form.cleaned_data['title'],
-                                                     content=form.cleaned_data['content'],
-                                                     user_message=form.cleaned_data['summary'],
-                                                     user=user,
-                                                     ip_address=ip_address)
-        messages.success(self.request, _(u"New article '%s' created.") % self.newpath.article.title)
+        try:
+            self.newpath = models.URLPath.create_article(self.urlpath,
+                                                         form.cleaned_data['slug'],
+                                                         title=form.cleaned_data['title'],
+                                                         content=form.cleaned_data['content'],
+                                                         user_message=form.cleaned_data['summary'],
+                                                         user=user,
+                                                         ip_address=ip_address)
+            messages.success(self.request, _(u"New article '%s' created.") % self.newpath.article.title)
+        
+        # TODO: Handle individual exceptions better and give good feedback.
+        except Exception, e:
+            transaction.rollback()
+            if self.request.user.has_perm('wiki.moderator'):
+                messages.error(self.request, _(u"There was an error creating this article: %s") % str(e))
+            else:
+                messages.error(self.request, _(u"There was an error creating this article."))
+            transaction.commit()
+            return redirect('wiki:get_url', '')
+            
+        transaction.commit()
         return self.get_success_url()
     
     def get_success_url(self):

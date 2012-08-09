@@ -13,10 +13,9 @@ class IllegalFileExtension(Exception):
     pass
 
 class Attachment(ReusablePlugin):
-    
 
-    objects = models.Manager()
-    active_objects = managers.ActiveObjectsManager()
+    objects = managers.PermissionArticleFkManager()
+    active_objects = managers.ActiveObjectsFkManager()
 
     current_revision = models.OneToOneField('AttachmentRevision', 
                                             verbose_name=_(u'current revision'),
@@ -25,7 +24,7 @@ class Attachment(ReusablePlugin):
                                             )
     
     original_filename = models.CharField(max_length=256, verbose_name=_(u'original filename'), blank=True, null=True)
-    
+
     class Meta:
         verbose_name = _(u'attachment')
         verbose_name_plural = _(u'attachments')
