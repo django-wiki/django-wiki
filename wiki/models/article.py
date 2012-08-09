@@ -16,11 +16,6 @@ class Article(models.Model):
     objects = managers.PermissionArticleManager()
     active_objects = managers.ActiveObjectsManager()
     
-    @classmethod
-    def objects_can_read(cls, user, objects):
-        if user.has_perm("wiki.moderator"):
-            return objects
-    
     title = models.CharField(max_length=512, verbose_name=_(u'title'), 
                              null=False, blank=False, help_text=_(u'Initial title of the article. '
                                                                   'May be overridden with revision titles.'))
@@ -57,6 +52,8 @@ class Article(models.Model):
                 return True
             if self.group and user and user.groups.filter(group=group):
                 return True
+        if user and user.has_perm('wiki_moderator'):
+            return True
         return False
     
     def can_write(self, user=None, group=None):
@@ -69,6 +66,8 @@ class Article(models.Model):
                 return True
             if self.group and user and user.groups.filter(group=group):
                 return True
+        if user and user.has_perm('wiki_moderator'):
+            return True
         return False
     
     def decendant_objects(self):
@@ -138,7 +137,7 @@ class Article(models.Model):
         app_label = settings.APP_LABEL
         permissions = (
             ("moderator", "Can edit all articles and lock/unlock/restore"),
-            ("admin", "Can change ownership of any article"),
+            ("assign", "Can change ownership of any article"),
             ("grant", "Can assign permissions to other users"),
         )
     

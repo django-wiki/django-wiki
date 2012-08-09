@@ -178,7 +178,7 @@ class Settings(ArticleMixin, TemplateView):
         Return all settings forms that can be filled in
         """
         settings_forms = [F for F in plugins_registry._settings_forms]
-        if (self.request.user.has_perm('wiki.admin') or 
+        if (self.request.user.has_perm('wiki.assign') or 
             self.article.owner == self.request.user):
             settings_forms.append(self.permission_form_class)
         settings_forms.sort(key=lambda form: form.settings_order)
