@@ -1,7 +1,42 @@
 from django.db import models
 from django.db.models import Q
+from django.db.models.query import QuerySet
 
-class PermissionArticleManagerMixin(object):
+class ArticleQuerySet(QuerySet):
+    
+    def can_read(self, user):
+        """Filter objects so only the ones with a user's reading access
+        are included"""
+        if user.has_perm('wiki.moderator'):
+            return self
+        if user.is_anonymous():
+            q = self.filter(other_read=True)
+        else:
+            q = self.filter(Q(other_read=True) |
+                            Q(owner=user) |
+                            (Q(group__user=user) & Q(group_read=True))
+                            )
+        return q
+    
+    def can_write(self, user):
+        """Filter objects so only the ones with a user's writing access
+        are included"""
+        if user.has_perm('wiki.moderator'):
+            return self
+        if user.is_anonymous():
+            q = self.filter(other_write=True)
+        else:
+            q = self.filter(Q(other_write=True) |
+                            Q(owner=user) |
+                            (Q(group__user=user) & Q(group_write=True))
+                            )
+        return q
+    
+    def active(self):
+        return self.filter(current_revision__deleted=False)
+
+
+class ArticleFkQuerySet(QuerySet):
     
     def can_read(self, user):
         """Filter objects so only the ones with a user's reading access
@@ -9,12 +44,12 @@ class PermissionArticleManagerMixin(object):
         if user.has_perm('wiki.moderator'):
             return self.get_query_set()
         if user.is_anonymous():
-            q = self.get_query_set().filter(other_read=True)
+            q = self.filter(article__other_read=True)
         else:
-            q = self.get_query_set().filter(Q(other_read=True) |
-                                            Q(owner=user) |
-                                            (Q(group__user=user) & Q(group_read=True))
-                                            )
+            q = self.filter(Q(article__other_read=True) |
+                            Q(article__owner=user) |
+                            (Q(article__group__user=user) & Q(article__group_read=True))
+                            )
         return q
     
     def can_write(self, user):
@@ -23,53 +58,34 @@ class PermissionArticleManagerMixin(object):
         if user.has_perm('wiki.moderator'):
             return self.get_query_set()
         if user.is_anonymous():
-            q = self.get_query_set().filter(other_write=True)
+            q = self.filter(article__other_write=True)
         else:
-            q = self.get_query_set().filter(Q(other_write=True) |
-                                            Q(owner=user) |
-                                            (Q(group__user=user) & Q(group_write=True))
-                                            )
+            q = self.filter(Q(article__other_write=True) |
+                            Q(article__owner=user) |
+                            (Q(article__group__user=user) & Q(article__group_write=True))
+                            )
         return q
 
-class PermissionArticleManager(PermissionArticleManagerMixin, models.Manager):
-    pass
+    def active(self):
+        return self.filter(article__current_revision__deleted=False)
 
-class PermissionArticleFkManagerMixin(object):
-    """A manager like the above but for objects that have a ForeignKey to
-    an article object and inherits its permissions."""
-    
-    def can_read(self, user):
-        """Filter objects so only the ones with a user's reading access
-        are included"""
-        if user.has_perm('wiki.moderator'):
-            return self.get_query_set()
-        q = self.get_query_set().filter(Q(article__other_read=True) |
-                                        Q(article__owner=user) |
-                                        (Q(article__group__user=user) & Q(article__group_read=True))
-                                        )
-        return q
-    
-    def can_write(self, user):
-        """Filter objects so only the ones with a user's writing access
-        are included"""
-        if user.has_perm('wiki.moderator'):
-            return self.get_query_set()
-        q = self.get_query_set().filter(Q(article__other_write=True) |
-                                        Q(article__owner=user) |
-                                        (Q(article__group__user=user) & Q(article__group_write=True))
-                                        )
-        return q
-
-class PermissionArticleFkManager(models.Manager, PermissionArticleFkManagerMixin):
-    pass
-
-class ActiveObjectsManager(models.Manager, PermissionArticleManagerMixin):
-    """A manager for objects that have a ForeignKey named 'current_revision' 
-    (ie. a BaseRevision inheritor)."""
-    
+class ArticleManager(models.Manager):
     def get_query_set(self):
-        return super(ActiveObjectsManager, self).get_query_set().filter(current_revision__deleted=False)
+        return ArticleQuerySet(self.model, using=self._db)
+    def active(self):
+        return self.get_query_set().active()
+    def can_read(self, user):
+        return self.get_query_set().can_read(user)
+    def can_write(self, user):
+        return self.get_query_set().can_write(user)
 
-class ActiveObjectsFkManager(ActiveObjectsManager, PermissionArticleFkManagerMixin):
-    pass
+class ArticleFkManager(models.Manager):
+    def get_query_set(self):
+        return ArticleFkQuerySet(self.model, using=self._db)
+    def active(self):
+        return self.get_query_set().active()
+    def can_read(self, user):
+        return self.get_query_set().can_read(user)
+    def can_write(self, user):
+        return self.get_query_set().can_write(user)
 

@@ -26,7 +26,7 @@ class AttachmentView(ArticleMixin, FormView):
         if request.user.has_perm('wiki.moderator'):
             self.attachments = models.Attachment.objects.filter(articles=article).order_by('current_revision__deleted', 'original_filename')
         else:
-            self.attachments = models.Attachment.active_objects.filter(articles=article)
+            self.attachments = models.Attachment.objects.active().filter(articles=article)
         
         # Fixing some weird transaction issue caused by adding commit_manually to form_valid
         return super(AttachmentView, self).dispatch(request, article, *args, **kwargs)
@@ -72,7 +72,7 @@ class AttachmentHistoryView(ArticleMixin, TemplateView):
         if request.user.has_perm('wiki.moderator'):
             self.attachment = get_object_or_404(models.Attachment, id=attachment_id, articles=article)
         else:
-            self.attachment = get_object_or_404(models.Attachment.active_objects, id=attachment_id, articles=article)
+            self.attachment = get_object_or_404(models.Attachment.objects.active(), id=attachment_id, articles=article)
         return super(AttachmentHistoryView, self).dispatch(request, article, *args, **kwargs)
     
     def get_context_data(self, **kwargs):
@@ -88,7 +88,7 @@ class AttachmentReplaceView(ArticleMixin, FormView):
     
     @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, attachment_id, *args, **kwargs):
-        self.attachment = get_object_or_404(models.Attachment.active_objects, id=attachment_id, articles=article)
+        self.attachment = get_object_or_404(models.Attachment.objects.active(), id=attachment_id, articles=article)
         return super(AttachmentReplaceView, self).dispatch(request, article, *args, **kwargs)
     
     def form_valid(self, form):
@@ -148,7 +148,7 @@ class AttachmentChangeRevisionView(ArticleMixin, View):
         if request.user.has_perm('wiki.moderator'):
             self.attachment = get_object_or_404(models.Attachment, id=attachment_id, articles=article)
         else:
-            self.attachment = get_object_or_404(models.Attachment.active_objects, id=attachment_id, articles=article)
+            self.attachment = get_object_or_404(models.Attachment.objects.active(), id=attachment_id, articles=article)
         self.revision = get_object_or_404(models.AttachmentRevision, id=revision_id, attachment__articles=article)
         return super(AttachmentChangeRevisionView, self).dispatch(request, article, *args, **kwargs)
     
@@ -168,7 +168,7 @@ class AttachmentAddView(ArticleMixin, View):
     
     @method_decorator(get_article(can_write=True))
     def dispatch(self, request, article, attachment_id, *args, **kwargs):
-        self.attachment = get_object_or_404(models.Attachment.active_objects.can_write(request.user), id=attachment_id)
+        self.attachment = get_object_or_404(models.Attachment.objects.active().can_write(request.user), id=attachment_id)
         return super(AttachmentAddView, self).dispatch(request, article, *args, **kwargs)
     
     def post(self, request, *args, **kwargs):
@@ -194,7 +194,7 @@ class AttachmentDeleteView(ArticleMixin, FormView):
         if request.user.has_perm("wiki.moderator"):
             self.attachment = get_object_or_404(models.Attachment, id=attachment_id, articles=article)
         else:
-            self.attachment = get_object_or_404(models.Attachment.active_objects, id=attachment_id, articles=article)
+            self.attachment = get_object_or_404(models.Attachment.objects.active(), id=attachment_id, articles=article)
         return super(AttachmentDeleteView, self).dispatch(request, article, *args, **kwargs)
     
     def form_valid(self, form):
@@ -237,9 +237,9 @@ class AttachmentSearchView(ArticleMixin, ListView):
     def get_queryset(self):
         self.query = self.request.GET.get('query', None)
         if not self.query:
-            qs = models.Attachment.active_objects.get_empty_query_set()
+            qs = models.Attachment.objects.active().get_empty_query_set()
         else:
-            qs = models.Attachment.active_objects.can_read(self.request.user)
+            qs = models.Attachment.objects.active().can_read(self.request.user)
             qs = qs.filter(Q(original_filename__contains=self.query) |
                            Q(current_revision__description__contains=self.query) |
                            Q(article__current_revision__title__contains=self.query))
