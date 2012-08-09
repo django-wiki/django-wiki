@@ -91,7 +91,7 @@
                       {% trans "Preview this version" %}
                     </a>
                     {% else %}
-                    <button type="submit" class="btn" onclick="$('#previewModal').modal('show'); this.form.target='previewWindow'; this.form.action='{% url 'wiki:preview_revision' article.id %}'; $('#previewModal .switch-to-revision').attr('href', '{% url 'wiki:change_revision_url' urlpath.path revision.id %}')">
+                    <button type="submit" class="btn" onclick="$('#previewModal').modal('show'); this.form.target='previewWindow'; this.form.action='{% url 'wiki:preview_revision' revision.id %}'; $('#previewModal .switch-to-revision').attr('href', '{% url 'wiki:change_revision_url' urlpath.path revision.id %}')">
                       <span class="icon-eye-open"></span>
                       {% trans "Preview this version" %}
                     </button>
