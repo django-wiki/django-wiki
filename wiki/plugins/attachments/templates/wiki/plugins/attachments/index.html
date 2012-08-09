@@ -24,8 +24,7 @@
     <div class="tab-content">
       <div class="row-fluid">
         <div class="span7">
-          <h2>{% trans "Attachments" %}</h2>
-          <p>{% trans "The following files are available for this article. Copy the markdown tag to directly refer to a file from the article text." %}</p>
+          <p class="lead">{% trans "The following files are available for this article. Copy the markdown tag to directly refer to a file from the article text." %}</p>
           {% for attachment in attachments %}
             <table class="table table-bordered table-striped" style="width: 100%;">
             <tr>

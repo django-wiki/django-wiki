@@ -8,10 +8,13 @@ class PermissionArticleManagerMixin(object):
         are included"""
         if user.has_perm('wiki.moderator'):
             return self.get_query_set()
-        q = self.get_query_set().filter(Q(other_read=True) |
-                                        Q(owner=user) |
-                                        (Q(group__user=user) & Q(group_read=True))
-                                        )
+        if user.is_anonymous():
+            q = self.get_query_set().filter(other_read=True)
+        else:
+            q = self.get_query_set().filter(Q(other_read=True) |
+                                            Q(owner=user) |
+                                            (Q(group__user=user) & Q(group_read=True))
+                                            )
         return q
     
     def can_write(self, user):
@@ -19,10 +22,13 @@ class PermissionArticleManagerMixin(object):
         are included"""
         if user.has_perm('wiki.moderator'):
             return self.get_query_set()
-        q = self.get_query_set().filter(Q(other_write=True) |
-                                        Q(owner=user) |
-                                        (Q(group__user=user) & Q(group_write=True))
-                                        )
+        if user.is_anonymous():
+            q = self.get_query_set().filter(other_write=True)
+        else:
+            q = self.get_query_set().filter(Q(other_write=True) |
+                                            Q(owner=user) |
+                                            (Q(group__user=user) & Q(group_write=True))
+                                            )
         return q
 
 class PermissionArticleManager(PermissionArticleManagerMixin, models.Manager):
