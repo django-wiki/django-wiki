@@ -13,7 +13,6 @@ from django.views.generic.base import TemplateView, View
 from wiki.core.http import send_file
 from django.http import Http404
 from django.db import transaction
-import os
 
 class AttachmentView(ArticleMixin, FormView):
     
@@ -47,7 +46,7 @@ class AttachmentView(ArticleMixin, FormView):
         except models.IllegalFileExtension, e:
             transaction.rollback()
             messages.error(self.request, _(u'Your file could not be saved: %s') % e)
-        except IOError:
+        except Exception:
             transaction.rollback()
             messages.error(self.request, _(u'Your file could not be saved, probably because of a permission error on the web server.'))
         
