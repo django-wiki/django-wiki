@@ -20,6 +20,7 @@ function notify_update() {
 }
 
 function notify_mark_read() {
+  $('.notification-li-container').empty();
   url = URL_NOTIFY_MARK_READ+notify_latest_id+'/';
   jsonWrapper(url, function (data) {
     if (data.success) {

@@ -78,10 +78,18 @@ class Notification(models.Model):
         if object_id:
             subscriptions = subscriptions.filter(Q(object_id=object_id) |
                                                  Q(object_id=None))
+        subscriptions.select_related()
+        subscriptions.order_by('settings__user')
+        prev_user = None
         for subscription in subscriptions:
+            # Don't alert the same user several times even though overlapping
+            # subscriptions occur.
+            if subscription.settings.user == prev_user:
+                continue
             objects_created.append(
                cls.objects.create(subscription=subscription, **kwargs)
             )
+            prev_user = subscription.settings.user
         
         return objects_created
     

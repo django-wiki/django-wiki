@@ -15,6 +15,7 @@ class SubscriptionForm(forms.Form):
     settings_write_access = False
     
     def __init__(self, article, user, *args, **kwargs):
+        # This has to be here to avoid unresolved imports in wiki_plugins
         import models
         self.article = article
         self.user = user

@@ -28,7 +28,7 @@ def default_url(article):
     return url
 
 def post_article_save(instance, **kwargs):
-    if kwargs.get('created', True):
+    if kwargs.get('created', False):
         url = default_url(instance)
         notify(_(u'New article created: %s') % instance.title, ARTICLE_CREATE,
                target_object=instance, url=url)
@@ -67,7 +67,6 @@ for plugin in plugins_registry.get_plugins():
                     url = default_url(notification_dict['get_article'](instance))
                 
                 message = notification_dict['message'](instance)
-                
                 notify(message, notification_dict['key'],
                        target_object=notification_dict['get_article'](instance), url=url)
 
