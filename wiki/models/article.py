@@ -12,8 +12,7 @@ from wiki import managers
 
 class Article(models.Model):
     
-    objects = managers.PermissionArticleManager()
-    active_objects = managers.ActiveObjectsManager()
+    objects = managers.ArticleManager()
     
     title = models.CharField(max_length=512, verbose_name=_(u'title'), 
                              null=False, blank=False, help_text=_(u'Initial title of the article. '
