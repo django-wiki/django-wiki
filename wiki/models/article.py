@@ -29,7 +29,7 @@ class Article(models.Model):
                                     help_text=_(u'Article properties last modified'))
 
     owner = models.ForeignKey(User, verbose_name=_('owner'),
-                              blank=True, null=True,
+                              blank=True, null=True, related_name='owned_articles',
                               help_text=_(u'The owner of the article, usually the creator. The owner always has both read and write access.'),)
     
     group = models.ForeignKey(Group, verbose_name=_('group'),
