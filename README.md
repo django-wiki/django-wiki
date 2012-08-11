@@ -23,7 +23,16 @@ Installation
 
     pip install git+git://github.com/benjaoming/django-wiki.git
 
-After that, add `'wiki'` and `'django_notify'` to `settings.INSTALLED_APPS`.
+After that, add `'wiki'` and `'django_notify'` to `settings.INSTALLED_APPS` and the plugins (they aren't optional yet).
+You must remember to add the dependencies to `settings.INSTALLED_APPS` (`'mptt'`, `'sekizai'`, `'django.contrib.humanize'`) and run `syncdb`.
+
+Then, add `'sekizai.context_processors.sekizai'` to `settings.TEMPLATE_CONTEXT_PROCESSORS`.
+
+To integrate the wiki to your existing application, you shoud add the following lines to `urls`:
+
+    url(r'^wiki/', include('wiki.urls', namespace='wiki')),
+    url(r'^django_notify/', include('django_notify.urls', namespace='notify')),
+
 
 Plugins
 ------------
