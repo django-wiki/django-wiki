@@ -64,6 +64,9 @@ So far the dependencies are:
  * [django-mptt>=0.5](https://github.com/django-mptt/django-mptt)
  * [django-sekizai](https://github.com/ojii/django-sekizai/)
 
+If you are using pip or virtualenv, the dependencies could be installed
+with the command `pip install -r requirements.txt`.
+
 Acknowledgements
 ----------------
 
