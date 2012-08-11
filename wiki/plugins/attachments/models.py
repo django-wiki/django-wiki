@@ -6,7 +6,7 @@ import settings
 from wiki import managers
 from wiki.conf import settings as wiki_settings
 from wiki.models.pluginbase import ReusablePlugin
-from wiki.models.article import BaseRevision
+from wiki.models.article import BaseRevisionMixin
 
 class IllegalFileExtension(Exception):
     """File extension on upload is not allowed"""
@@ -63,7 +63,7 @@ def upload_path(instance, filename):
     return path.join(upload_path, filename + '.upload')
 
 
-class AttachmentRevision(BaseRevision):
+class AttachmentRevision(BaseRevisionMixin, models.Model):
     
     attachment = models.ForeignKey('Attachment')
 
@@ -75,6 +75,7 @@ class AttachmentRevision(BaseRevision):
     class Meta:
         verbose_name = _(u'attachment revision')
         verbose_name_plural = _(u'attachment revisions')
+        ordering = ('created',)
         get_latest_by = ('revision_number',)
         app_label = wiki_settings.APP_LABEL
         

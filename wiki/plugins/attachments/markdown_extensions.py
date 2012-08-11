@@ -24,12 +24,15 @@ class AttachmentPreprocessor(markdown.preprocessors.Preprocessor):
             m = ATTACHMENT_RE.match(line)
             if m:
                 attachment_id = m.group('id').strip()
-                attachment = models.Attachment.objects.get(article=self.markdown.article,
+                try:
+                    attachment = models.Attachment.objects.get(article=self.markdown.article,
                                                            id=attachment_id)
-                url = reverse('wiki:attachments_download', kwargs={'article_id': self.markdown.article.id,
-                                                                   'attachment_id':attachment.id,})
-                line = line.replace(m.group(1), u"""<span class="attachment"><a href="%s" title="%s">%s</a>""" % 
-                                    (url, _(u"Click to download file"), attachment.original_filename))
+                    url = reverse('wiki:attachments_download', kwargs={'article_id': self.markdown.article.id,
+                                                                       'attachment_id':attachment.id,})
+                    line = line.replace(m.group(1), u"""<span class="attachment"><a href="%s" title="%s">%s</a>""" % 
+                                        (url, _(u"Click to download file"), attachment.original_filename))
+                except models.Attachment.DoesNotExist:
+                    line = line.replace(m.group(1), u"""<span class="attachment attachment-deleted">Attachment with ID #%s is deleted.</span>""" % attachment_id)                    
             new_text.append(line)
         return new_text
     

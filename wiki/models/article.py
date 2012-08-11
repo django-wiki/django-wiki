@@ -9,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from wiki.conf import settings
 from wiki.core import article_markdown, plugins_registry
 from wiki import managers
+from mptt.models import MPTTModel
 
 class Article(models.Model):
     
@@ -69,7 +70,7 @@ class Article(models.Model):
         return False
     
     def decendant_objects(self):
-        for obj in self.objectforarticle_set.filter(has_parent_field=True):
+        for obj in self.objectforarticle_set.filter(is_mptt=True):
             for decendant in obj.get_decendants():
                 yield decendant
     
@@ -115,11 +116,11 @@ class Article(models.Model):
     
     def add_object_relation(self, obj):
         content_type = ContentType.objects.get_for_model(obj)
-        has_parent_field = hasattr(obj, 'parent')
+        is_mptt = isinstance(obj, MPTTModel)
         rel = ArticleForObject.objects.get_or_create(article=self,
                                                      content_type=content_type,
                                                      object_id=obj.id,
-                                                     has_parent_method=has_parent_field)
+                                                     is_mptt=is_mptt)
         return rel
     
     @classmethod
@@ -159,7 +160,7 @@ class ArticleForObject(models.Model):
     object_id      = models.PositiveIntegerField(_('object ID'))
     content_object = generic.GenericForeignKey(ct_field="content_type", fk_field="object_id")
     
-    has_parent_method = models.BooleanField(default=False, editable=False)
+    is_mptt = models.BooleanField(default=False, editable=False)
     
     class Meta:
         app_label = settings.APP_LABEL
@@ -168,7 +169,9 @@ class ArticleForObject(models.Model):
         # Do not allow several objects
         unique_together = ('content_type', 'object_id')
 
-class BaseRevision(models.Model):
+class BaseRevisionMixin(models.Model):
+    """This is an abstract model used as a mixin: Do not override any of the 
+    core model methods but respect the inheritor's freedom to do so itself."""
     
     revision_number = models.IntegerField(editable=False, verbose_name=_(u'revision number'))
 
@@ -200,11 +203,8 @@ class BaseRevision(models.Model):
     
     class Meta:
         abstract = True
-        app_label = settings.APP_LABEL
-        get_latest_by = ('revision_number',)
-        ordering = ('created',)
     
-class ArticleRevision(BaseRevision):
+class ArticleRevision(BaseRevisionMixin, models.Model):
     """This is where main revision data is stored. To make it easier to
     copy, do NEVER create m2m relationships."""
     
@@ -266,3 +266,10 @@ class ArticleRevision(BaseRevision):
             self.article.save()
             if not self.title:
                 self.title = self.article.title
+    
+    class Meta:
+        app_label = settings.APP_LABEL
+        get_latest_by = ('revision_number',)
+        ordering = ('created',)
+        unique_together = ('article', 'revision_number')
+    

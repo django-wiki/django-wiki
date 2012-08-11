@@ -11,6 +11,7 @@ from itertools import chain
 from wiki import models
 from wiki.editors import editor
 from wiki.core.diff import simple_merge
+from django.forms.widgets import HiddenInput
 
 class CreateRoot(forms.Form):
     
@@ -219,3 +220,14 @@ class PermissionsForm(forms.ModelForm):
     class Meta:
         model = models.Article
         fields = ('group', 'group_read', 'group_write', 'other_read', 'other_write')
+
+
+class DeleteForm(forms.Form):
+    
+    confirm = forms.BooleanField(required=False)
+    purge = forms.BooleanField(widget=HiddenInput(), required=False)
+    
+    def clean(self):
+        cd = self.cleaned_data
+        if not cd['confirm']:
+            raise forms.ValidationError(_(u'You are not sure enough!'))

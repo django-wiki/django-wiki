@@ -28,8 +28,8 @@ class Logout(View):
     def get(self, request, *args, **kwargs):
         auth_logout(request)
         messages.info(request, _(u"You are no longer logged in. Bye bye!"))
-        print redirect("wiki:get_url", URLPath.root().path)
-        return redirect("wiki:get_url", URLPath.root().path)
+        print redirect("wiki:get", URLPath.root().path)
+        return redirect("wiki:get", URLPath.root().path)
 
 class Login(FormView):
     
@@ -47,5 +47,5 @@ class Login(FormView):
         messages.info(self.request, _(u"You are now logged in! Have fun!"))
         if self.request.GET.get("next", None):
             return redirect(self.request.GET['next'])
-        return redirect("wiki:get_url", URLPath.root().path)
+        return redirect("wiki:get", URLPath.root().path)
     

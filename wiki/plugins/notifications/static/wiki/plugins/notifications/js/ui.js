@@ -1,4 +1,6 @@
 notify_latest_id = 0;
+notify_update_timeout = 30000;
+notify_update_timeout_adjust = 1.2; // factor to adjust between each timeout.
 
 function notify_update() {
   jsonWrapper(URL_NOTIFY_GET_NEW, function (data) {
@@ -29,9 +31,15 @@ function notify_mark_read() {
   });
 }
 
+function update_timeout() {
+  setTimeout("notify_update()", notify_update_timeout);
+  setTimeout("update_timeout()", notify_update_timeout);
+  notify_update_timeout *= notify_update_timeout_adjust;
+}
+
 $(document).ready(function () {
-  notify_update();
-  // Update every second minute.
-  setInterval("notify_update()", 120000);
+  // Don't check immediately... some users just click through pages very quickly.
+  setTimeout("notify_update()", 2000);
+  update_timeout();
 })
 

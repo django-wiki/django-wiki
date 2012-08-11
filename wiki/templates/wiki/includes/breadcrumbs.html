@@ -3,10 +3,10 @@
 <ul class="breadcrumb pull-left" class="">
   {% for ancestor in urlpath.get_ancestors.all %}
     <span class="divider">/</span>
-    <li><a href="{% url 'wiki:get_url' ancestor.path %}">{{ ancestor.article.current_revision.title }}</a></li>
+    <li><a href="{% url 'wiki:get' path=ancestor.path %}">{{ ancestor.article.current_revision.title }}</a></li>
   {% endfor %}
   <span class="divider">/</span>
-  <li class="active"><a href="{% url 'wiki:get_url' urlpath.path %}">{{ article.current_revision.title }}</a></li>
+  <li class="active"><a href="{% url 'wiki:get' path=urlpath.path %}">{{ article.current_revision.title }}</a></li>
   <span class="divider">/</span>
 </ul>
 <div class="pull-left" style="margin-left: 10px;">
@@ -18,7 +18,7 @@
     <ul class="dropdown-menu">
       {% for child in urlpath.get_children %}
         <li>
-        <a href="{% url 'wiki:get_url' child.path %}">
+        <a href="{% url 'wiki:get' path=child.path %}">
           {{ child.article.current_revision.title }}
         </a>
         </li>
@@ -33,7 +33,7 @@
   </div>
 </div>
 <div class="pull-left" style="margin-left: 10px;">
-    <a class="btn" href="{% url 'wiki:create_url' urlpath.path %}" style="padding: 7px;">
+    <a class="btn" href="{% url 'wiki:create' path=urlpath.path %}" style="padding: 7px;">
       <span class="icon-plus"></span>
       {% trans "Add article" %}
     </a>

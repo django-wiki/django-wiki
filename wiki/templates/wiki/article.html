@@ -15,23 +15,16 @@
       <li style="float: left">
         <h1 style="margin-top: -10px;">{{ article.current_revision.title }}</h1>
       </li>
-      {% with "view" as selected %}
-        {% include "wiki/includes/article_menu.html" %}
-      {% endwith %}
+      {% include "wiki/includes/article_menu.html" %}
     </ul>
     <div class="tab-content">
+      {% block wiki_contents_tab %}
       {% wiki_render article %}
+      {% endblock %}
     </div>
   </div>
 
-  <div class="tabbable tabs-below" style="margin-top: 20px;">
-    <ul class="nav nav-tabs">
-      {% with "view" as selected %}
-        {% include "wiki/includes/article_menu.html" %}
-      {% endwith %}
-      <li style="margin-top: 10px;"><em>{% trans "Article last modified:" %} {{ article.current_revision.modified }}</em></li>
-    </ul>
-  </div>
+<p style="margin-top: 20px;"><em>{% trans "Article last modified:" %} {{ article.current_revision.modified }}</em></p>
     
 {% endblock %}
 

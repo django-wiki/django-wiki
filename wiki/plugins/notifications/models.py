@@ -19,12 +19,13 @@ class ArticleSubscription(wiki_models.pluginbase.ArticlePlugin, Subscription):
                  'article': self.article.current_revision.title,
                  'type': self.notification_type.label})
 
-def default_url(article):
+def default_url(article, urlpath=None):
     try:
-        urlpath = wiki_models.URLPath.objects.get(articles=article)
-        url = reverse('wiki:get_url', args=(urlpath.path,))
+        if not urlpath:
+            urlpath = wiki_models.URLPath.objects.get(articles=article)
+        url = reverse('wiki:get', kwargs={'path': urlpath.path})
     except wiki_models.URLPath.DoesNotExist:
-        url = None
+        url = reverse('wiki:get', kwargs={'article_id': article.id})
     return url
 
 def post_article_save(instance, **kwargs):

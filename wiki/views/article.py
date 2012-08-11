@@ -18,15 +18,19 @@ from wiki.core.diff import simple_merge
 from wiki.decorators import get_article, json_view
 from django.core.urlresolvers import reverse
 from django.db import transaction
+from wiki.core.exceptions import NoRootURL
 
-class ArticleView(ArticleMixin, TemplateView, ):
+class ArticleView(ArticleMixin, TemplateView):
 
     template_name="wiki/article.html"
     
     @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, *args, **kwargs):
         return super(ArticleView, self).dispatch(request, article, *args, **kwargs)
-        
+    
+    def get_context_data(self, **kwargs):
+        kwargs['selected_tab'] = 'view'
+        return ArticleMixin.get_context_data(self, **kwargs)
 
 class Create(FormView, ArticleMixin):
     
@@ -78,14 +82,14 @@ class Create(FormView, ArticleMixin):
             else:
                 messages.error(self.request, _(u"There was an error creating this article."))
             transaction.commit()
-            return redirect('wiki:get_url', '')
+            return redirect('wiki:get', '')
             
         url = self.get_success_url()
         transaction.commit()
         return url
     
     def get_success_url(self):
-        return redirect('wiki:get_url', self.newpath.path)
+        return redirect('wiki:get', self.newpath.path)
     
     def get_context_data(self, **kwargs):
         kwargs['parent_urlpath'] = self.urlpath
@@ -94,6 +98,56 @@ class Create(FormView, ArticleMixin):
         kwargs['editor'] = editors.editor
         return super(Create, self).get_context_data(**kwargs)
     
+
+class Delete(FormView, ArticleMixin):
+    
+    form_class = forms.DeleteForm
+    template_name="wiki/delete.html"
+    
+    @method_decorator(get_article(can_write=True))
+    def dispatch(self, request, article, *args, **kwargs):
+        super_return = super(Delete, self).dispatch(request, article, *args, **kwargs)
+        # Where to go after deletion... 
+        self.next = request.GET.get('next', None)
+        if not self.next:
+            if self.urlpath:
+                self.next = reverse('wiki:get', path=self.urlpath.parent.path)
+            else:
+                for art_obj in self.objectforarticle_set.filter(is_mptt=True):
+                    self.next = reverse('wiki:get', kwargs={'article_id': art_obj.parent.article.id})
+        return super_return
+    
+    def get_initial(self):
+        return {'revision': self.article.current_revision}
+    
+    def get_form(self, form_class):
+        form = FormView.get_form(self, form_class)
+        if self.request.user.has_perm('wiki.moderator'):
+            form.fields['purge'].widget = forms.forms.CheckboxInput()
+    
+    def form_valid(self, form):
+        cd = form.cleaned_data
+        if self.request.user.has_perm('wiki.moderator') and cd['purge']:
+            pass
+            messages.success(self.request, _(u'This article together with all its contents are now completely gone! Thanks!'))
+        else:
+            revision = models.ArticleRevision()
+            revision.inherit_predecessor(self.article)
+            revision.deleted = True
+            self.article.add_revision(revision)
+            
+            messages.success(self.request, _(u'This article is now marked as deleted! Thanks for keeping the site free from unwanted material!'))
+            
+    def get_success_url(self):
+        return redirect(self.next)
+    
+    def get_context_data(self, **kwargs):
+        kwargs['parent_urlpath'] = self.urlpath
+        kwargs['parent_article'] = self.article
+        kwargs['create_form'] = kwargs.pop('form', None)
+        kwargs['editor'] = editors.editor
+        return super(Create, self).get_context_data(**kwargs)
+
 
 class Edit(FormView, ArticleMixin):
     
@@ -122,16 +176,15 @@ class Edit(FormView, ArticleMixin):
         return self.get_success_url()
     
     def get_success_url(self):
-        if not self.urlpath is None:
-            return redirect("wiki:get_url", self.urlpath.path)
-        # TODO: Where to go if it's a different object? It's probably
-        # an ajax callback, so we don't care... but should perhaps return
-        # a status
-        return
+        if self.urlpath:
+            return redirect("wiki:get", path=self.urlpath.path)
+        return redirect('wiki:get', article_id=self.article.id)
+        
     
     def get_context_data(self, **kwargs):
         kwargs['edit_form'] = kwargs.pop('form', None)
         kwargs['editor'] = editors.editor
+        kwargs['selected_tab'] = 'edit'
         return super(Edit, self).get_context_data(**kwargs)
 
 
@@ -151,6 +204,7 @@ class History(ListView, ArticleMixin):
         kwargs_listview = ListView.get_context_data(self, **kwargs)
         kwargs.update(kwargs_article)
         kwargs.update(kwargs_listview)
+        kwargs['selected_tab'] = 'history'
         return kwargs
     
     @method_decorator(get_article(can_read=True))
@@ -198,7 +252,9 @@ class Settings(ArticleMixin, TemplateView):
                     usermessage = form.get_usermessage()
                     if usermessage:
                         messages.success(self.request, usermessage)
-                    return redirect('wiki:settings_url', self.urlpath.path)
+                    if self.urlpath:
+                        return redirect('wiki:settings', path=self.urlpath.path)
+                    return redirect('wiki:settings', article_id=self.article.id)
             else:
                 form = Form(self.article, self.request.user)
             self.forms.append(form)
@@ -211,9 +267,12 @@ class Settings(ArticleMixin, TemplateView):
         return super(Settings, self).get(*args, **kwargs)
 
     def get_success_url(self):
-        return redirect('wiki:settings_url', self.urlpath.path)
+        if self.urlpath:
+            return redirect('wiki:settings', path=self.urlpath.path)
+        return redirect('wiki:settings', article_id=self.article.id)
     
     def get_context_data(self, **kwargs):
+        kwargs['selected_tab'] = 'settings'
         kwargs['forms'] = self.forms
         return super(Settings, self).get_context_data(**kwargs)
 
@@ -226,10 +285,9 @@ def change_revision(request, article, revision_id=None, urlpath=None):
     article.save()
     messages.success(request, _(u'The article %s is now set to display revision #%d') % (revision.title, revision.revision_number))
     if urlpath:
-        return redirect("wiki:history_url", urlpath.path)
+        return redirect("wiki:history", path=urlpath.path)
     else:
-        # TODO: Where to go if not a urlpath object?
-        pass
+        return redirect('wiki:history', article_id=article.id)
 
 # TODO: Throw in a class-based view
 @get_article(can_read=True)
@@ -306,7 +364,9 @@ def merge(request, article, revision_id, urlpath=None, template_file="wiki/previ
                          {'r1': revision.revision_number,
                           'r2': old_revision.revision_number})
         if urlpath:
-            return redirect('wiki:edit_url', urlpath.path)
+            return redirect('wiki:edit', path=urlpath.path)
+        else:
+            return redirect('wiki:edit', article_id=article.id)
         
     
     c = RequestContext(request, {'article': article,
@@ -319,6 +379,14 @@ def merge(request, article, revision_id, urlpath=None, template_file="wiki/previ
     return render_to_response(template_file, c)
 
 def root_create(request):
+    try:
+        root = models.URLPath.root()
+        if not root.article:
+            root.delete()
+            raise NoRootURL
+        return redirect('wiki:get', path=root.path)
+    except NoRootURL:
+        pass
     if not request.user.has_perm('wiki.add_article'):
         return redirect(reverse("wiki:login") + "?next=" + reverse("wiki:root_create"))
     if request.method == 'POST':
