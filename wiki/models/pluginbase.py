@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.db.models import signals
 
 """
 There are two kinds of plugin objects:
@@ -18,26 +19,36 @@ There are two kinds of plugin objects:
 
 from article import Article, ArticleRevision
 
+from wiki.conf import settings 
+
 class ArticlePlugin(models.Model):
+    """Always extend from this if you're making a plugin. That way, a deletion
+    of an article will CASCADE to your plugin, and the database will be kept
+    clean. Furthermore, it's possible to list all plugins and maintain generic
+    properties in the future..."""    
     
     article = models.ForeignKey(Article, on_delete=models.CASCADE, 
                                 verbose_name=_(u"article"))
     
-    created = models.DateTimeField(auto_now_add=True, verbose_name=_(u"created"))
-    modified = models.DateTimeField(auto_now=True, verbose_name=_(u"created"))
-    
     deleted = models.BooleanField(default=False)
-
-    class Meta:
-        abstract = True
-
-class ReusablePlugin(ArticlePlugin):
     
+    def purge(self):
+        """Remove related contents completely, ie. media files."""
+        pass
+    
+    class Meta:
+        app_label = settings.APP_LABEL
+    
+class ReusablePlugin(ArticlePlugin):
+    """Extend from this model if you have a plugin that may be related to many
+    articles. Please note that the ArticlePlugin.article ForeignKey STAYS! This
+    is in order to maintain an explicit set of permissions. If you do not like this,
+    you can override can_read and can_write."""
     # The article on which the plugin was originally created.
     # Used to apply permissions.
+    ArticlePlugin.article.on_delete=models.SET_NULL
     ArticlePlugin.article.verbose_name=_(u'original article')
     ArticlePlugin.article.help_text=_(u'Permissions are inherited from this article')
-    ArticlePlugin.article.on_delete=models.SET_NULL
     ArticlePlugin.article.null = True
     ArticlePlugin.article.blank = True
     
@@ -54,9 +65,6 @@ class ReusablePlugin(ArticlePlugin):
             return self.article.can_write(*args, **kwargs)
         return False
     
-    class Meta:
-        abstract = True
-    
     def save(self, *args, **kwargs):
         
         # Automatically make the original article the first one in the added set
@@ -67,23 +75,29 @@ class ReusablePlugin(ArticlePlugin):
             
         super(ReusablePlugin, self).save(*args, **kwargs)
     
+    class Meta:
+        app_label = settings.APP_LABEL
+
 class RevisionPluginCreateError(Exception): pass
 
-class RevisionPlugin(models.Model):
+class RevisionPlugin(ArticlePlugin):
     """
     Inherit from this model and make sure to specify an article when
     saving a new instance. This way, a new revision will be created, and
-    users are able to roll back to the a previous revision (containing some
-    other instance of your plugin).
+    users are able to roll back to the a previous revision (in which your
+    plugin wasn't related to the article).
+    
+    Furthermore, your plugin relation is kept when new revisions are created.
     
     Usage:
     
     class YourPlugin(RevisionPlugin):
         ...
     
-    Creating new plugins:
+    Creating new plugins instances:
     YourPlugin(article=article_instance, ...) or
     YourPlugin.objects.create(article=article_instance, ...)
+    
     
     """
     revision = models.ForeignKey(ArticleRevision, on_delete=models.CASCADE)
@@ -109,5 +123,22 @@ class RevisionPlugin(models.Model):
             self.revision = new_revision
     
     class Meta:
-        abstract = True
-    
+        app_label = settings.APP_LABEL
+
+######################################################
+# SIGNAL HANDLERS
+######################################################
+
+# Look at me. I'm a plane.
+# And the plane becomes a metaphor for my life.
+# It's my art, when I disguise my body in the shape of a plane.
+# (Shellac, 1993)
+
+def update_revision_plugins(instance, *args, **kwargs):
+    """Every time a new article revision is created, we update all active 
+    plugins to match this article revision"""
+    if kwargs.get('created', False):
+        p_revisions = RevisionPlugin.objects.filter(article=instance.article, deleted=False)
+        p_revisions.update(revision=instance)
+
+signals.post_save.connect(update_revision_plugins, ArticleRevision)

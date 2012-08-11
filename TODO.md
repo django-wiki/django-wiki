@@ -16,6 +16,7 @@ Not implemented - will be ASAP
  * South migrations **Soon**
  * View source for read-only articles + locked status
  * Global moderator permission **Almost done** (need to add grant form for users with *grant* permissions)
+ * Are you sure you wanna leave this page?
  
 Ideas
 =====

@@ -48,3 +48,25 @@ from wiki.core.plugins_load import load_wiki_plugins
 
 load_wiki_plugins()
 
+
+from django.core import urlresolvers
+
+original_django_reverse = urlresolvers.reverse
+
+def reverse(*args, **kwargs):
+    """Now this is a crazy and silly hack, but it is basically here to
+    enforce that an empty path always takes precedence over an article_id
+    such that the root article doesn't get resolved to /ID/ but /."""
+    if args[0].startswith('wiki:'):
+        url_kwargs = kwargs.get('kwargs', {})
+        path = url_kwargs.get('path', False)
+        # If a path is supplied then discard the article_id
+        if path != False:
+            url_kwargs.pop('article_id', None)
+            url_kwargs['path'] = path
+            kwargs['kwargs'] = url_kwargs
+    
+    return original_django_reverse(*args, **kwargs)
+    
+# Now we redefine reverse method
+urlresolvers.reverse = reverse

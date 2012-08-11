@@ -56,7 +56,7 @@ class URLPath(MPTTModel):
         super(URLPath, self).save(*args, **kwargs)
     
     def delete(self, *args, **kwargs):
-        assert not self.parent and self.get_children(), "You cannot delete a root article with children."
+        assert not (self.parent and self.get_children()), "You cannot delete a root article with children."
         super(URLPath, self).delete(*args, **kwargs)
     
     class Meta:

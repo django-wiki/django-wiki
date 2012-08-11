@@ -32,7 +32,7 @@ class AttachmentView(ArticleMixin, FormView):
         return super(AttachmentView, self).dispatch(request, article, *args, **kwargs)
     
     # WARNING! The below decorator silences other exceptions that may occur!
-    @transaction.commit_manually
+    #@transaction.commit_manually
     def form_valid(self, form):
         try:
             attachment_revision = form.save(commit=False)
@@ -48,14 +48,12 @@ class AttachmentView(ArticleMixin, FormView):
         except models.IllegalFileExtension, e:
             transaction.rollback()
             messages.error(self.request, _(u'Your file could not be saved: %s') % e)
-        except Exception:
-            transaction.rollback()
-            messages.error(self.request, _(u'Your file could not be saved, probably because of a permission error on the web server.'))
+        #except Exception:
+        #    transaction.rollback()
+        #    messages.error(self.request, _(u'Your file could not be saved, probably because of a permission error on the web server.'))
         
-        transaction.commit()
-        if self.urlpath:
-            return redirect("wiki:attachments_index", self.urlpath.path)
-        # TODO: What if no urlpath?        
+        #transaction.commit()
+        return redirect("wiki:attachments_index", path=self.urlpath.path, article_id=self.article.id)
     
     def get_context_data(self, **kwargs):
         kwargs['attachments'] = self.attachments
@@ -102,10 +100,7 @@ class AttachmentReplaceView(ArticleMixin, FormView):
         self.attachment.save()
         
         messages.success(self.request, _(u'%s uploaded and replaces old attachment.') % attachment_revision.get_filename())
-        if self.urlpath:
-            return redirect("wiki:attachments_index", self.urlpath.path)
-        # TODO: What if we do not have a urlpath?
-        
+        return redirect("wiki:attachments_index", path=self.urlpath.path, article_id=self.article.id)
     
     def get_form(self, form_class):
         form = FormView.get_form(self, form_class)
@@ -157,11 +152,7 @@ class AttachmentChangeRevisionView(ArticleMixin, View):
         self.attachment.save()
         messages.success(self.request, _(u'Current revision changed for %s.') % self.attachment.original_filename)
         
-        if self.urlpath:
-            return redirect("wiki:attachments_index", path=self.urlpath.path)
-        # TODO: What if this hasn't got a urlpath.
-        else:
-            pass
+        return redirect("wiki:attachments_index", path=self.urlpath.path, article_id=self.article.id)
 
 
 class AttachmentAddView(ArticleMixin, View):
@@ -177,11 +168,7 @@ class AttachmentAddView(ArticleMixin, View):
         messages.success(self.request, _(u'Added a reference to "%(att)s" from "%(art)s".') % 
                          {'att': self.attachment.original_filename,
                           'art': self.article.current_revision.title})        
-        if self.urlpath:
-            return redirect("wiki:attachments_index", path=self.urlpath.path)
-        # TODO: What if this hasn't got a urlpath.
-        else:
-            pass
+        return redirect("wiki:attachments_index", path=self.urlpath.path, article_id=self.article.id)
 
 
 class AttachmentDeleteView(ArticleMixin, FormView):
@@ -214,9 +201,7 @@ class AttachmentDeleteView(ArticleMixin, FormView):
             self.attachment.articles.remove(self.article)
             messages.info(self.request, _(u'This article is no longer related to the file %s.') % self.attachment.original_filename)
         
-        if self.urlpath:
-            return redirect("wiki:get_url", path=self.urlpath.path)
-        # TODO: No urlpath?
+        return redirect("wiki:get", path=self.urlpath.path, article_id=self.article.id)
 
     def get_context_data(self, **kwargs):
         kwargs['attachment'] = self.attachment

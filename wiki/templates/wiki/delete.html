@@ -2,11 +2,11 @@
 {% load wiki_tags i18n sekizai_tags %}
 {% load url from future %}
 
-{% block pagetitle %}{% trans "Add new article" %}{% endblock %}
+{% block pagetitle %}{% trans "Delete article" %}{% endblock %}
 
 {% block wiki_contents %}
   {% include "wiki/includes/editormedia.html" %}
-  <h1 class="page-header">{% trans "Add new article" %}</h1>
+  <h1 class="page-header">{% trans "Delete" %} "{{ article.current_revision.title }}"?</h1>
   
   <form method="POST" class="form-horizontal">
     {% wiki_form create_form %}
