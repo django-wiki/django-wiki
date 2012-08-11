@@ -58,6 +58,7 @@ class AttachmentView(ArticleMixin, FormView):
     def get_context_data(self, **kwargs):
         kwargs['attachments'] = self.attachments
         kwargs['search_form'] = forms.SearchForm()
+        kwargs['selected_tab'] = 'attachments'
         return super(AttachmentView, self).get_context_data(**kwargs)
 
 
@@ -76,6 +77,7 @@ class AttachmentHistoryView(ArticleMixin, TemplateView):
     def get_context_data(self, **kwargs):
         kwargs['attachment'] = self.attachment
         kwargs['revisions'] = self.attachment.attachmentrevision_set.all().order_by('-revision_number')
+        kwargs['selected_tab'] = 'attachments'
         return super(AttachmentHistoryView, self).get_context_data(**kwargs)
 
 
@@ -112,6 +114,7 @@ class AttachmentReplaceView(ArticleMixin, FormView):
     
     def get_context_data(self, **kwargs):
         kwargs['attachment'] = self.attachment
+        kwargs['selected_tab'] = 'attachments'
         return super(AttachmentReplaceView, self).get_context_data(**kwargs)
 
 class AttachmentDownloadView(ArticleMixin, View):
@@ -127,7 +130,6 @@ class AttachmentDownloadView(ArticleMixin, View):
         return super(AttachmentDownloadView, self).dispatch(request, article, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        
         if self.revision:
             return send_file(request, self.revision.file.path, 
                              self.revision.created, self.attachment.original_filename)
@@ -153,7 +155,10 @@ class AttachmentChangeRevisionView(ArticleMixin, View):
         messages.success(self.request, _(u'Current revision changed for %s.') % self.attachment.original_filename)
         
         return redirect("wiki:attachments_index", path=self.urlpath.path, article_id=self.article.id)
-
+    
+    def get_context_data(self, **kwargs):
+        kwargs['selected_tab'] = 'attachments'
+        return ArticleMixin.get_context_data(self, **kwargs)
 
 class AttachmentAddView(ArticleMixin, View):
     
@@ -169,7 +174,7 @@ class AttachmentAddView(ArticleMixin, View):
                          {'att': self.attachment.original_filename,
                           'art': self.article.current_revision.title})        
         return redirect("wiki:attachments_index", path=self.urlpath.path, article_id=self.article.id)
-
+    
 
 class AttachmentDeleteView(ArticleMixin, FormView):
     
@@ -205,6 +210,7 @@ class AttachmentDeleteView(ArticleMixin, FormView):
 
     def get_context_data(self, **kwargs):
         kwargs['attachment'] = self.attachment
+        kwargs['selected_tab'] = 'attachments'
         return super(AttachmentDeleteView, self).get_context_data(**kwargs)
 
 
@@ -239,4 +245,5 @@ class AttachmentSearchView(ArticleMixin, ListView):
         kwargs['query'] = self.query
         kwargs.update(kwargs_article)
         kwargs.update(kwargs_listview)
+        kwargs['selected_tab'] = 'attachments'
         return kwargs

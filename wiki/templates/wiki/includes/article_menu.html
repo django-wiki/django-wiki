@@ -1,5 +1,7 @@
 {% load i18n wiki_tags %}{% load url from future %}
 
+{% with selected_tab as selected %}
+
 {% for plugin in plugins %}
   {% if plugin.article_tab %}
     <li class="pull-right{% if selected == plugin.slug %} active{% endif %}">
@@ -36,3 +38,5 @@
     {% trans "View" %}
   </a>
 </li>
+
+{% endwith %}

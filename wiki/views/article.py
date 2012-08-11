@@ -20,14 +20,17 @@ from django.core.urlresolvers import reverse
 from django.db import transaction
 from wiki.core.exceptions import NoRootURL
 
-class ArticleView(ArticleMixin, TemplateView, ):
+class ArticleView(ArticleMixin, TemplateView):
 
     template_name="wiki/article.html"
     
     @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, *args, **kwargs):
         return super(ArticleView, self).dispatch(request, article, *args, **kwargs)
-        
+    
+    def get_context_data(self, **kwargs):
+        kwargs['selected_tab'] = 'view'
+        return ArticleMixin.get_context_data(self, **kwargs)
 
 class Create(FormView, ArticleMixin):
     
@@ -181,6 +184,7 @@ class Edit(FormView, ArticleMixin):
     def get_context_data(self, **kwargs):
         kwargs['edit_form'] = kwargs.pop('form', None)
         kwargs['editor'] = editors.editor
+        kwargs['selected_tab'] = 'edit'
         return super(Edit, self).get_context_data(**kwargs)
 
 
@@ -200,6 +204,7 @@ class History(ListView, ArticleMixin):
         kwargs_listview = ListView.get_context_data(self, **kwargs)
         kwargs.update(kwargs_article)
         kwargs.update(kwargs_listview)
+        kwargs['selected_tab'] = 'history'
         return kwargs
     
     @method_decorator(get_article(can_read=True))
@@ -267,6 +272,7 @@ class Settings(ArticleMixin, TemplateView):
         return redirect('wiki:settings', article_id=self.article.id)
     
     def get_context_data(self, **kwargs):
+        kwargs['selected_tab'] = 'settings'
         kwargs['forms'] = self.forms
         return super(Settings, self).get_context_data(**kwargs)
 
