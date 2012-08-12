@@ -21,15 +21,13 @@ This is where it all begins. In less than *3* weeks we should have a wiki system
 Installation
 ------------
 
-Install
-_______
+### Install
 
 Install directly from Github, since there is no release yet:
 
 `pip install git+git://github.com/benjaoming/django-wiki.git`
 
-Configure `settings.INSTALLED_APPS`
-___________________________________
+### Configure `settings.INSTALLED_APPS`
 
 Make sure that the following is present:
 
@@ -43,21 +41,18 @@ Make sure that the following is present:
     'sekizai',
     'django.contrib.humanize',
 
-Database
-________
+### Database
 
 To sync and create tables, do:
 
     python manage.py syncdb
     python manage.py migrate
 
-Configure `settings.TEMPLATE_CONTEXT_PROCESSORS`
-________________________________________________
+### Configure `settings.TEMPLATE_CONTEXT_PROCESSORS`
 
 Add `'sekizai.context_processors.sekizai'` to `settings.TEMPLATE_CONTEXT_PROCESSORS`.
 
-Include urlpatterns
-___________________
+### Include urlpatterns
 
 To integrate the wiki to your existing application, you shoud add the following lines at the end of your project's `urls.py`.
 
