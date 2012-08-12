@@ -19,6 +19,7 @@ from wiki.decorators import get_article, json_view
 from django.core.urlresolvers import reverse
 from django.db import transaction
 from wiki.core.exceptions import NoRootURL
+from django_notify.decorators import disable_notify
 
 class ArticleView(ArticleMixin, TemplateView):
 
@@ -106,47 +107,95 @@ class Delete(FormView, ArticleMixin):
     
     @method_decorator(get_article(can_write=True))
     def dispatch(self, request, article, *args, **kwargs):
-        super_return = super(Delete, self).dispatch(request, article, *args, **kwargs)
+        urlpath = kwargs.get('urlpath', None)
         # Where to go after deletion... 
         self.next = request.GET.get('next', None)
+        self.cannot_delete_root = False
         if not self.next:
-            if self.urlpath:
-                self.next = reverse('wiki:get', path=self.urlpath.parent.path)
+            if urlpath and urlpath.parent:
+                self.next = reverse('wiki:get', kwargs={'path': urlpath.parent.path})
+            elif urlpath:
+                self.cannot_delete_root = True
             else:
-                for art_obj in self.objectforarticle_set.filter(is_mptt=True):
-                    self.next = reverse('wiki:get', kwargs={'article_id': art_obj.parent.article.id})
-        return super_return
+                for art_obj in article.articleforobject_set.filter(is_mptt=True):
+                    if art_obj.content_object.parent:
+                        self.next = reverse('wiki:get', kwargs={'article_id': art_obj.content_object.parent.article.id})
+                    else:
+                        self.cannot_delete_root = True
+        
+        # Fetch children if necessary
+        self.children = []
+        if not self.cannot_delete_root:
+            self.children = article.get_children()
+        
+        self.cannot_delete_children = False
+        if self.children and not request.user.has_perm('wiki.moderator'):
+            self.cannot_delete_children = True
+        
+        return super(Delete, self).dispatch(request, article, *args, **kwargs)
     
     def get_initial(self):
         return {'revision': self.article.current_revision}
     
     def get_form(self, form_class):
-        form = FormView.get_form(self, form_class)
+        form = super(Delete, self).get_form(form_class)
         if self.request.user.has_perm('wiki.moderator'):
             form.fields['purge'].widget = forms.forms.CheckboxInput()
+        return form
     
+    def get_form_kwargs(self):
+        kwargs = FormView.get_form_kwargs(self)
+        kwargs['article'] = self.article
+        kwargs['children'] = self.children
+        return kwargs
+    
+    @disable_notify
+    def delete_children(self, purge=False):
+        if purge:
+            for child in self.children:
+                child.delete()
+        else:
+            for child in self.children:
+                revision = models.ArticleRevision()
+                revision.inherit_predecessor(child)
+                revision.deleted = True
+                child.add_revision(revision)
+        
     def form_valid(self, form):
         cd = form.cleaned_data
+        
+        if self.cannot_delete_root or self.cannot_delete_children:
+            messages.error(self.request, _(u'This article cannot be deleted because it has children or is a root article.'))
+            return redirect('wiki:get', article_id=self.article.id)
+        
+        # First, remove children
+        self.delete_children(purge=cd['purge'])
+        
         if self.request.user.has_perm('wiki.moderator') and cd['purge']:
-            pass
+            self.article.delete()
             messages.success(self.request, _(u'This article together with all its contents are now completely gone! Thanks!'))
         else:
             revision = models.ArticleRevision()
             revision.inherit_predecessor(self.article)
             revision.deleted = True
             self.article.add_revision(revision)
-            
             messages.success(self.request, _(u'This article is now marked as deleted! Thanks for keeping the site free from unwanted material!'))
-            
+        
     def get_success_url(self):
         return redirect(self.next)
     
     def get_context_data(self, **kwargs):
-        kwargs['parent_urlpath'] = self.urlpath
-        kwargs['parent_article'] = self.article
-        kwargs['create_form'] = kwargs.pop('form', None)
-        kwargs['editor'] = editors.editor
-        return super(Create, self).get_context_data(**kwargs)
+        kwargs['delete_form'] = kwargs.pop('form', None)
+        kwargs['cannot_delete_root'] = self.cannot_delete_root
+        children = []
+        cnt = 0
+        for child in self.children:
+            if cnt > 21: break
+            children.append(child)
+        kwargs['children'] = children[:20]
+        kwargs['children_more'] = len(children) > 20
+        kwargs['cannot_delete_children'] = self.cannot_delete_children
+        return super(Delete, self).get_context_data(**kwargs)
 
 
 class Edit(FormView, ArticleMixin):
@@ -378,6 +427,7 @@ def merge(request, article, revision_id, urlpath=None, template_file="wiki/previ
                                  'content': content})
     return render_to_response(template_file, c)
 
+# TODO: Should be a class-based view
 def root_create(request):
     try:
         root = models.URLPath.root()
@@ -390,13 +440,13 @@ def root_create(request):
     if not request.user.has_perm('wiki.add_article'):
         return redirect(reverse("wiki:login") + "?next=" + reverse("wiki:root_create"))
     if request.method == 'POST':
-        create_form = forms.CreateRoot(request.POST)
+        create_form = forms.CreateRootForm(request.POST)
         if create_form.is_valid():
             models.URLPath.create_root(title=create_form.cleaned_data["title"],
                                        content=create_form.cleaned_data["content"])
             return redirect("wiki:root")
     else:
-        create_form = forms.CreateRoot()
+        create_form = forms.CreateRootForm()
     
     c = RequestContext(request, {'create_form': create_form,
                                  'editor': editors.editor,})

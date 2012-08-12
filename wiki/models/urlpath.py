@@ -110,7 +110,7 @@ class URLPath(MPTTModel):
         if not root_nodes:
             # (get_or_create does not work for MPTT models??)
             root = cls.objects.create(site=site)
-            article = Article(title=title)
+            article = Article()
             article.add_revision(ArticleRevision(title=title, **kwargs),
                                  save=True)
             article.add_object_relation(root)
@@ -122,7 +122,7 @@ class URLPath(MPTTModel):
     def create_article(cls, parent, slug, site=None, title="Root", **kwargs):
         if not site: site = Site.objects.get_current()
         newpath = cls.objects.create(site=site, parent=parent, slug=slug)
-        article = Article(title=title)
+        article = Article()
         article.add_revision(ArticleRevision(title=title, **kwargs),
                              save=True)
         article.add_object_relation(newpath)
@@ -153,16 +153,16 @@ def on_article_delete(instance, *args, **kwargs):
         lost_and_found = URLPath.objects.create(slug=settings.LOST_AND_FOUND_SLUG,
                                                 parent=URLPath.root(),
                                                 site=site,)
-        article = Article(title=_(u"Lost and found"),
-                          group_read = True,
+        article = Article(group_read = True,
                           group_write = False,
                           other_read = False,
                           other_write = False)
         article.add_revision(ArticleRevision(
                  content=_(u'Articles who lost their parents'
-                            '===============================')))
+                            '==============================='),
+                 title=_(u"Lost and found")))
         
-    for urlpath in URLPath.objects.filter(articles__article=article, site=site):
+    for urlpath in URLPath.objects.filter(articles__article=instance, site=site):
         for child in urlpath.get_children():
             child.move_to(lost_and_found)
 

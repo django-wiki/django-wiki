@@ -49,7 +49,7 @@ for plugin in plugins_registry._cache.values():
 urlpatterns += patterns('',
     # Paths decided by URLs
     url('^(?P<path>.+/|)_create/$', article.Create.as_view(), name='create'),   
-    url('^(?P<path>.+/|)_delete/$', article.Edit.as_view(), name='delete'),   
+    url('^(?P<path>.+/|)_delete/$', article.Delete.as_view(), name='delete'),   
     url('^(?P<path>.+/|)_edit/$', article.Edit.as_view(), name='edit'),   
     url('^(?P<path>.+/|)_preview/$', 'wiki.views.article.preview', name='preview'),   
     url('^(?P<path>.+/|)_history/$', article.History.as_view(), name='history'),   

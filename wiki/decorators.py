@@ -51,12 +51,19 @@ def get_article(func=None, can_read=True, can_write=False):
                     pathlist = filter(lambda x: x!="", path.split("/"),)
                     path = "/".join(pathlist[:-1])
                     parent = models.URLPath.get_by_path(path)
-                    return redirect(reverse("wiki:create_url", args=(parent.path,)) + "?slug=%s" % pathlist[-1])
+                    return redirect(reverse("wiki:create", kwargs={'path': parent.path,}) + "?slug=%s" % pathlist[-1])
                 except models.URLPath.DoesNotExist:
                     # TODO: Make a nice page
                     return HttpResponseNotFound("This article was not found, and neither was the parent. This page should look nicer.")
             # TODO: If the article is not found but it exists, there is a permission error!
-            article = get_object_or_404(articles, id=urlpath.article.id)
+            if urlpath.article:
+                article = get_object_or_404(articles, id=urlpath.article.id)
+            else:
+                # Somehow article is gone
+                return_url = reverse('wiki:get', kwargs={'path': urlpath.parent.path})
+                urlpath.delete()
+                return return_url
+                
         
         kwargs['urlpath'] = urlpath
         
