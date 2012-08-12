@@ -23,7 +23,7 @@ Installation
 
 1. Install.
 
-    pip install git+git://github.com/benjaoming/django-wiki.git
+`pip install git+git://github.com/benjaoming/django-wiki.git`
 
 2. Configure `settings.INSTALLED_APPS`
 
@@ -41,14 +41,14 @@ Make sure that the following is present:
 
 3. Database
 
-Run
+To sync and create tables, do:
 
     python manage.py syncdb
     python manage.py migrate
 
 4. Configure `settings.TEMPLATE_CONTEXT_PROCESSORS`
 
-Then, add `'sekizai.context_processors.sekizai'` to `settings.TEMPLATE_CONTEXT_PROCESSORS`.
+Add `'sekizai.context_processors.sekizai'` to `settings.TEMPLATE_CONTEXT_PROCESSORS`.
 
 5. Include urlpatterns
 
@@ -63,7 +63,7 @@ To integrate the wiki to your existing application, you shoud add the following 
 
 Please use these function calls rather than writing your own include() call - the url namespaces aren't supposed to be customized.
 
-The above line puts the wiki in **/** so it's important to put it at the end of your urlconf. You can also put it in **/wiki** by putting `'^wiki/'` as the pattern.
+The above line puts the wiki in */* so it's important to put it at the end of your urlconf. You can also put it in */wiki* by putting `'^wiki/'` as the pattern.
 
 Plugins
 ------------
