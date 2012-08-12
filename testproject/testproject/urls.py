@@ -5,13 +5,10 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib import admin
 admin.autodiscover()
 
-from wiki.urls import get_pattern as wiki_pattern
-from django_notify.urls import get_pattern as notify_pattern
-
 urlpatterns = patterns('',
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^notify/', include(notify_pattern())),
+    url(r'^notify/', include('django_notify.urls', namespace='notify')),
 )
 
 if settings.DEBUG:
@@ -21,5 +18,7 @@ if settings.DEBUG:
             'document_root': settings.MEDIA_ROOT,
         }),
    )
-
-urlpatterns += patterns('', url(r'', include(wiki_pattern())),)
+    
+from wiki.urls import get_pattern as get_wiki_pattern
+from django_notify.urls import get_pattern as get_notify_pattern
+urlpatterns += patterns('', (r'^notify/', get_notify_pattern()), (r'', get_wiki_pattern()))
