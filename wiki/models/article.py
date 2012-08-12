@@ -15,9 +15,6 @@ class Article(models.Model):
     
     objects = managers.ArticleManager()
     
-    title = models.CharField(max_length=512, verbose_name=_(u'title'), 
-                             null=False, blank=False, help_text=_(u'Initial title of the article. '
-                                                                  'May be overridden with revision titles.'))
     current_revision = models.OneToOneField('ArticleRevision', 
                                             verbose_name=_(u'current revision'),
                                             blank=True, null=True, related_name='current_set',
@@ -70,10 +67,20 @@ class Article(models.Model):
         return False
     
     def decendant_objects(self):
-        for obj in self.objectforarticle_set.filter(is_mptt=True):
-            for decendant in obj.get_decendants():
+        """NB! This generator is expensive, so use it with care!!"""
+        for obj in self.articleforobject_set.filter(is_mptt=True):
+            for decendant in obj.content_object.get_decendants():
                 yield decendant
     
+    def get_children(self, max_num=None):
+        """NB! This generator is expensive, so use it with care!!"""
+        cnt = 0
+        for obj in self.articleforobject_set.filter(is_mptt=True):
+            for child in obj.content_object.get_children():
+                cnt += 1
+                if cnt > max_num: return
+                yield child
+
     # All recursive permission methods will use decendant_objects to access
     # generic relations and check if they are using MPTT and have INHERIT_PERMISSIONS=True
     def set_permissions_recursive(self):
@@ -130,7 +137,7 @@ class Article(models.Model):
     def __unicode__(self):
         if self.current_revision:
             return self.current_revision.title
-        return self.title
+        return _(u'Article without content (%(id)d)') % {'id': self.id}
     
     class Meta:
         app_label = settings.APP_LABEL
@@ -264,8 +271,6 @@ class ArticleRevision(BaseRevisionMixin, models.Model):
             # If I'm saved from Django admin, then article.current_revision is me!
             self.article.current_revision = self
             self.article.save()
-            if not self.title:
-                self.title = self.article.title
     
     class Meta:
         app_label = settings.APP_LABEL

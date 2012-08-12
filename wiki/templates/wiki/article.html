@@ -24,7 +24,8 @@
     </div>
   </div>
 
-<p style="margin-top: 20px;"><em>{% trans "Article last modified:" %} {{ article.current_revision.modified }}</em></p>
-    
 {% endblock %}
 
+{% block footer_prepend %}
+  <p style="margin-bottom: 10px;"><em>{% trans "This article was last modified:" %} {{ article.current_revision.modified }}</em></p>
+{% endblock %}

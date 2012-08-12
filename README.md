@@ -1,7 +1,7 @@
 django-wiki
 ===========
 
-*Last update: 2012-08-08*
+*Last update: 2012-08-12*
 
 Demo here, sign up for an account to see the notification system.
 
@@ -10,7 +10,7 @@ Demo here, sign up for an account to see the notification system.
 NB!! *THIS IS A WORK IN PROGRESS*
 ---------------------------------
 
-This is where it all begins. In less than *3* weeks we should have a wiki system appealing to any kind of Django developer out there. Here is the manifest (so far):
+This is where it all begins. In *1* week we should have a wiki system appealing to any kind of Django developer out there. Here is the manifest (so far):
 
  * **Be pluggable and light-weight.** Don't integrate optional features in the core.
  * **Be open.** Make an extension API that allows the ecology of the wiki to grow. After all, Wikipedia consists of some [680 extensions](http://svn.wikimedia.org/viewvc/mediawiki/trunk/extensions/) written for MediaWiki.
@@ -21,18 +21,62 @@ This is where it all begins. In less than *3* weeks we should have a wiki system
 Installation
 ------------
 
-    pip install git+git://github.com/benjaoming/django-wiki.git
+### Install
 
-After that, add `'wiki'` and `'django_notify'` to `settings.INSTALLED_APPS`.
+Install directly from Github, since there is no release yet:
+
+`pip install git+git://github.com/benjaoming/django-wiki.git`
+
+### Configure `settings.INSTALLED_APPS`
+
+Make sure that the following is present:
+
+    'wiki',
+    'wiki.plugins.attachments',
+    'wiki.plugins.notifications',
+    'wiki.plugins.images',
+    'south',
+    'django_notify',
+    'mptt',
+    'sekizai',
+    'django.contrib.humanize',
+
+### Database
+
+To sync and create tables, do:
+
+    python manage.py syncdb
+    python manage.py migrate
+
+### Configure `settings.TEMPLATE_CONTEXT_PROCESSORS`
+
+Add `'sekizai.context_processors.sekizai'` to `settings.TEMPLATE_CONTEXT_PROCESSORS`.
+
+### Include urlpatterns
+
+To integrate the wiki to your existing application, you shoud add the following lines at the end of your project's `urls.py`.
+
+    from wiki.urls import get_pattern as get_wiki_pattern
+    from django_notify.urls import get_pattern as get_notify_pattern
+    urlpatterns += patterns('',
+        (r'^notify/', get_notify_pattern()),
+        (r'', get_wiki_pattern())
+    )
+
+Please use these function calls rather than writing your own include() call - the url namespaces aren't supposed to be customized.
+
+The above line puts the wiki in */* so it's important to put it at the end of your urlconf. You can also put it in */wiki* by putting `'^wiki/'` as the pattern.
 
 Plugins
 ------------
 
-Add the following to your `settings.INSTALLED_APPS` to enable some nifty plugins:
+Add/remove the following to your `settings.INSTALLED_APPS` to enable/disable the core plugins:
 
  * `'wiki.plugins.attachments'`
  * `'wiki.plugins.images'`
  * `'wiki.plugins.notifications'`
+
+The notifications plugin is mandatory for an out-of-the-box installation. You can safely remove it from INSTALLED_APPS if you also override the **wiki/base.html** template.
 
 Background
 ----------
@@ -64,9 +108,17 @@ So far the dependencies are:
  * [django-mptt>=0.5](https://github.com/django-mptt/django-mptt)
  * [django-sekizai](https://github.com/ojii/django-sekizai/)
 
+Development
+------------
+
+In a your Git fork, run `pip install -r requirements.txt` to install the requirements.
+
+The folder **testproject/** contains a pre-configured django project and an sqlite database. Login for django admin is *admin:admin*. This project should always be maintained, although the sqlite database will be deleted very soon to avoid unnecessary conflicts.
+
 Acknowledgements
 ----------------
 
  * The people at [edX](http://www.edxonline.org/) & MIT for finding and supporting the project both financially and with ideas.
  * [django-cms](https://github.com/divio/django-cms) for venturing where no django app has gone before in terms of well-planned features and high standards. It's a very big inspiration.
+ * [django-mptt](https://github.com/django-mptt/django-mptt), a wonderful utility for inexpensively using tree structures in Django with a relational database backend.
 
