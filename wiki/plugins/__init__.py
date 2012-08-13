@@ -24,7 +24,9 @@ class BasePlugin(object):
 
 
 class PluginSidebarFormMixin(object):
-    pass
+
+    def get_usermessage(self):
+        pass
 
 class PluginSettingsFormMixin(object):    
     settings_form_headline = _(u'Notifications')

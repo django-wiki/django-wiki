@@ -256,10 +256,13 @@ class Edit(FormView, ArticleMixin):
                 form = self.sidebar_forms[plugin.sidebar_form_context]
                 if form.is_valid():
                     form.save()
-                    if self.urlpath:
-                        return redirect('wiki:edit', path=self.urlpath.path)
-                    else:
-                        return redirect('wiki:edit', article_id=self.article.id)
+                    message = form.get_usermessage()
+                    if message:
+                        messages.success(request, message)
+                    #if self.urlpath:
+                    #    return redirect('wiki:edit', path=self.urlpath.path)
+                    #else:
+                    #    return redirect('wiki:edit', article_id=self.article.id)
                     
         if self.request.POST.get('save', '') == '1':
             return super(Edit, self).post(request, *args, **kwargs)
