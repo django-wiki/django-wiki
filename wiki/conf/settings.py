@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings as django_settings
+from django.core.urlresolvers import reverse_lazy
 
 # Should urls be case sensitive?
 URL_CASE_SENSITIVE = getattr(django_settings, 'WIKI_URL_CASE_SENSITIVE', False)
@@ -19,6 +20,11 @@ LOG_IPS_ANONYMOUS = getattr(django_settings, 'WIKI_LOG_IPS_ANONYMOUS', True)
 LOG_IPS_USERS = getattr(django_settings, 'WIKI_LOG_IPS_USERS', False)
 
 ACCOUNT_HANDLING = getattr(django_settings, 'WIKI_ACCOUNT_HANDLING', True)
+
+if ACCOUNT_HANDLING:
+    LOGIN_URL = reverse_lazy("wiki:login")
+else:
+    LOGIN_URL = getattr(django_settings, "LOGIN_URL", "/")
 
 ####################
 # PLANNED SETTINGS #

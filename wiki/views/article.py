@@ -315,7 +315,7 @@ def preview(request, article, urlpath=None, template_file="wiki/preview_inline.h
                                  'title': title,
                                  'revision': revision,
                                  'content': content})
-    return render_to_response(template_file, c)
+    return render_to_response(template_file, context_instance=c)
 
 @json_view
 def diff(request, revision_id, other_revision_id=None):
@@ -376,7 +376,7 @@ def merge(request, article, revision_id, urlpath=None, template_file="wiki/previ
                                  'merge2': article.current_revision,
                                  'merge': True,
                                  'content': content})
-    return render_to_response(template_file, c)
+    return render_to_response(template_file, context_instance=c)
 
 def root_create(request):
     try:
@@ -388,7 +388,7 @@ def root_create(request):
     except NoRootURL:
         pass
     if not request.user.has_perm('wiki.add_article'):
-        return redirect(reverse("wiki:login") + "?next=" + reverse("wiki:root_create"))
+        return redirect(settings.LOGIN_URL + "?next=" + reverse("wiki:root_create"))
     if request.method == 'POST':
         create_form = forms.CreateRoot(request.POST)
         if create_form.is_valid():
@@ -400,5 +400,5 @@ def root_create(request):
     
     c = RequestContext(request, {'create_form': create_form,
                                  'editor': editors.editor,})
-    return render_to_response("wiki/article/create_root.html", c)
+    return render_to_response("wiki/article/create_root.html", context_instance=c)
 
