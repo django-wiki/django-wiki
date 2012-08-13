@@ -6,7 +6,12 @@ from django.contrib.auth.decorators import login_required
 import django_notify
 
 def disable_notify(func):
-    """Disable notifications within a """
+    """Disable notifications. Example:
+    
+    @disable_notify
+    def your_function():
+        notify("no one will be notified", ...)
+    """
     def wrap(request, *args, **kwargs):
         django_notify._disable_notifications = True
         response = func(request, *args, **kwargs)

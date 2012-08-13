@@ -58,7 +58,7 @@ class Subscription(models.Model):
 
 class Notification(models.Model):
     
-    subscription = models.ForeignKey(Subscription)
+    subscription = models.ForeignKey(Subscription, null=True, blank=True, on_delete=models.SET_NULL)
     message = models.TextField()
     url = models.URLField(blank=True, null=True, verbose_name=_(u'link for notification'))
     is_viewed = models.BooleanField(default=False)
