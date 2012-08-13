@@ -9,6 +9,8 @@ ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
+LOGIN_URL = '/_accounts/login/'
+
 MANAGERS = ADMINS
 
 DATABASES = {

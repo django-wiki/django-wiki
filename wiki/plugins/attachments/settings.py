@@ -2,6 +2,9 @@ from django.conf import settings as django_settings
 
 SLUG = "attachments"
 
+# Allow anonymous users to upload (not nice on an open network)
+ANONYMOUS = getattr(django_settings, 'WIKI_ATTACHMENTS_ANONYMOUS', False)
+
 # Maximum file sizes: Please using something like LimitRequestBody on
 # your web server.
 # http://httpd.apache.org/docs/2.2/mod/core.html#LimitRequestBody
