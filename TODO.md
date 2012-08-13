@@ -17,6 +17,7 @@ Not implemented - will be ASAP
  * View source for read-only articles + locked status
  * Global moderator permission **Almost done** (need to add grant form for users with *grant* permissions)
  * Are you sure you wanna leave this page?
+ * requirements.txt : are the `>` really correct???
  
 Ideas
 =====

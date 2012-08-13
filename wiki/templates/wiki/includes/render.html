@@ -2,9 +2,11 @@
 
 {% block wiki_contents %}
   {% if not preview %}
-  {% cache 1 article article.current_revision.id %}
-    {{ article.render }}
-  {% endcache %}
+  {% if article.current_revision %}
+    {% cache 1 article article.current_revision.id %}
+      {{ article.render }}
+    {% endcache %}
+  {% endif %}
   {% else %}
     {{ content|default:"" }}
   {% endif %}

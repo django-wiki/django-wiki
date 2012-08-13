@@ -20,6 +20,9 @@ LOG_IPS_USERS = getattr(django_settings, 'WIKI_LOG_IPS_USERS', False)
 
 ACCOUNT_HANDLING = getattr(django_settings, 'WIKI_ACCOUNT_HANDLING', True)
 
+# Maximum amount of children to display in a menu before going "+more"
+SHOW_MAX_CHILDREN = getattr(django_settings, 'WIKI_SHOW_MAX_CHILDREN', 20)
+
 ####################
 # PLANNED SETTINGS #
 ####################

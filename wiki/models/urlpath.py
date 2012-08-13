@@ -119,10 +119,12 @@ class URLPath(MPTTModel):
         return root
         
     @classmethod
-    def create_article(cls, parent, slug, site=None, title="Root", **kwargs):
+    def create_article(cls, parent, slug, site=None, title="Root", article_kwargs={}, **kwargs):
+        """Utility function:
+        Create a new urlpath with an article and a new revision for the article"""
         if not site: site = Site.objects.get_current()
         newpath = cls.objects.create(site=site, parent=parent, slug=slug)
-        article = Article()
+        article = Article(**article_kwargs)
         article.add_revision(ArticleRevision(title=title, **kwargs),
                              save=True)
         article.add_object_relation(newpath)
@@ -145,6 +147,7 @@ def on_article_delete(instance, *args, **kwargs):
     # But move all descendants to a lost-and-found node.
     site = Site.objects.get_current()
     
+    # Get the Lost-and-found path or create a new one
     try:
         lost_and_found = URLPath.objects.get(slug=settings.LOST_AND_FOUND_SLUG,
                                              parent=URLPath.root(),
@@ -163,7 +166,10 @@ def on_article_delete(instance, *args, **kwargs):
                  title=_(u"Lost and found")))
         
     for urlpath in URLPath.objects.filter(articles__article=instance, site=site):
+        # Delete the children
         for child in urlpath.get_children():
             child.move_to(lost_and_found)
-
+        # ...and finally delete the path itself
+        urlpath.delete()
+    
 pre_delete.connect(on_article_delete, Article)

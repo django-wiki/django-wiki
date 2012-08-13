@@ -5,6 +5,7 @@ from django.http import HttpResponse, HttpResponseNotFound
 from django.utils import simplejson as json
 
 from wiki.core.exceptions import NoRootURL
+from django.contrib.contenttypes.models import ContentType
 
 def json_view(func):
     def wrap(request, *args, **kwargs):
@@ -16,11 +17,11 @@ def json_view(func):
         return response
     return wrap
 
-def get_article(func=None, can_read=True, can_write=False):
+def get_article(func=None, can_read=True, can_write=False, deleted_contents=False):
     """Intercepts the keyword args path or article_id and looks up an article,
     calling the decorated func with this ID."""
     
-    def the_func(request, *args, **kwargs):
+    def wrapper(request, *args, **kwargs):
         import models
 
         path = kwargs.pop('path', None)
@@ -38,7 +39,7 @@ def get_article(func=None, can_read=True, can_write=False):
         if article_id:
             article = get_object_or_404(articles, id=article_id)
             try:
-                urlpath = models.URLPath.objects.get(articles=article)
+                urlpath = models.URLPath.objects.get(articles__article=article)
             except models.URLPath.DoesNotExist, models.URLPath.MultipleObjectsReturned:
                 urlpath = None
         else:
@@ -62,15 +63,21 @@ def get_article(func=None, can_read=True, can_write=False):
                 # Somehow article is gone
                 return_url = reverse('wiki:get', kwargs={'path': urlpath.parent.path})
                 urlpath.delete()
-                return return_url
-                
+                return redirect(return_url)
+        
+        # If the article has been deleted, show a special page.
+        if not deleted_contents and article.current_revision and article.current_revision.deleted:
+            if urlpath:
+                return redirect('wiki:deleted', path=urlpath.path)
+            else:
+                return redirect('wiki:deleted', article_id=article.id)
         
         kwargs['urlpath'] = urlpath
         
         return func(request, article, *args, **kwargs)
     
     if func:
-        return the_func
+        return wrapper
     else:
         return lambda func: get_article(func, can_read=can_read, can_write=can_write)
 

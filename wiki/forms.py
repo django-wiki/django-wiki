@@ -189,11 +189,11 @@ class CreateForm(forms.Form):
         already_existing_slug = models.URLPath.objects.filter(slug=slug, parent=self.urlpath_parent)
         if already_existing_slug:
             slug = already_existing_slug[0]
-            if slug.deleted:
+            if slug.article and slug.article.deleted:
                 raise forms.ValidationError(_(u'A deleted article with slug "%s" already exists.') % slug)
             else:
                 raise forms.ValidationError(_(u'A slug named "%s" already exists.') % slug)
-            
+        
         return slug
 
 class PermissionsForm(forms.ModelForm):
@@ -232,14 +232,14 @@ class DeleteForm(forms.Form):
     
     def __init__(self, *args, **kwargs):
         self.article = kwargs.pop('article')
-        self.children = kwargs.pop('children')
+        self.has_children = kwargs.pop('has_children')
         super(DeleteForm, self).__init__(*args, **kwargs)
     
     confirm = forms.BooleanField(required=False,
                                  label=_(u'Confirm'))
     purge = forms.BooleanField(widget=HiddenInput(), required=False,
                                label=_(u'Purge'),
-                               help_text=_(u'Purge the article: Completely remove it (and all its contents) with no undo.'))
+                               help_text=_(u'Purge the article: Completely remove it (and all its contents) with no undo. Purging is a good idea if you want to free the slug such that users can create new articles in its place.'))
     revision = forms.ModelChoiceField(models.ArticleRevision.objects.all(),
                                       widget=HiddenInput(), required=False)
     

@@ -65,14 +65,23 @@ class Create(FormView, ArticleMixin):
         elif settings.LOG_IPS_ANONYMOUS:
             ip_address = self.request.META.get('REMOTE_ADDR', None)
         try:
-            self.newpath = models.URLPath.create_article(self.urlpath,
-                                                         form.cleaned_data['slug'],
-                                                         title=form.cleaned_data['title'],
-                                                         content=form.cleaned_data['content'],
-                                                         user_message=form.cleaned_data['summary'],
-                                                         user=user,
-                                                         ip_address=ip_address)
-            messages.success(self.request, _(u"New article '%s' created.") % self.newpath.article.title)
+            self.newpath = models.URLPath.create_article(
+                self.urlpath,
+                form.cleaned_data['slug'],
+                title=form.cleaned_data['title'],
+                content=form.cleaned_data['content'],
+                user_message=form.cleaned_data['summary'],
+                user=user,
+                ip_address=ip_address,
+                article_kwargs={'owner': user,
+                                'group': self.article.group,
+                                'group_read': self.article.group_read,
+                                'group_write': self.article.group_write,
+                                'other_read': self.article.other_read,
+                                'other_write': self.article.other_write,
+                                })
+                # TODO: Subscribe user to new article and send notifications that user was subscribed.
+            messages.success(self.request, _(u"New article '%s' created.") % self.newpath.article.current_revision.title)
         
             transaction.commit()
         # TODO: Handle individual exceptions better and give good feedback.
@@ -123,15 +132,6 @@ class Delete(FormView, ArticleMixin):
                     else:
                         self.cannot_delete_root = True
         
-        # Fetch children if necessary
-        self.children = []
-        if not self.cannot_delete_root:
-            self.children = article.get_children()
-        
-        self.cannot_delete_children = False
-        if self.children and not request.user.has_perm('wiki.moderator'):
-            self.cannot_delete_children = True
-        
         return super(Delete, self).dispatch(request, article, *args, **kwargs)
     
     def get_initial(self):
@@ -146,25 +146,31 @@ class Delete(FormView, ArticleMixin):
     def get_form_kwargs(self):
         kwargs = FormView.get_form_kwargs(self)
         kwargs['article'] = self.article
-        kwargs['children'] = self.children
+        kwargs['has_children'] = bool(self.children_slice)
         return kwargs
     
     @disable_notify
     def delete_children(self, purge=False):
         if purge:
-            for child in self.children:
+            for child in self.article.get_children(articles__article__current_revision__deleted=False):
                 child.delete()
         else:
-            for child in self.children:
+            for child in self.article.get_children(articles__article__current_revision__deleted=False):
                 revision = models.ArticleRevision()
-                revision.inherit_predecessor(child)
+                revision.inherit_predecessor(child.article)
+                revision.set_from_request(self.request)
+                revision.automatic_log = _(u'Deleting children of "%s"') % self.article.current_revision.title
                 revision.deleted = True
-                child.add_revision(revision)
+                child.article.add_revision(revision)
         
     def form_valid(self, form):
         cd = form.cleaned_data
         
-        if self.cannot_delete_root or self.cannot_delete_children:
+        cannot_delete_children = False
+        if self.children_slice and not self.request.user.has_perm('wiki.moderator'):
+            cannot_delete_children = True
+
+        if self.cannot_delete_root or cannot_delete_children:
             messages.error(self.request, _(u'This article cannot be deleted because it has children or is a root article.'))
             return redirect('wiki:get', article_id=self.article.id)
         
@@ -177,24 +183,25 @@ class Delete(FormView, ArticleMixin):
         else:
             revision = models.ArticleRevision()
             revision.inherit_predecessor(self.article)
+            revision.set_from_request(self.request)
             revision.deleted = True
             self.article.add_revision(revision)
-            messages.success(self.request, _(u'This article is now marked as deleted! Thanks for keeping the site free from unwanted material!'))
+            messages.success(self.request, _(u'The article "%s" is now marked as deleted! Thanks for keeping the site free from unwanted material!') % revision.title)
+        return self.get_success_url()
         
     def get_success_url(self):
         return redirect(self.next)
     
     def get_context_data(self, **kwargs):
+        cannot_delete_children = False
+        if self.children_slice and not self.request.user.has_perm('wiki.moderator'):
+            cannot_delete_children = True
+        
         kwargs['delete_form'] = kwargs.pop('form', None)
         kwargs['cannot_delete_root'] = self.cannot_delete_root
-        children = []
-        cnt = 0
-        for child in self.children:
-            if cnt > 21: break
-            children.append(child)
-        kwargs['children'] = children[:20]
-        kwargs['children_more'] = len(children) > 20
-        kwargs['cannot_delete_children'] = self.cannot_delete_children
+        kwargs['delete_children'] = self.children_slice[:20]
+        kwargs['delete_children_more'] = len(self.children_slice) > 20
+        kwargs['cannot_delete_children'] = cannot_delete_children
         return super(Delete, self).get_context_data(**kwargs)
 
 
@@ -219,6 +226,7 @@ class Edit(FormView, ArticleMixin):
         revision.title = form.cleaned_data['title']
         revision.content = form.cleaned_data['content']
         revision.user_message = form.cleaned_data['summary']
+        revision.deleted = False
         revision.set_from_request(self.request)
         self.article.add_revision(revision)
         messages.success(self.request, _(u'A new revision of the article was succesfully added.'))
@@ -235,6 +243,11 @@ class Edit(FormView, ArticleMixin):
         kwargs['editor'] = editors.editor
         kwargs['selected_tab'] = 'edit'
         return super(Edit, self).get_context_data(**kwargs)
+
+
+# TODO: ...
+class Source(ArticleMixin, TemplateView):
+    pass
 
 
 class History(ListView, ArticleMixin):
