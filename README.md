@@ -67,6 +67,14 @@ Please use these function calls rather than writing your own include() call - th
 
 The above line puts the wiki in */* so it's important to put it at the end of your urlconf. You can also put it in */wiki* by putting `'^wiki/'` as the pattern.
 
+### Settings
+
+For now, look in [wiki/conf/settings.py](wiki/conf/settings.py) to see a list of available settings.
+
+### Other tips
+
+ 1. **Account handling:** There are simple views that handle login, logout and signup. They are on by default. Make sure to set settings.LOGIN_URL to point to your login page as many wiki views may redirect to a login page.
+
 Plugins
 ------------
 
