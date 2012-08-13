@@ -1,6 +1,7 @@
 from wiki.core import plugins_registry
+from wiki import plugins
 
-class NotifyPlugin(plugins_registry.BasePlugin):
+class NotifyPlugin(plugins.BasePlugin):
     
     settings_form = 'wiki.plugins.notifications.forms.SubscriptionForm'
     

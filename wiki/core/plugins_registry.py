@@ -1,14 +1,10 @@
 # -*- coding: utf-8 -*-
 from django.utils.importlib import import_module
+
 _cache = {}
-
 _settings_forms = []
-
 _markdown_extensions = []
-
-class BasePlugin(object):
-    #settings_form = YourForm
-    pass
+_article_tabs = []
 
 def register(PluginClass):
     """
@@ -17,7 +13,8 @@ def register(PluginClass):
     """
     if PluginClass in _cache.keys():
         raise Exception("Plugin class already registered")
-    _cache[PluginClass] = PluginClass()
+    plugin = PluginClass()
+    _cache[PluginClass] = plugin
     
     settings_form = getattr(PluginClass, 'settings_form', None)
     if settings_form:
@@ -28,6 +25,9 @@ def register(PluginClass):
             settings_form = getattr(form_module, klassname)
         _settings_forms.append(settings_form)
     
+    if PluginClass.article_tab:
+        _article_tabs.append(plugin)
+    
     _markdown_extensions.extend(getattr(PluginClass, 'markdown_extensions', []))        
     
 def get_plugins():
@@ -35,3 +35,6 @@ def get_plugins():
 
 def get_markdown_extensions():
     return _markdown_extensions
+
+def get_article_tabs():
+    return _article_tabs
