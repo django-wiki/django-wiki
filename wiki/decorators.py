@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.conf import settings as django_settings
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseNotFound
@@ -42,10 +43,7 @@ def get_article(func=None, can_read=True, can_write=False, deleted_contents=Fals
         path = kwargs.pop('path', None)
         article_id = kwargs.pop('article_id', None)
         
-        if can_read:
-            articles = models.Article.objects.can_read(request.user)
-        if can_write:
-            articles = models.Article.objects.can_write(request.user)
+        articles = models.Article.objects
         
         # TODO: Is this the way to do it?
         articles = articles.select_related()
@@ -71,15 +69,28 @@ def get_article(func=None, can_read=True, can_write=False, deleted_contents=Fals
                 except models.URLPath.DoesNotExist:
                     # TODO: Make a nice page
                     return HttpResponseNotFound("This article was not found, and neither was the parent. This page should look nicer.")
-            # TODO: If the article is not found but it exists, there is a permission error!
             if urlpath.article:
                 article = get_object_or_404(articles, id=urlpath.article.id)
             else:
-                # Somehow article is gone
+                # Be robust: Somehow article is gone but urlpath exists... clean up
                 return_url = reverse('wiki:get', kwargs={'path': urlpath.parent.path})
                 urlpath.delete()
                 return redirect(return_url)
         
+        if can_read and not article.can_read(request.user):
+            if request.user.is_anonymous:
+                return redirect(django_settings.LOGIN_URL)
+            else:
+                pass
+                # TODO: Return a permission denied page
+        
+        if can_write and not article.can_write(request.user):
+            if request.user.is_anonymous:
+                return redirect(django_settings.LOGIN_URL)
+            else:
+                pass
+                # TODO: Return a permission denied page
+
         # If the article has been deleted, show a special page.
         if not deleted_contents and article.current_revision and article.current_revision.deleted:
             if urlpath:

@@ -2,17 +2,19 @@
 """This is nothing but the usual handling of django user accounts, so
 go ahead and replace it or disable it!"""
 
-from django.contrib.auth.models import User
+from django.conf import settings as django_settings
+from django.contrib import messages
 from django.contrib.auth import logout as auth_logout, login as auth_login
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.contrib import messages
+from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.utils.translation import ugettext as _
 from django.views.generic.base import View
 from django.views.generic.edit import CreateView, FormView
 
 from wiki.models import URLPath
-from django.core.urlresolvers import reverse
+
 
 class Signup(CreateView):
     model = User
@@ -28,7 +30,6 @@ class Logout(View):
     def get(self, request, *args, **kwargs):
         auth_logout(request)
         messages.info(request, _(u"You are no longer logged in. Bye bye!"))
-        print redirect("wiki:get", URLPath.root().path)
         return redirect("wiki:get", URLPath.root().path)
 
 class Login(FormView):
@@ -47,5 +48,5 @@ class Login(FormView):
         messages.info(self.request, _(u"You are now logged in! Have fun!"))
         if self.request.GET.get("next", None):
             return redirect(self.request.GET['next'])
-        return redirect("wiki:get", URLPath.root().path)
+        return redirect(django_settings.LOGIN_REDIRECT_URL)
     

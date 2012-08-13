@@ -35,6 +35,7 @@ class EditForm(forms.Form):
     
     def __init__(self, current_revision, *args, **kwargs):
         
+        self.no_clean = kwargs.pop('no_clean', False)
         self.preview = kwargs.pop('preview', False)
         self.initial_revision = current_revision
         self.presumed_revision = None
@@ -68,6 +69,8 @@ class EditForm(forms.Form):
     
     def clean(self):
         cd = self.cleaned_data
+        if self.no_clean:
+            return cd
         if not str(self.initial_revision.id) == str(self.presumed_revision):
             raise forms.ValidationError(_(u'While you were editing, someone else changed the revision. Your contents have been automatically merged with the new contents. Please review the text below.'))
         if cd['title'] == self.initial_revision.title and cd['content'] == self.initial_revision.content:

@@ -9,7 +9,11 @@ ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
+from django.core.urlresolvers import reverse_lazy
+
+LOGIN_REDIRECT_URL = reverse_lazy('wiki:get', kwargs={'path': ''})
 LOGIN_URL = '/_accounts/login/'
+LOGOUT_URL = '/_accounts/logout/'
 
 MANAGERS = ADMINS
 

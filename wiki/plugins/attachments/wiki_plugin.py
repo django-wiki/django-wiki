@@ -26,6 +26,7 @@ class AttachmentPlugin(plugins.BasePlugin):
         url('^download/(?P<attachment_id>\d+)/revision/(?P<revision_id>\d+)/$', views.AttachmentDownloadView.as_view(), name='attachments_download'),
         url('^change/(?P<attachment_id>\d+)/revision/(?P<revision_id>\d+)/$', views.AttachmentChangeRevisionView.as_view(), name='attachments_revision_change'),
     )
+    
     article_tab = (_(u'Attachments'), "icon-file")
     article_view = views.AttachmentView().dispatch
     

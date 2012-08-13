@@ -24,12 +24,7 @@ class BasePlugin(object):
 
 
 class PluginSidebarFormMixin(object):
-    
-    def __init__(self, plugin_instance, *args, **kwargs):
-        
-        kwargs['prefix'] = plugin_instance.slug
-        
-        
+    pass
 
 class PluginSettingsFormMixin(object):    
     settings_form_headline = _(u'Notifications')

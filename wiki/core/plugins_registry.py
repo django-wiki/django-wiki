@@ -5,6 +5,7 @@ _cache = {}
 _settings_forms = []
 _markdown_extensions = []
 _article_tabs = []
+_sidebar = []
 
 def register(PluginClass):
     """
@@ -25,9 +26,13 @@ def register(PluginClass):
             settings_form = getattr(form_module, klassname)
         _settings_forms.append(settings_form)
     
-    if PluginClass.article_tab:
+    
+    if getattr(PluginClass, 'article_tab', None):
         _article_tabs.append(plugin)
     
+    if getattr(PluginClass, 'sidebar', None):
+        _sidebar.append(plugin)
+
     _markdown_extensions.extend(getattr(PluginClass, 'markdown_extensions', []))        
     
 def get_plugins():
@@ -37,4 +42,9 @@ def get_markdown_extensions():
     return _markdown_extensions
 
 def get_article_tabs():
+    """Returns plugin classes that should connect to the article tab menu"""
     return _article_tabs
+
+def get_sidebar():
+    """Returns plugin classes that should connect to the sidebar"""
+    return _sidebar

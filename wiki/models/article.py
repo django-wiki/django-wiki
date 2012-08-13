@@ -44,7 +44,7 @@ class Article(models.Model):
         if user == self.owner:
             return True
         if self.group_read:
-            if group == self.group:
+            if self.group and group == self.group:
                 return True
             if self.group and user and user.groups.filter(group=group):
                 return True
@@ -58,7 +58,7 @@ class Article(models.Model):
         if user == self.owner:
             return True
         if self.group_write:
-            if group == self.group:
+            if self.group and group == self.group:
                 return True
             if self.group and user and user.groups.filter(group=group):
                 return True

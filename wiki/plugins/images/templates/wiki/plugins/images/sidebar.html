@@ -1,0 +1,57 @@
+{% load i18n wiki_tags wiki_images_tags humanize %}
+
+<h4>{% trans "Available images" %}</h4>
+
+<p>{% trans "Click on an image below to insert in your text. The format of the code inserted is:" %}<br /><code>[image:id alignment caption text]</code></p>
+
+<table class="table table-bordered table-striped">
+  <tr>
+    <th>{% trans "File" %}</th>
+    <th>{% trans "Added" %}</th>
+  </tr>
+  {% for image in article|images_for_article %}
+  <tr>
+    <td>{{ image.get_filename }}</td>
+    <td>{{ image.created|naturaltime }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<hr />
+
+<h4>{% trans "Add new image" %}</h4>
+
+{% if form.non_field_errors %}
+  {% if form_error_title %}<h4 class="alert-heading">{{ form_error_title }}</h4>{% endif %}
+  {% for error_message in form.non_field_errors %}
+    <div class="alert alert-block alert-error">
+      {{ error_message }}
+    </div>    
+  {% endfor %}
+{% endif %}
+
+{% for field in form %}
+<p id="div_{{ field.auto_id }}" class="fields {% if field.errors %} error{% endif %}">
+  {% if field.label %}
+    <!--<label for="{{ field.id_for_label }}" class="{% if field.field.required %}requiredField{% endif %}">
+    {{ field.label|safe }}
+    </label>-->
+  {% endif %}
+  {{ field }}
+    {% if field.errors %}
+    {% for error in field.errors %}
+      <div id="error_{{ forloop.counter }}_{{ field.auto_id }}" class="help-block"><strong>{{ error }}</strong></div>
+    {% endfor %}
+  {% endif %}
+</p>
+  {% if field.help_text %}
+    <p id="hint_{{ field.auto_id }}" class="help-block">{{ field.help_text|safe }}</p>
+  {% endif %}
+{% endfor %}
+
+<p>
+  <button type="submit" name="{{ plugin.slug }}_save" value="1" class="btn btn-large">
+    <span class="icon-upload"></span>
+    {% trans "Add image" %}
+  </button>
+</p>
