@@ -17,8 +17,24 @@ def json_view(func):
     return wrap
 
 def get_article(func=None, can_read=True, can_write=False, deleted_contents=False):
-    """Intercepts the keyword args path or article_id and looks up an article,
-    calling the decorated func with this ID."""
+    """View decorator for processing standard url keyword args: Intercepts the 
+    keyword args path or article_id and looks up an article, calling the decorated 
+    func with this ID.
+    
+    Will accept a func(request, article, *args, **kwargs)
+    
+    NB! This function will redirect if an article does not exist, permissions
+    are missing or the article is deleted.
+    
+    Arguments:
+    
+    can_read=True and/or can_write=True: Check that the current request.user
+    has correct permissions.
+    
+    deleted_contents=True: Do not redirect if the article has been deleted.
+    
+    Also see: wiki.views.mixins.ArticleMixin 
+    """
     
     def wrapper(request, *args, **kwargs):
         import models
@@ -78,5 +94,6 @@ def get_article(func=None, can_read=True, can_write=False, deleted_contents=Fals
     if func:
         return wrapper
     else:
-        return lambda func: get_article(func, can_read=can_read, can_write=can_write)
+        return lambda func: get_article(func, can_read=can_read, can_write=can_write, 
+                                        deleted_contents=deleted_contents)
 

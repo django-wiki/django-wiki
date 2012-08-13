@@ -236,7 +236,7 @@ class DeleteForm(forms.Form):
         super(DeleteForm, self).__init__(*args, **kwargs)
     
     confirm = forms.BooleanField(required=False,
-                                 label=_(u'Confirm'))
+                                 label=_(u'Yes, I am sure'))
     purge = forms.BooleanField(widget=HiddenInput(), required=False,
                                label=_(u'Purge'),
                                help_text=_(u'Purge the article: Completely remove it (and all its contents) with no undo. Purging is a good idea if you want to free the slug such that users can create new articles in its place.'))

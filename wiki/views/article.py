@@ -116,6 +116,11 @@ class Delete(FormView, ArticleMixin):
     
     @method_decorator(get_article(can_write=True))
     def dispatch(self, request, article, *args, **kwargs):
+        return self.dispatch1(request, article, *args, **kwargs)
+        
+    def dispatch1(self, request, article, *args, **kwargs):
+        """Deleted view needs to access this method without a decorator,
+        therefore it is separate."""
         urlpath = kwargs.get('urlpath', None)
         # Where to go after deletion... 
         self.next = request.GET.get('next', None)
@@ -150,17 +155,21 @@ class Delete(FormView, ArticleMixin):
         return kwargs
     
     @disable_notify
-    def delete_children(self, purge=False):
+    def delete_children(self, purge=False, restore=False):
+        assert not (restore and purge), "You cannot purge a restore"
         if purge:
             for child in self.article.get_children(articles__article__current_revision__deleted=False):
                 child.delete()
         else:
-            for child in self.article.get_children(articles__article__current_revision__deleted=False):
+            for child in self.article.get_children(articles__article__current_revision__deleted=restore):
                 revision = models.ArticleRevision()
                 revision.inherit_predecessor(child.article)
                 revision.set_from_request(self.request)
-                revision.automatic_log = _(u'Deleting children of "%s"') % self.article.current_revision.title
-                revision.deleted = True
+                if restore:
+                    revision.automatic_log = _(u'Restoring children of "%s"') % self.article.current_revision.title
+                else:
+                    revision.automatic_log = _(u'Deleting children of "%s"') % self.article.current_revision.title
+                revision.deleted = not restore
                 child.article.add_revision(revision)
         
     def form_valid(self, form):
@@ -245,6 +254,54 @@ class Edit(FormView, ArticleMixin):
         return super(Edit, self).get_context_data(**kwargs)
 
 
+# TODO: ...
+class Deleted(Delete):
+    
+    template_name="wiki/deleted.html"
+    form_class = forms.DeleteForm
+    
+    @method_decorator(get_article(can_read=True, deleted_contents=True))
+    def dispatch(self, request, article, *args, **kwargs):
+        
+        self.urlpath = kwargs.get('urlpath', None)
+        self.article = article
+        
+        if not article.current_revision.deleted:
+            if self.urlpath:
+                return redirect('wiki:get', path=self.urlpath.path)
+            else:
+                return redirect('wiki:get', article_id=article.id)
+        
+        # Restore
+        if (request.GET.get('restore', False) and
+            (not article.current_revision.locked or request.user.has_perm('wiki.moderator'))):
+            self.delete_children(restore=True)
+            revision = models.ArticleRevision()
+            revision.inherit_predecessor(self.article)
+            revision.set_from_request(request)
+            revision.deleted = False
+            revision.automatic_log = _('Restoring article')
+            self.article.add_revision(revision)
+            messages.success(request, _(u'The article "%s" and its children are now restored.') % revision.title)
+            if self.urlpath:
+                return redirect('wiki:get', path=self.urlpath.path)
+            else:
+                return redirect('wiki:get', article_id=article.id)
+        
+        return super(Deleted, self).dispatch1(request, article, *args, **kwargs)
+    
+    def get_initial(self):
+        return {'revision': self.article.current_revision,
+                'purge': True}
+
+    def get_form(self, form_class):
+        form = super(Delete, self).get_form(form_class)
+        return form
+
+    def get_context_data(self, **kwargs):
+        kwargs['purge_form'] = kwargs.pop('form', None)
+        return super(Delete, self).get_context_data(**kwargs)
+    
 # TODO: ...
 class Source(ArticleMixin, TemplateView):
     pass
