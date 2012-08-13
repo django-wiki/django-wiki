@@ -1,12 +1,41 @@
-class Registry():
-    
-    def __init__(self):
-        self._registry = []
-    
-    def register(self, plugin_instance):
-        if not isinstance(plugin_instance, WikiPlugin):
-            raise TypeError("That's not a WikiPlugin")
-        self._registry.append(plugin_instance)
+from django.utils.translation import ugettext as _
 
-class WikiPlugin():
+class BasePlugin(object):
+    # Must fill in!
+    slug = None
+    
+    # Optional
+    settings_form = None# A form class to add to the settings tab
+    urlpatterns = []
+    article_tab = None  #(_(u'Attachments'), "icon-file")
+    article_view = None # A view for article_id/plugin/slug/
+    notifications = []  # A list of notification handlers to be subscribed if the notification system is active
+                        # Example
+                        #        [{'model': models.AttachmentRevision,
+                        #          'message': lambda obj: _(u"A file was changed: %s") % obj.get_filename(),
+                        #          'key': ARTICLE_EDIT,
+                        #          'created': True,
+                        #          'get_article': lambda obj: obj.attachment.article}
+                        #            ]
+
+    markdown_extensions = []
+    
     pass
+
+
+class PluginSidebarFormMixin(object):
+    
+    def __init__(self, plugin_instance, *args, **kwargs):
+        
+        kwargs['prefix'] = plugin_instance.slug
+        
+        
+
+class PluginSettingsFormMixin(object):    
+    settings_form_headline = _(u'Notifications')
+    settings_order = 1
+    settings_write_access = False
+    
+    def get_usermessage(self):
+        pass
+

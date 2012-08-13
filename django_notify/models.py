@@ -22,7 +22,7 @@ class NotificationType(models.Model):
         return self.key
     
     class Meta:
-        db_tablespace = settings.DB_TABLESPACE
+        db_table = settings.DB_TABLE_PREFIX + '_notificationtype'
         verbose_name = _(u'type')
         verbose_name_plural = _(u'types')
     
@@ -36,7 +36,7 @@ class Settings(models.Model):
         return _(u"Settings for %s") % self.user.username
     
     class Meta:
-        db_tablespace = settings.DB_TABLESPACE        
+        db_table = settings.DB_TABLE_PREFIX + '_settings'
         verbose_name = _(u'settings')
         verbose_name_plural = _(u'settings')
 
@@ -52,13 +52,13 @@ class Subscription(models.Model):
         return _("Subscription for: %s") % str(self.settings.user.username)
 
     class Meta:
-        db_tablespace = settings.DB_TABLESPACE
+        db_table = settings.DB_TABLE_PREFIX + '_subscription'
         verbose_name = _(u'subscription')
         verbose_name_plural = _(u'subscriptions')
 
 class Notification(models.Model):
     
-    subscription = models.ForeignKey(Subscription)
+    subscription = models.ForeignKey(Subscription, null=True, blank=True, on_delete=models.SET_NULL)
     message = models.TextField()
     url = models.URLField(blank=True, null=True, verbose_name=_(u'link for notification'))
     is_viewed = models.BooleanField(default=False)
@@ -97,6 +97,6 @@ class Notification(models.Model):
         return "%s: %s" % (str(self.subscription.settings.user), self.message)
 
     class Meta:
-        db_tablespace = settings.DB_TABLESPACE
+        db_table = settings.DB_TABLE_PREFIX + '_notification'
         verbose_name = _(u'notification')
         verbose_name_plural = _(u'notifications')

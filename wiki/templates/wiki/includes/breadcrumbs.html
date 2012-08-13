@@ -16,15 +16,18 @@
     <span class="caret"></span>
     </a>
     <ul class="dropdown-menu">
-      {% for child in urlpath.get_children %}
+      {% for child in children_slice %}
         <li>
-        <a href="{% url 'wiki:get' path=child.path %}">
-          {{ child.article.current_revision.title }}
-        </a>
+          <a href="{% url 'wiki:get' path=child.path %}">
+            {{ child.article.current_revision.title }}
+          </a>
         </li>
         {% empty %}
         <li><a href="#"><em>{% trans "No sub-articles" %}</em></a></li>
       {% endfor %}
+      {% if children_slice_more %}
+      <li><a href="#"><em>{% trans "...and more" %}</em></a></li>
+      {% endif %}
       <li class="divider"></li>
       <li>
         <a href="" onclick="alert('TODO')">{% trans "List sub-pages" %} &raquo;</a>

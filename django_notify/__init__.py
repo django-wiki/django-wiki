@@ -4,6 +4,8 @@ from django.utils.translation import ugettext as _
 
 import models
 
+_disable_notifications = False
+
 def notify(message, key, target_object=None, url=None):
     """
     Notify subscribing users of a new event. Key can be any kind of string,
@@ -21,6 +23,9 @@ def notify(message, key, target_object=None, url=None):
     notify("New comment posted", "new_comments")
     
     """
+    
+    if _disable_notifications:
+        return 0
     
     if target_object:
         if not isinstance(target_object, Model):

@@ -16,11 +16,27 @@ def json_view(func):
         return response
     return wrap
 
-def get_article(func=None, can_read=True, can_write=False):
-    """Intercepts the keyword args path or article_id and looks up an article,
-    calling the decorated func with this ID."""
+def get_article(func=None, can_read=True, can_write=False, deleted_contents=False):
+    """View decorator for processing standard url keyword args: Intercepts the 
+    keyword args path or article_id and looks up an article, calling the decorated 
+    func with this ID.
     
-    def the_func(request, *args, **kwargs):
+    Will accept a func(request, article, *args, **kwargs)
+    
+    NB! This function will redirect if an article does not exist, permissions
+    are missing or the article is deleted.
+    
+    Arguments:
+    
+    can_read=True and/or can_write=True: Check that the current request.user
+    has correct permissions.
+    
+    deleted_contents=True: Do not redirect if the article has been deleted.
+    
+    Also see: wiki.views.mixins.ArticleMixin 
+    """
+    
+    def wrapper(request, *args, **kwargs):
         import models
 
         path = kwargs.pop('path', None)
@@ -38,7 +54,7 @@ def get_article(func=None, can_read=True, can_write=False):
         if article_id:
             article = get_object_or_404(articles, id=article_id)
             try:
-                urlpath = models.URLPath.objects.get(articles=article)
+                urlpath = models.URLPath.objects.get(articles__article=article)
             except models.URLPath.DoesNotExist, models.URLPath.MultipleObjectsReturned:
                 urlpath = None
         else:
@@ -51,19 +67,33 @@ def get_article(func=None, can_read=True, can_write=False):
                     pathlist = filter(lambda x: x!="", path.split("/"),)
                     path = "/".join(pathlist[:-1])
                     parent = models.URLPath.get_by_path(path)
-                    return redirect(reverse("wiki:create_url", args=(parent.path,)) + "?slug=%s" % pathlist[-1])
+                    return redirect(reverse("wiki:create", kwargs={'path': parent.path,}) + "?slug=%s" % pathlist[-1])
                 except models.URLPath.DoesNotExist:
                     # TODO: Make a nice page
                     return HttpResponseNotFound("This article was not found, and neither was the parent. This page should look nicer.")
             # TODO: If the article is not found but it exists, there is a permission error!
-            article = get_object_or_404(articles, id=urlpath.article.id)
+            if urlpath.article:
+                article = get_object_or_404(articles, id=urlpath.article.id)
+            else:
+                # Somehow article is gone
+                return_url = reverse('wiki:get', kwargs={'path': urlpath.parent.path})
+                urlpath.delete()
+                return redirect(return_url)
+        
+        # If the article has been deleted, show a special page.
+        if not deleted_contents and article.current_revision and article.current_revision.deleted:
+            if urlpath:
+                return redirect('wiki:deleted', path=urlpath.path)
+            else:
+                return redirect('wiki:deleted', article_id=article.id)
         
         kwargs['urlpath'] = urlpath
         
         return func(request, article, *args, **kwargs)
     
     if func:
-        return the_func
+        return wrapper
     else:
-        return lambda func: get_article(func, can_read=can_read, can_write=can_write)
+        return lambda func: get_article(func, can_read=can_read, can_write=can_write, 
+                                        deleted_contents=deleted_contents)
 

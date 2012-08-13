@@ -19,6 +19,7 @@ from wiki.decorators import get_article, json_view
 from django.core.urlresolvers import reverse
 from django.db import transaction
 from wiki.core.exceptions import NoRootURL
+from django_notify.decorators import disable_notify
 
 class ArticleView(ArticleMixin, TemplateView):
 
@@ -64,14 +65,23 @@ class Create(FormView, ArticleMixin):
         elif settings.LOG_IPS_ANONYMOUS:
             ip_address = self.request.META.get('REMOTE_ADDR', None)
         try:
-            self.newpath = models.URLPath.create_article(self.urlpath,
-                                                         form.cleaned_data['slug'],
-                                                         title=form.cleaned_data['title'],
-                                                         content=form.cleaned_data['content'],
-                                                         user_message=form.cleaned_data['summary'],
-                                                         user=user,
-                                                         ip_address=ip_address)
-            messages.success(self.request, _(u"New article '%s' created.") % self.newpath.article.title)
+            self.newpath = models.URLPath.create_article(
+                self.urlpath,
+                form.cleaned_data['slug'],
+                title=form.cleaned_data['title'],
+                content=form.cleaned_data['content'],
+                user_message=form.cleaned_data['summary'],
+                user=user,
+                ip_address=ip_address,
+                article_kwargs={'owner': user,
+                                'group': self.article.group,
+                                'group_read': self.article.group_read,
+                                'group_write': self.article.group_write,
+                                'other_read': self.article.other_read,
+                                'other_write': self.article.other_write,
+                                })
+                # TODO: Subscribe user to new article and send notifications that user was subscribed.
+            messages.success(self.request, _(u"New article '%s' created.") % self.newpath.article.current_revision.title)
         
             transaction.commit()
         # TODO: Handle individual exceptions better and give good feedback.
@@ -106,47 +116,102 @@ class Delete(FormView, ArticleMixin):
     
     @method_decorator(get_article(can_write=True))
     def dispatch(self, request, article, *args, **kwargs):
-        super_return = super(Delete, self).dispatch(request, article, *args, **kwargs)
+        return self.dispatch1(request, article, *args, **kwargs)
+        
+    def dispatch1(self, request, article, *args, **kwargs):
+        """Deleted view needs to access this method without a decorator,
+        therefore it is separate."""
+        urlpath = kwargs.get('urlpath', None)
         # Where to go after deletion... 
         self.next = request.GET.get('next', None)
+        self.cannot_delete_root = False
         if not self.next:
-            if self.urlpath:
-                self.next = reverse('wiki:get', path=self.urlpath.parent.path)
+            if urlpath and urlpath.parent:
+                self.next = reverse('wiki:get', kwargs={'path': urlpath.parent.path})
+            elif urlpath:
+                self.cannot_delete_root = True
             else:
-                for art_obj in self.objectforarticle_set.filter(is_mptt=True):
-                    self.next = reverse('wiki:get', kwargs={'article_id': art_obj.parent.article.id})
-        return super_return
+                for art_obj in article.articleforobject_set.filter(is_mptt=True):
+                    if art_obj.content_object.parent:
+                        self.next = reverse('wiki:get', kwargs={'article_id': art_obj.content_object.parent.article.id})
+                    else:
+                        self.cannot_delete_root = True
+        
+        return super(Delete, self).dispatch(request, article, *args, **kwargs)
     
     def get_initial(self):
         return {'revision': self.article.current_revision}
     
     def get_form(self, form_class):
-        form = FormView.get_form(self, form_class)
+        form = super(Delete, self).get_form(form_class)
         if self.request.user.has_perm('wiki.moderator'):
             form.fields['purge'].widget = forms.forms.CheckboxInput()
+        return form
     
+    def get_form_kwargs(self):
+        kwargs = FormView.get_form_kwargs(self)
+        kwargs['article'] = self.article
+        kwargs['has_children'] = bool(self.children_slice)
+        return kwargs
+    
+    @disable_notify
+    def delete_children(self, purge=False, restore=False):
+        assert not (restore and purge), "You cannot purge a restore"
+        if purge:
+            for child in self.article.get_children(articles__article__current_revision__deleted=False):
+                child.delete()
+        else:
+            for child in self.article.get_children(articles__article__current_revision__deleted=restore):
+                revision = models.ArticleRevision()
+                revision.inherit_predecessor(child.article)
+                revision.set_from_request(self.request)
+                if restore:
+                    revision.automatic_log = _(u'Restoring children of "%s"') % self.article.current_revision.title
+                else:
+                    revision.automatic_log = _(u'Deleting children of "%s"') % self.article.current_revision.title
+                revision.deleted = not restore
+                child.article.add_revision(revision)
+        
     def form_valid(self, form):
         cd = form.cleaned_data
+        
+        cannot_delete_children = False
+        if self.children_slice and not self.request.user.has_perm('wiki.moderator'):
+            cannot_delete_children = True
+
+        if self.cannot_delete_root or cannot_delete_children:
+            messages.error(self.request, _(u'This article cannot be deleted because it has children or is a root article.'))
+            return redirect('wiki:get', article_id=self.article.id)
+        
+        # First, remove children
+        self.delete_children(purge=cd['purge'])
+        
         if self.request.user.has_perm('wiki.moderator') and cd['purge']:
-            pass
+            self.article.delete()
             messages.success(self.request, _(u'This article together with all its contents are now completely gone! Thanks!'))
         else:
             revision = models.ArticleRevision()
             revision.inherit_predecessor(self.article)
+            revision.set_from_request(self.request)
             revision.deleted = True
             self.article.add_revision(revision)
-            
-            messages.success(self.request, _(u'This article is now marked as deleted! Thanks for keeping the site free from unwanted material!'))
-            
+            messages.success(self.request, _(u'The article "%s" is now marked as deleted! Thanks for keeping the site free from unwanted material!') % revision.title)
+        return self.get_success_url()
+        
     def get_success_url(self):
         return redirect(self.next)
     
     def get_context_data(self, **kwargs):
-        kwargs['parent_urlpath'] = self.urlpath
-        kwargs['parent_article'] = self.article
-        kwargs['create_form'] = kwargs.pop('form', None)
-        kwargs['editor'] = editors.editor
-        return super(Create, self).get_context_data(**kwargs)
+        cannot_delete_children = False
+        if self.children_slice and not self.request.user.has_perm('wiki.moderator'):
+            cannot_delete_children = True
+        
+        kwargs['delete_form'] = kwargs.pop('form', None)
+        kwargs['cannot_delete_root'] = self.cannot_delete_root
+        kwargs['delete_children'] = self.children_slice[:20]
+        kwargs['delete_children_more'] = len(self.children_slice) > 20
+        kwargs['cannot_delete_children'] = cannot_delete_children
+        return super(Delete, self).get_context_data(**kwargs)
 
 
 class Edit(FormView, ArticleMixin):
@@ -170,6 +235,7 @@ class Edit(FormView, ArticleMixin):
         revision.title = form.cleaned_data['title']
         revision.content = form.cleaned_data['content']
         revision.user_message = form.cleaned_data['summary']
+        revision.deleted = False
         revision.set_from_request(self.request)
         self.article.add_revision(revision)
         messages.success(self.request, _(u'A new revision of the article was succesfully added.'))
@@ -186,6 +252,59 @@ class Edit(FormView, ArticleMixin):
         kwargs['editor'] = editors.editor
         kwargs['selected_tab'] = 'edit'
         return super(Edit, self).get_context_data(**kwargs)
+
+
+# TODO: ...
+class Deleted(Delete):
+    
+    template_name="wiki/deleted.html"
+    form_class = forms.DeleteForm
+    
+    @method_decorator(get_article(can_read=True, deleted_contents=True))
+    def dispatch(self, request, article, *args, **kwargs):
+        
+        self.urlpath = kwargs.get('urlpath', None)
+        self.article = article
+        
+        if not article.current_revision.deleted:
+            if self.urlpath:
+                return redirect('wiki:get', path=self.urlpath.path)
+            else:
+                return redirect('wiki:get', article_id=article.id)
+        
+        # Restore
+        if (request.GET.get('restore', False) and
+            (not article.current_revision.locked or request.user.has_perm('wiki.moderator'))):
+            self.delete_children(restore=True)
+            revision = models.ArticleRevision()
+            revision.inherit_predecessor(self.article)
+            revision.set_from_request(request)
+            revision.deleted = False
+            revision.automatic_log = _('Restoring article')
+            self.article.add_revision(revision)
+            messages.success(request, _(u'The article "%s" and its children are now restored.') % revision.title)
+            if self.urlpath:
+                return redirect('wiki:get', path=self.urlpath.path)
+            else:
+                return redirect('wiki:get', article_id=article.id)
+        
+        return super(Deleted, self).dispatch1(request, article, *args, **kwargs)
+    
+    def get_initial(self):
+        return {'revision': self.article.current_revision,
+                'purge': True}
+
+    def get_form(self, form_class):
+        form = super(Delete, self).get_form(form_class)
+        return form
+
+    def get_context_data(self, **kwargs):
+        kwargs['purge_form'] = kwargs.pop('form', None)
+        return super(Delete, self).get_context_data(**kwargs)
+    
+# TODO: ...
+class Source(ArticleMixin, TemplateView):
+    pass
 
 
 class History(ListView, ArticleMixin):
@@ -378,6 +497,7 @@ def merge(request, article, revision_id, urlpath=None, template_file="wiki/previ
                                  'content': content})
     return render_to_response(template_file, context_instance=c)
 
+# TODO: Should be a class-based view
 def root_create(request):
     try:
         root = models.URLPath.root()
@@ -390,13 +510,13 @@ def root_create(request):
     if not request.user.has_perm('wiki.add_article'):
         return redirect(settings.LOGIN_URL + "?next=" + reverse("wiki:root_create"))
     if request.method == 'POST':
-        create_form = forms.CreateRoot(request.POST)
+        create_form = forms.CreateRootForm(request.POST)
         if create_form.is_valid():
             models.URLPath.create_root(title=create_form.cleaned_data["title"],
                                        content=create_form.cleaned_data["content"])
             return redirect("wiki:root")
     else:
-        create_form = forms.CreateRoot()
+        create_form = forms.CreateRootForm()
     
     c = RequestContext(request, {'create_form': create_form,
                                  'editor': editors.editor,})

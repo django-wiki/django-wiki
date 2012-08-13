@@ -12,8 +12,9 @@ from wiki import models
 from wiki.editors import editor
 from wiki.core.diff import simple_merge
 from django.forms.widgets import HiddenInput
+from wiki.plugins import PluginSettingsFormMixin
 
-class CreateRoot(forms.Form):
+class CreateRootForm(forms.Form):
     
     title = forms.CharField(label=_(u'Title'), help_text=_(u'Initial title of the article. May be overridden with revision titles.'))
     content = forms.CharField(label=_(u'Type in some contents'),
@@ -175,7 +176,7 @@ class CreateForm(forms.Form):
         self.urlpath_parent = urlpath_parent
     
     title = forms.CharField(label=_(u'Title'),)
-    slug = forms.SlugField(label=_(u'Slug'), help_text=_(u"This will be the address where your article can be found. Use only alphanumeric characters and '-' or '_'."),)
+    slug = forms.SlugField(label=_(u'Slug'), help_text=_(u"This will be the address where your article can be found. Use only alphanumeric characters and - or _. Note that you cannot change the slug after creating the article."),)
     content = forms.CharField(label=_(u'Contents'),
                               required=False, widget=editor.get_widget()) #@UndefinedVariable
     
@@ -186,13 +187,43 @@ class CreateForm(forms.Form):
         slug = self.cleaned_data['slug']
         if slug[0] == "_":
             raise forms.ValidationError(_(u'A slug may not begin with an underscore.'))
-        if models.URLPath.objects.filter(slug=slug, parent=self.urlpath_parent):
-            raise forms.ValidationError(_(u'A slug named "%s" already exists.') % slug)
+        already_existing_slug = models.URLPath.objects.filter(slug=slug, parent=self.urlpath_parent)
+        if already_existing_slug:
+            slug = already_existing_slug[0]
+            if slug.article and slug.article.deleted:
+                raise forms.ValidationError(_(u'A deleted article with slug "%s" already exists.') % slug)
+            else:
+                raise forms.ValidationError(_(u'A slug named "%s" already exists.') % slug)
+        
         return slug
 
-class PermissionsForm(forms.ModelForm):
+
+class DeleteForm(forms.Form):
     
-    settings_form_id = "perms"
+    def __init__(self, *args, **kwargs):
+        self.article = kwargs.pop('article')
+        self.has_children = kwargs.pop('has_children')
+        super(DeleteForm, self).__init__(*args, **kwargs)
+    
+    confirm = forms.BooleanField(required=False,
+                                 label=_(u'Yes, I am sure'))
+    purge = forms.BooleanField(widget=HiddenInput(), required=False,
+                               label=_(u'Purge'),
+                               help_text=_(u'Purge the article: Completely remove it (and all its contents) with no undo. Purging is a good idea if you want to free the slug such that users can create new articles in its place.'))
+    revision = forms.ModelChoiceField(models.ArticleRevision.objects.all(),
+                                      widget=HiddenInput(), required=False)
+    
+    def clean(self):
+        cd = self.cleaned_data
+        if not cd['confirm']:
+            raise forms.ValidationError(_(u'You are not sure enough!'))
+        if cd['revision'] != self.article.current_revision:
+            raise forms.ValidationError(_(u'While you tried to delete this article, it was modified. TAKE CARE!'))
+        return cd
+
+
+class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
+    
     settings_form_headline = _(u'Permissions')
     settings_order = 5
     settings_write_access = False
@@ -221,13 +252,3 @@ class PermissionsForm(forms.ModelForm):
         model = models.Article
         fields = ('group', 'group_read', 'group_write', 'other_read', 'other_write')
 
-
-class DeleteForm(forms.Form):
-    
-    confirm = forms.BooleanField(required=False)
-    purge = forms.BooleanField(widget=HiddenInput(), required=False)
-    
-    def clean(self):
-        cd = self.cleaned_data
-        if not cd['confirm']:
-            raise forms.ValidationError(_(u'You are not sure enough!'))

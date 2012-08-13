@@ -26,6 +26,9 @@ if ACCOUNT_HANDLING:
 else:
     LOGIN_URL = getattr(django_settings, "LOGIN_URL", "/")
 
+# Maximum amount of children to display in a menu before going "+more"
+SHOW_MAX_CHILDREN = getattr(django_settings, 'WIKI_SHOW_MAX_CHILDREN', 20)
+
 ####################
 # PLANNED SETTINGS #
 ####################

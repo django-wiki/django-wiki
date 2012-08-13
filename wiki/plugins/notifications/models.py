@@ -6,7 +6,7 @@ from django.db.models import signals
 from django_notify import notify
 from django_notify.models import Subscription
 
-from wiki.plugins.notifications import ARTICLE_CREATE, ARTICLE_EDIT
+from wiki.plugins.notifications import ARTICLE_EDIT
 
 from wiki import models as wiki_models
 from wiki.core import plugins_registry
@@ -28,23 +28,19 @@ def default_url(article, urlpath=None):
         url = reverse('wiki:get', kwargs={'article_id': article.id})
     return url
 
-def post_article_save(instance, **kwargs):
-    if kwargs.get('created', False):
-        url = default_url(instance)
-        notify(_(u'New article created: %s') % instance.title, ARTICLE_CREATE,
-               target_object=instance, url=url)
-
 def post_article_revision_save(instance, **kwargs):
     if kwargs.get('created', False):
         url = default_url(instance.article)
-        notify(_(u'Article modified: %s') % instance.title, ARTICLE_EDIT,
-               target_object=instance.article, url=url)
-
-# Create notifications when new articles are saved. We do NOT care
-# about Article objects that are just modified, because many properties
-# are modified without any notifications necessary!
-signals.post_save.connect(post_article_save, sender=wiki_models.Article,)
-
+        if instance.deleted:
+            notify(_(u'Article deleted: %s') % instance.title, ARTICLE_EDIT,
+                   target_object=instance.article, url=url)
+        elif instance.previous_revision:
+            notify(_(u'Article modified: %s') % instance.title, ARTICLE_EDIT,
+                   target_object=instance.article, url=url)
+        else:
+            notify(_(u'New article created: %s') % instance.title, ARTICLE_EDIT,
+                   target_object=instance, url=url)
+            
 # Whenever a new revision is created, we notifý users that an article
 # was edited
 signals.post_save.connect(post_article_revision_save, sender=wiki_models.ArticleRevision,)

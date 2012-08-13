@@ -72,13 +72,13 @@ class Article(models.Model):
             for decendant in obj.content_object.get_decendants():
                 yield decendant
     
-    def get_children(self, max_num=None):
+    def get_children(self, max_num=None, **kwargs):
         """NB! This generator is expensive, so use it with care!!"""
         cnt = 0
         for obj in self.articleforobject_set.filter(is_mptt=True):
-            for child in obj.content_object.get_children():
+            for child in obj.content_object.get_children().filter(**kwargs):
                 cnt += 1
-                if cnt > max_num: return
+                if max_num and cnt > max_num: return
                 yield child
 
     # All recursive permission methods will use decendant_objects to access

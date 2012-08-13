@@ -3,6 +3,22 @@ from django.utils import simplejson as json
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
+import django_notify
+
+def disable_notify(func):
+    """Disable notifications. Example:
+    
+    @disable_notify
+    def your_function():
+        notify("no one will be notified", ...)
+    """
+    def wrap(request, *args, **kwargs):
+        django_notify._disable_notifications = True
+        response = func(request, *args, **kwargs)
+        django_notify._disable_notifications = False
+        return response
+    return wrap
+
 def login_required_ajax(func):
     """Similar to login_required. But if the request is an ajax request, then
     it returns an error in json with a 403 status code."""
@@ -25,3 +41,4 @@ def json_view(func):
         response.write(data)
         return response
     return wrap
+

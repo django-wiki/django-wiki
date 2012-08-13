@@ -3,7 +3,6 @@ from django.utils.translation import ugettext_lazy as _
 
 import settings
 
-from wiki.conf import settings as wiki_settings
 from wiki.models.pluginbase import RevisionPlugin
 
 class Image(RevisionPlugin):
@@ -20,4 +19,3 @@ class Image(RevisionPlugin):
     class Meta:
         verbose_name = _(u'image')
         verbose_name_plural = _(u'images')
-        app_label = wiki_settings.APP_LABEL

@@ -3,13 +3,14 @@ from django.conf.urls.defaults import patterns, url
 from django.utils.translation import ugettext as _
 
 from wiki.core import plugins_registry
+from wiki import plugins
 from wiki.plugins.attachments import views
 from wiki.plugins.attachments import models
 from wiki.plugins.attachments import settings
 from wiki.plugins.attachments.markdown_extensions import AttachmentExtension
 from wiki.plugins.notifications import ARTICLE_EDIT
 
-class AttachmentPlugin(plugins_registry.BasePlugin):
+class AttachmentPlugin(plugins.BasePlugin):
     
     #settings_form = 'wiki.plugins.notifications.forms.SubscriptionForm'
     
@@ -27,7 +28,6 @@ class AttachmentPlugin(plugins_registry.BasePlugin):
     )
     article_tab = (_(u'Attachments'), "icon-file")
     article_view = views.AttachmentView().dispatch
-    article_template_append = 'wiki/plugins/attachments/append.html'
     
     # List of notifications to construct signal handlers for. This
     # is handled inside the notifications plugin.
