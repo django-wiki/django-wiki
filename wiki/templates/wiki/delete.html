@@ -20,9 +20,9 @@
       
     {% if delete_children %}
 
-      <p class="lead">{% trans "You are deleting an article. This means that its children will loose their connection to the rest of the tree and moved to Lost and Found. Only do this if you know what you're doing." %}</p>
+      <p class="lead">{% trans "You are deleting an article. This means that its children will be deleted as well. If you choose to purge, children will also be purged!" %}</p>
       
-      <h2>{% trans "Articles that will be orphans" %}</h2>
+      <h2>{% trans "Articles that will be deleted" %}</h2>
       
       <ul>
         {% for child in delete_children %}

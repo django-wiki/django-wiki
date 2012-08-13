@@ -5,7 +5,6 @@ from django.http import HttpResponse, HttpResponseNotFound
 from django.utils import simplejson as json
 
 from wiki.core.exceptions import NoRootURL
-from django.contrib.contenttypes.models import ContentType
 
 def json_view(func):
     def wrap(request, *args, **kwargs):

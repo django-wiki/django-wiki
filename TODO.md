@@ -5,11 +5,11 @@ Not implemented - will be ASAP
  * Notification system **Almost done** (email notifications)
  * Simple user account handling: login/register etc. **Done**
  * Implement notifications, revision log messages and user messages thoroughly
- * Attachment plugin **Almost done** (needs to be able to add attachments from other articles.. a simple search function)
+ * Attachment plugin **Done**
  * Image plugin
  * Example plugin
  * Bot editing detection. Don't let anyone edit more than once every other minute.
- * Article deletion
+ * Article deletion **Done**
  * Key-value meta data
  * Index views for urlpaths
  * Searching
@@ -17,7 +17,7 @@ Not implemented - will be ASAP
  * View source for read-only articles + locked status
  * Global moderator permission **Almost done** (need to add grant form for users with *grant* permissions)
  * Are you sure you wanna leave this page?
- * requirements.txt : are the `>` really correct???
+ * Special view for deleted articles w/ restore button
  
 Ideas
 =====
