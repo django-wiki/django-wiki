@@ -35,4 +35,4 @@ def load(modname, verbose=False, failfast=False):
         get_module(app, modname, verbose, failfast)
 
 def load_wiki_plugins():
-    load('wiki_plugin', verbose=True)
+    load('wiki_plugin', verbose=False)
