@@ -2,6 +2,7 @@
 import difflib
 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.decorators import method_decorator
@@ -344,6 +345,7 @@ class Settings(ArticleMixin, TemplateView):
     permission_form_class = forms.PermissionsForm
     template_name="wiki/settings.html"
     
+    @method_decorator(login_required)
     @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, *args, **kwargs):
         return super(Settings, self).dispatch(request, article, *args, **kwargs)
