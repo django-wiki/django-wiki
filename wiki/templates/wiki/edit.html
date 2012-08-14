@@ -6,7 +6,7 @@
 
 {% block wiki_contents_tab %}
 
-<form method="POST" class="form-horizontal">
+<form method="POST" class="form-horizontal" id="article_edit_form" enctype="multipart/form-data">
   {% include "wiki/includes/editor.html" %}
   <div class="form-actions">
       <button type="submit" name="preview" value="1" class="btn btn-large" onclick="$('#previewModal').modal('show'); this.form.target='previewWindow'; this.form.action='{% url 'wiki:preview' path=urlpath.path article_id=article.id %}'">

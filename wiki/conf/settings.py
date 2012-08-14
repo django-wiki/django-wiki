@@ -9,6 +9,8 @@ URL_CASE_SENSITIVE = getattr(django_settings, 'WIKI_URL_CASE_SENSITIVE', False)
 APP_LABEL = 'wiki'
 WIKI_LANGUAGE = 'markdown'
 
+# The editor class to use -- maybe a 3rd party or your own...? You can always
+# extend the built-in editor and customize it....
 EDITOR = getattr(django_settings, 'WIKI_EDITOR', 'wiki.editors.MarkItUp')
 
 # This slug is used in URLPath if an article has been deleted. The children of the
@@ -16,9 +18,11 @@ EDITOR = getattr(django_settings, 'WIKI_EDITOR', 'wiki.editors.MarkItUp')
 # and all their content.
 LOST_AND_FOUND_SLUG = getattr(django_settings, 'WIKI_LOST_AND_FOUND_SLUG', 'lost-and-found')
 
+# Do we want to log IPs?
 LOG_IPS_ANONYMOUS = getattr(django_settings, 'WIKI_LOG_IPS_ANONYMOUS', True)
 LOG_IPS_USERS = getattr(django_settings, 'WIKI_LOG_IPS_USERS', False)
 
+# Sign up, login and logout views should be accessible 
 ACCOUNT_HANDLING = getattr(django_settings, 'WIKI_ACCOUNT_HANDLING', True)
 
 if ACCOUNT_HANDLING:

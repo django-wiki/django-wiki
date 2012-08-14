@@ -13,11 +13,11 @@ Not implemented - will be ASAP
  * Key-value meta data
  * Index views for urlpaths
  * Searching
- * South migrations **Soon**
+ * South migrations **Done**
  * View source for read-only articles + locked status
  * Global moderator permission **Almost done** (need to add grant form for users with *grant* permissions)
  * Are you sure you wanna leave this page?
- * Special view for deleted articles w/ restore button
+ * Special view for deleted articles w/ restore button **Done**
  
 Ideas
 =====

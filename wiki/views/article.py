@@ -222,13 +222,53 @@ class Edit(FormView, ArticleMixin):
     
     @method_decorator(get_article(can_write=True))
     def dispatch(self, request, article, *args, **kwargs):
+        self.sidebar_plugins = plugins_registry.get_sidebar()
+        self.sidebar_forms = {}
+        for plugin in self.sidebar_plugins:
+            sidebar_form_class = plugin.sidebar.get('form_class', None)
+            if sidebar_form_class:
+                form_kwargs = {}
+                form_kwargs['prefix'] = plugin.slug
+                form_kwargs['article'] = article
+                form_kwargs.update(plugin.sidebar['get_form_kwargs'](article))
+                plugin.sidebar_form_context = 'form_' + plugin.slug
+                if request.POST.get(plugin.slug+'_save', '') == '1':
+                    form_kwargs['data'] = request.POST
+                    form_kwargs['files'] = request.FILES
+                self.sidebar_forms[plugin.sidebar_form_context] = sidebar_form_class(**form_kwargs)
+        
         return super(Edit, self).dispatch(request, article, *args, **kwargs)
     
     def get_form(self, form_class):
         """
         Returns an instance of the form to be used in this view.
         """
-        return form_class(self.article.current_revision, **self.get_form_kwargs())
+        kwargs = self.get_form_kwargs()
+        if self.request.POST.get('save', '') != '1':
+            kwargs['no_clean'] = True
+        
+        return form_class(self.article.current_revision, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        
+        # Check if any of the plugin form data is supposed to be saved
+        for plugin in self.sidebar_plugins:
+            if self.request.POST.get(plugin.slug+'_save', '') == '1':
+                form = self.sidebar_forms[plugin.sidebar_form_context]
+                if form.is_valid():
+                    form.save()
+                    message = form.get_usermessage()
+                    if message:
+                        messages.success(request, message)
+                    #if self.urlpath:
+                    #    return redirect('wiki:edit', path=self.urlpath.path)
+                    #else:
+                    #    return redirect('wiki:edit', article_id=self.article.id)
+                    
+        if self.request.POST.get('save', '') == '1':
+            return super(Edit, self).post(request, *args, **kwargs)
+        else:
+            return super(Edit, self).get(request, *args, **kwargs)
     
     def form_valid(self, form):
         revision = models.ArticleRevision()
@@ -252,6 +292,10 @@ class Edit(FormView, ArticleMixin):
         kwargs['edit_form'] = kwargs.pop('form', None)
         kwargs['editor'] = editors.editor
         kwargs['selected_tab'] = 'edit'
+        kwargs['sidebar'] = self.sidebar_plugins
+        
+        kwargs.update(self.sidebar_forms)
+        
         return super(Edit, self).get_context_data(**kwargs)
 
 

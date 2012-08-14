@@ -32,6 +32,8 @@ class ArticlePlugin(models.Model):
     
     deleted = models.BooleanField(default=False)
     
+    created = models.DateTimeField(auto_now_add=True)
+    
     def purge(self):
         """Remove related contents completely, ie. media files."""
         pass
@@ -106,7 +108,7 @@ class RevisionPlugin(ArticlePlugin):
         super(RevisionPlugin, self).__init__(*args, **kwargs)
         if not self.id and not 'article' in kwargs:
             raise RevisionPluginCreateError("Keyword argument 'article' expected.")
-        self.article = kwargs['article']
+            self.article = kwargs['article']
         
     def get_logmessage(self):
         return _(u"A plugin was changed")
@@ -121,6 +123,7 @@ class RevisionPlugin(ArticlePlugin):
             new_revision.save()
             
             self.revision = new_revision
+        super(RevisionPlugin, self).save(*args, **kwargs)
     
     class Meta:
         app_label = settings.APP_LABEL

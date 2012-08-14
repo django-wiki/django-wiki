@@ -1,20 +1,21 @@
 # -*- coding: utf-8 -*-
+from django.conf import settings as django_settings
+from django.contrib import messages
+from django.db import transaction
+from django.db.models import Q
+from django.http import Http404
 from django.shortcuts import redirect, get_object_or_404
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
-from django.views.generic.edit import FormView 
-from django.db.models import Q
-
-from wiki.views.mixins import ArticleMixin
-from wiki.decorators import get_article
-from wiki.plugins.attachments import forms
-from wiki.plugins.attachments import models
-from django.contrib import messages
 from django.views.generic.base import TemplateView, View
-from wiki.core.http import send_file
-from django.http import Http404
-from django.db import transaction
+from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
+
+from wiki.core.http import send_file
+from wiki.decorators import get_article
+from wiki.plugins.attachments import models, settings, forms
+from wiki.views.mixins import ArticleMixin
+
 
 class AttachmentView(ArticleMixin, FormView):
     
@@ -34,6 +35,9 @@ class AttachmentView(ArticleMixin, FormView):
     # WARNING! The below decorator silences other exceptions that may occur!
     #@transaction.commit_manually
     def form_valid(self, form):
+        if self.request.user.is_anonymous and not settings.ANONYMOUS:
+            return redirect(django_settings.LOGIN_URL)
+            
         try:
             attachment_revision = form.save(commit=False)
             attachment = models.Attachment()
@@ -59,6 +63,7 @@ class AttachmentView(ArticleMixin, FormView):
         kwargs['attachments'] = self.attachments
         kwargs['search_form'] = forms.SearchForm()
         kwargs['selected_tab'] = 'attachments'
+        kwargs['anonymous_disallowed'] = self.request.user.is_anonymous and not settings.ANONYMOUS
         return super(AttachmentView, self).get_context_data(**kwargs)
 
 
