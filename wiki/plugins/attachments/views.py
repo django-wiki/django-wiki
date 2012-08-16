@@ -35,7 +35,7 @@ class AttachmentView(ArticleMixin, FormView):
     # WARNING! The below decorator silences other exceptions that may occur!
     #@transaction.commit_manually
     def form_valid(self, form):
-        if self.request.user.is_anonymous and not settings.ANONYMOUS:
+        if self.request.user.is_anonymous() and not settings.ANONYMOUS:
             return redirect(django_settings.LOGIN_URL)
             
         try:
@@ -63,7 +63,7 @@ class AttachmentView(ArticleMixin, FormView):
         kwargs['attachments'] = self.attachments
         kwargs['search_form'] = forms.SearchForm()
         kwargs['selected_tab'] = 'attachments'
-        kwargs['anonymous_disallowed'] = self.request.user.is_anonymous and not settings.ANONYMOUS
+        kwargs['anonymous_disallowed'] = self.request.user.is_anonymous() and not settings.ANONYMOUS
         return super(AttachmentView, self).get_context_data(**kwargs)
 
 

@@ -78,14 +78,14 @@ def get_article(func=None, can_read=True, can_write=False, deleted_contents=Fals
                 return redirect(return_url)
         
         if can_read and not article.can_read(request.user):
-            if request.user.is_anonymous:
+            if request.user.is_anonymous():
                 return redirect(django_settings.LOGIN_URL)
             else:
                 pass
                 # TODO: Return a permission denied page
         
         if can_write and not article.can_write(request.user):
-            if request.user.is_anonymous:
+            if request.user.is_anonymous():
                 return redirect(django_settings.LOGIN_URL)
             else:
                 pass
