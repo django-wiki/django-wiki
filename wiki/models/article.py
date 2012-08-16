@@ -39,7 +39,8 @@ class Article(models.Model):
     other_write = models.BooleanField(default=True, verbose_name=_(u'others write access'))
     
     def can_read(self, user=None, group=None):
-        if self.other_read:
+        is_other = (user and not user.is_anonymous() ) or settings.ANONYMOUS
+        if is_other and self.other_read:
             return True
         if user == self.owner:
             return True
@@ -53,7 +54,8 @@ class Article(models.Model):
         return False
     
     def can_write(self, user=None, group=None):
-        if self.other_write:
+        is_other = (user and not user.is_anonymous() ) or settings.ANONYMOUS
+        if is_other and self.other_write:
             return True
         if user == self.owner:
             return True
