@@ -84,7 +84,6 @@ def get_article(func=None, can_read=True, can_write=False, deleted_contents=Fals
             else:
                 c = RequestContext(request, {'urlpath' : urlpath})
                 return render_to_response("wiki/permission_denied.html", context_instance=c)
-                pass
         
         if can_write and not article.can_write(request.user):
             if request.user.is_anonymous():
@@ -92,7 +91,6 @@ def get_article(func=None, can_read=True, can_write=False, deleted_contents=Fals
             else:
                 c = RequestContext(request, {'urlpath' : urlpath})
                 return render_to_response("wiki/permission_denied.html", context_instance=c)
-                pass
 
         # If the article has been deleted, show a special page.
         if not deleted_contents and article.current_revision and article.current_revision.deleted:
