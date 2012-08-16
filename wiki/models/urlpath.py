@@ -32,13 +32,17 @@ class URLPath(MPTTModel):
     @property
     def path(self):
         if not self.parent: return ""
-        return "/".join([obj.slug if obj.slug else "" for obj in self.get_ancestors(include_self=True).exclude(parent=None)]) + "/"
+        if not hasattr(self, '_cachedpath'):
+            self._cachedpath = "/".join([obj.slug if obj.slug else "" for obj in self.get_ancestors(include_self=True).exclude(parent=None)]) + "/"
+        return self._cachedpath 
     
     @classmethod
     def root(cls):
         site = Site.objects.get_current()
-        root_nodes = cls.objects.root_nodes().filter(site=site)
-        no_paths = root_nodes.count()
+        root_nodes = list(cls.objects.root_nodes().filter(site=site))
+        # We fetch the nodes as a list and use len(), not count() because we need
+        # to get the result out anyway. This only takes one sql query
+        no_paths = len(root_nodes)
         if no_paths == 0:
             raise NoRootURL("You need to create a root article on site '%s'" % site)
         if no_paths > 1:
