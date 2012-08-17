@@ -11,7 +11,7 @@ WIKI_LANGUAGE = 'markdown'
 
 # The editor class to use -- maybe a 3rd party or your own...? You can always
 # extend the built-in editor and customize it....
-EDITOR = getattr(django_settings, 'WIKI_EDITOR', 'wiki.editors.MarkItUp')
+EDITOR = getattr(django_settings, 'WIKI_EDITOR', 'wiki.plugins.MarkItUp')
 
 # This slug is used in URLPath if an article has been deleted. The children of the
 # URLPath of that article are moved to lost and found. They keep their permissions
