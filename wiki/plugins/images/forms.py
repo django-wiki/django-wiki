@@ -15,5 +15,5 @@ class SidebarForm(forms.ModelForm, PluginSidebarFormMixin):
         return _(u"New image %s was successfully uploaded. You can use it by selecting it from the list of available images.") % self.instance.get_filename()
     
     class Meta:
-        model = models.Image
+        model = models.ImageRevision
         fields = ('image',)

@@ -2,19 +2,24 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import signals
+from wiki.models.article import BaseRevisionMixin
 
 """
-There are two kinds of plugin objects:
-  1) ArticlePlugin - an object associated with an article. Does not reference
-     a Revision.
+There are three kinds of plugin objects:
+  1) SimplePlugin - an object purely associated with an article. Will bump the
+     article's revision history upon creation, and rolling back an article will
+     make it go away (not from the database, you can roll forwards again).
      
-  2) RevisionPlugin - an object associated with a revision. This object
-     is automatically referenced to each new revision, and if you create
-     a new object, a new revision will be created.
+  2) RevisionPlugin - an object with its own revisions. The object will have its
+     own history independent of the article. The strategy is that you will provide
+     different code for the article text while including it, so it will indirectly
+     affect the article history, but you have the force of rolling back this
+     object independently.
   
   3) ReusablePlugin - a plugin that can be used on many articles. Please note
      that the logics for keeping revisions on such plugins are complicated, so you
-     have to implement that on your own.
+     have to implement that on your own. Furthermore, you need to be aware of
+     the permission system!
 """
 
 from article import Article, ArticleRevision
@@ -22,7 +27,7 @@ from article import Article, ArticleRevision
 from wiki.conf import settings 
 
 class ArticlePlugin(models.Model):
-    """Always extend from this if you're making a plugin. That way, a deletion
+    """This is the mother of all plugins. Extending from it means a deletion
     of an article will CASCADE to your plugin, and the database will be kept
     clean. Furthermore, it's possible to list all plugins and maintain generic
     properties in the future..."""    
@@ -80,9 +85,9 @@ class ReusablePlugin(ArticlePlugin):
     class Meta:
         app_label = settings.APP_LABEL
 
-class RevisionPluginCreateError(Exception): pass
+class SimplePluginCreateError(Exception): pass
 
-class RevisionPlugin(ArticlePlugin):
+class SimplePlugin(ArticlePlugin):
     """
     Inherit from this model and make sure to specify an article when
     saving a new instance. This way, a new revision will be created, and
@@ -93,21 +98,20 @@ class RevisionPlugin(ArticlePlugin):
     
     Usage:
     
-    class YourPlugin(RevisionPlugin):
+    class YourPlugin(SimplePlugin):
         ...
     
     Creating new plugins instances:
     YourPlugin(article=article_instance, ...) or
     YourPlugin.objects.create(article=article_instance, ...)
-    
-    
     """
-    revision = models.ForeignKey(ArticleRevision, on_delete=models.CASCADE)
+    # The article revision that this plugin is attached to
+    article_revision = models.ForeignKey(ArticleRevision, on_delete=models.CASCADE)
     
     def __init__(self, *args, **kwargs):
-        super(RevisionPlugin, self).__init__(*args, **kwargs)
+        super(SimplePlugin, self).__init__(*args, **kwargs)
         if not self.id and not 'article' in kwargs:
-            raise RevisionPluginCreateError("Keyword argument 'article' expected.")
+            raise SimplePluginCreateError("Keyword argument 'article' expected.")
             self.article = kwargs['article']
         
     def get_logmessage(self):
@@ -116,15 +120,91 @@ class RevisionPlugin(ArticlePlugin):
     def save(self, *args, **kwargs):
         if not self.id:
             if not self.article.current_revision:
-                raise RevisionPluginCreateError("Article does not have a current_revision set.")
+                raise SimplePluginCreateError("Article does not have a current_revision set.")
             new_revision = ArticleRevision()
             new_revision.inherit_predecessor(self.article)
             new_revision.automatic_log = self.get_logmessage()
             new_revision.save()
             
-            self.revision = new_revision
-        super(RevisionPlugin, self).save(*args, **kwargs)
+            self.article_revision = new_revision
+        super(SimplePlugin, self).save(*args, **kwargs)
     
+    class Meta:
+        app_label = settings.APP_LABEL
+
+class RevisionPlugin(ArticlePlugin):
+    """
+    If you want your plugin to maintain revisions, extend from this one,
+    not SimplePlugin.
+    
+    This kind of plugin is not attached to article plugins so rolling articles
+    back and forth does not affect it.
+    """
+    # The current revision of this plugin, if any!
+    current_revision = models.OneToOneField('RevisionPluginRevision', 
+                                            verbose_name=_(u'current revision'),
+                                            blank=True, null=True, related_name='plugin_set',
+                                            help_text=_(u'The revision being displayed for this plugin.'
+                                                         'If you need to do a roll-back, simply change the value of this field.'),
+                                            )
+    
+    class Meta:
+        app_label = settings.APP_LABEL
+
+class RevisionPluginRevision(BaseRevisionMixin, models.Model):
+    """
+    If you want your plugin to maintain revisions, make an extra model
+    that extends from this one.
+    
+    (this class is very much copied from wiki.models.article.ArticleRevision
+    """
+    
+    plugin = models.ForeignKey(RevisionPlugin)
+
+    def save(self, *args, **kwargs):
+        if (not self.id and
+            not self.previous_revision and 
+            self.plugin and
+            self.plugin.current_revision and 
+            self.plugin.current_revision != self):
+            
+            self.previous_revision = self.plugin.current_revision
+
+        if not self.revision_number:
+            try:
+                previous_revision = self.article.articlerevision_set.latest()
+                self.revision_number = previous_revision.revision_number + 1
+            except ArticleRevision.DoesNotExist:
+                self.revision_number = 1
+
+        super(RevisionPluginRevision, self).save(*args, **kwargs)
+        
+        if not self.plugin.current_revision:
+            # If I'm saved from Django admin, then plugin.current_revision is me!
+            self.plugin.current_revision = self
+            self.plugin.save()
+
+
+    def add_revision(self, new_revision, save=True):
+        """
+        Sets the properties of a revision and ensures its the current
+        revision.
+        """
+        assert self.id or save, ('RevisionPluginRevision.add_revision: Sorry, you cannot add a' 
+                                 'revision to a plugin that has not been saved '
+                                 'without using save=True')
+        if not self.id: self.save()
+        revisions = self.pluginrevision_set.all()
+        try:
+            new_revision.revision_number = revisions.latest().revision_number + 1
+        except RevisionPlugin.DoesNotExist:
+            new_revision.revision_number = 0
+        new_revision.plugin = self
+        new_revision.previous_revision = self.current_revision
+        if save: new_revision.save()
+        self.current_revision = new_revision
+        if save: self.save()
+
     class Meta:
         app_label = settings.APP_LABEL
 
@@ -137,11 +217,11 @@ class RevisionPlugin(ArticlePlugin):
 # It's my art, when I disguise my body in the shape of a plane.
 # (Shellac, 1993)
 
-def update_revision_plugins(instance, *args, **kwargs):
+def update_simple_plugins(instance, *args, **kwargs):
     """Every time a new article revision is created, we update all active 
     plugins to match this article revision"""
     if kwargs.get('created', False):
-        p_revisions = RevisionPlugin.objects.filter(article=instance.article, deleted=False)
+        p_revisions = SimplePlugin.objects.filter(article=instance.article, deleted=False)
         p_revisions.update(revision=instance)
 
-signals.post_save.connect(update_revision_plugins, ArticleRevision)
+signals.post_save.connect(update_simple_plugins, ArticleRevision)

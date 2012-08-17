@@ -228,13 +228,14 @@ class ArticleRevision(BaseRevisionMixin, models.Model):
     # the last used revision...
     title = models.CharField(max_length=512, verbose_name=_(u'article title'), 
                              null=False, blank=False, help_text=_(u'Each revision contains a title field that must be filled out, even if the title has not changed'))
-
+    
+    # TODO:
     # Allow a revision to redirect to another *article*. This 
     # way, we can redirects and still maintain old content.
-    redirect = models.ForeignKey('Article', null=True, blank=True,
-                                 verbose_name=_(u'redirect'),
-                                 help_text=_(u'If set, the article will redirect to the contents of another article.'),
-                                 related_name='redirect_set')
+    #redirect = models.ForeignKey('Article', null=True, blank=True,
+    #                             verbose_name=_(u'redirect'),
+    #                             help_text=_(u'If set, the article will redirect to the contents of another article.'),
+    #                             related_name='redirect_set')
     
     def __unicode__(self):
         return "%s (%d)" % (self.title, self.revision_number)
@@ -250,7 +251,6 @@ class ArticleRevision(BaseRevisionMixin, models.Model):
         self.title = predecessor.title
         self.deleted = predecessor.deleted
         self.locked = predecessor.locked
-        self.redirect = predecessor.redirect
     
     def save(self, *args, **kwargs):
         if (not self.id and

@@ -2,11 +2,12 @@ from django.contrib import admin
 
 import models
 
-class ImageAdmin(admin.ModelAdmin):
+class ImageRevisionInline(admin.TabularInline):
+    model = models.ImageRevision
+    extra = 1
+    fields = ('image', 'locked', 'deleted')
     
-    # Do not let images be added in the admin. An image can only be added
-    # from the article admin due to the automatic revision system.
-    def has_add_permission(self, request):
-        return False
+class ImageAdmin(admin.ModelAdmin):
+    inlines = (ImageRevisionInline,)
 
 admin.site.register(models.Image, ImageAdmin)

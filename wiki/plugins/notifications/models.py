@@ -6,12 +6,10 @@ from django.db.models import signals
 from django_notify import notify
 from django_notify.models import Subscription
 
-from wiki.plugins.notifications import ARTICLE_EDIT
-
 from wiki import models as wiki_models
 from wiki.core import plugins_registry
-
-from . import settings
+from wiki.plugins.notifications import ARTICLE_EDIT #TODO: Is this bad practice?
+from wiki.plugins.notifications import settings
 
 class ArticleSubscription(wiki_models.pluginbase.ArticlePlugin, Subscription):
     

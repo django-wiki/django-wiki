@@ -6,4 +6,4 @@ register = template.Library()
 
 @register.filter
 def images_for_article(article):
-    return models.Image.objects.filter(revision__article=article).order_by('-created')
+    return models.Image.objects.filter(article=article).order_by('-created')
