@@ -66,7 +66,6 @@ class Article(models.Model):
                 return True
         if user and user.has_perm('wiki_moderator'):
             return True
-        print "returned false"
         return False
     
     def decendant_objects(self):
