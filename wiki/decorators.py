@@ -46,16 +46,15 @@ def get_article(func=None, can_read=True, can_write=False, deleted_contents=Fals
         articles = models.Article.objects
         
         # TODO: Is this the way to do it?
-        articles = articles.select_related()
+        # https://docs.djangoproject.com/en/1.4/ref/models/querysets/#django.db.models.query.QuerySet.prefetch_related
+        # This is not the way to go... optimize below statements to behave
+        # according to normal prefetching.
+        articles = articles.prefetch_related()
         
         urlpath = None
-        if article_id:
-            article = get_object_or_404(articles, id=article_id)
-            try:
-                urlpath = models.URLPath.objects.get(articles__article=article)
-            except models.URLPath.DoesNotExist, models.URLPath.MultipleObjectsReturned:
-                urlpath = None
-        else:
+        
+        # fetch by urlpath.path
+        if not path is None:
             try:
                 urlpath = models.URLPath.get_by_path(path, select_related=True)
             except NoRootURL:
@@ -76,6 +75,20 @@ def get_article(func=None, can_read=True, can_write=False, deleted_contents=Fals
                 return_url = reverse('wiki:get', kwargs={'path': urlpath.parent.path})
                 urlpath.delete()
                 return redirect(return_url)
+        
+        
+        # fetch by article.id
+        if article_id:
+            article = get_object_or_404(articles, id=article_id)
+            try:
+                urlpath = models.URLPath.objects.get(articles__article=article)
+            except models.URLPath.DoesNotExist, models.URLPath.MultipleObjectsReturned:
+                urlpath = None
+        
+        
+        else:
+            # TODO: Return something??
+            raise TypeError('You should specify either article_id or path')
         
         if can_read and not article.can_read(request.user):
             if request.user.is_anonymous():
