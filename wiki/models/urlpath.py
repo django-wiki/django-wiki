@@ -4,7 +4,7 @@ from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models.signals import pre_delete
+from django.db.models.signals import pre_delete, post_save
 from django.utils.translation import ugettext_lazy as _, ugettext
 
 from mptt.fields import TreeForeignKey
@@ -13,6 +13,7 @@ from mptt.models import MPTTModel
 from wiki.conf import settings
 from wiki.core.exceptions import NoRootURL, MultipleRootURLs
 from wiki.models.article import ArticleRevision, ArticleForObject, Article
+from django.contrib.contenttypes.models import ContentType
 
 class URLPath(MPTTModel):
     """
@@ -25,6 +26,11 @@ class URLPath(MPTTModel):
     INHERIT_PERMISSIONS = True 
     
     articles = generic.GenericRelation(ArticleForObject)
+    
+    # Do NOT modify this field - it is updated with signals whenever ArticleForObject is changed.
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, editable=False,
+                                verbose_name=_(u'Cache lookup value for articles'))
+    
     slug = models.SlugField(verbose_name=_(u'slug'), null=True, blank=True)
     site = models.ForeignKey(Site)
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children')    
@@ -85,6 +91,11 @@ class URLPath(MPTTModel):
         Strategy: Don't handle all kinds of weird cases. Be strict.
         Accepts paths both starting with and without '/'
         """
+        
+        # TODO: Save paths directly in the model for constant time lookups?
+        
+        # Or: Save the parents in a lazy property because the parents are
+        # always fetched anyways so it's fine to fetch them here.
         path = path.lstrip("/")
         path = path.rstrip("/")
         
@@ -127,24 +138,27 @@ class URLPath(MPTTModel):
         """Utility function:
         Create a new urlpath with an article and a new revision for the article"""
         if not site: site = Site.objects.get_current()
-        newpath = cls.objects.create(site=site, parent=parent, slug=slug)
         article = Article(**article_kwargs)
         article.add_revision(ArticleRevision(title=title, **kwargs),
                              save=True)
+        article.save()
+        newpath = cls.objects.create(site=site, parent=parent, slug=slug, article=article)
         article.add_object_relation(newpath)
         return newpath
-
-    @property
-    def article(self):
-        try:
-            return self.articles.all()[0].article
-        except IndexError:
-            return None
-
+    
 
 ######################################################
 # SIGNAL HANDLERS
 ######################################################
+
+# Just get this once
+urlpath_content_type = ContentType.objects.get_for_model(URLPath)
+
+def on_article_relation_save(instance, *args, **kwargs):
+    if instance.content_type == urlpath_content_type:
+        URLPath.objects.filter(id=instance.object_id).update(article=instance.article)
+
+post_save.connect(on_article_relation_save, ArticleForObject)
 
 def on_article_delete(instance, *args, **kwargs):
     # If an article is deleted, then throw out its URLPaths
@@ -168,12 +182,13 @@ def on_article_delete(instance, *args, **kwargs):
                  content=_(u'Articles who lost their parents'
                             '==============================='),
                  title=_(u"Lost and found")))
-        
+    
     for urlpath in URLPath.objects.filter(articles__article=instance, site=site):
         # Delete the children
         for child in urlpath.get_children():
             child.move_to(lost_and_found)
         # ...and finally delete the path itself
+        # TODO: This should be unnecessary because of URLPath.article(...ondelete=models.CASCADE)
         urlpath.delete()
     
 pre_delete.connect(on_article_delete, Article)

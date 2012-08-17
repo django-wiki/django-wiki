@@ -104,6 +104,7 @@ INSTALLED_APPS = (
     'south',
     'sekizai',
     'django_notify',
+    'sorl.thumbnail',
     'wiki',
     'wiki.plugins.images',
     'wiki.plugins.attachments',

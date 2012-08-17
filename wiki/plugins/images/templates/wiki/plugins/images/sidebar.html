@@ -17,6 +17,7 @@
   {% endfor %}
 </table>
 
+{% if article|can_write:user %}
 <hr />
 
 <h4>{% trans "Add new image" %}</h4>
@@ -55,3 +56,5 @@
     {% trans "Add image" %}
   </button>
 </p>
+
+{% endif %}

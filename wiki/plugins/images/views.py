@@ -1,7 +1,8 @@
-from wiki.views.mixins import ArticleMixin
 from django.views.generic.base import TemplateView
 from django.utils.decorators import method_decorator
+
 from wiki.decorators import get_article
+from wiki.views.mixins import ArticleMixin
 
 class ImageView(ArticleMixin, TemplateView):
     

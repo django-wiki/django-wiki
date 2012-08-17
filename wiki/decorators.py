@@ -3,10 +3,12 @@ from django.conf import settings as django_settings
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, get_object_or_404, render_to_response
 from django.template.context import RequestContext
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound,\
+    HttpResponseForbidden
 from django.utils import simplejson as json
 
 from wiki.core.exceptions import NoRootURL
+from django.template.loader import render_to_string
 
 def json_view(func):
     def wrap(request, *args, **kwargs):
@@ -79,7 +81,7 @@ def get_article(func=None, can_read=True, can_write=False, deleted_contents=Fals
         
         
         # fetch by article.id
-        if article_id:
+        elif article_id:
             article = get_object_or_404(articles, id=article_id)
             try:
                 urlpath = models.URLPath.objects.get(articles__article=article)
@@ -96,14 +98,14 @@ def get_article(func=None, can_read=True, can_write=False, deleted_contents=Fals
                 return redirect(django_settings.LOGIN_URL)
             else:
                 c = RequestContext(request, {'urlpath' : urlpath})
-                return render_to_response("wiki/permission_denied.html", context_instance=c)
+                return HttpResponseForbidden(render_to_string("wiki/permission_denied.html", c))
         
         if can_write and not article.can_write(request.user):
             if request.user.is_anonymous():
                 return redirect(django_settings.LOGIN_URL)
             else:
                 c = RequestContext(request, {'urlpath' : urlpath})
-                return render_to_response("wiki/permission_denied.html", context_instance=c)
+                return HttpResponseForbidden(render_to_string("wiki/permission_denied.html", c))
 
         # If the article has been deleted, show a special page.
         if not deleted_contents and article.current_revision and article.current_revision.deleted:

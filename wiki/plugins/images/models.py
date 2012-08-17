@@ -1,3 +1,5 @@
+from django.conf import settings as django_settings
+from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -5,9 +7,13 @@ import settings
 
 from wiki.models.pluginbase import RevisionPlugin
 
+if not "sorl.thumbnail" in django_settings.INSTALLED_APPS:
+    raise ImproperlyConfigured('wiki.plugins.images: needs sorl.thumbnail in INSTALLED_APPS')
+
 class Image(RevisionPlugin):
     
-    image = models.ImageField(upload_to=settings.IMAGE_PATH)
+    image = models.ImageField(upload_to=settings.IMAGE_PATH,
+                              max_length=2000)
     
     def get_filename(self):
         if self.image:
