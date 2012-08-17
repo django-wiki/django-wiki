@@ -40,7 +40,7 @@ class PluginSidebarFormMixin(object):
         pass
 
 class PluginSettingsFormMixin(object):    
-    settings_form_headline = _(u'Notifications')
+    settings_form_headline = _(u'Settings for plugin')
     settings_order = 1
     settings_write_access = False
     
