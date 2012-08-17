@@ -1,7 +1,10 @@
 from django.utils.translation import ugettext as _
 from django import forms
 
+"""Base classes for different plugin objects."""
+
 class BasePlugin(object):
+    """Plugins should inherit from this"""
     # Must fill in!
     slug = None
     
@@ -38,6 +41,8 @@ class PluginSettingsFormMixin(object):
         pass
 
 class BaseEditor():
+    """Editors should inherit from this. See wiki.editors for examples."""
+    
     # The editor id can be used for conditional testing. If you write your
     # own editor class, you can use the same editor_id as some editor 
     editor_id = 'plaintext'
