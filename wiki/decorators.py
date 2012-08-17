@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings as django_settings
 from django.core.urlresolvers import reverse
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404, render_to_response
+from django.template.context import RequestContext
 from django.http import HttpResponse, HttpResponseNotFound
 from django.utils import simplejson as json
 
@@ -94,15 +95,15 @@ def get_article(func=None, can_read=True, can_write=False, deleted_contents=Fals
             if request.user.is_anonymous():
                 return redirect(django_settings.LOGIN_URL)
             else:
-                pass
-                # TODO: Return a permission denied page
+                c = RequestContext(request, {'urlpath' : urlpath})
+                return render_to_response("wiki/permission_denied.html", context_instance=c)
         
         if can_write and not article.can_write(request.user):
             if request.user.is_anonymous():
                 return redirect(django_settings.LOGIN_URL)
             else:
-                pass
-                # TODO: Return a permission denied page
+                c = RequestContext(request, {'urlpath' : urlpath})
+                return render_to_response("wiki/permission_denied.html", context_instance=c)
 
         # If the article has been deleted, show a special page.
         if not deleted_contents and article.current_revision and article.current_revision.deleted:
