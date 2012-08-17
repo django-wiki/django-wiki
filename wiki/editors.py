@@ -6,27 +6,7 @@ from django.forms.util import flatatt
 
 from conf import settings
 from django.core.urlresolvers import get_callable
-
-class BaseEditor():
-    # The editor id can be used for conditional testing. If you write your
-    # own editor class, you can use the same editor_id as some editor 
-    editor_id = 'plaintext'
-    media_admin = ()
-    media_frontend = ()
-    
-    def __init__(self, instance=None):
-        self.instance = instance
-    
-    def get_admin_widget(self):
-        return forms.Textarea()
-
-    class AdminMedia:
-        css = {}
-        js = ()
-
-    class Media:
-        css = {}
-        js = ()
+from wiki.plugins import BaseEditor
 
 class MarkItUpAdminWidget(forms.Widget):
     """A simplified more fail-safe widget for the backend"""

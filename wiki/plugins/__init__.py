@@ -1,4 +1,5 @@
 from django.utils.translation import ugettext as _
+from django import forms
 
 class BasePlugin(object):
     # Must fill in!
@@ -35,4 +36,25 @@ class PluginSettingsFormMixin(object):
     
     def get_usermessage(self):
         pass
+
+class BaseEditor():
+    # The editor id can be used for conditional testing. If you write your
+    # own editor class, you can use the same editor_id as some editor 
+    editor_id = 'plaintext'
+    media_admin = ()
+    media_frontend = ()
+    
+    def __init__(self, instance=None):
+        self.instance = instance
+    
+    def get_admin_widget(self):
+        return forms.Textarea()
+
+    class AdminMedia:
+        css = {}
+        js = ()
+
+    class Media:
+        css = {}
+        js = ()
 
