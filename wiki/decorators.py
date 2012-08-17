@@ -98,14 +98,14 @@ def get_article(func=None, can_read=True, can_write=False, deleted_contents=Fals
                 return redirect(django_settings.LOGIN_URL)
             else:
                 c = RequestContext(request, {'urlpath' : urlpath})
-                return HttpResponseForbidden(render_to_string("wiki/permission_denied.html", c))
+                return HttpResponseForbidden(render_to_string("wiki/permission_denied.html", context_instance=c))
         
         if can_write and not article.can_write(request.user):
             if request.user.is_anonymous():
                 return redirect(django_settings.LOGIN_URL)
             else:
                 c = RequestContext(request, {'urlpath' : urlpath})
-                return HttpResponseForbidden(render_to_string("wiki/permission_denied.html", c))
+                return HttpResponseForbidden(render_to_string("wiki/permission_denied.html", context_instance=c))
 
         # If the article has been deleted, show a special page.
         if not deleted_contents and article.current_revision and article.current_revision.deleted:
