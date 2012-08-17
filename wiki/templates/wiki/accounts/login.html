@@ -1,5 +1,6 @@
 {% extends "wiki/base.html" %}
 {% load i18n wiki_tags %}
+{% load url from future %}
 {% block pagetitle %}{% trans "Log in" %}{% endblock %}
 
 {% block wiki_contents %}
@@ -13,6 +14,11 @@
     </button>
 </div>
 </form>
+
+<p>
+  {% trans "Don't have an account?" %} <a href="{% url 'wiki:signup' %}">{% trans "Sign up" %} &raquo;</a>
+</p>
+
 <script type="text/javascript">
   $('#id_username').focus();
 </script>

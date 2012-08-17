@@ -15,6 +15,8 @@ class Image(RevisionPlugin):
     image = models.ImageField(upload_to=settings.IMAGE_PATH,
                               max_length=2000)
     
+    
+    
     def get_filename(self):
         if self.image:
             return self.image.path.split('/')[-1]
@@ -22,6 +24,7 @@ class Image(RevisionPlugin):
     class Meta:
         verbose_name = _(u'image')
         verbose_name_plural = _(u'images')
+        app_label = settings.APP_LABEL
     
     def __unicode__(self):
         return _(u'Image: %s') % self.get_filename()

@@ -7,3 +7,5 @@ IMAGE_PATH = getattr(django_settings, 'WIKI_IMAGE_PATH', "wiki/images/%aid/")
 ANONYMOUS = getattr(django_settings, 'WIKI_ATTACHMENTS_ANONYMOUS', False)
 
 SLUG = 'images'
+
+APP_LABEL = 'wiki'

@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-import settings
+from . import settings
 
 from wiki import managers
 from wiki.models.pluginbase import ReusablePlugin
@@ -26,6 +26,7 @@ class Attachment(ReusablePlugin):
     class Meta:
         verbose_name = _(u'attachment')
         verbose_name_plural = _(u'attachments')
+        app_label = settings.APP_LABEL 
     
     def __unicode__(self):
         return "%s: %s" % (self.article.current_revision.title, self.original_filename)    
@@ -75,6 +76,7 @@ class AttachmentRevision(BaseRevisionMixin, models.Model):
         verbose_name_plural = _(u'attachment revisions')
         ordering = ('created',)
         get_latest_by = ('revision_number',)
+        app_label = settings.APP_LABEL
         
     def get_filename(self):
         """Used to retrieve the filename of a revision.

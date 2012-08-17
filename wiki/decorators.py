@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings as django_settings
 from django.core.urlresolvers import reverse
-from django.shortcuts import redirect, get_object_or_404, render_to_response
+from django.shortcuts import redirect, get_object_or_404
 from django.template.context import RequestContext
 from django.http import HttpResponse, HttpResponseNotFound,\
     HttpResponseForbidden

@@ -1,18 +1,19 @@
-{% load i18n wiki_tags wiki_images_tags humanize %}
+{% load i18n wiki_tags wiki_images_tags humanize thumbnail %}
+{% load url from future %}
 
 <h4>{% trans "Available images" %}</h4>
 
 <p>{% trans "Click on an image below to insert in your text. The format of the code inserted is:" %}<br /><code>[image:id alignment caption text]</code></p>
 
-<table class="table table-bordered table-striped">
-  <tr>
-    <th>{% trans "File" %}</th>
-    <th>{% trans "Added" %}</th>
-  </tr>
+<table class="table table-striped">
   {% for image in article|images_for_article %}
   <tr>
-    <td>{{ image.get_filename }}</td>
-    <td>{{ image.created|naturaltime }}</td>
+    <td>
+      {% thumbnail image.image "100x50" crop="center" as thumb %}
+      <img src="{{ thumb.url }}" alt="{{ image.get_filename }}" width="{{ thumb.width }}" height="{{ thumb.height }}" />
+      {% endthumbnail %}
+    </td>
+    <td><span class="label">{{ image.created|naturaltime }}</span></td>
   </tr>
   {% endfor %}
 </table>

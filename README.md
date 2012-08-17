@@ -1,7 +1,7 @@
 django-wiki
 ===========
 
-*Last update: 2012-08-12*
+*Last update: 2012-08-17*
 
 Demo here, sign up for an account to see the notification system.
 
@@ -10,7 +10,7 @@ Demo here, sign up for an account to see the notification system.
 NB!! *THIS IS A WORK IN PROGRESS*
 ---------------------------------
 
-This is where it all begins. In *1* week we should have a wiki system appealing to any kind of Django developer out there. Here is the manifest (so far):
+This is where it all begins. In *<1 week* we should have a wiki system appealing to any kind of Django developer out there. Here is the manifest (so far):
 
  * **Be pluggable and light-weight.** Don't integrate optional features in the core.
  * **Be open.** Make an extension API that allows the ecology of the wiki to grow. After all, Wikipedia consists of some [680 extensions](http://svn.wikimedia.org/viewvc/mediawiki/trunk/extensions/) written for MediaWiki.
