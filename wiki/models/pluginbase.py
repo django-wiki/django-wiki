@@ -5,7 +5,8 @@ from django.db.models import signals
 from wiki.models.article import BaseRevisionMixin
 
 """
-There are three kinds of plugin objects:
+There are three kinds of plugin base models:
+
   1) SimplePlugin - an object purely associated with an article. Will bump the
      article's revision history upon creation, and rolling back an article will
      make it go away (not from the database, you can roll forwards again).
@@ -20,6 +21,8 @@ There are three kinds of plugin objects:
      that the logics for keeping revisions on such plugins are complicated, so you
      have to implement that on your own. Furthermore, you need to be aware of
      the permission system!
+
+
 """
 
 from article import Article, ArticleRevision
