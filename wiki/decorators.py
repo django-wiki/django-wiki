@@ -3,10 +3,12 @@ from django.conf import settings as django_settings
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, get_object_or_404, render_to_response
 from django.template.context import RequestContext
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound,\
+    HttpResponseForbidden
 from django.utils import simplejson as json
 
 from wiki.core.exceptions import NoRootURL
+from django.template.loader import render_to_string
 
 def json_view(func):
     def wrap(request, *args, **kwargs):
@@ -47,16 +49,15 @@ def get_article(func=None, can_read=True, can_write=False, deleted_contents=Fals
         articles = models.Article.objects
         
         # TODO: Is this the way to do it?
-        articles = articles.select_related()
+        # https://docs.djangoproject.com/en/1.4/ref/models/querysets/#django.db.models.query.QuerySet.prefetch_related
+        # This is not the way to go... optimize below statements to behave
+        # according to normal prefetching.
+        articles = articles.prefetch_related()
         
         urlpath = None
-        if article_id:
-            article = get_object_or_404(articles, id=article_id)
-            try:
-                urlpath = models.URLPath.objects.get(articles__article=article)
-            except models.URLPath.DoesNotExist, models.URLPath.MultipleObjectsReturned:
-                urlpath = None
-        else:
+        
+        # fetch by urlpath.path
+        if not path is None:
             try:
                 urlpath = models.URLPath.get_by_path(path, select_related=True)
             except NoRootURL:
@@ -78,19 +79,33 @@ def get_article(func=None, can_read=True, can_write=False, deleted_contents=Fals
                 urlpath.delete()
                 return redirect(return_url)
         
+        
+        # fetch by article.id
+        elif article_id:
+            article = get_object_or_404(articles, id=article_id)
+            try:
+                urlpath = models.URLPath.objects.get(articles__article=article)
+            except models.URLPath.DoesNotExist, models.URLPath.MultipleObjectsReturned:
+                urlpath = None
+        
+        
+        else:
+            # TODO: Return something??
+            raise TypeError('You should specify either article_id or path')
+        
         if can_read and not article.can_read(request.user):
             if request.user.is_anonymous():
                 return redirect(django_settings.LOGIN_URL)
             else:
                 c = RequestContext(request, {'urlpath' : urlpath})
-                return render_to_response("wiki/permission_denied.html", context_instance=c)
+                return HttpResponseForbidden(render_to_string("wiki/permission_denied.html", c))
         
         if can_write and not article.can_write(request.user):
             if request.user.is_anonymous():
                 return redirect(django_settings.LOGIN_URL)
             else:
                 c = RequestContext(request, {'urlpath' : urlpath})
-                return render_to_response("wiki/permission_denied.html", context_instance=c)
+                return HttpResponseForbidden(render_to_string("wiki/permission_denied.html", c))
 
         # If the article has been deleted, show a special page.
         if not deleted_contents and article.current_revision and article.current_revision.deleted:

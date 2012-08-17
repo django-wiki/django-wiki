@@ -1,23 +1,29 @@
 Not implemented - will be ASAP
 ==============================
 
- * Permission system in settings tab **Done**
+ * Permission system in settings tab **Almost done** (option to apply changes recursively and to change owner if user has a grant permission)
  * Notification system **Almost done** (email notifications)
- * Simple user account handling: login/register etc. **Done**
+ * Image plugin **In progress**
+ * Circuit Editor plugin
+ * Custom storage engine for attachments
  * Implement notifications, revision log messages and user messages thoroughly
- * Attachment plugin **Done**
- * Image plugin
  * Example plugin
- * Bot editing detection. Don't let anyone edit more than once every other minute.
- * Article deletion **Done**
+ * Spam protection / Bot editing detection. Don't let anyone edit more than once every other minute.
  * Key-value meta data
  * Index views for urlpaths
  * Searching
- * South migrations **Done**
+ * Finish all class-based views
  * View source for read-only articles + locked status
- * Global moderator permission **Almost done** (need to add grant form for users with *grant* permissions)
  * Are you sure you wanna leave this page?
+ * Customize bootstrap to look a bit less like a default installation and add styles for the wiki articles
+ * Embeddable article template tag
+ * Expand prepopulated database
+ * "Fix Wiki URL bug in the footnotes plugin for python-markdown" ?
  * Special view for deleted articles w/ restore button **Done**
+ * Article deletion **Done**
+ * Attachment plugin **Done**
+ * Simple user account handling: login/register etc. **Done**
+ * South migrations **Done**
  
 Ideas
 =====
