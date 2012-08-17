@@ -11,6 +11,8 @@ from wiki.plugins.notifications import ARTICLE_EDIT
 from wiki import models as wiki_models
 from wiki.core import plugins_registry
 
+from . import settings
+
 class ArticleSubscription(wiki_models.pluginbase.ArticlePlugin, Subscription):
     
     def __unicode__(self):
@@ -18,6 +20,10 @@ class ArticleSubscription(wiki_models.pluginbase.ArticlePlugin, Subscription):
                 {'user': self.settings.user.username,
                  'article': self.article.current_revision.title,
                  'type': self.notification_type.label})
+    
+    class Meta:
+        app_label = settings.APP_LABEL
+    
 
 def default_url(article, urlpath=None):
     try:
