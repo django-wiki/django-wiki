@@ -54,7 +54,7 @@ class Article(models.Model):
         return False
     
     def can_write(self, user=None, group=None):
-        is_other = (user and not user.is_anonymous() ) or settings.ANONYMOUS
+        is_other = (user and not user.is_anonymous() ) or settings.ANONYMOUS_WRITE
         if is_other and self.other_write:
             return True
         if user == self.owner:
@@ -66,6 +66,7 @@ class Article(models.Model):
                 return True
         if user and user.has_perm('wiki_moderator'):
             return True
+        print "returned false"
         return False
     
     def decendant_objects(self):
