@@ -1,5 +1,15 @@
 from wiki.conf import settings
 from django.core.urlresolvers import get_callable
 
-EditorClass = get_callable(settings.EDITOR)
-editor = EditorClass()
+_EditorClass = None
+_editor = None
+
+def getEditorClass():
+    if not _EditorClass:
+        _EditorClass = get_callable(settings.EDITOR)
+    return _EditorClass
+    
+def getEditor():
+    if not _editor:
+        _editor = getEditorClass()()
+    return _editor
