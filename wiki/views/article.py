@@ -106,7 +106,7 @@ class Create(FormView, ArticleMixin):
         kwargs['parent_urlpath'] = self.urlpath
         kwargs['parent_article'] = self.article
         kwargs['create_form'] = kwargs.pop('form', None)
-        kwargs['editor'] = editors.editor
+        kwargs['editor'] = editors.getEditor()
         return super(Create, self).get_context_data(**kwargs)
     
 
@@ -301,7 +301,7 @@ class Edit(FormView, ArticleMixin):
         
     def get_context_data(self, **kwargs):
         kwargs['edit_form'] = kwargs.pop('form', None)
-        kwargs['editor'] = editors.editor
+        kwargs['editor'] = editors.getEditor()
         kwargs['selected_tab'] = 'edit'
         kwargs['sidebar'] = zip(self.sidebar_plugins, self.sidebar_forms)
         return super(Edit, self).get_context_data(**kwargs)
@@ -577,6 +577,6 @@ def root_create(request):
         create_form = forms.CreateRootForm()
     
     c = RequestContext(request, {'create_form': create_form,
-                                 'editor': editors.editor,})
+                                 'editor': editors.getEditor(),})
     return render_to_response("wiki/article/create_root.html", context_instance=c)
 

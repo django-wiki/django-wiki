@@ -232,6 +232,7 @@ def update_simple_plugins(instance, *args, **kwargs):
     plugins to match this article revision"""
     if kwargs.get('created', False):
         p_revisions = SimplePlugin.objects.filter(article=instance.article, deleted=False)
-        p_revisions.update(revision=instance)
+        # TODO: This was breaking things. SimplePlugin doesn't have a revision?
+        #p_revisions.update(revision=instance)
 
 signals.post_save.connect(update_simple_plugins, ArticleRevision)

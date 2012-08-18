@@ -19,15 +19,15 @@ class ArticleRevisionForm(forms.ModelForm):
         
     def __init__(self, *args, **kwargs):
         super(ArticleRevisionForm, self).__init__(*args, **kwargs)
-        EditorClass = editors.EditorClass
-        editor = editors.editor
+        EditorClass = editors.getEditorClass()
+        editor = editors.getEditor()
         self.fields['content'].widget = editor.get_admin_widget()
 
 class ArticleRevisionAdmin(admin.ModelAdmin):
     form = ArticleRevisionForm
     class Media:
-        js = editors.EditorClass.AdminMedia.js
-        css = editors.EditorClass.AdminMedia.css
+        js = editors.getEditorClass().AdminMedia.js
+        css = editors.getEditorClass().AdminMedia.css
 
 class ArticleRevisionInline(admin.TabularInline):
     model = models.ArticleRevision
@@ -37,8 +37,8 @@ class ArticleRevisionInline(admin.TabularInline):
     fields = ('content', 'title',  'deleted', 'locked',)
     
     class Media:
-        js = editors.EditorClass.AdminMedia.js
-        css = editors.EditorClass.AdminMedia.css
+        js = editors.getEditorClass().AdminMedia.js
+        css = editors.getEditorClass().AdminMedia.css
 
 class ArticleForm(forms.ModelForm):
 
