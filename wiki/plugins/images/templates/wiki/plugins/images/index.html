@@ -1,0 +1,40 @@
+{% extends "wiki/article.html" %}
+{% load wiki_tags i18n humanize %}
+{% load url from future %}
+
+{% block pagetitle %}{% trans "Images" %}: {{ article.current_revision.title }}{% endblock %}
+
+{% block wiki_contents_tab %}
+  <p class="lead">{% trans "The following images are available for this article. Copy the markdown tag to directly refer to an image from the article text." %}</p>
+  <p>
+    <a href="{% url 'wiki:edit' path=urlpath.path article_id=article.id %}" class="btn btn-large">
+      <span class="icon-arrow-left"></span>
+      {% trans "Back to edit page" %}
+    </a>
+  </p>
+  <table class="table table-bordered table-striped" style="width: 100%;">
+  <tr>
+    <th>{% trans "Image" %}</th>
+    <th>{% trans "Markdown tag" %}</th>
+    <th>{% trans "Uploaded by" %}</th>
+    <th>{% trans "Size" %}</th>
+  </tr>
+  {% for image in images %}
+    <tr>
+      <td><code>[image:{{ image.id }}]</code></td>
+      <td>
+      {% if image.current_revision.user %}{{ image.current_revision.user }}{% else %}{% if user|is_moderator %}{{ image.current_revision.ip_address|default:"anonymous (IP not logged)" }}{% else %}{% trans "anonymous (IP logged)" %}{% endif %}{% endif %}
+      </td>
+      <td>{{ image.current_revision.get_size|filesizeformat }}</td>
+    </tr>
+  {% empty %}
+    <tr>
+    <td colspan="100">
+      <p style="margin-bottom: 20px;"><em>{% trans "There are no images for this article." %}</em></p>
+    </td>
+  {% endfor %}  
+
+  </table>
+  
+{% endblock %}
+

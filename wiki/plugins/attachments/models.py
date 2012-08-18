@@ -23,6 +23,12 @@ class Attachment(ReusablePlugin):
     
     original_filename = models.CharField(max_length=256, verbose_name=_(u'original filename'), blank=True, null=True)
 
+    def can_write(self, **kwargs):
+        user = kwargs.get('user', None)
+        if not settings.ANONYMOUS and (not user or user.is_anonymous()):
+            return False
+        return ReusablePlugin.can_write(self, **kwargs)
+
     class Meta:
         verbose_name = _(u'attachment')
         verbose_name_plural = _(u'attachments')

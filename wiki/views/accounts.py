@@ -36,17 +36,29 @@ class Login(FormView):
     
     form_class = AuthenticationForm
     template_name = "wiki/accounts/login.html"
-        
+    
     def get_form_kwargs(self):
         self.request.session.set_test_cookie()
         kwargs = super(Login, self).get_form_kwargs()
         kwargs['request'] = self.request
         return kwargs
     
+    def post(self, request, *args, **kwargs):
+        self.referer = request.session.get('login_referer', '')
+        return FormView.post(self, request, *args, **kwargs)
+    
+    def get(self, request, *args, **kwargs):
+        self.referer = request.META.get('HTTP_REFERER', '')
+        request.session['login_referer'] = self.referer
+        return FormView.get(self, request, *args, **kwargs)
+    
     def form_valid(self, form, *args, **kwargs):
         auth_login(self.request, form.get_user())
         messages.info(self.request, _(u"You are now logged in! Have fun!"))
         if self.request.GET.get("next", None):
             return redirect(self.request.GET['next'])
-        return redirect(django_settings.LOGIN_REDIRECT_URL)
+        if django_settings.LOGIN_REDIRECT_URL:
+            return redirect(django_settings.LOGIN_REDIRECT_URL)
+        else:
+            return redirect(self.referer)
     

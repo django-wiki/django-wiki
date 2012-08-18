@@ -10,28 +10,54 @@ from wiki.models.pluginbase import RevisionPlugin, RevisionPluginRevision
 if not "sorl.thumbnail" in django_settings.INSTALLED_APPS:
     raise ImproperlyConfigured('wiki.plugins.images: needs sorl.thumbnail in INSTALLED_APPS')
 
+def upload_path(instance, filename):
+    from os import path
+    # Has to match original extension filename
+        
+    upload_path = settings.UPLOAD_PATH
+    upload_path = upload_path.replace('%aid', str(instance.image.article.id))
+    if settings.UPLOAD_PATH_OBSCURIFY:
+        import random, hashlib
+        m=hashlib.md5(str(random.randint(0,100000000000000)))
+        upload_path = path.join(upload_path, m.hexdigest())
+    return path.join(upload_path, filename)
+
 class Image(RevisionPlugin):
     
     # The plugin system is so awesome that the inheritor doesn't need to do
     # anything! :D
     
+    def can_write(self, **kwargs):
+        user = kwargs.get('user', None)
+        if not settings.ANONYMOUS and (not user or user.is_anonymous()):
+            return False
+        return RevisionPlugin.can_write(self, **kwargs)
+
     class Meta:
         verbose_name = _(u'image')
         verbose_name_plural = _(u'images')
         app_label = settings.APP_LABEL
     
     def __unicode__(self):
-        return _(u'Image: %s') % self.current_revision.get_filename()
+        title = (_(u'Image: %s') % self.current_revision.imagerevision.get_filename()) if self.current_revision else _(u'Current revision not set!!')
+        return unicode(title)
 
 class ImageRevision(RevisionPluginRevision):
     
-    image = models.ImageField(upload_to=settings.IMAGE_PATH,
+    image = models.ImageField(upload_to=upload_path,
                               max_length=2000)
 
     def get_filename(self):
         if self.image:
             return self.image.path.split('/')[-1]
     
+    def get_size(self):
+        """Used to retrieve the file size and not cause exceptions."""
+        try:
+            return self.file.size
+        except ValueError:
+            return None
+
     class Meta:
         verbose_name = _(u'image revision')
         verbose_name_plural = _(u'image revisions')

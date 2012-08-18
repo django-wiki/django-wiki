@@ -11,6 +11,7 @@ from django.views.generic.base import TemplateView, View
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 
+from wiki.conf import settings as wiki_settings
 from wiki.core.http import send_file
 from wiki.decorators import get_article
 from wiki.plugins.attachments import models, settings, forms
@@ -94,6 +95,8 @@ class AttachmentReplaceView(ArticleMixin, FormView):
     @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, attachment_id, *args, **kwargs):
         self.attachment = get_object_or_404(models.Attachment.objects.active(), id=attachment_id, articles=article)
+        if not self.attachment.can_write(user=request.user):
+            return redirect(wiki_settings.LOGIN_URL)
         return super(AttachmentReplaceView, self).dispatch(request, article, *args, **kwargs)
     
     def form_valid(self, form):

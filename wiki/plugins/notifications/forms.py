@@ -14,9 +14,13 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
     settings_order = 1
     settings_write_access = False
     
+    edit = forms.BooleanField(required=False, label=_(u'When this article is edited'))
+    edit_email = forms.BooleanField(required=False, label=_(u'Also receive emails about article edits'),
+                                    widget=forms.CheckboxInput(attrs={'onclick': mark_safe("$('#id_edit').attr('checked', $(this).is(':checked'));")}))
+    
     def __init__(self, article, user, *args, **kwargs):
         # This has to be here to avoid unresolved imports in wiki_plugins
-        import models
+        from wiki.plugins.notifications import models
         self.article = article
         self.user = user
         initial = kwargs.pop('initial', None)
@@ -31,10 +35,6 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
                        'edit_email': bool(self.edit_notifications.filter(send_emails=True))}
         kwargs['initial'] = initial
         super(SubscriptionForm, self).__init__(*args, **kwargs)
-    
-    edit = forms.BooleanField(required=False, label=_(u'When this article is edited'))
-    edit_email = forms.BooleanField(required=False, label=_(u'Also receive emails about article edits'),
-                                    widget=forms.CheckboxInput(attrs={'onclick': mark_safe("$('#id_edit').attr('checked', $(this).is(':checked'));")}))
     
     def get_usermessage(self):
         if self.changed_data:

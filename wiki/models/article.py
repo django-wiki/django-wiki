@@ -102,7 +102,7 @@ class Article(models.Model):
         for decendant in self.decendant_objects():
             if decendant.INHERIT_PERMISSIONS:
                 decendant.owner = self.owner
-
+    
     def add_revision(self, new_revision, save=True):
         """
         Sets the properties of a revision and ensures its the current

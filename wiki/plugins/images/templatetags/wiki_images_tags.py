@@ -1,9 +1,16 @@
 from django import template
 
 from wiki.plugins.images import models
+from wiki.plugins.images import settings
 
 register = template.Library()
 
 @register.filter
 def images_for_article(article):
-    return models.Image.objects.filter(article=article).order_by('-created')
+    return models.ImageRevision.objects.filter(plugin__article=article).order_by('-created')
+
+@register.filter
+def images_can_add(article, user):
+    if not settings.ANONYMOUS and (not user or user.is_anonymous()):
+        return False
+    return article.can_write(user)

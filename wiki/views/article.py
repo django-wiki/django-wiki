@@ -216,6 +216,7 @@ class Delete(FormView, ArticleMixin):
 
 
 class Edit(FormView, ArticleMixin):
+    """Edit an article and process sidebar plugins."""
     
     form_class = forms.EditForm
     template_name="wiki/edit.html"
@@ -223,54 +224,64 @@ class Edit(FormView, ArticleMixin):
     @method_decorator(get_article(can_write=True))
     def dispatch(self, request, article, *args, **kwargs):
         self.sidebar_plugins = plugins_registry.get_sidebar()
-        self.sidebar_forms = {}
-        for plugin in self.sidebar_plugins:
-            sidebar_form_class = plugin.sidebar.get('form_class', None)
-            if sidebar_form_class:
-                form_kwargs = {}
-                form_kwargs['prefix'] = plugin.slug
-                form_kwargs['article'] = article
-                form_kwargs.update(plugin.sidebar['get_form_kwargs'](article))
-                plugin.sidebar_form_context = 'form_' + plugin.slug
-                if request.POST.get(plugin.slug+'_save', '') == '1':
-                    form_kwargs['data'] = request.POST
-                    form_kwargs['files'] = request.FILES
-                self.sidebar_forms[plugin.sidebar_form_context] = sidebar_form_class(**form_kwargs)
-        
+        self.sidebar_forms = []
         return super(Edit, self).dispatch(request, article, *args, **kwargs)
     
     def get_form(self, form_class):
         """
-        Returns an instance of the form to be used in this view.
+        Checks from querystring data that the edit form is actually being saved,
+        otherwise removes the 'data' and 'files' kwargs from form initialisation.
         """
         kwargs = self.get_form_kwargs()
         if self.request.POST.get('save', '') != '1':
+            kwargs['data'] = None
+            kwargs['files'] = None
             kwargs['no_clean'] = True
-        
         return form_class(self.article.current_revision, **kwargs)
     
+    def get_sidebar_form_classes(self):
+        """Returns dictionary of form classes for the sidebar. If no form class is
+        specified, puts None in dictionary. Keys in the dictionary are used
+        to identify which form is being saved."""
+        form_classes = {}
+        for cnt, plugin in enumerate(self.sidebar_plugins):
+            form_classes['form%d' % cnt] = plugin.sidebar.get('form_class', None)
+        return form_classes
+    
+    def get(self, request, *args, **kwargs):
+        # Generate sidebar forms
+        self.sidebar_forms = []
+        for form_id, Form in self.get_sidebar_form_classes().items():
+            form = Form(self.article, self.request.user)
+            setattr(form, 'form_id', form_id)
+            self.sidebar_forms.append(form)
+        return super(Edit, self).get(request, *args, **kwargs)
+    
     def post(self, request, *args, **kwargs):
-        
-        # Check if any of the plugin form data is supposed to be saved
-        for plugin in self.sidebar_plugins:
-            if self.request.POST.get(plugin.slug+'_save', '') == '1':
-                form = self.sidebar_forms[plugin.sidebar_form_context]
+        # Generate sidebar forms
+        self.sidebar_forms = []
+        for form_id, Form in self.get_sidebar_form_classes().items():
+            if form_id == self.request.GET.get('f', None):
+                form = Form(self.article, self.request.user, data=self.request.POST, files=self.request.FILES)
                 if form.is_valid():
                     form.save()
-                    message = form.get_usermessage()
-                    if message:
-                        messages.success(request, message)
-                    #if self.urlpath:
-                    #    return redirect('wiki:edit', path=self.urlpath.path)
-                    #else:
-                    #    return redirect('wiki:edit', article_id=self.article.id)
-                    
-        if self.request.POST.get('save', '') == '1':
-            return super(Edit, self).post(request, *args, **kwargs)
-        else:
-            return super(Edit, self).get(request, *args, **kwargs)
+                    usermessage = form.get_usermessage()
+                    if usermessage:
+                        messages.success(self.request, usermessage)
+                    else:
+                        messages.success(self.request, _(u'Your changes were saved.'))
+                    if self.urlpath:
+                        return redirect('wiki:edit', path=self.urlpath.path)
+                    return redirect('wiki:edit', article_id=self.article.id)
+            else:
+                form = Form(self.article, self.request.user)
+            setattr(form, 'form_id', form_id)
+            self.sidebar_forms.append(form)
+        return super(Edit, self).post(request, *args, **kwargs)
     
     def form_valid(self, form):
+        """Create a new article revision when the edit form is valid 
+        (does not concern any sidebar forms!)."""
         revision = models.ArticleRevision()
         revision.inherit_predecessor(self.article)
         revision.title = form.cleaned_data['title']
@@ -283,24 +294,22 @@ class Edit(FormView, ArticleMixin):
         return self.get_success_url()
     
     def get_success_url(self):
+        """Go to the article view page when the article has been saved"""
         if self.urlpath:
             return redirect("wiki:get", path=self.urlpath.path)
         return redirect('wiki:get', article_id=self.article.id)
         
-    
     def get_context_data(self, **kwargs):
         kwargs['edit_form'] = kwargs.pop('form', None)
         kwargs['editor'] = editors.editor
         kwargs['selected_tab'] = 'edit'
-        kwargs['sidebar'] = self.sidebar_plugins
-        
-        kwargs.update(self.sidebar_forms)
-        
+        kwargs['sidebar'] = zip(self.sidebar_plugins, self.sidebar_forms)
         return super(Edit, self).get_context_data(**kwargs)
 
 
-# TODO: ...
 class Deleted(Delete):
+    """Tell a user that an article has been deleted. If user has permissions,
+    let user restore and possibly purge the deleted article and children."""
     
     template_name="wiki/deleted.html"
     form_class = forms.DeleteForm
@@ -404,6 +413,9 @@ class Settings(ArticleMixin, TemplateView):
             settings_forms.append(self.permission_form_class)
         settings_forms.sort(key=lambda form: form.settings_order)
         for i in range(len(settings_forms)):
+            # TODO: Do not set an attribute on a form class - this
+            # could be mixed up with a different instance
+            # Use strategy from Edit view...
             setattr(settings_forms[i], 'action', 'form%d' % i)
         return settings_forms
     

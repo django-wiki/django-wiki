@@ -54,12 +54,12 @@ def wiki_form(context, form_obj):
 @register.filter
 def can_read(obj, user):
     """Articles and plugins have a can_read method..."""
-    return obj.can_read(user)
+    return obj.can_read(user=user)
 
 @register.filter
 def can_write(obj, user):
     """Articles and plugins have a can_write method..."""
-    return obj.can_write(user)
+    return obj.can_write(user=user)
 
 @register.filter
 def is_moderator(user):

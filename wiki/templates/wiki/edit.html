@@ -8,7 +8,9 @@
 
   <div style="width: 67%; min-width: 600px; float: left;">
     <form method="POST" class="form-horizontal" id="article_edit_form">
-    {% include "wiki/includes/editor.html" %}
+    {% with edit_form as form %}
+      {% include "wiki/includes/editor.html" %}
+    {% endwith %}
     <div class="form-actions">
         <button type="submit" name="preview" value="1" class="btn btn-large" onclick="$('#previewModal').modal('show'); this.form.target='previewWindow'; this.form.action='{% url 'wiki:preview' path=urlpath.path article_id=article.id %}'">
           <span class="icon-eye-open"></span>

@@ -1,4 +1,4 @@
-{% for plugin in sidebar %}
+{% for plugin, plugin_form in sidebar %}
 
 <div class="accordion" id="accordion_{{ plugin.slug }}">
 
@@ -10,12 +10,13 @@
       </a>
     </div>
     
-    <div id="collapse_{{ plugin.slug }}" class="accordion-body collapse{% if form_images.errors %} in{% endif %}">
+    <div id="collapse_{{ plugin.slug }}" class="accordion-body collapse{% if plugin_form.errors %} in{% endif %}">
       <div class="accordion-inner form-vertical">
         {% if plugin.sidebar.template %}
-          {% with form_images as form and plugin as plugin %}
-            <form method="POST" class="form-horizontal" enctype="multipart/form-data">
-            {% include plugin.sidebar.template %}
+          {% with plugin_form as form and plugin as plugin %}
+            <form method="POST" class="form-horizontal" action="?f={{ plugin_form.form_id }}" enctype="multipart/form-data">
+              {% csrf_token %}
+              {% include plugin.sidebar.template %}
             </form>
           {% endwith %}
         {% endif %}

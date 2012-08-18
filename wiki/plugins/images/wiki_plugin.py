@@ -28,9 +28,13 @@ class ImagePlugin(plugins.BasePlugin):
                       'message': lambda obj: _(u"An image was added: %s") % obj.get_filename(),
                       'key': ARTICLE_EDIT,
                       'created': True,
-                      'get_article': lambda obj: obj.revision.article}
+                      'get_article': lambda obj: obj.article}
                      ]
     
+    urlpatterns = patterns('',
+        url('^$', views.ImageView.as_view(), name='images_index'),
+    )
+
     #markdown_extensions = [AttachmentExtension()]
     
     def __init__(self):

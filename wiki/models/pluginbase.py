@@ -65,14 +65,14 @@ class ReusablePlugin(ArticlePlugin):
     articles = models.ManyToManyField(Article, related_name='shared_plugins_set')
     
     # Permission methods - you may override these, if they don't fit your logic.
-    def can_read(self, *args, **kwargs):
+    def can_read(self, **kwargs):
         if self.article:
-            return self.article.can_read(*args, **kwargs)
+            return self.article.can_read(**kwargs)
         return False
     
-    def can_write(self, *args, **kwargs):
+    def can_write(self, **kwargs):
         if self.article:
-            return self.article.can_write(*args, **kwargs)
+            return self.article.can_write(**kwargs)
         return False
     
     def save(self, *args, **kwargs):
@@ -151,8 +151,35 @@ class RevisionPlugin(ArticlePlugin):
                                                          'If you need to do a roll-back, simply change the value of this field.'),
                                             )
     
+    # Permissions... overwrite if necessary
+    def can_read(self, **kwargs):
+        return self.article.can_read(self, **kwargs)
+    def can_write(self, **kwargs):
+        return self.article.can_write(self, **kwargs)
+
+    def add_revision(self, new_revision, save=True):
+        """
+        Sets the properties of a revision and ensures its the current
+        revision.
+        """
+        assert self.id or save, ('RevisionPluginRevision.add_revision: Sorry, you cannot add a' 
+                                 'revision to a plugin that has not been saved '
+                                 'without using save=True')
+        if not self.id: self.save()
+        revisions = self.revision_set.all()
+        try:
+            new_revision.revision_number = revisions.latest().revision_number + 1
+        except RevisionPluginRevision.DoesNotExist:
+            new_revision.revision_number = 0
+        new_revision.plugin = self
+        new_revision.previous_revision = self.current_revision
+        if save: new_revision.save()
+        self.current_revision = new_revision
+        if save: self.save()
+
     class Meta:
         app_label = settings.APP_LABEL
+
 
 class RevisionPluginRevision(BaseRevisionMixin, models.Model):
     """
@@ -162,7 +189,7 @@ class RevisionPluginRevision(BaseRevisionMixin, models.Model):
     (this class is very much copied from wiki.models.article.ArticleRevision
     """
     
-    plugin = models.ForeignKey(RevisionPlugin)
+    plugin = models.ForeignKey(RevisionPlugin, related_name='revision_set')
 
     def save(self, *args, **kwargs):
         if (not self.id and
@@ -175,9 +202,9 @@ class RevisionPluginRevision(BaseRevisionMixin, models.Model):
 
         if not self.revision_number:
             try:
-                previous_revision = self.article.articlerevision_set.latest()
+                previous_revision = self.plugin.revision_set.latest()
                 self.revision_number = previous_revision.revision_number + 1
-            except ArticleRevision.DoesNotExist:
+            except RevisionPluginRevision.DoesNotExist:
                 self.revision_number = 1
 
         super(RevisionPluginRevision, self).save(*args, **kwargs)
@@ -187,29 +214,9 @@ class RevisionPluginRevision(BaseRevisionMixin, models.Model):
             self.plugin.current_revision = self
             self.plugin.save()
 
-
-    def add_revision(self, new_revision, save=True):
-        """
-        Sets the properties of a revision and ensures its the current
-        revision.
-        """
-        assert self.id or save, ('RevisionPluginRevision.add_revision: Sorry, you cannot add a' 
-                                 'revision to a plugin that has not been saved '
-                                 'without using save=True')
-        if not self.id: self.save()
-        revisions = self.pluginrevision_set.all()
-        try:
-            new_revision.revision_number = revisions.latest().revision_number + 1
-        except RevisionPlugin.DoesNotExist:
-            new_revision.revision_number = 0
-        new_revision.plugin = self
-        new_revision.previous_revision = self.current_revision
-        if save: new_revision.save()
-        self.current_revision = new_revision
-        if save: self.save()
-
     class Meta:
         app_label = settings.APP_LABEL
+        get_latest_by = ('revision_number',)
 
 ######################################################
 # SIGNAL HANDLERS
