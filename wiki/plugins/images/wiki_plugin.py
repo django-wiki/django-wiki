@@ -2,12 +2,11 @@
 from django.conf.urls.defaults import patterns, url
 from django.utils.translation import ugettext as _
 
-from wiki.core import plugins_registry
-from wiki import plugins
+from wiki.core import plugins_registry, baseplugin
 from wiki.plugins.images import views, models, settings, forms
 from wiki.plugins.notifications import ARTICLE_EDIT
 
-class ImagePlugin(plugins.BasePlugin):
+class ImagePlugin(baseplugin.BasePlugin):
     
     #settings_form = 'wiki.plugins.notifications.forms.SubscriptionForm'
     

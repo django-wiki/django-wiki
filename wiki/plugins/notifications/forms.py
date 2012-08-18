@@ -6,9 +6,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils.safestring import mark_safe
 
 from wiki.plugins.notifications import ARTICLE_EDIT
-from wiki.plugins import PluginSettingsFormMixin
+from wiki.core import baseplugin
 
-class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
+class SubscriptionForm(baseplugin.PluginSettingsFormMixin, forms.Form):
     
     settings_form_headline = _(u'Notifications')
     settings_order = 1

@@ -124,10 +124,11 @@ class URLPath(MPTTModel):
         root_nodes = cls.objects.root_nodes().filter(site=site)
         if not root_nodes:
             # (get_or_create does not work for MPTT models??)
-            root = cls.objects.create(site=site)
             article = Article()
             article.add_revision(ArticleRevision(title=title, **kwargs),
                                  save=True)
+            article.save()
+            root = cls.objects.create(site=site, article=article)
             article.add_object_relation(root)
         else:
             root = root_nodes[0]
@@ -152,9 +153,12 @@ class URLPath(MPTTModel):
 ######################################################
 
 # Just get this once
-urlpath_content_type = ContentType.objects.get_for_model(URLPath)
+urlpath_content_type = None
 
 def on_article_relation_save(instance, *args, **kwargs):
+    global urlpath_content_type
+    if not urlpath_content_type:
+        urlpath_content_type = ContentType.objects.get_for_model(URLPath)
     if instance.content_type == urlpath_content_type:
         URLPath.objects.filter(id=instance.object_id).update(article=instance.article)
 

@@ -2,15 +2,14 @@
 from django.conf.urls.defaults import patterns, url
 from django.utils.translation import ugettext as _
 
-from wiki.core import plugins_registry
-from wiki import plugins
+from wiki.core import plugins_registry, baseplugin
 from wiki.plugins.attachments import views
 from wiki.plugins.attachments import models
 from wiki.plugins.attachments import settings
 from wiki.plugins.attachments.markdown_extensions import AttachmentExtension
 from wiki.plugins.notifications import ARTICLE_EDIT
 
-class AttachmentPlugin(plugins.BasePlugin):
+class AttachmentPlugin(baseplugin.BasePlugin):
     
     #settings_form = 'wiki.plugins.notifications.forms.SubscriptionForm'
     
