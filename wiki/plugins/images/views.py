@@ -1,14 +1,17 @@
 from django.contrib import messages
 from django.core.urlresolvers import reverse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
 
+from wiki.conf import settings as wiki_settings
 from wiki.decorators import get_article
+from wiki.plugins.images import forms
 from wiki.plugins.images import models
 from wiki.views.mixins import ArticleMixin
+from django.views.generic.edit import FormView
 
 class ImageView(ArticleMixin, ListView):
     
@@ -56,9 +59,9 @@ class DeleteView(ArticleMixin, RedirectView):
         self.image.current_revision = new_revision
         self.image.save()
         if self.restore:
-            messages.info(self.request, _('%s has been marked as deleted') % new_revision.get_filename())
-        else:
             messages.info(self.request, _('%s has been restored') % new_revision.get_filename())
+        else:
+            messages.info(self.request, _('%s has been marked as deleted') % new_revision.get_filename())
         if self.urlpath:
             return reverse('wiki:images_index', kwargs={'path': self.urlpath.path})
         return reverse('wiki:images_index', kwargs={'article_id': self.article.id})
@@ -85,3 +88,37 @@ class RevisionChangeView(ArticleMixin, RedirectView):
         if self.urlpath:
             return reverse('wiki:images_index', kwargs={'path': self.urlpath.path})
         return reverse('wiki:images_index', kwargs={'article_id': self.article.id})
+
+
+class RevisionAddView(ArticleMixin, FormView):
+    
+    template_name = "wiki/plugins/images/revision_add.html"
+    form_class = forms.RevisionForm
+    
+    @method_decorator(get_article(can_write=True))
+    def dispatch(self, request, article, *args, **kwargs):
+        self.image = get_object_or_404(models.Image, article=article,
+                                       id=kwargs.get('image_id', None))
+        if not self.image.can_write(user=request.user):
+            return redirect(wiki_settings.LOGIN_URL)
+        return ArticleMixin.dispatch(self, request, article, *args, **kwargs)
+    
+    def get_form_kwargs(self, **kwargs):
+        kwargs = super(RevisionAddView, self).get_form_kwargs(**kwargs)
+        kwargs['image'] = self.image
+        kwargs['request'] = self.request
+        return kwargs
+    
+    def get_context_data(self, **kwargs):
+        kwargs = super(RevisionAddView, self).get_context_data(**kwargs)
+        kwargs['image'] = self.image
+        return kwargs
+    
+    def form_valid(self, form, **kwargs):
+        form.save()
+        messages.info(self.request, _('%(file)s has been saved.') %
+                      {'file': self.image.current_revision.imagerevision.get_filename(),
+                       })
+        if self.urlpath:
+            return redirect('wiki:edit', path=self.urlpath.path)
+        return redirect('wiki:edit', article_id=self.article.id)

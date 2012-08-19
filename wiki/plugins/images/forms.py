@@ -21,6 +21,7 @@ class SidebarForm(forms.ModelForm, PluginSidebarFormMixin):
             image.article = self.article
             kwargs['commit'] = False
             revision = super(SidebarForm, self).save(*args, **kwargs)
+            revision.set_from_request(self.request)
             image.add_revision(self.instance, save=True)
             return revision
         return super(SidebarForm, self).save(*args, **kwargs)
@@ -28,3 +29,24 @@ class SidebarForm(forms.ModelForm, PluginSidebarFormMixin):
     class Meta:
         model = models.ImageRevision
         fields = ('image',)
+
+class RevisionForm(forms.ModelForm):
+    
+    def __init__(self, *args, **kwargs):
+        self.image = kwargs.pop('image')
+        self.request = kwargs.pop('request')
+        super(RevisionForm, self).__init__(*args, **kwargs)
+    
+    def save(self, *args, **kwargs):
+        if not self.instance.id:
+            kwargs['commit'] = False
+            revision = super(RevisionForm, self).save(*args, **kwargs)
+            revision.set_from_request(self.request)
+            self.image.add_revision(self.instance, save=True)
+            return revision
+        return super(SidebarForm, self).save(*args, **kwargs)
+    
+    class Meta:
+        model = models.ImageRevision
+        fields = ('image',)
+    

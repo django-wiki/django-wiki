@@ -14,8 +14,10 @@
           <td style="white-space: nowrap;">
             <p>{{ revision.get_filename|truncatechars:30 }}</p>
             <p>
-              <a href=""><span class="icon-edit"></span> {% trans "Insert" %}</a> <br />
-              <a href=""><span class="icon-edit"></span> {% trans "Replace" %}</a>
+              <a href=""><span class="icon-edit"></span> {% trans "Insert" %}</a><br />
+              {% if image|can_write:user %}
+              <a href="{% url 'wiki:images_add_revision' path=urlpath.path article_id=article.id image_id=image.id %}"><span class="icon-edit"></span> {% trans "Replace" %}</a>
+              {% endif %}
             </p>
           </td>
           <td>
