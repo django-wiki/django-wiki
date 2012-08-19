@@ -15,6 +15,8 @@ from wiki.core.exceptions import NoRootURL, MultipleRootURLs
 from wiki.models.article import ArticleRevision, ArticleForObject, Article
 from django.contrib.contenttypes.models import ContentType
 
+URLPATH_PREFECTED_PROPERTIES = ["parent", "article__current_revision"]
+
 class URLPath(MPTTModel):
     """
     Strategy: Very few fields go here, as most has to be managed through an
@@ -36,16 +38,29 @@ class URLPath(MPTTModel):
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children')    
     
     @property
+    def cached_ancestors(self):
+        if not hasattr(self, "_cached_ancestors"):
+            self._cached_ancestors = list(self.get_ancestors().select_related(*URLPATH_PREFECTED_PROPERTIES) )
+        
+        return self._cached_ancestors
+    
+    @cached_ancestors.setter
+    def cached_ancestors(self, ancestors):
+        self._cached_ancestors = ancestors
+        
+    @property
     def path(self):
         if not self.parent: return ""
-        if not hasattr(self, '_cachedpath'):
-            self._cachedpath = "/".join([obj.slug if obj.slug else "" for obj in self.get_ancestors(include_self=True).exclude(parent=None)]) + "/"
-        return self._cachedpath 
+        
+        ancestors = filter(lambda ancestor: ancestor.parent is not None, self.cached_ancestors)
+        slugs = [obj.slug if obj.slug else "" for obj in ancestors + [self] ]
+        
+        return "/".join(slugs) + "/"
     
     @classmethod
     def root(cls):
         site = Site.objects.get_current()
-        root_nodes = list(cls.objects.root_nodes().filter(site=site))
+        root_nodes = list(cls.objects.root_nodes().filter(site=site).select_related(*URLPATH_PREFECTED_PROPERTIES))
         # We fetch the nodes as a list and use len(), not count() because we need
         # to get the result out anyway. This only takes one sql query
         no_paths = len(root_nodes)
@@ -108,9 +123,13 @@ class URLPath(MPTTModel):
         parent = cls.root()
         for slug in slugs:
             if settings.URL_CASE_SENSITIVE:
-                parent = parent.get_children().get(slug=slug)
+                child = parent.get_children().select_related(*URLPATH_PREFECTED_PROPERTIES).get(slug=slug)
+                child.cached_ancestors = parent.cached_ancestors + [parent]
+                parent = child
             else:
-                parent = parent.get_children().get(slug__iexact=slug)
+                child = parent.get_children().select_related(*URLPATH_PREFECTED_PROPERTIES).get(slug__iexact=slug)
+                child.cached_ancestors = parent.cached_ancestors + [parent]
+                parent = child
             level += 1
                 
         return parent
