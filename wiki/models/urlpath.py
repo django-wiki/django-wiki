@@ -15,7 +15,7 @@ from wiki.core.exceptions import NoRootURL, MultipleRootURLs
 from wiki.models.article import ArticleRevision, ArticleForObject, Article
 from django.contrib.contenttypes.models import ContentType
 
-URLPATH_PREFECTED_PROPERTIES = ["parent", "article__current_revision"]
+URLPATH_PREFECTED_PROPERTIES = ["parent", "article__current_revision", "article__owner"]
 
 class URLPath(MPTTModel):
     """
