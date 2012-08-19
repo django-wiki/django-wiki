@@ -262,7 +262,7 @@ class Edit(FormView, ArticleMixin):
         self.sidebar_forms = []
         for form_id, Form in self.get_sidebar_form_classes().items():
             if form_id == self.request.GET.get('f', None):
-                form = Form(self.article, self.request.user, data=self.request.POST, files=self.request.FILES)
+                form = Form(self.article, self.request, data=self.request.POST, files=self.request.FILES)
                 if form.is_valid():
                     form.save()
                     usermessage = form.get_usermessage()
@@ -274,7 +274,7 @@ class Edit(FormView, ArticleMixin):
                         return redirect('wiki:edit', path=self.urlpath.path)
                     return redirect('wiki:edit', article_id=self.article.id)
             else:
-                form = Form(self.article, self.request.user)
+                form = Form(self.article, self.request)
             setattr(form, 'form_id', form_id)
             self.sidebar_forms.append(form)
         return super(Edit, self).post(request, *args, **kwargs)

@@ -7,9 +7,9 @@ from wiki.plugins.images import models
 
 class SidebarForm(forms.ModelForm, PluginSidebarFormMixin):
     
-    def __init__(self, article, user, *args, **kwargs):
+    def __init__(self, article, request, *args, **kwargs):
         self.article = article
-        self.user = user
+        self.request = request
         super(SidebarForm, self).__init__(*args, **kwargs)
     
     def get_usermessage(self):
