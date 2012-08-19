@@ -12,9 +12,10 @@ class ArticleMixin(TemplateResponseMixin):
         self.urlpath = kwargs.pop('urlpath', None)
         self.article = article        
         self.children_slice = []
-        for child in self.article.get_children(max_num=settings.SHOW_MAX_CHILDREN+1,
-                                               articles__article__current_revision__deleted=False):
-            self.children_slice.append(child)
+        if settings.SHOW_MAX_CHILDREN > 0:
+            for child in self.article.get_children(max_num=settings.SHOW_MAX_CHILDREN+1,
+                                                   articles__article__current_revision__deleted=False):
+                self.children_slice.append(child)
         return super(ArticleMixin, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):

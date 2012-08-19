@@ -1,7 +1,7 @@
 {% load i18n %}{% load url from future %}
 {% if urlpath %}
 <ul class="breadcrumb pull-left" class="">
-  {% for ancestor in urlpath.get_ancestors.all %}
+  {% for ancestor in urlpath.cached_ancestors %}
     <span class="divider">/</span>
     <li><a href="{% url 'wiki:get' path=ancestor.path %}">{{ ancestor.article.current_revision.title }}</a></li>
   {% endfor %}

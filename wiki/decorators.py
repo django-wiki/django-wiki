@@ -45,15 +45,7 @@ def get_article(func=None, can_read=True, can_write=False, deleted_contents=Fals
 
         path = kwargs.pop('path', None)
         article_id = kwargs.pop('article_id', None)
-        
-        articles = models.Article.objects
-        
-        # TODO: Is this the way to do it?
-        # https://docs.djangoproject.com/en/1.4/ref/models/querysets/#django.db.models.query.QuerySet.prefetch_related
-        # This is not the way to go... optimize below statements to behave
-        # according to normal prefetching.
-        articles = articles.prefetch_related()
-        
+                
         urlpath = None
         
         # fetch by urlpath.path
@@ -72,7 +64,8 @@ def get_article(func=None, can_read=True, can_write=False, deleted_contents=Fals
                     # TODO: Make a nice page
                     return HttpResponseNotFound("This article was not found, and neither was the parent. This page should look nicer.")
             if urlpath.article:
-                article = get_object_or_404(articles, id=urlpath.article.id)
+                # urlpath is already smart about prefetching items on article (like current_revision), so we don't have to
+                article = urlpath.article
             else:
                 # Be robust: Somehow article is gone but urlpath exists... clean up
                 return_url = reverse('wiki:get', kwargs={'path': urlpath.parent.path})
@@ -82,6 +75,9 @@ def get_article(func=None, can_read=True, can_write=False, deleted_contents=Fals
         
         # fetch by article.id
         elif article_id:
+            #TODO We should try to grab the article form URLPath so the caching is good, and fall back to grabbing it from Article.objects if not
+            articles = models.Article.objects
+            
             article = get_object_or_404(articles, id=article_id)
             try:
                 urlpath = models.URLPath.objects.get(articles__article=article)
