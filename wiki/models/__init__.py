@@ -44,7 +44,7 @@ if not 'south' in django_settings.INSTALLED_APPS:
 # PLUGINS
 ######################
 
-from wiki.core.plugins_load import load_wiki_plugins
+from wiki.core.plugins.loader import load_wiki_plugins
 
 load_wiki_plugins()
 

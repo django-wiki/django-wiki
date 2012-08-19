@@ -14,7 +14,7 @@ from django.views.generic.list import ListView
 from wiki.views.mixins import ArticleMixin
 from wiki import editors, forms, models
 from wiki.conf import settings
-from wiki.core import plugins_registry
+from wiki.core.plugins import registry as plugin_registry
 from wiki.core.diff import simple_merge
 from wiki.decorators import get_article, json_view
 from django.core.urlresolvers import reverse
@@ -223,7 +223,7 @@ class Edit(FormView, ArticleMixin):
     
     @method_decorator(get_article(can_write=True))
     def dispatch(self, request, article, *args, **kwargs):
-        self.sidebar_plugins = plugins_registry.get_sidebar()
+        self.sidebar_plugins = plugin_registry.get_sidebar()
         self.sidebar_forms = []
         return super(Edit, self).dispatch(request, article, *args, **kwargs)
     
@@ -389,7 +389,7 @@ class Plugin(View):
     
     def dispatch(self, request, path=None, slug=None, **kwargs):
         kwargs['path'] = path
-        for plugin in plugins_registry._cache.values():
+        for plugin in plugin_registry.get_plugins().values():
             if getattr(plugin, 'slug', None) == slug:
                 return plugin.article_view(request, **kwargs)
 
@@ -407,7 +407,7 @@ class Settings(ArticleMixin, TemplateView):
         """
         Return all settings forms that can be filled in
         """
-        settings_forms = [F for F in plugins_registry._settings_forms]
+        settings_forms = [F for F in plugin_registry.get_settings_forms()]
         if (self.request.user.has_perm('wiki.assign') or 
             self.article.owner == self.request.user):
             settings_forms.append(self.permission_form_class)

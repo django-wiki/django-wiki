@@ -7,7 +7,7 @@ from django_notify import notify
 from django_notify.models import Subscription
 
 from wiki import models as wiki_models
-from wiki.core import plugins_registry
+from wiki.core.plugins import registry
 from wiki.plugins.notifications import ARTICLE_EDIT #TODO: Is this bad practice?
 from wiki.plugins.notifications import settings
 
@@ -55,7 +55,7 @@ signals.post_save.connect(post_article_revision_save, sender=wiki_models.Article
 ##################################################
 # NOTIFICATIONS FOR PLUGINS
 ##################################################
-for plugin in plugins_registry.get_plugins():
+for plugin in registry.get_plugins():
     
     notifications = getattr(plugin, 'notifications', [])
     for notification_dict in notifications:

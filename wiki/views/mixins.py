@@ -1,6 +1,6 @@
 from django.views.generic.base import TemplateResponseMixin
 
-from wiki.core import plugins_registry
+from wiki.core.plugins import registry
 from wiki.conf import settings
 
 class ArticleMixin(TemplateResponseMixin):
@@ -20,7 +20,7 @@ class ArticleMixin(TemplateResponseMixin):
     def get_context_data(self, **kwargs):
         kwargs['urlpath'] = self.urlpath
         kwargs['article'] = self.article
-        kwargs['article_tabs'] = plugins_registry.get_article_tabs()
+        kwargs['article_tabs'] = registry.get_article_tabs()
         kwargs['children_slice'] = self.children_slice[:20]
         kwargs['children_slice_more'] = len(self.children_slice) > 20
 

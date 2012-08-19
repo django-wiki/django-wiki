@@ -3,7 +3,7 @@ from django.conf.urls.defaults import patterns, url, include
 
 from wiki.views import article, accounts
 from wiki.conf import settings
-from wiki.core import plugins_registry
+from wiki.core.plugins import registry
 
 urlpatterns = patterns('',
     url('^$', article.ArticleView.as_view(), name='root', kwargs={'path': ''}),   
@@ -38,7 +38,7 @@ urlpatterns += patterns('',
 
 )
 
-for plugin in plugins_registry._cache.values():
+for plugin in registry.get_plugins().values():
     slug = getattr(plugin, 'slug', None)
     plugin_urlpatterns = getattr(plugin, 'urlpatterns', None)
     if slug and plugin_urlpatterns:

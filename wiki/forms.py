@@ -12,7 +12,7 @@ from wiki import models
 from wiki.editors import getEditor
 from wiki.core.diff import simple_merge
 from django.forms.widgets import HiddenInput
-from wiki.core import baseplugin
+from wiki.core.plugins.base import PluginSettingsFormMixin
 
 class CreateRootForm(forms.Form):
     
@@ -225,7 +225,7 @@ class DeleteForm(forms.Form):
         return cd
 
 
-class PermissionsForm(baseplugin.PluginSettingsFormMixin, forms.ModelForm):
+class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
     
     settings_form_headline = _(u'Permissions')
     settings_order = 5

@@ -2,11 +2,12 @@
 from django.conf.urls.defaults import patterns, url
 from django.utils.translation import ugettext as _
 
-from wiki.core import plugins_registry, baseplugin
+from wiki.core.plugins import registry
+from wiki.core.plugins.base import BasePlugin
 from wiki.plugins.images import views, models, settings, forms
 from wiki.plugins.notifications import ARTICLE_EDIT
 
-class ImagePlugin(baseplugin.BasePlugin):
+class ImagePlugin(BasePlugin):
     
     #settings_form = 'wiki.plugins.notifications.forms.SubscriptionForm'
     
@@ -40,5 +41,5 @@ class ImagePlugin(baseplugin.BasePlugin):
         #print "I WAS LOADED!"
         pass
     
-plugins_registry.register(ImagePlugin)
+registry.register(ImagePlugin)
 

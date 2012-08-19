@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import ugettext as _
 
-from wiki.core.baseplugin import PluginSidebarFormMixin
+from wiki.core.plugins.base import PluginSidebarFormMixin
 from wiki.plugins.images import models
 
 
