@@ -31,7 +31,9 @@ class BasePlugin(object):
 
     markdown_extensions = []
     
-    pass
+    class RenderMedia:
+        js = []
+        css = {}
 
 class PluginSidebarFormMixin(object):
 

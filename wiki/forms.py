@@ -69,7 +69,7 @@ class EditForm(forms.Form):
     
     def clean(self):
         cd = self.cleaned_data
-        if self.no_clean:
+        if self.no_clean or self.preview:
             return cd
         if not str(self.initial_revision.id) == str(self.presumed_revision):
             raise forms.ValidationError(_(u'While you were editing, someone else changed the revision. Your contents have been automatically merged with the new contents. Please review the text below.'))
@@ -245,7 +245,6 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
         self.user = user
         kwargs['instance'] = article
         super(PermissionsForm, self).__init__(*args, **kwargs)
-        print self.data
         if user.has_perm("wiki.admin"):
             self.fields['group'].queryset = models.Group.objects.all()
         else:
