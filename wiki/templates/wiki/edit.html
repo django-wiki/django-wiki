@@ -6,17 +6,32 @@
 
 {% block wiki_contents_tab %}
 
-  <div style="width: 67%; min-width: 600px; float: left;">
+<div class="row-fluid">
+
+  <div class="span8">
     <form method="POST" class="form-horizontal" id="article_edit_form">
+      <input type="hidden" name="save" value="1" />
+      <input type="hidden" name="preview" value="1" />
     {% with edit_form as form %}
       {% include "wiki/includes/editor.html" %}
     {% endwith %}
+    </form>
+  </div>
+
+  <div class="span4">
+    {% include "wiki/includes/editor_sidebar.html" %}
+  </div>
+
+</div>
+
+<div style="clear: both"></div>
+
     <div class="form-actions">
-        <button type="submit" name="preview" value="1" class="btn btn-large" onclick="$('#previewModal').modal('show'); this.form.target='previewWindow'; this.form.action='{% url 'wiki:preview' path=urlpath.path article_id=article.id %}'">
+        <a class="btn btn-large" onclick="$('#previewModal').modal('show'); document.getElementById('article_edit_form').target='previewWindow'; document.getElementById('article_edit_form').action='{% url 'wiki:preview' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit()" href="#">
           <span class="icon-eye-open"></span>
           {% trans "Preview" %}
-        </button>
-        <button type="submit" name="save" value="1" class="btn btn-large btn-primary" onclick="this.form.target=''; this.form.action='{% url 'wiki:edit' path=urlpath.path article_id=article.id %}'">
+        </a>
+        <a class="btn btn-large btn-primary" onclick="document.getElementById('article_edit_form').target=''; document.getElementById('article_edit_form').action='{% url 'wiki:edit' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit();" href="#">
           <span class="icon-ok"></span>
           {% trans "Save changes" %}
         </button>
@@ -36,23 +51,12 @@
           <span class="icon-circle-arrow-left"></span>
           {% trans "Back to editor" %}
         </a>
-        <button type="submit" name="save" value="1" class="btn btn-large btn-primary" onclick="this.form.target=''; this.form.action='{% url 'wiki:edit' path=urlpath.path article_id=article.id %}'">
+        <a class="btn btn-large btn-primary" onclick="document.getElementById('article_edit_form').target=''; document.getElementById('article_edit_form').action='{% url 'wiki:edit' path=urlpath.path article_id=article.id %}'; document.getElementById('article_edit_form').submit();" href="#">
           <span class="icon-ok"></span>
           {% trans "Save changes" %}
-        </button>
+        </a>
       </div>
     </div>
-  </form>
-  </div>
-
-  <div style="width: 33%; min-width: 300px; float: right;">
-    <div style="padding-left: 40px;">
-    {% include "wiki/includes/editor_sidebar.html" %}
-    </div>
-  </div>
-
-
-<div style="clear: both"></div>
 
 {% endblock %}
 

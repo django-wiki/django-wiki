@@ -59,7 +59,7 @@ def can_read(obj, user):
 @register.filter
 def can_write(obj, user):
     """Articles and plugins have a can_write method..."""
-    return obj.can_write(user=user)
+    return obj.can_write(**{'user': user})
 
 @register.filter
 def is_moderator(user):

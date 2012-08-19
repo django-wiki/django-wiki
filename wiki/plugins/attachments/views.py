@@ -236,7 +236,7 @@ class AttachmentSearchView(ArticleMixin, ListView):
     def get_queryset(self):
         self.query = self.request.GET.get('query', None)
         if not self.query:
-            qs = models.Attachment.objects.active().get_empty_query_set()
+            qs = models.Attachment.objects.get_empty_query_set()
         else:
             qs = models.Attachment.objects.active().can_read(self.request.user)
             qs = qs.filter(Q(original_filename__contains=self.query) |

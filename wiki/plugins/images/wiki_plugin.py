@@ -25,7 +25,7 @@ class ImagePlugin(BasePlugin):
     # List of notifications to construct signal handlers for. This
     # is handled inside the notifications plugin.
     notifications = [{'model': models.Image,
-                      'message': lambda obj: _(u"An image was added: %s") % obj.get_filename(),
+                      'message': lambda obj: _(u"An image was added: %s") % obj.current_revision.get_filename(),
                       'key': ARTICLE_EDIT,
                       'created': True,
                       'get_article': lambda obj: obj.article}
@@ -33,6 +33,9 @@ class ImagePlugin(BasePlugin):
     
     urlpatterns = patterns('',
         url('^$', views.ImageView.as_view(), name='images_index'),
+        url('^delete/(?P<image_id>\d+)/$', views.DeleteView.as_view(), name='images_delete'),
+        url('^restore/(?P<image_id>\d+)/$', views.DeleteView.as_view(), name='images_restore', kwargs={'restore': True}),
+        url('^restore/(?P<image_id>\d+)/set-revision/(?P<rev_id>\d+)/$', views.RevisionChangeView.as_view(), name='images_restore'),
     )
 
     #markdown_extensions = [AttachmentExtension()]

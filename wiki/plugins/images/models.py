@@ -15,7 +15,7 @@ def upload_path(instance, filename):
     # Has to match original extension filename
         
     upload_path = settings.UPLOAD_PATH
-    upload_path = upload_path.replace('%aid', str(instance.image.article.id))
+    upload_path = upload_path.replace('%aid', str(instance.plugin.image.article.id))
     if settings.UPLOAD_PATH_OBSCURIFY:
         import random, hashlib
         m=hashlib.md5(str(random.randint(0,100000000000000)))
@@ -45,8 +45,12 @@ class Image(RevisionPlugin):
 class ImageRevision(RevisionPluginRevision):
     
     image = models.ImageField(upload_to=upload_path,
-                              max_length=2000)
-
+                              max_length=2000, height_field='height',
+                              width_field='width')
+    
+    width = models.SmallIntegerField(default=0)
+    height = models.SmallIntegerField(default=0)
+    
     def get_filename(self):
         if self.image:
             return self.image.path.split('/')[-1]
@@ -54,11 +58,25 @@ class ImageRevision(RevisionPluginRevision):
     def get_size(self):
         """Used to retrieve the file size and not cause exceptions."""
         try:
-            return self.file.size
+            return self.image.size
         except ValueError:
             return None
+    
+    def inherit_predecessor(self, image):
+        """
+        Inherit certain properties from predecessor because it's very
+        convenient. Remember to always call this method before 
+        setting properties :)"""
+        predecessor = image.current_revision.imagerevision
+        self.plugin = predecessor.plugin
+        self.image = predecessor.image
+        self.width = predecessor.width
+        self.height = predecessor.height
+        self.deleted = predecessor.deleted
+        self.locked = predecessor.locked
 
     class Meta:
         verbose_name = _(u'image revision')
         verbose_name_plural = _(u'image revisions')
         app_label = settings.APP_LABEL
+        ordering = ('-created',)

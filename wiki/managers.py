@@ -35,14 +35,13 @@ class ArticleQuerySet(QuerySet):
     def active(self):
         return self.filter(current_revision__deleted=False)
 
-
 class ArticleFkQuerySet(QuerySet):
     
     def can_read(self, user):
         """Filter objects so only the ones with a user's reading access
         are included"""
         if user.has_perm('wiki.moderator'):
-            return self.get_query_set()
+            return self
         if user.is_anonymous():
             q = self.filter(article__other_read=True)
         else:
@@ -56,7 +55,7 @@ class ArticleFkQuerySet(QuerySet):
         """Filter objects so only the ones with a user's writing access
         are included"""
         if user.has_perm('wiki.moderator'):
-            return self.get_query_set()
+            return self
         if user.is_anonymous():
             q = self.filter(article__other_write=True)
         else:

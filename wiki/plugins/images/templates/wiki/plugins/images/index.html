@@ -1,5 +1,5 @@
 {% extends "wiki/article.html" %}
-{% load wiki_tags i18n humanize %}
+{% load wiki_tags i18n humanize thumbnail %}
 {% load url from future %}
 
 {% block pagetitle %}{% trans "Images" %}: {{ article.current_revision.title }}{% endblock %}
@@ -7,34 +7,94 @@
 {% block wiki_contents_tab %}
   <p class="lead">{% trans "The following images are available for this article. Copy the markdown tag to directly refer to an image from the article text." %}</p>
   <p>
-    <a href="{% url 'wiki:edit' path=urlpath.path article_id=article.id %}" class="btn btn-large">
+    <a href="{% url 'wiki:edit' path=urlpath.path article_id=article.id %}">
       <span class="icon-arrow-left"></span>
       {% trans "Back to edit page" %}
     </a>
   </p>
   <table class="table table-bordered table-striped" style="width: 100%;">
-  <tr>
-    <th>{% trans "Image" %}</th>
-    <th>{% trans "Markdown tag" %}</th>
-    <th>{% trans "Uploaded by" %}</th>
-    <th>{% trans "Size" %}</th>
-  </tr>
   {% for image in images %}
+    {% with image.current_revision.imagerevision as revision %}
     <tr>
+      <th>{{ revision.get_filename }}</th>
+      <th>{% trans "Markdown tag" %}</th>
+      <th>{% trans "Uploaded by" %}</th>
+      <th>{% trans "Size" %}</th>
+    </tr>
+    <tr>
+      <td rowspan="3">
+      {% thumbnail revision.image "250x150" crop="center" as thumb %}
+        <p class="thumbnail">
+          <img src="{{ thumb.url }}" alt="{{ revision.get_filename }}" />
+        </p>
+      {% endthumbnail %}
+      {% if image|can_write:user %}
+      <p>
+        <a href="#">
+          <span class="icon-upload"></span>
+          {% trans "Upload new file" %}
+        </a> <br />
+        {% if revision.deleted %}
+          <a href="{% url 'wiki:images_restore' path=urlpath.path article_id=article.id image_id=image.id %}">
+            <span class="icon-repeat"></span>
+            {% trans "Restore image" %}
+          </a>
+        {% else %}
+          <a href="{% url 'wiki:images_delete' path=urlpath.path article_id=article.id image_id=image.id %}">
+            <span class="icon-remove"></span>
+            {% trans "Remove image" %}
+          </a>
+        {% endif %}
+      </p>
+      {% endif %}
+      </td>
       <td><code>[image:{{ image.id }}]</code></td>
       <td>
-      {% if image.current_revision.user %}{{ image.current_revision.user }}{% else %}{% if user|is_moderator %}{{ image.current_revision.ip_address|default:"anonymous (IP not logged)" }}{% else %}{% trans "anonymous (IP logged)" %}{% endif %}{% endif %}
+        <p>{% include "wiki/includes/revision_info.html" %}</p>
       </td>
-      <td>{{ image.current_revision.get_size|filesizeformat }}</td>
+      <td>{{ revision.get_size|filesizeformat }}<br />{{ revision.width }}x{{ revision.height }} pixels
+      </td>
     </tr>
+    <tr>
+      <th colspan="100">{% trans "History" %}</th>
+    </tr>
+    <tr>
+      <td colspan="100">
+        <table class="table">
+          {% for old_revision in image.revision_set.all %}
+            <tr>
+              <td>
+              {% thumbnail revision.imagerevision.image "50x50" crop="center" as thumb %}
+                <img src="{{ thumb.url }}" alt="{{ revision.imagerevision.get_filename }}" />
+              {% endthumbnail %}
+              </td>
+              <td>{% include "wiki/includes/revision_info.html" with current_revision=image.current_revision revision=old_revision %}</td>
+              <td>{{ old_revision.imagerevision.get_size|filesizeformat }}</td>
+              <td>{{ old_revision.imagerevision.width }}x{{ old_revision.imagerevision.height }}</td>
+              <td>
+                {% if image|can_write:user and old_revision != image.current_revision %}
+                  <a href="#">
+                    <span class="icon-refresh"></span>
+                    {% trans "Revert to this version" %}
+                  </a>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </table>
+      </td>
+    </tr>
+    {% endwith %}
   {% empty %}
     <tr>
     <td colspan="100">
       <p style="margin-bottom: 20px;"><em>{% trans "There are no images for this article." %}</em></p>
     </td>
-  {% endfor %}  
+  {% endfor %}
 
   </table>
+  
+  {% include "wiki/includes/pagination.html" %}
   
 {% endblock %}
 

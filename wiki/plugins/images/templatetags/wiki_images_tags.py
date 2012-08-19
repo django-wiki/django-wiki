@@ -7,7 +7,7 @@ register = template.Library()
 
 @register.filter
 def images_for_article(article):
-    return models.ImageRevision.objects.filter(plugin__article=article).order_by('-created')
+    return models.Image.objects.filter(article=article).order_by('-current_revision__created')
 
 @register.filter
 def images_can_add(article, user):

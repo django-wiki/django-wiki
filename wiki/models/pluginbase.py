@@ -153,9 +153,9 @@ class RevisionPlugin(ArticlePlugin):
     
     # Permissions... overwrite if necessary
     def can_read(self, **kwargs):
-        return self.article.can_read(self, **kwargs)
+        return self.article.can_read(**kwargs)
     def can_write(self, **kwargs):
-        return self.article.can_write(self, **kwargs)
+        return self.article.can_write(**kwargs)
 
     def add_revision(self, new_revision, save=True):
         """
@@ -217,6 +217,7 @@ class RevisionPluginRevision(BaseRevisionMixin, models.Model):
     class Meta:
         app_label = settings.APP_LABEL
         get_latest_by = ('revision_number',)
+        ordering = ('-created',)
 
 ######################################################
 # SIGNAL HANDLERS
@@ -233,6 +234,6 @@ def update_simple_plugins(instance, *args, **kwargs):
     if kwargs.get('created', False):
         p_revisions = SimplePlugin.objects.filter(article=instance.article, deleted=False)
         # TODO: This was breaking things. SimplePlugin doesn't have a revision?
-        #p_revisions.update(revision=instance)
+        p_revisions.update(article_revision=instance)
 
 signals.post_save.connect(update_simple_plugins, ArticleRevision)
