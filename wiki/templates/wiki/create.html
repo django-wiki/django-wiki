@@ -15,7 +15,11 @@
 		  $("#id_title").keyup(function () {
 			  var e = $("#id_slug")[0];
 			  if(!e._changed) {
-				  e.value = URLify(this.value, 64);
+			    slug = URLify(this.value, 64);
+			    wikislug = slug.replace(/\-/g, " ");
+			    wikislug = wikislug.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1);});
+          wikislug = wikislug.replace(/\s*/g, "");
+				  e.value = wikislug;
 			  }
 	      });
 	  });
