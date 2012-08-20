@@ -14,9 +14,9 @@ def upload_path(instance, filename):
     from os import path
     # Has to match original extension filename
         
-    upload_path = settings.UPLOAD_PATH
+    upload_path = settings.IMAGE_PATH
     upload_path = upload_path.replace('%aid', str(instance.plugin.image.article.id))
-    if settings.UPLOAD_PATH_OBSCURIFY:
+    if settings.IMAGE_PATH_OBSCURIFY:
         import random, hashlib
         m=hashlib.md5(str(random.randint(0,100000000000000)))
         upload_path = path.join(upload_path, m.hexdigest())

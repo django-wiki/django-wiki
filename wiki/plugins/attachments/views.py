@@ -34,7 +34,7 @@ class AttachmentView(ArticleMixin, FormView):
         return super(AttachmentView, self).dispatch(request, article, *args, **kwargs)
     
     # WARNING! The below decorator silences other exceptions that may occur!
-    #@transaction.commit_manually
+    @transaction.commit_manually
     def form_valid(self, form):
         if self.request.user.is_anonymous() and not settings.ANONYMOUS:
             return redirect(django_settings.LOGIN_URL)
@@ -53,11 +53,11 @@ class AttachmentView(ArticleMixin, FormView):
         except models.IllegalFileExtension, e:
             transaction.rollback()
             messages.error(self.request, _(u'Your file could not be saved: %s') % e)
-        #except Exception:
-        #    transaction.rollback()
-        #    messages.error(self.request, _(u'Your file could not be saved, probably because of a permission error on the web server.'))
+        except Exception:
+            transaction.rollback()
+            messages.error(self.request, _(u'Your file could not be saved, probably because of a permission error on the web server.'))
         
-        #transaction.commit()
+        transaction.commit()
         return redirect("wiki:attachments_index", path=self.urlpath.path, article_id=self.article.id)
     
     def get_context_data(self, **kwargs):
@@ -99,17 +99,32 @@ class AttachmentReplaceView(ArticleMixin, FormView):
             return redirect(wiki_settings.LOGIN_URL)
         return super(AttachmentReplaceView, self).dispatch(request, article, *args, **kwargs)
     
+    @transaction.commit_manually
     def form_valid(self, form):
         
-        attachment_revision = form.save(commit=False)
-        attachment_revision.attachment = self.attachment
-        attachment_revision.set_from_request(self.request)
-        attachment_revision.previous_revision = self.attachment.current_revision
-        attachment_revision.save()
-        self.attachment.current_revision = attachment_revision
-        self.attachment.save()
+        try:
+            attachment_revision = form.save(commit=False)
+            attachment_revision.attachment = self.attachment
+            attachment_revision.set_from_request(self.request)
+            attachment_revision.previous_revision = self.attachment.current_revision
+            attachment_revision.save()
+            self.attachment.current_revision = attachment_revision
+            self.attachment.save()
+            messages.success(self.request, _(u'%s uploaded and replaces old attachment.') % attachment_revision.get_filename())
+        except models.IllegalFileExtension, e:
+            transaction.rollback()
+            messages.error(self.request, _(u'Your file could not be saved: %s') % e)
+            transaction.commit()
+            return redirect("wiki:attachments_replace", attachment_id=self.attachment.id,
+                            path=self.urlpath.path, article_id=self.article.id)
+        except Exception:
+            transaction.rollback()
+            messages.error(self.request, _(u'Your file could not be saved, probably because of a permission error on the web server.'))
+            transaction.commit()
+            return redirect("wiki:attachments_replace", attachment_id=self.attachment.id,
+                            path=self.urlpath.path, article_id=self.article.id)
         
-        messages.success(self.request, _(u'%s uploaded and replaces old attachment.') % attachment_revision.get_filename())
+        transaction.commit()
         return redirect("wiki:attachments_index", path=self.urlpath.path, article_id=self.article.id)
     
     def get_form(self, form_class):
