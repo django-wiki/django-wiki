@@ -391,11 +391,12 @@ class History(ListView, ArticleMixin):
         return super(History, self).dispatch(request, article, *args, **kwargs)
 
 
-class List(ListView, ArticleMixin):
+class Dir(ListView, ArticleMixin):
     
-    template_name="wiki/list.html"
+    template_name="wiki/dir.html"
     allow_empty = True
     context_object_name = 'articles'
+    model = models.URLPath
     paginate_by = 30
     
     def get_queryset(self):
@@ -417,9 +418,13 @@ class List(ListView, ArticleMixin):
 
         return kwargs
     
+    def get_template_names(self):
+        #WHY IS THIS CALLED???????
+        return [self.__class__.template_name]
+    
     @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, *args, **kwargs):
-        return super(List, self).dispatch(request, article, *args, **kwargs)
+        return super(Dir, self).dispatch(request, article, *args, **kwargs)
 
 
 class Plugin(View):

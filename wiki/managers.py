@@ -115,7 +115,7 @@ class ArticleFkManager(models.Manager):
 
 
 class URLPathEmptyQuerySet(EmptyQuerySet, ArticleFkEmptyQuerySetMixin):
-    
+
     def select_related_common(self):
         return self
 
