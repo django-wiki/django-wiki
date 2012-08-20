@@ -385,6 +385,38 @@ class History(ListView, ArticleMixin):
         return super(History, self).dispatch(request, article, *args, **kwargs)
 
 
+class List(ListView, ArticleMixin):
+    
+    template_name="wiki/list.html"
+    allow_empty = True
+    context_object_name = 'children'
+    paginate_by = 50
+    
+    def get_queryset(self):
+        return models.URLPath.add_select_related(self.urlpath.get_children().order_by('slug'))
+    
+    
+    def get_context_data(self, **kwargs):
+        # Is this a bit of a hack? Use better inheritance?
+        kwargs_article = ArticleMixin.get_context_data(self, **kwargs)
+        kwargs_listview = ListView.get_context_data(self, **kwargs)
+        kwargs.update(kwargs_article)
+        kwargs.update(kwargs_listview)
+        
+        # We take this opportunity to add a bit of caching to each child. 
+        # Otherwise, 1 query every time we get a child's path
+        updated_children = kwargs[self.context_object_name]
+        new_ancestors = self.urlpath.cached_ancestors + [self.urlpath]
+        for child in updated_children:
+            child.cached_ancestors = new_ancestors
+        kwargs['object_list'] = kwargs[self.context_object_name] = updated_children
+        
+        return kwargs
+    
+    @method_decorator(get_article(can_read=True))
+    def dispatch(self, request, article, *args, **kwargs):
+        return super(List, self).dispatch(request, article, *args, **kwargs)
+
 class Plugin(View):
     
     def dispatch(self, request, path=None, slug=None, **kwargs):

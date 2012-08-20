@@ -15,8 +15,6 @@ from wiki.core.exceptions import NoRootURL, MultipleRootURLs
 from wiki.models.article import ArticleRevision, ArticleForObject, Article
 from django.contrib.contenttypes.models import ContentType
 
-URLPATH_PREFECTED_PROPERTIES = ["parent", "article__current_revision", "article__owner"]
-
 class URLPath(MPTTModel):
     """
     Strategy: Very few fields go here, as most has to be managed through an
@@ -39,15 +37,24 @@ class URLPath(MPTTModel):
     
     @property
     def cached_ancestors(self):
+        """
+        This returns the ancestors of this urlpath. These ancestors are hopefully
+        cached from the article path lookup. Accessing a foreign key included in
+        add_selecte_related on one of these ancestors will not occur an additional
+        sql query, as they were retrieved with a select_related.
+        
+        If the cached ancestors were not set explicitly, they will be retrieved from
+        the database.
+        """
         if not hasattr(self, "_cached_ancestors"):
-            self._cached_ancestors = list(self.get_ancestors().select_related(*URLPATH_PREFECTED_PROPERTIES) )
+            self._cached_ancestors = list(self.__class__.add_select_related(self.get_ancestors()) )
         
         return self._cached_ancestors
     
     @cached_ancestors.setter
     def cached_ancestors(self, ancestors):
         self._cached_ancestors = ancestors
-        
+    
     @property
     def path(self):
         if not self.parent: return ""
@@ -58,9 +65,17 @@ class URLPath(MPTTModel):
         return "/".join(slugs) + "/"
     
     @classmethod
+    def add_select_related(cls, urlpath_queryset):
+        """
+        Before using a queryset that retrieves urlpaths, run it through this first. It
+        adds a select_related with a list of foreign keys often retrieved from a urlpath.
+        """
+        return urlpath_queryset.select_related("parent", "article__current_revision", "article__owner")
+    
+    @classmethod
     def root(cls):
         site = Site.objects.get_current()
-        root_nodes = list(cls.objects.root_nodes().filter(site=site).select_related(*URLPATH_PREFECTED_PROPERTIES))
+        root_nodes = list( cls.add_select_related(cls.objects.root_nodes().filter(site=site)) ) 
         # We fetch the nodes as a list and use len(), not count() because we need
         # to get the result out anyway. This only takes one sql query
         no_paths = len(root_nodes)
@@ -123,11 +138,11 @@ class URLPath(MPTTModel):
         parent = cls.root()
         for slug in slugs:
             if settings.URL_CASE_SENSITIVE:
-                child = parent.get_children().select_related(*URLPATH_PREFECTED_PROPERTIES).get(slug=slug)
+                child = cls.add_select_related(parent.get_children()).get(slug=slug)
                 child.cached_ancestors = parent.cached_ancestors + [parent]
                 parent = child
             else:
-                child = parent.get_children().select_related(*URLPATH_PREFECTED_PROPERTIES).get(slug__iexact=slug)
+                child = cls.add_select_related(parent.get_children()).get(slug__iexact=slug)
                 child.cached_ancestors = parent.cached_ancestors + [parent]
                 parent = child
             level += 1
