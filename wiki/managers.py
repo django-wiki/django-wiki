@@ -91,7 +91,7 @@ class ArticleFkEmptyQuerySet(ArticleFkEmptyQuerySetMixin, EmptyQuerySet):
 
 class ArticleManager(models.Manager):
     def get_empty_query_set(self):
-        return ArticleEmptyQuerySet()
+        return ArticleEmptyQuerySet(model=self.model)
     def get_query_set(self):
         return ArticleQuerySet(self.model, using=self._db)
     def active(self):
@@ -127,7 +127,7 @@ class URLPathQuerySet(QuerySet, ArticleFkQuerySetMixin):
 class URLPathManager(TreeManager):
     
     def get_empty_query_set(self):
-        return URLPathEmptyQuerySet()
+        return URLPathEmptyQuerySet(model=self.model)
     
     def get_query_set(self):
         """Return a QuerySet with the same ordering as the TreeManager."""
