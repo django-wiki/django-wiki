@@ -1,9 +1,7 @@
 Not implemented - will be ASAP
 ==============================
 
- * Permission system in settings tab **Almost done** (option to apply changes recursively and to change owner if user has a grant permission)
  * Notification system **Almost done** (email notifications)
- * Image plugin **In progress**
  * Circuit Editor plugin
  * Custom storage engine for attachments
  * Implement notifications, revision log messages and user messages thoroughly
@@ -19,8 +17,10 @@ Not implemented - will be ASAP
  * Embeddable article template tag
  * Expand prepopulated database
  * "Fix Wiki URL bug in the footnotes plugin for python-markdown" ?
+ * Permission system in settings tab **Done**
  * Special view for deleted articles w/ restore button **Done**
  * Article deletion **Done**
+ * Image plugin **Done**
  * Attachment plugin **Done**
  * Simple user account handling: login/register etc. **Done**
  * South migrations **Done**

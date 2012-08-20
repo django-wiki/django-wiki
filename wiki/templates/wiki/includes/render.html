@@ -20,7 +20,7 @@
   {% if not preview %}
 
     {% if article.current_revision %}
-      {% cache 1 article article.current_revision.id %}
+      {% cache 6000 article article.current_revision.id %}
         {{ article.render }}
       {% endcache %}
     {% endif %}

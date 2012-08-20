@@ -1,4 +1,4 @@
-{% load thumbnail %}
+{% load thumbnail i18n %}
 {% comment %}
   This template is used for the markdown extension that renders images and captions
 {% endcomment %}
@@ -9,10 +9,14 @@
       <a href="{{ revision.image.url }}">
         <img src="{{ thumb.url }}" alt="{{ revision.get_filename }}" />
       </a>
+      {% empty %}
       <div class="caption">
-        {{ caption|safe }}
+        <em>{% trans "Image not found" %}</em>
       </div>
     {% endthumbnail %}
+    <div class="caption">
+      {{ caption|safe }}
+    </div>
   </div>
 </div>
 {% endwith %}

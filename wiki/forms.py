@@ -13,6 +13,7 @@ from wiki.editors import getEditor
 from wiki.core.diff import simple_merge
 from django.forms.widgets import HiddenInput
 from wiki.core.plugins.base import PluginSettingsFormMixin
+from django.contrib.auth.models import User
 
 class CreateRootForm(forms.Form):
     
@@ -231,12 +232,17 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
     settings_order = 5
     settings_write_access = False
 
+    owner_username = forms.CharField(required=False, label=_(u'Owner'),
+                                     help_text=_(u'Enter the username of the owner.'))
     group = forms.ModelChoiceField(models.Group.objects.all(), widget=SelectWidgetBootstrap(),
                                    empty_label=_(u'(none)'), required=False)
     
+    recursive = forms.BooleanField(label=_(u'Inherit permissions'), help_text=_(u'Check here to apply the above permissions recursively to articles under this one.'),
+                                   required=False)
+    
     def get_usermessage(self):
         if self.changed_data:
-            return _('Your permission settings were updated.')
+            return _('Permission settings for the article were updated.')
         else:
             return _('Your permission settings were unchanged, so nothing saved.')
     
@@ -245,12 +251,54 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
         self.user = user
         kwargs['instance'] = article
         super(PermissionsForm, self).__init__(*args, **kwargs)
-        if user.has_perm("wiki.admin"):
+        self.can_change_groups = True
+        self.can_assign = False
+        if user.has_perm("wiki.assign"):
+            self.can_assign = True
             self.fields['group'].queryset = models.Group.objects.all()
         else:
-            self.fields['group'].queryset = models.Group.objects.filter(user=user)
+            self.fields['owner_username'].widget = forms.HiddenInput()
+            self.fields['recursive'].widget = forms.HiddenInput()
+            groups = models.Group.objects.filter(user=user)
+            self.fields['group'].queryset = groups
+            # Sanity: If somehow the article belongs to a group that the
+            # owner is not a member of, don't let the owner make any decisions
+            # for group permissions.
+            if article.group and not user in article.group.user_set.all():
+                self.can_change_groups = False
+                self.fields['group'].widget = forms.HiddenInput()
+                self.fields['group_read'].widget = forms.HiddenInput()
+                self.fields['group_write'].widget = forms.HiddenInput()
+        
+        self.fields['owner_username'].initial = article.owner.username if article.owner else ""
+    
+    def clean_owner_username(self):
+        if self.can_assign:
+            username = self.cleaned_data['owner_username']
+            if username:
+                try:
+                    user = User.objects.get(username=username)
+                except models.User.DoesNotExist:
+                    raise forms.ValidationError(_(u'No user with that username'))
+            else:
+                user = None
+        else:
+            user = self.article.owner
+        return user
+    
+    def save(self, commit=True):
+        article = super(PermissionsForm, self).save(commit=False)
+        article.owner = self.cleaned_data['owner_username']
+        if not self.can_change_groups:
+            article.group = self.article.group
+            article.group_read = self.article.group_read
+            article.group_write = self.article.group_write
+        if self.can_assign and self.cleaned_data['recursive']:
+            article.set_permissions_recursive()
+        article.save()
     
     class Meta:
         model = models.Article
-        fields = ('group', 'group_read', 'group_write', 'other_read', 'other_write')
+        fields = ('owner_username', 'group', 'group_read', 'group_write', 'other_read', 'other_write',
+                  'recursive')
 

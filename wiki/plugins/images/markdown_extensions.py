@@ -35,7 +35,8 @@ class ImagePreprocessor(markdown.preprocessors.Preprocessor):
                 alignment = m.group('align').strip()
                 try:
                     image = models.Image.objects.get(article=self.markdown.article,
-                                                           id=image_id)
+                                                    id=image_id,
+                                                    current_revision__deleted=False)
                 except models.Image.DoesNotExist:
                     pass
                 line = line.replace(m.group(1), "")

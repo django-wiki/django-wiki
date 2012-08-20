@@ -69,11 +69,11 @@ class Article(models.Model):
             return True
         return False
     
-    def decendant_objects(self):
+    def descendant_objects(self):
         """NB! This generator is expensive, so use it with care!!"""
         for obj in self.articleforobject_set.filter(is_mptt=True):
-            for decendant in obj.content_object.get_decendants():
-                yield decendant
+            for descendant in obj.content_object.get_descendants():
+                yield descendant
     
     def get_children(self, max_num=None, **kwargs):
         """NB! This generator is expensive, so use it with care!!"""
@@ -84,25 +84,28 @@ class Article(models.Model):
                 if max_num and cnt > max_num: return
                 yield child
 
-    # All recursive permission methods will use decendant_objects to access
+    # All recursive permission methods will use descendant_objects to access
     # generic relations and check if they are using MPTT and have INHERIT_PERMISSIONS=True
     def set_permissions_recursive(self):
-        for decendant in self.decendant_objects():
-            if decendant.INHERIT_PERMISSIONS:
-                decendant.group_read = self.group_read
-                decendant.group_write = self.group_write
-                decendant.other_read = self.other_read
-                decendant.other_write = self.other_write
+        for descendant in self.descendant_objects():
+            if descendant.INHERIT_PERMISSIONS:
+                descendant.group_read = self.group_read
+                descendant.group_write = self.group_write
+                descendant.other_read = self.other_read
+                descendant.other_write = self.other_write
+                descendant.save()
     
     def set_group_recursive(self):
-        for decendant in self.decendant_objects():
-            if decendant.INHERIT_PERMISSIONS:
-                decendant.group = self.group
+        for descendant in self.descendant_objects():
+            if descendant.INHERIT_PERMISSIONS:
+                descendant.group = self.group
+                descendant.save()
 
     def set_owner_recursive(self):
-        for decendant in self.decendant_objects():
-            if decendant.INHERIT_PERMISSIONS:
-                decendant.owner = self.owner
+        for descendant in self.descendant_objects():
+            if descendant.INHERIT_PERMISSIONS:
+                descendant.owner = self.owner
+                descendant.save()
     
     def add_revision(self, new_revision, save=True):
         """
