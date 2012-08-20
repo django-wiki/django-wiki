@@ -27,6 +27,7 @@ class URLPath(MPTTModel):
     INHERIT_PERMISSIONS = True
     
     objects = managers.URLPathManager()
+    _default_manager = objects
     
     articles = generic.GenericRelation(ArticleForObject)
     
@@ -37,6 +38,10 @@ class URLPath(MPTTModel):
     slug = models.SlugField(verbose_name=_(u'slug'), null=True, blank=True)
     site = models.ForeignKey(Site)
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children')    
+    
+    def __init__(self, *args, **kwargs):
+        self._tree_manager = URLPath.objects
+        return super(URLPath, self).__init__(*args, **kwargs)
     
     @property
     def cached_ancestors(self):

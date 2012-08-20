@@ -395,15 +395,13 @@ class List(ListView, ArticleMixin):
     
     template_name="wiki/list.html"
     allow_empty = True
-    context_object_name = 'children'
-    paginate_by = 50
+    context_object_name = 'articles'
+    paginate_by = 30
     
     def get_queryset(self):
-        return self.urlpath.get_children().order_by('slug').select_related_common()
-    
+        return self.urlpath.get_children().can_read(self.request.user).select_related_common().order_by('slug')
     
     def get_context_data(self, **kwargs):
-        # Is this a bit of a hack? Use better inheritance?
         kwargs_article = ArticleMixin.get_context_data(self, **kwargs)
         kwargs_listview = ListView.get_context_data(self, **kwargs)
         kwargs.update(kwargs_article)
@@ -415,13 +413,14 @@ class List(ListView, ArticleMixin):
         new_ancestors = self.urlpath.cached_ancestors + [self.urlpath]
         for child in updated_children:
             child.cached_ancestors = new_ancestors
-        kwargs['object_list'] = kwargs[self.context_object_name] = updated_children
-        
+        kwargs[self.context_object_name] = updated_children
+
         return kwargs
     
     @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, *args, **kwargs):
         return super(List, self).dispatch(request, article, *args, **kwargs)
+
 
 class Plugin(View):
     
@@ -430,6 +429,7 @@ class Plugin(View):
         for plugin in plugin_registry.get_plugins().values():
             if getattr(plugin, 'slug', None) == slug:
                 return plugin.article_view(request, **kwargs)
+
 
 class Settings(ArticleMixin, TemplateView):
     

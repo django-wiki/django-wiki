@@ -2,14 +2,14 @@
 {% load wiki_tags i18n sekizai_tags %}
 {% load url from future %}
 
-{% block pagetitle %}{% trans "Children of" %} {{ article.current_revision.title }}{% endblock %}
+{% block pagetitle %}{% trans "Sub-articles of" %} {{ article.current_revision.title }}{% endblock %}
 
 {% block wiki_contents_tab %}
 
 <ul>
-  {% for child in children %}
+  {% for article in articles %}
     <li>
-      <a href="{% url 'wiki:get' child.path %}"> {{ child.article.current_revision.title }} </a>
+      <a href="{% url 'wiki:get' child.path %}"> {{ article.article.current_revision.title }} </a>
     </li>
   {% endfor %}
 </ul>

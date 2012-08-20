@@ -49,6 +49,8 @@ else:
     LOGIN_URL = getattr(django_settings, "LOGIN_URL", "/")
 
 # Maximum amount of children to display in a menu before going "+more"
+# NEVER set this to 0 as it will wrongly inform the user that there are no
+# children and for instance that an article can be safely deleted.
 SHOW_MAX_CHILDREN = getattr(django_settings, 'WIKI_SHOW_MAX_CHILDREN', 20)
 
 ####################
