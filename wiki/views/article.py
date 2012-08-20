@@ -224,7 +224,7 @@ class Edit(FormView, ArticleMixin):
     @method_decorator(get_article(can_write=True))
     def dispatch(self, request, article, *args, **kwargs):
         self.sidebar_plugins = plugin_registry.get_sidebar()
-        self.sidebar_forms = []
+        self.sidebar = []
         return super(Edit, self).dispatch(request, article, *args, **kwargs)
     
     def get_form(self, form_class):
@@ -245,25 +245,25 @@ class Edit(FormView, ArticleMixin):
         to identify which form is being saved."""
         form_classes = {}
         for cnt, plugin in enumerate(self.sidebar_plugins):
-            form_classes['form%d' % cnt] = plugin.sidebar.get('form_class', None)
+            form_classes['form%d' % cnt] = (plugin, plugin.sidebar.get('form_class', None))
         return form_classes
     
     def get(self, request, *args, **kwargs):
         # Generate sidebar forms
         self.sidebar_forms = []
-        for form_id, Form in self.get_sidebar_form_classes().items():
+        for form_id, (plugin, Form) in self.get_sidebar_form_classes().items():
             if Form:
                 form = Form(self.article, self.request.user)
                 setattr(form, 'form_id', form_id)
             else:
                 form = None
-            self.sidebar_forms.append(form)
+            self.sidebar.append((plugin, form))
         return super(Edit, self).get(request, *args, **kwargs)
     
     def post(self, request, *args, **kwargs):
         # Generate sidebar forms
         self.sidebar_forms = []
-        for form_id, Form in self.get_sidebar_form_classes().items():
+        for form_id, (plugin, Form) in self.get_sidebar_form_classes().items():
             if Form:
                 if form_id == self.request.GET.get('f', None):
                     form = Form(self.article, self.request, data=self.request.POST, files=self.request.FILES)
@@ -282,7 +282,7 @@ class Edit(FormView, ArticleMixin):
                 setattr(form, 'form_id', form_id)
             else:
                 form = None
-            self.sidebar_forms.append(form)
+            self.sidebar.append((plugin, form))
         return super(Edit, self).post(request, *args, **kwargs)
     
     def form_valid(self, form):
@@ -309,7 +309,7 @@ class Edit(FormView, ArticleMixin):
         kwargs['edit_form'] = kwargs.pop('form', None)
         kwargs['editor'] = editors.getEditor()
         kwargs['selected_tab'] = 'edit'
-        kwargs['sidebar'] = zip(self.sidebar_plugins, self.sidebar_forms)
+        kwargs['sidebar'] = self.sidebar
         return super(Edit, self).get_context_data(**kwargs)
 
 
