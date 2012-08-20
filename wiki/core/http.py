@@ -22,9 +22,7 @@ def send_file(request, filepath, last_modified=None, filename=None):
         response["Last-Modified"] = http_date(statobj.st_mtime)
     else:
         if isinstance(last_modified, datetime):
-            print last_modified
             last_modified = float(dateformat.format(last_modified, 'U'))
-            print last_modified
         response["Last-Modified"] = http_date(epoch_seconds=last_modified)
     
     response["Content-Length"] = statobj.st_size

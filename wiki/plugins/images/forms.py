@@ -42,6 +42,8 @@ class RevisionForm(forms.ModelForm):
             kwargs['commit'] = False
             revision = super(RevisionForm, self).save(*args, **kwargs)
             revision.set_from_request(self.request)
+            revision.set_from_request(self.request)
+            revision.save()
             self.image.add_revision(self.instance, save=True)
             return revision
         return super(SidebarForm, self).save(*args, **kwargs)

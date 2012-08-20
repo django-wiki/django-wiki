@@ -224,7 +224,7 @@ class Edit(FormView, ArticleMixin):
     @method_decorator(get_article(can_write=True))
     def dispatch(self, request, article, *args, **kwargs):
         self.sidebar_plugins = plugin_registry.get_sidebar()
-        self.sidebar_forms = []
+        self.sidebar = []
         return super(Edit, self).dispatch(request, article, *args, **kwargs)
     
     def get_form(self, form_class):
@@ -233,7 +233,7 @@ class Edit(FormView, ArticleMixin):
         otherwise removes the 'data' and 'files' kwargs from form initialisation.
         """
         kwargs = self.get_form_kwargs()
-        if self.request.POST.get('save', '') != '1':
+        if self.request.POST.get('save', '') != '1' and self.request.POST.get('preview') != '1':
             kwargs['data'] = None
             kwargs['files'] = None
             kwargs['no_clean'] = True
@@ -245,38 +245,44 @@ class Edit(FormView, ArticleMixin):
         to identify which form is being saved."""
         form_classes = {}
         for cnt, plugin in enumerate(self.sidebar_plugins):
-            form_classes['form%d' % cnt] = plugin.sidebar.get('form_class', None)
+            form_classes['form%d' % cnt] = (plugin, plugin.sidebar.get('form_class', None))
         return form_classes
     
     def get(self, request, *args, **kwargs):
         # Generate sidebar forms
         self.sidebar_forms = []
-        for form_id, Form in self.get_sidebar_form_classes().items():
-            form = Form(self.article, self.request.user)
-            setattr(form, 'form_id', form_id)
-            self.sidebar_forms.append(form)
+        for form_id, (plugin, Form) in self.get_sidebar_form_classes().items():
+            if Form:
+                form = Form(self.article, self.request.user)
+                setattr(form, 'form_id', form_id)
+            else:
+                form = None
+            self.sidebar.append((plugin, form))
         return super(Edit, self).get(request, *args, **kwargs)
     
     def post(self, request, *args, **kwargs):
         # Generate sidebar forms
         self.sidebar_forms = []
-        for form_id, Form in self.get_sidebar_form_classes().items():
-            if form_id == self.request.GET.get('f', None):
-                form = Form(self.article, self.request, data=self.request.POST, files=self.request.FILES)
-                if form.is_valid():
-                    form.save()
-                    usermessage = form.get_usermessage()
-                    if usermessage:
-                        messages.success(self.request, usermessage)
-                    else:
-                        messages.success(self.request, _(u'Your changes were saved.'))
-                    if self.urlpath:
-                        return redirect('wiki:edit', path=self.urlpath.path)
-                    return redirect('wiki:edit', article_id=self.article.id)
+        for form_id, (plugin, Form) in self.get_sidebar_form_classes().items():
+            if Form:
+                if form_id == self.request.GET.get('f', None):
+                    form = Form(self.article, self.request, data=self.request.POST, files=self.request.FILES)
+                    if form.is_valid():
+                        form.save()
+                        usermessage = form.get_usermessage()
+                        if usermessage:
+                            messages.success(self.request, usermessage)
+                        else:
+                            messages.success(self.request, _(u'Your changes were saved.'))
+                        if self.urlpath:
+                            return redirect('wiki:edit', path=self.urlpath.path)
+                        return redirect('wiki:edit', article_id=self.article.id)
+                else:
+                    form = Form(self.article, self.request)
+                setattr(form, 'form_id', form_id)
             else:
-                form = Form(self.article, self.request)
-            setattr(form, 'form_id', form_id)
-            self.sidebar_forms.append(form)
+                form = None
+            self.sidebar.append((plugin, form))
         return super(Edit, self).post(request, *args, **kwargs)
     
     def form_valid(self, form):
@@ -303,7 +309,7 @@ class Edit(FormView, ArticleMixin):
         kwargs['edit_form'] = kwargs.pop('form', None)
         kwargs['editor'] = editors.getEditor()
         kwargs['selected_tab'] = 'edit'
-        kwargs['sidebar'] = zip(self.sidebar_plugins, self.sidebar_forms)
+        kwargs['sidebar'] = self.sidebar
         return super(Edit, self).get_context_data(**kwargs)
 
 
@@ -498,33 +504,42 @@ def change_revision(request, article, revision_id=None, urlpath=None):
     else:
         return redirect('wiki:history', article_id=article.id)
 
-# TODO: Throw in a class-based view
-@get_article(can_read=True)
-def preview(request, article, urlpath=None, template_file="wiki/preview_inline.html"):
+class Preview(ArticleMixin, TemplateView):
     
-    content = article.current_revision.content
-    title = article.current_revision.title
+    template_name="wiki/preview_inline.html"
     
-    revision_id = request.GET.get('r', None)
-    revision = None
+    @method_decorator(get_article(can_read=True))
+    def dispatch(self, request, article, *args, **kwargs):
+        revision_id = request.GET.get('r', None)
+        self.title = None
+        self.content = None
+        self.preview = False
+        if revision_id:
+            self.revision = get_object_or_404(models.ArticleRevision, article=article, id=revision_id)
+        else:
+            self.revision = None
+        return super(Preview, self).dispatch(request, article, *args, **kwargs)
     
-    if request.method == 'POST':
-        edit_form = forms.EditForm(article.current_revision, request.POST, preview=True)
+    def post(self, request, *args, **kwargs):
+        edit_form = forms.EditForm(self.article.current_revision, request.POST, preview=True)
         if edit_form.is_valid():
-            title = edit_form.cleaned_data['title']
-            content = edit_form.cleaned_data['content']
+            self.title = edit_form.cleaned_data['title']
+            self.content = edit_form.cleaned_data['content']
+            self.preview = True
+        return super(Preview, self).get(request, *args, **kwargs)
+        
+    def get(self, request, *args, **kwargs):
+        self.title = self.revision.title
+        self.content = self.revision.content
+        return super(Preview, self).get( request, *args, **kwargs)
     
-    elif revision_id:
-        revision = get_object_or_404(models.ArticleRevision, article=article, id=revision_id)
-        title = revision.title
-        content = revision.content
+    def get_context_data(self, **kwargs):
+        kwargs['title'] = self.title
+        kwargs['revision'] = self.revision
+        kwargs['content'] = self.content
+        kwargs['preview'] = self.preview
+        return super(Preview, self).get_context_data(**kwargs)
     
-    c = RequestContext(request, {'urlpath': urlpath,
-                                 'article': article,
-                                 'title': title,
-                                 'revision': revision,
-                                 'content': content})
-    return render_to_response(template_file, context_instance=c)
 
 @json_view
 def diff(request, revision_id, other_revision_id=None):

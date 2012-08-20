@@ -13,6 +13,24 @@ WIKI_LANGUAGE = 'markdown'
 # extend the built-in editor and customize it....
 EDITOR = getattr(django_settings, 'WIKI_EDITOR', 'wiki.editors.markitup.MarkItUp')
 
+# If you want to write an extension, you should use the plugin API as you
+# will get an article model instance to play with. These are just the
+# builtin markdown extensions
+# Notice that this should be a callable which accepts the article as an argument
+def get_extensions(article):
+    from wiki.models import URLPath
+    try:
+        urlpath = URLPath.objects.get(article=article)
+        url = reverse_lazy('wiki:get', kwargs={'path': urlpath.path})
+    except URLPath.DoesNotExist:
+        url = reverse_lazy('wiki:get', kwargs={'article_id': article.id})
+    return ['extra', 'wikilinks(base_url=%s)' % url, 'codehilite(force_linenos=True)', 'toc']
+MARKDOWN_EXTENSIONS = getattr(
+    django_settings, 
+    'WIKI_MARKDOWN_EXTENSIONS',
+    get_extensions 
+)
+
 # This slug is used in URLPath if an article has been deleted. The children of the
 # URLPath of that article are moved to lost and found. They keep their permissions
 # and all their content.

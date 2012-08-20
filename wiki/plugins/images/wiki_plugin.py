@@ -6,16 +6,11 @@ from wiki.core.plugins import registry
 from wiki.core.plugins.base import BasePlugin
 from wiki.plugins.images import views, models, settings, forms
 from wiki.plugins.notifications import ARTICLE_EDIT
+from wiki.plugins.images.markdown_extensions import ImageExtension
 
 class ImagePlugin(BasePlugin):
     
-    #settings_form = 'wiki.plugins.notifications.forms.SubscriptionForm'
-    
     slug = settings.SLUG
-    urlpatterns = patterns('',
-        url('^$', views.ImageView.as_view(), name='images_index'),
-    )
-    
     sidebar = {'headline': _('Images'),
                'icon_class': 'icon-picture',
                'template': 'wiki/plugins/images/sidebar.html',
@@ -31,6 +26,14 @@ class ImagePlugin(BasePlugin):
                       'get_article': lambda obj: obj.article}
                      ]
     
+    class RenderMedia:
+        js = [
+              'wiki/colorbox/colorbox/jquery.colorbox-min.js',
+              'wiki/js/images.js',
+        ]
+        
+        css = {'screen': 'wiki/colorbox/example1/colorbox.css'}
+    
     urlpatterns = patterns('',
         url('^$', views.ImageView.as_view(), name='images_index'),
         url('^delete/(?P<image_id>\d+)/$', views.DeleteView.as_view(), name='images_delete'),
@@ -39,7 +42,7 @@ class ImagePlugin(BasePlugin):
         url('^(?P<image_id>\d+)/revision/add/$', views.RevisionAddView.as_view(), name='images_add_revision'),
     )
 
-    #markdown_extensions = [AttachmentExtension()]
+    markdown_extensions = [ImageExtension()]
     
     def __init__(self):
         #print "I WAS LOADED!"

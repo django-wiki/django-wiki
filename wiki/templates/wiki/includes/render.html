@@ -1,13 +1,35 @@
 {% load wiki_tags i18n cache %}
 
 {% block wiki_contents %}
+
+  {% for plugin in plugins %}
+    {% if plugin.RenderMedia.css %}
+      {% for media, url in plugin.RenderMedia.css.items %}
+        <link rel="stylesheet" href="{{ STATIC_URL }}{{ url }}" />
+      {% endfor %}
+    {% endif %}
+    {% if plugin.RenderMedia.js %}
+      {% for url in plugin.RenderMedia.js %}
+        <script type="text/javascript" src="{{ STATIC_URL }}{{ url }}"></script>
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
+  
+  
+  <div class="wiki-article">
   {% if not preview %}
-  {% if article.current_revision %}
-    {% cache 1 article article.current_revision.id %}
-      {{ article.render }}
-    {% endcache %}
-  {% endif %}
+
+    {% if article.current_revision %}
+      {% cache 6000 article article.current_revision.id %}
+        {{ article.render }}
+      {% endcache %}
+    {% endif %}
+
   {% else %}
+
     {{ content|default:"" }}
+
   {% endif %}
+  </div>
+  
 {% endblock %}

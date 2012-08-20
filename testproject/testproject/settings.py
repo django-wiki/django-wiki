@@ -109,6 +109,7 @@ INSTALLED_APPS = (
     'sorl.thumbnail',
     'wiki',
     'wiki.plugins.images',
+    'wiki.plugins.help',
     'wiki.plugins.attachments',
     'wiki.plugins.notifications',
     'mptt',

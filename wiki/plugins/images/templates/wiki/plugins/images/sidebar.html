@@ -1,6 +1,14 @@
 {% load i18n wiki_tags wiki_images_tags humanize thumbnail %}
 {% load url from future %}
 
+<script type="text/javascript">
+function insert_image(image_id) {
+  align=prompt('Enter an alignment. \'left\', \'right\' or \'center\':', 'right');
+  caption=prompt('Enter a caption text. You may use markdown. You can edit the text after...');
+  $('#id_content').insertAtCaret('\n[image:'+image_id+' align:'+align+']\n    '+caption+'\n\n');
+}
+</script>
+
 {% with article|images_for_article as images %}
 <style type="text/css">
   #image-list tr:first-child td {border:0;}
@@ -12,9 +20,9 @@
       {% thumbnail revision.image "50x50" crop="center" as thumb %}
         <tr>
           <td style="white-space: nowrap;">
-            <p>{{ revision.get_filename|truncatechars:30 }}</p>
+            <p>{% trans "Image id" %}: {{ image.id }}</code></p>
             <p>
-              <a href=""><span class="icon-edit"></span> {% trans "Insert" %}</a><br />
+              <a href="javascript:void(insert_image({{ image.id }}))"><span class="icon-edit"></span> {% trans "Insert" %}</a><br />
               {% if image|can_write:user %}
               <a href="{% url 'wiki:images_add_revision' path=urlpath.path article_id=article.id image_id=image.id %}"><span class="icon-edit"></span> {% trans "Replace" %}</a>
               {% endif %}
@@ -99,7 +107,10 @@
   {% trans "How to use images" %}
 </h4>
 
-<p>{% trans "After uploading an image, it is attached to this particular artice and can be used only here. Other users may replace the image, but older versions are kept. You probably want to show the image with a nice caption. To achieve this, press the Insert button and fill in the caption fields and possibly choose to have you image floating right or left of the content. You can use Markdown in the caption. The markdown code syntax for images looks like this:" %}<br /><code>[image:id alignment caption text]</code></p>
+<p>{% trans "After uploading an image, it is attached to this particular artice and can be used only here. Other users may replace the image, but older versions are kept. You probably want to show the image with a nice caption. To achieve this, press the Insert button and fill in the caption fields and possibly choose to have you image floating right or left of the content. You can use Markdown in the caption. The markdown code syntax for images looks like this, possible values for align are left/center/right:" %}<br />
+<pre>[image:id align:right]
+    caption indented by 4 spaces</pre>
+</p>
 
 
 {% endwith %}

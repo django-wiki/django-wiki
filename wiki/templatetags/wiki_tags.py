@@ -1,3 +1,4 @@
+from django.conf import settings as django_settings
 from django import template
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model
@@ -6,6 +7,7 @@ from django.forms import BaseForm
 register = template.Library()
 
 from wiki import models
+from wiki.core.plugins import registry as plugin_registry
 
 # Cache for looking up objects for articles... article_for_object is
 # called more than once per page in multiple template blocks.
@@ -39,6 +41,8 @@ def wiki_render(article, preview_content=None):
         'article': article,
         'content': content,
         'preview': not preview_content is None,
+        'plugins': plugin_registry.get_plugins(),
+        'STATIC_URL': django_settings.STATIC_URL,
     }
 
 @register.inclusion_tag('wiki/includes/form.html', takes_context=True)
