@@ -1,0 +1,20 @@
+{% extends "wiki/article.html" %}
+{% load wiki_tags i18n sekizai_tags %}
+{% load url from future %}
+
+{% block pagetitle %}{% trans "Children of" %} {{ article.current_revision.title }}{% endblock %}
+
+{% block wiki_contents_tab %}
+
+<ul>
+  {% for child in children %}
+    <li>
+      <a href="{% url 'wiki:get' child.path %}"> {{ child.article.current_revision.title }} </a>
+    </li>
+  {% endfor %}
+</ul>
+
+{% include "wiki/includes/pagination.html" %}
+
+{% endblock %}
+
