@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import Q
 from django.db.models.query import QuerySet
+from mptt.managers import TreeManager
 
 class ArticleQuerySet(QuerySet):
     
@@ -88,3 +89,17 @@ class ArticleFkManager(models.Manager):
     def can_write(self, user):
         return self.get_query_set().can_write(user)
 
+
+class URLPathQuerySet(QuerySet):
+    
+    def select_related_common(self):
+        return self.select_related("parent", "article__current_revision", "article__owner")
+
+class URLPathManager(TreeManager):
+    def get_query_set(self):
+        """Return a QuerySet with the same ordering as the TreeManager."""
+        return URLPathQuerySet(self.model, using=self._db).order_by(
+            self.tree_id_attr, self.left_attr)
+
+    def select_related_common(self):
+        return self.get_query_set().common_select_related()

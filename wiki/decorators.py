@@ -86,17 +86,16 @@ def get_article(func=None, can_read=True, can_write=False, deleted_contents=Fals
         
         
         else:
-            # TODO: Return something??
             raise TypeError('You should specify either article_id or path')
         
-        if can_read and not article.can_read(request.user):
+        if can_read and not article.can_read(user=request.user):
             if request.user.is_anonymous():
                 return redirect(django_settings.LOGIN_URL)
             else:
                 c = RequestContext(request, {'urlpath' : urlpath})
                 return HttpResponseForbidden(render_to_string("wiki/permission_denied.html", context_instance=c))
         
-        if can_write and not article.can_write(request.user):
+        if can_write and not article.can_write(user=request.user):
             if request.user.is_anonymous():
                 return redirect(django_settings.LOGIN_URL)
             else:

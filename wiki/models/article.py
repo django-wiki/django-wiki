@@ -48,7 +48,7 @@ class Article(models.Model):
         if self.group_read:
             if self.group and group == self.group:
                 return True
-            if self.group and user and user.groups.filter(group=group):
+            if self.group and user and user.groups.filter(id=self.group.id):
                 return True
         if user and user.has_perm('wiki_moderator'):
             return True
@@ -63,7 +63,7 @@ class Article(models.Model):
         if self.group_write:
             if self.group and group == self.group:
                 return True
-            if self.group and user and user.groups.filter(group=group):
+            if self.group and user and user.groups.filter(id=self.group.id):
                 return True
         if user and user.has_perm('wiki_moderator'):
             return True

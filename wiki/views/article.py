@@ -399,7 +399,7 @@ class List(ListView, ArticleMixin):
     paginate_by = 50
     
     def get_queryset(self):
-        return models.URLPath.add_select_related(self.urlpath.get_children().order_by('slug'))
+        return self.urlpath.get_children().order_by('slug').select_related_common()
     
     
     def get_context_data(self, **kwargs):

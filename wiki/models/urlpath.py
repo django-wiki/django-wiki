@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
@@ -10,10 +11,10 @@ from django.utils.translation import ugettext_lazy as _, ugettext
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
 
+from wiki import managers
 from wiki.conf import settings
 from wiki.core.exceptions import NoRootURL, MultipleRootURLs
 from wiki.models.article import ArticleRevision, ArticleForObject, Article
-from django.contrib.contenttypes.models import ContentType
 
 class URLPath(MPTTModel):
     """
@@ -23,7 +24,9 @@ class URLPath(MPTTModel):
     # Tells django-wiki that permissions from a this object's article
     # should be inherited to children's articles. In this case, it's a static
     # property.. but you can also use a BooleanField.
-    INHERIT_PERMISSIONS = True 
+    INHERIT_PERMISSIONS = True
+    
+    objects = managers.URLPathManager()
     
     articles = generic.GenericRelation(ArticleForObject)
     
@@ -47,7 +50,7 @@ class URLPath(MPTTModel):
         the database.
         """
         if not hasattr(self, "_cached_ancestors"):
-            self._cached_ancestors = list(self.__class__.add_select_related(self.get_ancestors()) )
+            self._cached_ancestors = list(self.get_ancestors().select_related_common() )
         
         return self._cached_ancestors
     
@@ -65,17 +68,11 @@ class URLPath(MPTTModel):
         return "/".join(slugs) + "/"
     
     @classmethod
-    def add_select_related(cls, urlpath_queryset):
-        """
-        Before using a queryset that retrieves urlpaths, run it through this first. It
-        adds a select_related with a list of foreign keys often retrieved from a urlpath.
-        """
-        return urlpath_queryset.select_related("parent", "article__current_revision", "article__owner")
-    
-    @classmethod
     def root(cls):
         site = Site.objects.get_current()
-        root_nodes = list( cls.add_select_related(cls.objects.root_nodes().filter(site=site)) ) 
+        root_nodes = list(
+            cls.objects.root_nodes().filter(site=site).select_related_common()
+        ) 
         # We fetch the nodes as a list and use len(), not count() because we need
         # to get the result out anyway. This only takes one sql query
         no_paths = len(root_nodes)
@@ -138,11 +135,11 @@ class URLPath(MPTTModel):
         parent = cls.root()
         for slug in slugs:
             if settings.URL_CASE_SENSITIVE:
-                child = cls.add_select_related(parent.get_children()).get(slug=slug)
+                child = parent.get_children().select_related_common().get(slug=slug)
                 child.cached_ancestors = parent.cached_ancestors + [parent]
                 parent = child
             else:
-                child = cls.add_select_related(parent.get_children()).get(slug__iexact=slug)
+                child = parent.get_children().select_related_common().get(slug__iexact=slug)
                 child.cached_ancestors = parent.cached_ancestors + [parent]
                 parent = child
             level += 1

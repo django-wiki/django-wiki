@@ -24,7 +24,7 @@ def get_extensions(article):
         url = reverse_lazy('wiki:get', kwargs={'path': urlpath.path})
     except URLPath.DoesNotExist:
         url = reverse_lazy('wiki:get', kwargs={'article_id': article.id})
-    return ['extra', 'wikilinks(base_url=%s)' % url, 'codehilite(force_linenos=True)', 'toc']
+    return ['extra', 'wikilinks(base_url=%s)' % url, 'codehilite', 'toc']
 MARKDOWN_EXTENSIONS = getattr(
     django_settings, 
     'WIKI_MARKDOWN_EXTENSIONS',
