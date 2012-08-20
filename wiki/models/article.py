@@ -161,6 +161,7 @@ class Article(models.Model):
         else:
             content = self.current_revision.content
         extensions = plugin_registry.get_markdown_extensions()
+        extensions += settings.MARKDOWN_EXTENSIONS(self)
         return mark_safe(article_markdown(content, self, extensions=extensions))
         
     

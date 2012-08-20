@@ -10,13 +10,7 @@ from wiki.plugins.images.markdown_extensions import ImageExtension
 
 class ImagePlugin(BasePlugin):
     
-    #settings_form = 'wiki.plugins.notifications.forms.SubscriptionForm'
-    
     slug = settings.SLUG
-    urlpatterns = patterns('',
-        url('^$', views.ImageView.as_view(), name='images_index'),
-    )
-    
     sidebar = {'headline': _('Images'),
                'icon_class': 'icon-picture',
                'template': 'wiki/plugins/images/sidebar.html',

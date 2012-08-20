@@ -252,8 +252,11 @@ class Edit(FormView, ArticleMixin):
         # Generate sidebar forms
         self.sidebar_forms = []
         for form_id, Form in self.get_sidebar_form_classes().items():
-            form = Form(self.article, self.request.user)
-            setattr(form, 'form_id', form_id)
+            if Form:
+                form = Form(self.article, self.request.user)
+                setattr(form, 'form_id', form_id)
+            else:
+                form = None
             self.sidebar_forms.append(form)
         return super(Edit, self).get(request, *args, **kwargs)
     
@@ -261,21 +264,24 @@ class Edit(FormView, ArticleMixin):
         # Generate sidebar forms
         self.sidebar_forms = []
         for form_id, Form in self.get_sidebar_form_classes().items():
-            if form_id == self.request.GET.get('f', None):
-                form = Form(self.article, self.request, data=self.request.POST, files=self.request.FILES)
-                if form.is_valid():
-                    form.save()
-                    usermessage = form.get_usermessage()
-                    if usermessage:
-                        messages.success(self.request, usermessage)
-                    else:
-                        messages.success(self.request, _(u'Your changes were saved.'))
-                    if self.urlpath:
-                        return redirect('wiki:edit', path=self.urlpath.path)
-                    return redirect('wiki:edit', article_id=self.article.id)
+            if Form:
+                if form_id == self.request.GET.get('f', None):
+                    form = Form(self.article, self.request, data=self.request.POST, files=self.request.FILES)
+                    if form.is_valid():
+                        form.save()
+                        usermessage = form.get_usermessage()
+                        if usermessage:
+                            messages.success(self.request, usermessage)
+                        else:
+                            messages.success(self.request, _(u'Your changes were saved.'))
+                        if self.urlpath:
+                            return redirect('wiki:edit', path=self.urlpath.path)
+                        return redirect('wiki:edit', article_id=self.article.id)
+                else:
+                    form = Form(self.article, self.request)
+                setattr(form, 'form_id', form_id)
             else:
-                form = Form(self.article, self.request)
-            setattr(form, 'form_id', form_id)
+                form = None
             self.sidebar_forms.append(form)
         return super(Edit, self).post(request, *args, **kwargs)
     
