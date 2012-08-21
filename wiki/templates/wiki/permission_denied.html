@@ -5,9 +5,9 @@
 {% block pagetitle %}Permission Denied{% endblock %}
 
 {% block wiki_contents %}
-  <div class="alert denied">
-    <h1>Permission Denied</h2>
-    <p>Sorry, you don't have permission to view this page.</p>
-  </div>
+  <h1 class="page-header">{% trans "Permission Denied" %}</h1>
+  <p class="alert denied">
+    {% trans "Sorry, you don't have permission to view this page." %}
+  </p>
 {% endblock %}
 

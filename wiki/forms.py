@@ -229,6 +229,9 @@ class DeleteForm(forms.Form):
 
 class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
     
+    locked = forms.BooleanField(label=_(u'Lock article'), help_text=_(u'Deny all users access to edit this article.'),
+                                required=False)
+
     settings_form_headline = _(u'Permissions')
     settings_order = 5
     settings_write_access = False
@@ -247,25 +250,28 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
         else:
             return _('Your permission settings were unchanged, so nothing saved.')
     
-    def __init__(self, article, user, *args, **kwargs):
+    def __init__(self, article, request, *args, **kwargs):
         self.article = article
-        self.user = user
+        self.user = request.user
+        self.request = request
         kwargs['instance'] = article
+        kwargs['initial'] = {'locked': article.current_revision.locked}
         super(PermissionsForm, self).__init__(*args, **kwargs)
         self.can_change_groups = True
         self.can_assign = False
-        if user.has_perm("wiki.assign"):
+        if request.user.has_perm("wiki.assign"):
             self.can_assign = True
             self.fields['group'].queryset = models.Group.objects.all()
         else:
             self.fields['owner_username'].widget = forms.HiddenInput()
             self.fields['recursive'].widget = forms.HiddenInput()
-            groups = models.Group.objects.filter(user=user)
+            self.fields['locked'].widget = forms.HiddenInput()
+            groups = models.Group.objects.filter(user=request.user)
             self.fields['group'].queryset = groups
             # Sanity: If somehow the article belongs to a group that the
             # owner is not a member of, don't let the owner make any decisions
             # for group permissions.
-            if article.group and not user in article.group.user_set.all():
+            if article.group and not request.user in article.group.user_set.all():
                 self.can_change_groups = False
                 self.fields['group'].widget = forms.HiddenInput()
                 self.fields['group_read'].widget = forms.HiddenInput()
@@ -294,12 +300,29 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
             article.group = self.article.group
             article.group_read = self.article.group_read
             article.group_write = self.article.group_write
-        if self.can_assign and self.cleaned_data['recursive']:
-            article.set_permissions_recursive()
+        
+        if self.can_assign:
+            if self.cleaned_data['recursive']:
+                article.set_permissions_recursive()
+            if self.cleaned_data['locked'] and not article.current_revision.locked:
+                revision = models.ArticleRevision()
+                revision.inherit_predecessor(self.article)
+                revision.set_from_request(self.request)
+                revision.automatic_log = _(u'Article locked for editing')
+                revision.locked = True
+                self.article.add_revision(revision)
+            elif not self.cleaned_data['locked'] and article.current_revision.locked:
+                revision = models.ArticleRevision()
+                revision.inherit_predecessor(self.article)
+                revision.set_from_request(self.request)
+                revision.automatic_log = _(u'Article unlocked for editing')
+                revision.locked = False
+                self.article.add_revision(revision)                
+        
         article.save()
     
     class Meta:
         model = models.Article
-        fields = ('owner_username', 'group', 'group_read', 'group_write', 'other_read', 'other_write',
+        fields = ('locked', 'owner_username', 'group', 'group_read', 'group_write', 'other_read', 'other_write',
                   'recursive')
 

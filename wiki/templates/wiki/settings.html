@@ -7,13 +7,11 @@
 {% block wiki_contents_tab %}
   
   {% for form in forms %}
-  <form method="POST" class="form-horizontal" id="settings_form" action="?f={{form.action}}">
-    <h2>{{ form.settings_form_headline }}</h2>
-    <div class="well">
-      {% wiki_form form %}
-    </div>
+  <form method="POST" class="form-horizontal settings-form" action="?f={{form.action}}">
+    <h3 class="page-header">{{ form.settings_form_headline }}</h2>
+    {% wiki_form form %}
     <div class="form-actions">
-      <button type="submit" name="save" value="1" class="btn btn-large btn-primary">
+      <button type="submit" name="save" value="1" class="btn btn-primary">
         <span class="icon-ok"></span>
         {% trans "Save changes" %}
       </button>

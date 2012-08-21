@@ -18,13 +18,13 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
     edit_email = forms.BooleanField(required=False, label=_(u'Also receive emails about article edits'),
                                     widget=forms.CheckboxInput(attrs={'onclick': mark_safe("$('#id_edit').attr('checked', $(this).is(':checked'));")}))
     
-    def __init__(self, article, user, *args, **kwargs):
+    def __init__(self, article, request, *args, **kwargs):
         # This has to be here to avoid unresolved imports in wiki_plugins
         from wiki.plugins.notifications import models
         self.article = article
-        self.user = user
+        self.user = request.user
         initial = kwargs.pop('initial', None)
-        self.settings = Settings.objects.get_or_create(user=user,)[0]
+        self.settings = Settings.objects.get_or_create(user=request.user,)[0]
         self.notification_type = NotificationType.objects.get_or_create(key=ARTICLE_EDIT,
                                                                         content_type=ContentType.objects.get_for_model(article))[0]
         self.edit_notifications=models.ArticleSubscription.objects.filter(settings=self.settings, 

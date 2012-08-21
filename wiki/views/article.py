@@ -21,6 +21,8 @@ from django.core.urlresolvers import reverse
 from django.db import transaction
 from wiki.core.exceptions import NoRootURL
 from django_notify.decorators import disable_notify
+from django.http import HttpResponseForbidden
+from django.template.loader import render_to_string
 
 class ArticleView(ArticleMixin, TemplateView):
 
@@ -115,7 +117,7 @@ class Delete(FormView, ArticleMixin):
     form_class = forms.DeleteForm
     template_name="wiki/delete.html"
     
-    @method_decorator(get_article(can_write=True))
+    @method_decorator(get_article(can_write=True, not_locked=True))
     def dispatch(self, request, article, *args, **kwargs):
         return self.dispatch1(request, article, *args, **kwargs)
         
@@ -221,7 +223,7 @@ class Edit(FormView, ArticleMixin):
     form_class = forms.EditForm
     template_name="wiki/edit.html"
     
-    @method_decorator(get_article(can_write=True))
+    @method_decorator(get_article(can_write=True, not_locked=True))
     def dispatch(self, request, article, *args, **kwargs):
         self.sidebar_plugins = plugin_registry.get_sidebar()
         self.sidebar = []
@@ -477,7 +479,7 @@ class Settings(ArticleMixin, TemplateView):
         self.forms = []
         for Form in self.get_form_classes():
             if Form.action == self.request.GET.get('f', None):
-                form = Form(self.article, self.request.user,self.request.POST)
+                form = Form(self.article, self.request, self.request.POST)
                 if form.is_valid():
                     form.save()
                     usermessage = form.get_usermessage()
@@ -487,14 +489,14 @@ class Settings(ArticleMixin, TemplateView):
                         return redirect('wiki:settings', path=self.urlpath.path)
                     return redirect('wiki:settings', article_id=self.article.id)
             else:
-                form = Form(self.article, self.request.user)
+                form = Form(self.article, self.request)
             self.forms.append(form)
         return super(Settings, self).get(*args, **kwargs)
     
     def get(self, *args, **kwargs):
         self.forms = []
         for Form in self.get_form_classes():
-            self.forms.append(Form(self.article, self.request.user))
+            self.forms.append(Form(self.article, self.request))
         return super(Settings, self).get(*args, **kwargs)
 
     def get_success_url(self):
@@ -509,7 +511,7 @@ class Settings(ArticleMixin, TemplateView):
 
 
 # TODO: Throw in a class-based view
-@get_article(can_write=True)
+@get_article(can_write=True, not_locked=True)
 def change_revision(request, article, revision_id=None, urlpath=None):
     revision = get_object_or_404(models.ArticleRevision, article=article, id=revision_id)
     article.current_revision = revision

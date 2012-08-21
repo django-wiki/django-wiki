@@ -20,7 +20,7 @@ def json_view(func):
         return response
     return wrap
 
-def get_article(func=None, can_read=True, can_write=False, deleted_contents=False):
+def get_article(func=None, can_read=True, can_write=False, deleted_contents=False, not_locked=False):
     """View decorator for processing standard url keyword args: Intercepts the 
     keyword args path or article_id and looks up an article, calling the decorated 
     func with this ID.
@@ -109,6 +109,12 @@ def get_article(func=None, can_read=True, can_write=False, deleted_contents=Fals
             else:
                 return redirect('wiki:deleted', article_id=article.id)
         
+        # The article is locked and this request is invalid because the view specified
+        # not to be requested for locked contents
+        if article.current_revision.locked and not_locked:
+            c = RequestContext(request, {'urlpath' : urlpath})
+            return HttpResponseForbidden(render_to_string("wiki/permission_denied.html", context_instance=c))
+            
         kwargs['urlpath'] = urlpath
         
         return func(request, article, *args, **kwargs)
@@ -117,5 +123,6 @@ def get_article(func=None, can_read=True, can_write=False, deleted_contents=Fals
         return wrapper
     else:
         return lambda func: get_article(func, can_read=can_read, can_write=can_write, 
-                                        deleted_contents=deleted_contents)
+                                        deleted_contents=deleted_contents,
+                                        not_locked=not_locked)
 

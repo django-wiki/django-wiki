@@ -27,7 +27,7 @@
   </a>
 </li>
 
-{% if article|can_write:user %}
+{% if article|can_write:user and not article.current_revision.locked %}
 <li class="pull-right{% if selected == "edit" %} active{% endif %}">
   <a href="{% url 'wiki:edit' article_id=article.id path=urlpath.path %}">
     <span class="icon-edit"></span>
