@@ -41,9 +41,9 @@ class RevisionForm(forms.ModelForm):
         if not self.instance.id:
             kwargs['commit'] = False
             revision = super(RevisionForm, self).save(*args, **kwargs)
+            revision.inherit_predecessor(self.image, skip_image_file=True)
             revision.set_from_request(self.request)
-            revision.inherit_predecessor(self.image)
-            revision.save()
+            #revision.save()
             self.image.add_revision(self.instance, save=True)
             return revision
         return super(SidebarForm, self).save(*args, **kwargs)

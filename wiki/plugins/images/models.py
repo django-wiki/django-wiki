@@ -53,7 +53,11 @@ class ImageRevision(RevisionPluginRevision):
     
     def get_filename(self):
         if self.image:
-            return self.image.path.split('/')[-1]
+            try:
+                return self.image.path.split('/')[-1]
+            except OSError:
+                pass
+        return None
     
     def get_size(self):
         """Used to retrieve the file size and not cause exceptions."""
@@ -61,22 +65,27 @@ class ImageRevision(RevisionPluginRevision):
             return self.image.size
         except ValueError:
             return None
+        except OSError:
+            return None
     
-    def inherit_predecessor(self, image):
+    def inherit_predecessor(self, image, skip_image_file=False):
         """
         Inherit certain properties from predecessor because it's very
         convenient. Remember to always call this method before 
         setting properties :)"""
         predecessor = image.current_revision.imagerevision
         self.plugin = predecessor.plugin
-        try:
-            self.image = predecessor.image
-        except IOError:
-            self.image = None
-        self.width = predecessor.width
-        self.height = predecessor.height
         self.deleted = predecessor.deleted
         self.locked = predecessor.locked
+        if not skip_image_file:
+            try:
+                self.image = predecessor.image
+                self.width = predecessor.width
+                self.height = predecessor.height
+            except IOError:
+                self.image = None
+                self.width = None
+                self.height = None
 
     class Meta:
         verbose_name = _(u'image revision')
