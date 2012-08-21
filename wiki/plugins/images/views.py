@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import permission_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
 from django.utils.decorators import method_decorator
@@ -13,6 +14,7 @@ from wiki.plugins.images import models
 from wiki.views.mixins import ArticleMixin
 from django.views.generic.edit import FormView
 
+
 class ImageView(ArticleMixin, ListView):
     
     template_name = 'wiki/plugins/images/index.html'
@@ -20,7 +22,7 @@ class ImageView(ArticleMixin, ListView):
     context_object_name = 'images'
     paginate_by = 10
     
-    @method_decorator(get_article(can_read=True))
+    @method_decorator(get_article(can_read=True, not_locked=True))
     def dispatch(self, request, article, *args, **kwargs):
         return super(ImageView, self).dispatch(request, article, *args, **kwargs)
     
@@ -38,11 +40,12 @@ class ImageView(ArticleMixin, ListView):
         kwargs.update(ArticleMixin.get_context_data(self, **kwargs))
         return ListView.get_context_data(self, **kwargs)
 
+
 class DeleteView(ArticleMixin, RedirectView):
     
     permanent = False
     
-    @method_decorator(get_article(can_write=True))
+    @method_decorator(get_article(can_write=True, not_locked=True))
     def dispatch(self, request, article, *args, **kwargs):
         self.image = get_object_or_404(models.Image, article=article,
                                        id=kwargs.get('image_id', None))
@@ -66,11 +69,41 @@ class DeleteView(ArticleMixin, RedirectView):
             return reverse('wiki:images_index', kwargs={'path': self.urlpath.path})
         return reverse('wiki:images_index', kwargs={'article_id': self.article.id})
 
+
+class PurgeView(ArticleMixin, FormView):
+    
+    template_name = "wiki/plugins/images/purge.html"
+    permanent = False
+    form_class = forms.PurgeForm
+    
+    @method_decorator(permission_required('wiki.moderator', login_url=wiki_settings.LOGIN_URL))
+    @method_decorator(get_article(can_write=True))
+    def dispatch(self, request, article, *args, **kwargs):
+        self.image = get_object_or_404(models.Image, article=article,
+                                       id=kwargs.get('image_id', None))
+        return ArticleMixin.dispatch(self, request, article, *args, **kwargs)
+    
+    def form_valid(self, form):
+        
+        for revision in self.image.revision_set.all().select_related("imagerevision"):
+            revision.imagerevision.image.delete(save=False)
+            revision.imagerevision.delete()
+        
+        if self.urlpath:
+            return redirect('wiki:images_index', path=self.urlpath.path)
+        return redirect('wiki:images_index', article_id=self.article_id)
+    
+    def get_context_data(self, **kwargs):
+        kwargs = ArticleMixin.get_context_data(self, **kwargs)
+        kwargs.update(FormView.get_context_data(self, **kwargs))
+        return kwargs
+
+
 class RevisionChangeView(ArticleMixin, RedirectView):
 
     permanent = False
     
-    @method_decorator(get_article(can_write=True))
+    @method_decorator(get_article(can_write=True, not_locked=True))
     def dispatch(self, request, article, *args, **kwargs):
         self.image = get_object_or_404(models.Image, article=article,
                                        id=kwargs.get('image_id', None))
@@ -95,7 +128,7 @@ class RevisionAddView(ArticleMixin, FormView):
     template_name = "wiki/plugins/images/revision_add.html"
     form_class = forms.RevisionForm
     
-    @method_decorator(get_article(can_write=True))
+    @method_decorator(get_article(can_write=True, not_locked=True))
     def dispatch(self, request, article, *args, **kwargs):
         self.image = get_object_or_404(models.Image, article=article,
                                        id=kwargs.get('image_id', None))

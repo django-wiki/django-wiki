@@ -30,6 +30,7 @@ class SidebarForm(forms.ModelForm, PluginSidebarFormMixin):
         model = models.ImageRevision
         fields = ('image',)
 
+
 class RevisionForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
@@ -52,3 +53,13 @@ class RevisionForm(forms.ModelForm):
         model = models.ImageRevision
         fields = ('image',)
     
+
+class PurgeForm(forms.Form):
+    
+    confirm = forms.BooleanField(label=_(u'Are you sure?'), required=False)
+    
+    def clean_confirm(self):
+        confirm = self.cleaned_data['confirm']
+        if not confirm:
+            raise forms.ValidationError(_(u'You are not sure enough!'))
+        return confirm
