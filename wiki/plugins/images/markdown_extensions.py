@@ -26,7 +26,7 @@ class ImagePreprocessor(markdown.preprocessors.Preprocessor):
         image = None
         image_id = None
         alignment = None
-        caption = ""
+        caption_lines = []
         for line in lines:
             m = IMAGE_RE.match(line)
             if m:
@@ -42,12 +42,13 @@ class ImagePreprocessor(markdown.preprocessors.Preprocessor):
                 line = line.replace(m.group(1), "")
             elif previous_line_was_image:
                 if line.startswith("    "):
-                    caption += line[3:]
+                    caption_lines.append(line[4:])
                     line = None
                 else:
                     html = render_to_string("wiki/plugins/images/render.html",
                                             Context({'image': image, 
-                                                     'caption': article_markdown(caption, self.markdown.article,
+                                                     'caption': article_markdown("\n".join(caption_lines),
+                                                                                 self.markdown.article,
                                                                                  extensions=self.markdown.registeredExtensions), 
                                                      'align': alignment}))
                     line = html + line

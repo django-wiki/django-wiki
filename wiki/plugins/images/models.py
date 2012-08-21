@@ -84,8 +84,6 @@ class ImageRevision(RevisionPluginRevision):
                 self.height = predecessor.height
             except IOError:
                 self.image = None
-                self.width = None
-                self.height = None
 
     class Meta:
         verbose_name = _(u'image revision')
