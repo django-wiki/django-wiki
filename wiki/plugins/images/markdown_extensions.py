@@ -42,7 +42,7 @@ class ImagePreprocessor(markdown.preprocessors.Preprocessor):
                 line = line.replace(m.group(1), "")
             elif previous_line_was_image:
                 if line.startswith("    "):
-                    caption += line[4:]
+                    caption += line[3:]
                     line = None
                 else:
                     html = render_to_string("wiki/plugins/images/render.html",

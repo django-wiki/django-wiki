@@ -1,8 +1,8 @@
-{% load thumbnail i18n %}
-{% comment %}
-  This template is used for the markdown extension that renders images and captions
-{% endcomment %}
-{% with image.current_revision.imagerevision as revision %}
+{% load thumbnail i18n %}{% comment %}
+  This template is used for the markdown extension that renders images and captions.
+  
+  NB! Watch out for line breaks, markdown might add <br />s and <p>s.
+{% endcomment %}{% with image.current_revision.imagerevision as revision %}{% spaceless %}
 <div style="width: 250px; margin: 10px; float: {{ align }};">
   <div class="thumbnail">
     {% thumbnail revision.image "250x250" as thumb %}
@@ -19,4 +19,4 @@
     </div>
   </div>
 </div>
-{% endwith %}
+{% endspaceless %}{% endwith %}
