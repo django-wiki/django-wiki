@@ -48,8 +48,8 @@ class ImageRevision(RevisionPluginRevision):
                               max_length=2000, height_field='height',
                               width_field='width', blank=True, null=True)
     
-    width = models.SmallIntegerField(default=0)
-    height = models.SmallIntegerField(default=0)
+    width = models.SmallIntegerField(blank=True, null=True)
+    height = models.SmallIntegerField(blank=True, null=True)
     
     def get_filename(self):
         if self.image:

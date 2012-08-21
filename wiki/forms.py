@@ -15,6 +15,17 @@ from django.forms.widgets import HiddenInput
 from wiki.core.plugins.base import PluginSettingsFormMixin
 from django.contrib.auth.models import User
 
+class SpamProtectionMixin():
+    
+    def check_spam(self, current_revision, request):
+        """Check that user or IP address does not perform content edits that
+        are not allowed.
+        
+        current_revision can be any object inheriting from models.BaseRevisionMixin 
+        """
+        ipaddress = request.META.get('REMOTE_ADDR', None)
+        
+
 class CreateRootForm(forms.Form):
     
     title = forms.CharField(label=_(u'Title'), help_text=_(u'Initial title of the article. May be overridden with revision titles.'))
@@ -78,6 +89,7 @@ class EditForm(forms.Form):
         if cd['title'] == self.initial_revision.title and cd['content'] == self.initial_revision.content:
             raise forms.ValidationError(_(u'No changes made. Nothing to save.'))
         return cd
+
 
 class SelectWidgetBootstrap(forms.Select):
     """

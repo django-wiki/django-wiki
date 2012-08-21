@@ -10,11 +10,11 @@ Not implemented - will be ASAP
  * Searching
  * "Are you sure you want to leave this page" confirmation for Edit page.
  * Finish all class-based views
- * View source for read-only articles + locked status **Almost Done**
  * Are you sure you wanna leave this page?
  * Customize bootstrap to look a bit less like a default installation and add styles for the wiki articles
  * Embeddable article template tag
  * "Fix Wiki URL bug in the footnotes plugin for python-markdown" ?
+ * View source for read-only articles + locked status **Done**
  * Index views for urlpaths **Done**
  * Permission system in settings tab **Done**
  * Special view for deleted articles w/ restore button **Done**
