@@ -8,8 +8,9 @@ Not implemented - will be ASAP
  * Spam protection / Bot editing detection. Don't let anyone edit more than once every other minute.
  * Key-value meta data
  * Searching
+ * "Are you sure you want to leave this page" confirmation for Edit page.
  * Finish all class-based views
- * View source for read-only articles + locked status
+ * View source for read-only articles + locked status **Almost Done**
  * Are you sure you wanna leave this page?
  * Customize bootstrap to look a bit less like a default installation and add styles for the wiki articles
  * Embeddable article template tag
