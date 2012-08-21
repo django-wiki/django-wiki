@@ -71,7 +71,7 @@ class ImageRevision(RevisionPluginRevision):
         self.plugin = predecessor.plugin
         try:
             self.image = predecessor.image
-        except OSError:
+        except IOError:
             self.image = None
         self.width = predecessor.width
         self.height = predecessor.height
