@@ -1,0 +1,27 @@
+{% extends "wiki/base.html" %}
+{% load wiki_tags i18n %}
+{% load url from future %}
+
+{% block pagetitle %}{{ article.current_revision.title }}{% endblock %}
+
+{% block wiki_breadcrumbs %}
+{% include "wiki/includes/breadcrumbs.html" %}
+{% endblock %}
+
+{% block wiki_contents %}
+
+{% if error_type == "ancestors_missing" %}
+
+  <div class="missing">
+    <p>This article was not found, and neither was its parent article. <a href="{% url 'wiki:get' path='' %}">Go back to the main wiki article</a></p>
+  </div>
+  
+{% else %}  
+
+  <div class="error">
+    <p>There was some sort of error accessing this page. Sorry!</p>
+  </div>
+
+{% endif %}
+
+{% endblock %}

@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, get_object_or_404
 from django.template.context import RequestContext
 from django.http import HttpResponse, HttpResponseNotFound,\
-    HttpResponseForbidden
+    HttpResponseForbidden, HttpResponse
 from django.utils import simplejson as json
 
 from wiki.core.exceptions import NoRootURL
@@ -61,8 +61,8 @@ def get_article(func=None, can_read=True, can_write=False, deleted_contents=Fals
                     parent = models.URLPath.get_by_path(path)
                     return redirect(reverse("wiki:create", kwargs={'path': parent.path,}) + "?slug=%s" % pathlist[-1])
                 except models.URLPath.DoesNotExist:
-                    # TODO: Make a nice page
-                    return HttpResponseNotFound("This article was not found, and neither was the parent. This page should look nicer.")
+                    c = RequestContext(request, {'error_type' : 'ancestors_missing'})
+                    return HttpResponseNotFound(render_to_string("wiki/error.html", context_instance=c))
             if urlpath.article:
                 # urlpath is already smart about prefetching items on article (like current_revision), so we don't have to
                 article = urlpath.article
