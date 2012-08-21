@@ -11,28 +11,34 @@ from wiki.plugins.images.markdown_extensions import ImageExtension
 class ImagePlugin(BasePlugin):
     
     slug = settings.SLUG
-    sidebar = {'headline': _('Images'),
-               'icon_class': 'icon-picture',
-               'template': 'wiki/plugins/images/sidebar.html',
-               'form_class': forms.SidebarForm,
-               'get_form_kwargs': (lambda a: {'instance': models.Image(article=a)})}
+    sidebar = {
+        'headline': _('Images'),
+        'icon_class': 'icon-picture',
+        'template': 'wiki/plugins/images/sidebar.html',
+        'form_class': forms.SidebarForm,
+        'get_form_kwargs': (lambda a: {'instance': models.Image(article=a)})
+    }
     
     # List of notifications to construct signal handlers for. This
     # is handled inside the notifications plugin.
-    notifications = [{'model': models.Image,
-                      'message': lambda obj: _(u"An image was added: %s") % obj.current_revision.get_filename(),
-                      'key': ARTICLE_EDIT,
-                      'created': True,
-                      'get_article': lambda obj: obj.article}
-                     ]
+    notifications = [
+        {'model': models.ImageRevision,
+         'message': lambda obj: _(u"An image was added: %s") % obj.get_filename(),
+         'key': ARTICLE_EDIT,
+         'created': False,
+         'ignore': lambda revision: bool(revision.previous_revision), # Ignore if there is a previous revision... the image isn't new
+         'get_article': lambda obj: obj.article}
+    ]
     
     class RenderMedia:
         js = [
-              'wiki/colorbox/colorbox/jquery.colorbox-min.js',
-              'wiki/js/images.js',
+            'wiki/colorbox/colorbox/jquery.colorbox-min.js',
+            'wiki/js/images.js',
         ]
         
-        css = {'screen': 'wiki/colorbox/example1/colorbox.css'}
+        css = {
+            'screen': 'wiki/colorbox/example1/colorbox.css'
+        }
     
     urlpatterns = patterns('',
         url('^$', views.ImageView.as_view(), name='images_index'),

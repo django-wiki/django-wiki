@@ -5,7 +5,12 @@
 function insert_image(image_id) {
   align=prompt('Enter an alignment. \'left\', \'right\' or \'center\':', 'right');
   caption=prompt('Enter a caption text. You may use markdown. You can edit the text after...');
-  $('#id_content').insertAtCaret('\n[image:'+image_id+' align:'+align+']\n    '+caption+'\n\n');
+  imagetag = '\n[image:'+image_id+' align:'+align+']';
+  if (! caption == '') {
+    $('#id_content').insertAtCaret(imagetag+'\n    '+caption+'\n\n');
+  } else {
+    $('#id_content').insertAtCaret(imagetag+'\n\n');  
+  }
 }
 </script>
 

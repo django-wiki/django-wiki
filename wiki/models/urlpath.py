@@ -40,7 +40,9 @@ class URLPath(MPTTModel):
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children')    
     
     def __init__(self, *args, **kwargs):
-        self._tree_manager = URLPath.objects
+        pass
+        # Fixed in django-mptt 0.5.3
+        #self._tree_manager = URLPath.objects
         return super(URLPath, self).__init__(*args, **kwargs)
     
     @property
@@ -152,7 +154,7 @@ class URLPath(MPTTModel):
         return parent
     
     def get_absolute_url(self):
-        return reverse('wiki:get_url', args=(self.path,))
+        return reverse('wiki:get', kwargs={'path': self.path})
     
     @classmethod
     def create_root(cls, site=None, title="Root", **kwargs):
@@ -211,17 +213,21 @@ def on_article_delete(instance, *args, **kwargs):
                                              parent=URLPath.root(),
                                              site=site)
     except URLPath.DoesNotExist:
-        lost_and_found = URLPath.objects.create(slug=settings.LOST_AND_FOUND_SLUG,
-                                                parent=URLPath.root(),
-                                                site=site,)
         article = Article(group_read = True,
                           group_write = False,
                           other_read = False,
                           other_write = False)
         article.add_revision(ArticleRevision(
-                 content=_(u'Articles who lost their parents'
-                            '==============================='),
+                 content=_(u'Articles who lost their parents\n'
+                            '===============================\n\n'
+                            'The children of this article have had their parents deleted. You should probably find a new home for them.'),
                  title=_(u"Lost and found")))
+        lost_and_found = URLPath.objects.create(slug=settings.LOST_AND_FOUND_SLUG,
+                                                parent=URLPath.root(),
+                                                site=site,
+                                                article=article)
+        article.add_object_relation(lost_and_found)
+
     
     for urlpath in URLPath.objects.filter(articles__article=instance, site=site):
         # Delete the children

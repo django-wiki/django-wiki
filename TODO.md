@@ -3,20 +3,18 @@ Not implemented - will be ASAP
 
  * Notification system **Almost done** (email notifications)
  * Circuit Editor plugin
- * Custom storage engine for attachments
  * Implement notifications, revision log messages and user messages thoroughly
  * Example plugin
  * Spam protection / Bot editing detection. Don't let anyone edit more than once every other minute.
  * Key-value meta data
- * Index views for urlpaths
  * Searching
  * Finish all class-based views
  * View source for read-only articles + locked status
  * Are you sure you wanna leave this page?
  * Customize bootstrap to look a bit less like a default installation and add styles for the wiki articles
  * Embeddable article template tag
- * Expand prepopulated database
  * "Fix Wiki URL bug in the footnotes plugin for python-markdown" ?
+ * Index views for urlpaths **Done**
  * Permission system in settings tab **Done**
  * Special view for deleted articles w/ restore button **Done**
  * Article deletion **Done**
@@ -24,6 +22,8 @@ Not implemented - will be ASAP
  * Attachment plugin **Done**
  * Simple user account handling: login/register etc. **Done**
  * South migrations **Done**
+ * Custom storage engine for attachments **Done**
+ * Handling WikiLinks and detecting broken links in markdown extension **Done**
  
 Ideas
 =====

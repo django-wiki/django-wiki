@@ -1,0 +1,32 @@
+{% load i18n %}
+{% load url from future %}
+<h4>{% trans "Link to another wiki page" %}</h4>
+
+<p>
+  {% trans "Type in something from another wiki page's title and auto-complete will help you create a tag for you wiki link. Tags for links look like this:" %}<br />
+  <code>[Title of link](wiki:ArticleSlug)</code>
+</p>
+
+<p>
+  <input type="text" class="page_title_query" id="links_page_title_query" value="" placeholder="Type to search..." />
+  <button type="button" class="btn" onclick="wikiInsertLink()">
+    {% trans "Insert" %}
+  </button>
+</p>
+
+<h4>{% trans "An external link" %}</h4>
+<script type="text/javascript" src="{{ STATIC_URL }}wiki/js/bootstrap-typeahead.js"></script>
+<script type="text/javascript">
+$('.page_title_query').typeahead({
+    source: function (typeahead, query) {
+        return $.get('{% url 'wiki:links_query_urlpath' path=urlpath.path article_id=article.id %}', { query: query }, function (data) {
+            return typeahead.process(data);
+        });
+    }
+});
+
+function wikiInsertLink() {
+  $('#id_content').insertAtCaret($('#links_page_title_query').val());
+}
+
+</script>

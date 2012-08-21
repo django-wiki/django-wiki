@@ -3,7 +3,7 @@
   This template is used for the markdown extension that renders images and captions
 {% endcomment %}
 {% with image.current_revision.imagerevision as revision %}
-<div class="pull-{{ align }}" style="width: 250px; margin: 10px;">
+<div style="width: 250px; margin: 10px; float: {{ align }};">
   <div class="thumbnail">
     {% thumbnail revision.image "250x250" as thumb %}
       <a href="{{ revision.image.url }}">

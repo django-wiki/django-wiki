@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings as django_settings
 from django.core.urlresolvers import reverse
+from django.http import HttpResponse, HttpResponseNotFound, \
+    HttpResponseForbidden
 from django.shortcuts import redirect, get_object_or_404
 from django.template.context import RequestContext
-from django.http import HttpResponse, HttpResponseNotFound,\
-    HttpResponseForbidden
+from django.template.loader import render_to_string
 from django.utils import simplejson as json
 
 from wiki.core.exceptions import NoRootURL
-from django.template.loader import render_to_string
 
 def json_view(func):
     def wrap(request, *args, **kwargs):

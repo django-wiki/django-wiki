@@ -60,6 +60,8 @@ for plugin in registry.get_plugins():
     notifications = getattr(plugin, 'notifications', [])
     for notification_dict in notifications:
         def plugin_notification(instance, **kwargs):
+            if notification_dict.get('ignore', lambda x: False)(instance):
+                return
             if kwargs.get('created', False) == notification_dict.get('created', True):
                 url = None
                 if notification_dict.has_key('get_url'):

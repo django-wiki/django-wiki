@@ -9,6 +9,19 @@
   {% addtoblock "js" %}
   <script type="text/javascript" src="{{ STATIC_URL }}admin/js/urlify.js "></script>
   <script type="text/javascript">
+  // Replacement of django's URLify that doesn't remove any words.
+  function URLify(s, num_chars) {
+      s = downcode(s);
+      removelist = [];
+      r = new RegExp('\\b(' + removelist.join('|') + ')\\b', 'gi');
+      s = s.replace(r, '');
+      // if downcode doesn't hit, the char will be stripped here
+      s = s.replace(/[^-\w\s]/g, '');  // remove unneeded chars
+      s = s.replace(/^\s+|\s+$/g, ''); // trim leading/trailing spaces
+      s = s.replace(/[-\s]+/g, '-');   // convert spaces to hyphens
+      s = s.toLowerCase();             // convert to lowercase
+      return s.substring(0, num_chars);// trim to first num_chars chars
+  }
   //<![CDATA[	
   (function($) {
 	  $(document).ready(function (){
@@ -17,7 +30,7 @@
 			  if(!e._changed) {
 			    slug = URLify(this.value, 64);
 			    wikislug = slug.replace(/\-/g, " ");
-			    wikislug = wikislug.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1);});
+			    wikislug = wikislug.replace(/\w\S*/gi, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1);});
           wikislug = wikislug.replace(/\s*/g, "");
 				  e.value = wikislug;
 			  }

@@ -60,5 +60,7 @@ class Login(FormView):
         if django_settings.LOGIN_REDIRECT_URL:
             return redirect(django_settings.LOGIN_REDIRECT_URL)
         else:
+            if not self.referer:
+                return redirect('wiki:get', path='')
             return redirect(self.referer)
     

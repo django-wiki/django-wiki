@@ -13,7 +13,12 @@
   <div class="tabbable tabs-top" style="margin-top: 20px;">
     <ul class="nav nav-tabs">
       <li style="float: left">
-        <h1 style="margin-top: -10px;">{{ article.current_revision.title }}</h1>
+        <h1 style="margin-top: -10px;">
+          {{ article.current_revision.title }}
+          {% if urlpath and urlpath.parent %}
+          <small style="font-size: 14px;"><a href="{% url 'wiki:get' path=urlpath.path %}">{{ urlpath.slug }} <span class="icon-bookmark"></span></a></small>
+          {% endif %}
+        </h1>
       </li>
       {% include "wiki/includes/article_menu.html" %}
     </ul>

@@ -41,10 +41,9 @@ class ImagePreprocessor(markdown.preprocessors.Preprocessor):
                     pass
                 line = line.replace(m.group(1), "")
             elif previous_line_was_image:
-                print line
                 if line.startswith("    "):
                     caption += line[4:]
-                    line = ""
+                    line = None
                 else:
                     html = render_to_string("wiki/plugins/images/render.html",
                                             Context({'image': image, 
@@ -53,6 +52,7 @@ class ImagePreprocessor(markdown.preprocessors.Preprocessor):
                                                      'align': alignment}))
                     line = html + line
                     previous_line_was_image = False
-            new_text.append(line)
+            if not line is None:
+                new_text.append(line)
         return new_text
     

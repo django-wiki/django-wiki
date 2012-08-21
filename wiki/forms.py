@@ -62,6 +62,7 @@ class EditForm(forms.Form):
                     newdata['current_revision'] = self.initial_revision.id
                     newdata['content'] = simple_merge(self.initial_revision.content,
                                                       data.get('content', ""))
+                    newdata['title'] = current_revision.title
                     kwargs['data'] = newdata
                 
             kwargs['initial'] = initial

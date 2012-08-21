@@ -400,7 +400,10 @@ class Dir(ListView, ArticleMixin):
     paginate_by = 30
     
     def get_queryset(self):
-        return self.urlpath.get_children().can_read(self.request.user).select_related_common().order_by('slug')
+        children = self.urlpath.get_children().can_read(self.request.user).select_related_common().order_by('article__current_revision__title')
+        if not self.request.user.has_perm('wiki.moderator'):
+            children = children.active()
+        return children
     
     def get_context_data(self, **kwargs):
         kwargs_article = ArticleMixin.get_context_data(self, **kwargs)
@@ -534,8 +537,10 @@ class Preview(ArticleMixin, TemplateView):
         return super(Preview, self).get(request, *args, **kwargs)
         
     def get(self, request, *args, **kwargs):
-        self.title = self.revision.title
-        self.content = self.revision.content
+        if self.revision and not self.title:
+            self.title = self.revision.title
+        if self.revision and not self.content:
+            self.content = self.revision.content
         return super(Preview, self).get( request, *args, **kwargs)
     
     def get_context_data(self, **kwargs):
@@ -543,7 +548,7 @@ class Preview(ArticleMixin, TemplateView):
         kwargs['revision'] = self.revision
         kwargs['content'] = self.content
         kwargs['preview'] = self.preview
-        return super(Preview, self).get_context_data(**kwargs)
+        return ArticleMixin.get_context_data(self, **kwargs)
     
 
 @json_view
