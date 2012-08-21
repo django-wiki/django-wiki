@@ -27,7 +27,7 @@
     </td>
     <td>{{ revision.description|default:_("<em>No description</em>")|safe }}</td>
     <td>{{ revision.get_filename }}</td>
-    <td>{{ revision.file.size|filesizeformat }}</td>
+    <td>{{ revision.get_size|filesizeformat }}</td>
     <td style="text-align: right">
       <form method="POST" action="{% url 'wiki:attachments_revision_change' path=urlpath.path article_id=article.id attachment_id=attachment.id revision_id=revision.id %}">
         {% csrf_token %}
