@@ -46,7 +46,7 @@ class ImageRevision(RevisionPluginRevision):
     
     image = models.ImageField(upload_to=upload_path,
                               max_length=2000, height_field='height',
-                              width_field='width')
+                              width_field='width', blank=True, null=True)
     
     width = models.SmallIntegerField(default=0)
     height = models.SmallIntegerField(default=0)
@@ -69,7 +69,10 @@ class ImageRevision(RevisionPluginRevision):
         setting properties :)"""
         predecessor = image.current_revision.imagerevision
         self.plugin = predecessor.plugin
-        self.image = predecessor.image
+        try:
+            self.image = predecessor.image
+        except OSError:
+            self.image = None
         self.width = predecessor.width
         self.height = predecessor.height
         self.deleted = predecessor.deleted
