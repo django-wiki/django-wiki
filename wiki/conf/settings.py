@@ -13,23 +13,7 @@ WIKI_LANGUAGE = 'markdown'
 # extend the built-in editor and customize it....
 EDITOR = getattr(django_settings, 'WIKI_EDITOR', 'wiki.editors.markitup.MarkItUp')
 
-# If you want to write an extension, you should use the plugin API as you
-# will get an article model instance to play with. These are just the
-# builtin markdown extensions
-# Notice that this should be a callable which accepts the article as an argument
-def get_extensions(article):
-    from wiki.models import URLPath
-    try:
-        urlpath = URLPath.objects.get(article=article)
-        url = reverse_lazy('wiki:get', kwargs={'path': urlpath.path})
-    except URLPath.DoesNotExist:
-        url = reverse_lazy('wiki:get', kwargs={'article_id': article.id})
-    return ['extra', 'wikilinks(base_url=%s)' % url, 'codehilite', 'toc']
-MARKDOWN_EXTENSIONS = getattr(
-    django_settings, 
-    'WIKI_MARKDOWN_EXTENSIONS',
-    get_extensions 
-)
+MARKDOWN_EXTENSIONS = getattr(django_settings, 'WIKI_MARKDOWN_EXTENSIONS', ['extra', 'toc'])
 
 # This slug is used in URLPath if an article has been deleted. The children of the
 # URLPath of that article are moved to lost and found. They keep their permissions
@@ -40,6 +24,34 @@ LOST_AND_FOUND_SLUG = getattr(django_settings, 'WIKI_LOST_AND_FOUND_SLUG', 'lost
 LOG_IPS_ANONYMOUS = getattr(django_settings, 'WIKI_LOG_IPS_ANONYMOUS', True)
 LOG_IPS_USERS = getattr(django_settings, 'WIKI_LOG_IPS_USERS', False)
 
+####################################
+# PERMISSIONS AND ACCOUNT HANDLING #
+####################################
+
+# A function returning True/False if a user has permission to assign
+# permissions on an article
+# Relevance: changing owner and group membership
+CAN_ASSIGN = getattr(django_settings, 'WIKI_CAN_ASSIGN', lambda article, user: user.has_perm('wiki.assign'))
+
+# A function returning True/False if a user has permission to change
+# read/write access for groups and others
+CAN_CHANGE_PERMISSIONS = getattr(django_settings, 'WIKI_CAN_CHANGE_PERMISSIONS', lambda article, user: article.owner == user or user.has_perm('wiki.assign'))
+
+# A function returning True/False if a user has permission to change
+# moderate, ie. lock articles and permanently delete content.
+CAN_MODERATE = getattr(django_settings, 'WIKI_CAN_MODERATE', lambda article, user: user.has_perm('wiki.moderate'))
+
+# A function returning True/False if a user has permission to create
+# new groups and users for the wiki.
+CAN_ADMIN = getattr(django_settings, 'WIKI_CAN_ADMIN', lambda article, user: user.has_perm('wiki.admin'))
+
+# Treat anonymous (non logged in) users as the "other" user group
+ANONYMOUS = getattr(django_settings, 'WIKI_ANONYMOUS', True)
+
+# Globally enable write access for anonymous users, if true anonymous users will be treated
+# as the others_write boolean field on models.Article. 
+ANONYMOUS_WRITE = getattr(django_settings, 'WIKI_ANONYMOUS_WRITE', False)
+
 # Sign up, login and logout views should be accessible 
 ACCOUNT_HANDLING = getattr(django_settings, 'WIKI_ACCOUNT_HANDLING', True)
 
@@ -48,10 +60,16 @@ if ACCOUNT_HANDLING:
 else:
     LOGIN_URL = getattr(django_settings, "LOGIN_URL", "/")
 
+
+##################
+# OTHER SETTINGS #
+##################
+
 # Maximum amount of children to display in a menu before going "+more"
 # NEVER set this to 0 as it will wrongly inform the user that there are no
 # children and for instance that an article can be safely deleted.
 SHOW_MAX_CHILDREN = getattr(django_settings, 'WIKI_SHOW_MAX_CHILDREN', 20)
+
 
 ####################
 # PLANNED SETTINGS #
@@ -65,13 +83,3 @@ MAX_REVISION_AGE = getattr(django_settings, 'MAX_REVISION_AGE', 365)
 
 # Maximum allowed revisions per minute for any given user or IP
 REVISIONS_PER_MINUTE = getattr(django_settings, 'WIKI_REVISIONS_PER_MINUTE', 3)
-
-# Allow others to upload
-UPLOAD_OTHERS = getattr(django_settings, 'WIKI_UPLOAD_OTHERS', True)
-
-# Treat anonymous (non logged in) users as the "other" user group
-ANONYMOUS = getattr(django_settings, 'WIKI_ANONYMOUS', True)
-
-# Globally enable write access for anonymous users, if true anonymous users will be treated
-# as the others_write boolean field on models.Article. 
-ANONYMOUS_WRITE = getattr(django_settings, 'WIKI_ANONYMOUS_WRITE', False)
