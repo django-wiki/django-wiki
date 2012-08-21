@@ -10,9 +10,9 @@
 
 {% block wiki_contents %}
 
-  <div class="tabbable tabs-top" style="margin-top: 20px;">
-    <ul class="nav nav-tabs">
-      <li style="float: left">
+  <div class="" style="margin-top: 20px;">
+    <ul class="nav nav-pills" style="border-bottom: 1px solid #EEE;">
+      <li class="pull-left">
         <h1 style="margin-top: -10px;">
           {{ article.current_revision.title }}
           {% if urlpath and urlpath.parent %}
@@ -22,7 +22,7 @@
       </li>
       {% include "wiki/includes/article_menu.html" %}
     </ul>
-    <div class="tab-content">
+    <div>
       {% block wiki_contents_tab %}
       {% wiki_render article %}
       {% endblock %}

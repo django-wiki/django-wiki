@@ -1,4 +1,8 @@
-"""A more liberal autolinker
+"""
+Code modified from:
+https://github.com/r0wb0t/markdown-urlize
+
+A more liberal autolinker
 
 Inspired by Django's urlize function.
 
@@ -39,10 +43,10 @@ import markdown
 
 # Global Vars
 URLIZE_RE = '(%s)' % '|'.join([
-    r'<(?:f|ht)tps?://[^>]*>',
-    r'\b(?:f|ht)tps?://[^)<>\s]+[^.,)<>\s]',
-    r'\bwww\.[^)<>\s]+[^.,)<>\s]',
-    r'[^(<\s"]+\.(?:com|net|org)\b',
+    r'<(?:f|ht)tps?://[^>\'"]*>',
+    r'\b(?:f|ht)tps?://[^)<>\s\'"]+[^.,)<>\s\'"]',
+    r'\bwww\.[^)<>\s]+[^.,)<>\s\'"]',
+    r'[^(<\s\'"]+\.(?:com|net|org)\b',
 ])
 
 class UrlizePattern(markdown.inlinepatterns.Pattern):
