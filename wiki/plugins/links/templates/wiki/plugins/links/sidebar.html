@@ -9,7 +9,7 @@
 <pre>[Title of link](wiki:ArticleSlug)</pre>
 
 <p>
-  <input type="text" class="page_title_query" id="links_page_title_query" value="" placeholder="Type to search..." />
+  <input type="text" class="page_title_query" id="links_page_title_query" value="" placeholder="Type to search..." style="max-width: 90%;" />
   <button type="button" class="btn" onclick="wikiInsertLink()">
     {% trans "Insert" %}
   </button>
@@ -24,14 +24,11 @@
 </p>
 <pre>[Clickable text](http://example.com)</pre>
 
-
-
-<script type="text/javascript" src="{{ STATIC_URL }}wiki/js/bootstrap-typeahead.js"></script>
 <script type="text/javascript">
 $('.page_title_query').typeahead({
-    source: function (typeahead, query) {
+    source: function (query, process) {
         return $.get('{% url 'wiki:links_query_urlpath' path=urlpath.path article_id=article.id %}', { query: query }, function (data) {
-            return typeahead.process(data);
+            return process(data);
         });
     }
 });

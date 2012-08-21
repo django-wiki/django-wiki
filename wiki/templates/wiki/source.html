@@ -1,0 +1,14 @@
+{% extends "wiki/article.html" %}
+{% load wiki_tags i18n humanize %}
+{% load url from future %}
+
+{% block pagetitle %}{% trans "Source of" %} {{ article.current_revision.title }}{% endblock %}
+
+{% block wiki_contents_tab %}
+
+<pre class="pre-scrollable">
+  {{ article.current_revision.content }}
+</pre>
+
+{% endblock %}
+

@@ -26,12 +26,23 @@
     {% trans "Changes" %}
   </a>
 </li>
+
+{% if article|can_write:user %}
 <li class="pull-right{% if selected == "edit" %} active{% endif %}">
   <a href="{% url 'wiki:edit' article_id=article.id path=urlpath.path %}">
     <span class="icon-edit"></span>
     {% trans "Edit" %}
   </a>
 </li>
+{% else %}
+<li class="pull-right{% if selected == "source" %} active{% endif %}">
+  <a href="{% url 'wiki:source' article_id=article.id path=urlpath.path %}">
+    <span class="icon-lock"></span>
+    {% trans "View Source" %}
+  </a>
+</li>
+{% endif %}
+
 <li class="pull-right{% if selected == "view" %} active{% endif %}">
   <a href="{% url 'wiki:get' article_id=article.id path=urlpath.path %}">
     <span class="icon-home"></span>

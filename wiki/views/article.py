@@ -362,9 +362,17 @@ class Deleted(Delete):
         kwargs['purge_form'] = kwargs.pop('form', None)
         return super(Delete, self).get_context_data(**kwargs)
     
-# TODO: ...
 class Source(ArticleMixin, TemplateView):
-    pass
+
+    template_name="wiki/source.html"
+    
+    @method_decorator(get_article(can_read=True))
+    def dispatch(self, request, article, *args, **kwargs):
+        return super(Source, self).dispatch(request, article, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs):
+        kwargs['selected_tab'] = 'source'
+        return ArticleMixin.get_context_data(self, **kwargs)
 
 
 class History(ListView, ArticleMixin):

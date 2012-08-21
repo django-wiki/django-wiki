@@ -44,17 +44,17 @@ textarea.markItUp {font-size: 16px; padding: 10px; float: none; display: block; 
 	background-image:url(images/list-numeric.png);
 }
 
-.markItUp .markItUpButton11 a {
+/*.markItUp .markItUpButton11 a {
 	background-image:url(images/picture.png); 
 }
 .markItUp .markItUpButton12 a {
 	background-image:url(images/link.png);
-}
+}*/
 
-.markItUp .markItUpButton13 a	{
+.markItUp .markItUpButton11 a	{
 	background-image:url(images/quotes.png);
 }
-.markItUp .markItUpButton14 a	{
+.markItUp .markItUpButton12 a	{
 	background-image:url(images/code.png);
 }
 

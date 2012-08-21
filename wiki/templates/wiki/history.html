@@ -123,20 +123,14 @@
     
     {% include "wiki/includes/pagination.html" %}
     
-    {% if revisions.count > 1 %}
+    {% if revisions.count > 1 and article|can_write:user %}
+
     <div class="form-actions">
       <div class="pull-right">
-        {% if article|can_write:user %}
-          <button type="submit" name="preview" value="1" class="btn btn-large" onclick="$('#mergeModal').modal('show'); this.form.target='mergeWindow'; this.form.action=$('input[type=radio]:checked').attr('merge-button-href'); $('.merge-revision-commit').attr('href', $('input[type=radio]:checked').attr('merge-button-commit-href'))">
-            <span class="icon-random"></span>
-            {% trans "Merge selected with current..." %}
-          </button>
-        {% else %}
-          <button type="submit" disabled="true" name="preview" value="1" class="btn btn-large">
-            <span class="icon-lock"></span>
-            {% trans "Merge selected with current..." %}
-          </button>
-        {% endif %}
+        <button type="submit" name="preview" value="1" class="btn btn-large" onclick="$('#mergeModal').modal('show'); this.form.target='mergeWindow'; this.form.action=$('input[type=radio]:checked').attr('merge-button-href'); $('.merge-revision-commit').attr('href', $('input[type=radio]:checked').attr('merge-button-commit-href'))">
+          <span class="icon-random"></span>
+          {% trans "Merge selected with current..." %}
+        </button>
         <button type="submit" name="save" value="1" class="btn btn-large btn-primary" onclick="$('#previewModal').modal('show'); this.form.target='previewWindow'; this.form.action=$('input[type=radio]:checked').attr('switch-button-href')">
           <span class="icon-flag"></span>
           {% trans "Switch to selected version" %}
