@@ -42,7 +42,7 @@ URLIZE_RE = '(%s)' % '|'.join([
     r'<(?:f|ht)tps?://[^>]*>',
     r'\b(?:f|ht)tps?://[^)<>\s]+[^.,)<>\s]',
     r'\bwww\.[^)<>\s]+[^.,)<>\s]',
-    r'[^(<\s]+\.(?:com|net|org)\b',
+    r'[^(<\s"]+\.(?:com|net|org)\b',
 ])
 
 class UrlizePattern(markdown.inlinepatterns.Pattern):

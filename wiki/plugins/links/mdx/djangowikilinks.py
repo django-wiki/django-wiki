@@ -42,8 +42,6 @@ class WikiPathExtension(markdown.Extension):
         for key, value in configs :
             # self.config[key][0] = value
             self.setConfig(key, value)
-                
-        print "I was created"
         
     def extendMarkdown(self, md, md_globals):
         self.md = md

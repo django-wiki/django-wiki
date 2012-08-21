@@ -4,8 +4,9 @@
 
 <p>
   {% trans "Type in something from another wiki page's title and auto-complete will help you create a tag for you wiki link. Tags for links look like this:" %}<br />
-  <code>[Title of link](wiki:ArticleSlug)</code>
 </p>
+
+<pre>[Title of link](wiki:ArticleSlug)</pre>
 
 <p>
   <input type="text" class="page_title_query" id="links_page_title_query" value="" placeholder="Type to search..." />
@@ -14,7 +15,17 @@
   </button>
 </p>
 
+<hr />
+
 <h4>{% trans "An external link" %}</h4>
+
+<p>
+  {% trans "You can link to another website simply by inserting an address example.com or http://example.com or by using the markdown syntax:" %}<br />
+</p>
+<pre>[Clickable text](http://example.com)</pre>
+
+
+
 <script type="text/javascript" src="{{ STATIC_URL }}wiki/js/bootstrap-typeahead.js"></script>
 <script type="text/javascript">
 $('.page_title_query').typeahead({

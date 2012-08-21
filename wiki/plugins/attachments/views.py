@@ -148,8 +148,11 @@ class AttachmentDownloadView(ArticleMixin, View):
 
     def get(self, request, *args, **kwargs):
         if self.revision:
-            return send_file(request, self.revision.file.path, 
-                             self.revision.created, self.attachment.original_filename)
+            try:
+                return send_file(request, self.revision.file.path, 
+                                 self.revision.created, self.attachment.original_filename)
+            except OSError:
+                pass
         raise Http404
     
 class AttachmentChangeRevisionView(ArticleMixin, View):
