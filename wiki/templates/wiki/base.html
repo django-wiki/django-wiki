@@ -11,7 +11,13 @@
     <link href="{{ STATIC_URL }}wiki/bootstrap/css/bootstrap.css" rel="stylesheet">
     
     <!-- TODO: Put all this stuff in Less -->
-    <style>
+    <style media="print">
+      .navbar,
+      .nav-tabs li a,
+      #article-breadcrumbs
+      {display: none;}
+    </style>
+    <style media="all">
       #div_id_title .asteriskField{display:none}
       #id_title {font-size: 20px; height: 30px; padding: 6px; width: 98%;}
       #id_summary {width: 98%; padding: 6px;}

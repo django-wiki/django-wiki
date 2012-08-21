@@ -1,5 +1,7 @@
 {% load i18n %}{% load url from future %}
 {% if urlpath %}
+<div id="article-breadcrumbs">
+
 <ul class="breadcrumb pull-left" class="">
   {% for ancestor in urlpath.cached_ancestors %}
     <span class="divider">/</span>
@@ -58,4 +60,5 @@
   </div>
 </div>
 <div style="clear: both"></div>
+</div>
 {% endif %}

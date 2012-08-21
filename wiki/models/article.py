@@ -79,7 +79,7 @@ class Article(models.Model):
         """NB! This generator is expensive, so use it with care!!"""
         cnt = 0
         for obj in self.articleforobject_set.filter(is_mptt=True):
-            for child in obj.content_object.get_children().filter(**kwargs):
+            for child in obj.content_object.get_children().filter(**kwargs).order_by('articles__article__current_revision__title'):
                 cnt += 1
                 if max_num and cnt > max_num: return
                 yield child
