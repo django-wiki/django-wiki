@@ -7,12 +7,15 @@ Demo here, sign up for an account to see the notification system.
 
 [wiki.overtag.dk](http://wiki.overtag.dk)
 
-NB!! *THIS IS A WORK IN PROGRESS*
+NB!! *THIS IS A WORK IN PROGR...*
 ---------------------------------
 
-Currently, the whole API is subject to change. That means, that if you use the wiki, you should use it *as it is* and not access any internals or spend time overriding templates or writing plugins... **yet!** But the games will soon begin.
+Currently, the whole API is subject to change. That means, if you use the wiki, you should use it *as it is* and not access internals or override templates or write plugins... **yet!** But the games will soon begin, and Django South migrations are available.
 
-Please refer to the [TODO](https://github.com/benjaoming/django-wiki/blob/master/TODO.md)
+Please refer to the [TODO](https://github.com/benjaoming/django-wiki/blob/master/TODO.md) for a detailed status or the Issue list.
+
+Manifesto
+---------
 
 This is where it all begins. In *less than 1 week* we should have a wiki system appealing to any kind of Django developer out there. Here is the manifest (so far):
 
