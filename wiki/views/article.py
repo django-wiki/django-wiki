@@ -521,7 +521,7 @@ class Preview(ArticleMixin, TemplateView):
     
     template_name="wiki/preview_inline.html"
     
-    @method_decorator(get_article(can_read=True))
+    @method_decorator(get_article(can_read=True, deleted_contents=True))
     def dispatch(self, request, article, *args, **kwargs):
         revision_id = request.GET.get('r', None)
         self.title = None
