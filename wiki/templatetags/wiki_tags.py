@@ -72,10 +72,12 @@ def get_content_snippet(content, keyword, max_words=30):
         words = filter(lambda x: x!="", striptags(m.group("after")).replace("\n", " ").split(" "))
         after = " ".join(words[:max_words - len(before_words)])
         before = " ".join(before_words)
-        html = "%s <strong>%s</strong> %s" % (before,
-                                             striptags(keyword),
-                                             after)
+        html = "%s %s %s" % (before, striptags(keyword), after)
+        kw_p = re.compile(r'(%s)'%keyword, re.IGNORECASE)
+        html = kw_p.sub(r"<strong>\1</strong>", html)
         html = mark_safe(html)
+    else:
+        html = " ".join(filter(lambda x: x!="", striptags(content).replace("\n", " ").split(" "))[:max_words])
     return html
 
 @register.filter

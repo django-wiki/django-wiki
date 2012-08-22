@@ -100,3 +100,4 @@ class Notification(models.Model):
         db_table = settings.DB_TABLE_PREFIX + '_notification'
         verbose_name = _(u'notification')
         verbose_name_plural = _(u'notifications')
+        ordering = ('-id',)
