@@ -80,6 +80,7 @@ class URLPath(MPTTModel):
         """
         return self.first_deleted_ancestor() is not None
     
+    # TODO: Can we move this into is_deleted's logic? It is a very strange method
     def first_deleted_ancestor(self):
         for ancestor in self.cached_ancestors + [self]:
             if ancestor.article.current_revision.deleted == True:

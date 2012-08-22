@@ -20,7 +20,6 @@ from wiki.decorators import get_article, json_view
 from django.core.urlresolvers import reverse
 from django.db import transaction
 from wiki.core.exceptions import NoRootURL
-from django_notify.decorators import disable_notify
 from wiki.core import permissions
 
 class ArticleView(ArticleMixin, TemplateView):
