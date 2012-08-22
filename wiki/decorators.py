@@ -101,13 +101,16 @@ def get_article(func=None, can_read=True, can_write=False, deleted_contents=Fals
             else:
                 c = RequestContext(request, {'urlpath' : urlpath})
                 return HttpResponseForbidden(render_to_string("wiki/permission_denied.html", context_instance=c))
-
-        # If the article has been deleted, show a special page.
-        if not deleted_contents and article.current_revision and article.current_revision.deleted:
+        
+        
+        if not deleted_contents:            
             if urlpath:
-                return redirect('wiki:deleted', path=urlpath.path)
+                if urlpath.is_deleted(): # This also checks all ancestors
+                    return redirect('wiki:deleted', path=urlpath.path)
             else:
-                return redirect('wiki:deleted', article_id=article.id)
+                if article.current_revision and article.current_revision.deleted:
+                    return redirect('wiki:deleted', article_id=article.id)
+        
         
         kwargs['urlpath'] = urlpath
         

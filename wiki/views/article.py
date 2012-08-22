@@ -130,8 +130,10 @@ class Delete(FormView, ArticleMixin):
             if urlpath and urlpath.parent:
                 self.next = reverse('wiki:get', kwargs={'path': urlpath.parent.path})
             elif urlpath:
+                # We are a urlpath with no parent. This is the root
                 self.cannot_delete_root = True
             else:
+                # We have no urlpath. Get it if a urlpath exists
                 for art_obj in article.articleforobject_set.filter(is_mptt=True):
                     if art_obj.content_object.parent:
                         self.next = reverse('wiki:get', kwargs={'article_id': art_obj.content_object.parent.article.id})
@@ -156,38 +158,30 @@ class Delete(FormView, ArticleMixin):
         return kwargs
     
     @disable_notify
-    def delete_children(self, purge=False, restore=False):
-        assert not (restore and purge), "You cannot purge a restore"
+    def delete_children(self, purge=False):
         if purge:
             for child in self.article.get_children(articles__article__current_revision__deleted=False):
                 child.delete()
-        else:
-            for child in self.article.get_children(articles__article__current_revision__deleted=restore):
-                revision = models.ArticleRevision()
-                revision.inherit_predecessor(child.article)
-                revision.set_from_request(self.request)
-                if restore:
-                    revision.automatic_log = _(u'Restoring children of "%s"') % self.article.current_revision.title
-                else:
-                    revision.automatic_log = _(u'Deleting children of "%s"') % self.article.current_revision.title
-                revision.deleted = not restore
-                child.article.add_revision(revision)
+        # If it is not a purge there is no need to delete the children. Having a deleted parent is enough
         
     def form_valid(self, form):
         cd = form.cleaned_data
         
+        purge = cd['purge']
+        
+        #If we are purging, only moderators can delete articles with children
         cannot_delete_children = False
-        if self.children_slice and not self.request.user.has_perm('wiki.moderator'):
+        if purge and self.children_slice and not self.request.user.has_perm('wiki.moderator'):
             cannot_delete_children = True
 
         if self.cannot_delete_root or cannot_delete_children:
             messages.error(self.request, _(u'This article cannot be deleted because it has children or is a root article.'))
             return redirect('wiki:get', article_id=self.article.id)
         
-        # First, remove children
-        self.delete_children(purge=cd['purge'])
-        
-        if self.request.user.has_perm('wiki.moderator') and cd['purge']:
+        if self.request.user.has_perm('wiki.moderator') and purge:
+            # First, remove children
+            self.delete_children(purge=purge)
+            
             self.article.delete()
             messages.success(self.request, _(u'This article together with all its contents are now completely gone! Thanks!'))
         else:
@@ -326,16 +320,23 @@ class Deleted(Delete):
         self.urlpath = kwargs.get('urlpath', None)
         self.article = article
         
-        if not article.current_revision.deleted:
-            if self.urlpath:
+        if self.urlpath:
+            deleted_ancestor = self.urlpath.first_deleted_ancestor()
+            
+            if deleted_ancestor is None:
+                # No one is deleted!
                 return redirect('wiki:get', path=self.urlpath.path)
-            else:
+            elif deleted_ancestor != self.urlpath:
+                # An ancestor was deleted, so redirect to that deleted page
+                return redirect('wiki:deleted', path=deleted_ancestor.path)
+                
+        else:
+            if not article.current_revision.deleted:
                 return redirect('wiki:get', article_id=article.id)
         
         # Restore
         if (request.GET.get('restore', False) and
             (not article.current_revision.locked or request.user.has_perm('wiki.moderator'))):
-            self.delete_children(restore=True)
             revision = models.ArticleRevision()
             revision.inherit_predecessor(self.article)
             revision.set_from_request(request)
