@@ -45,7 +45,11 @@ def get_article(func=None, can_read=True, can_write=False,
     can_read=True and/or can_write=True: Check that the current request.user
     has correct permissions.
     
+    can_delete and can_moderate: Verifies with wiki.core.permissions
+    
     deleted_contents=True: Do not redirect if the article has been deleted.
+    
+    not_locked=True: Return permission denied if the article is locked
     
     Also see: wiki.views.mixins.ArticleMixin 
     """

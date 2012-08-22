@@ -3,17 +3,15 @@ Not implemented - will be ASAP
 
  * Notification system **Almost done** (email notifications)
  * Circuit Editor plugin
- * Implement notifications, revision log messages and user messages thoroughly
  * Example plugin
  * Spam protection / Bot editing detection. Don't let anyone edit more than once every other minute.
  * Key-value meta data
  * Searching
  * "Are you sure you want to leave this page" confirmation for Edit page.
  * Finish all class-based views
- * Are you sure you wanna leave this page?
- * Customize bootstrap to look a bit less like a default installation and add styles for the wiki articles
  * Embeddable article template tag
  * "Fix Wiki URL bug in the footnotes plugin for python-markdown" ?
+ * Implement notifications, revision log messages and user messages thoroughly **Pretty much done**
  * View source for read-only articles + locked status **Done**
  * Index views for urlpaths **Done**
  * Permission system in settings tab **Done**
@@ -29,9 +27,10 @@ Not implemented - will be ASAP
 Ideas
 =====
 
- * Build TOCs and use bootstrap scrollspy
+ * Build menus of hierarchies and use bootstrap scrollspy. Add through plugin.
  * Notification system should be it's own separate app
  * Statistics page for wiki owners
+ * Table plugin: Quickly add a row of data to an existing table and sort data.
  * Auto-merge for conflicting concurrent revisions **DONE**
  * Add revision conflict detection for concurrent editing **DONE**
  * Make a comments plugin for commenting inline
