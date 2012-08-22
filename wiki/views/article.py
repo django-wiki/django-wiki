@@ -476,6 +476,7 @@ class Settings(ArticleMixin, TemplateView):
             # could be mixed up with a different instance
             # Use strategy from Edit view...
             setattr(settings_forms[i], 'action', 'form%d' % i)
+        
         return settings_forms
     
     def post(self, *args, **kwargs):
@@ -498,8 +499,15 @@ class Settings(ArticleMixin, TemplateView):
     
     def get(self, *args, **kwargs):
         self.forms = []
+        
+        # There is a bug where articles fetched with select_related have bad boolean field https://code.djangoproject.com/ticket/15040
+        # We fetch a fresh new article for this reason
+        new_article = models.Article.objects.get(id=self.article.id)
+        
         for Form in self.get_form_classes():
-            self.forms.append(Form(self.article, self.request))
+            self.forms.append(Form(new_article, self.request))
+        print self.forms[1].instance
+        
         return super(Settings, self).get(*args, **kwargs)
 
     def get_success_url(self):
