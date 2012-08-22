@@ -14,6 +14,7 @@ from wiki.core.diff import simple_merge
 from django.forms.widgets import HiddenInput
 from wiki.core.plugins.base import PluginSettingsFormMixin
 from django.contrib.auth.models import User
+from wiki.core import permissions
 
 class SpamProtectionMixin():
     
@@ -24,7 +25,10 @@ class SpamProtectionMixin():
         current_revision can be any object inheriting from models.BaseRevisionMixin 
         """
         ipaddress = request.META.get('REMOTE_ADDR', None)
-        
+        if not ipaddress == "127.0.0.1":
+            raise forms.ValidationError(_('Only localhost... muahahaha'))
+        # TODO: Finish this stuff and integrate it in forms....
+
 
 class CreateRootForm(forms.Form):
     
@@ -269,25 +273,25 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
         kwargs['instance'] = article
         kwargs['initial'] = {'locked': article.current_revision.locked}
         super(PermissionsForm, self).__init__(*args, **kwargs)
-        self.can_change_groups = True
+        
+        self.can_change_groups = False
         self.can_assign = False
-        if request.user.has_perm("wiki.assign"):
+        
+        if permissions.can_assign(article, request.user):
             self.can_assign = True
             self.fields['group'].queryset = models.Group.objects.all()
+        elif permissions.can_assign_owner(article, request.user):
+            self.fields['group'].queryset = models.Group.objects.filter(user=request.user)
+            self.can_change_groups = True
         else:
+            self.fields['group'].widget = forms.HiddenInput()
+            self.fields['group_read'].widget = forms.HiddenInput()
+            self.fields['group_write'].widget = forms.HiddenInput()
+            
+        if not self.can_assign:
             self.fields['owner_username'].widget = forms.HiddenInput()
             self.fields['recursive'].widget = forms.HiddenInput()
             self.fields['locked'].widget = forms.HiddenInput()
-            groups = models.Group.objects.filter(user=request.user)
-            self.fields['group'].queryset = groups
-            # Sanity: If somehow the article belongs to a group that the
-            # owner is not a member of, don't let the owner make any decisions
-            # for group permissions.
-            if article.group and not request.user in article.group.user_set.all():
-                self.can_change_groups = False
-                self.fields['group'].widget = forms.HiddenInput()
-                self.fields['group_read'].widget = forms.HiddenInput()
-                self.fields['group_write'].widget = forms.HiddenInput()
         
         self.fields['owner_username'].initial = article.owner.username if article.owner else ""
     

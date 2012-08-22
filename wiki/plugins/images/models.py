@@ -33,6 +33,9 @@ class Image(RevisionPlugin):
             return False
         return RevisionPlugin.can_write(self, **kwargs)
 
+    def can_delete(self, user):
+        return self.can_write(user=user)
+
     class Meta:
         verbose_name = _(u'image')
         verbose_name_plural = _(u'images')

@@ -42,6 +42,16 @@ class ArticlePlugin(models.Model):
     
     created = models.DateTimeField(auto_now_add=True)
     
+    # Permission methods - you should override these, if they don't fit your logic.
+    def can_read(self, **kwargs):
+        return self.article.can_read(**kwargs)
+    def can_write(self, **kwargs):
+        return self.article.can_write(**kwargs)
+    def can_delete(self, user):
+        return self.article.can_delete(user)
+    def can_moderate(self, user):
+        return self.article.can_moderate(user)
+
     def purge(self):
         """Remove related contents completely, ie. media files."""
         pass
@@ -52,8 +62,15 @@ class ArticlePlugin(models.Model):
 class ReusablePlugin(ArticlePlugin):
     """Extend from this model if you have a plugin that may be related to many
     articles. Please note that the ArticlePlugin.article ForeignKey STAYS! This
-    is in order to maintain an explicit set of permissions. If you do not like this,
-    you can override can_read and can_write."""
+    is in order to maintain an explicit set of permissions.
+    
+    In general, it's quite complicated to maintain plugin content that's shared
+    between different articles. The best way to go is to avoid this. For inspiration,
+    look at wiki.plugins.attachments
+    
+    You might have to override the permission methods (can_read, can_write etc.)
+    if you have certain needs for logic in your reusable plugin.
+    """
     # The article on which the plugin was originally created.
     # Used to apply permissions.
     ArticlePlugin.article.on_delete=models.SET_NULL
@@ -64,17 +81,17 @@ class ReusablePlugin(ArticlePlugin):
     
     articles = models.ManyToManyField(Article, related_name='shared_plugins_set')
     
-    # Permission methods - you may override these, if they don't fit your logic.
+    # Since the article relation may be None, we have to check for this
+    # before handling permissions....
     def can_read(self, **kwargs):
-        if self.article:
-            return self.article.can_read(**kwargs)
-        return False
-    
+        return self.article.can_read(**kwargs) if self.article else False
     def can_write(self, **kwargs):
-        if self.article:
-            return self.article.can_write(**kwargs)
-        return False
-    
+        return self.article.can_write(**kwargs) if self.article else False
+    def can_delete(self, user):
+        return self.article.can_delete(user) if self.article else False
+    def can_moderate(self, user):
+        return self.article.can_moderate(user) if self.article else False
+
     def save(self, *args, **kwargs):
         
         # Automatically make the original article the first one in the added set
@@ -151,12 +168,6 @@ class RevisionPlugin(ArticlePlugin):
                                                          'If you need to do a roll-back, simply change the value of this field.'),
                                             )
     
-    # Permissions... overwrite if necessary
-    def can_read(self, **kwargs):
-        return self.article.can_read(**kwargs)
-    def can_write(self, **kwargs):
-        return self.article.can_write(**kwargs)
-
     def add_revision(self, new_revision, save=True):
         """
         Sets the properties of a revision and ensures its the current

@@ -45,7 +45,7 @@
               {% trans "Remove image" %}
             </a>
           {% endif %}
-          {% if user|is_moderator %}
+          {% if article|can_moderate:user %}
           <br />
           <a href="{% url 'wiki:images_purge' path=urlpath.path article_id=article.id image_id=image.id %}">
             <span class="icon-trash"></span>

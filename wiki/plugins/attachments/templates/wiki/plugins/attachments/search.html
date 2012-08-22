@@ -40,7 +40,7 @@
       {% if attachment.current_revision.deleted %}<span class="badge badge-important">{% trans "deleted" %}</span>{% endif %}
     </td>
     <td>
-      {% if attachment.current_revision.user %}{{ attachment.current_revision.user }}{% else %}{% if user|is_moderator %}{{ attachment.current_revision.ip_address|default:"anonymous (IP not logged)" }}{% else %}{% trans "anonymous (IP logged)" %}{% endif %}{% endif %}
+      {% include "wiki/includes/revision_info.html" with revision=attachment.current_revision hidedate=1 hidenumber=1 %}
     </td>
     <td>{{ attachment.current_revision.file.size|filesizeformat }}</td>
     <td style="text-align: right">

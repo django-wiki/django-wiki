@@ -6,7 +6,7 @@
 
 {% block wiki_contents_tab %}
 <div class="row-fluid">
-  <div class="span7">
+  <div class="span8">
     <p class="lead">{% trans "The following files are available for this article. Copy the markdown tag to directly refer to a file from the article text." %}</p>
     {% for attachment in attachments %}
       <table class="table table-bordered table-striped" style="width: 100%;">
@@ -26,7 +26,7 @@
         <th>{% trans "Markdown tag" %}</th>
         <th>{% trans "Uploaded by" %}</th>
         <th>{% trans "Size" %}</th>
-        <td style="text-align: right;" rowspan="2">
+        <td style="text-align: right; white-space: nowrap;" rowspan="2">
           {% if attachment|can_write:user %}
             <p>
             {% if not attachment.current_revision.deleted %}
@@ -59,7 +59,7 @@
       <tr>
         <td><code>[attachment:{{ attachment.id }}]</code></td>
         <td>
-        {% if attachment.current_revision.user %}{{ attachment.current_revision.user }}{% else %}{% if user|is_moderator %}{{ attachment.current_revision.ip_address|default:"anonymous (IP not logged)" }}{% else %}{% trans "anonymous (IP logged)" %}{% endif %}{% endif %}
+        {% include "wiki/includes/revision_info.html" with revision=attachment.current_revision hidedate=1 hidenumber=1 %}
         </td>
         <td>{{ attachment.current_revision.get_size|filesizeformat }}</td>
       </tr>
@@ -69,7 +69,7 @@
     {% endfor %}
   </div>
   {% if article|can_write:user %}
-  <div class="span5" style="min-width: 330px;">
+  <div class="span4" style="min-width: 330px;">
     <div class="accordion" id="accordion_upload">
 
       <div class="accordion-group">

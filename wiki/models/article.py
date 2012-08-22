@@ -7,7 +7,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
 from wiki.conf import settings
-from wiki.core import article_markdown
+from wiki.core import article_markdown, permissions
 from wiki.core.plugins import registry as plugin_registry
 from wiki import managers
 from mptt.models import MPTTModel
@@ -39,35 +39,56 @@ class Article(models.Model):
     other_read = models.BooleanField(default=True, verbose_name=_(u'others read access'))
     other_write = models.BooleanField(default=True, verbose_name=_(u'others write access'))
     
-    def can_read(self, user=None, group=None):
-        is_other = (user and not user.is_anonymous() ) or settings.ANONYMOUS
-        if is_other and self.other_read:
+    # TODO: Do not use kwargs, it can lead to dangerous situations with bad
+    # permission checking patterns. Also, since there are no other keywords,
+    # it doesn't make much sense.
+    def can_read(self, user=None):
+        # Deny reading access to deleted articles if user has no delete access
+        if self.current_revision and self.current_revision.deleted and not self.can_delete(user):
+            return False
+        
+        # Check access for other users...
+        if user.is_anonymous() and not settings.ANONYMOUS:
+            return False
+        elif self.other_read:
             return True
+        elif user.is_anonymous():
+            return  False
         if user == self.owner:
             return True
         if self.group_read:
-            if self.group and group == self.group:
+            if self.group and user.groups.filter(id=self.group.id):
                 return True
-            if self.group and user and user.groups.filter(id=self.group.id):
-                return True
-        if user and user.has_perm('wiki_moderator'):
+        if self.can_moderate(user):
             return True
         return False
     
-    def can_write(self, user=None, group=None):
-        is_other = (user and not user.is_anonymous() ) or settings.ANONYMOUS_WRITE
-        if is_other and self.other_write:
+    def can_write(self, user=None):
+        # Deny writing access to deleted articles if user has no delete access
+        if self.current_revision and self.current_revision.deleted and not self.can_delete(user):
+            return False
+        # Check access for other users...
+        if user.is_anonymous() and not settings.ANONYMOUS_WRITE:
+            return False
+        elif self.other_write:
             return True
+        elif user.is_anonymous():
+            return  False
         if user == self.owner:
             return True
         if self.group_write:
-            if self.group and group == self.group:
-                return True
             if self.group and user and user.groups.filter(id=self.group.id):
                 return True
-        if user and user.has_perm('wiki_moderator'):
+        if self.can_moderate(user):
             return True
         return False
+    
+    def can_delete(self, user):
+        return permissions.can_delete(self, user)
+    def can_moderate(self, user):
+        return permissions.can_moderate(self, user)
+    def can_assign(self, user):
+        return permissions.can_assign(self, user)
     
     def descendant_objects(self):
         """NB! This generator is expensive, so use it with care!!"""
@@ -148,7 +169,7 @@ class Article(models.Model):
     class Meta:
         app_label = settings.APP_LABEL
         permissions = (
-            ("moderator", "Can edit all articles and lock/unlock/restore"),
+            ("moderate", "Can edit all articles and lock/unlock/restore"),
             ("assign", "Can change ownership of any article"),
             ("grant", "Can assign permissions to other users"),
         )

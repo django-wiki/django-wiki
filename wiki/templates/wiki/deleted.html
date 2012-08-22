@@ -19,7 +19,7 @@
   
   <div class="row-fluid">
   
-  {% if not article.current_revision.locked or user|is_moderator %}
+  {% if not article.current_revision.locked or article|can_delete:user %}
     <div class="span6">
       <div class="well">
         <h2>{% trans "Restore" %}</h2>
@@ -34,7 +34,7 @@
     </div>
   {% endif %}
   
-  {% if user|is_moderator %}
+  {% if article|can_moderate:user %}
     <div class="span6">
       <div class="well">
         <h2>{% trans "Purge deletion" %}</h2>

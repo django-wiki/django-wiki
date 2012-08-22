@@ -28,14 +28,25 @@ LOG_IPS_USERS = getattr(django_settings, 'WIKI_LOG_IPS_USERS', False)
 # PERMISSIONS AND ACCOUNT HANDLING #
 ####################################
 
+# NB! None of these callables need to handle anonymous users as they are treated
+# in separate settings...
+
 # A function returning True/False if a user has permission to assign
 # permissions on an article
 # Relevance: changing owner and group membership
 CAN_ASSIGN = getattr(django_settings, 'WIKI_CAN_ASSIGN', lambda article, user: user.has_perm('wiki.assign'))
 
+# A function returning True/False if the owner of an article has permission to change
+# the group to a user's own groups
+# Relevance: changing group membership
+CAN_ASSIGN_OWNER = getattr(django_settings, 'WIKI_ASSIGN_OWNER', lambda article, user: False)
+
 # A function returning True/False if a user has permission to change
 # read/write access for groups and others
 CAN_CHANGE_PERMISSIONS = getattr(django_settings, 'WIKI_CAN_CHANGE_PERMISSIONS', lambda article, user: article.owner == user or user.has_perm('wiki.assign'))
+
+# Specifies if a user has access to soft deletion of articles
+CAN_DELETE = getattr(django_settings, 'WIKI_CAN_DELETE', lambda article, user: article.can_write(user=user))
 
 # A function returning True/False if a user has permission to change
 # moderate, ie. lock articles and permanently delete content.

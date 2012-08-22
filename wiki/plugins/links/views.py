@@ -4,11 +4,13 @@ from django.utils.decorators import method_decorator
 
 class QueryUrlPath(View):
     
+    # TODO: get_article does not actually support JSON responses
     @method_decorator(json_view)
     @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, *args, **kwargs):
         max_num = kwargs.pop('max_num', 20)
-        # TODO: Move this import when 
+        # TODO: Move this import when circularity issue is resolved
+        # https://github.com/benjaoming/django-wiki/issues/23
         from wiki import models
         query = request.GET.get('query', None)
         

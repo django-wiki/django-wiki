@@ -16,7 +16,8 @@ def get_notifications(request, latest_id=None, is_viewed=False, max_results=10):
     
     if not latest_id is None:
         notifications = notifications.filter(latest_id__gt=latest_id)
-
+    
+    notifications = notifications.prefetch_related('subscription')
     notifications = notifications[:max_results]
     
     from django.contrib.humanize.templatetags.humanize import naturaltime

@@ -20,7 +20,17 @@ def json_view(func):
         return response
     return wrap
 
-def get_article(func=None, can_read=True, can_write=False, deleted_contents=False, not_locked=False):
+def response_forbidden(request, article, urlpath):
+    if request.user.is_anonymous():
+        return redirect(django_settings.LOGIN_URL)
+    else:
+        c = RequestContext(request, {'article': article,
+                                     'urlpath' : urlpath})
+        return HttpResponseForbidden(render_to_string("wiki/permission_denied.html", context_instance=c))
+
+def get_article(func=None, can_read=True, can_write=False, 
+                 deleted_contents=False, not_locked=False,
+                 can_delete=False, can_moderate=False):
     """View decorator for processing standard url keyword args: Intercepts the 
     keyword args path or article_id and looks up an article, calling the decorated 
     func with this ID.
@@ -88,20 +98,6 @@ def get_article(func=None, can_read=True, can_write=False, deleted_contents=Fals
         else:
             raise TypeError('You should specify either article_id or path')
         
-        if can_read and not article.can_read(user=request.user):
-            if request.user.is_anonymous():
-                return redirect(django_settings.LOGIN_URL)
-            else:
-                c = RequestContext(request, {'urlpath' : urlpath})
-                return HttpResponseForbidden(render_to_string("wiki/permission_denied.html", context_instance=c))
-        
-        if can_write and not article.can_write(user=request.user):
-            if request.user.is_anonymous():
-                return redirect(django_settings.LOGIN_URL)
-            else:
-                c = RequestContext(request, {'urlpath' : urlpath})
-                return HttpResponseForbidden(render_to_string("wiki/permission_denied.html", context_instance=c))
-
         # If the article has been deleted, show a special page.
         if not deleted_contents and article.current_revision and article.current_revision.deleted:
             if urlpath:
@@ -109,11 +105,20 @@ def get_article(func=None, can_read=True, can_write=False, deleted_contents=Fals
             else:
                 return redirect('wiki:deleted', article_id=article.id)
         
-        # The article is locked and this request is invalid because the view specified
-        # not to be requested for locked contents
         if article.current_revision.locked and not_locked:
-            c = RequestContext(request, {'urlpath' : urlpath})
-            return HttpResponseForbidden(render_to_string("wiki/permission_denied.html", context_instance=c))
+            return response_forbidden(request, article, urlpath)
+
+        if can_read and not article.can_read(user=request.user):
+            return response_forbidden(request, article, urlpath)
+        
+        if can_write and not article.can_write(user=request.user):
+            return response_forbidden(request, article, urlpath)
+        
+        if can_delete and not article.can_delete(request.user):
+            return response_forbidden(request, article, urlpath)
+            
+        if can_moderate and not article.can_moderate(request.user):
+            return response_forbidden(request, article, urlpath)
             
         kwargs['urlpath'] = urlpath
         
@@ -124,5 +129,6 @@ def get_article(func=None, can_read=True, can_write=False, deleted_contents=Fals
     else:
         return lambda func: get_article(func, can_read=can_read, can_write=can_write, 
                                         deleted_contents=deleted_contents,
-                                        not_locked=not_locked)
+                                        not_locked=not_locked,can_delete=can_delete,
+                                        can_moderate=can_moderate)
 

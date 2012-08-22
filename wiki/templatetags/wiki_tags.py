@@ -63,9 +63,20 @@ def can_read(obj, user):
 @register.filter
 def can_write(obj, user):
     """Articles and plugins have a can_write method..."""
-    return obj.can_write(**{'user': user})
+    return obj.can_write(user=user)
+
+@register.filter
+def can_delete(obj, user):
+    """Articles and plugins have a can_delete method..."""
+    return obj.can_delete(user)
+
+@register.filter
+def can_moderate(obj, user):
+    """Articles and plugins have a can_moderate method..."""
+    return obj.can_moderate(user)
+
 
 @register.filter
 def is_moderator(user):
     """Tells if a user is a moderator"""
-    return user.has_perm('wiki.moderator')
+    return user.has_perm('wiki.moderate')

@@ -28,7 +28,10 @@ class Attachment(ReusablePlugin):
         if not settings.ANONYMOUS and (not user or user.is_anonymous()):
             return False
         return ReusablePlugin.can_write(self, **kwargs)
-
+    
+    def can_delete(self, user):
+        return self.can_write(user=user)
+    
     class Meta:
         verbose_name = _(u'attachment')
         verbose_name_plural = _(u'attachments')

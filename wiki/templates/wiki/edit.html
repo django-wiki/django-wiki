@@ -34,12 +34,14 @@
         <a class="btn btn-large btn-primary" onclick="document.getElementById('article_edit_form').target=''; document.getElementById('article_edit_form').action='{% url 'wiki:edit' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit();" href="#">
           <span class="icon-ok"></span>
           {% trans "Save changes" %}
-        </button>
+        </a>
         
+        {% if article|can_delete:user %}
         <a href="{% url 'wiki:delete' path=urlpath.path article_id=article.id %}" class="pull-right btn">
           <span class="icon-trash"></span>
           {% trans "Delete article" %}
         </a>
+        {% endif %}
         
     </div>
     <div class="modal hide fade" id="previewModal" style="width: 80%; min-height: 500px; margin-left: -40%;">

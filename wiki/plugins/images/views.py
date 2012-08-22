@@ -1,5 +1,4 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import permission_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
 from django.utils.decorators import method_decorator
@@ -27,8 +26,8 @@ class ImageView(ArticleMixin, ListView):
         return super(ImageView, self).dispatch(request, article, *args, **kwargs)
     
     def get_queryset(self):
-        if (self.request.user.has_perm('wiki.moderator') or
-            self.article.owner == self.request.user):
+        if (self.article.can_moderate(self.request.user) or
+            self.article.can_delete(self.request.user)):
             images = models.Image.objects.filter(article=self.article)
         else:
             images = models.Image.objects.filter(article=self.article,
@@ -76,8 +75,7 @@ class PurgeView(ArticleMixin, FormView):
     permanent = False
     form_class = forms.PurgeForm
     
-    @method_decorator(permission_required('wiki.moderator', login_url=wiki_settings.LOGIN_URL))
-    @method_decorator(get_article(can_write=True))
+    @method_decorator(get_article(can_write=True, can_moderate=True))
     def dispatch(self, request, article, *args, **kwargs):
         self.image = get_object_or_404(models.Image, article=article,
                                        id=kwargs.get('image_id', None))

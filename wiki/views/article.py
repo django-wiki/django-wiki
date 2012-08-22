@@ -21,8 +21,7 @@ from django.core.urlresolvers import reverse
 from django.db import transaction
 from wiki.core.exceptions import NoRootURL
 from django_notify.decorators import disable_notify
-from django.http import HttpResponseForbidden
-from django.template.loader import render_to_string
+from wiki.core import permissions
 
 class ArticleView(ArticleMixin, TemplateView):
 
@@ -83,14 +82,13 @@ class Create(FormView, ArticleMixin):
                                 'other_read': self.article.other_read,
                                 'other_write': self.article.other_write,
                                 })
-                # TODO: Subscribe user to new article and send notifications that user was subscribed.
             messages.success(self.request, _(u"New article '%s' created.") % self.newpath.article.current_revision.title)
         
             transaction.commit()
         # TODO: Handle individual exceptions better and give good feedback.
         except Exception, e:
             transaction.rollback()
-            if self.request.user.has_perm('wiki.moderator'):
+            if self.request.user.is_superuser():
                 messages.error(self.request, _(u"There was an error creating this article: %s") % str(e))
             else:
                 messages.error(self.request, _(u"There was an error creating this article."))
@@ -117,7 +115,7 @@ class Delete(FormView, ArticleMixin):
     form_class = forms.DeleteForm
     template_name="wiki/delete.html"
     
-    @method_decorator(get_article(can_write=True, not_locked=True))
+    @method_decorator(get_article(can_write=True, not_locked=True, can_delete=True))
     def dispatch(self, request, article, *args, **kwargs):
         return self.dispatch1(request, article, *args, **kwargs)
         
@@ -147,7 +145,7 @@ class Delete(FormView, ArticleMixin):
     
     def get_form(self, form_class):
         form = super(Delete, self).get_form(form_class)
-        if self.request.user.has_perm('wiki.moderator'):
+        if self.article.can_delete(self.request.user):
             form.fields['purge'].widget = forms.forms.CheckboxInput()
         return form
     
@@ -179,7 +177,8 @@ class Delete(FormView, ArticleMixin):
         cd = form.cleaned_data
         
         cannot_delete_children = False
-        if self.children_slice and not self.request.user.has_perm('wiki.moderator'):
+        can_moderate = self.article.can_moderate(self.request.user)
+        if self.children_slice and not can_moderate:
             cannot_delete_children = True
 
         if self.cannot_delete_root or cannot_delete_children:
@@ -189,7 +188,7 @@ class Delete(FormView, ArticleMixin):
         # First, remove children
         self.delete_children(purge=cd['purge'])
         
-        if self.request.user.has_perm('wiki.moderator') and cd['purge']:
+        if can_moderate and cd['purge']:
             self.article.delete()
             messages.success(self.request, _(u'This article together with all its contents are now completely gone! Thanks!'))
         else:
@@ -206,7 +205,7 @@ class Delete(FormView, ArticleMixin):
     
     def get_context_data(self, **kwargs):
         cannot_delete_children = False
-        if self.children_slice and not self.request.user.has_perm('wiki.moderator'):
+        if self.children_slice and not self.article.can_moderate(self.request.user):
             cannot_delete_children = True
         
         kwargs['delete_form'] = kwargs.pop('form', None)
@@ -336,7 +335,8 @@ class Deleted(Delete):
         
         # Restore
         if (request.GET.get('restore', False) and
-            (not article.current_revision.locked or request.user.has_perm('wiki.moderator'))):
+            (not article.current_revision.locked and article.can_delete(request.user)) or
+             article.can_moderate(request.user)):
             self.delete_children(restore=True)
             revision = models.ArticleRevision()
             revision.inherit_predecessor(self.article)
@@ -409,9 +409,13 @@ class Dir(ListView, ArticleMixin):
     model = models.URLPath
     paginate_by = 30
     
+    @method_decorator(get_article(can_read=True))
+    def dispatch(self, request, article, *args, **kwargs):
+        return super(Dir, self).dispatch(request, article, *args, **kwargs)
+
     def get_queryset(self):
         children = self.urlpath.get_children().can_read(self.request.user).select_related_common().order_by('article__current_revision__title')
-        if not self.request.user.has_perm('wiki.moderator'):
+        if not self.article.can_moderate(self.request.user):
             children = children.active()
         return children
     
@@ -431,14 +435,6 @@ class Dir(ListView, ArticleMixin):
 
         return kwargs
     
-    def get_template_names(self):
-        #WHY IS THIS CALLED???????
-        return [self.__class__.template_name]
-    
-    @method_decorator(get_article(can_read=True))
-    def dispatch(self, request, article, *args, **kwargs):
-        return super(Dir, self).dispatch(request, article, *args, **kwargs)
-
 
 class Plugin(View):
     
@@ -464,8 +460,7 @@ class Settings(ArticleMixin, TemplateView):
         Return all settings forms that can be filled in
         """
         settings_forms = [F for F in plugin_registry.get_settings_forms()]
-        if (self.request.user.has_perm('wiki.assign') or 
-            self.article.owner == self.request.user):
+        if permissions.can_change_permissions(self.article, self.request.user):
             settings_forms.append(self.permission_form_class)
         settings_forms.sort(key=lambda form: form.settings_order)
         for i in range(len(settings_forms)):
@@ -627,12 +622,14 @@ def root_create(request):
     try:
         root = models.URLPath.root()
         if not root.article:
+            # TODO: This is too dangerous... let's say there is no root.article and we end up here,
+            # then it might cascade to delete a lot of things on an existing installation.... / benjaoming
             root.delete()
             raise NoRootURL
         return redirect('wiki:get', path=root.path)
     except NoRootURL:
         pass
-    if not request.user.has_perm('wiki.add_article'):
+    if not request.user.is_superuser():
         return redirect(settings.LOGIN_URL + "?next=" + reverse("wiki:root_create"))
     if request.method == 'POST':
         create_form = forms.CreateRootForm(request.POST)

@@ -103,7 +103,7 @@ class ArticleManager(models.Manager):
 
 class ArticleFkManager(models.Manager):
     def get_empty_query_set(self):
-        return ArticleFkEmptyQuerySet()
+        return ArticleFkEmptyQuerySet(model=self.model)
     def get_query_set(self):
         return ArticleFkQuerySet(self.model, using=self._db)
     def active(self):
