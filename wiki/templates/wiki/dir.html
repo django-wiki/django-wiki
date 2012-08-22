@@ -6,31 +6,34 @@
 
 {% block wiki_contents_tab %}
 
-<form class="form-search">
+{% url 'wiki:dir' urlpath.path as self_url %}
+
+<form class="form-search directory-toolbar">
 <div class="well well-small">
   <div class="btn-group pull-left">
     {% if urlpath.parent %}
     <a href="{% url 'wiki:dir' path=urlpath.parent.path %}" class="btn">
       <span class="icon-arrow-up"></span>
-      {% trans "Go up one level" %}
+      {% trans "Up one level" %}
     </a>
     {% endif %}
     <a href="{% url 'wiki:create' path=urlpath.path %}" class="btn">
       <span class="icon-plus"></span>
-      {% trans "Add article in this level" %}
+      {% trans "Add article" %}
     </a>
   </div>
   <div class="pull-right">
     {{ filter_form.query }}
-    <button class="btn">
-      <span class="icon-search"></span>
-    </button>
   </div>
+  {% if filter_query %}
+    <div class="pull-right filter-clear">
+      <a href="{{ self_url }}">({% trans "clear" %})</a>
+    </div>
+  {% endif %}
+
   <div class="clearfix"></div>
 </div>
 </form>
-
-{% url 'wiki:get' urlpath.path as self_url %}
 
 <p>
   {% with paginator.object_list.count as cnt %}
@@ -39,10 +42,6 @@
     {% endblocktrans %}
   {% endwith %}
 </p>
-
-{% if filter_query %}
-  <p>{% trans "Filtering by" %} <strong>{{ filter_query }}</strong> (<a href="{{ self_url }}">{% trans "clear" %}</a>).</p>
-{% endif %}
 
 <table class="table table-striped">
   <tr>

@@ -400,7 +400,7 @@ class History(ListView, ArticleMixin):
         return super(History, self).dispatch(request, article, *args, **kwargs)
 
 
-class Dir(ListView, ArticleMixin, FormView):
+class Dir(ListView, ArticleMixin):
     
     template_name="wiki/dir.html"
     allow_empty = True
