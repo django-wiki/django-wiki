@@ -156,13 +156,6 @@ class Delete(FormView, ArticleMixin):
         kwargs['article'] = self.article
         kwargs['has_children'] = bool(self.children_slice)
         return kwargs
-    
-    @disable_notify
-    def delete_children(self, purge=False):
-        if purge:
-            for child in self.article.get_children(articles__article__current_revision__deleted=False):
-                child.delete()
-        # If it is not a purge there is no need to delete the children. Having a deleted parent is enough
         
     def form_valid(self, form):
         cd = form.cleaned_data
@@ -182,9 +175,12 @@ class Delete(FormView, ArticleMixin):
 
         if can_moderate and purge:
             # First, remove children
-            self.delete_children(purge=purge)
+            if self.urlpath:
+                for descendant in self.urlpath.get_descendants(include_self=True):
+                    descendant.article.delete()
+            else:
+                self.article.delete()
             
-            self.article.delete()
             messages.success(self.request, _(u'This article together with all its contents are now completely gone! Thanks!'))
         else:
             revision = models.ArticleRevision()
