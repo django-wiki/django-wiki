@@ -1,12 +1,12 @@
-{% for plugin, plugin_form in sidebar %}
-
 <div class="accordion" id="accordion_{{ plugin.slug }}">
+
+{% for plugin, plugin_form in sidebar %}
 
   <div class="accordion-group">
     
     <div class="accordion-heading">
       <a class="accordion-toggle" href="#collapse_{{ plugin.slug }}" data-toggle="collapse">
-        <h3 style="margin: 0;">{{ plugin.sidebar.headline }} <span class="{{ plugin.sidebar.icon_class }}"></span></h3>
+        <h3>{{ plugin.sidebar.headline }} <span class="{{ plugin.sidebar.icon_class }}"></span></h3>
       </a>
     </div>
     
@@ -24,7 +24,7 @@
     </div>
   
   </div>
+{% endfor %}
 </div>
 
-{% endfor %}
 

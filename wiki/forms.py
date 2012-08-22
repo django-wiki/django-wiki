@@ -9,6 +9,7 @@ from django.utils.html import escape, conditional_escape
 from itertools import chain
 
 from wiki import models
+from wiki.conf import settings
 from wiki.editors import getEditor
 from wiki.core.diff import simple_merge
 from django.forms.widgets import HiddenInput
@@ -190,6 +191,7 @@ class TextInputPrepend(forms.TextInput):
         html = super(TextInputPrepend, self).render(*args, **kwargs)
         return mark_safe('<div class="input-prepend"><span class="add-on">%s</span>%s</div>' % (self.prepend, html))
     
+
 class CreateForm(forms.Form):
     
     def __init__(self, urlpath_parent, *args, **kwargs):
@@ -206,15 +208,19 @@ class CreateForm(forms.Form):
     
     def clean_slug(self):
         slug = self.cleaned_data['slug']
-        if slug[0] == "_":
+        if slug.startswith("_"):
             raise forms.ValidationError(_(u'A slug may not begin with an underscore.'))
-        already_existing_slug = models.URLPath.objects.filter(slug=slug, parent=self.urlpath_parent)
+        
+        if settings.URL_CASE_SENSITIVE:
+            already_existing_slug = models.URLPath.objects.filter(slug=slug, parent=self.urlpath_parent)
+        else:
+            already_existing_slug = models.URLPath.objects.filter(slug__iexact=slug, parent=self.urlpath_parent)
         if already_existing_slug:
-            slug = already_existing_slug[0]
-            if slug.article and slug.article.deleted:
-                raise forms.ValidationError(_(u'A deleted article with slug "%s" already exists.') % slug)
+            already_urlpath = already_existing_slug[0]
+            if already_urlpath.article and already_urlpath.article.current_revision.deleted:
+                raise forms.ValidationError(_(u'A deleted article with slug "%s" already exists.') % already_urlpath.slug)
             else:
-                raise forms.ValidationError(_(u'A slug named "%s" already exists.') % slug)
+                raise forms.ValidationError(_(u'A slug named "%s" already exists.') % already_urlpath.slug)
         
         return slug
 
