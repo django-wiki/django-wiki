@@ -74,6 +74,18 @@ class URLPath(MPTTModel):
         
         return "/".join(slugs) + "/"
     
+    def is_deleted(self):
+        """
+        Returns True if this article or any of its ancestors have been deleted
+        """
+        return self.first_deleted_ancestor() is not None
+    
+    def first_deleted_ancestor(self):
+        for ancestor in self.cached_ancestors + [self]:
+            if ancestor.article.current_revision.deleted == True:
+                return ancestor
+        return None
+    
     @classmethod
     def root(cls):
         site = Site.objects.get_current()

@@ -102,12 +102,15 @@ def get_article(func=None, can_read=True, can_write=False,
         else:
             raise TypeError('You should specify either article_id or path')
         
-        # If the article has been deleted, show a special page.
-        if not deleted_contents and article.current_revision and article.current_revision.deleted:
+        if not deleted_contents:    
+            # If the article has been deleted, show a special page.        
             if urlpath:
-                return redirect('wiki:deleted', path=urlpath.path)
+                if urlpath.is_deleted(): # This also checks all ancestors
+                    return redirect('wiki:deleted', path=urlpath.path)
             else:
-                return redirect('wiki:deleted', article_id=article.id)
+                if article.current_revision and article.current_revision.deleted:
+                    return redirect('wiki:deleted', article_id=article.id)
+        
         
         if article.current_revision.locked and not_locked:
             return response_forbidden(request, article, urlpath)
