@@ -333,20 +333,22 @@ class Deleted(Delete):
                 return redirect('wiki:get', article_id=article.id)
         
         # Restore
-        if (request.GET.get('restore', False) and
-            (not article.current_revision.locked and article.can_delete(request.user)) or
-             article.can_moderate(request.user)):
-            revision = models.ArticleRevision()
-            revision.inherit_predecessor(self.article)
-            revision.set_from_request(request)
-            revision.deleted = False
-            revision.automatic_log = _('Restoring article')
-            self.article.add_revision(revision)
-            messages.success(request, _(u'The article "%s" and its children are now restored.') % revision.title)
-            if self.urlpath:
-                return redirect('wiki:get', path=self.urlpath.path)
-            else:
-                return redirect('wiki:get', article_id=article.id)
+        if request.GET.get('restore', False):
+            can_restore = not article.current_revision.locked and article.can_delete(request.user)
+            can_restore = can_restore or article.can_moderate(request.user)
+            
+            if can_restore:
+                revision = models.ArticleRevision()
+                revision.inherit_predecessor(self.article)
+                revision.set_from_request(request)
+                revision.deleted = False
+                revision.automatic_log = _('Restoring article')
+                self.article.add_revision(revision)
+                messages.success(request, _(u'The article "%s" and its children are now restored.') % revision.title)
+                if self.urlpath:
+                    return redirect('wiki:get', path=self.urlpath.path)
+                else:
+                    return redirect('wiki:get', article_id=article.id)
         
         return super(Deleted, self).dispatch1(request, article, *args, **kwargs)
     
