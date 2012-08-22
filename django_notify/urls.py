@@ -3,6 +3,7 @@ from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns('',
     url('^json/get/$', 'django_notify.views.get_notifications', name='json_get', kwargs={}),   
+    url('^json/get/(?P<latest_id>\d+)/$', 'django_notify.views.get_notifications', name='json_get', kwargs={}),   
     url('^json/mark-read/$', 'django_notify.views.mark_read', name='json_mark_read_base', kwargs={}),   
     url('^json/mark-read/(\d+)/$', 'django_notify.views.mark_read', name='json_mark_read', kwargs={}),   
     url('^goto/(?P<notification_id>\d+)/$', 'django_notify.views.goto', name='goto', kwargs={}),   
