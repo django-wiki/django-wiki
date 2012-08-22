@@ -14,7 +14,8 @@ class ArticleMixin(TemplateResponseMixin):
         self.children_slice = []
         if settings.SHOW_MAX_CHILDREN > 0:
             for child in self.article.get_children(max_num=settings.SHOW_MAX_CHILDREN+1,
-                                                   articles__article__current_revision__deleted=False):
+                                                   articles__article__current_revision__deleted=False,
+                                                   user_can_read=request.user):
                 self.children_slice.append(child)
         return super(ArticleMixin, self).dispatch(request, *args, **kwargs)
 
