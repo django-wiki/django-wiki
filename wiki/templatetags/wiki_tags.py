@@ -74,9 +74,3 @@ def can_delete(obj, user):
 def can_moderate(obj, user):
     """Articles and plugins have a can_moderate method..."""
     return obj.can_moderate(user)
-
-
-@register.filter
-def is_moderator(user):
-    """Tells if a user is a moderator"""
-    return user.has_perm('wiki.moderate')
