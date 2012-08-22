@@ -3,6 +3,7 @@ import difflib
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.decorators import method_decorator
@@ -319,7 +320,6 @@ class Deleted(Delete):
         
         if self.urlpath:
             deleted_ancestor = self.urlpath.first_deleted_ancestor()
-            
             if deleted_ancestor is None:
                 # No one is deleted!
                 return redirect('wiki:get', path=self.urlpath.path)
@@ -400,22 +400,31 @@ class History(ListView, ArticleMixin):
         return super(History, self).dispatch(request, article, *args, **kwargs)
 
 
-class Dir(ListView, ArticleMixin):
+class Dir(ListView, ArticleMixin, FormView):
     
     template_name="wiki/dir.html"
     allow_empty = True
-    context_object_name = 'articles'
+    context_object_name = 'directory'
     model = models.URLPath
     paginate_by = 30
     
     @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, *args, **kwargs):
+        self.filter_form = forms.DirFilterForm(request.GET)
+        if self.filter_form.is_valid():
+            self.query = self.filter_form.cleaned_data['query']
+        else:
+            self.query = None
         return super(Dir, self).dispatch(request, article, *args, **kwargs)
 
     def get_queryset(self):
-        children = self.urlpath.get_children().can_read(self.request.user).select_related_common().order_by('article__current_revision__title')
+        children = self.urlpath.get_children().can_read(self.request.user)
+        if self.query:
+            children = children.filter(Q(article__current_revision__title__contains=self.query) |
+                                       Q(slug__contains=self.query))
         if not self.article.can_moderate(self.request.user):
             children = children.active()
+        children = children.select_related_common().order_by('article__current_revision__title')
         return children
     
     def get_context_data(self, **kwargs):
@@ -423,13 +432,14 @@ class Dir(ListView, ArticleMixin):
         kwargs_listview = ListView.get_context_data(self, **kwargs)
         kwargs.update(kwargs_article)
         kwargs.update(kwargs_listview)
+        kwargs['filter_query'] = self.query
+        kwargs['filter_form'] = self.filter_form
         
-        # We take this opportunity to add a bit of caching to each child. 
-        # Otherwise, 1 query every time we get a child's path
+        # Update each child's ancestor cache so the lookups don't have
+        # to be repeated.
         updated_children = kwargs[self.context_object_name]
-        new_ancestors = self.urlpath.cached_ancestors + [self.urlpath]
         for child in updated_children:
-            child.cached_ancestors = new_ancestors
+            child.set_cached_ancestors_from_parent(self.urlpath)
         kwargs[self.context_object_name] = updated_children
 
         return kwargs
@@ -592,6 +602,8 @@ def merge(request, article, revision_id, urlpath=None, template_file="wiki/previ
         old_revision = article.current_revision
         new_revision = models.ArticleRevision()
         new_revision.inherit_predecessor(article)
+        new_revision.deleted = False
+        new_revision.locked = False
         new_revision.title=article.current_revision.title
         new_revision.content=content
         new_revision.automatic_log = (_(u'Merge between Revision #%(r1)d and Revision #%(r2)d') % 

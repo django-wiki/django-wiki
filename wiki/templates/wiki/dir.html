@@ -6,44 +6,66 @@
 
 {% block wiki_contents_tab %}
 
-<p class="lead">
-  {% with paginator.object_list.count as cnt %}
-    {% blocktrans with article.current_revision.title as title and cnt|pluralize:_("article,articles") as articles_plur and cnt|pluralize:_("is,are") as articles_plur_verb %}
-      There {{ articles_plur_verb }} <strong>{{ cnt }} {{ articles_plur }}</strong> in the "{{ title }}" level.
-    {% endblocktrans %}
-  {% endwith %}
-</p>
-
-
-  <p>
+<form class="form-search">
+<div class="well well-small">
+  <div class="btn-group pull-left">
     {% if urlpath.parent %}
     <a href="{% url 'wiki:dir' path=urlpath.parent.path %}" class="btn">
       <span class="icon-arrow-up"></span>
       {% trans "Go up one level" %}
     </a>
     {% endif %}
-    <a href="{% url 'wiki:get' path=urlpath.path %}" class="btn">
-      <span class="icon-arrow-right"></span>
-      {% trans "View article" %}
-    </a>
     <a href="{% url 'wiki:create' path=urlpath.path %}" class="btn">
       <span class="icon-plus"></span>
       {% trans "Add article in this level" %}
     </a>
-  </p>
+  </div>
+  <div class="pull-right">
+    {{ filter_form.query }}
+    <button class="btn">
+      <span class="icon-search"></span>
+    </button>
+  </div>
+  <div class="clearfix"></div>
+</div>
+</form>
+
+{% url 'wiki:get' urlpath.path as self_url %}
+
+<p>
+  {% with paginator.object_list.count as cnt %}
+    {% blocktrans with urlpath.path as path and cnt|pluralize:_("article,articles") as articles_plur and cnt|pluralize:_("is,are") as articles_plur_verb %}
+      Browsing <strong><a href="{{ self_url }}">/{{ path }}</a></strong>. There {{ articles_plur_verb }} <strong>{{ cnt }} {{ articles_plur }}</strong> in this level.
+    {% endblocktrans %}
+  {% endwith %}
+</p>
+
+{% if filter_query %}
+  <p>{% trans "Filtering by" %} <strong>{{ filter_query }}</strong> (<a href="{{ self_url }}">{% trans "clear" %}</a>).</p>
+{% endif %}
 
 <table class="table table-striped">
   <tr>
     <th>{% trans "Title" %}</th>
+    <th>{% trans "Slug" %}</th>
     <th>{% trans "Last modified" %}</th>
   </tr>
-  {% for article in articles %}
+  {% for urlpath in directory %}
     <tr>
       <td>
-        <a href="{% url 'wiki:dir' path=article.path %}"> {{ article.article.current_revision.title }} </a>
+        <a href="{% url 'wiki:dir' path=urlpath.path %}"> {{ urlpath.article.current_revision.title }} </a>
+        {% if urlpath.article.current_revision.deleted %}
+          <span class="icon-trash"></span>
+        {% endif %}
+        {% if urlpath.article.current_revision.locked %}
+          <span class="icon-lock"></span>
+        {% endif %}
       </td>
       <td>
-        {{ article.article.current_revision.created|naturaltime }}
+        {{ urlpath.slug }}
+      </td>
+      <td>
+        {{ urlpath.article.current_revision.created|naturaltime }}
       </td>
     </tr>
     {% empty%}

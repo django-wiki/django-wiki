@@ -348,3 +348,6 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
         fields = ('locked', 'owner_username', 'group', 'group_read', 'group_write', 'other_read', 'other_write',
                   'recursive')
 
+class DirFilterForm(forms.Form):
+    
+    query = forms.CharField(widget=forms.TextInput(attrs={'placeholder': _(u'Filter...')}))
