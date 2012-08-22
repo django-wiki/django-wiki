@@ -506,7 +506,6 @@ class Settings(ArticleMixin, TemplateView):
         
         for Form in self.get_form_classes():
             self.forms.append(Form(new_article, self.request))
-        print self.forms[1].instance
         
         return super(Settings, self).get(*args, **kwargs)
 
