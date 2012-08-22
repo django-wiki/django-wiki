@@ -147,7 +147,7 @@ class Delete(FormView, ArticleMixin):
     
     def get_form(self, form_class):
         form = super(Delete, self).get_form(form_class)
-        if self.article.can_delete(self.request.user):
+        if self.article.can_moderate(self.request.user):
             form.fields['purge'].widget = forms.forms.CheckboxInput()
         return form
     
