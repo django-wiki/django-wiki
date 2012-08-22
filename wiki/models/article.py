@@ -65,7 +65,7 @@ class Article(models.Model):
     
     def can_write(self, user=None):
         # Deny writing access to deleted articles if user has no delete access
-        if self.current_revision and self.current_revision.deleted and not self.can_delete(user):
+        if self.current_revision and self.current_revision.deleted and not self.can_moderate(user):
             return False
         # Check access for other users...
         if user.is_anonymous() and not settings.ANONYMOUS_WRITE:
