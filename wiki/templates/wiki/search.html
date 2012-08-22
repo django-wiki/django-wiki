@@ -6,16 +6,17 @@
 
 {% block wiki_contents %}
 
-<h1>{% trans "Search results for:" %} {{ search_query }}</h1>
+<h1 class="page-header">{% trans "Search results for:" %} {{ search_query }}</h1>
 
 <form class="form-search directory-toolbar">
-<div class="well well-small">
+<p class="lead">
   <div class="pull-right">
     {{ search_form.query }}
+    <button class="btn"><span class="icon-search"></span></button>
   </div>
-  <p>{% blocktrans with paginator.object_list.count as cnt %}Your search return <strong>{{ cnt }}</strong> results.{% endblocktrans %}</p>
+  <p>{% blocktrans with paginator.object_list.count as cnt %}Your search returned <strong>{{ cnt }}</strong> results.{% endblocktrans %}</p>
   <div class="clearfix"></div>
-</div>
+</p>
 </form>
 
 <table class="table table-striped">
