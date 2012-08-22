@@ -260,8 +260,10 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
 
     owner_username = forms.CharField(required=False, label=_(u'Owner'),
                                      help_text=_(u'Enter the username of the owner.'))
-    group = forms.ModelChoiceField(models.Group.objects.all(), widget=SelectWidgetBootstrap(),
-                                   empty_label=_(u'(none)'), required=False)
+    group = forms.ModelChoiceField(models.Group.objects.all(), empty_label=_(u'(none)'),
+                                     required=False)
+    if settings.USE_BOOTSTRAP_SELECT_WIDGET:
+        group.widget= SelectWidgetBootstrap()
     
     recursive = forms.BooleanField(label=_(u'Inherit permissions'), help_text=_(u'Check here to apply the above permissions recursively to articles under this one.'),
                                    required=False)
@@ -283,6 +285,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
         self.can_change_groups = False
         self.can_assign = False
         
+        print "checking can_assing", permissions.can_assign(article, request.user), request.user.is_staff
         if permissions.can_assign(article, request.user):
             self.can_assign = True
             self.fields['group'].queryset = models.Group.objects.all()
