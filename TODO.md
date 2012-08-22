@@ -1,5 +1,8 @@
-Not implemented - will be ASAP
+Roadmap to RC1...
 ==============================
+
+Unfinished
+----------
 
  * Notification system **Almost done** (email notifications)
  * Circuit Editor plugin
@@ -11,6 +14,18 @@ Not implemented - will be ASAP
  * Finish all class-based views
  * Embeddable article template tag
  * "Fix Wiki URL bug in the footnotes plugin for python-markdown" ?
+ * CodeMirror to be distributed with default setup
+ 
+### Management script
+
+ * Cleanup deleted Image's image files
+ * Cleanup attachments
+ * Cleanup revisions + plugin revisions
+ * django_notify: send out email notifications
+
+Done
+----
+
  * Implement notifications, revision log messages and user messages thoroughly **Pretty much done**
  * View source for read-only articles + locked status **Done**
  * Index views for urlpaths **Done**
@@ -25,7 +40,7 @@ Not implemented - will be ASAP
  * Handling WikiLinks and detecting broken links in markdown extension **Done**
  
 Ideas
-=====
+-----
 
  * Build menus of hierarchies and use bootstrap scrollspy. Add through plugin.
  * Notification system should be it's own separate app
@@ -35,15 +50,7 @@ Ideas
  * Add revision conflict detection for concurrent editing **DONE**
  * Make a comments plugin for commenting inline
 
-Management script
-=================
-
- * Cleanup deleted Image's image files
- * Cleanup attachments
- * Cleanup revisions + plugin revisions
- * django_notify: send out email notifications
-
 Postponed
-=================
+---------
 
 * Make dependency on django_notify optional
