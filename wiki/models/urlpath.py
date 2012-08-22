@@ -74,6 +74,18 @@ class URLPath(MPTTModel):
         
         return "/".join(slugs) + "/"
     
+    def is_deleted(self):
+        """
+        Returns True if this article or any of its ancestors have been deleted
+        """
+        return self.first_deleted_ancestor() is not None
+    
+    def first_deleted_ancestor(self):
+        for ancestor in self.cached_ancestors + [self]:
+            if ancestor.article.current_revision.deleted == True:
+                return ancestor
+        return None
+    
     @classmethod
     def root(cls):
         site = Site.objects.get_current()
@@ -202,39 +214,40 @@ def on_article_relation_save(instance, *args, **kwargs):
 
 post_save.connect(on_article_relation_save, ArticleForObject)
 
-def on_article_delete(instance, *args, **kwargs):
-    # If an article is deleted, then throw out its URLPaths
-    # But move all descendants to a lost-and-found node.
-    site = Site.objects.get_current()
-    
-    # Get the Lost-and-found path or create a new one
-    try:
-        lost_and_found = URLPath.objects.get(slug=settings.LOST_AND_FOUND_SLUG,
-                                             parent=URLPath.root(),
-                                             site=site)
-    except URLPath.DoesNotExist:
-        article = Article(group_read = True,
-                          group_write = False,
-                          other_read = False,
-                          other_write = False)
-        article.add_revision(ArticleRevision(
-                 content=_(u'Articles who lost their parents\n'
-                            '===============================\n\n'
-                            'The children of this article have had their parents deleted. You should probably find a new home for them.'),
-                 title=_(u"Lost and found")))
-        lost_and_found = URLPath.objects.create(slug=settings.LOST_AND_FOUND_SLUG,
-                                                parent=URLPath.root(),
-                                                site=site,
-                                                article=article)
-        article.add_object_relation(lost_and_found)
-
-    
-    for urlpath in URLPath.objects.filter(articles__article=instance, site=site):
-        # Delete the children
-        for child in urlpath.get_children():
-            child.move_to(lost_and_found)
-        # ...and finally delete the path itself
-        # TODO: This should be unnecessary because of URLPath.article(...ondelete=models.CASCADE)
-        urlpath.delete()
-    
-pre_delete.connect(on_article_delete, Article)
+# TODO: When a parent all of its children are purged, they get sucked up into the lost and found. It is disabled for now.
+# def on_article_delete(instance, *args, **kwargs):
+#     # If an article is deleted, then throw out its URLPaths
+#     # But move all descendants to a lost-and-found node.
+#     site = Site.objects.get_current()
+#     
+#     # Get the Lost-and-found path or create a new one
+#     try:
+#         lost_and_found = URLPath.objects.get(slug=settings.LOST_AND_FOUND_SLUG,
+#                                              parent=URLPath.root(),
+#                                              site=site)
+#     except URLPath.DoesNotExist:
+#         article = Article(group_read = True,
+#                           group_write = False,
+#                           other_read = False,
+#                           other_write = False)
+#         article.add_revision(ArticleRevision(
+#                  content=_(u'Articles who lost their parents\n'
+#                             '===============================\n\n'
+#                             'The children of this article have had their parents deleted. You should probably find a new home for them.'),
+#                  title=_(u"Lost and found")))
+#         lost_and_found = URLPath.objects.create(slug=settings.LOST_AND_FOUND_SLUG,
+#                                                 parent=URLPath.root(),
+#                                                 site=site,
+#                                                 article=article)
+#         article.add_object_relation(lost_and_found)
+# 
+#     
+#     for urlpath in URLPath.objects.filter(articles__article=instance, site=site):
+#         # Delete the children
+#         for child in urlpath.get_children():
+#             child.move_to(lost_and_found)
+#         # ...and finally delete the path itself
+#         # TODO: This should be unnecessary because of URLPath.article(...ondelete=models.CASCADE)
+#         urlpath.delete()
+#     
+# pre_delete.connect(on_article_delete, Article)

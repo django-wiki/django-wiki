@@ -7,11 +7,12 @@ from django_notify import notify
 from django_notify.models import Subscription
 
 from wiki import models as wiki_models
+from wiki.models.pluginbase import ArticlePlugin
 from wiki.core.plugins import registry
 from wiki.plugins.notifications import ARTICLE_EDIT #TODO: Is this bad practice?
 from wiki.plugins.notifications import settings
 
-class ArticleSubscription(wiki_models.pluginbase.ArticlePlugin, Subscription):
+class ArticleSubscription(ArticlePlugin, Subscription):
     
     def __unicode__(self):
         return (_(u"%(user)s subscribing to %(article)s (%(type)s)") % 
