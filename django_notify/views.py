@@ -17,8 +17,9 @@ def get_notifications(request, latest_id=None, is_viewed=False, max_results=10):
     if not latest_id is None:
         notifications = notifications.filter(id__gt=latest_id)
     
+    notifications = notifications.order_by('-id')
     notifications = notifications.prefetch_related('subscription')
-    notifications = notifications[:max_results]
+    notifications = notifications[:max_results]    
     
     from django.contrib.humanize.templatetags.humanize import naturaltime
     
@@ -45,13 +46,16 @@ def goto(request, notification_id=None):
     
 @login_required_ajax
 @json_view
-def mark_read(request, up_to_id, notification_type_id=None):
+def mark_read(request, id_lte, notification_type_id=None, id_gte=None):
     
     notifications = models.Notification.objects.filter(subscription__settings__user=request.user,
-                                                       id__lte=up_to_id)
+                                                       id__lte=id_lte)
     
     if notification_type_id:
         notifications = notifications.filter(notification_type__id=notification_type_id)
+    
+    if id_gte:
+        notifications = notifications.filter(id__gte=id_gte)
     
     notifications.update(is_viewed=True)
     
