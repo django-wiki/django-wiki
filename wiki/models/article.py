@@ -96,11 +96,15 @@ class Article(models.Model):
             for descendant in obj.content_object.get_descendants():
                 yield descendant
     
-    def get_children(self, max_num=None, **kwargs):
+    def get_children(self, max_num=None, user_can_read=None, **kwargs):
         """NB! This generator is expensive, so use it with care!!"""
         cnt = 0
         for obj in self.articleforobject_set.filter(is_mptt=True):
-            for child in obj.content_object.get_children().filter(**kwargs).order_by('articles__article__current_revision__title'):
+            if user_can_read:
+                objects = obj.content_object.get_children().filter(**kwargs).can_read(user_can_read)
+            else:
+                objects = obj.content_object.get_children().filter(**kwargs)
+            for child in objects.order_by('articles__article__current_revision__title'):
                 cnt += 1
                 if max_num and cnt > max_num: return
                 yield child
@@ -187,6 +191,9 @@ class Article(models.Model):
         
     
 class ArticleForObject(models.Model):
+    
+    objects = managers.ArticleFkManager()
+    
     article = models.ForeignKey('Article', on_delete=models.CASCADE)
     # Same as django.contrib.comments
     content_type   = models.ForeignKey(ContentType,

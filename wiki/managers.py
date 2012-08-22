@@ -47,7 +47,7 @@ class ArticleFkQuerySetMixin():
     def can_read(self, user):
         """Filter objects so only the ones with a user's reading access
         are included"""
-        if user.has_perm('wiki.moderator'):
+        if user.has_perm('wiki.moderate'):
             return self
         if user.is_anonymous():
             q = self.filter(article__other_read=True)
@@ -61,7 +61,7 @@ class ArticleFkQuerySetMixin():
     def can_write(self, user):
         """Filter objects so only the ones with a user's writing access
         are included"""
-        if user.has_perm('wiki.moderator'):
+        if user.has_perm('wiki.moderate'):
             return self
         if user.is_anonymous():
             q = self.filter(article__other_write=True)
