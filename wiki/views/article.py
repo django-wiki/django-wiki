@@ -176,8 +176,7 @@ class Delete(FormView, ArticleMixin):
         if can_moderate and purge:
             # First, remove children
             if self.urlpath:
-                for descendant in self.urlpath.get_descendants(include_self=True):
-                    descendant.article.delete()
+                self.urlpath.delete_subtree()
             else:
                 self.article.delete()
             

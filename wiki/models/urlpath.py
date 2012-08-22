@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
+import logging
+
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
-from django.db import models
+from django.db import models, transaction
 from django.db.models.signals import pre_delete, post_save
 from django.utils.translation import ugettext_lazy as _, ugettext
 
@@ -15,6 +17,8 @@ from wiki import managers
 from wiki.conf import settings
 from wiki.core.exceptions import NoRootURL, MultipleRootURLs
 from wiki.models.article import ArticleRevision, ArticleForObject, Article
+
+log = logging.getLogger(__name__)
 
 class URLPath(MPTTModel):
     """
@@ -88,6 +92,24 @@ class URLPath(MPTTModel):
             if ancestor.article.current_revision.deleted == True:
                 return ancestor
         return None
+    
+    @transaction.commit_manually
+    def delete_subtree(self):
+        """
+        NB! This deletes this urlpath, its children, and ALL of the related
+        articles. This is a purged delete and CANNOT be undone.
+        """
+        try:
+            for descendant in self.get_descendants(include_self=True).order_by("-level"):
+                print "deleting " , descendant
+                descendant.article.delete()
+            
+            transaction.commit()
+        except:
+            transaction.rollback()
+            log.exception("Exception deleting article subtree.")
+            
+        
     
     @classmethod
     def root(cls):
