@@ -8,6 +8,8 @@ class ArticleEmptyQuerySet(QuerySet):
         return self
     def can_write(self, user):
         return self
+    def active(self):
+        return self
 
 class ArticleQuerySet(QuerySet):
     
@@ -80,7 +82,7 @@ class ArticleFkEmptyQuerySetMixin():
         return self
     def can_write(self, user):
         return self
-    def active(self, user):
+    def active(self):
         return self
 
 class ArticleFkQuerySet(ArticleFkQuerySetMixin, QuerySet):
