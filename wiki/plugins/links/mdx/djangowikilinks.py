@@ -35,7 +35,9 @@ class WikiPathExtension(markdown.Extension):
         # set extension defaults
         self.config = {
                         'base_url' : ['/', 'String to append to beginning of URL.'],
-                        'html_class' : ['wikipath', 'CSS hook. Leave blank for none.']
+                        'html_class' : ['wikipath', 'CSS hook. Leave blank for none.'],
+                        'live_lookups' : [True, 'If the plugin should try and match links to real articles'],
+                        'default_level' : [2, 'The level that most articles are created at. Relative links will tend to start at that level.']
         }
         
         # Override defaults with user settings
@@ -73,19 +75,32 @@ class WikiPath(markdown.inlinepatterns.Pattern):
         if absolute:
             base_path = self.config['base_url'][0]
             path_from_link = os_path.join(base_path, article_title)
-            try:
-                urlpath = models.URLPath.get_by_path(path_from_link)
-                path = urlpath.get_absolute_url()
-            except models.URLPath.DoesNotExist:
-                urlpath = None
-                path = path_from_link
+            
+            urlpath = None
+            path = path_from_link
+            if self.config['live_lookups'][0]:
+                try:
+                    urlpath = models.URLPath.get_by_path(path_from_link)
+                    path = urlpath.get_absolute_url()
+                except models.URLPath.DoesNotExist:
+                    pass
         else:
             urlpath = models.URLPath.objects.get(article=self.markdown.article)
-            path_from_link = os_path.join(urlpath.path, article_title)
-            if urlpath.parent:
-                lookup = urlpath.parent.get_descendants().filter(slug=article_title)
-            else:
-                lookup = urlpath.get_descendants().filter(slug=article_title)
+            source_components = urlpath.path.strip("/").split("/")
+            # We take the first (self.config['default_level'] - 1) components, so adding
+            # one more component would make a path of length self.config['default_level']
+            starting_level = max(0, self.config['default_level'][0] - 1 )
+            starting_path = "/".join(source_components[ : starting_level ])
+            
+            path_from_link = os_path.join(starting_path, article_title)
+            
+            lookup = models.URLPath.objects.none()
+            if self.config['live_lookups'][0]:
+                if urlpath.parent:
+                    lookup = urlpath.parent.get_descendants().filter(slug=article_title)
+                else:
+                    lookup = urlpath.get_descendants().filter(slug=article_title)
+            
             if lookup.count() > 0:
                 urlpath = lookup[0]
                 path = urlpath.get_absolute_url()
@@ -96,7 +111,7 @@ class WikiPath(markdown.inlinepatterns.Pattern):
         label = m.group('linkTitle')
         a = etree.Element('a')
         a.set('href', path)
-        if not urlpath:
+        if not urlpath and self.config['live_lookups']:
             a.set('class', self.config['html_class'][0] + " linknotfound")
         else:
             a.set('class', self.config['html_class'][0])

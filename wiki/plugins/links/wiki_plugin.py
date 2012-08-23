@@ -2,6 +2,7 @@
 from django.conf.urls.defaults import patterns, url
 from django.utils.translation import ugettext as _
 
+from wiki.conf import settings
 from wiki.core.plugins import registry
 from wiki.core.plugins.base import BasePlugin
 from wiki.plugins.links import views
@@ -22,7 +23,13 @@ class LinkPlugin(BasePlugin):
                'form_class': None,
                'get_form_kwargs': (lambda a: {})}
     
-    markdown_extensions = [makeExtension(), WikiPathExtension([('base_url', reverse_lazy('wiki:get', kwargs={'path': ''}))])]
+    wikipath_config = [
+        ('base_url', reverse_lazy('wiki:get', kwargs={'path': ''}) ),
+        ('live_lookups', settings.LINK_LIVE_LOOKUPS ),
+        ('default_level', settings.LINK_DEFAULT_LEVEL ),
+        ]
+    
+    markdown_extensions = [makeExtension(), WikiPathExtension(wikipath_config)]
     
     def __init__(self):
         pass

@@ -83,6 +83,9 @@ SHOW_MAX_CHILDREN = getattr(django_settings, 'WIKI_SHOW_MAX_CHILDREN', 20)
 
 USE_BOOTSTRAP_SELECT_WIDGET = getattr(django_settings, 'WIKI_USE_BOOTSTRAP_SELECT_WIDGET', True)
 
+LINK_LIVE_LOOKUPS = getattr(django_settings, 'WIKI_LINK_LIVE_LOOKUPS', True)
+LINK_DEFAULT_LEVEL = getattr(django_settings, 'WIKI_LINK_DEFAULT_LEVEL', 1)
+
 ####################
 # PLANNED SETTINGS #
 ####################
