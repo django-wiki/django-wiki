@@ -69,7 +69,7 @@ class WikiPath(markdown.inlinepatterns.Pattern):
         # from the link, regardless of whether or not something can be
         # looked up
         path_from_link = ""
-        
+
         if absolute:
             base_path = self.config['base_url'][0]
             path_from_link = os_path.join(base_path, article_title)
@@ -91,7 +91,7 @@ class WikiPath(markdown.inlinepatterns.Pattern):
                 path = urlpath.get_absolute_url()
             else:
                 urlpath = None
-                path = "/" + path_from_link
+                path = self.config['base_url'][0] + path_from_link
             
         label = m.group('linkTitle')
         a = etree.Element('a')
