@@ -40,6 +40,7 @@ class ImagePreprocessor(markdown.preprocessors.Preprocessor):
                 except models.Image.DoesNotExist:
                     pass
                 line = line.replace(m.group(1), "")
+                caption_lines = []
             elif previous_line_was_image:
                 if line.startswith("    "):
                     caption_lines.append(line[4:])
