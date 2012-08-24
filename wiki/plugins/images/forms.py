@@ -47,7 +47,7 @@ class RevisionForm(forms.ModelForm):
             #revision.save()
             self.image.add_revision(self.instance, save=True)
             return revision
-        return super(SidebarForm, self).save(*args, **kwargs)
+        return super(RevisionForm, self).save(*args, **kwargs)
     
     class Meta:
         model = models.ImageRevision
