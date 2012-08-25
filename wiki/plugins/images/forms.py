@@ -44,7 +44,6 @@ class RevisionForm(forms.ModelForm):
             revision = super(RevisionForm, self).save(*args, **kwargs)
             revision.inherit_predecessor(self.image, skip_image_file=True)
             revision.set_from_request(self.request)
-            #revision.save()
             self.image.add_revision(self.instance, save=True)
             return revision
         return super(RevisionForm, self).save(*args, **kwargs)
