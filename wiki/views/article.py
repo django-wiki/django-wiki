@@ -88,7 +88,7 @@ class Create(FormView, ArticleMixin):
         # TODO: Handle individual exceptions better and give good feedback.
         except Exception, e:
             transaction.rollback()
-            if self.request.user.is_superuser():
+            if self.request.user.is_superuser:
                 messages.error(self.request, _(u"There was an error creating this article: %s") % str(e))
             else:
                 messages.error(self.request, _(u"There was an error creating this article."))
@@ -442,8 +442,40 @@ class Dir(ListView, ArticleMixin):
         kwargs[self.context_object_name] = updated_children
 
         return kwargs
-    
 
+
+class SearchView(ListView):
+    
+    template_name="wiki/search.html"
+    paginate_by = 25
+    context_object_name = "articles"
+    
+    def dispatch(self, request, *args, **kwargs):
+        # Do not allow anonymous users to search if they cannot read content
+        if request.user.is_anonymous and not settings.ANONYMOUS:
+            return(settings.LOGIN_URL)
+        self.search_form = forms.SearchForm(request.GET)
+        if self.search_form.is_valid():
+            self.query = self.search_form.cleaned_data['query']
+        else:
+            self.query = None
+        return super(SearchView, self).dispatch(request, *args, **kwargs)
+        
+    def get_queryset(self):
+        if not self.query:
+            return models.Article.objects.get_empty_query_set()
+        articles = models.Article.objects.filter(Q(current_revision__title__contains=self.query) |
+                                                 Q(current_revision__content__contains=self.query))
+        if not permissions.can_moderate(models.URLPath.root().article, self.request.user):
+            articles = articles.active().can_read(self.request.user)
+        return articles
+    
+    def get_context_data(self, **kwargs):
+        kwargs = ListView.get_context_data(self, **kwargs)
+        kwargs['search_form'] = self.search_form
+        kwargs['search_query'] = self.query
+        return kwargs
+    
 class Plugin(View):
     
     def dispatch(self, request, path=None, slug=None, **kwargs):
@@ -646,7 +678,7 @@ def root_create(request):
         return redirect('wiki:get', path=root.path)
     except NoRootURL:
         pass
-    if not request.user.is_superuser():
+    if not request.user.is_superuser:
         return redirect(settings.LOGIN_URL + "?next=" + reverse("wiki:root_create"))
     if request.method == 'POST':
         create_form = forms.CreateRootForm(request.POST)

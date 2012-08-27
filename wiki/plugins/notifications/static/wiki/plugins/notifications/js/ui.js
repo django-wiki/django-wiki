@@ -1,9 +1,10 @@
+notify_oldest_id = 0;
 notify_latest_id = 0;
 notify_update_timeout = 30000;
 notify_update_timeout_adjust = 1.2; // factor to adjust between each timeout.
 
 function notify_update() {
-  jsonWrapper(URL_NOTIFY_GET_NEW, function (data) {
+  jsonWrapper(URL_NOTIFY_GET_NEW+notify_latest_id+'/', function (data) {
     if (data.success) {
       $('.notification-cnt').html(data.objects.length);
       if (data.objects.length> 0) {
@@ -12,9 +13,10 @@ function notify_update() {
       } else {
         $('.notification-cnt').removeClass('badge-important');
       }
-      for (var i=0; i < data.objects.length; i++) {
+      for (var i=data.objects.length-1; i >=0 ; i--) {
         n = data.objects[i];
         notify_latest_id = n.pk>notify_latest_id ? n.pk:notify_latest_id;
+        notify_oldest_id = (n.pk<notify_oldest_id || notify_oldest_id==0) ? n.pk:notify_oldest_id;
         $('.notification-li-container').prepend($('<li><a href="'+URL_NOTIFY_GOTO+n.pk+'/"><div>'+n.message+'</div><div class="since">'+n.since+'</div></a></li>'))
       }
     }
@@ -23,7 +25,9 @@ function notify_update() {
 
 function notify_mark_read() {
   $('.notification-li-container').empty();
-  url = URL_NOTIFY_MARK_READ+notify_latest_id+'/';
+  url = URL_NOTIFY_MARK_READ+notify_latest_id+'/'+notify_oldest_id+'/';
+  notify_oldest_id = 0;
+  notify_latest_id = 0;
   jsonWrapper(url, function (data) {
     if (data.success) {
       notify_update();

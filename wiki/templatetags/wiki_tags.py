@@ -1,8 +1,13 @@
+# -*- coding: utf-8 -*-
+import re
+
 from django.conf import settings as django_settings
 from django import template
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model
 from django.forms import BaseForm
+from django.utils.safestring import mark_safe
+from django.template.defaultfilters import striptags
 
 register = template.Library()
 
@@ -54,6 +59,26 @@ def wiki_form(context, form_obj):
     return {
         'form': form_obj,
     }
+
+@register.filter
+def get_content_snippet(content, keyword, max_words=30):
+    max_words = int(max_words)
+    p = re.compile(r'(?P<before>.*)%s(?P<after>.*)' % re.escape(keyword), re.MULTILINE | re.IGNORECASE | re.DOTALL)
+    m = p.search(content)
+    html = ""
+    if m:
+        words = filter(lambda x: x!="", striptags(m.group("before")).replace("\n", " ").split(" "))
+        before_words = words[-max_words/2:]
+        words = filter(lambda x: x!="", striptags(m.group("after")).replace("\n", " ").split(" "))
+        after = " ".join(words[:max_words - len(before_words)])
+        before = " ".join(before_words)
+        html = "%s %s %s" % (before, striptags(keyword), after)
+        kw_p = re.compile(r'(%s)'%keyword, re.IGNORECASE)
+        html = kw_p.sub(r"<strong>\1</strong>", html)
+        html = mark_safe(html)
+    else:
+        html = " ".join(filter(lambda x: x!="", striptags(content).replace("\n", " ").split(" "))[:max_words])
+    return html
 
 @register.filter
 def can_read(obj, user):

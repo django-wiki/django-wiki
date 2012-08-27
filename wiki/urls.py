@@ -8,6 +8,7 @@ from wiki.core.plugins import registry
 urlpatterns = patterns('',
     url('^$', article.ArticleView.as_view(), name='root', kwargs={'path': ''}),   
     url('^create-root/$', 'wiki.views.article.root_create', name='root_create'),   
+    url('^_search/$', article.SearchView.as_view(), name='search'),   
     url('^_revision/diff/(?P<revision_id>\d+)/$', 'wiki.views.article.diff', name='diff'),
 )
 

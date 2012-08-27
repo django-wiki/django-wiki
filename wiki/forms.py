@@ -354,4 +354,9 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
 class DirFilterForm(forms.Form):
     
     query = forms.CharField(widget=forms.TextInput(attrs={'placeholder': _(u'Filter...'),
-                                                          'class': 'search-query'}))
+                                                          'class': 'search-query'}), required=False)
+
+class SearchForm(forms.Form):
+    
+    query = forms.CharField(widget=forms.TextInput(attrs={'placeholder': _(u'Search...'),
+                                                          'class': 'search-query'}), required=False)

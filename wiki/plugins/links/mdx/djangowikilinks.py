@@ -28,7 +28,7 @@ try:
     # but import the 2.0.3 version if it fails
     from markdown.util import etree #@UnusedImport
 except ImportError:
-    from markdown import etree #@UnresolvedImport @Reimport
+    from markdown import etree #@UnresolvedImport @Reimport @UnusedImport
 
 class WikiPathExtension(markdown.Extension):
     def __init__(self, configs):
@@ -36,7 +36,6 @@ class WikiPathExtension(markdown.Extension):
         self.config = {
                         'base_url' : ['/', 'String to append to beginning of URL.'],
                         'html_class' : ['wikipath', 'CSS hook. Leave blank for none.'],
-                        'live_lookups' : [True, 'If the plugin should try and match links to real articles'],
                         'default_level' : [2, 'The level that most articles are created at. Relative links will tend to start at that level.']
         }
         
@@ -78,12 +77,11 @@ class WikiPath(markdown.inlinepatterns.Pattern):
             
             urlpath = None
             path = path_from_link
-            if self.config['live_lookups'][0]:
-                try:
-                    urlpath = models.URLPath.get_by_path(path_from_link)
-                    path = urlpath.get_absolute_url()
-                except models.URLPath.DoesNotExist:
-                    pass
+            try:
+                urlpath = models.URLPath.get_by_path(path_from_link)
+                path = urlpath.get_absolute_url()
+            except models.URLPath.DoesNotExist:
+                pass
         else:
             urlpath = models.URLPath.objects.get(article=self.markdown.article)
             source_components = urlpath.path.strip("/").split("/")
@@ -95,11 +93,10 @@ class WikiPath(markdown.inlinepatterns.Pattern):
             path_from_link = os_path.join(starting_path, article_title)
             
             lookup = models.URLPath.objects.none()
-            if self.config['live_lookups'][0]:
-                if urlpath.parent:
-                    lookup = urlpath.parent.get_descendants().filter(slug=article_title)
-                else:
-                    lookup = urlpath.get_descendants().filter(slug=article_title)
+            if urlpath.parent:
+                lookup = urlpath.parent.get_descendants().filter(slug=article_title)
+            else:
+                lookup = urlpath.get_descendants().filter(slug=article_title)
             
             if lookup.count() > 0:
                 urlpath = lookup[0]
@@ -111,7 +108,7 @@ class WikiPath(markdown.inlinepatterns.Pattern):
         label = m.group('linkTitle')
         a = etree.Element('a')
         a.set('href', path)
-        if not urlpath and self.config['live_lookups']:
+        if not urlpath:
             a.set('class', self.config['html_class'][0] + " linknotfound")
         else:
             a.set('class', self.config['html_class'][0])

@@ -1,0 +1,59 @@
+{% extends "wiki/base.html" %}
+{% load wiki_tags i18n humanize %}
+{% load url from future %}
+
+{% block pagetitle %}{% trans "Search results for:" %} {{ search_query }}{% endblock %}
+
+{% block wiki_contents %}
+
+<h1 class="page-header">{% trans "Search results for:" %} {{ search_query }}</h1>
+
+<form class="form-search directory-toolbar">
+<p class="lead">
+  <div class="pull-right">
+    {{ search_form.query }}
+    <button class="btn"><span class="icon-search"></span></button>
+  </div>
+  <p>{% blocktrans with paginator.object_list.count as cnt %}Your search returned <strong>{{ cnt }}</strong> results.{% endblocktrans %}</p>
+  <div class="clearfix"></div>
+</p>
+</form>
+
+<table class="table table-striped">
+  <tr>
+    <th style="width: 75%">{% trans "Title" %}</th>
+    <th>{% trans "Last modified" %}</th>
+  </tr>
+  {% for article in articles %}
+    <tr>
+      <td>
+        {% for urlpath in article.urlpath_set.all %}
+          <a href="{% url 'wiki:get' path=urlpath.path %}">{{ article.current_revision.title }}<br /><small class="muted">/{{ urlpath.path }}</small></a>
+        {% empty %}
+          <a href="{% url 'wiki:get' article_id=article.id %}">{{ article.current_revision.title }}</a>
+        {% endfor %}
+        {% if article.current_revision.deleted %}
+          <span class="icon-trash"></span>
+        {% endif %}
+        {% if article.current_revision.locked %}
+          <span class="icon-lock"></span>
+        {% endif %}
+        <p class="muted"><small>{{ article.current_revision.content|get_content_snippet:search_query }}</small></p>
+      </td>
+      <td style="white-space: nowrap">
+        {{ article.current_revision.created|naturaltime }}
+      </td>
+    </tr>
+    {% empty%}
+    <tr>
+      <td colspan="100">
+        <em>{% trans "There are no articles in this level" %}</em>
+      </td>
+    </tr>
+  {% endfor %}
+</table>
+
+{% include "wiki/includes/pagination.html" %}
+
+{% endblock %}
+

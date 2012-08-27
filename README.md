@@ -25,6 +25,12 @@ This is where it all begins. In *less than 1 week* we should have a wiki system 
  * **Be simple.** The source code should *almost* explain itself.
  * **Be structured.** Markdown is a simple syntax for readability. Features should be implemented either through easy coding patterns in the content field, but rather stored in a structured way (in the database) and managed through a friendly interface. This gives control back to the website developer, and makes knowledge more usable. Just ask: Why has Wikipedia never changed? Answer: Because it's knowledge is stored in a complicated way, thus it becomes very static.
 
+Ideas?
+------
+
+Please go ahead and post issues for discussion of ideas. We do not have a mailing list, and it's totally cool to discuss ideas in the Issue tracker for now.
+
+
 Installation
 ------------
 
