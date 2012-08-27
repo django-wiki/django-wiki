@@ -81,6 +81,7 @@ else:
 # children and for instance that an article can be safely deleted.
 SHOW_MAX_CHILDREN = getattr(django_settings, 'WIKI_SHOW_MAX_CHILDREN', 20)
 
+USE_BOOTSTRAP_SELECT_WIDGET = getattr(django_settings, 'WIKI_USE_BOOTSTRAP_SELECT_WIDGET', True)
 
 ####################
 # PLANNED SETTINGS #

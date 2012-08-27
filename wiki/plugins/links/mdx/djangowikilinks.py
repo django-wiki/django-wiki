@@ -28,14 +28,15 @@ try:
     # but import the 2.0.3 version if it fails
     from markdown.util import etree #@UnusedImport
 except ImportError:
-    from markdown import etree #@UnresolvedImport @Reimport
+    from markdown import etree #@UnresolvedImport @Reimport @UnusedImport
 
 class WikiPathExtension(markdown.Extension):
     def __init__(self, configs):
         # set extension defaults
         self.config = {
                         'base_url' : ['/', 'String to append to beginning of URL.'],
-                        'html_class' : ['wikipath', 'CSS hook. Leave blank for none.']
+                        'html_class' : ['wikipath', 'CSS hook. Leave blank for none.'],
+                        'default_level' : [2, 'The level that most articles are created at. Relative links will tend to start at that level.']
         }
         
         # Override defaults with user settings
@@ -47,7 +48,7 @@ class WikiPathExtension(markdown.Extension):
         self.md = md
         
         # append to end of inline patterns
-        WIKI_RE =  r'\[(?P<linkTitle>.+?)\]\(wiki:(?P<wikiTitle>[a-zA-Z\d\./_-]*)\)'
+        WIKI_RE =  r'\[(?P<linkTitle>[^\]]+?)\]\(wiki:(?P<wikiTitle>[a-zA-Z\d\./_-]*)\)'
         wikiPathPattern = WikiPath(WIKI_RE, self.config, markdown_instance=md)
         wikiPathPattern.md = md
         md.inlinePatterns.add('djangowikipath', wikiPathPattern, "<reference")
@@ -69,29 +70,40 @@ class WikiPath(markdown.inlinepatterns.Pattern):
         # from the link, regardless of whether or not something can be
         # looked up
         path_from_link = ""
-        
+
         if absolute:
             base_path = self.config['base_url'][0]
             path_from_link = os_path.join(base_path, article_title)
+            
+            urlpath = None
+            path = path_from_link
             try:
                 urlpath = models.URLPath.get_by_path(path_from_link)
                 path = urlpath.get_absolute_url()
             except models.URLPath.DoesNotExist:
-                urlpath = None
-                path = path_from_link
+                pass
         else:
             urlpath = models.URLPath.objects.get(article=self.markdown.article)
-            path_from_link = os_path.join(urlpath.path, article_title)
+            source_components = urlpath.path.strip("/").split("/")
+            # We take the first (self.config['default_level'] - 1) components, so adding
+            # one more component would make a path of length self.config['default_level']
+            starting_level = max(0, self.config['default_level'][0] - 1 )
+            starting_path = "/".join(source_components[ : starting_level ])
+            
+            path_from_link = os_path.join(starting_path, article_title)
+            
+            lookup = models.URLPath.objects.none()
             if urlpath.parent:
                 lookup = urlpath.parent.get_descendants().filter(slug=article_title)
             else:
                 lookup = urlpath.get_descendants().filter(slug=article_title)
+            
             if lookup.count() > 0:
                 urlpath = lookup[0]
                 path = urlpath.get_absolute_url()
             else:
                 urlpath = None
-                path = "/" + path_from_link
+                path = self.config['base_url'][0] + path_from_link
             
         label = m.group('linkTitle')
         a = etree.Element('a')
