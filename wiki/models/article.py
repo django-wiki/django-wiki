@@ -57,7 +57,7 @@ class Article(models.Model):
         if user == self.owner:
             return True
         if self.group_read:
-            if self.group and user.groups.filter(id=self.group.id):
+            if self.group and user.groups.filter(id=self.group.id).exists():
                 return True
         if self.can_moderate(user):
             return True
@@ -74,7 +74,7 @@ class Article(models.Model):
         if user == self.owner:
             return True
         if self.group_write:
-            if self.group and user and user.groups.filter(id=self.group.id):
+            if self.group and user and user.groups.filter(id=self.group.id).exists():
                 return True
         if self.can_moderate(user):
             return True
