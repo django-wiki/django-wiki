@@ -14,19 +14,29 @@ from django.views.generic.base import View
 from django.views.generic.edit import CreateView, FormView
 
 from wiki.models import URLPath
-
+from wiki.conf import settings
 
 class Signup(CreateView):
     model = User
     form_class = UserCreationForm
     template_name = "wiki/accounts/signup.html"
-
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not settings.ACCOUNT_HANDLING:
+            return redirect(settings.SIGNUP_URL)
+        return super(Signup, self).dispatch(request, *args, **kwargs)
+    
     def get_success_url(self, *args):
         messages.success(self.request, _(u'You are now sign up... and now you can sign in!'))
         return reverse("wiki:login")
 
 class Logout(View):
     
+    def dispatch(self, request, *args, **kwargs):
+        if not settings.ACCOUNT_HANDLING:
+            return redirect(settings.LOGOUT_URL)
+        return super(Logout, self).dispatch(request, *args, **kwargs)
+
     def get(self, request, *args, **kwargs):
         auth_logout(request)
         messages.info(request, _(u"You are no longer logged in. Bye bye!"))
@@ -37,6 +47,11 @@ class Login(FormView):
     form_class = AuthenticationForm
     template_name = "wiki/accounts/login.html"
     
+    def dispatch(self, request, *args, **kwargs):
+        if not settings.ACCOUNT_HANDLING:
+            return redirect(settings.LOGIN_URL)
+        return super(Login, self).dispatch(request, *args, **kwargs)
+
     def get_form_kwargs(self):
         self.request.session.set_test_cookie()
         kwargs = super(Login, self).get_form_kwargs()

@@ -12,12 +12,11 @@ urlpatterns = patterns('',
     url('^_revision/diff/(?P<revision_id>\d+)/$', 'wiki.views.article.diff', name='diff'),
 )
 
-if settings.ACCOUNT_HANDLING:
-    urlpatterns += patterns('',
-        url('^_accounts/sign-up/$', accounts.Signup.as_view(), name='signup'),   
-        url('^_accounts/logout/$', accounts.Logout.as_view(), name='logout'),   
-        url('^_accounts/login/$', accounts.Login.as_view(), name='login'),   
-    )
+urlpatterns += patterns('',
+    url('^_accounts/sign-up/$', accounts.Signup.as_view(), name='signup'),   
+    url('^_accounts/logout/$', accounts.Logout.as_view(), name='logout'),   
+    url('^_accounts/login/$', accounts.Login.as_view(), name='login'),   
+)
 
 urlpatterns += patterns('',
     # This one doesn't work because it don't know where to redirect after...   
