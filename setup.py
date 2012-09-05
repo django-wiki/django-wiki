@@ -24,15 +24,16 @@ media_patterns = ( build_media_pattern("templates", "html") +
 packages = find_packages()
 
 package_data = dict(
-    (package_name, template_patterns)
+    (package_name, media_patterns)
     for package_name in packages
 )
 
 setup(
-    name = "django-wiki",
+    name = "wiki",
     version = "0.0.1",
     author = "Benjamin Bach",
     author_email = "benjamin@overtag.dk",
+    url = "http://www.django-wiki.org",
     description = ("A wiki system written for the Django framework."),
     license = "GPLv3",
     keywords = "django wiki markdown",
@@ -47,8 +48,8 @@ setup(
         'django-mptt',
       ],
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
-        'License :: OSI Approved :: GPLv3',
+        'Development Status :: 3 - Alpha',
+        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Environment :: Web Environment',
         'Framework :: Django',
         'Intended Audience :: Developers',
