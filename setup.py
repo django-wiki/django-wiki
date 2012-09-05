@@ -9,16 +9,17 @@ from setuptools import setup, find_packages
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-
 def build_media_pattern(base_folder, file_extension):
-    return ["%s/%s*.%s" % (base_folder, "*/"*x, file_extension) for x in range(10)]
+    return ["%s/%s*.%s" % (base_folder, "*/"*x, file_extension) if base_folder else "%s*.%s" % ("*/"*x, file_extension) for x in range(10)]
 
-template_patterns = ( build_media_pattern("templates", "html") +
-                      build_media_pattern("static", "js") +
-                      build_media_pattern("static", "css") +
-                      build_media_pattern("static", "png") + 
-                      build_media_pattern("static", "jpeg") + 
-                      build_media_pattern("static", "gif"))
+media_patterns = ( build_media_pattern("templates", "html") +
+                   build_media_pattern("static", "js") +
+                   build_media_pattern("static", "css") +
+                   build_media_pattern("static", "png") +
+                   build_media_pattern("static", "jpeg") +
+                   build_media_pattern("static", "gif") +
+                   build_media_pattern("", "rst")
+)
 
 packages = find_packages()
 
