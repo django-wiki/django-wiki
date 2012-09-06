@@ -95,7 +95,7 @@ class AttachmentRevision(BaseRevisionMixin, models.Model):
         # TODO: Perhaps we can let file names change when files are replaced?
         if not self.file:
             return None
-        filename = self.file.path.split("/")[-1]
+        filename = self.file.name.split("/")[-1]
         return ".".join(filename.split(".")[:-1])
     
     def get_size(self):

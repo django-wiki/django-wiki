@@ -57,7 +57,7 @@ class ImageRevision(RevisionPluginRevision):
     def get_filename(self):
         if self.image:
             try:
-                return self.image.path.split('/')[-1]
+                return self.image.name.split('/')[-1]
             except OSError:
                 pass
         return None
