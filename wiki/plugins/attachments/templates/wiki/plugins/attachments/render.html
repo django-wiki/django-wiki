@@ -1,0 +1,5 @@
+{% load i18n %}
+{% comment %}
+  Render an attachment to HTML in the markdown extension
+{% endcomment %}
+<span class="attachment"><a href="{{ url }}" title="{% trans "Click to download" %} {{ filename }}">{{ filename }}</a>

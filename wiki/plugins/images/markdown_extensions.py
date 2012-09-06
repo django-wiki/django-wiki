@@ -46,13 +46,15 @@ class ImagePreprocessor(markdown.preprocessors.Preprocessor):
                     caption_lines.append(line[4:])
                     line = None
                 else:
+                    caption_placeholder = "{{{IMAGECAPTION}}}"
                     html = render_to_string("wiki/plugins/images/render.html",
                                             Context({'image': image, 
-                                                     'caption': article_markdown("\n".join(caption_lines),
-                                                                                 self.markdown.article,
-                                                                                 extensions=self.markdown.registeredExtensions), 
+                                                     'caption': caption_placeholder, 
                                                      'align': alignment}))
-                    line = html + line
+                    html_before, html_after = html.split(caption_placeholder)
+                    placeholder_before = self.markdown.htmlStash.store(html_before, safe=True)
+                    placeholder_after = self.markdown.htmlStash.store(html_after, safe=True)
+                    line = placeholder_before + "\n".join(caption_lines) + placeholder_after
                     previous_line_was_image = False
             if not line is None:
                 new_text.append(line)
