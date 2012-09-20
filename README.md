@@ -1,9 +1,14 @@
 django-wiki
 ===========
 
-*Last update: 2012-08-22*
+***News: September 20, 2012***
 
-Demo here, sign up for an account to see the notification system.
+The wiki is closing in on 1.0 RC1, scheduled for **October 1st**. There have not been many commits lately, but please do continue to provide Issues, and they will be resolved before RC1.
+
+Demo
+----
+
+A demo is available here, sign up for an account to see the notification system.
 
 [wiki.overtag.dk](http://wiki.overtag.dk)
 
