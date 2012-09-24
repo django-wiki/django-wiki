@@ -76,6 +76,7 @@ class AttachmentRevision(BaseRevisionMixin, models.Model):
     attachment = models.ForeignKey('Attachment')
 
     file = models.FileField(upload_to=upload_path, #@ReservedAssignment
+                            max_length=255,
                             verbose_name=_(u'file'),
                             storage=settings.STORAGE_BACKEND)
         
