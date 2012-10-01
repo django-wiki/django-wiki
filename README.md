@@ -1,6 +1,10 @@
 django-wiki
 ===========
 
+***News: October 1st, 2012***
+
+Nothing forgotten, but the release is being postponed until Friday 5th. Most simple target will be to close all current issues, and to furthermore announce that the plugin API is stable and document everything.
+
 ***News: September 20, 2012***
 
 The wiki is closing in on 1.0 RC1, scheduled for **October 1st**. There have not been many commits lately, but please do continue to provide Issues, and they will be resolved before RC1.
