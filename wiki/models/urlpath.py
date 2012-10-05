@@ -7,7 +7,7 @@ from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models, transaction
-from django.db.models.signals import pre_delete, post_save
+from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _, ugettext
 
 from mptt.fields import TreeForeignKey
