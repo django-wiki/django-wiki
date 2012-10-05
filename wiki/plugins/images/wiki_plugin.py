@@ -5,7 +5,8 @@ from django.utils.translation import ugettext as _
 from wiki.core.plugins import registry
 from wiki.core.plugins.base import BasePlugin
 from wiki.plugins.images import views, models, settings, forms
-from wiki.plugins.notifications import ARTICLE_EDIT
+from wiki.plugins.notifications.settings import ARTICLE_EDIT
+from wiki.plugins.notifications.util import truncate_title
 from wiki.plugins.images.markdown_extensions import ImageExtension
 
 class ImagePlugin(BasePlugin):
@@ -23,7 +24,7 @@ class ImagePlugin(BasePlugin):
     # is handled inside the notifications plugin.
     notifications = [
         {'model': models.ImageRevision,
-         'message': lambda obj: _(u"An image was added: %s") % obj.get_filename(),
+         'message': lambda obj: _(u"An image was added: %s") % truncate_title(obj.get_filename()),
          'key': ARTICLE_EDIT,
          'created': False,
          'ignore': lambda revision: bool(revision.previous_revision), # Ignore if there is a previous revision... the image isn't new

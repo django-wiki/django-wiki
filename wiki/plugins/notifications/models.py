@@ -9,8 +9,8 @@ from django_notify.models import Subscription
 from wiki import models as wiki_models
 from wiki.models.pluginbase import ArticlePlugin
 from wiki.core.plugins import registry
-from wiki.plugins.notifications import ARTICLE_EDIT #TODO: Is this bad practice?
 from wiki.plugins.notifications import settings
+from wiki.plugins.notifications.util import get_title
 
 class ArticleSubscription(ArticlePlugin, Subscription):
     
@@ -37,13 +37,13 @@ def post_article_revision_save(instance, **kwargs):
     if kwargs.get('created', False):
         url = default_url(instance.article)
         if instance.deleted:
-            notify(_(u'Article deleted: %s') % instance.title, ARTICLE_EDIT,
+            notify(_(u'Article deleted: %s') % get_title(instance), settings.ARTICLE_EDIT,
                    target_object=instance.article, url=url)
         elif instance.previous_revision:
-            notify(_(u'Article modified: %s') % instance.title, ARTICLE_EDIT,
+            notify(_(u'Article modified: %s') % get_title(instance), settings.ARTICLE_EDIT,
                    target_object=instance.article, url=url)
         else:
-            notify(_(u'New article created: %s') % instance.title, ARTICLE_EDIT,
+            notify(_(u'New article created: %s') % get_title(instance), settings.ARTICLE_EDIT,
                    target_object=instance, url=url)
             
 # Whenever a new revision is created, we notifý users that an article

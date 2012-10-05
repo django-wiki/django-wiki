@@ -6,7 +6,7 @@ notify_update_timeout_adjust = 1.2; // factor to adjust between each timeout.
 function notify_update() {
   jsonWrapper(URL_NOTIFY_GET_NEW+notify_latest_id+'/', function (data) {
     if (data.success) {
-      $('.notification-cnt').html(data.objects.length);
+      $('.notification-cnt').html(data.total_count);
       if (data.objects.length> 0) {
         $('.notification-cnt').addClass('badge-important');
         $('.notifications-empty').hide();

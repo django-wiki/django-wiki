@@ -19,17 +19,17 @@ def get_notifications(request, latest_id=None, is_viewed=False, max_results=10):
     
     notifications = notifications.order_by('-id')
     notifications = notifications.prefetch_related('subscription', 'subscription__notification_type')
-    notifications = notifications[:max_results]    
     
     from django.contrib.humanize.templatetags.humanize import naturaltime
     
     return {'success': True,
+            'total_count': notifications.count(),
             'objects': [{'pk': n.pk,
                          'message': n.message,
                          'url': n.url,
                          'occurrences': n.occurrences,
                          'type': n.subscription.notification_type.key,
-                         'since': naturaltime(n.created)} for n in notifications]}
+                         'since': naturaltime(n.created)} for n in notifications[:max_results]]}
 
 @login_required
 def goto(request, notification_id=None):
