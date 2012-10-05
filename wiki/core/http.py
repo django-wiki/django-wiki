@@ -32,6 +32,6 @@ def send_file(request, filepath, last_modified=None, filename=None):
     
     # TODO: Escape filename
     if filename:
-        response["Content-Disposition"] = "attachment; filename=%s" % filename
+        response["Content-Disposition"] = "attachment; filename=%s" % filename.encode('utf-8')
     
     return response
