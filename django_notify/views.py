@@ -18,7 +18,7 @@ def get_notifications(request, latest_id=None, is_viewed=False, max_results=10):
         notifications = notifications.filter(id__gt=latest_id)
     
     notifications = notifications.order_by('-id')
-    notifications = notifications.prefetch_related('subscription')
+    notifications = notifications.prefetch_related('subscription', 'subscription__notification_type')
     notifications = notifications[:max_results]    
     
     from django.contrib.humanize.templatetags.humanize import naturaltime
@@ -27,6 +27,7 @@ def get_notifications(request, latest_id=None, is_viewed=False, max_results=10):
             'objects': [{'pk': n.pk,
                          'message': n.message,
                          'url': n.url,
+                         'occurrences': n.occurrences,
                          'type': n.subscription.notification_type.key,
                          'since': naturaltime(n.created)} for n in notifications]}
 

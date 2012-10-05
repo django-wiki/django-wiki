@@ -47,7 +47,8 @@ class Subscription(models.Model):
     object_id = models.CharField(max_length=64, null=True, blank=True, 
                                  help_text=_(u'Leave this blank to subscribe to any kind of object'))
     send_emails = models.BooleanField(default=True)
-
+    latest = models.ForeignKey('Notification', null=True, blank=True, related_name='latest_for')
+    
     def __unicode__(self):
         return _("Subscription for: %s") % str(self.settings.user.username)
 
@@ -64,6 +65,10 @@ class Notification(models.Model):
     is_viewed = models.BooleanField(default=False)
     is_emailed = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
+    occurrences = models.PositiveIntegerField(
+                      default=1, verbose_name=_(u'occurrences'),
+                      help_text=_(u'If the same notification was fired multiple times with no intermediate notifications')
+                  )
     
     @classmethod
     def create_notifications(cls, key, **kwargs):
@@ -78,17 +83,31 @@ class Notification(models.Model):
         if object_id:
             subscriptions = subscriptions.filter(Q(object_id=object_id) |
                                                  Q(object_id=None))
-        subscriptions.select_related()
-        subscriptions.order_by('settings__user')
+
+        subscriptions = subscriptions.prefetch_related('latest', 'settings')
+        subscriptions = subscriptions.order_by('settings__user')
         prev_user = None
+        
         for subscription in subscriptions:
             # Don't alert the same user several times even though overlapping
             # subscriptions occur.
             if subscription.settings.user == prev_user:
                 continue
-            objects_created.append(
-               cls.objects.create(subscription=subscription, **kwargs)
-            )
+            
+            # Check if it's the same as the previous message
+            latest = subscription.latest
+            if latest and (latest.message == kwargs.get('message', None) and 
+                latest.url == kwargs.get('url', None) and
+                latest.is_viewed == False):
+                # Both message and URL are the same, and it hasn't been viewed
+                # so just increment occurrence count.
+                latest.occurrences = latest.occurrences + 1
+                latest.save()
+            else:
+                # Insert a new notification
+                objects_created.append(
+                   cls.objects.create(subscription=subscription, **kwargs)
+                )
             prev_user = subscription.settings.user
         
         return objects_created
