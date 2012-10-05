@@ -11,6 +11,7 @@ class SidebarForm(forms.ModelForm, PluginSidebarFormMixin):
         self.article = article
         self.request = request
         super(SidebarForm, self).__init__(*args, **kwargs)
+        self.fields['image'].required = True
     
     def get_usermessage(self):
         return _(u"New image %s was successfully uploaded. You can use it by selecting it from the list of available images.") % self.instance.get_filename()
@@ -37,6 +38,7 @@ class RevisionForm(forms.ModelForm):
         self.image = kwargs.pop('image')
         self.request = kwargs.pop('request')
         super(RevisionForm, self).__init__(*args, **kwargs)
+        self.fields['image'].required = True
     
     def save(self, *args, **kwargs):
         if not self.instance.id:
