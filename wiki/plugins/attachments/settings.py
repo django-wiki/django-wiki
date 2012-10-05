@@ -1,4 +1,5 @@
 from django.conf import settings as django_settings
+from django.core.exceptions import ImproperlyConfigured
 
 APP_LABEL = 'wiki'
 SLUG = "attachments"
@@ -31,3 +32,22 @@ FILE_EXTENSIONS = getattr(django_settings, 'WIKI_FILE_EXTENSIONS', ['pdf', 'doc'
 
 from django.core.files.storage import default_storage
 STORAGE_BACKEND = getattr(django_settings, 'WIKI_STORAGE_BACKEND', default_storage)
+
+# SAFETY FIRST! Only store files with an appended .upload extension to be sure
+# that something nasty does not get executed on the server.
+APPEND_EXTENSION = getattr(django_settings, 'WIKI_ATTACHMENTS_APPEND_EXTENSION', True)
+
+# Important for S3 backends etc.: If your storage backend does not have a .path 
+# attribute for the file, but only a .url attribute, you should use False. 
+# This will reveal the direct download URL so it does not work perfectly for
+# files you wish to be kept private.
+USE_LOCAL_PATH = getattr(django_settings, 'WIKI_ATTACHMENTS_LOCAL_PATH', True)
+
+if (not USE_LOCAL_PATH) and APPEND_EXTENSION:
+    raise ImproperlyConfigured(
+        "django-wiki (attachment plugin) not USE_LOCAL_PATH and APPEND_EXTENSION: "
+        "You have configured to append .upload and not use local paths. That won't "
+        "work as all your attachments will be stored and sent with a .upload "
+        "extension. You have to trust your storage backend to be safe for storing"
+        "the extensions you have allowed."
+    )

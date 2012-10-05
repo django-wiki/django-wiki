@@ -2,7 +2,7 @@
 from django.contrib import messages
 from django.db import transaction
 from django.db.models import Q
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import redirect, get_object_or_404
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
@@ -153,11 +153,14 @@ class AttachmentDownloadView(ArticleMixin, View):
 
     def get(self, request, *args, **kwargs):
         if self.revision:
-            try:
-                return send_file(request, self.revision.file.path, 
-                                 self.revision.created, self.attachment.original_filename)
-            except OSError:
-                pass
+            if settings.USE_LOCAL_PATH:
+                try:
+                    return send_file(request, self.revision.file.path, 
+                                     self.revision.created, self.attachment.original_filename)
+                except OSError:
+                    pass
+            else:
+                return HttpResponseRedirect(self.revision.file.url)
         raise Http404
     
 class AttachmentChangeRevisionView(ArticleMixin, View):
