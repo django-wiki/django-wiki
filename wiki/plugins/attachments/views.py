@@ -97,7 +97,7 @@ class AttachmentReplaceView(ArticleMixin, FormView):
     
     @method_decorator(get_article(can_write=True))
     def dispatch(self, request, article, attachment_id, *args, **kwargs):
-        if self.request.user.is_anonymous() and not settings.ANONYMOUS:
+        if request.user.is_anonymous() and not settings.ANONYMOUS:
             return response_forbidden(request, article, kwargs.get('urlpath', None))
         if article.can_moderate(request.user):
             self.attachment = get_object_or_404(models.Attachment, id=attachment_id, articles=article)
