@@ -18,7 +18,8 @@ media_patterns = ( build_media_pattern("templates", "html") +
                    build_media_pattern("static", "png") +
                    build_media_pattern("static", "jpeg") +
                    build_media_pattern("static", "gif") +
-                   build_media_pattern("", "rst")
+                   build_media_pattern("", "md") +
+                   build_media_pattern("", "requirements.txt")
 )
 
 packages = find_packages()
@@ -30,7 +31,7 @@ package_data = dict(
 
 setup(
     name = "wiki",
-    version = "0.0.1",
+    version = "0.0.2",
     author = "Benjamin Bach",
     author_email = "benjamin@overtag.dk",
     url = "http://www.django-wiki.org",
@@ -40,13 +41,7 @@ setup(
     packages=find_packages(exclude=["testproject","testproject.*"]),
     long_description=read('README.md'),
     zip_safe = False,
-    install_requires=[
-        'Django>=1.4',
-        'markdown',
-        'django-sekizai',
-        'south',
-        'django-mptt',
-      ],
+    install_requires=read('requirements.txt').split("\n"),
     classifiers=[
         'Development Status :: 3 - Alpha',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
