@@ -33,7 +33,8 @@ class Settings(models.Model):
                                         default=settings.INTERVALS_DEFAULT)
     
     def __unicode__(self):
-        return _(u"Settings for %s") % self.user.username
+        obj_name = _(u"Settings for %s") % self.user.username
+        return unicode(obj_name)
     
     class Meta:
         db_table = settings.DB_TABLE_PREFIX + '_settings'
@@ -50,7 +51,8 @@ class Subscription(models.Model):
     latest = models.ForeignKey('Notification', null=True, blank=True, related_name='latest_for')
     
     def __unicode__(self):
-        return _("Subscription for: %s") % str(self.settings.user.username)
+        obj_name = _("Subscription for: %s") % str(self.settings.user.username)
+        return unicode(obj_name)
 
     class Meta:
         db_table = settings.DB_TABLE_PREFIX + '_subscription'
