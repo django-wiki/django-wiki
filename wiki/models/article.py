@@ -165,7 +165,8 @@ class Article(models.Model):
     def __unicode__(self):
         if self.current_revision:
             return self.current_revision.title
-        return _(u'Article without content (%(id)d)') % {'id': self.id}
+        obj_name = _(u'Article without content (%(id)d)') % {'id': self.id}
+        return unicode(obj_name)
     
     class Meta:
         app_label = settings.APP_LABEL

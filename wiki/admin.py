@@ -19,12 +19,14 @@ class ArticleRevisionForm(forms.ModelForm):
         
     def __init__(self, *args, **kwargs):
         super(ArticleRevisionForm, self).__init__(*args, **kwargs)
+        # TODO: This pattern is too weird
         EditorClass = editors.getEditorClass()
         editor = editors.getEditor()
         self.fields['content'].widget = editor.get_admin_widget()
 
 class ArticleRevisionAdmin(admin.ModelAdmin):
     form = ArticleRevisionForm
+    display_list = ('title', 'created', 'modified', 'user', 'ip_address')
     class Media:
         js = editors.getEditorClass().AdminMedia.js
         css = editors.getEditorClass().AdminMedia.css

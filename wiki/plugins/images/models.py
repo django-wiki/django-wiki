@@ -43,7 +43,7 @@ class Image(RevisionPlugin):
     
     def __unicode__(self):
         title = (_(u'Image: %s') % self.current_revision.imagerevision.get_filename()) if self.current_revision else _(u'Current revision not set!!')
-        return title
+        return unicode(title)
 
 class ImageRevision(RevisionPluginRevision):
     
@@ -95,4 +95,5 @@ class ImageRevision(RevisionPluginRevision):
         ordering = ('-created',)
 
     def __unicode__(self):
-        return _(u'Image Revsion: %d') % self.revision_number
+        title = _(u'Image Revsion: %d') % self.revision_number
+        return unicode(title)

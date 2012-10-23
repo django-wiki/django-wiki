@@ -15,10 +15,11 @@ from wiki.plugins.notifications.util import get_title
 class ArticleSubscription(ArticlePlugin, Subscription):
     
     def __unicode__(self):
-        return (_(u"%(user)s subscribing to %(article)s (%(type)s)") % 
-                {'user': self.settings.user.username,
-                 'article': self.article.current_revision.title,
-                 'type': self.notification_type.label})
+        title = (_(u"%(user)s subscribing to %(article)s (%(type)s)") % 
+                 {'user': self.settings.user.username,
+                  'article': self.article.current_revision.title,
+                  'type': self.notification_type.label})
+        return unicode(title)
     
     class Meta:
         app_label = settings.APP_LABEL
