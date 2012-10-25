@@ -5,7 +5,7 @@ from django_notify.models import Settings, NotificationType
 from django.contrib.contenttypes.models import ContentType
 from django.utils.safestring import mark_safe
 
-from wiki.plugins.notifications import ARTICLE_EDIT
+from wiki.plugins.notifications.settings import ARTICLE_EDIT
 from wiki.core.plugins.base import PluginSettingsFormMixin
 
 class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
