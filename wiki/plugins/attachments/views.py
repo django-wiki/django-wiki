@@ -34,7 +34,8 @@ class AttachmentView(ArticleMixin, FormView):
     def form_valid(self, form):
         
         if (self.request.user.is_anonymous() and not settings.ANONYMOUS or 
-            not self.article.can_write(self.request.user)):
+            not self.article.can_write(self.request.user) or
+            self.article.current_revision.locked):
             return response_forbidden(self.request, self.article, self.urlpath)
         
         # WARNING! The below decorator silences other exceptions that may occur!
@@ -95,7 +96,7 @@ class AttachmentReplaceView(ArticleMixin, FormView):
     form_class = forms.AttachmentForm
     template_name="wiki/plugins/attachments/replace.html"
     
-    @method_decorator(get_article(can_write=True))
+    @method_decorator(get_article(can_write=True, not_locked=True))
     def dispatch(self, request, article, attachment_id, *args, **kwargs):
         if request.user.is_anonymous() and not settings.ANONYMOUS:
             return response_forbidden(request, article, kwargs.get('urlpath', None))
@@ -172,7 +173,7 @@ class AttachmentChangeRevisionView(ArticleMixin, View):
     form_class = forms.AttachmentForm
     template_name="wiki/plugins/attachments/replace.html"
     
-    @method_decorator(get_article(can_write=True))
+    @method_decorator(get_article(can_write=True, not_locked=True))
     def dispatch(self, request, article, attachment_id, revision_id, *args, **kwargs):
         if article.can_moderate(request.user):
             self.attachment = get_object_or_404(models.Attachment, id=attachment_id, articles=article)
@@ -194,7 +195,7 @@ class AttachmentChangeRevisionView(ArticleMixin, View):
 
 class AttachmentAddView(ArticleMixin, View):
     
-    @method_decorator(get_article(can_write=True))
+    @method_decorator(get_article(can_write=True, not_locked=True))
     def dispatch(self, request, article, attachment_id, *args, **kwargs):
         self.attachment = get_object_or_404(models.Attachment.objects.active().can_write(request.user), id=attachment_id)
         return super(AttachmentAddView, self).dispatch(request, article, *args, **kwargs)
@@ -214,7 +215,7 @@ class AttachmentDeleteView(ArticleMixin, FormView):
     form_class = forms.DeleteForm
     template_name="wiki/plugins/attachments/delete.html"
     
-    @method_decorator(get_article(can_write=True))
+    @method_decorator(get_article(can_write=True, not_locked=True))
     def dispatch(self, request, article, attachment_id, *args, **kwargs):
         self.attachment = get_object_or_404(models.Attachment, id=attachment_id, articles=article)
         if not self.attachment.can_delete(request.user):

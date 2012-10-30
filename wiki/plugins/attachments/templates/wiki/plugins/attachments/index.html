@@ -10,8 +10,8 @@
     <p class="lead">{% trans "The following files are available for this article. Copy the markdown tag to directly refer to a file from the article text." %}</p>
 
 
-    <table class="table table-bordered table-striped">
     {% for attachment in attachments %}
+    <table class="table table-bordered table-striped">
       <tr>
         <th colspan="4">
           <h4>
@@ -24,12 +24,11 @@
         </th>
       </tr>
       <tr>
-        <th>{% trans "Markdown tag" %}</th>
-        <th>{% trans "Uploaded by" %}</th>
-        <th>{% trans "Size" %}</th>
-        <td style="text-align: right; white-space: nowrap;" rowspan="2">
+        <th style="width: 25%">{% trans "Markdown tag" %}</th>
+        <th style="width: 25%">{% trans "Uploaded by" %}</th>
+        <th style="width: 25%">{% trans "Size" %}</th>
+        <td style="width: 25%; text-align: right; white-space: nowrap;" rowspan="2">
           {% if attachment|can_write:user %}
-            <p>
             {% if not attachment.current_revision.deleted %}
               <a href="{% url 'wiki:attachments_replace' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn">{% trans "Replace" %}</a>
               {% if attachment.article = article %}
@@ -39,7 +38,7 @@
               {% endif %}
             {% else %}
               {% if attachment.current_revision.previous_revision.id %}
-              <form method="POST" action="{% url 'wiki:attachments_revision_change' path=urlpath.path article_id=article.id attachment_id=attachment.id revision_id=attachment.current_revision.previous_revision.id %}">
+              <form method="POST" action="{% url 'wiki:attachments_revision_change' path=urlpath.path article_id=article.id attachment_id=attachment.id revision_id=attachment.current_revision.previous_revision.id %}" style="margin:0; padding:0;">
                 {% csrf_token %}
                 <button class="btn">
                   {% trans "Restore" %}
@@ -47,9 +46,8 @@
               </form>
               {% endif %}
             {% endif %}
-            </p>
           {% endif %}
-          <p>
+          <p style="margin-top: 10px;">
           <a href="{% url 'wiki:attachments_history' path=urlpath.path article_id=article.id attachment_id=attachment.id %}">
             <span class="icon-time"></span>
             {% trans "File history" %} ({{ attachment.attachmentrevision_set.all.count }} {% trans "revisions" %})
@@ -64,17 +62,15 @@
         </td>
         <td>{{ attachment.current_revision.get_size|filesizeformat }}</td>
       </tr>
-    {% empty %}
-      <tr>
-        <td>
-          <p style="margin-bottom: 20px;"><em>{% trans "There are no attachments for this article." %}</em></p>
-        </td>
-      </tr>
-    {% endfor %}
     </table>
+    {% empty %}
+
+      <p style="margin-bottom: 20px;"><em>{% trans "There are no attachments for this article." %}</em></p>
+
+    {% endfor %}
   </div>
-  {% if article|can_write:user %}
   <div class="span4" style="min-width: 330px;">
+  {% if article|can_write:user and not article|is_locked %}
     <div class="accordion">
 
       <div class="accordion-group">
@@ -123,8 +119,17 @@
       </div>
       
     </div>
-  </div>
+  {% else %}
+  
+    {% if article|is_locked %}
+    <p class="muted">
+      <i class="icon-lock"></i>
+      {% trans "The article is currently locked for editing, and therefore no new attachments can be added." %}
+    </p>
+    {% endif %}
+  
   {% endif %}
+  </div>
   
 </div>
   

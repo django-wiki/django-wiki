@@ -6,8 +6,22 @@
 
 {% block wiki_contents %}
   <h1 class="page-header">{% trans "Permission Denied" %}</h1>
-  <p class="alert denied">
-    {% trans "Sorry, you don't have permission to view this page." %}
+  <p class="alert denied alert-error">
+    <i class="icon-minus-sign"></i>
+    {% trans "Sorry, you don't have permission to access this page." %}
   </p>
+  {% if article.current_revision.locked %}
+  <p class="alert alert-warning">
+    <i class="icon-lock"></i>
+    {% trans "This article is locked for editing." %}
+  </p>
+  {% endif %}
+  
+  <p>
+    <a href="{% url 'wiki:get' article_id=article.id path=urlpath.path %}" class="btn">
+      {% trans "Back to article" %}
+    </a>
+  </p>
+  
 {% endblock %}
 

@@ -99,3 +99,8 @@ def can_delete(obj, user):
 def can_moderate(obj, user):
     """Articles and plugins have a can_moderate method..."""
     return obj.can_moderate(user)
+
+@register.filter
+def is_locked(obj):
+    """Articles and plugins have a can_delete method..."""
+    return (obj.current_revision and obj.current_revision.locked)
