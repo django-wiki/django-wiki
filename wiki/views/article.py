@@ -40,8 +40,9 @@ class Create(FormView, ArticleMixin):
     form_class = forms.CreateForm
     template_name="wiki/create.html"
     
-    @method_decorator(get_article(can_write=True))
+    @method_decorator(get_article(can_write=True, can_create=True))
     def dispatch(self, request, article, *args, **kwargs):
+            
         return super(Create, self).dispatch(request, article, *args, **kwargs)
     
     def get_form(self, form_class):
@@ -52,7 +53,7 @@ class Create(FormView, ArticleMixin):
         initial = kwargs.get('initial', {})
         initial['slug'] = self.request.GET.get('slug', None)
         kwargs['initial'] = initial
-        form = form_class(self.urlpath, **kwargs)
+        form = form_class(self.request, self.urlpath, **kwargs)
         form.fields['slug'].widget = forms.TextInputPrepend(prepend='/'+self.urlpath.path)        
         return form
     
@@ -228,7 +229,7 @@ class Edit(FormView, ArticleMixin):
             kwargs['data'] = None
             kwargs['files'] = None
             kwargs['no_clean'] = True
-        return form_class(self.article.current_revision, **kwargs)
+        return form_class(self.request, self.article.current_revision, **kwargs)
     
     def get_sidebar_form_classes(self):
         """Returns dictionary of form classes for the sidebar. If no form class is

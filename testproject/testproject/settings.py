@@ -89,6 +89,7 @@ TEMPLATE_CONTEXT_PROCESSORS =(
     'django.core.context_processors.media',
     'django.core.context_processors.static',
     'django.core.context_processors.tz',
+    'django.core.context_processors.debug',
     'django.contrib.messages.context_processors.messages',
     'sekizai.context_processors.sekizai',
 )
@@ -114,6 +115,7 @@ INSTALLED_APPS = (
     'wiki.plugins.attachments',
     'wiki.plugins.notifications',
     'mptt',
+    #'haystack',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -146,3 +148,5 @@ LOGGING = {
 }
 
 WIKI_ANONYMOUS_WRITE = True
+WIKI_ANONYMOUS_CREATE = False
+WIKI_ATTACHMENTS_LOCAL_PATH = True

@@ -63,6 +63,10 @@ ANONYMOUS = getattr(django_settings, 'WIKI_ANONYMOUS', True)
 # as the others_write boolean field on models.Article. 
 ANONYMOUS_WRITE = getattr(django_settings, 'WIKI_ANONYMOUS_WRITE', False)
 
+# Globally enable create access for anonymous users
+# Defaults to ANONYMOUS_WRITE.  
+ANONYMOUS_CREATE = getattr(django_settings, 'WIKI_ANONYMOUS_CREATE', ANONYMOUS_WRITE)
+
 # Sign up, login and logout views should be accessible 
 ACCOUNT_HANDLING = getattr(django_settings, 'WIKI_ACCOUNT_HANDLING', True)
 
@@ -86,6 +90,25 @@ SHOW_MAX_CHILDREN = getattr(django_settings, 'WIKI_SHOW_MAX_CHILDREN', 20)
 
 USE_BOOTSTRAP_SELECT_WIDGET = getattr(django_settings, 'WIKI_USE_BOOTSTRAP_SELECT_WIDGET', True)
 
+###################
+# SPAM PROTECTION #
+###################
+
+# Maximum allowed revisions per hour for any given user or IP
+REVISIONS_PER_HOUR = getattr(django_settings, 'WIKI_REVISIONS_PER_HOUR', 60)
+
+# Maximum allowed revisions per hour for any given user or IP
+REVISIONS_PER_MINUTES = getattr(django_settings, 'WIKI_REVISIONS_PER_MINUTES', 5)
+
+# Maximum allowed revisions per hour for any given user or IP
+REVISIONS_PER_HOUR_ANONYMOUS = getattr(django_settings, 'WIKI_REVISIONS_PER_HOUR_ANONYMOUS', 10)
+
+# Maximum allowed revisions per hour for any given user or IP
+REVISIONS_PER_MINUTES_ANONYMOUS = getattr(django_settings, 'WIKI_REVISIONS_PER_MINUTES_ANONYMOUS', 2)
+
+# Number of minutes for looking up REVISIONS_PER_MINUTES and REVISIONS_PER_MINUTES_ANONYMOUS
+REVISIONS_MINUTES_LOOKBACK = getattr(django_settings, 'WIKI_REVISIONS_MINUTES_LOOKBACK', 2)
+
 ####################
 # PLANNED SETTINGS #
 ####################
@@ -95,6 +118,3 @@ MAX_REVISIONS = getattr(django_settings, 'WIKI_MAX_REVISIONS', 100)
 
 # Maximum age of revisions in days, 0=unlimited
 MAX_REVISION_AGE = getattr(django_settings, 'MAX_REVISION_AGE', 365)
-
-# Maximum allowed revisions per minute for any given user or IP
-REVISIONS_PER_MINUTE = getattr(django_settings, 'WIKI_REVISIONS_PER_MINUTE', 3)

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime, timedelta
+
 from django import forms
 from django.utils.translation import ugettext as _
 from django.utils.safestring import mark_safe
@@ -18,18 +20,62 @@ from django.contrib.auth.models import User
 from wiki.core import permissions
 
 class SpamProtectionMixin():
+    """Check a form for spam. Only works if properties 'request' and 'revision_model' are set."""
     
-    def check_spam(self, current_revision, request):
+    revision_model = models.ArticleRevision
+    
+    def check_spam(self):
         """Check that user or IP address does not perform content edits that
         are not allowed.
         
         current_revision can be any object inheriting from models.BaseRevisionMixin 
         """
-        ipaddress = request.META.get('REMOTE_ADDR', None)
-        if not ipaddress == "127.0.0.1":
-            raise forms.ValidationError(_('Only localhost... muahahaha'))
-        # TODO: Finish this stuff and integrate it in forms....
+        request = self.request
+        user = None
+        ip_address = None
+        if request.user.is_authenticated():
+            user = request.user
+        else:
+            ip_address = request.META.get('REMOTE_ADDR', None)
+        
+        if not (user or ip_address):
+            raise forms.ValidationError(_(u'Spam protection failed to find both a logged in user and an IP address.'))
+        
+        def check_interval(from_time, max_count, interval_name):
+            from_time = datetime.now() - timedelta(minutes=settings.REVISIONS_MINUTES_LOOKBACK)
+            revisions = self.revision_model.objects.filter(
+                            created__gte=from_time,
+                        )
+            if user:
+                revisions = revisions.filter(user=user)
+            if ip_address:
+                revisions = revisions.filter(ip_address=ip_address)
+            revisions = revisions.count()
+            if revisions >= max_count:
+                raise forms.ValidationError(_(u'Spam protection: You are only allowed to create or edit %(revisions)d article per %(interval_name)s.') % 
+                                            {'revisions': max_count,
+                                             'interval_name': interval_name,})
+            
+        
+        if not settings.LOG_IPS_ANONYMOUS:
+            return
+        if request.user.has_perm('wiki.moderator') and False:
+            return
 
+        from_time = datetime.now() - timedelta(minutes=settings.REVISIONS_MINUTES_LOOKBACK)
+        if request.user.is_authenticated():
+            per_minute = settings.REVISIONS_PER_MINUTES
+        else:
+            per_minute = settings.REVISIONS_PER_MINUTES_ANONYMOUS
+        check_interval(from_time, per_minute,
+                       _('minute') if settings.REVISIONS_MINUTES_LOOKBACK==1 else (_(u'%d minutes') % settings.REVISIONS_MINUTES_LOOKBACK),)
+            
+        from_time = datetime.now() - timedelta(minutes=60)
+        if request.user.is_authenticated():
+            per_hour = settings.REVISIONS_PER_MINUTES
+        else:
+            per_hour = settings.REVISIONS_PER_MINUTES_ANONYMOUS
+        check_interval(from_time, per_hour, _('hour'))
 
 class CreateRootForm(forms.Form):
     
@@ -39,7 +85,7 @@ class CreateRootForm(forms.Form):
                               required=False, widget=getEditor().get_widget()) #@UndefinedVariable
     
 
-class EditForm(forms.Form):
+class EditForm(forms.Form, SpamProtectionMixin):
     
     title = forms.CharField(label=_(u'Title'),)
     content = forms.CharField(label=_(u'Contents'),
@@ -50,8 +96,9 @@ class EditForm(forms.Form):
     
     current_revision = forms.IntegerField(required=False, widget=forms.HiddenInput())
     
-    def __init__(self, current_revision, *args, **kwargs):
+    def __init__(self, request, current_revision, *args, **kwargs):
         
+        self.request = request
         self.no_clean = kwargs.pop('no_clean', False)
         self.preview = kwargs.pop('preview', False)
         self.initial_revision = current_revision
@@ -93,6 +140,7 @@ class EditForm(forms.Form):
             raise forms.ValidationError(_(u'While you were editing, someone else changed the revision. Your contents have been automatically merged with the new contents. Please review the text below.'))
         if cd['title'] == self.initial_revision.title and cd['content'] == self.initial_revision.content:
             raise forms.ValidationError(_(u'No changes made. Nothing to save.'))
+        self.check_spam()
         return cd
 
 
@@ -192,10 +240,11 @@ class TextInputPrepend(forms.TextInput):
         return mark_safe('<div class="input-prepend"><span class="add-on">%s</span>%s</div>' % (self.prepend, html))
     
 
-class CreateForm(forms.Form):
+class CreateForm(forms.Form, SpamProtectionMixin):
     
-    def __init__(self, urlpath_parent, *args, **kwargs):
+    def __init__(self, request, urlpath_parent, *args, **kwargs):
         super(CreateForm, self).__init__(*args, **kwargs)
+        self.request = request
         self.urlpath_parent = urlpath_parent
     
     title = forms.CharField(label=_(u'Title'),)
@@ -224,7 +273,11 @@ class CreateForm(forms.Form):
                 raise forms.ValidationError(_(u'A slug named "%s" already exists.') % already_urlpath.slug)
         
         return slug
-
+    
+    def clean(self):
+        self.check_spam()
+        return self.cleaned_data
+    
 
 class DeleteForm(forms.Form):
     
