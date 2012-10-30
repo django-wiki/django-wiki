@@ -1,5 +1,5 @@
 django>=1.4
-South<0.8
+South
 Markdown<2.3.0
 django-sekizai<0.7
 django-mptt>=0.5.3
