@@ -41,7 +41,10 @@ class URLPath(MPTTModel):
     article = models.ForeignKey(Article, on_delete=models.CASCADE, editable=False,
                                 verbose_name=_(u'Cache lookup value for articles'))
     
-    slug = models.SlugField(verbose_name=_(u'slug'), null=True, blank=True)
+    SLUG_MAX_LENGTH = 50
+    
+    slug = models.SlugField(verbose_name=_(u'slug'), null=True, blank=True,
+                            max_length=SLUG_MAX_LENGTH)
     site = models.ForeignKey(Site)
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children')    
     
