@@ -199,7 +199,8 @@ class CreateForm(forms.Form):
         self.urlpath_parent = urlpath_parent
     
     title = forms.CharField(label=_(u'Title'),)
-    slug = forms.SlugField(label=_(u'Slug'), help_text=_(u"This will be the address where your article can be found. Use only alphanumeric characters and - or _. Note that you cannot change the slug after creating the article."),)
+    slug = forms.SlugField(label=_(u'Slug'), help_text=_(u"This will be the address where your article can be found. Use only alphanumeric characters and - or _. Note that you cannot change the slug after creating the article."),
+                           max_length=models.URLPath.SLUG_MAX_LENGTH)
     content = forms.CharField(label=_(u'Contents'),
                               required=False, widget=getEditor().get_widget()) #@UndefinedVariable
     
