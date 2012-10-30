@@ -3,7 +3,7 @@
   
   NB! Watch out for line breaks, markdown might add <br />s and <p>s.
 {% endcomment %}{% with image.current_revision.imagerevision as revision %}{% spaceless %}
-<div style="width: 250px; margin: 10px; float: {{ align }};">
+<div style="width: 250px;"{% if align %}class="pull-{{ align }}"{% endif %}>
   <div class="thumbnail">
     {% thumbnail revision.image "250x250" as thumb %}
       <a href="{{ revision.image.url }}">
