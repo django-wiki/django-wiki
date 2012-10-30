@@ -107,9 +107,12 @@ class Notification(models.Model):
                 latest.save()
             else:
                 # Insert a new notification
+                new_obj = cls.objects.create(subscription=subscription, **kwargs)
                 objects_created.append(
-                   cls.objects.create(subscription=subscription, **kwargs)
+                   new_obj
                 )
+                subscription.latest = new_obj
+                subscription.save()
             prev_user = subscription.settings.user
         
         return objects_created
