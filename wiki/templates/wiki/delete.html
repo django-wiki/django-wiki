@@ -40,9 +40,6 @@
 
     <form method="POST" class="form-horizontal">
       {% wiki_form delete_form %}
-      <script type="text/javascript">
-        $('#id_revision').val('{{ article.current_revision.id }}');
-      </script>
       <div class="form-actions">
           <a href="{% url 'wiki:get' path=urlpath.path article_id=article.id %}" class="btn btn-large">
             <span class="icon-circle-arrow-left"></span>
@@ -57,6 +54,12 @@
     {% endif %}
  
   {% endif %}
+
+{% addtoblock "js" %}
+<script type="text/javascript">
+  $('#id_revision').val('{{ article.current_revision.id }}');
+</script>
+{% endaddtoblock %}
 
 {% endblock %}
 

@@ -1,6 +1,7 @@
-{% load i18n wiki_tags wiki_images_tags humanize thumbnail %}
+{% load i18n wiki_tags wiki_images_tags humanize thumbnail sekizai_tags %}
 {% load url from future %}
 
+{% addtoblock "js" %}
 <script type="text/javascript">
 function insert_image(image_id) {
   align=prompt('Enter an alignment. \'left\', \'right\' or \'center\':', 'right');
@@ -13,6 +14,7 @@ function insert_image(image_id) {
   }
 }
 </script>
+{% endaddtoblock %}
 
 {% with article|images_for_article as images %}
 <style type="text/css">

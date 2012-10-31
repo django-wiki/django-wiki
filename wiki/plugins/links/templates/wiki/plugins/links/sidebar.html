@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n sekizai_tags %}
 {% load url from future %}
 <h4>{% trans "Link to another wiki page" %}</h4>
 
@@ -24,6 +24,7 @@
 </p>
 <pre>[Clickable text](http://example.com)</pre>
 
+{% addtoblock "js" %}
 <script type="text/javascript">
 $('.page_title_query').typeahead({
     source: function (query, process) {
@@ -38,3 +39,4 @@ function wikiInsertLink() {
 }
 
 </script>
+{% endaddtoblock %}

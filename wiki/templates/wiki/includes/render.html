@@ -1,20 +1,6 @@
-{% load wiki_tags i18n cache %}
+{% load wiki_tags i18n cache sekizai_tags %}
 
-{% block wiki_contents %}
-
-  {% for plugin in plugins %}
-    {% if plugin.RenderMedia.css %}
-      {% for media, url in plugin.RenderMedia.css.items %}
-        <link rel="stylesheet" href="{{ STATIC_URL }}{{ url }}" />
-      {% endfor %}
-    {% endif %}
-    {% if plugin.RenderMedia.js %}
-      {% for url in plugin.RenderMedia.js %}
-        <script type="text/javascript" src="{{ STATIC_URL }}{{ url }}"></script>
-      {% endfor %}
-    {% endif %}
-  {% endfor %}
-  
+{% block wiki_contents %}  
   
   <div class="wiki-article">
   {% if not preview %}
