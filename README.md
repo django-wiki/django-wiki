@@ -91,7 +91,7 @@ The above line puts the wiki in */* so it's important to put it at the end of yo
 
 ### Settings
 
-For now, look in [wiki/conf/settings.py](wiki/conf/settings.py) to see a list of available settings.
+For now, look in [wiki/conf/settings.py](https://github.com/benjaoming/django-wiki/blob/master/wiki/conf/settings.py) to see a list of available settings.
 
 ### Other tips
 
