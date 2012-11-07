@@ -51,17 +51,17 @@ Install directly from Github, since there is no release yet:
 
 ### Configure `settings.INSTALLED_APPS`
 
-Make sure that the following is present:
-
-    'wiki',
-    'wiki.plugins.attachments',
-    'wiki.plugins.notifications',
-    'wiki.plugins.images',
+The following applications should be listed - NB! it's important to maintain the order due to database relational constraints:
+    
+    'django.contrib.humanize',
     'south',
     'django_notify',
     'mptt',
     'sekizai',
-    'django.contrib.humanize',
+    'wiki',
+    'wiki.plugins.attachments',
+    'wiki.plugins.notifications',
+    'wiki.plugins.images',
 
 ### Database
 
