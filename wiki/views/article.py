@@ -583,7 +583,7 @@ class Preview(ArticleMixin, TemplateView):
         return super(Preview, self).dispatch(request, article, *args, **kwargs)
     
     def post(self, request, *args, **kwargs):
-        edit_form = forms.EditForm(self.article.current_revision, request.POST, preview=True)
+        edit_form = forms.EditForm(request, self.article.current_revision, request.POST, preview=True)
         if edit_form.is_valid():
             self.title = edit_form.cleaned_data['title']
             self.content = edit_form.cleaned_data['content']
