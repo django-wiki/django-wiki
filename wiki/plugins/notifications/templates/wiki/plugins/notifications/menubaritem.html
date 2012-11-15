@@ -15,12 +15,12 @@
   </li>
 
 {% endcomment %}
-{% load i18n sekizai_tags %}
+{% load i18n sekizai_tags %}{% load url from future %}
 {% addtoblock "js" %}
 <script type="text/javascript">
-  URL_NOTIFY_GET_NEW = "{% url notify:json_get %}";
-  URL_NOTIFY_MARK_READ = "{% url notify:json_mark_read_base %}";
-  URL_NOTIFY_GOTO = "{% url notify:goto_base %}";
+  URL_NOTIFY_GET_NEW = "{% url "notify:json_get" %}";
+  URL_NOTIFY_MARK_READ = "{% url "notify:json_mark_read_base" %}";
+  URL_NOTIFY_GOTO = "{% url "notify:goto_base" %}";
 </script>
 <script type="text/javascript" src="{{ STATIC_URL }}wiki/plugins/notifications/js/ui.js"></script>
 {% endaddtoblock %}
