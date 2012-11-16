@@ -150,3 +150,5 @@ LOGGING = {
 WIKI_ANONYMOUS_WRITE = True
 WIKI_ANONYMOUS_CREATE = False
 WIKI_ATTACHMENTS_LOCAL_PATH = True
+
+from settings_local import *
