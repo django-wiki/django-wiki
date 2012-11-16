@@ -44,8 +44,11 @@ class WikiURLPatterns(object):
         urlpatterns += self.get_accounts_urls()
         urlpatterns += self.get_revision_urls()
         urlpatterns += self.get_article_urls()
-        urlpatterns += self.get_article_path_urls()
         urlpatterns += self.get_plugin_urls()
+        
+        # This ALWAYS has to be the last of all the patterns since
+        # the paths in theory could wrongly match other targets.
+        urlpatterns += self.get_article_path_urls()
         return urlpatterns
 
     def get_root_urls(self):
@@ -106,6 +109,7 @@ class WikiURLPatterns(object):
             url('^(?P<path>.+/|)_revision/change/(?P<revision_id>\d+)/$', self.revision_change_view, name='change_revision'),
             url('^(?P<path>.+/|)_revision/merge/(?P<revision_id>\d+)/$', self.revision_merge_view, name='merge_revision'),
             url('^(?P<path>.+/|)_plugin/(?P<slug>\w+)/$', self.article_plugin_view_class.as_view(), name='plugin'),
+            # This should always go last!
             url('^(?P<path>.+/|)$', self.article_view_class.as_view(), name='get'),
            )
         return urlpatterns
