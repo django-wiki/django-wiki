@@ -4,7 +4,7 @@
 {% addtoblock "js" %}
 <script type="text/javascript">
 function insert_image(image_id) {
-  align=prompt('Enter an alignment. \'left\', \'right\' or \'center\':', 'right');
+  align=prompt('Enter an alignment. \'left\' or \'right\':', 'right');
   caption=prompt('Enter a caption text. You may use markdown. You can edit the text after...');
   imagetag = '\n[image:'+image_id+' align:'+align+']';
   if (! caption == '') {
