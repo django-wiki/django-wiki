@@ -12,7 +12,7 @@ A demo is available here, sign up for an account to see the notification system.
 
 [wiki.overtag.dk](http://wiki.overtag.dk)
 
-NB!! *THIS IS A WORK IN PROGR...*
+*THIS IS A WORK IN PROGRE...*
 ---------------------------------
 
 Currently, the API is subject to smaller changes. South is used so no database changes will cause data loss. You are not encouraged to make your own fiddling with the internal parts of the wiki - the best idea is to customize it through overriding templates and making custom template tags. The second best strategy is to extend the wiki's class-based views.
@@ -22,7 +22,7 @@ Please refer to the [TODO](https://github.com/benjaoming/django-wiki/blob/master
 Manifesto
 ---------
 
-We should have a wiki system appealing to all kinds of Django developers. Here is the manifest:
+Django needs a mature wiki system appealing to all kinds of needs, both big and small:
 
  * **Be pluggable and light-weight.** Don't integrate optional features in the core.
  * **Be open.** Make an extension API that allows the ecology of the wiki to grow. After all, Wikipedia consists of some [680 extensions](http://svn.wikimedia.org/viewvc/mediawiki/trunk/extensions/) written for MediaWiki.
