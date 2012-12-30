@@ -1,13 +1,9 @@
 django-wiki
 ===========
 
-***News: October 1st, 2012***
+***News: December 30, 2012***
 
-Nothing forgotten, but the release is being postponed until Friday 5th. Most simple target will be to close all current issues, and to furthermore announce that the plugin API is stable and document everything.
-
-***News: September 20, 2012***
-
-The wiki is closing in on 1.0 RC1, scheduled for **October 1st**. There have not been many commits lately, but please do continue to provide Issues, and they will be resolved before RC1.
+You might have noticed that RC1 has not appeared. To answer the question shortly: There is still some work to be done on the plugin API and the documentation wich prohibits a proper RC1 release. The version released on PyPi today is 0.0.9 to reflect that we're not totally sure about the plugin API stability but pretty confident that it won't change radically.
 
 Demo
 ----
@@ -44,6 +40,10 @@ Installation
 ------------
 
 ### Install
+
+To install the latest stable release:
+
+`pip install wiki`
 
 Install directly from Github, since there is no release yet:
 
