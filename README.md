@@ -15,14 +15,14 @@ A demo is available here, sign up for an account to see the notification system.
 NB!! *THIS IS A WORK IN PROGR...*
 ---------------------------------
 
-Currently, the whole API is subject to change. That means, if you use the wiki, you should use it *as it is* and not access internals or override templates or write plugins... **yet!** But the games will soon begin, and Django South migrations are available.
+Currently, the API is subject to smaller changes. South is used so no database changes will cause data loss. You are not encouraged to make your own fiddling with the internal parts of the wiki - the best idea is to customize it through overriding templates and making custom template tags. The second best strategy is to extend the wiki's class-based views.
 
 Please refer to the [TODO](https://github.com/benjaoming/django-wiki/blob/master/TODO.md) for a detailed status or the Issue list.
 
 Manifesto
 ---------
 
-This is where it all begins. In *less than 1 week* we should have a wiki system appealing to any kind of Django developer out there. Here is the manifest (so far):
+We should have a wiki system appealing to all kinds of Django developers. Here is the manifest:
 
  * **Be pluggable and light-weight.** Don't integrate optional features in the core.
  * **Be open.** Make an extension API that allows the ecology of the wiki to grow. After all, Wikipedia consists of some [680 extensions](http://svn.wikimedia.org/viewvc/mediawiki/trunk/extensions/) written for MediaWiki.
@@ -33,7 +33,7 @@ This is where it all begins. In *less than 1 week* we should have a wiki system 
 Ideas?
 ------
 
-Please go ahead and post issues for discussion of ideas. We do not have a mailing list, and it's totally cool to discuss ideas in the Issue tracker for now.
+Please go ahead and post issues for discussion of ideas.
 
 
 Installation
