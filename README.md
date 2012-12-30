@@ -53,15 +53,16 @@ Install directly from Github, since there is no release yet:
 
 The following applications should be listed - NB! it's important to maintain the order due to database relational constraints:
     
-    'django.contrib.humanize',
-    'south',
-    'django_notify',
-    'mptt',
-    'sekizai',
-    'wiki',
-    'wiki.plugins.attachments',
-    'wiki.plugins.notifications',
-    'wiki.plugins.images',
+        'django.contrib.humanize',
+        'south',
+        'django_notify',
+        'mptt',
+        'sekizai',
+        'sorl.thumbnail',
+        'wiki',
+        'wiki.plugins.attachments',
+        'wiki.plugins.notifications',
+        'wiki.plugins.images',
 
 ### Database
 
@@ -72,7 +73,7 @@ To sync and create tables, do:
 
 ### Configure `settings.TEMPLATE_CONTEXT_PROCESSORS`
 
-Add `'sekizai.context_processors.sekizai'` to `settings.TEMPLATE_CONTEXT_PROCESSORS`.
+Add `'sekizai.context_processors.sekizai'` to `settings.TEMPLATE_CONTEXT_PROCESSORS`. Please refer to the [Django docs](https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors) to see the current default setting for this variable.
 
 ### Include urlpatterns
 
