@@ -12,6 +12,13 @@ A demo is available here, sign up for an account to see the notification system.
 
 [wiki.overtag.dk](http://wiki.overtag.dk)
 
+Community
+---------
+
+Please use our mailing list for getting in touch on development and support:
+
+[django-wiki@googlegroups.com](https://groups.google.com/d/forum/django-wiki)
+
 *THIS IS A WORK IN PROGRE...*
 ---------------------------------
 
@@ -71,7 +78,7 @@ To sync and create tables, do:
     python manage.py syncdb
     python manage.py migrate
 
-### Configure `settings.TEMPLATE_CONTEXT_PROCESSORS`
+### Configure TEMPLATE_CONTEXT_PROCESSORS
 
 Add `'sekizai.context_processors.sekizai'` to `settings.TEMPLATE_CONTEXT_PROCESSORS`. Please refer to the [Django docs](https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors) to see the current default setting for this variable.
 
