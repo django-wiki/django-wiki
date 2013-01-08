@@ -14,8 +14,16 @@
     function() {
       $('.accordion input[disabled!="disabled"][type="radio"]').first().attr('checked', 'true');
       // Fix modal heights
-      $('.modal-body').css('height', $(window).height()*0.70 + 'px');
-      $('.modal').css('max-height', $(window).height() + 'px');      
+      $('.modal').css('height', $(window).height()*0.70 + 'px');
+      $('.modal').css('max-height', ($(window).height() * 0.8) + 'px');
+      $('.modal').each( function() {
+        var max_height = ($(this).height() - $(this).find('.modal-header').height() - $(this).find('.modal-footer').height()-265);
+        if (max_height > 0)
+          $(this).find('.modal-body').css('height', max_height + 'px');
+        else
+          $(this).find('.modal-body').css('height', ($(this).height() - 100) + 'px');
+        $(this).css('resize', 'both');
+      });
     });
 </script>
 {% endaddtoblock %}

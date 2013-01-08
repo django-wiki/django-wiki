@@ -17,6 +17,11 @@
       <strong>{% trans "and" %}</strong>
       {% include "wiki/includes/revision_info.html" with revision=merge2 %}
     </div>
+    {% if merge1.deleted %}
+    <div class="alert alert-error">
+      <strong>{% trans "You cannot merge with a deleted revision" %}</strong>
+    </div>
+    {% endif %}
   {% endif %}
 
   <h1 class="page-header">{{ title }}</h1>

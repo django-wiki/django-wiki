@@ -640,6 +640,13 @@ def merge(request, article, revision_id, urlpath=None, template_file="wiki/previ
     # Save new revision
     if not preview:
         old_revision = article.current_revision
+        
+        if revision.deleted:
+            c = RequestContext(request, {'error_msg': _(u'You cannot merge with a deleted revision'),
+                                         'article': article,
+                                         'urlpath': urlpath})
+            return render_to_response("wiki/error.html", context_instance=c)
+            
         new_revision = models.ArticleRevision()
         new_revision.inherit_predecessor(article)
         new_revision.deleted = False
@@ -650,6 +657,10 @@ def merge(request, article, revision_id, urlpath=None, template_file="wiki/previ
                                       {'r1': revision.revision_number, 
                                        'r2': old_revision.revision_number})
         article.add_revision(new_revision, save=True)
+        
+        old_revision.simpleplugin_set.all().update(article_revision=new_revision)
+        revision.simpleplugin_set.all().update(article_revision=new_revision)
+        
         messages.success(request, _(u'A new revision was created: Merge between Revision #%(r1)d and Revision #%(r2)d') % 
                          {'r1': revision.revision_number,
                           'r2': old_revision.revision_number})
