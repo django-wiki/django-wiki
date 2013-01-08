@@ -1,11 +1,16 @@
+import os
+import os.path
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings as django_settings
 
 from . import settings
 
 from wiki import managers
 from wiki.models.pluginbase import ReusablePlugin
 from wiki.models.article import BaseRevisionMixin
+from django.db.models import signals
 
 class IllegalFileExtension(Exception):
     """File extension on upload is not allowed"""
@@ -136,3 +141,23 @@ class AttachmentRevision(BaseRevisionMixin, models.Model):
         return "%s: %s (r%d)" % (self.attachment.article.current_revision.title, 
                                  self.attachment.original_filename,
                                  self.revision_number)    
+
+def on_revision_delete(instance, *args, **kwargs):
+    # Remove file
+    path = instance.file.path.split("/")[:-1]
+    instance.file.delete(save=False)
+    
+    # Clean up empty directories
+    
+    # Check for empty folders in the path. Delete the first two.
+    if len(path[-1]) == 32:
+        # Path was (most likely) obscurified so we should look 2 levels down
+        max_depth = 2
+    else:
+        max_depth = 1
+    for depth in range(0, max_depth):
+        delete_path = "/".join(path[:-depth] if depth > 0 else path)
+        if len(os.listdir(os.path.join(django_settings.MEDIA_ROOT, delete_path))) == 0:
+            os.rmdir(delete_path)
+
+signals.pre_delete.connect(on_revision_delete, AttachmentRevision)
