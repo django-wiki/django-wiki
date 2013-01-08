@@ -2,7 +2,7 @@
 {% load wiki_tags i18n %}
 {% load url from future %}
 
-{% block pagetitle %}{{ article.current_revision.title }}{% endblock %}
+{% block pagetitle %}{% if article %}{{ article.current_revision.title }}{% else %}{% trans "Error" %}{% endif %}{% endblock %}
 
 {% block wiki_breadcrumbs %}
 {% include "wiki/includes/breadcrumbs.html" %}
@@ -12,14 +12,19 @@
 
 {% if error_type == "ancestors_missing" %}
 
+  <h1 class="page-header">{% trans "Not found" %}</h1>
+
   <div class="missing">
-    <p>This article was not found, and neither was its parent article. <a href="{% url 'wiki:get' path='' %}">Go to the main wiki article</a></p>
+    <p>{% trans "This article was not found, and neither was its parent article." %}</p>
+    <p>
+      <a href="{% url 'wiki:get' path='' %}" class="btn"><i class="icon-arrow-left"></i> {% trans "Start page" %}</a>
+    </p>    
   </div>
   
 {% else %}  
 
   <div class="error">
-    <p>There was some sort of error accessing this page. Sorry!</p>
+    <p>{% trans "There was some sort of error accessing this page. Sorry!" %}</p>
   </div>
 
 {% endif %}

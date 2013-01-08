@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from django.conf import settings as django_settings
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseNotFound, \
     HttpResponseForbidden
@@ -11,6 +10,7 @@ from django.utils import simplejson as json
 from wiki.core.exceptions import NoRootURL
 
 from wiki.conf import settings
+from django.utils.http import urlquote
 
 def json_view(func):
     def wrap(request, *args, **kwargs):
@@ -24,7 +24,12 @@ def json_view(func):
 
 def response_forbidden(request, article, urlpath):
     if request.user.is_anonymous():
-        return redirect(django_settings.LOGIN_URL+"?next="+request.path)
+        qs = request.META.get('QUERY_STRING', '')
+        if qs:
+            qs = urlquote('?' + qs)
+        else:
+            qs = ''
+        return redirect(settings.LOGIN_URL+"?next="+request.path + qs)
     else:
         c = RequestContext(request, {'article': article,
                                      'urlpath' : urlpath})
