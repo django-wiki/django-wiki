@@ -12,11 +12,6 @@ ADMINS = (
 #from django.core.urlresolvers import reverse_lazy
 #LOGIN_REDIRECT_URL = reverse_lazy('wiki:get', kwargs={'path': ''})
 
-# This forces the wiki login view to redirect to the referer...
-LOGIN_REDIRECT_URL = None
-LOGIN_URL = '/_accounts/login/'
-LOGOUT_URL = '/_accounts/logout/'
-
 MANAGERS = ADMINS
 
 DATABASES = {
