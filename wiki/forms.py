@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime, timedelta
+from datetime import timedelta
+from django.utils import timezone
 
 from django import forms
 from django.utils.translation import ugettext as _
@@ -42,7 +43,7 @@ class SpamProtectionMixin():
             raise forms.ValidationError(_(u'Spam protection failed to find both a logged in user and an IP address.'))
         
         def check_interval(from_time, max_count, interval_name):
-            from_time = datetime.now() - timedelta(minutes=settings.REVISIONS_MINUTES_LOOKBACK)
+            from_time = timezone.now() - timedelta(minutes=settings.REVISIONS_MINUTES_LOOKBACK)
             revisions = self.revision_model.objects.filter(
                             created__gte=from_time,
                         )
@@ -62,7 +63,7 @@ class SpamProtectionMixin():
         if request.user.has_perm('wiki.moderator') and False:
             return
 
-        from_time = datetime.now() - timedelta(minutes=settings.REVISIONS_MINUTES_LOOKBACK)
+        from_time = timezone.now() - timedelta(minutes=settings.REVISIONS_MINUTES_LOOKBACK)
         if request.user.is_authenticated():
             per_minute = settings.REVISIONS_PER_MINUTES
         else:
@@ -70,7 +71,7 @@ class SpamProtectionMixin():
         check_interval(from_time, per_minute,
                        _('minute') if settings.REVISIONS_MINUTES_LOOKBACK==1 else (_(u'%d minutes') % settings.REVISIONS_MINUTES_LOOKBACK),)
             
-        from_time = datetime.now() - timedelta(minutes=60)
+        from_time = timezone.now() - timedelta(minutes=60)
         if request.user.is_authenticated():
             per_hour = settings.REVISIONS_PER_MINUTES
         else:
