@@ -1,9 +1,11 @@
 django-wiki
 ===========
 
-***News: December 30, 2012***
+***News: January 9, 2013***
 
-You might have noticed that RC1 has not appeared. To answer the question shortly: There is still some work to be done on the plugin API and the documentation wich prohibits a proper RC1 release. The version released on PyPi today is 0.0.9 to reflect that we're not totally sure about the plugin API stability but pretty confident that it won't change radically.
+Happy new year. We have added a bit more in the department of nptifying ourselves upon errors both in the installation process (Travis) and the demo version. Have a look further below.
+
+Please consider any moment in life that you could have been writing unittests for django-wiki.
 
 Demo
 ----
@@ -153,6 +155,8 @@ Development
 In a your Git fork, run `pip install -r requirements.txt` to install the requirements.
 
 The folder **testproject/** contains a pre-configured django project and an sqlite database. Login for django admin is *admin:admin*. This project should always be maintained, although the sqlite database will be deleted very soon to avoid unnecessary conflicts.
+
+[![Build Status](https://travis-ci.org/benjaoming/django-wiki.png?branch=master)](https://travis-ci.org/benjaoming/django-wiki)
 
 Acknowledgements
 ----------------
