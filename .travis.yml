@@ -8,4 +8,4 @@ python:
 env:
   - DJANGO_VERSION=1.4.2
 install:
-  - pip -r requirements.txt install -q Django==$DJANGO_VERSION
+  - pip install -r requirements.txt -q Django==$DJANGO_VERSION
