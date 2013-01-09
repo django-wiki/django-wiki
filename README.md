@@ -148,6 +148,8 @@ So far the dependencies are:
  * [django-mptt>=0.5.3](https://github.com/django-mptt/django-mptt)
  * [django-sekizai](https://github.com/ojii/django-sekizai/)
  * [sorl-thumbnail](https://github.com/sorl/sorl-thumbnail)
+ * PIL (Python Imaging Library)
+ * Python>=2.6<3 (Python 3 not yet supported)
 
 Development
 ------------
