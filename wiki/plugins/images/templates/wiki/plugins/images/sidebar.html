@@ -30,7 +30,7 @@ $(document).ready( function() {
 <style type="text/css">
   #image-list tr:first-child td {border:0;}
 </style>
-<div style="max-height: 300px; overflow: scroll-y;">
+<div style="max-height: 300px; overflow: auto;">
   <table class="table" style="margin-bottom: 0;" id="image-list">
     {% for image in images %}
       {% with image.current_revision.imagerevision as revision %}

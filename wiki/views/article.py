@@ -278,10 +278,13 @@ class Edit(FormView, ArticleMixin):
                         else:
                             messages.success(self.request, _(u'Your changes were saved.'))
                         
-                        request.session['unsaved_article_title_%d' % self.article.id] = form.cleaned_data['unsaved_article_title']
-                        request.session['unsaved_article_content_%d' % self.article.id] = form.cleaned_data['unsaved_article_content']
+                        title = form.cleaned_data['unsaved_article_title']
+                        content = form.cleaned_data['unsaved_article_content']
                         
-                        messages.warning(request, _('Please note that your article text has not yet been saved!'))
+                        if title != self.article.current_revision.title or content != self.article.current_revision.content:
+                            request.session['unsaved_article_title_%d' % self.article.id] = title
+                            request.session['unsaved_article_content_%d' % self.article.id] = content
+                            messages.warning(request, _('Please note that your article text has not yet been saved!'))
                         
                         if self.urlpath:
                             return redirect('wiki:edit', path=self.urlpath.path)
