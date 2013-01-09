@@ -5,7 +5,5 @@ python:
   - "2.7"
 # command to run tests
 # script: nosetests
-env:
-  - DJANGO_VERSION=1.4.2
 install:
-  - pip install -r requirements.txt -q Django==$DJANGO_VERSION
+  - pip install -r .travis/requirements_1.4.txt
