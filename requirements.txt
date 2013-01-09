@@ -4,3 +4,4 @@ Markdown<2.3.0
 django-sekizai<0.7
 django-mptt>=0.5.3
 sorl-thumbnail
+PIL
