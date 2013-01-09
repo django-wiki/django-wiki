@@ -1,0 +1,11 @@
+language: python
+python:
+  - "2.5"
+  - "2.6"
+  - "2.7"
+# command to run tests
+# script: nosetests
+env:
+  - DJANGO_VERSION=1.4.2
+install:
+  - pip -r requirements.txt install -q Django==$DJANGO_VERSION
