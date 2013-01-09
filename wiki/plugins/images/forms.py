@@ -5,7 +5,7 @@ from wiki.core.plugins.base import PluginSidebarFormMixin
 from wiki.plugins.images import models
 
 
-class SidebarForm(forms.ModelForm, PluginSidebarFormMixin):
+class SidebarForm(PluginSidebarFormMixin):
     
     def __init__(self, article, request, *args, **kwargs):
         self.article = article

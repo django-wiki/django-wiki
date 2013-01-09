@@ -14,7 +14,7 @@
       <div class="accordion-inner form-vertical">
         {% if plugin.sidebar.template %}
           {% with plugin_form as form and plugin as plugin %}
-            <form method="POST" class="form-horizontal" action="?f={{ plugin_form.form_id }}" enctype="multipart/form-data">
+            <form method="POST" class="form-horizontal sidebar-form" action="?f={{ plugin_form.form_id }}" enctype="multipart/form-data">
               {% csrf_token %}
               {% include plugin.sidebar.template %}
             </form>

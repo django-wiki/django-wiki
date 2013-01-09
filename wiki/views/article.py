@@ -219,6 +219,17 @@ class Edit(FormView, ArticleMixin):
         self.sidebar = []
         return super(Edit, self).dispatch(request, article, *args, **kwargs)
     
+    def get_initial(self):
+        initial = FormView.get_initial(self)
+        
+        for field_name in ['title', 'content']:
+            session_key = 'unsaved_article_%s_%d' % (field_name, self.article.id)
+            if session_key in self.request.session.keys():
+                content = self.request.session[session_key]
+                initial[field_name] = content
+                del self.request.session[session_key]
+        return initial
+    
     def get_form(self, form_class):
         """
         Checks from querystring data that the edit form is actually being saved,
@@ -266,9 +277,16 @@ class Edit(FormView, ArticleMixin):
                             messages.success(self.request, usermessage)
                         else:
                             messages.success(self.request, _(u'Your changes were saved.'))
+                        
+                        request.session['unsaved_article_title_%d' % self.article.id] = form.cleaned_data['unsaved_article_title']
+                        request.session['unsaved_article_content_%d' % self.article.id] = form.cleaned_data['unsaved_article_content']
+                        
+                        messages.warning(request, _('Please note that your article text has not yet been saved!'))
+                        
                         if self.urlpath:
                             return redirect('wiki:edit', path=self.urlpath.path)
                         return redirect('wiki:edit', article_id=self.article.id)
+                        
                 else:
                     form = Form(self.article, self.request)
                 setattr(form, 'form_id', form_id)

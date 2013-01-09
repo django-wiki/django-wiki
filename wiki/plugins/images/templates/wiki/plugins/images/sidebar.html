@@ -13,6 +13,16 @@ function insert_image(image_id) {
     $('#id_content').insertAtCaret(imagetag+'\n\n');  
   }
 }
+
+$(document).ready( function() {
+  $('.sidebar-form').each(function () {
+    $(this).submit( function() {
+      this.unsaved_article_title.value = $('#id_title').val();
+      this.unsaved_article_content.value = $('#id_content').val();
+    });
+  });
+});
+
 </script>
 {% endaddtoblock %}
 
@@ -72,22 +82,27 @@ function insert_image(image_id) {
     {% endfor %}
   {% endif %}
 
-  {% for field in form %}
-  <fieldset id="div_{{ field.auto_id }}" class="control-group fields {% if field.errors %} error{% endif %}">
-    {% if field.label %}
-      <!--<label for="{{ field.id_for_label }}" class="{% if field.field.required %}requiredField{% endif %}">
-      {{ field.label|safe }}
-      </label>-->
-    {% endif %}
-    {{ field }}
-    {% if field.errors %}
-    <div id="error_{{ forloop.counter }}_{{ field.auto_id }}" class="help-block">
-      {% for error in field.errors %}
-      <div>{{ error }}</div>
-      {% endfor %}
-    </div>
-    {% endif %}
-  </fieldset>
+  {# Include the hidden fields #}
+  {% for hidden in form.hidden_fields %}
+    {{ hidden }}
+  {% endfor %}
+
+  {% for field in form.visible_fields %}
+    <fieldset id="div_{{ field.auto_id }}" class="control-group fields {% if field.errors %} error{% endif %}">
+      {% if field.label %}
+        <!--<label for="{{ field.id_for_label }}" class="{% if field.field.required %}requiredField{% endif %}">
+        {{ field.label|safe }}
+        </label>-->
+      {% endif %}
+      {{ field }}
+      {% if field.errors %}
+      <div id="error_{{ forloop.counter }}_{{ field.auto_id }}" class="help-block">
+        {% for error in field.errors %}
+        <div>{{ error }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </fieldset>
     {% if field.help_text %}
       <p id="hint_{{ field.auto_id }}" class="help-block">{{ field.help_text|safe }}</p>
     {% endif %}
