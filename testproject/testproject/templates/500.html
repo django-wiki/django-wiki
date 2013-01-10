@@ -1,0 +1,17 @@
+{% extends "wiki/base.html" %}
+{% load wiki_tags i18n %}
+{% load url from future %}
+
+{% block pagetitle %}{% trans "500 Server err" %}{% endblock %}
+
+{% block wiki_breadcrumbs %}{% endblock %}
+
+{% block wiki_contents %}
+
+<h1 class="page-header">{% trans "500 - ERROR" %}</h1>
+
+<div class="error">
+  <p>{% trans "Oh god no the demo has failed. Please rest asured that an open source developer is the logs to resolve this, because it's fun!!" %}</p>
+</div>
+
+{% endblock %}
