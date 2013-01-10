@@ -74,7 +74,7 @@ ROOT_URLCONF = 'testproject.urls'
 WSGI_APPLICATION = 'testproject.wsgi.application'
 
 TEMPLATE_DIRS = (
-    'templates',
+    os_path.join(PROJECT_PATH, 'templates'),
 )
 
 TEMPLATE_CONTEXT_PROCESSORS =(
