@@ -73,7 +73,10 @@ def upload_path(instance, filename):
         import random, hashlib
         m=hashlib.md5(str(random.randint(0,100000000000000)))
         upload_path = path.join(upload_path, m.hexdigest())
-    return path.join(upload_path, filename + '.upload')
+        
+    if settings.APPEND_EXTENSION:
+        filename += '.upload'
+    return path.join(upload_path, filename)
 
 
 class AttachmentRevision(BaseRevisionMixin, models.Model):
