@@ -1,11 +1,14 @@
 from django.conf import settings as django_settings
+from wiki.conf import settings as wiki_settings
 from django.core.exceptions import ImproperlyConfigured
 
 APP_LABEL = 'wiki'
 SLUG = "attachments"
 
-# Allow anonymous users to upload (not nice on an open network)
-ANONYMOUS = getattr(django_settings, 'WIKI_ATTACHMENTS_ANONYMOUS', False)
+# Allow anonymous users upload access (not nice on an open network)
+# WIKI_ATTACHMENTS_ANONYMOUS can override this, otherwise the default
+# in wiki.conf.settings is used. 
+ANONYMOUS = getattr( django_settings, 'WIKI_ATTACHMENTS_ANONYMOUS', wiki_settings.ANONYMOUS_UPLOAD )
 
 # Maximum file sizes: Please using something like LimitRequestBody on
 # your web server.
@@ -15,12 +18,12 @@ ANONYMOUS = getattr(django_settings, 'WIKI_ATTACHMENTS_ANONYMOUS', False)
 # You should NEVER enable directory indexing in MEDIA_ROOT/UPLOAD_PATH !
 # Actually, you can completely disable serving it, if you want. Files are
 # sent to the user through a Django view that reads and streams a file.
-UPLOAD_PATH = getattr(django_settings, 'WIKI_UPLOAD_PATH', 'wiki/uploads/%aid/')
+UPLOAD_PATH = getattr(django_settings, 'WIKI_ATTACHMENTS_PATH', 'wiki/attachments/%aid/')
 
 # Should the upload path be obscurified? If so, a random hash will be added to the path
 # such that someone can not guess the location of files (if you have
 # restricted permissions and the files are still located within the web server's
-UPLOAD_PATH_OBSCURIFY = getattr(django_settings, 'WIKI_UPLOAD_PATH_OBSCURIFY', True)
+UPLOAD_PATH_OBSCURIFY = getattr(django_settings, 'WIKI_ATTACHMENTS_PATH_OBSCURIFY', True)
 
 # Allowed extensions. Empty to disallow uploads completely.
 # No files are saved without appending ".upload" to the file to ensure that
@@ -28,10 +31,12 @@ UPLOAD_PATH_OBSCURIFY = getattr(django_settings, 'WIKI_UPLOAD_PATH_OBSCURIFY', T
 # Case insensitive.
 # You are asked to explicitly enter all file extensions that you want
 # to allow. For your own safety.
-FILE_EXTENSIONS = getattr(django_settings, 'WIKI_FILE_EXTENSIONS', ['pdf', 'doc', 'odt', 'docx', 'txt'])
+FILE_EXTENSIONS = getattr(django_settings, 'WIKI_ATTACHMENTS_EXTENSIONS', ['pdf', 'doc', 'odt', 'docx', 'txt'])
 
-from django.core.files.storage import default_storage
-STORAGE_BACKEND = getattr(django_settings, 'WIKI_STORAGE_BACKEND', default_storage)
+# Storage backend to use, default is to use the same as the rest of the
+# wiki, which is set in WIKI_STORAGE_BACKEND, but you can override it
+# with WIKI_ATTACHMENTS_STORAGE_BACKEND
+STORAGE_BACKEND = getattr(django_settings, 'WIKI_ATTACHMENTS_STORAGE_BACKEND', wiki_settings.STORAGE_BACKEND)
 
 # SAFETY FIRST! Only store files with an appended .upload extension to be sure
 # that something nasty does not get executed on the server.

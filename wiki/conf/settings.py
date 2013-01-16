@@ -67,6 +67,10 @@ ANONYMOUS_WRITE = getattr( django_settings, 'WIKI_ANONYMOUS_WRITE', False )
 # Defaults to ANONYMOUS_WRITE.  
 ANONYMOUS_CREATE = getattr( django_settings, 'WIKI_ANONYMOUS_CREATE', ANONYMOUS_WRITE )
 
+# Default setting to allow anonymous users upload access (used in
+# plugins.attachments and plugins.images). 
+ANONYMOUS_UPLOAD = getattr( django_settings, 'WIKI_ANONYMOUS_UPLOAD', False )
+
 # Sign up, login and logout views should be accessible 
 ACCOUNT_HANDLING = getattr( django_settings, 'WIKI_ACCOUNT_HANDLING', True )
 
@@ -114,6 +118,13 @@ REVISIONS_PER_MINUTES_ANONYMOUS = getattr( django_settings, 'WIKI_REVISIONS_PER_
 
 # Number of minutes for looking up REVISIONS_PER_MINUTES and REVISIONS_PER_MINUTES_ANONYMOUS
 REVISIONS_MINUTES_LOOKBACK = getattr( django_settings, 'WIKI_REVISIONS_MINUTES_LOOKBACK', 2 )
+
+###########
+# STORAGE #
+###########
+
+from django.core.files.storage import default_storage
+STORAGE_BACKEND = getattr(django_settings, 'WIKI_STORAGE_BACKEND', default_storage)
 
 ####################
 # PLANNED SETTINGS #
