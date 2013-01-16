@@ -3,6 +3,9 @@ from django.conf import settings as django_settings
 # Where to store images
 IMAGE_PATH = getattr(django_settings, 'WIKI_IMAGE_PATH', "wiki/images/%aid/")
 
+from django.core.files.storage import default_storage
+STORAGE_BACKEND = getattr(django_settings, 'WIKI_STORAGE_BACKEND', default_storage)
+
 # Should the upload path be obscurified? If so, a random hash will be added to the path
 # such that someone can not guess the location of files (if you have
 # restricted permissions and the files are still located within the web server's

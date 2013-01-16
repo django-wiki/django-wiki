@@ -52,7 +52,8 @@ class ImageRevision(RevisionPluginRevision):
     
     image = models.ImageField(upload_to=upload_path,
                               max_length=2000, height_field='height',
-                              width_field='width', blank=True, null=True)
+                              width_field='width', blank=True, null=True,
+                              storage=settings.STORAGE_BACKEND)
     
     width = models.SmallIntegerField(blank=True, null=True)
     height = models.SmallIntegerField(blank=True, null=True)
