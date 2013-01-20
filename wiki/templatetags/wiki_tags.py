@@ -52,13 +52,10 @@ def wiki_render(article, preview_content=None):
 
 @register.inclusion_tag('wiki/includes/form.html', takes_context=True)
 def wiki_form(context, form_obj):
-    
     if not isinstance(form_obj, BaseForm):
         raise TypeError("Error including form, it's not a form, it's a %s" % type(form_obj))
-    
-    return {
-        'form': form_obj,
-    }
+    context.update({'form': form_obj})
+    return context
 
 @register.filter
 def get_content_snippet(content, keyword, max_words=30):

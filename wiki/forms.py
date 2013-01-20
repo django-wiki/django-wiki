@@ -150,33 +150,6 @@ class SelectWidgetBootstrap(forms.Select):
     http://twitter.github.com/bootstrap/components.html#buttonDropdowns
     Needs bootstrap and jquery
     """
-    js = ("""
-    <script type="text/javascript">
-        function setBtnGroupVal(elem) {
-            btngroup = $(elem).parents('.btn-group');
-            selected_a = btngroup.find('a[selected]');
-            if (selected_a.length > 0) {
-                val = selected_a.attr('data-value');
-                label = selected_a.html();
-            } else {
-                btngroup.find('a').first().attr('selected', 'selected');
-                setBtnGroupVal(elem);
-            }
-            btngroup.find('input').val(val);
-            btngroup.find('.btn-group-label').html(label);
-        }
-        $(document).ready(function() {
-            $('.btn-group-form input').each(function() {
-                setBtnGroupVal(this);
-            });
-            $('.btn-group-form li a').click(function() {
-                $(this).parent().siblings().find('a').attr('selected', false);
-                $(this).attr('selected', true);
-                setBtnGroupVal(this);
-            });
-        })
-    </script>
-    """)
     def __init__(self, attrs={'class': 'btn-group pull-left btn-group-form'}, choices=()):
         self.noscript_widget = forms.Select(attrs={}, choices=choices)
         super(SelectWidgetBootstrap, self).__init__(attrs, choices)
@@ -199,13 +172,11 @@ class SelectWidgetBootstrap(forms.Select):
                   """    </ul>"""
                   """    <input type="hidden" name="%(name)s" value="" class="btn-group-value" />"""
                   """</div>"""
-                  """%(js)s"""
                   """<noscript>%(noscript)s</noscript>"""
                    % {'attrs': flatatt(final_attrs),
                       'options':self.render_options(choices, [value]),
                       'label': _(u'Select an option'),
                       'name': name,
-                      'js': SelectWidgetBootstrap.js,
                       'noscript': self.noscript_widget.render(name, value, {}, choices)} ]
         return mark_safe(u'\n'.join(output))
 
@@ -229,6 +200,9 @@ class SelectWidgetBootstrap(forms.Select):
                 output.append(self.render_option(selected_choices, option_value, option_label))
         return u'\n'.join(output)
     
+    class Media(forms.Media):
+            
+        js = ("wiki/js/forms.js",)
 
 class TextInputPrepend(forms.TextInput):
     
