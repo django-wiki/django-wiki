@@ -14,6 +14,7 @@ WIKI_LANGUAGE = 'markdown'
 EDITOR = getattr( django_settings, 'WIKI_EDITOR', 'wiki.editors.markitup.MarkItUp' )
 
 MARKDOWN_EXTENSIONS = getattr( django_settings, 'WIKI_MARKDOWN_EXTENSIONS', ['extra', 'toc'] )
+MARKDOWN_SAFE_MODE = getattr( django_settings, 'WIKI_MARKDOWN_SAFE_MODE', 'remove' )
 
 # This slug is used in URLPath if an article has been deleted. The children of the
 # URLPath of that article are moved to lost and found. They keep their permissions
