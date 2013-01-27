@@ -1,6 +1,10 @@
 django-wiki
 ===========
 
+***News: January 26, 2013***
+
+New release 0.0.11 is out. Fixed recursive inheritence of permissions, Issue#99.
+
 ***News: January 9, 2013***
 
 Happy new year. We have added a bit more in the department of nptifying ourselves upon errors both in the installation process (Travis) and the demo version. Have a look further below.
