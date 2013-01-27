@@ -1,6 +1,10 @@
 django-wiki
 ===========
 
+***News: January 26, 2013***
+
+New release 0.0.11 is out. Fixed recursive inheritence of permissions, Issue#99.
+
 ***News: January 9, 2013***
 
 Happy new year. We have added a bit more in the department of nptifying ourselves upon errors both in the installation process (Travis) and the demo version. Have a look further below.
@@ -134,8 +138,9 @@ Q&A
 ------------
 
  * **Why is the module named just "wiki"?** Because "pip install wiki" returns "No distributions at all found for wiki"! :)
- * **What markup language will you use?** The markup engine will be pluggable, but Markdown will be the built-in supported one.
+ * **What markup language will you use?** [Markdown](http://pypi.python.org/pypi/Markdown). The markup renderer is not a pluggable part but has been internalized into core parts. Discussion should go here: https://github.com/benjaoming/django-wiki/issues/76
  * **Why not use django-reversion?** It's a great project, but if the wiki has to grow ambitious, someone will have to optimize its behavior, and using a third-party application for something as crucial as the revision system is a no-go in this regard.
+ * **Any support for multiple wikis?** Yes, in an sense you can just imagine that you always have multiple wikis, because you always have hierarchies and full control of their permissions. See this discussion: https://github.com/benjaoming/django-wiki/issues/63
 
 Dependencies
 ------------
