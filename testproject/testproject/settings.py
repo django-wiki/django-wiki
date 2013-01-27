@@ -149,3 +149,14 @@ WIKI_ANONYMOUS_CREATE = False
 LOGIN_REDIRECT_URL = "/"
 
 from settings_local import *
+
+try:
+    import debug_toolbar #@UnusedImport
+    MIDDLEWARE_CLASSES = list(MIDDLEWARE_CLASSES) + [
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+    ]
+    INSTALLED_APPS = list(INSTALLED_APPS) + ['debug_toolbar']
+    INTERNAL_IPS = ('127.0.0.1',)
+    DEBUG_TOOLBAR_CONFIG = {'INTERCEPT_REDIRECTS': False}
+except ImportError:
+    pass
