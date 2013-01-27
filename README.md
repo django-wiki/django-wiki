@@ -21,9 +21,10 @@ A demo is available here, sign up for an account to see the notification system.
 Community
 ---------
 
-Please use our mailing list for getting in touch on development and support:
+Please use our mailing list (google group) for getting in touch on development and support:
 
 [django-wiki@googlegroups.com](https://groups.google.com/d/forum/django-wiki)
+
 [twitter:djangowiki](https://twitter.com/djangowiki)
 
 *THIS IS A WORK IN PROGRE...*
