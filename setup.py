@@ -31,7 +31,7 @@ package_data = dict(
 
 setup(
     name = "wiki",
-    version = "0.0.9",
+    version = "0.0.11",
     author = "Benjamin Bach",
     author_email = "benjamin@overtag.dk",
     url = "http://www.django-wiki.org",

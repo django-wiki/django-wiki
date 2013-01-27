@@ -294,9 +294,15 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
     if settings.USE_BOOTSTRAP_SELECT_WIDGET:
         group.widget= SelectWidgetBootstrap()
     
-    recursive = forms.BooleanField(label=_(u'Inherit permissions'), help_text=_(u'Check here to apply the above permissions recursively to articles under this one.'),
+    recursive = forms.BooleanField(label=_(u'Inherit permissions'), help_text=_(u'Check here to apply the above permissions (excluding group and owner of the article) recursively to articles below this one.'),
                                    required=False)
     
+    recursive_owner = forms.BooleanField(label=_(u'Inherit owner'), help_text=_(u'Check here to apply the ownership setting recursively to articles below this one.'),
+                                         required=False)
+
+    recursive_group = forms.BooleanField(label=_(u'Inherit group'), help_text=_(u'Check here to apply the group setting recursively to articles below this one.'),
+                                         required=False)
+
     def get_usermessage(self):
         if self.changed_data:
             return _('Permission settings for the article were updated.')
@@ -313,8 +319,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
         
         self.can_change_groups = False
         self.can_assign = False
-        
-        print "checking can_assing", permissions.can_assign(article, request.user), request.user.is_staff
+
         if permissions.can_assign(article, request.user):
             self.can_assign = True
             self.fields['group'].queryset = models.Group.objects.all()
@@ -322,13 +327,15 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
             self.fields['group'].queryset = models.Group.objects.filter(user=request.user)
             self.can_change_groups = True
         else:
-            self.fields['group'].widget = forms.HiddenInput()
+            self.fields['group'].widget = forms.CharField(attrs={'readonly': 'true'})
             self.fields['group_read'].widget = forms.HiddenInput()
             self.fields['group_write'].widget = forms.HiddenInput()
             
         if not self.can_assign:
-            self.fields['owner_username'].widget = forms.HiddenInput()
+            self.fields['owner_username'].widget = forms.CharField(attrs={'readonly': 'true'})
             self.fields['recursive'].widget = forms.HiddenInput()
+            self.fields['recursive_group'].widget = forms.HiddenInput()
+            self.fields['recursive_owner'].widget = forms.HiddenInput()
             self.fields['locked'].widget = forms.HiddenInput()
         
         self.fields['owner_username'].initial = article.owner.username if article.owner else ""
@@ -358,6 +365,10 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
         if self.can_assign:
             if self.cleaned_data['recursive']:
                 article.set_permissions_recursive()
+            if self.cleaned_data['recursive_owner']:
+                article.set_owner_recursive()
+            if self.cleaned_data['recursive_group']:
+                article.set_group_recursive()
             if self.cleaned_data['locked'] and not article.current_revision.locked:
                 revision = models.ArticleRevision()
                 revision.inherit_predecessor(self.article)
@@ -372,12 +383,12 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
                 revision.automatic_log = _(u'Article unlocked for editing')
                 revision.locked = False
                 self.article.add_revision(revision)                
-        
+
         article.save()
     
     class Meta:
         model = models.Article
-        fields = ('locked', 'owner_username', 'group', 'group_read', 'group_write', 'other_read', 'other_write',
+        fields = ('locked', 'owner_username', 'recursive_owner', 'group', 'recursive_group', 'group_read', 'group_write', 'other_read', 'other_write',
                   'recursive')
 
 class DirFilterForm(forms.Form):

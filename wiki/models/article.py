@@ -28,11 +28,13 @@ class Article(models.Model):
 
     owner = models.ForeignKey(User, verbose_name=_('owner'),
                               blank=True, null=True, related_name='owned_articles',
-                              help_text=_(u'The owner of the article, usually the creator. The owner always has both read and write access.'),)
+                              help_text=_(u'The owner of the article, usually the creator. The owner always has both read and write access.'),
+                              on_delete=models.SET_NULL)
     
     group = models.ForeignKey(Group, verbose_name=_('group'),
                               blank=True, null=True,
-                              help_text=_(u'Like in a UNIX file system, permissions can be given to a user according to group membership. Groups are handled through the Django auth system.'),)
+                              help_text=_(u'Like in a UNIX file system, permissions can be given to a user according to group membership. Groups are handled through the Django auth system.'),
+                              on_delete=models.SET_NULL)
     
     group_read = models.BooleanField(default=True, verbose_name=_(u'group read access'))
     group_write = models.BooleanField(default=True, verbose_name=_(u'group write access'))
@@ -111,23 +113,23 @@ class Article(models.Model):
     def set_permissions_recursive(self):
         for descendant in self.descendant_objects():
             if descendant.INHERIT_PERMISSIONS:
-                descendant.group_read = self.group_read
-                descendant.group_write = self.group_write
-                descendant.other_read = self.other_read
-                descendant.other_write = self.other_write
+                descendant.article.group_read = self.group_read
+                descendant.article.group_write = self.group_write
+                descendant.article.other_read = self.other_read
+                descendant.article.other_write = self.other_write
                 descendant.save()
     
     def set_group_recursive(self):
         for descendant in self.descendant_objects():
             if descendant.INHERIT_PERMISSIONS:
-                descendant.group = self.group
-                descendant.save()
+                descendant.article.group = self.group
+                descendant.article.save()
 
     def set_owner_recursive(self):
         for descendant in self.descendant_objects():
             if descendant.INHERIT_PERMISSIONS:
-                descendant.owner = self.owner
-                descendant.save()
+                descendant.article.owner = self.owner
+                descendant.article.save()
     
     def add_revision(self, new_revision, save=True):
         """
@@ -220,7 +222,8 @@ class BaseRevisionMixin(models.Model):
     
     ip_address  = models.IPAddressField(_('IP address'), blank=True, null=True, editable=False)
     user        = models.ForeignKey(User, verbose_name=_('user'),
-                                    blank=True, null=True)    
+                                    blank=True, null=True,
+                                    on_delete=models.SET_NULL)    
     
     modified = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
