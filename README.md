@@ -24,6 +24,7 @@ Community
 Please use our mailing list for getting in touch on development and support:
 
 [django-wiki@googlegroups.com](https://groups.google.com/d/forum/django-wiki)
+[twitter:djangowiki](https://twitter.com/djangowiki)
 
 *THIS IS A WORK IN PROGRE...*
 ---------------------------------
