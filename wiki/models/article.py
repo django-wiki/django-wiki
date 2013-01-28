@@ -8,7 +8,6 @@ from django.utils.translation import ugettext_lazy as _
 
 from wiki.conf import settings
 from wiki.core import article_markdown, permissions
-from wiki.core.plugins import registry as plugin_registry
 from wiki import managers
 from mptt.models import MPTTModel
 
@@ -183,9 +182,7 @@ class Article(models.Model):
             content = preview_content
         else:
             content = self.current_revision.content
-        extensions = plugin_registry.get_markdown_extensions()
-        extensions += settings.MARKDOWN_EXTENSIONS
-        return mark_safe(article_markdown(content, self, extensions=extensions))
+        return mark_safe(article_markdown(content, self))
         
     
 class ArticleForObject(models.Model):
