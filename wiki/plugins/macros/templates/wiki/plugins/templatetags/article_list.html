@@ -1,0 +1,11 @@
+{% load wiki_macro_tags %}
+<p><a href="{% url wiki:get path=urlpath.path %}">{{ urlpath.article }}</a></p>
+<div> 
+    <ul>
+        <li>
+            {% for urlpath in urlpath.children.all %}
+                {% article_list urlpath %}
+            {% endfor %}
+        </li>
+    </ul>
+</div>
