@@ -1,11 +1,15 @@
 {% load wiki_macro_tags %}
-<p><a href="{% url wiki:get path=urlpath.path %}">{{ urlpath.article }}</a></p>
-<div class="wiki-article-sublist"> 
-    <ul>
-        <li>
-            {% for urlpath in urlpath.children.all %}
-                {% article_list urlpath %}
-            {% endfor %}
-        </li>
-    </ul>
-</div>
+{% load url from future %}
+
+<p><a href="{% url 'wiki:get' path=urlpath.path %}">{{ urlpath.article }}</a></p>
+{% if urlpath.children.count %}
+    <div class="wiki-article-sublist"> 
+        <ul>
+            <li>
+                {% for urlpath in urlpath.children.all %}
+                    {% article_list urlpath %}
+                {% endfor %}
+            </li>
+        </ul>
+    </div>
+{% endif %}
