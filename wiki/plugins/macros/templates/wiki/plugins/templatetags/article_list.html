@@ -5,11 +5,9 @@
 {% if urlpath.children.count %}
     <div class="wiki-article-sublist"> 
         <ul>
-            <li>
-                {% for urlpath in urlpath.children.all %}
-                    {% article_list urlpath %}
-                {% endfor %}
-            </li>
+            {% for urlpath in urlpath.children.all %}
+                <li>{% article_list urlpath %}</li>
+            {% endfor %}
         </ul>
     </div>
 {% endif %}
