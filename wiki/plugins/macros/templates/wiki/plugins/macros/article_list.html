@@ -1,8 +1,8 @@
-{% load wiki_macro_tags %}
+{% load i18n wiki_macro_tags %}
 
 {% if article_children %}
     <div class="well wiki-article-list">
-        <h3>Articles</h3>
+        <h3>{% trans "Articles" %}</h3>
         <br/>
             {% for child in article_children %}
                 {% article_list child %}

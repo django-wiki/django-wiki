@@ -8,7 +8,7 @@ register = template.Library()
     takes_context=True
 )
 def article_list(context, urlpath):
-    context['urlpath'] = urlpath 
+    context['parent'] = urlpath 
     return context 
 
 
