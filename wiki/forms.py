@@ -327,12 +327,12 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
             self.fields['group'].queryset = models.Group.objects.filter(user=request.user)
             self.can_change_groups = True
         else:
-            self.fields['group'].widget = forms.CharField(attrs={'readonly': 'true'})
+            self.fields['group'].widget = forms.TextInput(attrs={'readonly': 'true'})
             self.fields['group_read'].widget = forms.HiddenInput()
             self.fields['group_write'].widget = forms.HiddenInput()
             
         if not self.can_assign:
-            self.fields['owner_username'].widget = forms.CharField(attrs={'readonly': 'true'})
+            self.fields['owner_username'].widget = forms.TextInput(attrs={'readonly': 'true'})
             self.fields['recursive'].widget = forms.HiddenInput()
             self.fields['recursive_group'].widget = forms.HiddenInput()
             self.fields['recursive_owner'].widget = forms.HiddenInput()
