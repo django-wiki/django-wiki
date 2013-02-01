@@ -109,6 +109,7 @@ INSTALLED_APPS = (
     'wiki.plugins.images',
     'wiki.plugins.attachments',
     'wiki.plugins.notifications',
+    'wiki.plugins.macros',
     'mptt',
     #'haystack',
 )

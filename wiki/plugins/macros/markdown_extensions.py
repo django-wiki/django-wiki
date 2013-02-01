@@ -18,13 +18,17 @@ class MacroExtension(markdown.Extension):
 class MacroPreprocessor(markdown.preprocessors.Preprocessor):
     """django-wiki macro preprocessor - parse text for various [some_macro] and 
     [some_macro:arg] references. """
-
+    
+    allowed_methods = ('article_list',)
+    
     def run(self, lines):
         new_text = []
         for line in lines:
             m = MACRO_RE.match(line)
             if m:
                 macro = m.group('macro').strip()
+                if not macro in MacroPreprocessor.allowed_methods:
+                    continue
                 arg = m.group('arg')
                 if arg:
                     arg = arg.strip()
