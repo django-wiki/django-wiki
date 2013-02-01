@@ -34,7 +34,8 @@ def default_url(article, urlpath=None):
         url = reverse('wiki:get', kwargs={'article_id': article.id})
     return url
 
-def post_article_revision_save(instance, **kwargs):
+def post_article_revision_save(**kwargs):
+    instance = kwargs['instance']
     if kwargs.get('created', False):
         url = default_url(instance.article)
         if instance.deleted:

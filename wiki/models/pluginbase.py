@@ -239,9 +239,10 @@ class RevisionPluginRevision(BaseRevisionMixin, models.Model):
 # It's my art, when I disguise my body in the shape of a plane.
 # (Shellac, 1993)
 
-def update_simple_plugins(instance, *args, **kwargs):
+def update_simple_plugins(**kwargs):
     """Every time a new article revision is created, we update all active 
     plugins to match this article revision"""
+    instance = kwargs['instance']
     if kwargs.get('created', False):
         p_revisions = SimplePlugin.objects.filter(article=instance.article, deleted=False)
         # TODO: This was breaking things. SimplePlugin doesn't have a revision?

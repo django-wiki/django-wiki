@@ -235,8 +235,9 @@ class URLPath(MPTTModel):
 # Just get this once
 urlpath_content_type = None
 
-def on_article_relation_save(instance, *args, **kwargs):
+def on_article_relation_save(**kwargs):
     global urlpath_content_type
+    instance = kwargs['instance']
     if not urlpath_content_type:
         urlpath_content_type = ContentType.objects.get_for_model(URLPath)
     if instance.content_type == urlpath_content_type:
