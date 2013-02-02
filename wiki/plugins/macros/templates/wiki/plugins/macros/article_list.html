@@ -5,7 +5,7 @@
         <h3>{% trans "Articles" %}</h3>
         <br/>
             {% for child in article_children %}
-                {% article_list child %}
+                {% article_list child depth %}
             {% endfor %}
     </div>
 {% endif %}
