@@ -10,9 +10,9 @@
 
 {% block wiki_contents %}
 
-  <div class="" style="margin-top: 20px;">
-    <ul class="nav nav-pills" style="border-bottom: 1px solid #EEE;">
-      <li class="pull-left">
+  <div id="article-container">
+    <ul class="nav nav-pills" id="article-menu">
+      <li class="pull-left" id="article-title-li">
         <h1 id="article-title">
           {{ article.current_revision.title }}
           <small style="font-size: 14px;">
