@@ -7,6 +7,13 @@ DB_TABLE_PREFIX = 'notify'
 # You need to switch this setting on, otherwise nothing will happen :)
 ENABLED = getattr(django_settings, "NOTIFY_ENABLED", True)
 
+# Enable django-admin registration
+ENABLE_ADMIN = getattr(django_settings, "NOTIFY_ENABLE_ADMIN", False)
+
+##################################
+# PLANNED CONFIGURATION SETTINGS #
+##################################
+
 # Email notifications are just optional... if you don't have access
 # to a proper SMTP server, just leave it off...
 SEND_EMAILS = getattr(django_settings, "NOTIFY_SEND_EMAILS", False)
