@@ -52,8 +52,7 @@ class URLPath(MPTTModel):
         #self._tree_manager = URLPath.objects
         return super(URLPath, self).__init__(*args, **kwargs)
     
-    @property
-    def cached_ancestors(self):
+    def __cached_ancestors(self):
         """
         This returns the ancestors of this urlpath. These ancestors are hopefully
         cached from the article path lookup. Accessing a foreign key included in
@@ -70,10 +69,13 @@ class URLPath(MPTTModel):
         
         return self._cached_ancestors
     
-    @cached_ancestors.setter
-    def cached_ancestors(self, ancestors):
+    def __cached_ancestors_setter(self, ancestors):
         self._cached_ancestors = ancestors
-    
+
+    # Python 2.5 compatible property constructor
+    cached_ancestors = property(__cached_ancestors,
+                                __cached_ancestors_setter)
+
     def set_cached_ancestors_from_parent(self, parent):
         self.cached_ancestors = parent.cached_ancestors + [parent]
     
