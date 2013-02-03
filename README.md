@@ -1,6 +1,10 @@
 django-wiki
 ===========
 
+***News: February 3, 2013***
+
+New alpha release 0.0.13 is out. Updates on Python 2.5 support, new macro plugin and lots of smaller fixes. Have a look in the commit log.
+
 ***News: January 26, 2013***
 
 New release 0.0.11 is out. Fixed recursive inheritence of permissions, Issue#99.
