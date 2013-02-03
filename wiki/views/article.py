@@ -718,7 +718,8 @@ def root_create(request):
         create_form = forms.CreateRootForm(request.POST)
         if create_form.is_valid():
             models.URLPath.create_root(title=create_form.cleaned_data["title"],
-                                       content=create_form.cleaned_data["content"])
+                                       content=create_form.cleaned_data["content"],
+                                       request=request)
             return redirect("wiki:root")
     else:
         create_form = forms.CreateRootForm()
