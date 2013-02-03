@@ -156,7 +156,7 @@ So far the dependencies are:
  * [django-sekizai](https://github.com/ojii/django-sekizai/)
  * [sorl-thumbnail](https://github.com/sorl/sorl-thumbnail)
  * PIL (Python Imaging Library)
- * Python>=2.6<3 (Python 3 not yet supported)
+ * Python>=2.5<3 (Python 3 not yet supported)
 
 Development
 ------------
@@ -166,6 +166,11 @@ In a your Git fork, run `pip install -r requirements.txt` to install the require
 The folder **testproject/** contains a pre-configured django project and an sqlite database. Login for django admin is *admin:admin*. This project should always be maintained, although the sqlite database will be deleted very soon to avoid unnecessary conflicts.
 
 [![Build Status](https://travis-ci.org/benjaoming/django-wiki.png?branch=master)](https://travis-ci.org/benjaoming/django-wiki)
+
+Python 2.5
+----------
+
+Due to Markdown using elementree, you should check that you have python-celementtree: `apt-get install python-celementtree`
 
 Acknowledgements
 ----------------
