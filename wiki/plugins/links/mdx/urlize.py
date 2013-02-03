@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Code modified from:
 https://github.com/r0wb0t/markdown-urlize
