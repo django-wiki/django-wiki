@@ -5,7 +5,8 @@ from django.utils.translation import ugettext as _
 from django.template.loader import render_to_string
 from django.template import Context
 
-MACRO_RE = re.compile(r'.*(\[(?P<macro>\w+)(\:(?P<arg>\w+))?\]).*', re.IGNORECASE)
+MACRO_RE = re.compile(r'.*(\[(?P<macro>\w+)(?P<kwargs>\s\w+\:.+)*\]).*', re.IGNORECASE)
+KWARG_RE = re.compile(r'([^ |:]+):([^ |$]+)', re.IGNORECASE)
 
 from wiki.plugins.macros import settings
 
@@ -19,7 +20,7 @@ class MacroExtension(markdown.Extension):
 
 class MacroPreprocessor(markdown.preprocessors.Preprocessor):
     """django-wiki macro preprocessor - parse text for various [some_macro] and 
-    [some_macro:arg] references. """
+    [some_macro (kw:arg)*] references. """
     
     allowed_methods = settings.METHODS
     
@@ -31,22 +32,22 @@ class MacroPreprocessor(markdown.preprocessors.Preprocessor):
                 macro = m.group('macro').strip()
                 if not macro in MacroPreprocessor.allowed_methods:
                     continue
-                arg = m.group('arg')
-                if arg:
-                    arg = arg.strip()
-                try:
-                    line = getattr(self, macro)(arg)
-                except AttributeError:
-                    pass       
+                kwargs = m.group('kwargs')
+                if kwargs:
+                    kwargs = eval('{' + KWARG_RE.sub(r'"\1":"\2",', kwargs) + '}')
+                    line = getattr(self, macro)(**kwargs)
+                else:
+                    line = getattr(self, macro)()
             if not line is None:
                 new_text.append(line)
         return new_text
 
-    def article_list(self, arg=None):
+    def article_list(self, depth=2):
         html = render_to_string(
             "wiki/plugins/macros/article_list.html",
             Context({
                 'article_children': self.markdown.article.get_children,
+                'depth': int(depth) + 1,
             })
         )
         return self.markdown.htmlStash.store(html, safe=True)
