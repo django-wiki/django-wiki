@@ -175,7 +175,9 @@
       <div style="padding: 30px 0;" class="clearfix">
       <footer>
         <hr />
+        {% block footer_logo %}
         <a href="https://github.com/benjaoming/django-wiki" class="pull-right"><img src="{{ STATIC_URL }}wiki/img/github_icon.png" /></a>
+        {% endblock %}
         {% block footer_prepend %}
         {% endblock %}
         <p>Powered by <a href="http://www.django-wiki.org">django-wiki</a>, an open source application under the <a href="http://www.gnu.org/licenses/quick-guide-gplv3.html">GPLv3</a> license. Let knowledge be the cure.</p>
