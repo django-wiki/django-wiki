@@ -30,14 +30,13 @@ class MacroPreprocessor(markdown.preprocessors.Preprocessor):
             m = MACRO_RE.match(line)
             if m:
                 macro = m.group('macro').strip()
-                if not macro in MacroPreprocessor.allowed_methods:
-                    continue
-                kwargs = m.group('kwargs')
-                if kwargs:
-                    kwargs = eval('{' + KWARG_RE.sub(r'"\1":"\2",', kwargs) + '}')
-                    line = getattr(self, macro)(**kwargs)
-                else:
-                    line = getattr(self, macro)()
+                if macro in MacroPreprocessor.allowed_methods:
+                    kwargs = m.group('kwargs')
+                    if kwargs:
+                        kwargs = eval('{' + KWARG_RE.sub(r'"\1":"\2",', kwargs) + '}')
+                        line = getattr(self, macro)(**kwargs)
+                    else:
+                        line = getattr(self, macro)()
             if not line is None:
                 new_text.append(line)
         return new_text
