@@ -74,7 +74,8 @@ class UrlizePattern(markdown.inlinepatterns.Pattern):
         el = markdown.util.etree.Element("a")
         el.set('href', url)
         el.set('target', '_blank')
-        el.extend([icon, span_text])
+        el.append(icon)
+        el.append(span_text)
         return el
 
 class UrlizeExtension(markdown.Extension):
