@@ -13,7 +13,7 @@ WIKI_LANGUAGE = 'markdown'
 # extend the built-in editor and customize it....
 EDITOR = getattr( django_settings, 'WIKI_EDITOR', 'wiki.editors.markitup.MarkItUp' )
 
-MARKDOWN_KWARGS = {'extensions': ['extra', 'toc'], 'safe_mode': 'replace'}
+MARKDOWN_KWARGS = {'extensions': ['footnotes', 'headerid', 'extra', 'toc'], 'safe_mode': 'replace'}
 MARKDOWN_KWARGS.update(getattr( django_settings, 'WIKI_MARKDOWN_KWARGS', {} ))
 
 # This slug is used in URLPath if an article has been deleted. The children of the
