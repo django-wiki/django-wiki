@@ -1,10 +1,12 @@
 {% load i18n wiki_macro_tags %}
 
 {% if article_children %}
-  <h3>{% trans "Articles" %}</h3>
+  <h3>{% trans "Article index" %}</h3>
   <div class="article-list">
     {% for child in article_children %}
       {% article_list child depth %}
+      {% empty %}
+      <i>{% trans "Nothing below this level" %}</i>
     {% endfor %}
   </div>
 {% endif %}
