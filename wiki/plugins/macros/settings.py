@@ -1,5 +1,6 @@
 from django.conf import settings as django_settings
-from wiki.conf import settings as wiki_settings
 
 SLUG = 'macros'
 APP_LABEL = 'wiki'
+
+METHODS = getattr(django_settings, 'WIKI_PLUGINS_METHODS', ('article_list',))
