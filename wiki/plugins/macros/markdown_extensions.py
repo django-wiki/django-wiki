@@ -10,7 +10,7 @@ from django.template import Context
 re_sq_short = r"'([^'\\]*(?:\\.[^'\\]*)*)'"
 
 MACRO_RE = re.compile(r'.*(\[(?P<macro>\w+)(?P<kwargs>\s\w+\:.+)*\]).*', re.IGNORECASE)
-KWARG_RE = re.compile(r'\s*(?P<arg>\w+)(:(?P<value>([^\']|%s)))?' % re_sq_short, re.IGNORECASE)
+KWARG_RE = re.compile(r'\s*(?P<arg>\w+)(:(?P<value>([^\']+|%s)))?' % re_sq_short, re.IGNORECASE)
 
 from wiki.plugins.macros import settings
 
@@ -54,6 +54,7 @@ class MacroPreprocessor(markdown.preprocessors.Preprocessor):
                                     value = value.replace(u"\\", u"")
                                     value = value.replace(u"¤KEEPME¤", u"\\")
                             kwargs_dict[arg] = value
+                        print kwargs_dict
                         line = getattr(self, macro)(**kwargs_dict)
                     else:
                         line = getattr(self, macro)()
@@ -62,6 +63,7 @@ class MacroPreprocessor(markdown.preprocessors.Preprocessor):
         return new_text
 
     def article_list(self, depth=2):
+        print depth
         html = render_to_string(
             "wiki/plugins/macros/article_list.html",
             Context({
