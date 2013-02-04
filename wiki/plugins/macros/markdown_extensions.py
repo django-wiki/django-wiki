@@ -10,7 +10,7 @@ from django.template import Context
 re_sq_short = r"'([^'\\]*(?:\\.[^'\\]*)*)'"
 
 MACRO_RE = re.compile(r'.*(\[(?P<macro>\w+)(?P<kwargs>\s\w+\:.+)*\]).*', re.IGNORECASE)
-KWARG_RE = re.compile(r'\s*(?P<arg>\w+)(:(?P<value>([^\']|%s)))?' % re_sq_short, re.IGNORECASE)
+KWARG_RE = re.compile(r'\s*(?P<arg>\w+)(:(?P<value>([^\']+|%s)))?' % re_sq_short, re.IGNORECASE)
 
 from wiki.plugins.macros import settings
 
