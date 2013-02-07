@@ -10,7 +10,7 @@ from django.template import Context
 re_sq_short = r"'([^'\\]*(?:\\.[^'\\]*)*)'"
 
 MACRO_RE = re.compile(r'.*(\[(?P<macro>\w+)(?P<kwargs>\s\w+\:.+)*\]).*', re.IGNORECASE)
-KWARG_RE = re.compile(r'\s*(?P<arg>\w+)(:(?P<value>([^\']|%s)))?' % re_sq_short, re.IGNORECASE)
+KWARG_RE = re.compile(r'\s*(?P<arg>\w+)(:(?P<value>([^\']+|%s)))?' % re_sq_short, re.IGNORECASE)
 
 # See: http://stackoverflow.com/questions/430759/regex-for-managing-escaped-characters-for-items-like-string-literals
 re_sq_short = r"'([^'\\]*(?:\\.[^'\\]*)*)'"
