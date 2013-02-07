@@ -76,7 +76,7 @@ class MacroPreprocessor(markdown.preprocessors.Preprocessor):
                                     value = value.replace(u"\\\\", u"¤KEEPME¤")
                                     value = value.replace(u"\\", u"")
                                     value = value.replace(u"¤KEEPME¤", u"\\")
-                            kwargs_dict[arg] = value
+                            kwargs_dict[str(arg)] = value
                         line = getattr(self, macro)(**kwargs_dict)
                     else:
                         line = getattr(self, macro)()
@@ -84,7 +84,7 @@ class MacroPreprocessor(markdown.preprocessors.Preprocessor):
                 new_text.append(line)
         return new_text
 
-    def article_list(self, depth=2):
+    def article_list(self, depth="2"):
         html = render_to_string(
             "wiki/plugins/macros/article_list.html",
             Context({
