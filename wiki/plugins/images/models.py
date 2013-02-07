@@ -118,7 +118,12 @@ def on_image_revision_delete(instance, *args, **kwargs):
         max_depth = 1
     for depth in range(0, max_depth):
         delete_path = "/".join(path[:-depth] if depth > 0 else path)
-        if len(os.listdir(os.path.join(django_settings.MEDIA_ROOT, delete_path))) == 0:
+        try:
+            dir_list = os.listdir(os.path.join(django_settings.MEDIA_ROOT, delete_path))
+        except OSError:
+            # Path does not exist, so let's not try to remove it...
+            dir_list = None
+        if not (dir_list is None) and len(dir_list) == 0:
             os.rmdir(delete_path)
 
 signals.pre_delete.connect(on_image_revision_delete, ImageRevision)
