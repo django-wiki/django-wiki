@@ -12,6 +12,35 @@ re_sq_short = r"'([^'\\]*(?:\\.[^'\\]*)*)'"
 MACRO_RE = re.compile(r'.*(\[(?P<macro>\w+)(?P<kwargs>\s\w+\:.+)*\]).*', re.IGNORECASE)
 KWARG_RE = re.compile(r'\s*(?P<arg>\w+)(:(?P<value>([^\']|%s)))?' % re_sq_short, re.IGNORECASE)
 
+# See: http://stackoverflow.com/questions/430759/regex-for-managing-escaped-characters-for-items-like-string-literals
+re_sq_short = r"'([^'\\]*(?:\\.[^'\\]*)*)'"
+
+MACRO_RE = re.compile(r'.*(\[(?P<macro>%s)(?P<kwargs>\s\w+\:.+)*\]).*', re.IGNORECASE)
+KWARG_RE = re.compile(r'\s*(?P<arg>\w+)(:(?P<value>([^\']|%s)))?' % re_sq_short, re.IGNORECASE)
+
+class SimplePreprocessorExtension(markdown.Extension):
+    """Extend this class to create a simple [name arg:val] markdown tag 
+    and replace each tag with your own html stack"""
+    
+    UNSET = "OVERRIDE THIS"
+    markdown_id = UNSET
+    tagname = UNSET
+    
+    def extendMarkdown(self, md, md_globals):
+        if SimplePreprocessorExtension.UNSET in (self.markdown_id, self.tagname):
+            raise NotImplementedError("You need to set all required properties")
+        """ Insert ImagePreprocessor before ReferencePreprocessor. """
+        md.preprocessors.add('dw-%s' % self.markdown_id,
+                             self.get_preprocessor(md, self.tagname), 
+                             '>html_block')
+    
+    def get_preprocessor(self, md, tagname):
+        return SimplePreprocessor(md, tagname)
+    
+    class Preprocessor(markdown.preprocessors.Preprocessor):
+        pass
+
+
 from wiki.plugins.macros import settings
 
 class MacroExtension(markdown.Extension):
