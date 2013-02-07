@@ -68,3 +68,9 @@ input[type=file] {float: none; width: auto;}
 {
   margin-top: 20px;
 }
+
+#wiki-footer
+{
+  padding: 30px 0;
+  clear: both;
+}
