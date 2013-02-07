@@ -851,7 +851,7 @@ a.label:hover,a.badge:hover{color:#ffffff;text-decoration:none;cursor:pointer;}
 .show{display:block;}
 .invisible{visibility:hidden;}
 .affix{position:fixed;}
-.wiki-article .thumbnail{clear:both;}
+.wiki-article .thumbnail{clear:both;margin-bottom:15px;}
 #div_id_title .asteriskField{display:none;}
 #id_title{font-size:20px;height:30px;padding:6px;width:98%;}
 #id_summary{width:98%;padding:6px;}

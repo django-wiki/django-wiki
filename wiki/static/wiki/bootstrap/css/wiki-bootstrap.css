@@ -5122,6 +5122,7 @@ a.badge:hover {
 }
 .wiki-article .thumbnail {
   clear: both;
+  margin-bottom: 15px;
 }
 #div_id_title .asteriskField {
   display: none;
