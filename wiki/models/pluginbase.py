@@ -97,7 +97,7 @@ class ReusablePlugin(ArticlePlugin):
         # Automatically make the original article the first one in the added set
         if not self.article:
             articles = self.articles.all()
-            if articles.count() == 0:
+            if articles.exists():
                 self.article = articles[0]
             
         super(ReusablePlugin, self).save(*args, **kwargs)
