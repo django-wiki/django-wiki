@@ -30,7 +30,7 @@ packages = find_packages()
 
 setup(
     name = "wiki",
-    version = "0.0.14",
+    version = "0.0.15",
     author = "Benjamin Bach",
     author_email = "benjamin@overtag.dk",
     url = "http://www.django-wiki.org",
