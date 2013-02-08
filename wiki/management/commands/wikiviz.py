@@ -8,7 +8,7 @@ edited as management script by Benjamin Bach <benjamin@overtag.dk>
 Depends on package 'graphviz', ie. 'apt-get install graphviz'
 
 Example usage:
-$ ./manage.py wikiwiz wiki --inheritance | dot -Tpdf -o <filename>.pdf
+$ ./manage.py wikiviz wiki --inheritance | dot -Tpdf -o <filename>.pdf
 
 Place this script in the management.commands package of your application or project.
 
