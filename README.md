@@ -1,6 +1,14 @@
 django-wiki
 ===========
 
+***News: February 8, 2013***
+
+New alpha release 0.0.15 is out mainly because static files and templates in the previous two builds were not being properly updated and included. It also includes various tiny cosmetic changes and a new LESS structure.
+
+***News: February 3, 2013***
+
+New alpha release 0.0.13 is out. Updates on Python 2.5 support, new macro plugin and lots of smaller fixes. Have a look in the commit log.
+
 ***News: February 3, 2013***
 
 New alpha release 0.0.13 is out. Updates on Python 2.5 support, new macro plugin and lots of smaller fixes. Have a look in the commit log.
