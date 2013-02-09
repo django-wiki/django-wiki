@@ -1,3 +1,4 @@
+include COPYING
 include README.md
 include requirements.txt
 include model_chart_wiki.pdf

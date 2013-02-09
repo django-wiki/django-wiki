@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+from wiki import VERSION
 from setuptools import setup, find_packages
 
 # Utility function to read the README file.
@@ -30,7 +31,7 @@ packages = find_packages()
 
 setup(
     name = "wiki",
-    version = "0.0.15",
+    version = VERSION,
     author = "Benjamin Bach",
     author_email = "benjamin@overtag.dk",
     url = "http://www.django-wiki.org",
