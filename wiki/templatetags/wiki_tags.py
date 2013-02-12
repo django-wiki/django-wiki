@@ -8,9 +8,11 @@ from django.db.models import Model
 from django.forms import BaseForm
 from django.utils.safestring import mark_safe
 from django.template.defaultfilters import striptags
+from django.utils.http import urlquote
 
 register = template.Library()
 
+from wiki.conf import settings
 from wiki import models
 from wiki.core.plugins import registry as plugin_registry
 
@@ -101,3 +103,14 @@ def can_moderate(obj, user):
 def is_locked(obj):
     """Articles and plugins have a can_delete method..."""
     return (obj.current_revision and obj.current_revision.locked)
+
+
+@register.assignment_tag(takes_context=True)
+def login_url(context):
+    request = context['request']
+    qs = request.META.get('QUERY_STRING', '')
+    if qs:
+        qs = urlquote('?' + qs)
+    else:
+        qs = ''
+    return settings.LOGIN_URL+"?next="+request.path + qs
