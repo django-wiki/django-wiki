@@ -90,6 +90,25 @@ input[type=file] {float: none; width: auto;}
   clear: both;
 }
 
+.wiki-modal .modal-body iframe
+{
+    width: 100%;
+    min-height: 400px;
+    height: 100%;
+    border: 0;
+}
+
+// Resizable modals
+.ui-resizable-s {
+  bottom: 0;
+}
+.ui-resizable-e {
+  right: 0;
+}
+.ui-resizable {
+  position: fixed !important;
+}
+
 @media print
 {
     .navbar,
@@ -107,3 +126,5 @@ input[type=file] {float: none; width: auto;}
       display: block !important;
     }
 }
+
+

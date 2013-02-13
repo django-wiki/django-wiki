@@ -6,25 +6,11 @@
 
 {% block wiki_contents_tab %}
 
+{% include "wiki/includes/modals.html" %}
+
 {% addtoblock "js" %}
 <script type="text/javascript" src="{{ STATIC_URL }}wiki/js/diffview.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}wiki/js/diff.js"></script>
-<script type="text/javascript">
-  $(document).ready(
-    function() {
-      $('.accordion input[disabled!="disabled"][type="radio"]').first().attr('checked', 'true');
-      // Fix modal heights
-      $('.modal').css('height', $(window).height()*0.70 + 'px');
-      $('.modal').css('max-height', ($(window).height() * 0.8) + 'px');
-      $('.modal').each( function() {
-        var max_height = ($(this).height() - $(this).find('.modal-header').height() - $(this).find('.modal-footer').height()-265);
-        if (max_height > 0)
-          $(this).find('.modal-body').css('height', max_height + 'px');
-        else
-          $(this).find('.modal-body').css('height', ($(this).height() - 100) + 'px');
-      });
-    });
-</script>
 {% endaddtoblock %}
 {% addtoblock "css" %}
 <style type="text/css">
@@ -153,9 +139,9 @@
     
   </div>
   <input type="hidden" name="r" value="" />
-  <div class="modal hide" id="previewModal" style="width: 80%; margin-left: -40%;">
+  <div class="modal hide wiki-modal" id="previewModal">
     <div class="modal-body">
-      <iframe name="previewWindow" style="width: 100%; height: 100%; border: 0;" frameborder="0"></iframe>
+      <iframe name="previewWindow" frameborder="0"></iframe>
     </div>
     <div class="modal-footer">
       <a href="#" class="btn btn-large" data-dismiss="modal">
@@ -176,13 +162,13 @@
     </div>
   </div>
 
-  <div class="modal hide" id="mergeModal" style="width: 80%; margin-left: -40%;">
+  <div class="modal hide wiki-modal" id="mergeModal">
     <div class="modal-header">
       <h1>{% trans "Merge with current" %}</h1>
       <p class="lead"><span class="icon-info-sign"></span> {% trans "When you merge a revision with the current, all data will be retained from both versions and merged at its approximate location from each revision." %} <strong>{% trans "After this, it's important to do a manual review." %}</strong></p>
     </div>
     <div class="modal-body">
-      <iframe name="mergeWindow" style="width: 100%; height: 100%; border: 0;" frameborder="0"></iframe>
+      <iframe name="mergeWindow" frameborder="0"></iframe>
     </div>
     <div class="modal-footer">
       <a href="#" class="btn btn-large" data-dismiss="modal">

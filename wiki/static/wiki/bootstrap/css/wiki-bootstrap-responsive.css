@@ -1023,3 +1023,24 @@
     overflow: visible !important;
   }
 }
+/******************************
+ WIKI STUFF
+*******************************/
+@media (min-width: 980px) {
+  .wiki-modal {
+    width: 80%;
+    margin-left: -40%;
+  }
+}
+@media (max-width: 979px) {
+  .wiki-modal {
+    width: 90%;
+    margin-left: -45%;
+  }
+}
+@media (max-width: 767px) {
+  .wiki-modal {
+    width: 90%;
+    margin-left: 0;
+  }
+}

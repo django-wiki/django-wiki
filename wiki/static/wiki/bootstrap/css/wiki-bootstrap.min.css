@@ -878,4 +878,8 @@ input[type=file]{float:none;width:auto;}
 #article-menu{border-bottom:1px solid #EEE;}
 #article-container{margin-top:20px;}
 #wiki-footer{padding:30px 0;clear:both;}
+.wiki-modal .modal-body iframe{width:100%;min-height:400px;height:100%;border:0;}
+.ui-resizable-s{bottom:0;}
+.ui-resizable-e{right:0;}
+.ui-resizable{position:fixed !important;}
 @media print{.navbar,.nav-tabs li a,#article-breadcrumbs{display:none;} #article-menu li{display:none;} #article-title-li{display:block !important;}}
