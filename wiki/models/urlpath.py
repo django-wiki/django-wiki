@@ -7,7 +7,7 @@ from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models, transaction
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_delete
 from django.utils.translation import ugettext_lazy as _, ugettext
 
 from mptt.fields import TreeForeignKey
@@ -249,41 +249,43 @@ def on_article_relation_save(**kwargs):
 
 post_save.connect(on_article_relation_save, ArticleForObject)
 
-# TODO: When a parent all of its children are purged, they get
-# sucked up into the lost and found. It is disabled for now.
 def on_article_delete(instance, *args, **kwargs):
     # If an article is deleted, then throw out its URLPaths
     # But move all descendants to a lost-and-found node.
     site = Site.objects.get_current()
     
     # Get the Lost-and-found path or create a new one
-    try:
-        lost_and_found = URLPath.objects.get(slug=settings.LOST_AND_FOUND_SLUG,
-                                             parent=URLPath.root(),
-                                             site=site)
-    except URLPath.DoesNotExist:
-        article = Article(group_read = True,
-                          group_write = False,
-                          other_read = False,
-                          other_write = False)
-        article.add_revision(ArticleRevision(
-                 content=_(u'Articles who lost their parents\n'
-                            '===============================\n\n'
-                            'The children of this article have had their parents deleted. You should probably find a new home for them.'),
-                 title=_(u"Lost and found")))
-        lost_and_found = URLPath.objects.create(slug=settings.LOST_AND_FOUND_SLUG,
-                                                parent=URLPath.root(),
-                                                site=site,
-                                                article=article)
-        article.add_object_relation(lost_and_found)
-
+    # Only create the lost-and-found article if it's necessary and such
+    # that the lost-and-found article can be deleted without being recreated!
+    lost_and_found = None
+    def get_lost_and_found():
+        if lost_and_found:
+            return lost_and_found
+        try:
+            lost_and_found = URLPath.objects.get(slug=settings.LOST_AND_FOUND_SLUG,
+                                                 parent=URLPath.root(),
+                                                 site=site)
+        except URLPath.DoesNotExist:
+            article = Article(group_read = True,
+                              group_write = False,
+                              other_read = False,
+                              other_write = False)
+            article.add_revision(ArticleRevision(
+                     content=_(u'Articles who lost their parents\n'
+                                '===============================\n\n'
+                                'The children of this article have had their parents deleted. You should probably find a new home for them.'),
+                     title=_(u"Lost and found")))
+            lost_and_found = URLPath.objects.create(slug=settings.LOST_AND_FOUND_SLUG,
+                                                    parent=URLPath.root(),
+                                                    site=site,
+                                                    article=article)
+            article.add_object_relation(lost_and_found)
+        return lost_and_found
     
     for urlpath in URLPath.objects.filter(articles__article=instance, site=site):
         # Delete the children
         for child in urlpath.get_children():
-            child.move_to(lost_and_found)
+            child.move_to(get_lost_and_found())
         # ...and finally delete the path itself
-        # TODO: This should be unnecessary because of URLPath.article(...ondelete=models.CASCADE)
-        urlpath.delete()
     
-# pre_delete.connect(on_article_delete, Article)
+pre_delete.connect(on_article_delete, Article)
