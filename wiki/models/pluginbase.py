@@ -2,6 +2,8 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import signals
+from django.core.cache import cache
+
 from wiki.models.article import BaseRevisionMixin
 
 """
@@ -248,4 +250,19 @@ def update_simple_plugins(**kwargs):
         # TODO: This was breaking things. SimplePlugin doesn't have a revision?
         p_revisions.update(article_revision=instance)
 
+def on_article_plugin_post_save(**kwargs):
+    articleplugin = kwargs['instance']
+    articleplugin.article.clear_cache()
+
+def on_reusable_plugin_post_save(**kwargs):
+    reusableplugin = kwargs['instance']
+    for article in reusableplugin.articles.all():
+        article.clear_cache()
+
+def on_revision_plugin_revision_post_save(**kwargs):
+    revision = kwargs['instance']
+    revision.plugin.article.clear_cache()
+
 signals.post_save.connect(update_simple_plugins, ArticleRevision)
+signals.post_save.connect(on_article_plugin_post_save, ArticlePlugin)
+signals.post_save.connect(on_reusable_plugin_post_save, ReusablePlugin)

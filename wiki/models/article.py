@@ -2,6 +2,7 @@
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.contrib.auth.models import User, Group
+from django.core.cache import cache
 from django.db import models
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
@@ -185,7 +186,21 @@ class Article(models.Model):
         else:
             content = self.current_revision.content
         return mark_safe(article_markdown(content, self))
-        
+    
+    def get_cache_key(self):
+        return "wiki:article:%d" % self.id
+    
+    def get_cached_content(self):
+        """Returns cached """
+        cache_key = self.get_cache_key()
+        cached_content =  cache.get(cache_key)
+        if cached_content is None:
+            cached_content = self.render()
+            cache.set(cache_key, cached_content, settings.CACHE_TIMEOUT)
+        return cached_content
+    
+    def clear_cache(self):
+        cache.delete(self.get_cache_key())
     
 class ArticleForObject(models.Model):
     
