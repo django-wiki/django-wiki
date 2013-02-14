@@ -34,6 +34,11 @@ class AttachmentForm(forms.ModelForm):
 
     def save(self, *args, **kwargs):
         attachment_revision = super(AttachmentForm, self).save(commit=False)
+        
+        # Added because of AttachmentArcihveForm removing file from fields
+        # should be more elegant
+        attachment_revision.file = self.cleaned_data['file']
+        
         attachment = models.Attachment()
         attachment.article = self.article
         attachment.original_filename = attachment_revision.get_filename()
@@ -88,8 +93,11 @@ class AttachmentArcihveForm(AttachmentForm):
         return self.cleaned_data
         
     def save(self, *args, **kwargs):
+        
+        # This is not having the intended effect
         if not 'file' in self._meta.fields:
             self._meta.fields.append('file')
+        
         if self.cleaned_data['unzip_archive']:
             new_attachments = []
             try:
@@ -117,7 +125,6 @@ class AttachmentArcihveForm(AttachmentForm):
                 raise
             return new_attachments
         else:
-            kwargs['commit'] = True
             return super(AttachmentArcihveForm, self).save(*args, **kwargs)
 
     class Meta(AttachmentForm.Meta):
