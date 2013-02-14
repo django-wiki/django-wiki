@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings as django_settings
 from django.core.urlresolvers import reverse_lazy
+from django.utils.translation import ugettext as _
 
 # Should urls be case sensitive?
 URL_CASE_SENSITIVE = getattr( django_settings, 'WIKI_URL_CASE_SENSITIVE', False )
@@ -13,7 +14,11 @@ WIKI_LANGUAGE = 'markdown'
 # extend the built-in editor and customize it....
 EDITOR = getattr( django_settings, 'WIKI_EDITOR', 'wiki.editors.markitup.MarkItUp' )
 
-MARKDOWN_KWARGS = {'extensions': ['footnotes', 'headerid', 'extra', 'toc'], 'safe_mode': 'replace'}
+MARKDOWN_KWARGS = {
+    'extensions': ['footnotes', 'headerid', 'extra', 'toc'],
+    'safe_mode': 'replace',
+    'extension_configs': {'toc': {'title': _('Table of Contents')}},
+}
 MARKDOWN_KWARGS.update(getattr( django_settings, 'WIKI_MARKDOWN_KWARGS', {} ))
 
 # This slug is used in URLPath if an article has been deleted. The children of the
