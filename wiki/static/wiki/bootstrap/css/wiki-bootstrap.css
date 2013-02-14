@@ -5118,6 +5118,8 @@ a.badge:hover {
 .wiki-article .thumbnail {
   clear: both;
   margin-bottom: 15px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 #div_id_title .asteriskField {
   display: none;
@@ -5309,6 +5311,15 @@ h1#article-title {
   -webkit-border-top-right-radius: 4px;
   -moz-border-radius-topright: 4px;
   border-top-right-radius: 4px;
+}
+.wiki-article h1,
+.wiki-article h2,
+.wiki-article h3,
+.wiki-article h4,
+.wiki-article h5,
+.wiki-article h6 {
+  overflow: hidden;
+  margin-right: 5px;
 }
 .wiki-article h1 {
   font-size: 28px;

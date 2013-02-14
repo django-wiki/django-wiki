@@ -851,7 +851,7 @@ a.label:hover,a.badge:hover{color:#ffffff;text-decoration:none;cursor:pointer;}
 .show{display:block;}
 .invisible{visibility:hidden;}
 .affix{position:fixed;}
-.wiki-article .thumbnail{clear:both;margin-bottom:15px;}
+.wiki-article .thumbnail{clear:both;margin-bottom:15px;margin-left:10px;margin-right:10px;}
 #div_id_title .asteriskField{display:none;}
 #id_title{font-size:20px;height:30px;padding:6px;width:98%;}
 #id_summary{width:98%;padding:6px;}
@@ -884,6 +884,7 @@ h1#article-title{font-size:2em;margin-top:-5px;}
 .wiki-article table tfoot+tbody:last-child tr:last-child td:last-child{-webkit-border-bottom-right-radius:0;-moz-border-radius-bottomright:0;border-bottom-right-radius:0;}
 .wiki-article table caption+thead tr:first-child th:first-child,.wiki-article table caption+tbody tr:first-child td:first-child,.wiki-article table colgroup+thead tr:first-child th:first-child,.wiki-article table colgroup+tbody tr:first-child td:first-child{-webkit-border-top-left-radius:4px;-moz-border-radius-topleft:4px;border-top-left-radius:4px;}
 .wiki-article table caption+thead tr:first-child th:last-child,.wiki-article table caption+tbody tr:first-child td:last-child,.wiki-article table colgroup+thead tr:first-child th:last-child,.wiki-article table colgroup+tbody tr:first-child td:last-child{-webkit-border-top-right-radius:4px;-moz-border-radius-topright:4px;border-top-right-radius:4px;}
+.wiki-article h1,.wiki-article h2,.wiki-article h3,.wiki-article h4,.wiki-article h5,.wiki-article h6{overflow:hidden;margin-right:5px;}
 .wiki-article h1{font-size:28px;padding-bottom:9px;margin:20px 0 30px;border-bottom:1px solid #eeeeee;}
 .wiki-article h2{font-size:24.5px;padding-bottom:9px;margin:20px 0 30px;border-bottom:1px solid #eeeeee;}
 .wiki-article h3{font-size:21px;}
