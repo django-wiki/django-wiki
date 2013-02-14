@@ -32,6 +32,7 @@
       <p>{% trans "Restoring to this revision will mark the article as deleted." %}</p>
     </div>
   {% else %}
+    
     {% wiki_render article content %}
     {% for plugin in plugins %}
       {% if plugin.RenderMedia.css %}

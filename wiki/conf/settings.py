@@ -101,6 +101,11 @@ USE_BOOTSTRAP_SELECT_WIDGET = getattr( django_settings, 'WIKI_USE_BOOTSTRAP_SELE
 #: you can derive from this.
 URL_CONFIG_CLASS = getattr( django_settings, 'WIKI_URL_CONFIG_CLASS', 'wiki.urls.WikiURLPatterns' )
 
+# Seconds of timeout before renewing article cache. Articles are automatically
+# renewed whenever an edit occurs but article content may be generated from
+# other objects that are changed.
+CACHE_TIMEOUT = getattr( django_settings, 'WIKI_CACHE_TIMEOUT', 600 )
+
 ###################
 # SPAM PROTECTION #
 ###################

@@ -1,12 +1,10 @@
 {% load wiki_tags i18n cache sekizai_tags %}
 
-{% block wiki_contents %}  
-  
-  <div class="wiki-article">
+<div class="wiki-article">
   {% if not preview %}
 
     {% if article.current_revision %}
-      {% cache 6000 article article.current_revision.id %}
+      {% cache CACHE_TIMEOUT article article.current_revision.id %}
         {{ article.render }}
       {% endcache %}
     {% endif %}
@@ -16,6 +14,4 @@
     {{ content|default:"" }}
 
   {% endif %}
-  </div>
-  
-{% endblock %}
+</div>

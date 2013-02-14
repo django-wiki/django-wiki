@@ -28,8 +28,10 @@
       {% include "wiki/includes/article_menu.html" %}
     </ul>
     <div>
-      {% block wiki_contents_tab %}
+
       {% wiki_render article %}
+
+      {% block wiki_contents_tab %}
       {% for plugin in plugins %}
         {% if plugin.RenderMedia.css %}
           {% addtoblock "css" %}

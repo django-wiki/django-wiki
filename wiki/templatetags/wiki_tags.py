@@ -50,6 +50,7 @@ def wiki_render(article, preview_content=None):
         'preview': not preview_content is None,
         'plugins': plugin_registry.get_plugins(),
         'STATIC_URL': django_settings.STATIC_URL,
+        'CACHE_TIMEOUT': settings.CACHE_TIMEOUT,
     }
 
 @register.inclusion_tag('wiki/includes/form.html', takes_context=True)
