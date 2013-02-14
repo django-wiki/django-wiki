@@ -126,21 +126,20 @@ class Delete(FormView, ArticleMixin):
         therefore it is separate."""
         urlpath = kwargs.get('urlpath', None)
         # Where to go after deletion... 
-        self.next = request.GET.get('next', None)
+        self.next = ""
         self.cannot_delete_root = False
-        if not self.next:
-            if urlpath and urlpath.parent:
-                self.next = reverse('wiki:get', kwargs={'path': urlpath.parent.path})
-            elif urlpath:
-                # We are a urlpath with no parent. This is the root
-                self.cannot_delete_root = True
-            else:
-                # We have no urlpath. Get it if a urlpath exists
-                for art_obj in article.articleforobject_set.filter(is_mptt=True):
-                    if art_obj.content_object.parent:
-                        self.next = reverse('wiki:get', kwargs={'article_id': art_obj.content_object.parent.article.id})
-                    else:
-                        self.cannot_delete_root = True
+        if urlpath and urlpath.parent:
+            self.next = reverse('wiki:get', kwargs={'path': urlpath.parent.path})
+        elif urlpath:
+            # We are a urlpath with no parent. This is the root
+            self.cannot_delete_root = True
+        else:
+            # We have no urlpath. Get it if a urlpath exists
+            for art_obj in article.articleforobject_set.filter(is_mptt=True):
+                if art_obj.content_object.parent:
+                    self.next = reverse('wiki:get', kwargs={'article_id': art_obj.content_object.parent.article.id})
+                else:
+                    self.cannot_delete_root = True
         
         return super(Delete, self).dispatch(request, article, *args, **kwargs)
     
