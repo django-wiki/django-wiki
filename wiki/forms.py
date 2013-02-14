@@ -60,7 +60,7 @@ class SpamProtectionMixin():
         
         if not settings.LOG_IPS_ANONYMOUS:
             return
-        if request.user.has_perm('wiki.moderator') and False:
+        if request.user.has_perm('wiki.moderator'):
             return
 
         from_time = timezone.now() - timedelta(minutes=settings.REVISIONS_MINUTES_LOOKBACK)
