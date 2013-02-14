@@ -188,7 +188,7 @@ class Article(models.Model):
         return mark_safe(article_markdown(content, self))
     
     def get_cache_key(self):
-        return "wiki:article:%d" % self.id
+        return "wiki:article:%d" % (self.current_revision.id if self.current_revision else self.id)
     
     def get_cached_content(self):
         """Returns cached """
