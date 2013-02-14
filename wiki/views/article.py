@@ -22,6 +22,7 @@ from django.core.urlresolvers import reverse
 from django.db import transaction
 from wiki.core.exceptions import NoRootURL
 from wiki.core import permissions
+from django.http import Http404
 
 class ArticleView(ArticleMixin, TemplateView):
 
@@ -505,7 +506,7 @@ class Plugin(View):
         for plugin in plugin_registry.get_plugins().values():
             if getattr(plugin, 'slug', None) == slug:
                 return plugin.article_view(request, **kwargs)
-
+        raise Http404()
 
 class Settings(ArticleMixin, TemplateView):
     
