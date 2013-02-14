@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.template.context import Context
 from django.template.loader import render_to_string
 
-ATTACHMENT_RE = re.compile(r'.*(\[attachment\:(?P<id>\d+)\]).*', re.IGNORECASE)
+ATTACHMENT_RE = re.compile(r'(?P<before>.*)(\[attachment\:(?P<id>\d+)\])(?P<after>.*)', re.IGNORECASE)
 
 from wiki.plugins.attachments import models
 
@@ -25,6 +25,8 @@ class AttachmentPreprocessor(markdown.preprocessors.Preprocessor):
             m = ATTACHMENT_RE.match(line)
             if m:
                 attachment_id = m.group('id').strip()
+                before = m.group('before')
+                after = m.group('after')
                 try:
                     attachment = models.Attachment.objects.get(articles=self.markdown.article,
                                                                id=attachment_id, current_revision__deleted=False)
@@ -35,7 +37,8 @@ class AttachmentPreprocessor(markdown.preprocessors.Preprocessor):
                                                      'filename': attachment.original_filename,}))
                     line = self.markdown.htmlStash.store(html, safe=True)
                 except models.Attachment.DoesNotExist:
-                    line = line.replace(m.group(1), u"""<span class="attachment attachment-deleted">Attachment with ID #%s is deleted.</span>""" % attachment_id)                    
+                    line = line.replace(m.group(1), u"""<span class="attachment attachment-deleted">Attachment with ID #%s is deleted.</span>""" % attachment_id)
+                line = before + line + after                    
             new_text.append(line)
         return new_text
     
