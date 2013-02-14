@@ -57,7 +57,7 @@ class AttachmentArcihveForm(AttachmentForm):
     
     unzip_archive = forms.BooleanField(
         label=_(u'Unzip file'),
-        help_text=_(u'Create individual attachments for files in a .zip file -- directories NOT allowed.'),
+        help_text=_(u'Create individual attachments for files in a .zip file - directories do not work.'),
         required=False
     )
     
@@ -94,9 +94,8 @@ class AttachmentArcihveForm(AttachmentForm):
             new_attachments = []
             try:
                 for zipinfo in self.zipfile.filelist:
-                    zf = self.zipfile.open(name=zipinfo.filename, mode='r')
                     f = tempfile.NamedTemporaryFile(mode='r+w')
-                    f.write(zf.read())
+                    f.write(self.zipfile.read(zipinfo.filename))
                     f = File(f, name=zipinfo.filename)
                     try:
                         attachment = models.Attachment()
