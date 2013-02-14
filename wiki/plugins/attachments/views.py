@@ -23,7 +23,12 @@ class AttachmentView(ArticleMixin, FormView):
     @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, *args, **kwargs):
         if article.can_moderate(request.user):
-            self.attachments = models.Attachment.objects.filter(articles=article).order_by('current_revision__deleted', 'original_filename')
+            self.attachments = models.Attachment.objects.filter(
+                articles=article, current_revision__deleted=False
+            ).exclude(
+                current_revision__file=None
+            ).order_by('original_filename')
+            
             self.form_class = forms.AttachmentArcihveForm
         else:
             self.attachments = models.Attachment.objects.active().filter(articles=article)
@@ -54,6 +59,7 @@ class AttachmentView(ArticleMixin, FormView):
     
     def get_context_data(self, **kwargs):
         kwargs['attachments'] = self.attachments
+        kwargs['deleted_attachments'] = models.Attachment.objects.filter(articles=self.article, current_revision__deleted=True)
         kwargs['search_form'] = forms.SearchForm()
         kwargs['selected_tab'] = 'attachments'
         kwargs['anonymous_disallowed'] = self.request.user.is_anonymous() and not settings.ANONYMOUS

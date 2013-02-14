@@ -21,6 +21,7 @@
             <span class="badge badge-important">{% trans "deleted" %}</span>
             {% endif %}
           </h4>
+          {{ attachment.current_revision.description }}
         </th>
       </tr>
       <tr>
@@ -37,14 +38,7 @@
                 <a href="{% url 'wiki:attachments_delete' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn">{% trans "Detach" %}</a>
               {% endif %}
             {% else %}
-              {% if attachment.current_revision.previous_revision.id %}
-              <form method="POST" action="{% url 'wiki:attachments_revision_change' path=urlpath.path article_id=article.id attachment_id=attachment.id revision_id=attachment.current_revision.previous_revision.id %}" style="margin:0; padding:0;">
-                {% csrf_token %}
-                <button class="btn">
-                  {% trans "Restore" %}
-                </button>
-              </form>
-              {% endif %}
+               Deleted
             {% endif %}
           {% endif %}
           <p style="margin-top: 10px;">
@@ -97,9 +91,10 @@
         </div>
       
       </div>
+      
       <div class="accordion-group">
         <div class="accordion-heading">
-          <a class="accordion-toggle" data-toggle="collapse">
+          <a class="accordion-toggle" data-toggle="collapse" href="#collapse_add">
             <h3>{% trans "Search and add file" %} <span class="icon-plus-sign"></span></h3>
           </a>
         </div>
@@ -117,6 +112,40 @@
           </div>
         </div>
       </div>
+      
+      {% if article|can_write:user %}
+        <div class="accordion-group">
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" href="#collapse_restore">
+              <h3>{% trans "Restore attachments" %} <span class="icon-trash"></span></h3>
+            </a>
+          </div>
+          <div id="collapse_restore" class="accordion-body collapse">
+            <div class="accordion-inner">
+            
+            {% for attachment in deleted_attachments %}
+            <p>
+              {{ attachment.current_revision.get_filename }}
+              {% if attachment.current_revision.previous_revision.id %}
+              <form method="POST" action="{% url 'wiki:attachments_revision_change' path=urlpath.path article_id=article.id attachment_id=attachment.id revision_id=attachment.current_revision.previous_revision.id %}" style="margin:0; padding:0;">
+                {% csrf_token %}
+                <button class="btn">
+                  {% trans "Restore" %}
+                </button>
+              </form>
+              {% endif %}
+            </p>  
+            {% empty %}
+            
+            <p><em>{% trans "Nothing to restore" %}</em></p>
+            
+            {% endfor %}
+            
+            </div>
+          </div>
+        </div>        
+      {% endif %}
+
       
     </div>
   {% else %}
