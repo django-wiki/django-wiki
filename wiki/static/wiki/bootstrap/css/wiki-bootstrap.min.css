@@ -864,9 +864,30 @@ h1#article-title{font-size:2em;margin-top:-5px;}
 .settings-form .form-actions{padding-left:270px;}
 #attachment_form #id_description{width:95%;}
 #edit_sidebar .accordion{margin-bottom:5px;}
-.wiki-article div.toc,.wiki-article div.article-list{margin:10px 0;background:#f9f9f9;padding:10px;width:300px;border:1px solid #CCC;}
+.wiki-article div.toc,.wiki-article div.article-list{min-height:20px;padding:19px;margin-bottom:20px;background-color:#f5f5f5;border:1px solid #e3e3e3;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;-webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);-moz-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);padding:9px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;max-width:340px;}.wiki-article div.toc blockquote,.wiki-article div.article-list blockquote{border-color:#ddd;border-color:rgba(0, 0, 0, 0.15);}
 .wiki-article a.linknotfound{color:#C87;}
 .wiki-article pre{max-width:700px;}
+.wiki-article table{width:100%;margin-bottom:20px;border:1px solid #dddddd;border-collapse:separate;*border-collapse:collapse;border-left:0;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;}.wiki-article table th,.wiki-article table td{padding:8px;line-height:20px;text-align:left;vertical-align:top;border-top:1px solid #dddddd;}
+.wiki-article table th{font-weight:bold;}
+.wiki-article table thead th{vertical-align:bottom;}
+.wiki-article table caption+thead tr:first-child th,.wiki-article table caption+thead tr:first-child td,.wiki-article table colgroup+thead tr:first-child th,.wiki-article table colgroup+thead tr:first-child td,.wiki-article table thead:first-child tr:first-child th,.wiki-article table thead:first-child tr:first-child td{border-top:0;}
+.wiki-article table tbody+tbody{border-top:2px solid #dddddd;}
+.wiki-article table .table{background-color:#ffffff;}
+.wiki-article table th,.wiki-article table td{border-left:1px solid #dddddd;}
+.wiki-article table caption+thead tr:first-child th,.wiki-article table caption+tbody tr:first-child th,.wiki-article table caption+tbody tr:first-child td,.wiki-article table colgroup+thead tr:first-child th,.wiki-article table colgroup+tbody tr:first-child th,.wiki-article table colgroup+tbody tr:first-child td,.wiki-article table thead:first-child tr:first-child th,.wiki-article table tbody:first-child tr:first-child th,.wiki-article table tbody:first-child tr:first-child td{border-top:0;}
+.wiki-article table thead:first-child tr:first-child>th:first-child,.wiki-article table tbody:first-child tr:first-child>td:first-child{-webkit-border-top-left-radius:4px;-moz-border-radius-topleft:4px;border-top-left-radius:4px;}
+.wiki-article table thead:first-child tr:first-child>th:last-child,.wiki-article table tbody:first-child tr:first-child>td:last-child{-webkit-border-top-right-radius:4px;-moz-border-radius-topright:4px;border-top-right-radius:4px;}
+.wiki-article table thead:last-child tr:last-child>th:first-child,.wiki-article table tbody:last-child tr:last-child>td:first-child,.wiki-article table tfoot:last-child tr:last-child>td:first-child{-webkit-border-bottom-left-radius:4px;-moz-border-radius-bottomleft:4px;border-bottom-left-radius:4px;}
+.wiki-article table thead:last-child tr:last-child>th:last-child,.wiki-article table tbody:last-child tr:last-child>td:last-child,.wiki-article table tfoot:last-child tr:last-child>td:last-child{-webkit-border-bottom-right-radius:4px;-moz-border-radius-bottomright:4px;border-bottom-right-radius:4px;}
+.wiki-article table tfoot+tbody:last-child tr:last-child td:first-child{-webkit-border-bottom-left-radius:0;-moz-border-radius-bottomleft:0;border-bottom-left-radius:0;}
+.wiki-article table tfoot+tbody:last-child tr:last-child td:last-child{-webkit-border-bottom-right-radius:0;-moz-border-radius-bottomright:0;border-bottom-right-radius:0;}
+.wiki-article table caption+thead tr:first-child th:first-child,.wiki-article table caption+tbody tr:first-child td:first-child,.wiki-article table colgroup+thead tr:first-child th:first-child,.wiki-article table colgroup+tbody tr:first-child td:first-child{-webkit-border-top-left-radius:4px;-moz-border-radius-topleft:4px;border-top-left-radius:4px;}
+.wiki-article table caption+thead tr:first-child th:last-child,.wiki-article table caption+tbody tr:first-child td:last-child,.wiki-article table colgroup+thead tr:first-child th:last-child,.wiki-article table colgroup+tbody tr:first-child td:last-child{-webkit-border-top-right-radius:4px;-moz-border-radius-topright:4px;border-top-right-radius:4px;}
+.wiki-article h1{font-size:28px;padding-bottom:9px;margin:20px 0 30px;border-bottom:1px solid #eeeeee;}
+.wiki-article h2{font-size:24.5px;padding-bottom:9px;margin:20px 0 30px;border-bottom:1px solid #eeeeee;}
+.wiki-article h3{font-size:21px;}
+.wiki-article h4{font-size:17.5px;}
+.wiki-article h5,.wiki-article h6{font-size:14px;}
 input[type=file]{float:none;width:auto;}
 .asteriskField{font-size:20px;margin-left:5px;}
 .notification-list .since{font-size:80%;color:#CCC;}

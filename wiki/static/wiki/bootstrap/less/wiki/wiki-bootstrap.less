@@ -1,11 +1,68 @@
 /*!
- * Based on Bootstrap v2.2.2
+ * Bootstrap Responsive v2.2.2
  *
- * Modified for django-wiki
+ * Copyright 2012 Twitter, Inc
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Designed and built with all the love in the world @twitter by @mdo and @fat.
  */
  
-@import "../bootstrap.less";
+ // CSS Reset
+@import "../reset.less";
 
+// Core variables and mixins
+@import "../variables.less"; // Modify this for custom colors, font-sizes, etc
+@import "../mixins.less";
+
+// Grid system and page structure
+@import "../scaffolding.less";
+@import "../grid.less";
+@import "../layouts.less";
+
+// Base CSS
+@import "../type.less";
+@import "../code.less";
+@import "../forms.less";
+@import "../tables.less";
+
+// Components: common
+@import "../sprites.less";
+@import "../dropdowns.less";
+@import "../wells.less";
+@import "../component-animations.less";
+@import "../close.less";
+
+// Components: Buttons & Alerts
+@import "../buttons.less";
+@import "../button-groups.less";
+@import "../alerts.less"; // Note: alerts share common CSS with buttons and thus have styles in buttons.less
+
+// Components: Nav
+@import "../navs.less";
+@import "../navbar.less";
+@import "../breadcrumbs.less";
+@import "../pagination.less";
+@import "../pager.less";
+
+// Components: Popovers
+@import "../modals.less";
+@import "../tooltip.less";
+@import "../popovers.less";
+
+// Components: Misc
+@import "../thumbnails.less";
+@import "../media.less";
+@import "../labels-badges.less";
+@import "../progress-bars.less";
+@import "../accordion.less";
+@import "../carousel.less";
+@import "../hero-unit.less";
+
+// Utility classes
+@import "../utilities.less"; // Has to be last to override when necessary
+
+ 
 .wiki-article .thumbnail
 {
     clear: both;
@@ -36,17 +93,49 @@ h1#article-title {font-size: 2em; margin-top: -5px;}
 
 .wiki-article div.toc,
 .wiki-article div.article-list {
-  margin: 10px 0;
-  background: #f9f9f9;
-  padding: 10px;
-  width: 300px;
-  border: 1px solid #CCC;
+    .well;
+    .well-small;
+    max-width: 340px;
 }
-      
+
 .wiki-article a.linknotfound {color: #C87;}
 
 .wiki-article pre {
   max-width: 700px;
+}
+
+.wiki-article table
+{
+    .table;
+    .table-bordered;
+}
+
+.wiki-article h1
+{
+    font-size: @baseFontSize * 2;
+    .page-header;
+}
+
+.wiki-article h2
+{
+    font-size: @baseFontSize * 1.75;
+    .page-header;
+}
+
+.wiki-article h3
+{
+    font-size: @baseFontSize * 1.50;
+}
+
+.wiki-article h4
+{
+    font-size: @baseFontSize * 1.25;
+}
+
+.wiki-article h5,
+.wiki-article h6
+{
+    font-size: @baseFontSize;
 }
 
 input[type=file] {float: none; width: auto;}

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from django.contrib import messages
-from django.db import transaction
 from django.db.models import Q
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import redirect, get_object_or_404
@@ -14,7 +13,6 @@ from wiki.core.http import send_file
 from wiki.decorators import get_article, response_forbidden
 from wiki.plugins.attachments import models, settings, forms
 from wiki.views.mixins import ArticleMixin
-from django.core.mail import mail_admins
 
 
 class AttachmentView(ArticleMixin, FormView):

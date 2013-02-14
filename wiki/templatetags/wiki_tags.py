@@ -37,21 +37,22 @@ def article_for_object(context, obj):
         _cache[obj] = article
     return _cache[obj]
 
-@register.inclusion_tag('wiki/includes/render.html')
-def wiki_render(article, preview_content=None):
+@register.inclusion_tag('wiki/includes/render.html', takes_context=True)
+def wiki_render(context, article, preview_content=None):
     
     if preview_content:
         content = article.render(preview_content=preview_content)
     else:
         content = None
-    return {
+    context.update({
         'article': article,
         'content': content,
         'preview': not preview_content is None,
         'plugins': plugin_registry.get_plugins(),
         'STATIC_URL': django_settings.STATIC_URL,
         'CACHE_TIMEOUT': settings.CACHE_TIMEOUT,
-    }
+    })
+    return context
 
 @register.inclusion_tag('wiki/includes/form.html', takes_context=True)
 def wiki_form(context, form_obj):

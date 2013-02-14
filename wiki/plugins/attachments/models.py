@@ -1,4 +1,3 @@
-import os
 import os.path
 
 from django.db import models

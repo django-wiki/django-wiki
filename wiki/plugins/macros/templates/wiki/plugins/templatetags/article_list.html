@@ -1,13 +1,12 @@
 {% load wiki_macro_tags %}
 {% load url from future %}
 
-<p><a href="{% url 'wiki:get' path=parent.path article_id=parent.article.id %}">{{ parent.article }}</a></p>
+<li><a href="{% url 'wiki:get' path=parent.path article_id=parent.article.id %}">{{ parent.article }}</a>
 {% if parent.children.count and parent.level < depth %}
-    <div class="wiki-article-sublist"> 
-        <ul>
-            {% for child in parent.children.all %}
-                <li>{% article_list child depth %}</li>
-            {% endfor %}
-        </ul>
-    </div>
+    <ul>
+        {% for child in parent.children.all %}
+            <li>{% article_list child depth %}</li>
+        {% endfor %}
+    </ul>
 {% endif %}
+</li>
