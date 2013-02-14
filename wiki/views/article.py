@@ -25,7 +25,7 @@ from wiki.core import permissions
 
 class ArticleView(ArticleMixin, TemplateView):
 
-    template_name="wiki/article.html"
+    template_name="wiki/view.html"
     
     @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, *args, **kwargs):
@@ -726,5 +726,5 @@ def root_create(request):
     
     c = RequestContext(request, {'create_form': create_form,
                                  'editor': editors.getEditor(),})
-    return render_to_response("wiki/article/create_root.html", context_instance=c)
+    return render_to_response("wiki/create_root.html", context_instance=c)
 

@@ -1,0 +1,27 @@
+{% extends "wiki/article.html" %}
+{% load wiki_tags i18n sekizai_tags %}
+
+
+{% block wiki_contents_tab %}
+
+    {% wiki_render article %}
+
+    {% for plugin in plugins %}
+      {% if plugin.RenderMedia.css %}
+        {% addtoblock "css" %}
+          {% for media, url in plugin.RenderMedia.css.items %}
+            <link rel="stylesheet" href="{{ STATIC_URL }}{{ url }}" />
+          {% endfor %}
+        {% endaddtoblock %}
+      {% endif %}
+      {% if plugin.RenderMedia.js %}
+        {% addtoblock "js" %}        
+          {% for url in plugin.RenderMedia.js %}
+            <script type="text/javascript" src="{{ STATIC_URL }}{{ url }}"></script>
+          {% endfor %}
+        {% endaddtoblock %}
+      {% endif %}
+    {% endfor %}
+
+{% endblock %}
+
