@@ -2,11 +2,13 @@
 {% load url from future %}
 
 <li><a href="{% url 'wiki:get' path=parent.path article_id=parent.article.id %}">{{ parent.article.current_revision.title }}</a>
-{% if parent.children.count and parent.level < depth %}
+{% with parent.children.active as children %}
+{% if parent.level < depth and children.count %}
     <ul>
-        {% for child in parent.children.all %}
+        {% for child in parent.children.active %}
             <li>{% article_list child depth %}</li>
         {% endfor %}
     </ul>
 {% endif %}
+{% endwith %}
 </li>
