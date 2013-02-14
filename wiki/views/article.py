@@ -179,9 +179,7 @@ class Delete(FormView, ArticleMixin):
             # First, remove children
             if self.urlpath:
                 self.urlpath.delete_subtree()
-            else:
-                self.article.delete()
-            
+            self.article.delete()
             messages.success(self.request, _(u'This article together with all its contents are now completely gone! Thanks!'))
         else:
             revision = models.ArticleRevision()
