@@ -44,20 +44,24 @@ class Attachment(ReusablePlugin):
     
     def __unicode__(self):
         return "%s: %s" % (self.article.current_revision.title, self.original_filename)    
-        
-def upload_path(instance, filename):
-    from os import path
+
+def extension_allowed(filename):
     try:
         extension = filename.split(".")[-1]
     except IndexError:
         # No extension
         raise IllegalFileExtension("No file extension found in filename. That's not okay!")
-    
-    # Must be an allowed extension
     if not extension.lower() in map(lambda x: x.lower(), settings.FILE_EXTENSIONS):
         raise IllegalFileExtension("The following filename is illegal: %s. Extension has to be one of %s" % 
                                    (filename, ", ".join(settings.FILE_EXTENSIONS)))
-
+    
+    return extension
+    
+def upload_path(instance, filename):
+    from os import path
+    
+    extension = extension_allowed(filename)
+    
     # Has to match original extension filename
     if instance.id and instance.attachment and instance.attachment.original_filename:
         original_extension = instance.attachment.original_filename.split(".")[-1]
@@ -146,6 +150,9 @@ class AttachmentRevision(BaseRevisionMixin, models.Model):
                                  self.revision_number)    
 
 def on_revision_delete(instance, *args, **kwargs):
+    if not instance.file:
+        return
+    
     # Remove file
     path = instance.file.path.split("/")[:-1]
     instance.file.delete(save=False)

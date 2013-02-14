@@ -14,6 +14,7 @@ from wiki.core.http import send_file
 from wiki.decorators import get_article, response_forbidden
 from wiki.plugins.attachments import models, settings, forms
 from wiki.views.mixins import ArticleMixin
+from django.core.mail import mail_admins
 
 
 class AttachmentView(ArticleMixin, FormView):
@@ -25,6 +26,7 @@ class AttachmentView(ArticleMixin, FormView):
     def dispatch(self, request, article, *args, **kwargs):
         if article.can_moderate(request.user):
             self.attachments = models.Attachment.objects.filter(articles=article).order_by('current_revision__deleted', 'original_filename')
+            self.form_class = forms.AttachmentArcihveForm
         else:
             self.attachments = models.Attachment.objects.active().filter(articles=article)
         
@@ -38,31 +40,19 @@ class AttachmentView(ArticleMixin, FormView):
             self.article.current_revision.locked):
             return response_forbidden(self.request, self.article, self.urlpath)
         
-        # WARNING! The below decorator silences other exceptions that may occur!
-        @transaction.commit_manually
-        def _form_valid(form):
-            try:
-                attachment_revision = form.save(commit=False)
-                attachment = models.Attachment()
-                attachment.article = self.article
-                attachment.original_filename = attachment_revision.get_filename()
-                attachment.save()
-                attachment.articles.add(self.article)
-                attachment_revision.attachment = attachment
-                attachment_revision.set_from_request(self.request)
-                attachment_revision.save()
-                messages.success(self.request, _(u'%s was successfully added.') % attachment_revision.get_filename())
-            except models.IllegalFileExtension, e:
-                transaction.rollback()
-                messages.error(self.request, _(u'Your file could not be saved: %s') % e)
-            except Exception:
-                transaction.rollback()
-                messages.error(self.request, _(u'Your file could not be saved, probably because of a permission error on the web server.'))
-            
-            transaction.commit()
+        attachment_revision = form.save()
+        if isinstance(attachment_revision, list):
+            messages.success(self.request, _(u'Successfully added: %s') % (", ".join([ar.get_filename() for ar in attachment_revision])))
+        else:
+            messages.success(self.request, _(u'%s was successfully added.') % attachment_revision.get_filename())
         
-        _form_valid(form)
         return redirect("wiki:attachments_index", path=self.urlpath.path, article_id=self.article.id)
+    
+    def get_form_kwargs(self):
+        kwargs = FormView.get_form_kwargs(self)
+        kwargs['article'] = self.article
+        kwargs['request'] = self.request
+        return kwargs
     
     def get_context_data(self, **kwargs):
         kwargs['attachments'] = self.attachments
