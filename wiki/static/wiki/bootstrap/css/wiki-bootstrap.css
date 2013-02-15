@@ -5332,9 +5332,13 @@ h1#article-title {
   padding-bottom: 9px;
   margin: 20px 0 30px;
   border-bottom: 1px solid #eeeeee;
+  margin-bottom: 20px;
+  padding-bottom: 0px;
 }
 .wiki-article h3 {
   font-size: 21px;
+  margin: 15px 0 10px;
+  line-height: 30px;
 }
 .wiki-article h4 {
   font-size: 17.5px;
