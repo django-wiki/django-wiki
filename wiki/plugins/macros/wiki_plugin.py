@@ -4,8 +4,9 @@ from django.utils.translation import ugettext as _
 from wiki.core.plugins import registry
 from wiki.core.plugins.base import BasePlugin
 from wiki.plugins.macros import settings
-from wiki.plugins.macros.markdown_extensions import MacroExtension
 
+from wiki.plugins.macros.mdx.macro import MacroExtension
+from wiki.plugins.macros.mdx.toc import WikiTocExtension
 
 class MacroPlugin(BasePlugin):
     
@@ -17,7 +18,7 @@ class MacroPlugin(BasePlugin):
                'form_class': None,
                'get_form_kwargs': (lambda a: {})}
     
-    markdown_extensions = [MacroExtension()]
+    markdown_extensions = [MacroExtension(), WikiTocExtension()]
     
     def __init__(self):
         pass

@@ -1,5 +1,6 @@
 from django import template
-from wiki.plugins.macros import settings, markdown_extensions
+from wiki.plugins.macros import settings
+from wiki.plugins.macros.mdx.macro import MacroPreprocessor
 
 register = template.Library()
 
@@ -18,7 +19,7 @@ def article_list(context, urlpath, depth):
 def allowed_macros():
     for method in settings.METHODS:
         try:
-            yield getattr(markdown_extensions.MacroPreprocessor, method).meta
+            yield getattr(MacroPreprocessor, method).meta
         except AttributeError:
             continue
     
