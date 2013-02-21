@@ -18,6 +18,11 @@ ENABLE_ADMIN = getattr(django_settings, "NOTIFY_ENABLE_ADMIN", False)
 # to a proper SMTP server, just leave it off...
 SEND_EMAILS = getattr(django_settings, "NOTIFY_SEND_EMAILS", False)
 
+DEFAULT_EMAIL = 'notifications@django-wiki.org'
+
+#NOTIFY_SLEEP_TIME must be greater than 0 to allow for Garbage Collection
+NOTIFY_SLEEP_TIME = 10
+
 # You can always make up more numbers... they simply identify which notifications
 # to send when invoking the script, and the number indicates how many hours
 # to minimum pass between each notification.
@@ -27,12 +32,11 @@ DAILY = 24-1 # Subtract 1, because the job finishes less than 24h before the nex
 WEEKLY = 7*24-1
 
 INTERVALS = getattr(django_settings, "NOTIFY_INTERVALS",
-                    [(INSTANTLY, _(u'instantly')),
+                    [(INSTANTLY, _(u'instant')),
                      (DAILY, _(u'daily')),
                      (WEEKLY, _(u'weekly'))])
 
 INTERVALS_DEFAULT = INSTANTLY
-
 # Minimum logging and digital garbage! Don't save too much crap!
 
 # After how many days should viewed notifications be deleted?
