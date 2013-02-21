@@ -4,6 +4,8 @@ PROJECT_PATH = os_path.abspath(os_path.split(__file__)[0])
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = '%s/app-messages' %(PROJECT_PATH) # change this to a proper location
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
