@@ -8,8 +8,9 @@ from django.contrib.sites.models import Site
 from django.core import mail
 from django.core.management.base import BaseCommand, CommandError
 from django.template.loader import render_to_string
+from django.utils.translation import ugettext as _
 from django_notify import models
-from django_notify.settings import INTERVALS, DEFAULT_EMAIL,NOTIFY_SLEEP_TIME
+from django_notify.settings import INTERVALS, DEFAULT_EMAIL,NOTIFY_SLEEP_TIME,EMAIL_SUBJECT
 
 
 class Command(BaseCommand):
@@ -24,9 +25,7 @@ class Command(BaseCommand):
 
 
     def _send_user_notifications(self,context,connection):
-        subject = render_to_string('emails/notification_email_subject.txt',
-                                   context)
-        subject = ''.join(subject.splitlines())
+        subject = _(EMAIL_SUBJECT) 
         message = render_to_string('emails/notification_email_message.txt',
                                    context)
         email = mail.EmailMessage(subject, message, DEFAULT_EMAIL,

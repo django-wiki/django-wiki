@@ -18,8 +18,9 @@ ENABLE_ADMIN = getattr(django_settings, "NOTIFY_ENABLE_ADMIN", False)
 # to a proper SMTP server, just leave it off...
 SEND_EMAILS = getattr(django_settings, "NOTIFY_SEND_EMAILS", False)
 
-DEFAULT_EMAIL = 'notifications@django-wiki.org'
+EMAIL_SUBJECT = "Notifications" 
 
+DEFAULT_EMAIL = 'notifications@example.com'
 #NOTIFY_SLEEP_TIME must be greater than 0 to allow for Garbage Collection
 NOTIFY_SLEEP_TIME = 10
 
