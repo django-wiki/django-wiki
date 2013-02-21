@@ -255,5 +255,4 @@ class WikiTocExtension(TocExtension):
 
     def extendMarkdown(self, md, md_globals):
         if 'toc' in settings.METHODS:
-            print md, md_globals
             TocExtension.extendMarkdown(self, md, md_globals)
