@@ -190,4 +190,11 @@ Acknowledgements
  * The people at [edX](http://www.edxonline.org/) & MIT for finding and supporting the project both financially and with ideas.
  * [django-cms](https://github.com/divio/django-cms) for venturing where no django app has gone before in terms of well-planned features and high standards. It's a very big inspiration.
  * [django-mptt](https://github.com/django-mptt/django-mptt), a wonderful utility for inexpensively using tree structures in Django with a relational database backend.
+ * [jdcaballero](https://github.com/jdcaballero), [yekibud](https://github.com/yekibud), [bridger](https://github.com/bridger), and [everyone else](https://github.com/benjaoming/django-wiki/contributors) involved!
 
+Support
+-------
+
+This project is already alive and will remain alive, because it's free software. If you want to help build benjaoming's economical independency, you're more than welcome. I'm not doing this for the money, but you probably know how the whole paying the rent thing goes.
+
+[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=benjaoming&url=https://github.com/benjaoming/django-wiki/&title=django-wiki&language=&tags=github&category=software) 
