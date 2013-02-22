@@ -21,7 +21,7 @@ A demo is available here, sign up for an account to see the notification system.
 Community
 ---------
 
-Please use our mailing list (google group) for getting in touch on development and support:
+Use our mailing list (google group) for getting in touch on development and support:
 
 [django-wiki@googlegroups.com](https://groups.google.com/d/forum/django-wiki)
 
@@ -30,11 +30,22 @@ Please use our mailing list (google group) for getting in touch on development a
 *THIS IS A WORK IN PROGRE...*
 ---------------------------------
 
-Currently, the API is subject to smaller changes. South is used so no database changes will cause data loss. You are not encouraged to make your own fiddling with the internal parts of the wiki - the best idea is to customize it through overriding templates and making custom template tags. The second best strategy is to extend the wiki's class-based views.
+Currently, the model API is subject to smaller changes, and the plugin API seems pretty stable.
 
-Please refer to the [TODO](https://github.com/benjaoming/django-wiki/blob/master/TODO.md) for a detailed status or the Issue list.
+South is used so no database changes will cause data loss. In order to customize the wiki, best idea is to override templates and create your own template tags. Do not make your own hard copy of this repository in order to fiddle with internal parts of the wiki -- this strategy will lead you to loose out on future updates with highly improved features and plugins. Possibly security updates as well!
 
-Please consider any moment in life that you could have been writing unittests for django-wiki.
+The release cycle has already begun, so you can administer django-wiki through Pypi and pip.
+
+All views are class-based, however don't take it as an encouragement to extend them, unless you are prepared to modify both templates and view classes every time there is an update.
+
+Contributing
+------------
+
+[TODO](https://github.com/benjaoming/django-wiki/blob/master/TODO.md) contains an overview of features planned or under development.
+
+Consider any moment in life that you could have been writing **unit tests** for django-wiki.
+
+The easiest way to add features is to write a plugin. Please create an issue to discuss whether your plugin idea is a core plugin (`wiki.plugins.*`) or external plugin. If there are additions needed to the plugin API, we can discuss that as well!
 
 Manifesto
 ---------
@@ -46,12 +57,6 @@ Django needs a mature wiki system appealing to all kinds of needs, both big and 
  * **Be smart.** [This is](https://upload.wikimedia.org/wikipedia/commons/8/88/MediaWiki_database_schema_1-19_%28r102798%29.png) the map of tables in MediaWiki - we'll understand the choices of other wiki projects and make our own. After-all, this is a Django project.
  * **Be simple.** The source code should *almost* explain itself.
  * **Be structured.** Markdown is a simple syntax for readability. Features should be implemented either through easy coding patterns in the content field, but rather stored in a structured way (in the database) and managed through a friendly interface. This gives control back to the website developer, and makes knowledge more usable. Just ask: Why has Wikipedia never changed? Answer: Because it's knowledge is stored in a complicated way, thus it becomes very static.
-
-Ideas?
-------
-
-Please go ahead and post issues for discussion of ideas.
-
 
 Installation
 ------------
@@ -126,6 +131,11 @@ Add/remove the following to your `settings.INSTALLED_APPS` to enable/disable the
 
 The notifications plugin is mandatory for an out-of-the-box installation. You can safely remove it from INSTALLED_APPS if you also override the **wiki/base.html** template.
 
+Any docs?
+---------
+
+**No**, but there is a `docs/` skeleton and a RTD project has been registered. If you wish to write something, you can start with contents from this page, and please ask in the google group or raise an issue if you're in doubt about whether something might change.
+
 Background
 ----------
 
@@ -163,14 +173,16 @@ So far the dependencies are:
 Development
 ------------
 
-In a your Git fork, run `pip install -r requirements.txt` to install the requirements.
+In your Git fork, run `pip install -r requirements.txt` to install the requirements.
 
-The folder **testproject/** contains a pre-configured django project and an sqlite database. Login for django admin is *admin:admin*. This project should always be maintained, although the sqlite database will be deleted very soon to avoid unnecessary conflicts.
+The folder **testproject/** contains a pre-configured django project and an sqlite database. Login for django admin is *admin:admin*. This project should always be maintained, but please do not commit changes to the SQLite database as we only care about its contents in case data models are changed.
 
 [![Build Status](https://travis-ci.org/benjaoming/django-wiki.png?branch=master)](https://travis-ci.org/benjaoming/django-wiki)
 
 Python 2.5
 ----------
+
+It's compatible and being run on a server with Python 2.5.
 
 Due to Markdown using elementree, you should check that you have python-celementtree: `apt-get install python-celementtree`
 
@@ -185,6 +197,6 @@ Acknowledgements
 Support
 -------
 
-This project is already alive and will remain alive, because it's free software. If you want to help build benjaoming's economical independency, you're more than welcome. I'm not doing this for the money, but you probably know how the whole paying the rent thing goes.
+This project is already alive and will remain alive, because it's free software and as long as its essential, common interest will keep it alive... we hope :) You're more than welcome to help build benjaoming's economical independency which in turn will be used to create free software.
 
 [![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=benjaoming&url=https://github.com/benjaoming/django-wiki/&title=django-wiki&language=&tags=github&category=software) 
