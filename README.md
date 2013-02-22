@@ -1,27 +1,15 @@
 django-wiki
 ===========
 
+***News: February 21, 2013***
+
+New release adds email notifications to django_notify, improved [toc] tag and bootstrap typography.
+
 ***News: February 8, 2013***
 
 New alpha release 0.0.15 is out mainly because static files and templates in the previous two builds were not being properly updated and included. It also includes various tiny cosmetic changes and a new LESS structure.
 
-***News: February 3, 2013***
-
-New alpha release 0.0.13 is out. Updates on Python 2.5 support, new macro plugin and lots of smaller fixes. Have a look in the commit log.
-
-***News: February 3, 2013***
-
-New alpha release 0.0.13 is out. Updates on Python 2.5 support, new macro plugin and lots of smaller fixes. Have a look in the commit log.
-
-***News: January 26, 2013***
-
-New release 0.0.11 is out. Fixed recursive inheritence of permissions, Issue#99.
-
-***News: January 9, 2013***
-
-Happy new year. We have added a bit more in the department of nptifying ourselves upon errors both in the installation process (Travis) and the demo version. Have a look further below.
-
-Please consider any moment in life that you could have been writing unittests for django-wiki.
+(old news are deleted)
 
 Demo
 ----
@@ -45,6 +33,8 @@ Please use our mailing list (google group) for getting in touch on development a
 Currently, the API is subject to smaller changes. South is used so no database changes will cause data loss. You are not encouraged to make your own fiddling with the internal parts of the wiki - the best idea is to customize it through overriding templates and making custom template tags. The second best strategy is to extend the wiki's class-based views.
 
 Please refer to the [TODO](https://github.com/benjaoming/django-wiki/blob/master/TODO.md) for a detailed status or the Issue list.
+
+Please consider any moment in life that you could have been writing unittests for django-wiki.
 
 Manifesto
 ---------
