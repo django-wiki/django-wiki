@@ -21,7 +21,7 @@ A demo is available here, sign up for an account to see the notification system.
 Community
 ---------
 
-Please use our mailing list (google group) for getting in touch on development and support:
+Use our mailing list (google group) for getting in touch on development and support:
 
 [django-wiki@googlegroups.com](https://groups.google.com/d/forum/django-wiki)
 
@@ -41,9 +41,9 @@ All views are class-based, however don't take it as an encouragement to extend t
 Contributing
 ------------
 
-Please refer to the [TODO](https://github.com/benjaoming/django-wiki/blob/master/TODO.md) for a detailed status or the Issue list.
+[TODO](https://github.com/benjaoming/django-wiki/blob/master/TODO.md) contains an overview of features planned or under development.
 
-Please consider any moment in life that you could have been writing unit tests for django-wiki.
+Consider any moment in life that you could have been writing **unit tests** for django-wiki.
 
 The easiest way to add features is to write a plugin. Please create an issue to discuss whether your plugin idea is a core plugin (`wiki.plugins.*`) or external plugin. If there are additions needed to the plugin API, we can discuss that as well!
 
@@ -57,12 +57,6 @@ Django needs a mature wiki system appealing to all kinds of needs, both big and 
  * **Be smart.** [This is](https://upload.wikimedia.org/wikipedia/commons/8/88/MediaWiki_database_schema_1-19_%28r102798%29.png) the map of tables in MediaWiki - we'll understand the choices of other wiki projects and make our own. After-all, this is a Django project.
  * **Be simple.** The source code should *almost* explain itself.
  * **Be structured.** Markdown is a simple syntax for readability. Features should be implemented either through easy coding patterns in the content field, but rather stored in a structured way (in the database) and managed through a friendly interface. This gives control back to the website developer, and makes knowledge more usable. Just ask: Why has Wikipedia never changed? Answer: Because it's knowledge is stored in a complicated way, thus it becomes very static.
-
-Ideas?
-------
-
-Please go ahead and post issues for discussion of ideas.
-
 
 Installation
 ------------
