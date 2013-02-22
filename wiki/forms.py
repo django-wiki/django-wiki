@@ -18,6 +18,7 @@ from wiki.core.diff import simple_merge
 from django.forms.widgets import HiddenInput
 from wiki.core.plugins.base import PluginSettingsFormMixin
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 from wiki.core import permissions
 
 class SpamProtectionMixin():
@@ -400,3 +401,9 @@ class SearchForm(forms.Form):
     
     query = forms.CharField(widget=forms.TextInput(attrs={'placeholder': _(u'Search...'),
                                                           'class': 'search-query'}), required=False)
+class UserCreateForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = User
+        fields = ( "username", "email" )
