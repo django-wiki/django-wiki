@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.db.models.query import QuerySet, EmptyQuerySet
 from mptt.managers import TreeManager
 
-class ArticleEmptyQuerySet(QuerySet):
+class ArticleEmptyQuerySet(EmptyQuerySet):
     def can_read(self, user):
         return self
     def can_write(self, user):
