@@ -5,43 +5,50 @@ _ = lambda x: x
 DB_TABLE_PREFIX = 'notify'
 
 # You need to switch this setting on, otherwise nothing will happen :)
-ENABLED = getattr(django_settings, "NOTIFY_ENABLED", True)
+ENABLED = getattr(django_settings, 'NOTIFY_ENABLED', True)
 
 # Enable django-admin registration
-ENABLE_ADMIN = getattr(django_settings, "NOTIFY_ENABLE_ADMIN", False)
+ENABLE_ADMIN = getattr(django_settings, 'NOTIFY_ENABLE_ADMIN', False)
 
-##################################
-# PLANNED CONFIGURATION SETTINGS #
-##################################
+# Email notifications won't get sent unless you run
+# python manage.py notifymail
+SEND_EMAILS = getattr(django_settings, 'NOTIFY_SEND_EMAILS', True)
 
-# Email notifications are just optional... if you don't have access
-# to a proper SMTP server, just leave it off...
-SEND_EMAILS = getattr(django_settings, "NOTIFY_SEND_EMAILS", False)
+EMAIL_SUBJECT = getattr(django_settings, 
+    'NOTIFY_EMAIL_SUBJECT', _("You have new notifications")) 
 
-EMAIL_SUBJECT = "Notifications" 
+EMAIL_SENDER = getattr(django_settings, 
+    'NOTIFY_EMAIL_SENDER', "notifications@example.com")
 
-DEFAULT_EMAIL = 'notifications@example.com'
-#NOTIFY_SLEEP_TIME must be greater than 0 to allow for Garbage Collection
-NOTIFY_SLEEP_TIME = 10
+# Seconds to sleep between each database poll
+# (leave high unless you really want to send extremely real time
+# notifications)
+NOTIFY_SLEEP_TIME = 120
 
 # You can always make up more numbers... they simply identify which notifications
 # to send when invoking the script, and the number indicates how many hours
 # to minimum pass between each notification.
-# Actual notifications are sent with a management script and a cron job!
 INSTANTLY = 0
-DAILY = 24-1 # Subtract 1, because the job finishes less than 24h before the next...
-WEEKLY = 7*24-1
+DAILY = (24 - 1) * 60 # Subtract 1, because the job finishes less than 24h before the next...
+WEEKLY = 7 * (24 - 1) * 60
 
-INTERVALS = getattr(django_settings, "NOTIFY_INTERVALS",
-                    [(INSTANTLY, _(u'instant')),
-                     (DAILY, _(u'daily')),
-                     (WEEKLY, _(u'weekly'))])
+# List of intervals available. In minutes
+INTERVALS = getattr(django_settings, 'NOTIFY_INTERVALS',
+    [(INSTANTLY, _(u'instant')),
+     (DAILY, _(u'daily')),
+     (WEEKLY, _(u'weekly'))]
+)
 
 INTERVALS_DEFAULT = INSTANTLY
+
+####################
+# PLANNED SETTINGS #
+####################
+
 # Minimum logging and digital garbage! Don't save too much crap!
 
 # After how many days should viewed notifications be deleted?
-AUTO_DELETE = getattr(django_settings, "NOTIFY_AUTO_DELETE", 120)
+AUTO_DELETE = getattr(django_settings, 'NOTIFY_AUTO_DELETE', 120)
 
 # After how many days should all types of notifications be deleted?
-AUTO_DELETE_ALL = getattr(django_settings, "NOTIFY_AUTO_DELETE_ALL", 120)
+AUTO_DELETE_ALL = getattr(django_settings, 'NOTIFY_AUTO_DELETE_ALL', 120)
