@@ -5,7 +5,7 @@ go ahead and replace it or disable it!"""
 from django.conf import settings as django_settings
 from django.contrib import messages
 from django.contrib.auth import logout as auth_logout, login as auth_login
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
@@ -13,12 +13,13 @@ from django.utils.translation import ugettext as _
 from django.views.generic.base import View
 from django.views.generic.edit import CreateView, FormView
 
+from wiki import forms
 from wiki.models import URLPath
 from wiki.conf import settings
 
 class Signup(CreateView):
     model = User
-    form_class = UserCreationForm
+    form_class = forms.UserCreationForm
     template_name = "wiki/accounts/signup.html"
     
     def dispatch(self, request, *args, **kwargs):
