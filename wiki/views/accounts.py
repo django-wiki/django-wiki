@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
-"""Here is a very basic handling of accounts."""
+"""Here is a very basic handling of accounts.
+If you have your own account handling, don't worry, 
+just switch off account handling in 
+settings.WIKI_ACCOUNT_HANDLING = False
+
+and remember to set
+settings.WIKI_SIGNUP_URL = '/your/signup/url'
+SETTINGS.LOGIN_URL
+SETTINGS.LOGOUT_URL
+"""
 
 from django.conf import settings as django_settings
 from django.contrib import messages
@@ -13,8 +22,8 @@ from django.views.generic.base import View
 from django.views.generic.edit import CreateView, FormView
 
 from wiki import forms
-from wiki.models import URLPath
 from wiki.conf import settings
+
 
 class Signup(CreateView):
     model = User
@@ -22,6 +31,8 @@ class Signup(CreateView):
     template_name = "wiki/accounts/signup.html"
     
     def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_anonymous():
+            return redirect('wiki:root')    
         if not settings.ACCOUNT_HANDLING:
             return redirect(settings.SIGNUP_URL)
         return super(Signup, self).dispatch(request, *args, **kwargs)
@@ -33,8 +44,9 @@ class Signup(CreateView):
         return context
     
     def get_success_url(self, *args):
-        messages.success(self.request, _(u'You are now sign up... and now you can sign in!'))
+        messages.success(self.request, _(u'You are now signed up... and now you can sign in!'))
         return reverse("wiki:login")
+
 
 class Logout(View):
     
@@ -46,7 +58,8 @@ class Logout(View):
     def get(self, request, *args, **kwargs):
         auth_logout(request)
         messages.info(request, _(u"You are no longer logged in. Bye bye!"))
-        return redirect("wiki:get", URLPath.root().path)
+        return redirect("wiki:root")
+
 
 class Login(FormView):
     
@@ -54,6 +67,8 @@ class Login(FormView):
     template_name = "wiki/accounts/login.html"
     
     def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_anonymous():
+            return redirect('wiki:root')    
         if not settings.ACCOUNT_HANDLING:
             return redirect(settings.LOGIN_URL)
         return super(Login, self).dispatch(request, *args, **kwargs)
@@ -82,6 +97,6 @@ class Login(FormView):
             return redirect(django_settings.LOGIN_REDIRECT_URL)
         else:
             if not self.referer:
-                return redirect('wiki:get', path='')
+                return redirect("wiki:root")
             return redirect(self.referer)
     
