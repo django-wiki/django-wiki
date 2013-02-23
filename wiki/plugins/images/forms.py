@@ -45,6 +45,7 @@ class RevisionForm(forms.ModelForm):
             kwargs['commit'] = False
             revision = super(RevisionForm, self).save(*args, **kwargs)
             revision.inherit_predecessor(self.image, skip_image_file=True)
+            revision.deleted = False # Restore automatically if deleted
             revision.set_from_request(self.request)
             self.image.add_revision(self.instance, save=True)
             return revision
