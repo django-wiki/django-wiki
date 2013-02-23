@@ -166,7 +166,11 @@ def on_revision_delete(instance, *args, **kwargs):
         max_depth = 1
     for depth in range(0, max_depth):
         delete_path = "/".join(path[:-depth] if depth > 0 else path)
-        if len(os.listdir(os.path.join(django_settings.MEDIA_ROOT, delete_path))) == 0:
-            os.rmdir(delete_path)
+        try:
+            if len(os.listdir(os.path.join(django_settings.MEDIA_ROOT, delete_path))) == 0:
+                os.rmdir(delete_path)
+        except OSError:
+            # Raised by os.listdir if directory is missing
+            pass
 
 signals.pre_delete.connect(on_revision_delete, AttachmentRevision)

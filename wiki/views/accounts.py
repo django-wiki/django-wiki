@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-"""This is nothing but the usual handling of django user accounts, so
-go ahead and replace it or disable it!"""
+"""Here is a very basic handling of accounts."""
 
 from django.conf import settings as django_settings
 from django.contrib import messages

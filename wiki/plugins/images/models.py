@@ -103,6 +103,8 @@ class ImageRevision(RevisionPluginRevision):
 
 
 def on_image_revision_delete(instance, *args, **kwargs):
+    if not instance.image:
+        return
     # Remove image file
     path = instance.image.path.split("/")[:-1]
     instance.image.delete(save=False)
