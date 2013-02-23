@@ -401,7 +401,7 @@ class SearchForm(forms.Form):
     
     query = forms.CharField(widget=forms.TextInput(attrs={'placeholder': _(u'Search...'),
                                                           'class': 'search-query'}), required=False)
-class UserCreateForm(UserCreationForm):
+class UserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
 
     class Meta:

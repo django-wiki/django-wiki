@@ -13,13 +13,13 @@ from django.utils.translation import ugettext as _
 from django.views.generic.base import View
 from django.views.generic.edit import CreateView, FormView
 
+from wiki import forms
 from wiki.models import URLPath
 from wiki.conf import settings
-from wiki.forms import UserCreateForm
 
 class Signup(CreateView):
     model = User
-    form_class = UserCreateForm
+    form_class = forms.UserCreationForm
     template_name = "wiki/accounts/signup.html"
     
     def dispatch(self, request, *args, **kwargs):
