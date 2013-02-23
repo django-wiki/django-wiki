@@ -43,7 +43,8 @@ class Command(BaseCommand):
             subject, message, notify_settings.EMAIL_SENDER,
             [context['user'].email], connection=connection
         )
-        email.send()
+        logger.info("Sending to: %s" % context['user'].email)
+        email.send(fail_silently=False)
 
     def handle(self, *args, **options):
         
