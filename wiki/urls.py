@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
-try:
-    from django.conf.urls import patterns, url, include
-except ImportError:
-    from django.conf.urls.defaults import patterns, url, include
+from django.conf.urls import patterns, url, include
 from django.utils.importlib import import_module
 
 from wiki.views import article, accounts
