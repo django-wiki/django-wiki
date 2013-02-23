@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import random
+import string
+
 from datetime import timedelta
 from django.utils import timezone
 
@@ -78,6 +81,7 @@ class SpamProtectionMixin():
         else:
             per_hour = settings.REVISIONS_PER_MINUTES_ANONYMOUS
         check_interval(from_time, per_hour, _('hour'))
+
 
 class CreateRootForm(forms.Form):
     
@@ -204,6 +208,7 @@ class SelectWidgetBootstrap(forms.Select):
     class Media(forms.Media):
             
         js = ("wiki/js/forms.js",)
+
 
 class TextInputPrepend(forms.TextInput):
     
@@ -392,18 +397,42 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
         fields = ('locked', 'owner_username', 'recursive_owner', 'group', 'recursive_group', 'group_read', 'group_write', 'other_read', 'other_write',
                   'recursive')
 
+
 class DirFilterForm(forms.Form):
     
     query = forms.CharField(widget=forms.TextInput(attrs={'placeholder': _(u'Filter...'),
                                                           'class': 'search-query'}), required=False)
 
+
 class SearchForm(forms.Form):
     
     query = forms.CharField(widget=forms.TextInput(attrs={'placeholder': _(u'Search...'),
                                                           'class': 'search-query'}), required=False)
+
+
 class UserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
-
+    
+    def __init__(self, *args, **kwargs):
+        super(UserCreationForm, self).__init__(*args, **kwargs)
+        
+        # Add honeypots
+        self.honeypot_fieldnames = "address", "phone"
+        self.honeypot_class = ''.join(random.choice(string.ascii_uppercase + string.digits) for __ in range(10))
+        self.honeypot_jsfunction = 'f'+''.join(random.choice(string.ascii_uppercase + string.digits) for __ in range(10))
+        
+        for fieldname in self.honeypot_fieldnames:
+            self.fields[fieldname] = forms.CharField(
+                widget=forms.TextInput(attrs={'class': self.honeypot_class}),
+                required=False,
+        )
+    
+    def clean(self):
+        cd = self.cleaned_data
+        for fieldname in self.honeypot_fieldnames:
+            if cd[fieldname]: raise forms.ValidationError("Thank you, non-human visitor. Please keep trying to fill in the form.")
+        return cd
+    
     class Meta:
         model = User
         fields = ( "username", "email" )

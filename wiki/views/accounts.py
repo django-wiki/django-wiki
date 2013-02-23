@@ -27,6 +27,12 @@ class Signup(CreateView):
             return redirect(settings.SIGNUP_URL)
         return super(Signup, self).dispatch(request, *args, **kwargs)
     
+    def get_context_data(self, **kwargs):
+        context = CreateView.get_context_data(self, **kwargs)
+        context['honeypot_class'] = context['form'].honeypot_class
+        context['honeypot_jsfunction'] = context['form'].honeypot_jsfunction
+        return context
+    
     def get_success_url(self, *args):
         messages.success(self.request, _(u'You are now sign up... and now you can sign in!'))
         return reverse("wiki:login")

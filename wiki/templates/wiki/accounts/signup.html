@@ -1,5 +1,5 @@
 {% extends "wiki/base.html" %}
-{% load i18n wiki_tags %}
+{% load i18n wiki_tags sekizai_tags %}
 {% block pagetitle %}{% trans "Log in" %}{% endblock %}
 
 {% block wiki_contents %}
@@ -13,4 +13,12 @@
     </button>
 </div>
 </form>
+{% addtoblock "js" %}
+<script type="text/javascript">
+  function {{ honeypot_jsfunction }}() {
+    $('.{{ honeypot_class }}').parent().parent().hide();
+  }
+  $(document).ready({{ honeypot_jsfunction }});
+</script>
+{% endaddtoblock %}
 {% endblock %}

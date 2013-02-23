@@ -2,7 +2,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import signals
-from django.core.cache import cache
 
 from wiki.models.article import BaseRevisionMixin
 
