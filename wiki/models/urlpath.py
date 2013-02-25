@@ -239,9 +239,8 @@ class URLPath(MPTTModel):
 # clear the ancestor cache when saving or deleting articles so things like
 # article_lists will be refreshed
 def _clear_ancestor_cache(article):
-    for urlpath in article.urlpath_set.all():
-        for ancestor in urlpath.get_ancestors():
-            ancestor.article.clear_cache()
+    for ancestor in article.ancestor_objects():
+        ancestor.article.clear_cache()
 
 # Just get this once
 urlpath_content_type = None
