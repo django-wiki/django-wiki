@@ -236,6 +236,13 @@ class URLPath(MPTTModel):
 # SIGNAL HANDLERS
 ######################################################
 
+# clear the ancestor cache when saving or deleting articles so things like
+# article_lists will be refreshed
+def _clear_ancestor_cache(article):
+    for urlpath in article.urlpath_set.all():
+        for ancestor in urlpath.get_ancestors():
+            ancestor.article.clear_cache()
+
 # Just get this once
 urlpath_content_type = None
 
@@ -246,6 +253,7 @@ def on_article_relation_save(**kwargs):
         urlpath_content_type = ContentType.objects.get_for_model(URLPath)
     if instance.content_type == urlpath_content_type:
         URLPath.objects.filter(id=instance.object_id).update(article=instance.article)
+    _clear_ancestor_cache(instance.article)
 
 post_save.connect(on_article_relation_save, ArticleForObject)
 
@@ -287,5 +295,7 @@ def on_article_delete(instance, *args, **kwargs):
         for child in urlpath.get_children():
             child.move_to(get_lost_and_found())
         # ...and finally delete the path itself
+
+    _clear_ancestor_cache(instance)
     
 pre_delete.connect(on_article_delete, Article)
