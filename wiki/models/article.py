@@ -89,6 +89,12 @@ class Article(models.Model):
     def can_assign(self, user):
         return permissions.can_assign(self, user)
     
+    def ancestor_objects(self):
+        """NB! This generator is expensive, so use it with care!!"""
+        for obj in self.articleforobject_set.filter(is_mptt=True):
+            for ancestor in obj.content_object.get_ancestors():
+                yield ancestor
+
     def descendant_objects(self):
         """NB! This generator is expensive, so use it with care!!"""
         for obj in self.articleforobject_set.filter(is_mptt=True):
