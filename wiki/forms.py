@@ -119,7 +119,8 @@ class EditForm(forms.Form, SpamProtectionMixin):
             # is reset to match the actual current revision.
             data = None
             if len(args) > 0:
-                data = args[0]
+                args = list(args)
+                data = args.pop(0)
             if not data:
                 data = kwargs.get('data', None)
             if data:
