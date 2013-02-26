@@ -4,6 +4,7 @@ from django.contrib.contenttypes import generic
 from django.contrib.auth.models import User, Group
 from django.core.cache import cache
 from django.db import models
+from django.db.models.signals import post_save, pre_delete
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
@@ -332,3 +333,22 @@ class ArticleRevision(BaseRevisionMixin, models.Model):
         ordering = ('created',)
         unique_together = ('article', 'revision_number')
     
+
+######################################################
+# SIGNAL HANDLERS
+######################################################
+
+# clear the ancestor cache when saving or deleting articles so things like
+# article_lists will be refreshed
+def _clear_ancestor_cache(article):
+    for ancestor in article.ancestor_objects():
+        ancestor.article.clear_cache()
+
+def on_article_save_clear_cache(instance, **kwargs):
+    _clear_ancestor_cache(instance.article)
+post_save.connect(on_article_save_clear_cache, Article)
+
+def on_article_delete_clear_cache(instance, **kwargs):
+    _clear_ancestor_cache(instance)
+pre_delete.connect(on_article_delete_clear_cache, Article)
+
