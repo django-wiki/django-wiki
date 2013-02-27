@@ -14,7 +14,7 @@
     {{ query }}
     <button class="btn"><span class="icon-search"></span></button>
   </div>
-  <p>{% blocktrans with page.object_list.count as cnt %}Your search returned <strong>{{ cnt }}</strong> results.{% endblocktrans %}</p>
+  <p>{% blocktrans with page.paginator.count as cnt %}Your search returned <strong>{{ cnt }}</strong> results.{% endblocktrans %}</p>
   <div class="clearfix"></div>
 </p>
 </form>
