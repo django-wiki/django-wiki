@@ -85,6 +85,7 @@ The following applications should be listed - NB! it's important to maintain the
         'wiki.plugins.attachments',
         'wiki.plugins.notifications',
         'wiki.plugins.images',
+        'wiki.plugins.macros',
 
 ### Database
 
