@@ -171,7 +171,7 @@ class RevisionPlugin(ArticlePlugin):
     current_revision = models.OneToOneField('RevisionPluginRevision', 
                                             verbose_name=_(u'current revision'),
                                             blank=True, null=True, related_name='plugin_set',
-                                            help_text=_(u'The revision being displayed for this plugin.'
+                                            help_text=_(u'The revision being displayed for this plugin. '
                                                          'If you need to do a roll-back, simply change the value of this field.'),
                                             )
     
