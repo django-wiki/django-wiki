@@ -1,18 +1,18 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# THE GERMAN TRANSLATION OF DJANGO-WIKI.
+# Copyright (C) 2013 THOMAS LOTTERMANN
+# This file is distributed under the same license as the DJANGO-WIKI package.
+# THOMAS LOTTERMANN <TomLottermann@googlemail.com>, 2013.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: 0.17\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-03-16 18:05+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2013-03-17 19:30+CET\n"
+"Last-Translator: Thomas Lottermann <TomLottermann@googlemail.com>\n"
+"Language-Team: \n"
+"Language: German\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -453,6 +453,8 @@ msgstr ""
 msgid "Lost and found"
 msgstr "Unreferenzierte Artikel"
 
+################# PLUGINS #################
+
 #: plugins/attachments/forms.py:16
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:14
 msgid "Description"
@@ -550,50 +552,50 @@ msgid ""
 "Your new file will automatically be renamed to match the file already "
 "present. Files with different extensions are not allowed."
 msgstr ""
-"Your new file will automatically be renamed to match the file already "
-"present. Files with different extensions are not allowed."
+"Deine Datei wird automatisch umbenannt um dem bereits vorhandenen "
+"zu entsprechen. Andere Dateitypen sind nicht erlaubt."
 
 #: plugins/attachments/views.py:182
 #, python-format
 msgid "Current revision changed for %s."
-msgstr ""
+msgstr "Aktuelle Revision ersetzt durch %s."
 
 #: plugins/attachments/views.py:201
 #, python-format
 msgid "Added a reference to \"%(att)s\" from \"%(art)s\"."
-msgstr ""
+msgstr "Es wurde eine Referenz von \"%(art)s\" zu \"%(att)s\" angelegt."
 
 #: plugins/attachments/views.py:231
 #, python-format
 msgid "The file %s was deleted."
-msgstr ""
+msgstr "Die Datei %s wurde gelöscht."
 
 #: plugins/attachments/views.py:234
 #, python-format
 msgid "This article is no longer related to the file %s."
-msgstr ""
+msgstr "Dieser Artikel ist nicht mehr im Bezug zu der Datei %s."
 
 #: plugins/attachments/wiki_plugin.py:31
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:5
 msgid "Attachments"
-msgstr ""
+msgstr "Anhänge"
 
 #: plugins/attachments/wiki_plugin.py:37
 #, python-format
 msgid "A file was changed: %s"
-msgstr ""
+msgstr "Eine Datei wurde geändert: %s"
 
 #: plugins/attachments/wiki_plugin.py:37
 #, python-format
 msgid "A file was deleted: %s"
-msgstr ""
+msgstr "Eine Datei wurde gelöscht: %s"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:5
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:10
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:36
 #: templates/wiki/delete.html:8
 msgid "Delete"
-msgstr ""
+msgstr "Löschen"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:12
 msgid ""
@@ -603,6 +605,11 @@ msgid ""
 "reference this file:\n"
 "    "
 msgstr ""
+"\n"
+"    Die Datei könnte in anderen Artikeln referenziert sein. Wenn sie gelöscht "
+"wird, bedeutet das, dass diese Artikel die Referenz verlieren. Folgende Artikel "
+"sind betroffen:\n"
+"    "
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:27
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:48
@@ -614,15 +621,15 @@ msgstr ""
 #: templates/wiki/create.html:52 templates/wiki/delete.html:12
 #: templates/wiki/delete.html.py:46
 msgid "Go back"
-msgstr ""
+msgstr "Zurück"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:31
 msgid "Delete it!"
-msgstr ""
+msgstr "Löschen!"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:37
 msgid "Remove"
-msgstr ""
+msgstr "Löschen"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:39
 msgid ""
@@ -631,140 +638,150 @@ msgid ""
 "on other articles.\n"
 "    "
 msgstr ""
+"\n"
+"    Du kannst eine Referenz zu einer Datei löschen. Die Referenzen in "
+"anderen Artikeln bleiben erhalten.\n"
+"    "
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:52
 msgid "Remove reference"
-msgstr ""
+msgstr "Lösche Referenz"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:5
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:9
 msgid "History of"
-msgstr ""
+msgstr "Revisionen von"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:12
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:24
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:13
 msgid "User"
-msgstr ""
+msgstr "Benutzer"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:15
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:22
 msgid "File"
-msgstr ""
+msgstr "Datei"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:16
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:30
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:26
 #: plugins/images/templates/wiki/plugins/images/index.html:22
 msgid "Size"
-msgstr ""
+msgstr "Größe"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:17
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:27
 msgid "Action"
-msgstr ""
+msgstr "Aktion"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:28
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:33
 msgid "<em>No description</em>"
-msgstr ""
+msgstr "<em>Keine Beschreibung</em>"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:36
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:51
 msgid "Download"
-msgstr ""
+msgstr "Download"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:41
 msgid "Use this!"
-msgstr ""
+msgstr "Benutzen"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:10
 msgid ""
 "The following files are available for this article. Copy the markdown tag to "
 "directly refer to a file from the article text."
 msgstr ""
+"Die folgenden Dateien sind für diesen Artikel verfügbar. Kopiere den markdown Tag "
+"um die Datei direkt im Text zu verlinken."
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:28
 #: plugins/images/templates/wiki/plugins/images/index.html:20
 msgid "Markdown tag"
-msgstr ""
+msgstr "Markdown tag"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:29
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:25
 #: plugins/images/templates/wiki/plugins/images/index.html:21
 msgid "Uploaded by"
-msgstr ""
+msgstr "Hochgeladen von"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:34
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:5
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:9
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:34
 msgid "Replace"
-msgstr ""
+msgstr "Ersetzen"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:38
 msgid "Detach"
-msgstr ""
+msgstr "Trennen"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:47
 msgid "File history"
-msgstr ""
+msgstr "Datei Revisionen"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:47
 msgid "revisions"
-msgstr ""
+msgstr "Revisionen"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:62
 msgid "There are no attachments for this article."
-msgstr ""
+msgstr "Es gibt keine Anhänge für diesen Artikel."
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:74
 msgid "Upload new file"
-msgstr ""
+msgstr "Neue Datei hochladen"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:86
 msgid "Upload file"
-msgstr ""
+msgstr "Datei hochladen"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:98
 msgid "Search and add file"
-msgstr ""
+msgstr "Datei suchen und hinzufügen"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:104
 msgid ""
 "You can reuse files from other articles. These files are subject to updates "
 "on other articles which may or may not be a good thing."
 msgstr ""
+"Du kannst Dateien von anderen Artikel verwenden. Diese Dateien könnten Änderungen "
+"unterliegen."
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:109
 msgid "Search"
-msgstr ""
+msgstr "Suchen"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:120
 msgid "Restore attachments"
-msgstr ""
+msgstr "Anhänge wiederherstellen"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:133
 #: templates/wiki/deleted.html:25 templates/wiki/deleted.html.py:30
 msgid "Restore"
-msgstr ""
+msgstr "Wiederherstellen"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:140
 msgid "Nothing to restore"
-msgstr ""
+msgstr "Es gibt nichts wiederherzustellen"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:156
 msgid ""
 "The article is currently locked for editing, and therefore no new "
 "attachments can be added."
 msgstr ""
+"Der Artikel ist aktuell für die Bearbeitung gesperrt, weshalb auch keine "
+"neuen Anhänge hinzugefügt werden können."
 
 #: plugins/attachments/templates/wiki/plugins/attachments/render.html:5
 msgid "Click to download"
-msgstr ""
+msgstr "Klicken um Download zu starten"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:12
 #, python-format
@@ -779,10 +796,24 @@ msgid ""
 "efficient....\n"
 "  "
 msgstr ""
+"\n"
+"  Das Ersetzen eines Anhangs bedeutet, dass eine neue Datei stattdessen benutzt "
+"wird. Alle Referenzen auf die Datei werden erstetz durch die, die du hochlädst. "
+"Der Dateiname wird <strong>%(filename)s</strong> sein. Bitte beachte, dass diese "
+"Datei in anderen Artikeln benutzt wird. Es könnte also zu inhaltlichen Problemen kommen. "
+"Zögere dennoch nicht diese Funktion zu benutzen und ersetze gegebenenfalls "
+"den Anhang in den aufgeführten Artikeln."
+"  "
 
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:16
-msgid "Articles using"
+msgid ""
+"\n"
+"Articles using %(filename)s"
+"  "
 msgstr ""
+"\n"
+"Artikel, die %(filename)s benutzen"
+"  "
 
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:23
 #, python-format
@@ -1147,6 +1178,8 @@ msgstr ""
 msgid "(None)"
 msgstr ""
 
+################################ Rest #######################################
+
 #: templates/wiki/article.html:39
 msgid "This article was last modified:"
 msgstr "Dieser Artikel wurde zuletzt modifiziert:"
@@ -1342,7 +1375,7 @@ msgstr "Vorschau"
 #: templates/wiki/edit.html:45 templates/wiki/edit.html.py:67
 #: templates/wiki/settings.html:16
 msgid "Save changes"
-msgstr "Speichere Änderungen"
+msgstr "Speichern"
 
 #: templates/wiki/edit.html:63
 msgid "Back to editor"
@@ -1390,7 +1423,7 @@ msgstr "keine Nachricht"
 
 #: templates/wiki/history.html:84 templates/wiki/history.html.py:89
 msgid "Preview this revision"
-msgstr "Vorschau dieser Revision"
+msgstr "Vorschau"
 
 #: templates/wiki/history.html:103
 msgid "Auto log:"
