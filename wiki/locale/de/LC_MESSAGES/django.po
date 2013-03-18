@@ -183,7 +183,7 @@ msgstr "Gib den Benutzernamen des Besitzers an."
 
 #: forms.py:299
 msgid "(none)"
-msgstr "(keine)"
+msgstr "(nichts)"
 
 #: forms.py:304
 msgid "Inherit permissions"
@@ -798,11 +798,11 @@ msgid ""
 msgstr ""
 "\n"
 "  Das Ersetzen eines Anhangs bedeutet, dass eine neue Datei stattdessen benutzt "
-"wird. Alle Referenzen auf die Datei werden erstetz durch die, die du hochlädst. "
+"wird. Alle Referenzen auf die Datei werden ersetzt durch die, die du hochlädst. "
 "Der Dateiname wird <strong>%(filename)s</strong> sein. Bitte beachte, dass diese "
 "Datei in anderen Artikeln benutzt wird. Es könnte also zu inhaltlichen Problemen kommen. "
 "Zögere dennoch nicht diese Funktion zu benutzen und ersetze gegebenenfalls "
-"den Anhang in den aufgeführten Artikeln."
+"den Anhang in den aufgeführten Artikeln.\n"
 "  "
 
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:16
@@ -824,76 +824,85 @@ msgid ""
 "the file will be downloaded as <strong>%(filename)s</strong>.\n"
 "  "
 msgstr ""
+"\n"
+"  Das Ersetzen eines Anhangs bedeutet, dass eine neue Datei stattdessen benutzt "
+"wird. Alle Referenzen auf die Datei werden ersetzt durch die, die du hochlädst. "
+"Der Dateiname wird <strong>%(filename)s</strong> sein.\n"
+"  "
 
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:38
 #: plugins/images/templates/wiki/plugins/images/index.html:35
 #: plugins/images/templates/wiki/plugins/images/revision_add.html:25
 msgid "Upload replacement"
-msgstr ""
+msgstr "Ersatz hochladen"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:5
 msgid "Add file to"
-msgstr ""
+msgstr "Datei hinzufügen zu"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:9
 msgid "Add attachment from other article"
-msgstr ""
+msgstr "Anhang von anderem Artikel hinzufügen"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:15
 msgid "Search files and articles"
-msgstr ""
+msgstr "Suche nach Dateien und Artikeln"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:23
 msgid "Main article"
-msgstr ""
+msgstr "Hauptartikel"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:55
 msgid "Add to article"
-msgstr ""
+msgstr "Zu Artikel hinzufügen"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:63
 msgid "Your search did not return any results"
-msgstr ""
+msgstr "Deine Suche hat keine Ergebnisse geliefert"
 
 #: plugins/help/wiki_plugin.py:13
 msgid "Help"
-msgstr ""
+msgstr "Hilfe"
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:1
 msgid "Adding new articles"
-msgstr ""
+msgstr "Neue Artikel hinzufügen"
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:3
 msgid ""
 "To create a new wiki article, create a link to it. Clicking the link gives "
 "you the creation page."
 msgstr ""
+"Um einen neuen Artikel zu anzulegen, erstelle einen Link dahin. Wenn du auf "
+"den Link klickst kommst du zum Artikelformular."
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:6
 #: plugins/links/templates/wiki/plugins/links/sidebar.html:20
 msgid "An external link"
-msgstr ""
+msgstr "Ein externer Link"
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:9
 msgid "Headers"
-msgstr ""
+msgstr "Überschriften"
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:10
 msgid ""
 "Use these codes for headers and to automatically generate Tables of Contents."
 msgstr ""
+"Benutze diese Kodierung für Überschriften und um automatisch ein Inhaltsverzeichnis "
+"zu generieren (TOC)."
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:25
 msgid "Typography"
-msgstr ""
+msgstr "Typografie"
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:30
 msgid "Lists"
-msgstr ""
+msgstr "Listen"
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:38
 msgid "Tables"
-msgstr ""
+msgstr "Tabellen"
 
 #: plugins/images/forms.py:17
 #, python-format
@@ -901,167 +910,172 @@ msgid ""
 "New image %s was successfully uploaded. You can use it by selecting it from "
 "the list of available images."
 msgstr ""
+"Das neue Bild %s wurde erfolgreich hochgeladen. Du kannst es benutzen, indem "
+"du es aus der Liste von verfügbaren Bildern auswählst."
 
 #: plugins/images/forms.py:61
 msgid "Are you sure?"
-msgstr ""
+msgstr "Bist du dir sicher?"
 
 #: plugins/images/models.py:42
 msgid "image"
-msgstr ""
+msgstr "Bild"
 
 #: plugins/images/models.py:43
 msgid "images"
-msgstr ""
+msgstr "Bilder"
 
 #: plugins/images/models.py:47
 #, python-format
 msgid "Image: %s"
-msgstr ""
+msgstr "Bild: %s"
 
 #: plugins/images/models.py:47
 msgid "Current revision not set!!"
-msgstr ""
+msgstr "Aktuelle Revision nicht ausgewählt!!"
 
 #: plugins/images/models.py:95
 msgid "image revision"
-msgstr ""
+msgstr "Bildrevision"
 
 #: plugins/images/models.py:96
 msgid "image revisions"
-msgstr ""
+msgstr "Bildrevisionen"
 
 #: plugins/images/models.py:101
 #, python-format
 msgid "Image Revsion: %d"
-msgstr ""
+msgstr "Bildrevision: %d"
 
 #: plugins/images/views.py:64
 #, python-format
 msgid "%s has been restored"
-msgstr ""
+msgstr "%s wurde gespeichert"
 
 #: plugins/images/views.py:66
 #, python-format
 msgid "%s has been marked as deleted"
-msgstr ""
+msgstr "%s wurde als gelöscht markiert"
 
 #: plugins/images/views.py:116
 #, python-format
 msgid "%(file)s has been changed to revision #%(revision)d"
-msgstr ""
+msgstr "%(file)s wurde auf Revision #%(revision)d geändert"
 
 #: plugins/images/views.py:150
 #, python-format
 msgid "%(file)s has been saved."
-msgstr ""
+msgstr "%(file)s wurde gespeichert."
 
 #: plugins/images/wiki_plugin.py:16
 #: plugins/images/templates/wiki/plugins/images/index.html:5
 msgid "Images"
-msgstr ""
+msgstr "Bilder"
 
 #: plugins/images/wiki_plugin.py:27
 #, python-format
 msgid "An image was added: %s"
-msgstr ""
+msgstr "Ein Bild wurde hinzugefügt: %s"
 
 #: plugins/images/templates/wiki/plugins/images/index.html:8
 msgid ""
 "The following images are available for this article. Copy the markdown tag "
 "to directly refer to an image from the article text."
 msgstr ""
+"Die folgenden Bilder sind für diesen Artikel verfügbar. Kopiere den Markdowntag "
+"um ein Bild in den Artiekl einzubinden."
 
 #: plugins/images/templates/wiki/plugins/images/index.html:12
 msgid "Back to edit page"
-msgstr ""
+msgstr "Zurück zur Bearbeitung"
 
 #: plugins/images/templates/wiki/plugins/images/index.html:19
 msgid "No file"
-msgstr ""
+msgstr "Keine Datei"
 
 #: plugins/images/templates/wiki/plugins/images/index.html:40
 msgid "Restore image"
-msgstr ""
+msgstr "Bild wiederherstellen"
 
 #: plugins/images/templates/wiki/plugins/images/index.html:45
 msgid "Remove image"
-msgstr ""
+msgstr "Bild löschen"
 
 #: plugins/images/templates/wiki/plugins/images/index.html:52
 msgid "Completely delete"
-msgstr ""
+msgstr "Vollständig löschen"
 
 #: plugins/images/templates/wiki/plugins/images/index.html:66
 #: templates/wiki/history.html:5
 msgid "History"
-msgstr ""
+msgstr "Revisionen"
 
 #: plugins/images/templates/wiki/plugins/images/index.html:85
 msgid "Revert to this version"
-msgstr ""
+msgstr "Zu dieser Revision zurückkehren"
 
 #: plugins/images/templates/wiki/plugins/images/index.html:98
 msgid "There are no images for this article."
-msgstr ""
+msgstr "Es gibt keine Bilder für diesen Artikel."
 
 #: plugins/images/templates/wiki/plugins/images/purge.html:5
 #: templates/wiki/deleted.html:40
 msgid "Purge deletion"
-msgstr ""
+msgstr "Für immer löschen"
 
 #: plugins/images/templates/wiki/plugins/images/purge.html:14
 msgid "Purge image: Completely remove image file and all revisions."
 msgstr ""
+"Löscht das Bild für immer, ohne dass es rückgängig gemacht werden kann."
 
 #: plugins/images/templates/wiki/plugins/images/purge.html:25
 msgid "Remove it completely!"
-msgstr ""
+msgstr "Für immer löschen!"
 
 #: plugins/images/templates/wiki/plugins/images/render.html:14
 msgid "Image not found"
-msgstr ""
+msgstr "Bild nicht gefunden"
 
 #: plugins/images/templates/wiki/plugins/images/revision_add.html:5
 msgid "Replace image"
-msgstr ""
+msgstr "Bild ersetzen"
 
 #: plugins/images/templates/wiki/plugins/images/revision_add.html:14
 msgid "Choose an image file to replace current image."
-msgstr ""
+msgstr "Wähle ein Bild aus, mit dem das aktuelle ersetzt werden soll."
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:30
 msgid "Image id"
-msgstr ""
+msgstr "Bild id"
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:32
 #: plugins/links/templates/wiki/plugins/links/sidebar.html:14
 msgid "Insert"
-msgstr ""
+msgstr "Einfügen"
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:48
 msgid "No images found for this article"
-msgstr ""
+msgstr "Es wurden keine Bilder für diesen Artikel gefunden"
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:57
 msgid "Manage images"
-msgstr ""
+msgstr "Bilder verwalten"
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:63
 msgid "Add new image"
-msgstr ""
+msgstr "Neues Bild hinzufügen"
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:104
 msgid "Add image"
-msgstr ""
+msgstr "Bild hinzufügen"
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:112
 msgid "You do not have permissions to add images."
-msgstr ""
+msgstr "Du hast nicht die nötigen Rechte um Bilder hinzuzufügen."
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:119
 msgid "How to use images"
-msgstr ""
+msgstr "Anleitung für Bilder"
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:122
 msgid ""
@@ -1073,110 +1087,117 @@ msgid ""
 "Markdown in the caption. The markdown code syntax for images looks like "
 "this, possible values for align are left and right:"
 msgstr ""
+"Nachdem ein Bild hochgeladen wurde, wird es mit diesem Artikel verknüpft und "
+"kann nur hierin genutzt werden. Andere Benutzer dürfen das Bild ersetzen, aber "
+"alte versionen bleiben erhalten. Wahrscheinlich willst du das Bild mit "
+"Bildbeschreibung einfügen. Klicke dazu einfach \"Einfügen\" und fülle das Feld "
+"aus. Du kannst auch auwählen ob es rechts- oder linksbündig ist. Du darfst in "
+"der Bildbeschreibung Markdown benutzen. Der Markdown Code für bilder sieht "
+"wie folgt aus, wobei mögliche Ausrichtungen \"right\" und \"left\" sind:"
 
 #: plugins/links/wiki_plugin.py:20
 msgid "Links"
-msgstr ""
+msgstr "Links"
 
 #: plugins/links/templates/wiki/plugins/links/sidebar.html:3
 msgid "Link to another wiki page"
-msgstr ""
+msgstr "Link zu anderer Wikiseite"
 
 #: plugins/links/templates/wiki/plugins/links/sidebar.html:6
 msgid ""
 "Type in something from another wiki page's title and auto-complete will help "
 "you create a tag for you wiki link. Tags for links look like this:"
 msgstr ""
+"Gib etwas aus dem Titel des anderen Wikieintrags ein. Auto-complete wird dir "
+"helfen, den Tag zu erstellen. Tags für links sehen so aus:"
 
 #: plugins/links/templates/wiki/plugins/links/sidebar.html:23
 msgid ""
 "You can link to another website simply by inserting an address example.com "
 "or http://example.com or by using the markdown syntax:"
 msgstr ""
+"Du darfst auf eine andere Webseite verlinken indem du einfach eine Adresse "
+"(z.B. example.com oder http://example.com) eingibst oder folgende Syntax benutzt:"
 
 #: plugins/macros/wiki_plugin.py:15
 msgid "Macros"
-msgstr ""
+msgstr "Macros"
 
 #: plugins/macros/mdx/macro.py:72
 msgid "Article list"
-msgstr ""
+msgstr "Artikelliste"
 
 #: plugins/macros/mdx/macro.py:73
 msgid "Insert a list of articles in this level."
-msgstr ""
+msgstr "Füge eine Liste von Artikeln auf dieser Ebene ein."
 
 #: plugins/macros/mdx/macro.py:74
 msgid "[article_list depth:2]"
-msgstr ""
+msgstr "[article_list depth:2]"
 
 #: plugins/macros/mdx/macro.py:75
 msgid "Maximum depth to show levels for."
-msgstr ""
+msgstr "Maximale Ebenentiefe, für die Artikel angezeigt werden sollen."
 
 #: plugins/macros/mdx/macro.py:81
 msgid "Table of contents"
-msgstr ""
+msgstr "Inhaltsverzeichnis"
 
 #: plugins/macros/mdx/macro.py:82
 msgid "Insert a table of contents matching the headings."
-msgstr ""
+msgstr "Füge ein Inhaltsverzeichnis passend zu den Überschriften ein."
 
 #: plugins/macros/mdx/macro.py:83
 msgid "[TOC]"
-msgstr ""
+msgstr "[TOC]"
 
 #: plugins/macros/templates/wiki/plugins/macros/article_list.html:6
 msgid "Article index"
-msgstr ""
+msgstr "Artikelindex"
 
 #: plugins/macros/templates/wiki/plugins/macros/article_list.html:10
 msgid "Nothing below this level"
-msgstr ""
+msgstr "Es gibt keine Unterartikel"
 
 #: plugins/notifications/forms.py:13
 msgid "Notifications"
-msgstr ""
+msgstr "Benachrichtigungen"
 
 #: plugins/notifications/forms.py:17
 msgid "When this article is edited"
-msgstr ""
+msgstr "Wenn dieser Artikel bearbeitet wird" #TODO: right?
 
 #: plugins/notifications/forms.py:18
 msgid "Also receive emails about article edits"
-msgstr ""
+msgstr "Ebenfalls Mails über Artikeländerungen empfangen"
 
 #: plugins/notifications/forms.py:41
 msgid "Your notification settings were updated."
-msgstr ""
+msgstr "Deine Benachrichtigungseinstellungen wurden aktualisiert."
 
 #: plugins/notifications/forms.py:43
 msgid "Your notification settings were unchanged, so nothing saved."
-msgstr ""
+msgstr "Deine Benachrichtigungseinstellungen sind unverändert. Es ist nicht zu speichern."
 
 #: plugins/notifications/models.py:18
 #, python-format
 msgid "%(user)s subscribing to %(article)s (%(type)s)"
-msgstr ""
+msgstr "%(user)s abonniert %(article)s (%(type)s)"
 
 #: plugins/notifications/models.py:42
 #, python-format
 msgid "Article deleted: %s"
-msgstr ""
+msgstr "Artikel gelöscht: %s"
 
 #: plugins/notifications/models.py:45
 #, python-format
 msgid "Article modified: %s"
-msgstr ""
+msgstr "Artikel geändert: %s"
 
 #: plugins/notifications/models.py:48
 #, python-format
 msgid "New article created: %s"
-msgstr ""
-
-#: plugins/notifications/util.py:10
-msgid "(None)"
-msgstr ""
+msgstr "Neuer Artikel erstellt: %s"
 
 ################################ Rest #######################################
 
