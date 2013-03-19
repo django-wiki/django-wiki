@@ -672,7 +672,7 @@ def merge(request, article, revision_id, urlpath=None, template_file="wiki/previ
         new_revision.locked = False
         new_revision.title=article.current_revision.title
         new_revision.content=content
-        new_revision.automatic_log = (_(u'Merge between Revision #%(r1)d and Revision #%(r2)d') % 
+        new_revision.automatic_log = (_(u'Merge between revision #%(r1)d and revision #%(r2)d') % 
                                       {'r1': revision.revision_number, 
                                        'r2': old_revision.revision_number})
         article.add_revision(new_revision, save=True)
@@ -680,7 +680,7 @@ def merge(request, article, revision_id, urlpath=None, template_file="wiki/previ
         old_revision.simpleplugin_set.all().update(article_revision=new_revision)
         revision.simpleplugin_set.all().update(article_revision=new_revision)
         
-        messages.success(request, _(u'A new revision was created: Merge between Revision #%(r1)d and Revision #%(r2)d') % 
+        messages.success(request, _(u'A new revision was created: Merge between revision #%(r1)d and revision #%(r2)d') % 
                          {'r1': revision.revision_number,
                           'r2': old_revision.revision_number})
         if urlpath:
