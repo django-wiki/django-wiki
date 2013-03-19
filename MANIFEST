@@ -2,5 +2,5 @@ include COPYING
 include README.md
 include requirements.txt
 include model_chart_wiki.pdf
-recursive-include wiki *.html *.txt *.png *.js *.css *.gif *.less
+recursive-include wiki *.html *.txt *.png *.js *.css *.gif *.less *.mo *.po
 recursive-include django_notify *.html *.txt *.png *.js *.css *.gif
