@@ -156,21 +156,23 @@ class SelectWidgetBootstrap(forms.Select):
     http://twitter.github.com/bootstrap/components.html#buttonDropdowns
     Needs bootstrap and jquery
     """
-    def __init__(self, attrs={'class': 'btn-group pull-left btn-group-form'}, choices=()):
+    def __init__(self, attrs={}, choices=(), disabled=False):
+        attrs['class'] = 'btn-group pull-left btn-group-form'
+        self.disabled = disabled
         self.noscript_widget = forms.Select(attrs={}, choices=choices)
         super(SelectWidgetBootstrap, self).__init__(attrs, choices)
     
     def __setattr__(self, k, value):
         super(SelectWidgetBootstrap, self).__setattr__(k, value)
-        if k != 'attrs':
+        if k != 'attrs' and k != 'disabled':
             self.noscript_widget.__setattr__(k, value)
     
     def render(self, name, value, attrs=None, choices=()):
         if value is None: value = ''
         final_attrs = self.build_attrs(attrs, name=name)
         output = ["""<div%(attrs)s>"""
-                  """    <button class="btn btn-group-label" type="button">%(label)s</button>"""
-                  """    <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">"""
+                  """    <button class="btn btn-group-label%(disabled)s" type="button">%(label)s</button>"""
+                  """    <button class="btn dropdown-toggle%(disabled)s" type="button" data-toggle="dropdown">"""
                   """        <span class="caret"></span>"""
                   """    </button>"""
                   """    <ul class="dropdown-menu">"""
@@ -183,6 +185,7 @@ class SelectWidgetBootstrap(forms.Select):
                       'options':self.render_options(choices, [value]),
                       'label': _(u'Select an option'),
                       'name': name,
+                      'disabled': ' disabled' if self.disabled else '',
                       'noscript': self.noscript_widget.render(name, value, {}, choices)} ]
         return mark_safe(u'\n'.join(output))
 
@@ -322,6 +325,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
         self.request = request
         kwargs['instance'] = article
         kwargs['initial'] = {'locked': article.current_revision.locked}
+        
         super(PermissionsForm, self).__init__(*args, **kwargs)
         
         self.can_change_groups = False
@@ -334,10 +338,18 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
             self.fields['group'].queryset = models.Group.objects.filter(user=request.user)
             self.can_change_groups = True
         else:
-            self.fields['group'].widget = forms.TextInput(attrs={'readonly': 'true'})
+            # Quick-fix...
+            # Set the group dropdown to readonly and with the current
+            # group as only selectable option
+            self.fields['group'] = forms.ModelChoiceField(
+                queryset = models.Group.objects.filter(id=self.instance.group.id) if self.instance.group else models.Group.objects.none(),
+                empty_label = _(u'(none)'),
+                required = False,
+                widget = SelectWidgetBootstrap(disabled=True) if settings.USE_BOOTSTRAP_SELECT_WIDGET else forms.Select(attrs={'disabled': True})
+            )
             self.fields['group_read'].widget = forms.HiddenInput()
             self.fields['group_write'].widget = forms.HiddenInput()
-            
+
         if not self.can_assign:
             self.fields['owner_username'].widget = forms.TextInput(attrs={'readonly': 'true'})
             self.fields['recursive'].widget = forms.HiddenInput()
@@ -397,6 +409,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
         model = models.Article
         fields = ('locked', 'owner_username', 'recursive_owner', 'group', 'recursive_group', 'group_read', 'group_write', 'other_read', 'other_write',
                   'recursive')
+        widgets = {}
 
 
 class DirFilterForm(forms.Form):
