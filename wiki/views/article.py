@@ -473,7 +473,7 @@ class SearchView(ListView):
     def dispatch(self, request, *args, **kwargs):
         # Do not allow anonymous users to search if they cannot read content
         if request.user.is_anonymous and not settings.ANONYMOUS:
-            return(settings.LOGIN_URL)
+            return redirect(settings.LOGIN_URL)
         self.search_form = forms.SearchForm(request.GET)
         if self.search_form.is_valid():
             self.query = self.search_form.cleaned_data['query']
