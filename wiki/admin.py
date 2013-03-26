@@ -26,7 +26,7 @@ class ArticleRevisionForm(forms.ModelForm):
 
 class ArticleRevisionAdmin(admin.ModelAdmin):
     form = ArticleRevisionForm
-    display_list = ('title', 'created', 'modified', 'user', 'ip_address')
+    list_display = ('title', 'created', 'modified', 'user', 'ip_address')
     class Media:
         js = editors.getEditorClass().AdminMedia.js
         css = editors.getEditorClass().AdminMedia.css
