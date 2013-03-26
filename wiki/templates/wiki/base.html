@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>{% block pagetitle %}{% endblock %} - django-\/\/  i K |</title>
+    <title>{% block wiki_pagetitle %}{% endblock %} - django-\/\/  i K |</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="www.django-wiki.org">
@@ -24,7 +24,7 @@
 
     {% block wiki_body %}
     
-    {% block navbar %}
+    {% block wiki_navbar %}
     <div class="navbar navbar-fixed-top navbar-inverse">
       <div class="navbar-inner">
         <div class="container">
@@ -83,14 +83,16 @@
               <li class="active"><a href="/">Home</a></li>
               <li><a href="https://github.com/benjaoming/django-wiki" target="_blank">About</a></li>
             </ul>
-          </div><!--/.nav-collapse -->
+          </div>
         </div>
       </div>
     </div>
     {% endblock %}
 
     <div class="container" style="margin-top: 60px;">
+
       {% if messages %}
+        <!-- Messages for this instance -->
         {% for message in messages %}
           <div class="alert alert-{{ message.tags }}">
             <a class="close" data-dismiss="alert" href="#">&times;</a>
@@ -98,11 +100,12 @@
           </div>
         {% endfor %}
       {% endif %}
+
+      <!-- Reserved for breadcrumbs -->
       {% block wiki_breadcrumbs %}{% endblock %}
-      {% block wiki_contents %}
-      <h1>Bootstrap starter template</h1>
-      <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
-      {% endblock %}
+      
+      <!-- Main page contents go here -->
+      {% block wiki_contents %}{% endblock %}
       
       <footer id="wiki-footer">
         <hr />
