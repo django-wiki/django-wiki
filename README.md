@@ -1,6 +1,10 @@
 django-wiki
 ===========
 
+***News: March 26, 2013***
+
+Thanks to TomLottermann for German translation and daltonmatos for Brazilian translations! French are also reported in the works. 0.0.18 is released with that plus Django 1.5 compatibility, and [a bunch of other things and fixes](https://groups.google.com/forum/#!topic/django-wiki/V-bZou8aTaI).
+
 ***News: February 21, 2013***
 
 New release adds email notifications to django_notify, improved [toc] tag and bootstrap typography.
