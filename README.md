@@ -65,8 +65,21 @@ Django needs a mature wiki system appealing to all kinds of needs, both big and 
 Installation
 ------------
 
-### Install
+### Pre-requisites
 
+Django-wiki uses the [PIL library](http://www.pythonware.com/products/pil/) for image processing.  If you plan to enable images on your wiki, you'll need to make sure you have libpng and libjpeg installed *before* beginning the pip install process.  If you don't, you'll see the IOError exception popping up when a user uploads an image. The library installs are platform-specific, here are notes for installation:
+
+**Ubuntu/Apt-based Linux Distros**
+
+    sudo apt-get install libjpeg-dev
+
+**Mac OS X 10.5+**
+
+[Ethan Tira-Thompson](http://ethan.tira-thompson.com/Mac_OS_X_Ports.html) has created ports for OS X and made them available as a .dmg installer.  Download and install the universal combo package [here](http://ethan.tira-thompson.com/Mac_OS_X_Ports_files/libjpeg-libpng%20%28universal%29.dmg).
+
+Once you have the packages installed, you can proceed to the pip installation.  PIL will automatically pick up these libraries and compile them for django use.
+
+### Install
 To install the latest stable release:
 
 `pip install wiki`
