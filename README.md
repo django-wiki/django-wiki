@@ -71,7 +71,7 @@ Django-wiki uses the [PIL library](http://www.pythonware.com/products/pil/) for 
 
 **Ubuntu/Apt-based Linux Distros**
 
-    sudo apt-get install libjpeg-dev
+    sudo apt-get install python-imaging
 
 **Mac OS X 10.5+**
 
