@@ -25,6 +25,12 @@ DATABASES = {
     }
 }
 
+#Django Haystack
+
+HAYSTACK_SEARCH_ENGINE = 'whoosh'
+HAYSTACK_WHOOSH_PATH = os_path.join(PROJECT_PATH, 'index_woosh')
+HAYSTACK_SITECONF = 'testproject.search_sites'
+
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 TIME_ZONE = 'Europe/Copenhagen'
 
@@ -112,7 +118,7 @@ INSTALLED_APPS = (
     'wiki.plugins.attachments',
     'wiki.plugins.notifications',
     'mptt',
-    #'haystack',
+    'haystack',
 )
 
 # A sample logging configuration. The only tangible logging

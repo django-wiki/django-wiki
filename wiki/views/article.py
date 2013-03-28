@@ -477,15 +477,36 @@ class SearchViewHaystack(SearchView):
     def as_view(cls,*args,**kwargs):
         return search_view_factory(view_class=cls,*args,**kwargs)
 
+    def __filter_can_read(self, user):
+        """Filter objects so only the ones with a user's reading access
+         are included"""
+        if user.has_perm('wiki.moderator'):
+            return self.results
+        if user.is_anonymous():
+            print self.results
+            q = self.results.filter(other_read='True')
+            print q
+            return q 
+        else:
+           q = self.results.filter(Q(other_read=True) |
+                        Q(owner=user) |
+                        (Q(group__user=user) & Q(group_read=True))
+                        )
+        return q
+
+
     def __call__(self, request):
         self.request = request
         if self.request.user.is_anonymous and not settings.ANONYMOUS:
             return redirect(settings.LOGIN_URL)
 
-
         self.form = self.build_form()
         self.query = self.get_query()
         self.results = self.get_results()
+        if not permissions.can_moderate(models.URLPath.root().article, self.request.user):
+            self.results = self.__filter_can_read(self.request.user)         
+            #self.results = self.results.filter(current_revision__deleted=False)
+          
         return self.create_response()    
 
     def extra_context(self):
