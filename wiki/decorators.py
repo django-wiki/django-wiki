@@ -2,10 +2,6 @@
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseNotFound, \
     HttpResponseForbidden
-try:
-    from django.http import HttpResponseRedirectBase
-except ImportError:
-    from django.http.response import HttpResponseRedirectBase
 
 from django.shortcuts import redirect, get_object_or_404
 from django.template.context import RequestContext
@@ -20,11 +16,12 @@ from django.utils.http import urlquote
 def json_view(func):
     def wrap(request, *args, **kwargs):
         obj = func(request, *args, **kwargs)
-        if isinstance(obj, HttpResponseRedirectBase):
+        if isinstance(obj, HttpResponse):
             # Special behaviour: If it's a redirect, for instance
             # because of login protection etc. just return
             # the redirect
-            return obj
+            if obj.status_code == 301 or obj.status_code == 302:
+                return obj
         data = json.dumps(obj, ensure_ascii=False)
         status = kwargs.get('status', 200)
         response = HttpResponse(mimetype='application/json', status=status)
