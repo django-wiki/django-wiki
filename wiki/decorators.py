@@ -2,7 +2,11 @@
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseNotFound, \
     HttpResponseForbidden
-from django.http import HttpResponseRedirectBase
+try:
+    from django.http import HttpResponseRedirectBase
+except ImportError:
+    from django.http.response import HttpResponseRedirectBase
+
 from django.shortcuts import redirect, get_object_or_404
 from django.template.context import RequestContext
 from django.template.loader import render_to_string
