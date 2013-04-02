@@ -67,11 +67,19 @@ Installation
 
 ### Pre-requisites
 
-Django-wiki uses the [PIL library](http://www.pythonware.com/products/pil/) for image processing.  If you plan to enable images on your wiki, you'll need to make sure you have libpng and libjpeg installed *before* beginning the pip install process.  If you don't, you'll see the IOError exception popping up when a user uploads an image. The library installs are platform-specific, here are notes for installation:
+Django-wiki uses the [PIL library](http://www.pythonware.com/products/pil/) for image processing. The preferred method should be to get a system-wide version of PIL, for instance by getting the binaries from your Linux distribution repos.
 
-**Ubuntu/Apt-based Linux Distros**
+**PIL Directly from repository: Debian-based Linux Distros**
 
     sudo apt-get install python-imaging
+
+**PIL/Pillow for Pypi**
+
+Firstly, you need to get development libraries that PIP needs before compiling. For instance on Debian/Ubuntu:
+
+    sudo apt-get install libjpeg8 libjpeg-dev libpng libpng-dev
+
+After that, choose either `pip install PIL` or `pip install Pillow`. Pillow is the pip-friendly version of PIL. You might as well install PIL system-wide, because there are little version-specific dependencies in Django applications when it comes to PIL.
 
 **Mac OS X 10.5+**
 
