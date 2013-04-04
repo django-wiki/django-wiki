@@ -120,7 +120,8 @@ class EditForm(forms.Form, SpamProtectionMixin):
             data = None
             if len(args) > 0:
                 data = args[0]
-            if not data:
+                args = args[1:]
+            if data is None:
                 data = kwargs.get('data', None)
             if data:
                 self.presumed_revision = data.get('current_revision', None)
@@ -133,6 +134,9 @@ class EditForm(forms.Form, SpamProtectionMixin):
                                                       data.get('content', ""))
                     newdata['title'] = current_revision.title
                     kwargs['data'] = newdata
+                else:
+                    # Always pass as kwarg
+                    kwargs['data'] = data
                 
             kwargs['initial'] = initial
         
