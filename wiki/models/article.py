@@ -46,42 +46,10 @@ class Article(models.Model):
     # permission checking patterns. Also, since there are no other keywords,
     # it doesn't make much sense.
     def can_read(self, user=None):
-        # Deny reading access to deleted articles if user has no delete access
-        if self.current_revision and self.current_revision.deleted and not self.can_delete(user):
-            return False
-        
-        # Check access for other users...
-        if user.is_anonymous() and not settings.ANONYMOUS:
-            return False
-        elif self.other_read:
-            return True
-        elif user.is_anonymous():
-            return  False
-        if user == self.owner:
-            return True
-        if self.group_read:
-            if self.group and user.groups.filter(id=self.group.id).exists():
-                return True
-        if self.can_moderate(user):
-            return True
-        return False
+        return permissions.can_read(self, user)
     
     def can_write(self, user=None):
-        # Check access for other users...
-        if user.is_anonymous() and not settings.ANONYMOUS_WRITE:
-            return False
-        elif self.other_write:
-            return True
-        elif user.is_anonymous():
-            return  False
-        if user == self.owner:
-            return True
-        if self.group_write:
-            if self.group and user and user.groups.filter(id=self.group.id).exists():
-                return True
-        if self.can_moderate(user):
-            return True
-        return False
+        return permissions.can_write(self, user)
     
     def can_delete(self, user):
         return permissions.can_delete(self, user)
