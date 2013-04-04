@@ -29,14 +29,13 @@ class Image(RevisionPlugin):
     # The plugin system is so awesome that the inheritor doesn't need to do
     # anything! :D
     
-    def can_write(self, **kwargs):
-        user = kwargs.get('user', None)
+    def can_write(self, user):
         if not settings.ANONYMOUS and (not user or user.is_anonymous()):
             return False
-        return RevisionPlugin.can_write(self, **kwargs)
+        return RevisionPlugin.can_write(self, user)
 
     def can_delete(self, user):
-        return self.can_write(user=user)
+        return self.can_write(user)
 
     class Meta:
         verbose_name = _(u'image')

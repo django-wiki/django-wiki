@@ -44,10 +44,10 @@ class ArticlePlugin(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     
     # Permission methods - you should override these, if they don't fit your logic.
-    def can_read(self, **kwargs):
-        return self.article.can_read(**kwargs)
-    def can_write(self, **kwargs):
-        return self.article.can_write(**kwargs)
+    def can_read(self, user):
+        return self.article.can_read(user)
+    def can_write(self, user):
+        return self.article.can_write(user)
     def can_delete(self, user):
         return self.article.can_delete(user)
     def can_moderate(self, user):
@@ -86,10 +86,10 @@ class ReusablePlugin(ArticlePlugin):
     
     # Since the article relation may be None, we have to check for this
     # before handling permissions....
-    def can_read(self, **kwargs):
-        return self.article.can_read(**kwargs) if self.article else False
-    def can_write(self, **kwargs):
-        return self.article.can_write(**kwargs) if self.article else False
+    def can_read(self, user):
+        return self.article.can_read(user) if self.article else False
+    def can_write(self, user):
+        return self.article.can_write(user) if self.article else False
     def can_delete(self, user):
         return self.article.can_delete(user) if self.article else False
     def can_moderate(self, user):

@@ -42,15 +42,11 @@ class Article(models.Model):
     other_read = models.BooleanField(default=True, verbose_name=_(u'others read access'))
     other_write = models.BooleanField(default=True, verbose_name=_(u'others write access'))
     
-    # TODO: Do not use kwargs, it can lead to dangerous situations with bad
-    # permission checking patterns. Also, since there are no other keywords,
-    # it doesn't make much sense.
-    def can_read(self, user=None):
+    # PERMISSIONS
+    def can_read(self, user):
         return permissions.can_read(self, user)
-    
-    def can_write(self, user=None):
+    def can_write(self, user):
         return permissions.can_write(self, user)
-    
     def can_delete(self, user):
         return permissions.can_delete(self, user)
     def can_moderate(self, user):
