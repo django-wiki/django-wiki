@@ -48,7 +48,7 @@ class Article(models.Model):
     def can_read(self, user=None):
         return permissions.can_read(self, user)
     
-    def can_write(self, user=None):
+    def can_write(self, user):
         return permissions.can_write(self, user)
     
     def can_delete(self, user):

@@ -132,10 +132,10 @@ def get_article(func=None, can_read=True, can_write=False,
         if article.current_revision.locked and not_locked:
             return response_forbidden(request, article, urlpath)
 
-        if can_read and not article.can_read(user=request.user):
+        if can_read and not article.can_read(request.user):
             return response_forbidden(request, article, urlpath)
         
-        if (can_write or can_create) and not article.can_write(user=request.user):
+        if (can_write or can_create) and not article.can_write(request.user):
             return response_forbidden(request, article, urlpath)
 
         if can_create and not (request.user.is_authenticated() or settings.ANONYMOUS_CREATE):

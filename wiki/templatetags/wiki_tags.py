@@ -84,12 +84,12 @@ def get_content_snippet(content, keyword, max_words=30):
 @register.filter
 def can_read(obj, user):
     """Articles and plugins have a can_read method..."""
-    return obj.can_read(user=user)
+    return obj.can_read(user)
 
 @register.filter
 def can_write(obj, user):
     """Articles and plugins have a can_write method..."""
-    return obj.can_write(user=user)
+    return obj.can_write(user)
 
 @register.filter
 def can_delete(obj, user):
