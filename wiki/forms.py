@@ -126,7 +126,6 @@ class EditForm(forms.Form, SpamProtectionMixin):
             if data:
                 self.presumed_revision = data.get('current_revision', None)
                 if not str(self.presumed_revision) == str(self.initial_revision.id):
-                    print "IT"
                     newdata = {}
                     for k,v in data.items():
                         newdata[k] = v
