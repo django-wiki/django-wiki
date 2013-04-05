@@ -57,7 +57,7 @@ class SpamProtectionMixin():
                 revisions = revisions.filter(ip_address=ip_address)
             revisions = revisions.count()
             if revisions >= max_count:
-                raise forms.ValidationError(_(u'Spam protection: You are only allowed to create or edit %(revisions)d article per %(interval_name)s.') % 
+                raise forms.ValidationError(_(u'Spam protection: You are only allowed to create or edit %(revisions)d article(s) per %(interval_name)s.') % 
                                             {'revisions': max_count,
                                              'interval_name': interval_name,})
             
