@@ -314,5 +314,6 @@ post_save.connect(on_article_save_clear_cache, Article)
 
 def on_article_delete_clear_cache(instance, **kwargs):
     _clear_ancestor_cache(instance)
+    instance.clear_cache()
 pre_delete.connect(on_article_delete_clear_cache, Article)
 

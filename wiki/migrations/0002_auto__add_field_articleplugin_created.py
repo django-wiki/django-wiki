@@ -3,6 +3,7 @@ import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
+from django.utils.timezone import utc
 
 
 class Migration(SchemaMigration):
@@ -10,7 +11,7 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         # Adding field 'ArticlePlugin.created'
         db.add_column('wiki_articleplugin', 'created',
-                      self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, default=datetime.datetime(2012, 8, 16, 0, 0), blank=True),
+                      self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, default=datetime.datetime(2012, 8, 16, 0, 0, 0, 0, utc), blank=True),
                       keep_default=False)
 
 
