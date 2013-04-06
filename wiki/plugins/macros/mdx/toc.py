@@ -17,11 +17,23 @@ Until it's released, we have a copy here.
 """
 import markdown
 from markdown.util import etree
-from markdown.extensions.headerid import slugify, unique, itertext
+from markdown.extensions.headerid import slugify, itertext
 
 import re
 
 from wiki.plugins.macros import settings
+
+IDCOUNT_RE = re.compile(r'^(.*)_([0-9]+)$')
+def unique(elem_id, ids):
+    """ Ensure id is unique in set of ids. Append '_1', '_2'... if not """
+    while elem_id in ids:
+        m = IDCOUNT_RE.match(elem_id)
+        if m:
+            elem_id = '%s_%d'% (m.group(1), int(m.group(2))+1)
+        else:
+            elem_id = '%s_%d'% (elem_id, 1)
+    ids.add(elem_id)
+    return elem_id
 
 def order_toc_list(toc_list):
     """Given an unsorted list with errors and skips, return a nested one.
@@ -135,10 +147,10 @@ class TocTreeprocessor(markdown.treeprocessors.Treeprocessor):
         self.use_anchors = self.config["anchorlink"] in [1, '1', True, 'True', 'true']
         
         # Get a list of id attributes
-        used_ids = []
+        used_ids = set()
         for c in doc.getiterator():
             if "id" in c.attrib:
-                used_ids.append(c.attrib["id"])
+                used_ids.add(c.attrib["id"])
 
         toc_list = []
         marker_found = False
@@ -172,9 +184,11 @@ class TocTreeprocessor(markdown.treeprocessors.Treeprocessor):
 
                 tag_level = int(c.tag[-1])
                 
-                toc_list.append({'level': tag_level,
+                toc_list.append({
+                    'level': tag_level,
                     'id': elem_id,
-                    'name': c.text})
+                    'name': c.text
+                })
                 
                 self.add_anchor(c, elem_id)
                 
