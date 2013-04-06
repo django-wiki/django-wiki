@@ -37,7 +37,7 @@ class WebClientTest(TestCase):
                 'content': 'The modified text',
                 'current_revision': '1',
                 'preview': '1',
-                'save': '1',
+                #'save': '1',  # probably not too important
                 'summary': 'why edited',
                 'title': 'wiki test'}
 
@@ -78,13 +78,46 @@ class WebClientTest(TestCase):
         self.assertTrue('succesfully added' in message)
 
     def test_redirect_create(self):
+        """Test that redirects to create if the slug is unknown."""
         response = self.get_by_path('Unknown/')
         self.assertRedirects(response, reverse('wiki:create', kwargs={'path': ''}) + '?slug=Unknown')
 
     def test_cleared_cache(self):
+        """Test the article cache is cleared after delete."""
+        # That bug is tested by one individual test, otherwise it could be
+        # revealed only by sequence of tests in some particular order
         c = self.c
-        response = c.post(reverse('wiki:edit', kwargs={'path': ''}), self.example_data)
+        response = c.post(reverse('wiki:create', kwargs={'path': ''}),
+                {'title': 'Test cache', 'slug': 'TestCache', 'content': 'Content 1'})
+        self.assertRedirects(response, reverse('wiki:get', kwargs={'path': 'TestCache/'}))
+        response = c.post(reverse('wiki:delete', kwargs={'path': 'TestCache/'}),
+                {'confirm': 'on', 'purge': 'on', 'revision': '2'})
+        self.assertRedirects(response, reverse('wiki:get', kwargs={'path': ''}))
+        response = c.post(reverse('wiki:create', kwargs={'path': ''}),
+                {'title': 'Test cache', 'slug': 'TestCache', 'content': 'Content 2'})
+        self.assertRedirects(response, reverse('wiki:get', kwargs={'path': 'TestCache/'}))
+        # test the cache
+        self.assertContains(self.get_by_path('TestCache/'), 'Content 2')
+
+    def test_article_list_update(self):
+        """Test automatic adding and removing the new article to/from article_list."""
+        c = self.c
+        root_data = {'content': '[article_list depth:2]', 'current_revision': '1', 'preview': '1', 'title': 'Root Article'}
+        response = c.post(reverse('wiki:edit', kwargs={'path': ''}), root_data)
         self.assertRedirects(response, reverse('wiki:root'))
+        # verify the new article is added to article_list
+        response = c.post(reverse('wiki:create', kwargs={'path': ''}),
+                {'title': 'Sub Article 1', 'slug': 'SubArticle1'})
+        self.assertRedirects(response, reverse('wiki:get', kwargs={'path': 'SubArticle1/'}))
+        self.assertContains(self.get_by_path(''), 'Sub Article 1')
+        self.assertContains(self.get_by_path(''), 'SubArticle1/')
+        # verify the deleted article is removed from article_list
+        response = c.post(reverse('wiki:delete', kwargs={'path': 'SubArticle1/'}),
+                {'confirm': 'on', 'purge': 'on', 'revision': '3'})
+        message = c.cookies['messages'].value if 'messages' in c.cookies else None
+        self.assertRedirects(response, reverse('wiki:get', kwargs={'path': ''}))
+        self.assertTrue('This article together with all its contents are now completely gone' in message)
+        self.assertNotContains(self.get_by_path(''), 'Sub Article 1')
 
     def test_revision_conflict(self):
         """Test the warning if the same article is beeing edited concurrently."""
