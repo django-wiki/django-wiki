@@ -5,4 +5,8 @@ python:
 # command to run tests
 script: python testproject/manage.py test wiki
 install:
-  - pip install -r .travis/requirements_1.4.txt
+  - pip install -r .travis/requirements_1.4.txt --use-mirrors
+  - pip install -r .travis/requirements_1.5.txt --use-mirrors
+script:
+  - python -W error:"":"":0 testproject/manage.py test
+
