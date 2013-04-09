@@ -134,16 +134,20 @@ class SimplePlugin(ArticlePlugin):
     article_revision = models.ForeignKey(ArticleRevision, on_delete=models.CASCADE)
     
     def __init__(self, *args, **kwargs):
+        article = kwargs.pop('article', None)
         super(SimplePlugin, self).__init__(*args, **kwargs)
-        if not self.id and not 'article' in kwargs:
+        if not self.pk and not article:
             raise SimplePluginCreateError("Keyword argument 'article' expected.")
-            self.article = kwargs['article']
+        elif self.pk:
+            self.article = self.article_revision.article
+        else:
+            self.article = article
         
     def get_logmessage(self):
         return _(u"A plugin was changed")
     
     def save(self, *args, **kwargs):
-        if not self.id:
+        if not self.pk:
             if not self.article.current_revision:
                 raise SimplePluginCreateError("Article does not have a current_revision set.")
             new_revision = ArticleRevision()
