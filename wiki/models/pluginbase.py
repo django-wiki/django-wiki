@@ -133,12 +133,6 @@ class SimplePlugin(ArticlePlugin):
     # The article revision that this plugin is attached to
     article_revision = models.ForeignKey(ArticleRevision, on_delete=models.CASCADE)
     
-    def __init__(self, *args, **kwargs):
-        super(SimplePlugin, self).__init__(*args, **kwargs)
-        if not self.id and not 'article' in kwargs:
-            raise SimplePluginCreateError("Keyword argument 'article' expected.")
-            self.article = kwargs['article']
-        
     def get_logmessage(self):
         return _(u"A plugin was changed")
     
