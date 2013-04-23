@@ -1,6 +1,10 @@
 django-wiki
 ===========
 
+***News: April 23rd, 2013***
+
+Security fix included in 0.0.19. [View commit log >](https://github.com/benjaoming/django-wiki/commits/alpha/0.0.19)
+
 ***News: March 26, 2013***
 
 Thanks to TomLottermann for German translation and daltonmatos for Brazilian translations! French are also reported in the works. 0.0.18 is released with that plus Django 1.5 compatibility, and [a bunch of other things and fixes](https://groups.google.com/forum/#!topic/django-wiki/V-bZou8aTaI).
