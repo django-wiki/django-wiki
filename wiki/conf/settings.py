@@ -15,7 +15,7 @@ WIKI_LANGUAGE = 'markdown'
 EDITOR = getattr( django_settings, 'WIKI_EDITOR', 'wiki.editors.markitup.MarkItUp' )
 
 MARKDOWN_KWARGS = {
-    'extensions': ['footnotes', 'headerid', 'extra',],
+    'extensions': ['footnotes', 'attr_list', 'headerid', 'extra',],
     'safe_mode': 'replace',
     'extension_configs': {'toc': {'title': _('Table of Contents')}},
 }

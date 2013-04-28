@@ -1,6 +1,10 @@
 django-wiki
 ===========
 
+***News: April 23rd, 2013***
+
+Security fix included in 0.0.19. [View commit log >](https://github.com/benjaoming/django-wiki/commits/alpha/0.0.19)
+
 ***News: March 26, 2013***
 
 Thanks to TomLottermann for German translation and daltonmatos for Brazilian translations! French are also reported in the works. 0.0.18 is released with that plus Django 1.5 compatibility, and [a bunch of other things and fixes](https://groups.google.com/forum/#!topic/django-wiki/V-bZou8aTaI).
@@ -223,6 +227,6 @@ Acknowledgements
 Support
 -------
 
-This project is already alive and will remain alive, because it's free software and as long as it's essential, common interest will keep it alive... we hope :) You're more than welcome to help build benjaoming's economical independency which in turn will be used to create free software.
+This project is already alive and will remain alive, because it's free software and as long as it's essential, common interest will keep it alive... we hope :) You're more than welcome to show your appreciation through Flattr.
 
 [![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=benjaoming&url=https://github.com/benjaoming/django-wiki/&title=django-wiki&language=&tags=github&category=software) 

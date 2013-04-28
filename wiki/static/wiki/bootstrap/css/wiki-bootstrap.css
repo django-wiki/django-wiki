@@ -688,8 +688,8 @@ ol.inline {
   margin-left: 0;
   list-style: none;
 }
-ul.inline  > li,
-ol.inline  > li {
+ul.inline > li,
+ol.inline > li {
   display: inline-block;
   padding-left: 5px;
   padding-right: 5px;
@@ -2461,7 +2461,7 @@ table th[class*="span"],
 .open {
   *z-index: 1000;
 }
-.open  > .dropdown-menu {
+.open > .dropdown-menu {
   display: block;
 }
 .pull-right > .dropdown-menu {
@@ -5190,6 +5190,7 @@ h1#article-title {
   -moz-border-radius: 3px;
   border-radius: 3px;
   max-width: 340px;
+  clear: left;
 }
 .wiki-article div.toc blockquote,
 .wiki-article div.article-list blockquote {
@@ -5351,6 +5352,10 @@ h1#article-title {
 }
 .wiki-article h5,
 .wiki-article h6 {
+  font-size: 14px;
+}
+.wiki-article blockquote p,
+.wiki-article blockquote {
   font-size: 14px;
 }
 input[type=file] {
