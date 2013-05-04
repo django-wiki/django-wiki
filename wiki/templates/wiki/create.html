@@ -22,6 +22,7 @@
       s = s.toLowerCase();             // convert to lowercase
       return s.substring(0, num_chars);// trim to first num_chars chars
   }
+  {% if not create_form.slug.value %}
   //<![CDATA[	
   (function($) {
 	  $(document).ready(function (){
@@ -38,6 +39,7 @@
 	  });
   })(jQuery);
   //]]>
+  {% endif %}
   </script>
   {% endaddtoblock %}
 
