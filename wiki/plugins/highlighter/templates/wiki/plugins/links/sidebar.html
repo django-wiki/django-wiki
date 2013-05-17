@@ -1,0 +1,42 @@
+{% load i18n sekizai_tags %}
+{% load url from future %}
+<h4>{% trans "Link to another wiki page" %}</h4>
+
+<p>
+  {% trans "Type in something from another wiki page's title and auto-complete will help you create a tag for you wiki link. Tags for links look like this:" %}<br />
+</p>
+
+<pre>[Title of link](wiki:ArticleSlug)</pre>
+
+<p>
+  <input type="text" class="page_title_query" id="links_page_title_query" value="" placeholder="Type to search..." style="max-width: 90%;" />
+  <button type="button" class="btn" onclick="wikiInsertLink()">
+    {% trans "Insert" %}
+  </button>
+</p>
+
+<hr />
+
+<h4>{% trans "An external link" %}</h4>
+
+<p>
+  {% trans "You can link to another website simply by inserting an address example.com or http://example.com or by using the markdown syntax:" %}<br />
+</p>
+<pre>[Clickable text](http://example.com)</pre>
+
+{% addtoblock "js" %}
+<script type="text/javascript">
+$('.page_title_query').typeahead({
+    source: function (query, process) {
+        return $.get('{% url 'wiki:links_query_urlpath' path=urlpath.path article_id=article.id %}', { query: query }, function (data) {
+            return process(data);
+        });
+    }
+});
+
+function wikiInsertLink() {
+  $('#id_content').insertAtCaret($('#links_page_title_query').val());
+}
+
+</script>
+{% endaddtoblock %}

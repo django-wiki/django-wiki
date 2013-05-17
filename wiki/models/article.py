@@ -144,9 +144,9 @@ class Article(models.Model):
     class Meta:
         app_label = settings.APP_LABEL
         permissions = (
-            ("moderate", "Can edit all articles and lock/unlock/restore"),
-            ("assign", "Can change ownership of any article"),
-            ("grant", "Can assign permissions to other users"),
+            ("moderate", _(u"Can edit all articles and lock/unlock/restore")),
+            ("assign", _(u"Can change ownership of any article")),
+            ("grant", _(u"Can assign permissions to other users")),
         )
     
     def render(self, preview_content=None):

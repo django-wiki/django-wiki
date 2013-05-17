@@ -80,8 +80,8 @@
           </div>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class="active"><a href="/">Home</a></li>
-              <li><a href="https://github.com/benjaoming/django-wiki" target="_blank">About</a></li>
+              <li class="active"><a href="/">{% trans "Home" %}</a></li>
+              <li><a href="https://github.com/benjaoming/django-wiki" target="_blank">{% trans "About" %}</a></li>
             </ul>
           </div>
         </div>
@@ -114,7 +114,7 @@
         {% endblock %}
         {% block wiki_footer_prepend %}
         {% endblock %}
-        <p>Powered by <a href="http://www.django-wiki.org">django-wiki</a>, an open source application under the <a href="http://www.gnu.org/licenses/quick-guide-gplv3.html">GPLv3</a> license. Let knowledge be the cure.</p>
+        <p>{% blocktrans %}Powered by <a href="http://www.django-wiki.org">django-wiki</a>, an open source application under the <a href="http://www.gnu.org/licenses/quick-guide-gplv3.html">GPLv3</a> license. Let knowledge be the cure.{% endblocktrans %}</p>
         <div style="clear: both"></div>
       </footer>
       </div>
