@@ -211,7 +211,9 @@ class BaseRevisionMixin(models.Model):
     modified = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     
-    previous_revision = models.ForeignKey('self', blank=True, null=True)
+    previous_revision = models.ForeignKey(
+        'self', blank=True, null=True, on_delete=models.SET_NULL
+    )
     
     # NOTE! The semantics of these fields are not related to the revision itself
     # but the actual related object. If the latest revision says "deleted=True" then
