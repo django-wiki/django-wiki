@@ -445,7 +445,7 @@ class UserCreationForm(UserCreationForm):
         )
     
     def clean(self):
-        cd = self.cleaned_data
+        cd = super(UserCreationForm, self).clean()
         for fieldname in self.honeypot_fieldnames:
             if cd[fieldname]: raise forms.ValidationError("Thank you, non-human visitor. Please keep trying to fill in the form.")
         return cd
