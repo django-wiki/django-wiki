@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from django.core.cache import cache
 from django.db import models
 from django.db.models.signals import post_save, pre_delete
@@ -27,7 +27,7 @@ class Article(models.Model):
     modified = models.DateTimeField(auto_now=True, verbose_name=_(u'modified'),
                                     help_text=_(u'Article properties last modified'))
 
-    owner = models.ForeignKey(User, verbose_name=_('owner'),
+    owner = models.ForeignKey(settings.USER_MODEL, verbose_name=_('owner'),
                               blank=True, null=True, related_name='owned_articles',
                               help_text=_(u'The owner of the article, usually the creator. The owner always has both read and write access.'),
                               on_delete=models.SET_NULL)
@@ -204,7 +204,7 @@ class BaseRevisionMixin(models.Model):
     automatic_log = models.TextField(blank=True, editable=False,)
     
     ip_address  = models.IPAddressField(_('IP address'), blank=True, null=True, editable=False)
-    user        = models.ForeignKey(User, verbose_name=_('user'),
+    user        = models.ForeignKey(settings.USER_MODEL, verbose_name=_('user'),
                                     blank=True, null=True,
                                     on_delete=models.SET_NULL)    
     

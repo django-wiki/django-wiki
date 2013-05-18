@@ -41,6 +41,9 @@ INTERVALS = getattr(django_settings, 'NOTIFY_INTERVALS',
 
 INTERVALS_DEFAULT = INSTANTLY
 
+# Django 1.5+
+USER_MODEL = getattr(django_settings, 'AUTH_USER_MODEL', 'auth.User')
+
 ####################
 # PLANNED SETTINGS #
 ####################

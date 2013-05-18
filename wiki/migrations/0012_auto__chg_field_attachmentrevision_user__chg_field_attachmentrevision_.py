@@ -5,47 +5,58 @@ from south.v2 import SchemaMigration
 from django.db import models
 
 
+try:
+    from django.contrib.auth import get_user_model
+except ImportError: # django < 1.5
+    from django.contrib.auth.models import User
+else:
+    User = get_user_model()
+
+user_orm_label = '%s.%s' % (User._meta.app_label, User._meta.object_name)
+user_model_label = '%s.%s' % (User._meta.app_label, User._meta.module_name) 
+
+
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
 
         # Changing field 'AttachmentRevision.user'
-        db.alter_column('wiki_attachmentrevision', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'], null=True, on_delete=models.SET_NULL))
+        db.alter_column('wiki_attachmentrevision', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm[user_orm_label], null=True, on_delete=models.SET_NULL))
 
         # Changing field 'AttachmentRevision.file'
         db.alter_column('wiki_attachmentrevision', 'file', self.gf('django.db.models.fields.files.FileField')(max_length=255))
 
         # Changing field 'RevisionPluginRevision.user'
-        db.alter_column('wiki_revisionpluginrevision', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'], null=True, on_delete=models.SET_NULL))
+        db.alter_column('wiki_revisionpluginrevision', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm[user_orm_label], null=True, on_delete=models.SET_NULL))
 
         # Changing field 'ArticleRevision.user'
-        db.alter_column('wiki_articlerevision', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'], null=True, on_delete=models.SET_NULL))
+        db.alter_column('wiki_articlerevision', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm[user_orm_label], null=True, on_delete=models.SET_NULL))
 
         # Changing field 'Article.group'
         db.alter_column('wiki_article', 'group_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.Group'], null=True, on_delete=models.SET_NULL))
 
         # Changing field 'Article.owner'
-        db.alter_column('wiki_article', 'owner_id', self.gf('django.db.models.fields.related.ForeignKey')(null=True, on_delete=models.SET_NULL, to=orm['auth.User']))
+        db.alter_column('wiki_article', 'owner_id', self.gf('django.db.models.fields.related.ForeignKey')(null=True, on_delete=models.SET_NULL, to=orm[user_orm_label]))
 
     def backwards(self, orm):
 
         # Changing field 'AttachmentRevision.user'
-        db.alter_column('wiki_attachmentrevision', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'], null=True))
+        db.alter_column('wiki_attachmentrevision', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm[user_orm_label], null=True))
 
         # Changing field 'AttachmentRevision.file'
         db.alter_column('wiki_attachmentrevision', 'file', self.gf('django.db.models.fields.files.FileField')(max_length=100))
 
         # Changing field 'RevisionPluginRevision.user'
-        db.alter_column('wiki_revisionpluginrevision', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'], null=True))
+        db.alter_column('wiki_revisionpluginrevision', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm[user_orm_label], null=True))
 
         # Changing field 'ArticleRevision.user'
-        db.alter_column('wiki_articlerevision', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'], null=True))
+        db.alter_column('wiki_articlerevision', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm[user_orm_label], null=True))
 
         # Changing field 'Article.group'
         db.alter_column('wiki_article', 'group_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.Group'], null=True))
 
         # Changing field 'Article.owner'
-        db.alter_column('wiki_article', 'owner_id', self.gf('django.db.models.fields.related.ForeignKey')(null=True, to=orm['auth.User']))
+        db.alter_column('wiki_article', 'owner_id', self.gf('django.db.models.fields.related.ForeignKey')(null=True, to=orm[user_orm_label]))
 
     models = {
         'auth.group': {
@@ -61,8 +72,8 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
         },
-        'auth.user': {
-            'Meta': {'object_name': 'User'},
+        user_model_label: {
+            'Meta': {'object_name': User.__name__, 'db_table': "'%s'" % User._meta.db_table},
             'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
@@ -105,7 +116,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Settings', 'db_table': "'notify_settings'"},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'interval': ('django.db.models.fields.SmallIntegerField', [], {'default': '0'}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['%s']" % user_orm_label})
         },
         'django_notify.subscription': {
             'Meta': {'object_name': 'Subscription', 'db_table': "'notify_subscription'"},
@@ -133,7 +144,7 @@ class Migration(SchemaMigration):
             'modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'other_read': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'other_write': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'owner': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'owned_articles'", 'null': 'True', 'on_delete': 'models.SET_NULL', 'to': "orm['auth.User']"})
+            'owner': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'owned_articles'", 'null': 'True', 'on_delete': 'models.SET_NULL', 'to': "orm['%s']" % user_orm_label})
         },
         'wiki.articleforobject': {
             'Meta': {'unique_together': "(('content_type', 'object_id'),)", 'object_name': 'ArticleForObject'},
@@ -164,7 +175,7 @@ class Migration(SchemaMigration):
             'previous_revision': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['wiki.ArticleRevision']", 'null': 'True', 'blank': 'True'}),
             'revision_number': ('django.db.models.fields.IntegerField', [], {}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']", 'null': 'True', 'on_delete': 'models.SET_NULL', 'blank': 'True'}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['%s']" % user_orm_label, 'null': 'True', 'on_delete': 'models.SET_NULL', 'blank': 'True'}),
             'user_message': ('django.db.models.fields.TextField', [], {'blank': 'True'})
         },
         'wiki.articlesubscription': {
@@ -192,7 +203,7 @@ class Migration(SchemaMigration):
             'modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'previous_revision': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['wiki.AttachmentRevision']", 'null': 'True', 'blank': 'True'}),
             'revision_number': ('django.db.models.fields.IntegerField', [], {}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']", 'null': 'True', 'on_delete': 'models.SET_NULL', 'blank': 'True'}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['%s']" % user_orm_label, 'null': 'True', 'on_delete': 'models.SET_NULL', 'blank': 'True'}),
             'user_message': ('django.db.models.fields.TextField', [], {'blank': 'True'})
         },
         'wiki.image': {
@@ -228,7 +239,7 @@ class Migration(SchemaMigration):
             'plugin': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'revision_set'", 'to': "orm['wiki.RevisionPlugin']"}),
             'previous_revision': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['wiki.RevisionPluginRevision']", 'null': 'True', 'blank': 'True'}),
             'revision_number': ('django.db.models.fields.IntegerField', [], {}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']", 'null': 'True', 'on_delete': 'models.SET_NULL', 'blank': 'True'}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['%s']" % user_orm_label, 'null': 'True', 'on_delete': 'models.SET_NULL', 'blank': 'True'}),
             'user_message': ('django.db.models.fields.TextField', [], {'blank': 'True'})
         },
         'wiki.simpleplugin': {

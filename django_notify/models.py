@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.db.models import Q
-from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
 from django.contrib.contenttypes.models import ContentType
@@ -28,7 +27,7 @@ class NotificationType(models.Model):
     
 class Settings(models.Model):
     
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(settings.USER_MODEL)
     interval = models.SmallIntegerField(choices=settings.INTERVALS, verbose_name=_(u'interval'),
                                         default=settings.INTERVALS_DEFAULT)
     
