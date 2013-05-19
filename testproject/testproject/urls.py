@@ -17,7 +17,7 @@ if settings.DEBUG:
             'document_root': settings.MEDIA_ROOT,
         }),
    )
-    
+
 from wiki.urls import get_pattern as get_wiki_pattern
 from django_notify.urls import get_pattern as get_notify_pattern
 urlpatterns += patterns('',
