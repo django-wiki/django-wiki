@@ -91,9 +91,6 @@ ANONYMOUS_UPLOAD = getattr( django_settings, 'WIKI_ANONYMOUS_UPLOAD', False )
 # Sign up, login and logout views should be accessible 
 ACCOUNT_HANDLING = getattr( django_settings, 'WIKI_ACCOUNT_HANDLING', True )
 
-# Django 1.5+
-USER_MODEL = getattr(django_settings, 'AUTH_USER_MODEL', 'auth.User')
-
 if ACCOUNT_HANDLING:
     LOGIN_URL = reverse_lazy("wiki:login")
     LOGOUT_URL = reverse_lazy("wiki:logout")

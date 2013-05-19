@@ -10,6 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from wiki.conf import settings
 from wiki.core import article_markdown, permissions
+from wiki.core import compat
 from wiki import managers
 from mptt.models import MPTTModel
 
@@ -27,7 +28,7 @@ class Article(models.Model):
     modified = models.DateTimeField(auto_now=True, verbose_name=_(u'modified'),
                                     help_text=_(u'Article properties last modified'))
 
-    owner = models.ForeignKey(settings.USER_MODEL, verbose_name=_('owner'),
+    owner = models.ForeignKey(compat.USER_MODEL, verbose_name=_('owner'),
                               blank=True, null=True, related_name='owned_articles',
                               help_text=_(u'The owner of the article, usually the creator. The owner always has both read and write access.'),
                               on_delete=models.SET_NULL)
@@ -204,7 +205,7 @@ class BaseRevisionMixin(models.Model):
     automatic_log = models.TextField(blank=True, editable=False,)
     
     ip_address  = models.IPAddressField(_('IP address'), blank=True, null=True, editable=False)
-    user        = models.ForeignKey(settings.USER_MODEL, verbose_name=_('user'),
+    user        = models.ForeignKey(compat.USER_MODEL, verbose_name=_('user'),
                                     blank=True, null=True,
                                     on_delete=models.SET_NULL)
     

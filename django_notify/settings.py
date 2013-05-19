@@ -1,4 +1,5 @@
 from django.conf import settings as django_settings
+from django import VERSION as DJANGO_VERSION
 
 _ = lambda x: x
 
@@ -42,7 +43,10 @@ INTERVALS = getattr(django_settings, 'NOTIFY_INTERVALS',
 INTERVALS_DEFAULT = INSTANTLY
 
 # Django 1.5+
-USER_MODEL = getattr(django_settings, 'AUTH_USER_MODEL', 'auth.User')
+if DJANGO_VERSION >= (1,5):
+    USER_MODEL = getattr(django_settings, 'AUTH_USER_MODEL', 'auth.User')
+else:
+    USER_MODEL = 'auth.User'
 
 ####################
 # PLANNED SETTINGS #

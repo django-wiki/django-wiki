@@ -19,7 +19,7 @@ settings.configure(
         'django.contrib.admin',
         'django.contrib.humanize',
         'django.contrib.sites',
-        #'south',
+        'south',
         'django_notify',
         'mptt',
         'sekizai',
@@ -42,14 +42,16 @@ settings.configure(
         "sekizai.context_processors.sekizai",
     ),
     USE_TZ=True,
+    SOUTH_TESTS_MIGRATE=True,
 )
 
 from django.test.simple import DjangoTestSuiteRunner
 test_runner = DjangoTestSuiteRunner(verbosity=1)
+
 # If you use South for migrations, uncomment this to monkeypatch
 # syncdb to get migrations to run.
-#from south.management.commands import patch_for_test_db_setup
-#patch_for_test_db_setup()
+from south.management.commands import patch_for_test_db_setup
+patch_for_test_db_setup()
 
 failures = test_runner.run_tests(['wiki', ])
 if failures:
