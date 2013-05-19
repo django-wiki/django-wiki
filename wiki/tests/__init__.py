@@ -1,15 +1,19 @@
-from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client
 from wiki.models import Article, ArticleRevision, URLPath
 import pprint
-import re
 
 class InitialWebClientTest(TestCase):
     """Tests by the dummy web client, with manual creating the root article."""
 
     def setUp(self):
+        try:
+            from django.contrib.auth import get_user_model
+            User = get_user_model()
+        except ImportError:
+            from django.contrib.auth.models import User
+        
         User.objects.create_superuser('admin', 'nobody@example.com', 'secret')
         self.c = c = Client()
         c.login(username='admin', password='secret')
@@ -29,6 +33,11 @@ class InitialWebClientTest(TestCase):
 class WebClientTest(TestCase):
     """Tests by the dummy web client."""
     def setUp(self):
+        try:
+            from django.contrib.auth import get_user_model
+            User = get_user_model()
+        except ImportError:
+            from django.contrib.auth.models import User
         User.objects.create_superuser('admin', 'nobody@example.com', 'secret')
         self.c = c = Client()
         c.login(username='admin', password='secret')
