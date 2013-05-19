@@ -20,9 +20,11 @@ from wiki.editors import getEditor
 from wiki.core.diff import simple_merge
 from django.forms.widgets import HiddenInput
 from wiki.core.plugins.base import PluginSettingsFormMixin
-from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from wiki.core import permissions
+
+from wiki.core.compat import get_user_model
+User = get_user_model()
 
 class SpamProtectionMixin():
     """Check a form for spam. Only works if properties 'request' and 'revision_model' are set."""
@@ -368,7 +370,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
             if username:
                 try:
                     user = User.objects.get(username=username)
-                except models.User.DoesNotExist:
+                except User.DoesNotExist:
                     raise forms.ValidationError(_(u'No user with that username'))
             else:
                 user = None

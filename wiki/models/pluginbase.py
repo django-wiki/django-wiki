@@ -3,8 +3,6 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import signals
 
-from wiki.models.article import BaseRevisionMixin
-
 """
 There are three kinds of plugin base models:
 
@@ -26,8 +24,7 @@ There are three kinds of plugin base models:
 
 """
 
-from article import Article, ArticleRevision
-
+from article import ArticleRevision, BaseRevisionMixin
 from wiki.conf import settings 
 
 class ArticlePlugin(models.Model):
@@ -36,7 +33,7 @@ class ArticlePlugin(models.Model):
     clean. Furthermore, it's possible to list all plugins and maintain generic
     properties in the future..."""    
     
-    article = models.ForeignKey(Article, on_delete=models.CASCADE, 
+    article = models.ForeignKey('wiki.Article', on_delete=models.CASCADE, 
                                 verbose_name=_(u"article"))
     
     deleted = models.BooleanField(default=False)
@@ -82,7 +79,7 @@ class ReusablePlugin(ArticlePlugin):
     ArticlePlugin.article.null = True
     ArticlePlugin.article.blank = True
     
-    articles = models.ManyToManyField(Article, related_name='shared_plugins_set')
+    articles = models.ManyToManyField('wiki.Article', related_name='shared_plugins_set')
     
     # Since the article relation may be None, we have to check for this
     # before handling permissions....
@@ -131,7 +128,7 @@ class SimplePlugin(ArticlePlugin):
     YourPlugin.objects.create(article=article_instance, ...)
     """
     # The article revision that this plugin is attached to
-    article_revision = models.ForeignKey(ArticleRevision, on_delete=models.CASCADE)
+    article_revision = models.ForeignKey('wiki.ArticleRevision', on_delete=models.CASCADE)
     
     def __init__(self, *args, **kwargs):
         article = kwargs.pop('article', None)

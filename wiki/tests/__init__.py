@@ -1,7 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client
-from wiki.models import Article, ArticleRevision, URLPath
+
 import pprint
 
 class InitialWebClientTest(TestCase):
@@ -52,6 +52,7 @@ class WebClientTest(TestCase):
 
     def tearDown(self):
         # clear Article cache before the next test
+        from wiki.models import Article
         Article.objects.all().delete()
 
     def get_by_path(self, path):
@@ -63,6 +64,7 @@ class WebClientTest(TestCase):
     def dump_db_status(self, message=''):
         """Debug printing of the complete important database content."""
         print('*** db status *** {}'.format(message))
+        from wiki.models import Article, ArticleRevision, URLPath
         for klass in (Article, ArticleRevision, URLPath):
             print('* {} *'.format(klass.__name__))
             pprint.pprint(list(klass.objects.values()), width=240)

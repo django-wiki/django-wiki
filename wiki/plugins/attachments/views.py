@@ -29,7 +29,7 @@ class AttachmentView(ArticleMixin, FormView):
                 current_revision__file=None
             ).order_by('original_filename')
             
-            self.form_class = forms.AttachmentArcihveForm
+            self.form_class = forms.AttachmentArchiveForm
         else:
             self.attachments = models.Attachment.objects.active().filter(articles=article)
         

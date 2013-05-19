@@ -206,7 +206,7 @@ class BaseRevisionMixin(models.Model):
     ip_address  = models.IPAddressField(_('IP address'), blank=True, null=True, editable=False)
     user        = models.ForeignKey(settings.USER_MODEL, verbose_name=_('user'),
                                     blank=True, null=True,
-                                    on_delete=models.SET_NULL)    
+                                    on_delete=models.SET_NULL)
     
     modified = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
