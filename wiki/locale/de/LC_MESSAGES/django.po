@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.18\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-07 15:26+0200\n"
+"POT-Creation-Date: 2013-05-20 19:09+0200\n"
 "PO-Revision-Date: 2013-03-17 19:30+CET\n"
 "Last-Translator: Thomas Lottermann <TomLottermann@googlemail.com>\n"
 "Language-Team: \n"
@@ -18,17 +18,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin.py:72 models/article.py:26
+#: admin.py:72 models/article.py:27
 msgid "created"
 msgstr "erstellt"
 
-#: forms.py:47
+#: forms.py:49
 msgid "Spam protection failed to find both a logged in user and an IP address."
 msgstr ""
 "Dem Spam Schutz war es nicht möglich einen angemeldeten Benutzer oder eine "
 "IP Adresse zu finden."
 
-#: forms.py:60
+#: forms.py:62
 #, fuzzy, python-format
 msgid ""
 "Spam protection: You are only allowed to create or edit %(revisions)d article"
@@ -37,35 +37,35 @@ msgstr ""
 "Spam Schutz: Du darfst pro %(interval_name)s nur %(revisions)d Artikel "
 "erzeugen oder verändern"
 
-#: forms.py:76
+#: forms.py:78
 msgid "minute"
 msgstr "Minute"
 
-#: forms.py:76
+#: forms.py:78
 #, python-format
 msgid "%d minutes"
 msgstr "%d Minuten"
 
-#: forms.py:83
+#: forms.py:85
 msgid "hour"
 msgstr "Stunde"
 
-#: forms.py:88 forms.py:96 forms.py:238 templates/wiki/dir.html:48
+#: forms.py:90 forms.py:98 forms.py:240 templates/wiki/dir.html:48
 #: templates/wiki/search.html:24
 msgid "Title"
 msgstr "Titel"
 
-#: forms.py:88
+#: forms.py:90
 msgid "Initial title of the article. May be overridden with revision titles."
 msgstr ""
 "Initialer Titel des Artikels. Er darf in zukünftigen Revisionen "
 "überschrieben werden."
 
-#: forms.py:89
+#: forms.py:91
 msgid "Type in some contents"
 msgstr "Gib den Inhalt an"
 
-#: forms.py:90
+#: forms.py:92
 msgid ""
 "This is just the initial contents of your article. After creating it, you "
 "can use more complex features like adding plugins, meta data, related "
@@ -74,22 +74,22 @@ msgstr ""
 "Das ist nur der initiale Inhalt des Artikels. Du darfst später komplexere "
 "Features wie Plugins, Metadaten oder abhängige Artikel ergänzen."
 
-#: forms.py:97 forms.py:241
+#: forms.py:99 forms.py:243
 msgid "Contents"
 msgstr "Inhalt"
 
-#: forms.py:100 forms.py:244
+#: forms.py:102 forms.py:246
 msgid "Summary"
 msgstr "Nachricht"
 
-#: forms.py:100
+#: forms.py:102
 msgid ""
 "Give a short reason for your edit, which will be stated in the revision log."
 msgstr ""
 "Gebe einen kurzen Grund für deine Änderung an. Er wird bei der Revision "
 "genannt werden."
 
-#: forms.py:150
+#: forms.py:152
 msgid ""
 "While you were editing, someone else changed the revision. Your contents "
 "have been automatically merged with the new contents. Please review the text "
@@ -99,19 +99,19 @@ msgstr ""
 "Dein Inhalt wurde automatisch mit dem neuen Inhalt vereinigt. Bitte "
 "kontolliere den unten gezeigten Inhalt."
 
-#: forms.py:152
+#: forms.py:154
 msgid "No changes made. Nothing to save."
 msgstr "Da keine Änderungen gemacht wurden ist nichts zu speichern."
 
-#: forms.py:189
+#: forms.py:191
 msgid "Select an option"
 msgstr "Wähle eine Option aus"
 
-#: forms.py:239 templates/wiki/dir.html:49
+#: forms.py:241 templates/wiki/dir.html:49
 msgid "Slug"
 msgstr "Adresse"
 
-#: forms.py:239
+#: forms.py:241
 msgid ""
 "This will be the address where your article can be found. Use only "
 "alphanumeric characters and - or _. Note that you cannot change the slug "
@@ -121,33 +121,33 @@ msgstr ""
 "sind nur Buchstaben, Zahlen sowie - und _ erlaubt. Die Adresse kann nachder "
 "Erstellung des Artikels nicht mehr geändert werden."
 
-#: forms.py:244
+#: forms.py:246
 msgid "Write a brief message for the article's history log."
 msgstr "Schreibe eine kurze Nachricht für für die Versionsübersicht."
 
-#: forms.py:250
+#: forms.py:252
 msgid "A slug may not begin with an underscore."
 msgstr "Die Adresse darf nicht mit _ beginnen."
 
-#: forms.py:259
+#: forms.py:261
 #, python-format
 msgid "A deleted article with slug \"%s\" already exists."
 msgstr "Ein gelöschter Artikel unter der Adresse \"%s\" existiert bereits."
 
-#: forms.py:261
+#: forms.py:263
 #, python-format
 msgid "A slug named \"%s\" already exists."
 msgstr "Ein Artikel unter der Adresse \"%s\" existiert bereits."
 
-#: forms.py:278
+#: forms.py:280
 msgid "Yes, I am sure"
 msgstr "Ja, ich bin mir sicher"
 
-#: forms.py:280 templates/wiki/deleted.html:47
+#: forms.py:282 templates/wiki/deleted.html:47
 msgid "Purge"
 msgstr "Für immer löschen"
 
-#: forms.py:281
+#: forms.py:283
 msgid ""
 "Purge the article: Completely remove it (and all its contents) with no undo. "
 "Purging is a good idea if you want to free the slug such that users can "
@@ -156,45 +156,45 @@ msgstr ""
 "Löscht den Artikel (und seinen Inhalt) für immer, ohne dass es rückgängig "
 "gemacht werden kann. Dadurch kann die Adresse wieder neu belegt werden."
 
-#: forms.py:288 plugins/attachments/forms.py:140 plugins/images/forms.py:66
+#: forms.py:290 plugins/attachments/forms.py:140 plugins/images/forms.py:66
 msgid "You are not sure enough!"
 msgstr "Du scheinst dir nicht sicher zu sein!"
 
-#: forms.py:290
+#: forms.py:292
 msgid "While you tried to delete this article, it was modified. TAKE CARE!"
 msgstr ""
 "ACHTUNG: Während du den Artikel löschen wolltest wurde der Artikel "
 "modifiziert!"
 
-#: forms.py:296
+#: forms.py:298
 msgid "Lock article"
 msgstr "Artikel sperren"
 
-#: forms.py:296
+#: forms.py:298
 msgid "Deny all users access to edit this article."
 msgstr "Allen Benutzern verbieten den Artikel zu modifizieren."
 
-#: forms.py:299
+#: forms.py:301
 msgid "Permissions"
 msgstr "Rechte"
 
-#: forms.py:303
+#: forms.py:305
 msgid "Owner"
 msgstr "Besitzer"
 
-#: forms.py:304
+#: forms.py:306
 msgid "Enter the username of the owner."
 msgstr "Gib den Benutzernamen des Besitzers an."
 
-#: forms.py:305 forms.py:349 plugins/notifications/util.py:10
+#: forms.py:307 forms.py:351 plugins/notifications/util.py:10
 msgid "(none)"
 msgstr "(nichts)"
 
-#: forms.py:310
+#: forms.py:312
 msgid "Inherit permissions"
 msgstr "Vererbe Rechte"
 
-#: forms.py:310
+#: forms.py:312
 msgid ""
 "Check here to apply the above permissions (excluding group and owner of the "
 "article) recursively to articles below this one."
@@ -202,11 +202,11 @@ msgstr ""
 "Wähle diese Option aus, um die oben angegebenen Rechte (abgesehen von Gruppe "
 "und Besitzer) auf die Unterartikel zu übertragen."
 
-#: forms.py:313
+#: forms.py:315
 msgid "Inherit owner"
 msgstr "Vererbe den Besitzer"
 
-#: forms.py:313
+#: forms.py:315
 msgid ""
 "Check here to apply the ownership setting recursively to articles below this "
 "one."
@@ -214,42 +214,42 @@ msgstr ""
 "Wähle diese Option aus, um die Besitzereinstellung auf die Unterartikel zu "
 "übertragen."
 
-#: forms.py:316
+#: forms.py:318
 msgid "Inherit group"
 msgstr "Vererbe Gruppe"
 
-#: forms.py:316
+#: forms.py:318
 msgid ""
 "Check here to apply the group setting recursively to articles below this one."
 msgstr ""
 "Wähle diese Option aus, um die Gruppeneinstellung auf die Unterartikel zu "
 "übertragen."
 
-#: forms.py:321
+#: forms.py:323
 msgid "Permission settings for the article were updated."
 msgstr "Die Rechte für den Artikel wurden aktualisiert."
 
-#: forms.py:323
+#: forms.py:325
 msgid "Your permission settings were unchanged, so nothing saved."
 msgstr "Da keine Änderungen gemacht wurden ist nichts zu speichern."
 
-#: forms.py:372
+#: forms.py:374
 msgid "No user with that username"
 msgstr "Es existiert kein Benutzer mit diesem Namen"
 
-#: forms.py:398
+#: forms.py:400
 msgid "Article locked for editing"
 msgstr "Artikel wurde für die Bearbeitung gesperrt"
 
-#: forms.py:405
+#: forms.py:407
 msgid "Article unlocked for editing"
 msgstr "Artikel wurde für die Bearbeitung freigegeben"
 
-#: forms.py:420
+#: forms.py:422
 msgid "Filter..."
 msgstr "Filtern..."
 
-#: forms.py:426 templates/wiki/base.html:41
+#: forms.py:428 templates/wiki/base.html:41
 #, fuzzy
 msgid "Search..."
 msgstr "Suchen..."
@@ -262,12 +262,12 @@ msgstr "Inhaltsverzeichnis"
 msgid "Settings for plugin"
 msgstr "Plugineinstellungen"
 
-#: models/article.py:21 models/pluginbase.py:172
+#: models/article.py:22 models/pluginbase.py:173
 #: plugins/attachments/models.py:23
 msgid "current revision"
 msgstr "aktuelle Revision"
 
-#: models/article.py:23
+#: models/article.py:24
 msgid ""
 "The revision being displayed for this article. If you need to do a roll-"
 "back, simply change the value of this field."
@@ -275,19 +275,19 @@ msgstr ""
 "Die Revision, die für diesen Artikel angezeigt wird. Falls du eine Änderung "
 "rückgängig machen willst, ändere einfach dieses Feld."
 
-#: models/article.py:27
+#: models/article.py:28
 msgid "modified"
 msgstr "modifiziert"
 
-#: models/article.py:28
+#: models/article.py:29
 msgid "Article properties last modified"
 msgstr "Wann der Artikel zuletzt modifiziert wurde"
 
-#: models/article.py:30
+#: models/article.py:31
 msgid "owner"
 msgstr "Besitzer"
 
-#: models/article.py:32
+#: models/article.py:33
 msgid ""
 "The owner of the article, usually the creator. The owner always has both "
 "read and write access."
@@ -295,11 +295,11 @@ msgstr ""
 "Der Besitzer des Artikels (meistens der Ersteller). Der Besitzer hat immer "
 "Schreib- und Lesezugriff."
 
-#: models/article.py:35
+#: models/article.py:36
 msgid "group"
 msgstr "Gruppe"
 
-#: models/article.py:37
+#: models/article.py:38
 msgid ""
 "Like in a UNIX file system, permissions can be given to a user according to "
 "group membership. Groups are handled through the Django auth system."
@@ -307,56 +307,69 @@ msgstr ""
 "Wie auch beim UNIX Dateisystem könnten Nutzern Rechte über Gruppen gegeben "
 "werden.Gruppen werden durch das Django auth System verwaltet."
 
-#: models/article.py:40
+#: models/article.py:41
 msgid "group read access"
 msgstr "Lesezugriff für Gruppen"
 
-#: models/article.py:41
+#: models/article.py:42
 msgid "group write access"
 msgstr "Schreibzugriff für Gruppen"
 
-#: models/article.py:42
+#: models/article.py:43
 msgid "others read access"
 msgstr "Lesezugriff für andere"
 
-#: models/article.py:43
+#: models/article.py:44
 msgid "others write access"
 msgstr "Schreibzugriff für andere"
 
-#: models/article.py:141
+#: models/article.py:142
 #, python-format
 msgid "Article without content (%(id)d)"
 msgstr "Artikel ohne Inhalt (%(id)d)"
 
-#: models/article.py:183
+#: models/article.py:148
+msgid "Can edit all articles and lock/unlock/restore"
+msgstr ""
+"Darf alle Artikel bearbeiten und sie sperren/entsperren/wiederherstellen"
+
+#: models/article.py:149
+msgid "Can change ownership of any article"
+msgstr "Darf den Besitzer jedes Artikels ändern"
+
+#: models/article.py:150
+msgid "Can assign permissions to other users"
+msgstr "Darf anderen Benutzern Rechte zuweisen"
+
+#: models/article.py:184
 msgid "content type"
 msgstr "Inhaltsart"
 
-#: models/article.py:185
+#: models/article.py:186
 msgid "object ID"
 msgstr "Objekt ID"
 
-#: models/article.py:192
+#: models/article.py:193
 msgid "Article for object"
 msgstr "Artikel für Objekt"
 
-#: models/article.py:193
+#: models/article.py:194
 msgid "Articles for object"
 msgstr "Artikel für Objekt"
 
-#: models/article.py:201
+#: models/article.py:202
 msgid "revision number"
 msgstr "Revisionsnummer"
 
-#: models/article.py:206
+#: models/article.py:207
 msgid "IP address"
 msgstr "IP Adresse"
 
-#: models/article.py:207
+#: models/article.py:208
 msgid "user"
 msgstr "Benutzer"
 
-#: models/article.py:219
+#: models/article.py:222
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:23
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:21
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:40
@@ -364,24 +377,24 @@ msgstr "Benutzer"
 msgid "deleted"
 msgstr "Gelöscht"
 
-#: models/article.py:220 templates/wiki/article.html:23
+#: models/article.py:223 templates/wiki/article.html:23
 #: templates/wiki/includes/revision_info.html:21
 msgid "locked"
 msgstr "Gesperrt"
 
-#: models/article.py:238 models/pluginbase.py:40
+#: models/article.py:241 models/pluginbase.py:37
 msgid "article"
 msgstr "Artikel"
 
-#: models/article.py:241
+#: models/article.py:244
 msgid "article contents"
 msgstr "Artikelinhalt"
 
-#: models/article.py:245
+#: models/article.py:248
 msgid "article title"
 msgstr "Artikeltitel"
 
-#: models/article.py:246
+#: models/article.py:249
 msgid ""
 "Each revision contains a title field that must be filled out, even if the "
 "title has not changed"
@@ -389,19 +402,19 @@ msgstr ""
 "Jede Revision enthält ein Titelfeld, das ausgefüllt werden muss, selbst wenn "
 "es nicht geändert wurde"
 
-#: models/pluginbase.py:80
+#: models/pluginbase.py:77
 msgid "original article"
 msgstr "Ursprünglicher Artikel"
 
-#: models/pluginbase.py:81
+#: models/pluginbase.py:78
 msgid "Permissions are inherited from this article"
 msgstr "Die rechte werden von diesem Artikel vererbt"
 
-#: models/pluginbase.py:143
+#: models/pluginbase.py:144
 msgid "A plugin was changed"
 msgstr "Ein Plugin wurde geändert"
 
-#: models/pluginbase.py:174
+#: models/pluginbase.py:175
 msgid ""
 "The revision being displayed for this plugin. If you need to do a roll-back, "
 "simply change the value of this field."
@@ -626,7 +639,7 @@ msgstr ""
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:71
 #: plugins/images/templates/wiki/plugins/images/purge.html:21
 #: plugins/images/templates/wiki/plugins/images/revision_add.html:21
-#: templates/wiki/create.html:52 templates/wiki/delete.html:12
+#: templates/wiki/create.html:54 templates/wiki/delete.html:12
 #: templates/wiki/delete.html.py:46
 msgid "Go back"
 msgstr "Zurück"
@@ -887,6 +900,7 @@ msgstr ""
 "den Link klickst kommst du zum Artikelformular."
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:6
+#: plugins/highlighter/templates/wiki/plugins/links/sidebar.html:20
 #: plugins/links/templates/wiki/plugins/links/sidebar.html:20
 msgid "An external link"
 msgstr "Ein externer Link"
@@ -913,6 +927,40 @@ msgstr "Listen"
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:38
 msgid "Tables"
 msgstr "Tabellen"
+
+#: plugins/highlighter/wiki_plugin.py:20 plugins/links/wiki_plugin.py:20
+msgid "Links"
+msgstr "Links"
+
+#: plugins/highlighter/templates/wiki/plugins/links/sidebar.html:3
+#: plugins/links/templates/wiki/plugins/links/sidebar.html:3
+msgid "Link to another wiki page"
+msgstr "Link zu anderer Wikiseite"
+
+#: plugins/highlighter/templates/wiki/plugins/links/sidebar.html:6
+#: plugins/links/templates/wiki/plugins/links/sidebar.html:6
+msgid ""
+"Type in something from another wiki page's title and auto-complete will help "
+"you create a tag for you wiki link. Tags for links look like this:"
+msgstr ""
+"Gib etwas aus dem Titel des anderen Wikieintrags ein. Auto-complete wird dir "
+"helfen, den Tag zu erstellen. Tags für links sehen so aus:"
+
+#: plugins/highlighter/templates/wiki/plugins/links/sidebar.html:14
+#: plugins/images/templates/wiki/plugins/images/sidebar.html:32
+#: plugins/links/templates/wiki/plugins/links/sidebar.html:14
+msgid "Insert"
+msgstr "Einfügen"
+
+#: plugins/highlighter/templates/wiki/plugins/links/sidebar.html:23
+#: plugins/links/templates/wiki/plugins/links/sidebar.html:23
+msgid ""
+"You can link to another website simply by inserting an address example.com "
+"or http://example.com or by using the markdown syntax:"
+msgstr ""
+"Du darfst auf eine andere Webseite verlinken indem du einfach eine Adresse "
+"(z.B. example.com oder http://example.com) eingibst oder folgende Syntax "
+"benutzt:"
 
 #: plugins/images/forms.py:17
 #, python-format
@@ -1058,11 +1106,6 @@ msgstr "Wähle ein Bild aus, mit dem das aktuelle ersetzt werden soll."
 msgid "Image id"
 msgstr "Bild id"
 
-#: plugins/images/templates/wiki/plugins/images/sidebar.html:32
-#: plugins/links/templates/wiki/plugins/links/sidebar.html:14
-msgid "Insert"
-msgstr "Einfügen"
-
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:48
 msgid "No images found for this article"
 msgstr "Es wurden keine Bilder für diesen Artikel gefunden"
@@ -1105,31 +1148,6 @@ msgstr ""
 "darfst in der Bildbeschreibung Markdown benutzen. Der Markdown Code für "
 "bilder sieht wie folgt aus, wobei mögliche Ausrichtungen \"right\" und \"left"
 "\" sind:"
-
-#: plugins/links/wiki_plugin.py:20
-msgid "Links"
-msgstr "Links"
-
-#: plugins/links/templates/wiki/plugins/links/sidebar.html:3
-msgid "Link to another wiki page"
-msgstr "Link zu anderer Wikiseite"
-
-#: plugins/links/templates/wiki/plugins/links/sidebar.html:6
-msgid ""
-"Type in something from another wiki page's title and auto-complete will help "
-"you create a tag for you wiki link. Tags for links look like this:"
-msgstr ""
-"Gib etwas aus dem Titel des anderen Wikieintrags ein. Auto-complete wird dir "
-"helfen, den Tag zu erstellen. Tags für links sehen so aus:"
-
-#: plugins/links/templates/wiki/plugins/links/sidebar.html:23
-msgid ""
-"You can link to another website simply by inserting an address example.com "
-"or http://example.com or by using the markdown syntax:"
-msgstr ""
-"Du darfst auf eine andere Webseite verlinken indem du einfach eine Adresse "
-"(z.B. example.com oder http://example.com) eingibst oder folgende Syntax "
-"benutzt:"
 
 #: plugins/macros/wiki_plugin.py:15
 msgid "Macros"
@@ -1240,11 +1258,29 @@ msgstr "Einloggen"
 msgid "Sign up"
 msgstr "Registrieren"
 
-#: templates/wiki/create.html:5 templates/wiki/create.html.py:45
+#: templates/wiki/base.html:83
+msgid "Home"
+msgstr "Home"
+
+#: templates/wiki/base.html:84
+msgid "About"
+msgstr "About"
+
+#: templates/wiki/base.html:117
+msgid ""
+"Powered by <a href=\"http://www.django-wiki.org\">django-wiki</a>, an open "
+"source application under the <a href=\"http://www.gnu.org/licenses/quick-"
+"guide-gplv3.html\">GPLv3</a> license. Let knowledge be the cure."
+msgstr ""
+"Powered by <a href=\"http://www.django-wiki.org\">django-wiki</a>, eine Open-"
+"Source-Anwendung unter der <a href=\"http://www.gnu.org/licenses/quick-guide-"
+"gplv3.html\">GPLv3</a> Lizens. Let knowledge be the cure."
+
+#: templates/wiki/create.html:5 templates/wiki/create.html.py:47
 msgid "Add new article"
 msgstr "Neuen Artikel hinzufügen"
 
-#: templates/wiki/create.html:56
+#: templates/wiki/create.html:58
 msgid "Create article"
 msgstr "Artikel erstellen"
 
@@ -1658,15 +1694,15 @@ msgstr "wiederhergestellt"
 msgid "unlocked"
 msgstr "entsprerrt"
 
-#: views/accounts.py:47
+#: views/accounts.py:48
 msgid "You are now signed up... and now you can sign in!"
 msgstr "Du bist jetzt registriert... Jetzt kannst du dich einloggen."
 
-#: views/accounts.py:60
+#: views/accounts.py:61
 msgid "You are no longer logged in. Bye bye!"
 msgstr "Du bist jetzt abgemeldet. Bis bald!"
 
-#: views/accounts.py:93
+#: views/accounts.py:94
 msgid "You are now logged in! Have fun!"
 msgstr "Du bist jetzt eingeloggt! Viel Spaß!"
 
