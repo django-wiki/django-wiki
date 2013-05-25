@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.18\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-25 20:06+0800\n"
+"POT-Creation-Date: 2013-05-25 20:35+0800\n"
 "PO-Revision-Date: 2013-03-17 19:30+CET\n"
 "Last-Translator: Rostislav Grigoriev <hjcnbckfd@gmail.com>\n"
 "Language-Team: \n"
@@ -1261,7 +1261,7 @@ msgid ""
 "guide-gplv3.html\">GPLv3</a> license. Let knowledge be the cure."
 msgstr ""
 "Создано на <a href=\"http://www.django-wiki.org\">django-wiki</a>, с "
-"открытымисходным кодом по лицензии <a href=\"http://www.gnu.org/licenses/"
+"открытым исходным кодом по лицензии <a href=\"http://www.gnu.org/licenses/"
 "quick-guide-gplv3.html\">GPLv3</a>. Пусть знания будут лекарством."
 
 #: templates/wiki/create.html:5 templates/wiki/create.html.py:47
@@ -1587,7 +1587,7 @@ msgstr "Эта статья заблокирована от изменений."
 
 #: templates/wiki/accounts/login.html:7
 msgid "Please log in"
-msgstr "Пожалйуйста, авторизуйтесь"
+msgstr "Пожалуйста, авторизуйтесь"
 
 #: templates/wiki/accounts/login.html:13
 msgid "Log me in..."
