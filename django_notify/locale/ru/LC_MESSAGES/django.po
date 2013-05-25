@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.18\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-25 23:46+0800\n"
+"POT-Creation-Date: 2013-05-25 23:57+0800\n"
 "PO-Revision-Date: 2013-03-17 19:30+CET\n"
 "Last-Translator: Rostislav Grigoriev <hjcnbckfd@gmail.com>\n"
 "Language-Team: \n"
@@ -106,7 +106,7 @@ msgstr "раз в день"
 
 #: settings.py:40
 msgid "weekly"
-msgstr "раз в месяц"
+msgstr "раз в неделю"
 
 #: views.py:32
 #, python-format
