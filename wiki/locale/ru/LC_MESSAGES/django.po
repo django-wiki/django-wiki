@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.18\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-25 20:35+0800\n"
+"POT-Creation-Date: 2013-05-25 23:52+0800\n"
 "PO-Revision-Date: 2013-03-17 19:30+CET\n"
 "Last-Translator: Rostislav Grigoriev <hjcnbckfd@gmail.com>\n"
 "Language-Team: \n"
@@ -24,7 +24,7 @@ msgstr "создан"
 
 #: forms.py:49
 msgid "Spam protection failed to find both a logged in user and an IP address."
-msgstr "Блокировщику спама не удалось найти пользователя и IP-адрес. "
+msgstr "Блокировщику спама не удалось найти пользователя и IP-адрес."
 
 #: forms.py:62
 #, fuzzy, python-format
@@ -1186,11 +1186,11 @@ msgstr "Уведомления"
 
 #: plugins/notifications/forms.py:17
 msgid "When this article is edited"
-msgstr "Эта статья редактируется"
+msgstr "Когда статья изменится"
 
 #: plugins/notifications/forms.py:18
 msgid "Also receive emails about article edits"
-msgstr "Также получать уведомления о правках статей на e-mail"
+msgstr "Также получать уведомления о правках статьи на e-mail"
 
 #: plugins/notifications/forms.py:41
 msgid "Your notification settings were updated."
@@ -1474,7 +1474,7 @@ msgstr ""
 
 #: templates/wiki/history.html:72
 msgid "no log message"
-msgstr "ревизия без сообщения"
+msgstr "ревизия без комментария"
 
 #: templates/wiki/history.html:84 templates/wiki/history.html.py:89
 msgid "Preview this revision"
@@ -1494,7 +1494,7 @@ msgstr "Соединить выбранную версию с текущей..."
 
 #: templates/wiki/history.html:133
 msgid "Switch to selected version"
-msgstr "Заменить на выбранную версией"
+msgstr "Заменить на выбранную версию"
 
 #: templates/wiki/history.html:149 templates/wiki/history.html.py:176
 msgid "Back to history view"
@@ -1502,7 +1502,7 @@ msgstr "Вернуться к просмотру истории"
 
 #: templates/wiki/history.html:154 templates/wiki/history.html.py:159
 msgid "Switch to this version"
-msgstr "Заменить на эту версией"
+msgstr "Заменить на эту версию"
 
 #: templates/wiki/history.html:167
 msgid "Merge with current"
@@ -1554,7 +1554,7 @@ msgstr "и"
 
 #: templates/wiki/preview_inline.html:22 views/article.py:664
 msgid "You cannot merge with a deleted revision"
-msgstr "Вы не можете объедянть с удаленной ревизией"
+msgstr "Вы не можете объединять с удаленной ревизией"
 
 #: templates/wiki/preview_inline.html:31
 msgid "This revision has been deleted."
@@ -1562,7 +1562,7 @@ msgstr "Эта ревизия удалена"
 
 #: templates/wiki/preview_inline.html:32
 msgid "Restoring to this revision will mark the article as deleted."
-msgstr "Восстановление к этой ревизии отметит статью удаленной. "
+msgstr "Восстановление к этой ревизии отметит статью удаленной."
 
 #: templates/wiki/search.html:5 templates/wiki/search.html.py:9
 msgid "Search results for:"
@@ -1762,4 +1762,4 @@ msgstr "Объединение ревизий #%(r1)d и #%(r2)d"
 msgid ""
 "A new revision was created: Merge between revision #%(r1)d and revision #"
 "%(r2)d"
-msgstr "Новая ревизия создана: Объеденение ревизий #%(r1)d и #%(r2)d"
+msgstr "Новая ревизия создана: Объединение ревизий #%(r1)d и #%(r2)d"
