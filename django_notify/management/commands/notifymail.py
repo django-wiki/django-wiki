@@ -41,11 +41,18 @@ class Command(BaseCommand):
         email.send(fail_silently=False)
 
     def handle(self, *args, **options):
-        
+
+        daemon = options['daemon']
+
         self.logger = logging.getLogger('django_notify')
     
         if not self.logger.handlers:
-            self.logger.addHandler(logging.StreamHandler(stream=self.stdout))
+            if daemon:
+                handler = logging.FileHandler(filename=os.path.join(notify_settings.NOTIFY_LOG_PATH,
+                                                                    notify_settings.NOTIFY_LOG_FILENAME))
+            else:
+                handler = logging.StreamHandler(stream=self.stdout)
+            self.logger.addHandler(handler)
             self.logger.setLevel(logging.INFO)
         
         self.logger.info("Starting django_notify e-mail dispatcher")
@@ -54,7 +61,7 @@ class Command(BaseCommand):
             print "E-mails disabled - quitting."
             sys.exit()
         
-        daemon = options['daemon']
+
     
         # Run as daemon, ie. fork the process
         if daemon:
@@ -64,7 +71,8 @@ class Command(BaseCommand):
                 if fpid > 0:
                 # Running as daemon now. PID is fpid
                     self.logger.info("PID: %s" % str(fpid))
-                    pid_file = file('/tmp/daemon-example.pid', "w")
+                    pid_file = file(os.path.join(notify_settings.NOTIFY_LOG_PATH,
+                                                 notify_settings.NOTIFY_LOG_FILENAME), "w")
                     pid_file.write(str(fpid))
                     pid_file.close()
                     sys.exit(0) 
