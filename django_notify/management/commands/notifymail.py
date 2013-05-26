@@ -17,6 +17,7 @@ import smtplib
 
 import logging
 
+
 class Command(BaseCommand):
     help = 'Sends notification emails to subscribed users taking into account the subscription interval' #@ReservedAssignment
     option_list = BaseCommand.option_list + (
@@ -28,7 +29,7 @@ class Command(BaseCommand):
         )
 
     def _send_user_notifications(self, context, connection):
-        subject = _(notify_settings.EMAIL_SUBJECT) 
+        subject = _(notify_settings.EMAIL_SUBJECT)
         message = render_to_string(
             'emails/notification_email_message.txt',
             context
@@ -45,24 +46,23 @@ class Command(BaseCommand):
         daemon = options['daemon']
 
         self.logger = logging.getLogger('django_notify')
-    
+
         if not self.logger.handlers:
             if daemon:
-                handler = logging.FileHandler(filename=os.path.join(notify_settings.NOTIFY_LOG_PATH,
-                                                                    notify_settings.NOTIFY_LOG_FILENAME))
+                handler = logging.FileHandler(filename=notify_settings.NOTIFY_LOG)
             else:
                 handler = logging.StreamHandler(stream=self.stdout)
             self.logger.addHandler(handler)
             self.logger.setLevel(logging.INFO)
-        
+
         self.logger.info("Starting django_notify e-mail dispatcher")
-        
+
         if not notify_settings.SEND_EMAILS:
             print "E-mails disabled - quitting."
             sys.exit()
-        
 
-    
+
+
         # Run as daemon, ie. fork the process
         if daemon:
             self.logger.info("Daemon mode enabled, forking")
@@ -71,24 +71,23 @@ class Command(BaseCommand):
                 if fpid > 0:
                 # Running as daemon now. PID is fpid
                     self.logger.info("PID: %s" % str(fpid))
-                    pid_file = file(os.path.join(notify_settings.NOTIFY_PID_PATH,
-                                                 notify_settings.NOTIFY_PID_FILENAME), "w")
+                    pid_file = file(notify_settings.NOTIFY_PID, "w")
                     pid_file.write(str(fpid))
                     pid_file.close()
-                    sys.exit(0) 
+                    sys.exit(0)
             except OSError, e:
                 sys.stderr.write("fork failed: %d (%s)\n" % (e.errno, e.strerror))
-                sys.exit(1)        
-        
+                sys.exit(1)
+
         try:
             self.send_loop()
         except KeyboardInterrupt:
             print "\nQuitting..."
-        
+
     def send_loop(self):
-        
+
         # This could be /improved by looking up the last notified person
-        last_sent = None            
+        last_sent = None
         context = {'user': None,
                    'notifications': None,
                    'digest': None,
@@ -101,7 +100,7 @@ class Command(BaseCommand):
             self.logger.error("Could get a mail connection")
             raise
 
-        while True:    
+        while True:
             try:
                 connection.open()
             except:
@@ -126,8 +125,8 @@ class Command(BaseCommand):
                 for subscription in setting.subscription_set.filter(
                     send_emails=True,
                     latest__is_emailed=False
-                ):  
-                    context['notifications'].append(subscription.latest)  
+                ):
+                    context['notifications'].append(subscription.latest)
                 if len(context['notifications']) > 0:
                     try:
                         self._send_user_notifications(context, connection)
@@ -138,10 +137,10 @@ class Command(BaseCommand):
                         # TODO: Only quit on certain errors, retry on others.
                         self.logger.error("You have an error with your SMTP server connection, quitting.")
                         raise
-            
+
             connection.close()
             last_sent = datetime.now()
-            elapsed_seconds = ((last_sent - started_sending_at).seconds)
+            elapsed_seconds = (last_sent - started_sending_at).seconds
             time.sleep(
                 max(
                     (min(notify_settings.INTERVALS)[0] - elapsed_seconds) * 60,
