@@ -71,8 +71,8 @@ class Command(BaseCommand):
                 if fpid > 0:
                 # Running as daemon now. PID is fpid
                     self.logger.info("PID: %s" % str(fpid))
-                    pid_file = file(os.path.join(notify_settings.NOTIFY_LOG_PATH,
-                                                 notify_settings.NOTIFY_LOG_FILENAME), "w")
+                    pid_file = file(os.path.join(notify_settings.NOTIFY_PID_PATH,
+                                                 notify_settings.NOTIFY_PID_FILENAME), "w")
                     pid_file.write(str(fpid))
                     pid_file.close()
                     sys.exit(0) 
