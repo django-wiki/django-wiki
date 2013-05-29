@@ -59,3 +59,9 @@ AUTO_DELETE = getattr(django_settings, 'NOTIFY_AUTO_DELETE', 120)
 
 # After how many days should all types of notifications be deleted?
 AUTO_DELETE_ALL = getattr(django_settings, 'NOTIFY_AUTO_DELETE_ALL', 120)
+
+NOTIFY_LOG = getattr(django_settings, 'NOTIFY_LOG', '/tmp/daemon_notify.log')
+
+NOTIFY_PID = getattr(django_settings, 'NOTIFY_PID', '/tmp/daemon_notify.pid')
+
+
