@@ -1,6 +1,18 @@
 django-wiki
 ===========
 
+***News: June 7th, 2013***
+
+Yay! New alpha release! [View commit log on Github >](https://github.com/benjaoming/django-wiki/commits/alpha/0.0.20) or [a summary of all the commits](https://groups.google.com/forum/#!topic/django-wiki/ZnnGowlppj4)
+
+Highlights:
+
+- Fix missing translation activation in django-notify's email notifications (manage command) - credits TomLottermann
+- Add Russian on django-wiki and django-notify - credits crazyzubr
+- Support for AUTH_USER_MODEL settings (seriously, don't use it though, unless you really want trouble in most third party django apps). Please note, that this is only going to help you if you are starting new projects. If you are changing the setting and introducing a new model in a running project, you have to do all database migrations manuall. Django-wiki and its South migrations will silently ignore your changes.
+- Add settings for logging to files instead of stdout in django-notify daemon mode - credits: crazyzubr
+- Built-in account handling now properly asserts that usernames are not already taken when signing up.
+
 ***News: April 23rd, 2013***
 
 Security fix included in 0.0.19. [View commit log >](https://github.com/benjaoming/django-wiki/commits/alpha/0.0.19)
