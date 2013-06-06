@@ -10,7 +10,8 @@ from django.contrib.sites.models import Site
 from django.core import mail
 from django.core.management.base import BaseCommand
 from django.template.loader import render_to_string
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, activate, deactivate
+from django.conf import settings
 from django_notify import models
 
 import smtplib
@@ -19,6 +20,7 @@ import logging
 
 
 class Command(BaseCommand):
+    can_import_settings = True
     help = 'Sends notification emails to subscribed users taking into account the subscription interval' #@ReservedAssignment
     option_list = BaseCommand.option_list + (
         make_option('--daemon','-d',
@@ -42,6 +44,8 @@ class Command(BaseCommand):
         email.send(fail_silently=False)
 
     def handle(self, *args, **options):
+        # activate the language
+        activate(settings.LANGUAGE_CODE)
 
         daemon = options['daemon']
 
@@ -83,6 +87,9 @@ class Command(BaseCommand):
             self.send_loop()
         except KeyboardInterrupt:
             print "\nQuitting..."
+
+        # deactivate the language
+        deactivate()
 
     def send_loop(self):
 
