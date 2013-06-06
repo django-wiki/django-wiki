@@ -8,8 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.18\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-07 15:44+0200\n"
-"POT-Creation-Date: 2013-04-07 15:44+0200\n"
+"POT-Creation-Date: 2013-06-06 20:37+0200\n"
 "Last-Translator: Thomas Lottermann <TomLottermann@googlemail.com>\n"
 "Language-Team: \n"
 "Language: German\n"
@@ -22,89 +21,89 @@ msgstr ""
 msgid "You supplied a target_object that's not an instance of a django Model."
 msgstr "Das gegebene \"target_object\" ist keine Instanz eines Django Models."
 
-#: models.py:15
+#: models.py:14
 msgid "unique key"
 msgstr "eindeutiger Schlüssel"
 
-#: models.py:17
+#: models.py:16
 msgid "verbose name"
 msgstr "sprechender Name"
 
-#: models.py:26
+#: models.py:25
 msgid "type"
 msgstr "Typ"
 
-#: models.py:27
+#: models.py:26
 msgid "types"
 msgstr "Typen"
 
-#: models.py:32
+#: models.py:31
 msgid "interval"
 msgstr "Interval"
 
-#: models.py:36
+#: models.py:35
 #, python-format
 msgid "Settings for %s"
 msgstr "Einstellungen für %s"
 
-#: models.py:41 models.py:42
+#: models.py:40 models.py:41
 msgid "settings"
 msgstr "Einstellungen"
 
-#: models.py:49
+#: models.py:48
 msgid "Leave this blank to subscribe to any kind of object"
 msgstr "Leerlassen um beliebiges Object zu abonnieren"
 
-#: models.py:54
+#: models.py:53
 #, python-format
 msgid "Subscription for: %s"
 msgstr "Abonnement von: %s"
 
-#: models.py:59
+#: models.py:58
 msgid "subscription"
 msgstr "Abonnement"
 
-#: models.py:60
+#: models.py:59
 msgid "subscriptions"
 msgstr "Abonnements"
 
-#: models.py:66
+#: models.py:65
 msgid "link for notification"
 msgstr "Link zur Benachrichtigung"
 
-#: models.py:72
+#: models.py:71
 msgid "occurrences"
 msgstr "Häufigkeit"
 
-#: models.py:73
+#: models.py:72
 msgid ""
 "If the same notification was fired multiple times with no intermediate "
 "notifications"
 msgstr ""
-"Wenn die gleiche Benachrichtigung öfter aufgetreten ist ohne zwischenzeitiges "
-"senden"
+"Wenn die gleiche Benachrichtigung öfter aufgetreten ist ohne "
+"zwischenzeitiges senden"
 
-#: models.py:126
+#: models.py:125
 msgid "notification"
 msgstr "Benachrichtigung"
 
-#: models.py:127
+#: models.py:126
 msgid "notifications"
 msgstr "Benachrichtigungen"
 
-#: settings.py:18
+#: settings.py:19
 msgid "You have new notifications"
 msgstr "Du hast neue Benachrichtigungen"
 
-#: settings.py:37
+#: settings.py:38
 msgid "instant"
 msgstr "sofort"
 
-#: settings.py:38
+#: settings.py:39
 msgid "daily"
 msgstr "täglich"
 
-#: settings.py:39
+#: settings.py:40
 msgid "weekly"
 msgstr "wöchentlich"
 
@@ -129,7 +128,7 @@ msgstr "Danke, dass du unsere Seite nutzt!"
 
 #: templates/emails/notification_email_message.txt:12
 msgid "Sincerely"
-msgstr "Viele Grüße,"
+msgstr "Viele Grüße"
 
 #: templates/emails/notification_email_subject.txt:2
 #, python-format
