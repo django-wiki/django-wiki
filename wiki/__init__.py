@@ -15,4 +15,4 @@
 # You should have received a copy of the GNU General Public License
 # along with django-wiki. If not, see <http://www.gnu.org/licenses/>.
 
-VERSION = "0.0.19"
+VERSION = "0.0.20"

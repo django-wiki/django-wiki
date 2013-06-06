@@ -16,7 +16,7 @@
 # along with django_notify. If not, see <http://www.gnu.org/licenses/>.
 
 # Unused feature, atm. everything is bundled with django-wiki
-VERSION = "0.0.3"
+VERSION = "0.0.4"
 
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model
