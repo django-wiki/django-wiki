@@ -12,7 +12,6 @@ class ArticleMixin(TemplateResponseMixin):
         self.urlpath = kwargs.pop('urlpath', None)
         self.article = article        
         self.children_slice = []
-        self.request = request
         if settings.SHOW_MAX_CHILDREN > 0:
             try:
                 for child in self.article.get_children(max_num=settings.SHOW_MAX_CHILDREN+1,
