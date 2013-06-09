@@ -519,10 +519,12 @@ class Settings(ArticleMixin, TemplateView):
         """
         Return all settings forms that can be filled in
         """
-        settings_forms = [F for F in plugin_registry.get_settings_forms()]
+        settings_forms = []
         if permissions.can_change_permissions(self.article, self.request.user):
             settings_forms.append(self.permission_form_class)
-        settings_forms.sort(key=lambda form: form.settings_order)
+        plugin_forms = [F for F in plugin_registry.get_settings_forms()]
+        plugin_forms.sort(key=lambda form: form.settings_order)
+        settings_forms += plugin_forms
         for i in range(len(settings_forms)):
             # TODO: Do not set an attribute on a form class - this
             # could be mixed up with a different instance
