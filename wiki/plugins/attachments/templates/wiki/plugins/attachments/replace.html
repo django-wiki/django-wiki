@@ -2,7 +2,7 @@
 {% load wiki_tags i18n humanize %}
 {% load url from future %}
 
-{% block pagetitle %}{% trans "Replace" %} "{{ attachment.current_revision.get_filename }}"{% endblock %}
+{% block wiki_pagetitle %}{% trans "Replace" %} "{{ attachment.current_revision.get_filename }}"{% endblock %}
 
 {% block wiki_contents_tab %}
 

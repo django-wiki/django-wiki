@@ -2,7 +2,7 @@
 {% load wiki_tags i18n humanize thumbnail %}
 {% load url from future %}
 
-{% block pagetitle %}{% trans "Images" %}: {{ article.current_revision.title }}{% endblock %}
+{% block wiki_pagetitle %}{% trans "Images" %}: {{ article.current_revision.title }}{% endblock %}
 
 {% block wiki_contents_tab %}
   <p class="lead">{% trans "The following images are available for this article. Copy the markdown tag to directly refer to an image from the article text." %}</p>
