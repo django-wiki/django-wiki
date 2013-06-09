@@ -1,10 +1,9 @@
-{% load i18n %}{% autoescape off %}{% load url from future %}
-{% blocktrans with user.username as username %}Dear {{ username }},{% endblocktrans %}
+{% load i18n %}{% autoescape off %}{% load url from future %}{% blocktrans with user.username as username %}Dear {{ username }},{% endblocktrans %}
 
-{% blocktrans with site.name as site %} These are the {{ digest }} notifications from {{ site }}.{% endblocktrans %}
-
+{% blocktrans with site.name as site %}These are the {{ digest }} notifications from {{ site }}.{% endblocktrans %}
 {% for n in notifications %}
-    http://{{ site.domain }}{{n.url}} - {{ n.message }}
+ * {{ n.message }}
+   http://{{ site.domain }}{{n.url}}
 {% endfor %}
 
 {% trans "Thanks for using our site!" %}
