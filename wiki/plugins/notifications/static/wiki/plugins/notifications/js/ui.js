@@ -18,10 +18,12 @@ function notify_update() {
         notify_latest_id = n.pk>notify_latest_id ? n.pk:notify_latest_id;
         notify_oldest_id = (n.pk<notify_oldest_id || notify_oldest_id==0) ? n.pk:notify_oldest_id;
         if (n.occurrences > 1) {
-          $('.notification-li-container').prepend($('<li><a href="'+URL_NOTIFY_GOTO+n.pk+'/"><div>'+n.message+'</div><div class="since">'+n.occurrences_msg+' - ' + n.since + '</div></a></li>'));
+          element = $('<li><a href="'+URL_NOTIFY_GOTO+n.pk+'/"><div>'+n.message+'</div><div class="since">'+n.occurrences_msg+' - ' + n.since + '</div></a></li>')
         } else {
-          $('.notification-li-container').prepend($('<li><a href="'+URL_NOTIFY_GOTO+n.pk+'/"><div>'+n.message+'</div><div class="since">'+n.since+'</div></a></li>'));
+          element = $('<li><a href="'+URL_NOTIFY_GOTO+n.pk+'/"><div>'+n.message+'</div><div class="since">'+n.since+'</div></a></li>');
         }
+        element.addClass('notification-li');
+        element.insertAfter('.notification-before-list');
       }
     }
   });
