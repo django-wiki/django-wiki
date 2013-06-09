@@ -118,11 +118,15 @@ class WikiURLPatterns(object):
         urlpatterns = patterns('',)
         for plugin in registry.get_plugins().values():
             slug = getattr(plugin, 'slug', None)
-            plugin_urlpatterns = getattr(plugin, 'urlpatterns', None)
-            if slug and plugin_urlpatterns:
+            if slug:
+                article_urlpatterns = plugin.urlpatterns.get('article', [])
                 urlpatterns += patterns('',
-                    url('^(?P<article_id>\d+)/plugin/' + slug + '/', include(plugin_urlpatterns)),
-                    url('^(?P<path>.+/|)_plugin/' + slug + '/', include(plugin_urlpatterns)),
+                    url('^(?P<article_id>\d+)/plugin/' + slug + '/', include(article_urlpatterns)),
+                    url('^(?P<path>.+/|)_plugin/' + slug + '/', include(article_urlpatterns)),
+                )
+                root_urlpatterns = plugin.urlpatterns.get('root', [])
+                urlpatterns += patterns('',
+                    url('^_plugin/' + slug + '/', include(root_urlpatterns)),
                )
         return urlpatterns
 
