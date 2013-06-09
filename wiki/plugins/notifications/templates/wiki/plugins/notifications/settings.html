@@ -23,13 +23,17 @@
         {% include "wiki/includes/formfield.html" %}
       {% endfor %}
     </fieldset>
+  {% empty %}
+  <em>{% trans "You are not subscribed to any notifications yet." %}</em>
   {% endfor %}
+  {% if formset.forms %}
   <div class="form-actions">
     <button type="submit" class="btn btn-primary">
       <span class="icon-ok"></span>
       {% trans "Save changes" %}
     </button>
   </div>
+  {% endif %}
 </form>
 
 <div class="row-fluid">

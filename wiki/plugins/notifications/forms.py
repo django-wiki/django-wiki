@@ -162,7 +162,8 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
         if cd['edit']:
             edit_notification = models.ArticleSubscription.objects.get_or_create(
                 article=self.article,
-                notification_type=self.notification_type
+                notification_type=self.notification_type,
+                settings=cd['settings'],
             )[0]
             edit_notification.settings = cd['settings']
             edit_notification.send_emails = cd['edit_email']
