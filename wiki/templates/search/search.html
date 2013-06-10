@@ -40,7 +40,7 @@
         {% if article.current_revision.locked %}
           <span class="icon-lock"></span>
         {% endif %}
-        <p class="muted"><small>{% highlight article.current_revision.content with query html_tag "strong" max_length 400 %}</small></p>
+        <p class="muted"><small>{% if article.current_revision %}{% highlight article.current_revision.content with query html_tag "strong" max_length 400 %}{% endif %}</small></p>
       </td>
       <td style="white-space: nowrap">
         {{ article.current_revision.created|naturaltime }}
