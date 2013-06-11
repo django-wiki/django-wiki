@@ -2,7 +2,7 @@
 {% load wiki_tags i18n humanize thumbnail %}
 {% load url from future %}
 
-{% block pagetitle %}{% trans "Replace image" %}: {{ image }}{% endblock %}
+{% block wiki_pagetitle %}{% trans "Replace image" %}: {{ image }}{% endblock %}
 
 {% block wiki_contents_tab %}
   {% thumbnail image.current_revision.imagerevision.image "250x250" as thumb %}

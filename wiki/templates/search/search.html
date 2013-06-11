@@ -1,5 +1,5 @@
 {% extends "wiki/base.html" %}
-{% load wiki_tags i18n humanize %}
+{% load wiki_tags i18n humanize highlight %}
 {% load url from future %}
 
 {% block pagetitle %}{% trans "Search results for:" %} {{ search_query }}{% endblock %}
@@ -40,7 +40,7 @@
         {% if article.current_revision.locked %}
           <span class="icon-lock"></span>
         {% endif %}
-        <p class="muted"><small>{{ article.current_revision.content|get_content_snippet:query }}</small></p>
+        <p class="muted"><small>{% if article.current_revision %}{% highlight article.current_revision.content with query html_tag "strong" max_length 400 %}{% endif %}</small></p>
       </td>
       <td style="white-space: nowrap">
         {{ article.current_revision.created|naturaltime }}

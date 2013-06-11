@@ -2,7 +2,7 @@
 {% load wiki_tags i18n sekizai_tags %}
 {% load url from future %}
 
-{% block pagetitle %}{{ article.current_revision.title }}{% endblock %}
+{% block wiki_pagetitle %}{{ article.current_revision.title }}{% endblock %}
 
 {% block wiki_breadcrumbs %}
 {% include "wiki/includes/breadcrumbs.html" %}

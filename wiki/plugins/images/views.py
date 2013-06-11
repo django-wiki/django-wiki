@@ -130,7 +130,7 @@ class RevisionAddView(ArticleMixin, FormView):
     def dispatch(self, request, article, *args, **kwargs):
         self.image = get_object_or_404(models.Image, article=article,
                                        id=kwargs.get('image_id', None))
-        if not self.image.can_write(user=request.user):
+        if not self.image.can_write(request.user):
             return redirect(wiki_settings.LOGIN_URL)
         return ArticleMixin.dispatch(self, request, article, *args, **kwargs)
     

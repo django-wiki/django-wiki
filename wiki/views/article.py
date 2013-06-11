@@ -24,7 +24,7 @@ from django.db import transaction
 from wiki.core.exceptions import NoRootURL
 from wiki.core import permissions
 from django.http import Http404
-from haystack.views import SearchView,search_view_factory
+from haystack import views as haystack_views
 
 class ArticleView(ArticleMixin, TemplateView):
 
@@ -465,17 +465,22 @@ class Dir(ListView, ArticleMixin):
 
         return kwargs
 
-#bug can read, moderate
-class SearchViewHaystack(SearchView):
+class SearchViewHaystack(haystack_views.SearchView):
     results_per_page = 25
     template = "search/search.html"
 
     def __name__(self):
         return "SearchViewHaystack"
 
+    def dispatch(self, request, *args, **kwargs):
+        # Do not allow anonymous users to search if they cannot read content
+        if request.user.is_anonymous() and not settings.ANONYMOUS:
+            return redirect(settings.LOGIN_URL)
+        return super(SearchViewHaystack, self).dispatch(request, *args, **kwargs)
+
     @classonlymethod
     def as_view(cls,*args,**kwargs):
-        return search_view_factory(view_class=cls,*args,**kwargs)
+        return haystack_views.search_view_factory(view_class=cls,*args,**kwargs)
 
     def __filter_can_read(self, user):
         """Filter objects so only the ones with a user's reading access
@@ -483,9 +488,7 @@ class SearchViewHaystack(SearchView):
         if user.has_perm('wiki.moderator'):
             return self.results
         if user.is_anonymous():
-            print self.results
             q = self.results.filter(other_read='True')
-            print q
             return q 
         else:
            q = self.results.filter(Q(other_read=True) |
@@ -523,8 +526,8 @@ class SearchView(ListView):
     
     def dispatch(self, request, *args, **kwargs):
         # Do not allow anonymous users to search if they cannot read content
-        if request.user.is_anonymous and not settings.ANONYMOUS:
-            return(settings.LOGIN_URL)
+        if request.user.is_anonymous() and not settings.ANONYMOUS:
+            return redirect(settings.LOGIN_URL)
         self.search_form = forms.SearchForm(request.GET)
         if self.search_form.is_valid():
             self.query = self.search_form.cleaned_data['q']
@@ -723,7 +726,7 @@ def merge(request, article, revision_id, urlpath=None, template_file="wiki/previ
         new_revision.locked = False
         new_revision.title=article.current_revision.title
         new_revision.content=content
-        new_revision.automatic_log = (_(u'Merge between Revision #%(r1)d and Revision #%(r2)d') % 
+        new_revision.automatic_log = (_(u'Merge between revision #%(r1)d and revision #%(r2)d') % 
                                       {'r1': revision.revision_number, 
                                        'r2': old_revision.revision_number})
         article.add_revision(new_revision, save=True)
@@ -731,7 +734,7 @@ def merge(request, article, revision_id, urlpath=None, template_file="wiki/previ
         old_revision.simpleplugin_set.all().update(article_revision=new_revision)
         revision.simpleplugin_set.all().update(article_revision=new_revision)
         
-        messages.success(request, _(u'A new revision was created: Merge between Revision #%(r1)d and Revision #%(r2)d') % 
+        messages.success(request, _(u'A new revision was created: Merge between revision #%(r1)d and revision #%(r2)d') % 
                          {'r1': revision.revision_number,
                           'r2': old_revision.revision_number})
         if urlpath:

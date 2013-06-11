@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls import patterns
 from django.utils.translation import ugettext as _
 
 from wiki.core.plugins import registry
@@ -8,7 +7,6 @@ from wiki.core.plugins.base import BasePlugin
 class HelpPlugin(BasePlugin):
     
     slug = 'help'
-    urlpatterns = patterns('',)
     
     sidebar = {'headline': _('Help'),
                'icon_class': 'icon-question-sign',

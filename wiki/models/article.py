@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from django.core.cache import cache
 from django.db import models
+from django.db.models.signals import post_save, pre_delete
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
 from wiki.conf import settings
 from wiki.core import article_markdown, permissions
+from wiki.core import compat
 from wiki import managers
 from mptt.models import MPTTModel
 
@@ -26,7 +28,7 @@ class Article(models.Model):
     modified = models.DateTimeField(auto_now=True, verbose_name=_(u'modified'),
                                     help_text=_(u'Article properties last modified'))
 
-    owner = models.ForeignKey(User, verbose_name=_('owner'),
+    owner = models.ForeignKey(compat.USER_MODEL, verbose_name=_('owner'),
                               blank=True, null=True, related_name='owned_articles',
                               help_text=_(u'The owner of the article, usually the creator. The owner always has both read and write access.'),
                               on_delete=models.SET_NULL)
@@ -41,47 +43,11 @@ class Article(models.Model):
     other_read = models.BooleanField(default=True, verbose_name=_(u'others read access'))
     other_write = models.BooleanField(default=True, verbose_name=_(u'others write access'))
     
-    # TODO: Do not use kwargs, it can lead to dangerous situations with bad
-    # permission checking patterns. Also, since there are no other keywords,
-    # it doesn't make much sense.
-    def can_read(self, user=None):
-        # Deny reading access to deleted articles if user has no delete access
-        if self.current_revision and self.current_revision.deleted and not self.can_delete(user):
-            return False
-        
-        # Check access for other users...
-        if user.is_anonymous() and not settings.ANONYMOUS:
-            return False
-        elif self.other_read:
-            return True
-        elif user.is_anonymous():
-            return  False
-        if user == self.owner:
-            return True
-        if self.group_read:
-            if self.group and user.groups.filter(id=self.group.id).exists():
-                return True
-        if self.can_moderate(user):
-            return True
-        return False
-    
-    def can_write(self, user=None):
-        # Check access for other users...
-        if user.is_anonymous() and not settings.ANONYMOUS_WRITE:
-            return False
-        elif self.other_write:
-            return True
-        elif user.is_anonymous():
-            return  False
-        if user == self.owner:
-            return True
-        if self.group_write:
-            if self.group and user and user.groups.filter(id=self.group.id).exists():
-                return True
-        if self.can_moderate(user):
-            return True
-        return False
-    
+    # PERMISSIONS
+    def can_read(self, user):
+        return permissions.can_read(self, user)
+    def can_write(self, user):
+        return permissions.can_write(self, user)
     def can_delete(self, user):
         return permissions.can_delete(self, user)
     def can_moderate(self, user):
@@ -89,6 +55,12 @@ class Article(models.Model):
     def can_assign(self, user):
         return permissions.can_assign(self, user)
     
+    def ancestor_objects(self):
+        """NB! This generator is expensive, so use it with care!!"""
+        for obj in self.articleforobject_set.filter(is_mptt=True):
+            for ancestor in obj.content_object.get_ancestors():
+                yield ancestor
+
     def descendant_objects(self):
         """NB! This generator is expensive, so use it with care!!"""
         for obj in self.articleforobject_set.filter(is_mptt=True):
@@ -173,9 +145,9 @@ class Article(models.Model):
     class Meta:
         app_label = settings.APP_LABEL
         permissions = (
-            ("moderate", "Can edit all articles and lock/unlock/restore"),
-            ("assign", "Can change ownership of any article"),
-            ("grant", "Can assign permissions to other users"),
+            ("moderate", _(u"Can edit all articles and lock/unlock/restore")),
+            ("assign", _(u"Can change ownership of any article")),
+            ("grant", _(u"Can assign permissions to other users")),
         )
     
     def render(self, preview_content=None):
@@ -233,14 +205,16 @@ class BaseRevisionMixin(models.Model):
     automatic_log = models.TextField(blank=True, editable=False,)
     
     ip_address  = models.IPAddressField(_('IP address'), blank=True, null=True, editable=False)
-    user        = models.ForeignKey(User, verbose_name=_('user'),
+    user        = models.ForeignKey(compat.USER_MODEL, verbose_name=_('user'),
                                     blank=True, null=True,
-                                    on_delete=models.SET_NULL)    
+                                    on_delete=models.SET_NULL)
     
     modified = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     
-    previous_revision = models.ForeignKey('self', blank=True, null=True)
+    previous_revision = models.ForeignKey(
+        'self', blank=True, null=True, on_delete=models.SET_NULL
+    )
     
     # NOTE! The semantics of these fields are not related to the revision itself
     # but the actual related object. If the latest revision says "deleted=True" then
@@ -326,3 +300,23 @@ class ArticleRevision(BaseRevisionMixin, models.Model):
         ordering = ('created',)
         unique_together = ('article', 'revision_number')
     
+
+######################################################
+# SIGNAL HANDLERS
+######################################################
+
+# clear the ancestor cache when saving or deleting articles so things like
+# article_lists will be refreshed
+def _clear_ancestor_cache(article):
+    for ancestor in article.ancestor_objects():
+        ancestor.article.clear_cache()
+
+def on_article_save_clear_cache(instance, **kwargs):
+    _clear_ancestor_cache(instance)
+post_save.connect(on_article_save_clear_cache, Article)
+
+def on_article_delete_clear_cache(instance, **kwargs):
+    _clear_ancestor_cache(instance)
+    instance.clear_cache()
+pre_delete.connect(on_article_delete_clear_cache, Article)
+

@@ -2,7 +2,7 @@
 {% load wiki_tags i18n sekizai_tags %}
 {% load url from future %}
 
-{% block pagetitle %}{% trans "Delete article" %}{% endblock %}
+{% block wiki_pagetitle %}{% trans "Delete article" %}{% endblock %}
 
 {% block wiki_contents %}
   <h1 class="page-header">{% trans "Delete" %} "{{ article.current_revision.title }}"</h1>
@@ -46,7 +46,7 @@
             {% trans "Go back" %}
           </a>
           <button type="submit" name="save_changes" class="btn btn-danger btn-large">
-            <span class="icon-plus"></span>
+            <span class="icon-trash icon-white"></span>
             {% trans "Delete article" %}
           </button>
       </div>  

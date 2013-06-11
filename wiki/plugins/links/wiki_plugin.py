@@ -13,9 +13,11 @@ from django.core.urlresolvers import reverse_lazy
 class LinkPlugin(BasePlugin):
     
     slug = 'links'
-    urlpatterns = patterns('',
-        url(r'^json/query-urlpath/$', views.QueryUrlPath.as_view(), name='links_query_urlpath'),
-    )
+    urlpatterns = {
+        'article': patterns('',
+            url(r'^json/query-urlpath/$', views.QueryUrlPath.as_view(), name='links_query_urlpath'),
+        )
+    }
     
     sidebar = {'headline': _('Links'),
                'icon_class': 'icon-bookmark',
@@ -26,7 +28,7 @@ class LinkPlugin(BasePlugin):
     wikipath_config = [
         ('base_url', reverse_lazy('wiki:get', kwargs={'path': ''}) ),
         ('default_level', settings.LOOKUP_LEVEL ),
-        ]
+    ]
     
     markdown_extensions = [urlize_makeExtension(), WikiPathExtension(wikipath_config)]
     

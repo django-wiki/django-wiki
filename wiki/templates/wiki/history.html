@@ -2,7 +2,7 @@
 {% load wiki_tags i18n sekizai_tags %}
 {% load url from future %}
 
-{% block pagetitle %}{% trans "History" %}: {{ article.current_revision.title }}{% endblock %}
+{% block wiki_pagetitle %}{% trans "History" %}: {{ article.current_revision.title }}{% endblock %}
 
 {% block wiki_contents_tab %}
 
@@ -128,7 +128,7 @@
           <span class="icon-random"></span>
           {% trans "Merge selected with current..." %}
         </button>
-        <button type="submit" name="save" value="1" class="btn btn-large btn-primary" onclick="$('#previewModal').modal('show'); this.form.target='previewWindow'; this.form.action=$('input[type=radio]:checked').attr('switch-button-href')">
+        <button type="submit" name="save" value="1" class="btn btn-large btn-primary" onclick="this.form.target='_self'; this.form.action=$('input[type=radio]:checked').attr('switch-button-href')">
           <span class="icon-flag"></span>
           {% trans "Switch to selected version" %}
         </button>
@@ -152,7 +152,7 @@
       <a href="#" class="btn btn-large btn-primary switch-to-revision">
         <span class="icon-flag"></span>
         {% trans "Switch to this version" %}
-      </a>                    
+      </a>
       {% else %}
         <a href="#" class="btn btn-large btn-primary disabled">
           <span class="icon-lock"></span>
@@ -168,7 +168,7 @@
       <p class="lead"><span class="icon-info-sign"></span> {% trans "When you merge a revision with the current, all data will be retained from both versions and merged at its approximate location from each revision." %} <strong>{% trans "After this, it's important to do a manual review." %}</strong></p>
     </div>
     <div class="modal-body">
-      <iframe name="mergeWindow" frameborder="0"></iframe>
+      <iframe name="mergeWindow" frameborder="0" style="min-height: 0;"></iframe>
     </div>
     <div class="modal-footer">
       <a href="#" class="btn btn-large" data-dismiss="modal">

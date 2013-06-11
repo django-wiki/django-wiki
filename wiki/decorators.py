@@ -2,6 +2,7 @@
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseNotFound, \
     HttpResponseForbidden
+
 from django.shortcuts import redirect, get_object_or_404
 from django.template.context import RequestContext
 from django.template.loader import render_to_string
@@ -15,6 +16,12 @@ from django.utils.http import urlquote
 def json_view(func):
     def wrap(request, *args, **kwargs):
         obj = func(request, *args, **kwargs)
+        if isinstance(obj, HttpResponse):
+            # Special behaviour: If it's a redirect, for instance
+            # because of login protection etc. just return
+            # the redirect
+            if obj.status_code == 301 or obj.status_code == 302:
+                return obj
         data = json.dumps(obj, ensure_ascii=False)
         status = kwargs.get('status', 200)
         response = HttpResponse(mimetype='application/json', status=status)
@@ -125,10 +132,10 @@ def get_article(func=None, can_read=True, can_write=False,
         if article.current_revision.locked and not_locked:
             return response_forbidden(request, article, urlpath)
 
-        if can_read and not article.can_read(user=request.user):
+        if can_read and not article.can_read(request.user):
             return response_forbidden(request, article, urlpath)
         
-        if (can_write or can_create) and not article.can_write(user=request.user):
+        if (can_write or can_create) and not article.can_write(request.user):
             return response_forbidden(request, article, urlpath)
 
         if can_create and not (request.user.is_authenticated() or settings.ANONYMOUS_CREATE):

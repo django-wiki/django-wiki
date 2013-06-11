@@ -41,20 +41,31 @@ u'<p>del.icio.us</p>'
 """
 
 import markdown
+import re
 
-# Global Vars
-URLIZE_RE = '(%s)' % '|'.join([
-    r'<(?:f|ht)tps?://[^>\'"]*>',
-    r'\b(?:f|ht)tps?://[^)<>\s\'"]+[^.,)<>\s\'"]',
-    r'\bwww\.[^)<>\s]+[^.,)<>\s\'"]',
-    r'[^(<\s\'"]+\.(?:com|net|org)\b',
-])
+# Taken from Django trunk 2f121dfe635b3f497fe1fe03bc8eb97cdf5083b3
+# https://github.com/django/django/blob/master/django/core/validators.py#L47
+URLIZE_RE = (
+    r'((?:(?:http|ftp)s?://|www\.)' # http:// or https://
+    r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|' # domain...
+    r'localhost|' # localhost...
+    r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|' # ...or ipv4
+    r'\[?[A-F0-9]*:[A-F0-9:]+\]?)' # ...or ipv6
+    r'(?::\d+)?' # optional port
+    r'(?:/?|[/?]\S+))'
+)
 
 class UrlizePattern(markdown.inlinepatterns.Pattern):
+
+    def __init__(self, pattern, markdown_instance=None):
+        markdown.inlinepatterns.Pattern.__init__(self, pattern, markdown_instance=markdown_instance)
+        self.compiled_re = re.compile("^(.*?)%s(.*?)$" % pattern, 
+                                      re.DOTALL | re.UNICODE | re.IGNORECASE)
+
     """ Return a link Element given an autolink (`http://example/com`). """
     def handleMatch(self, m):
         url = m.group(2)
-        
+
         if url.startswith('<'):
             url = url[1:-1]
             
@@ -71,7 +82,6 @@ class UrlizePattern(markdown.inlinepatterns.Pattern):
         
         span_text = markdown.util.etree.Element("span")
         span_text.text = markdown.util.AtomicString(" " + text)
-        
         el = markdown.util.etree.Element("a")
         el.set('href', url)
         el.set('target', '_blank')

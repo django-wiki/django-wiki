@@ -1,0 +1,136 @@
+# THE GERMAN TRANSLATION OF DJANGO-NOTIFY.
+# Copyright (C) 2013 THOMAS LOTTERMANN
+# This file is distributed under the same license as the DJANGO-WIKI package.
+# THOMAS LOTTERMANN <TomLottermann@googlemail.com>, 2013.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.18\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-06-06 20:37+0200\n"
+"Last-Translator: Thomas Lottermann <TomLottermann@googlemail.com>\n"
+"Language-Team: \n"
+"Language: German\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: __init__.py:52
+msgid "You supplied a target_object that's not an instance of a django Model."
+msgstr "Das gegebene \"target_object\" ist keine Instanz eines Django Models."
+
+#: models.py:14
+msgid "unique key"
+msgstr "eindeutiger Schlüssel"
+
+#: models.py:16
+msgid "verbose name"
+msgstr "sprechender Name"
+
+#: models.py:25
+msgid "type"
+msgstr "Typ"
+
+#: models.py:26
+msgid "types"
+msgstr "Typen"
+
+#: models.py:31
+msgid "interval"
+msgstr "Interval"
+
+#: models.py:35
+#, python-format
+msgid "Settings for %s"
+msgstr "Einstellungen für %s"
+
+#: models.py:40 models.py:41
+msgid "settings"
+msgstr "Einstellungen"
+
+#: models.py:48
+msgid "Leave this blank to subscribe to any kind of object"
+msgstr "Leerlassen um beliebiges Object zu abonnieren"
+
+#: models.py:53
+#, python-format
+msgid "Subscription for: %s"
+msgstr "Abonnement von: %s"
+
+#: models.py:58
+msgid "subscription"
+msgstr "Abonnement"
+
+#: models.py:59
+msgid "subscriptions"
+msgstr "Abonnements"
+
+#: models.py:65
+msgid "link for notification"
+msgstr "Link zur Benachrichtigung"
+
+#: models.py:71
+msgid "occurrences"
+msgstr "Häufigkeit"
+
+#: models.py:72
+msgid ""
+"If the same notification was fired multiple times with no intermediate "
+"notifications"
+msgstr ""
+"Wenn die gleiche Benachrichtigung öfter aufgetreten ist ohne "
+"zwischenzeitiges senden"
+
+#: models.py:125
+msgid "notification"
+msgstr "Benachrichtigung"
+
+#: models.py:126
+msgid "notifications"
+msgstr "Benachrichtigungen"
+
+#: settings.py:19
+msgid "You have new notifications"
+msgstr "Du hast neue Benachrichtigungen"
+
+#: settings.py:38
+msgid "instant"
+msgstr "sofort"
+
+#: settings.py:39
+msgid "daily"
+msgstr "täglich"
+
+#: settings.py:40
+msgid "weekly"
+msgstr "wöchentlich"
+
+#: views.py:32
+#, python-format
+msgid "%d times"
+msgstr "%d mal"
+
+#: templates/emails/notification_email_message.txt:2
+#, python-format
+msgid "Dear %(username)s,"
+msgstr "Hallo %(username)s,"
+
+#: templates/emails/notification_email_message.txt:4
+#, python-format
+msgid " These are the %(digest)s notifications from %(site)s."
+msgstr " Dies sind die %(digest)s versendeten Benachrichtigungen von %(site)s."
+
+#: templates/emails/notification_email_message.txt:10
+msgid "Thanks for using our site!"
+msgstr "Danke, dass du unsere Seite nutzt!"
+
+#: templates/emails/notification_email_message.txt:12
+msgid "Sincerely"
+msgstr "Viele Grüße"
+
+#: templates/emails/notification_email_subject.txt:2
+#, python-format
+msgid " %(digest)s Notifications %(site)s."
+msgstr " Benachrichtigungen von %(site)s (%(digest)s versendet)."

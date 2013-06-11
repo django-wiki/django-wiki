@@ -1,4 +1,10 @@
 /*!
+ * This is django-wiki's LESS rules built on top of
+ * Bootstrap. Please do not modify the original Bootstrap
+ * files as we try to maintain a simple and clean copy of
+ * Bootstrap!!
+ */
+/*!
  * Bootstrap Responsive v2.2.2
  *
  * Copyright 2012 Twitter, Inc
@@ -7,7 +13,7 @@
  *
  * Designed and built with all the love in the world @twitter by @mdo and @fat.
  */
-@-ms-viewport  {
+@-ms-viewport {
   width: device-width;
 }
 .clearfix {

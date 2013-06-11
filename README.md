@@ -1,6 +1,26 @@
 django-wiki
 ===========
 
+***News: June 7th, 2013***
+
+Yay! New alpha release! [View commit log on Github >](https://github.com/benjaoming/django-wiki/commits/alpha/0.0.20) or [a summary of all the commits](https://groups.google.com/forum/#!topic/django-wiki/ZnnGowlppj4)
+
+Highlights:
+
+- Fix missing translation activation in django-notify's email notifications (manage command) - credits TomLottermann
+- Add Russian on django-wiki and django-notify - credits crazyzubr
+- Support for AUTH_USER_MODEL settings (seriously, don't use it though, unless you really want trouble in most third party django apps). Please note, that this is only going to help you if you are starting new projects. If you are changing the setting and introducing a new model in a running project, you have to do all database migrations manuall. Django-wiki and its South migrations will silently ignore your changes.
+- Add settings for logging to files instead of stdout in django-notify daemon mode - credits: crazyzubr
+- Built-in account handling now properly asserts that usernames are not already taken when signing up.
+
+***News: April 23rd, 2013***
+
+Security fix included in 0.0.19. [View commit log >](https://github.com/benjaoming/django-wiki/commits/alpha/0.0.19)
+
+***News: March 26, 2013***
+
+Thanks to TomLottermann for German translation and daltonmatos for Brazilian translations! French are also reported in the works. 0.0.18 is released with that plus Django 1.5 compatibility, and [a bunch of other things and fixes](https://groups.google.com/forum/#!topic/django-wiki/V-bZou8aTaI).
+
 ***News: February 21, 2013***
 
 New release adds email notifications to django_notify, improved [toc] tag and bootstrap typography.
@@ -61,8 +81,29 @@ Django needs a mature wiki system appealing to all kinds of needs, both big and 
 Installation
 ------------
 
-### Install
+### Pre-requisites
 
+Django-wiki uses the [PIL library](http://www.pythonware.com/products/pil/) for image processing. The preferred method should be to get a system-wide version of PIL, for instance by getting the binaries from your Linux distribution repos.
+
+**PIL Directly from repository: Debian-based Linux Distros**
+
+    sudo apt-get install python-imaging
+
+**PIL/Pillow for Pypi**
+
+Firstly, you need to get development libraries that PIP needs before compiling. For instance on Debian/Ubuntu:
+
+    sudo apt-get install libjpeg8 libjpeg-dev libpng libpng-dev
+
+After that, choose either `pip install PIL` or `pip install Pillow`. Pillow is the pip-friendly version of PIL. You might as well install PIL system-wide, because there are little version-specific dependencies in Django applications when it comes to PIL.
+
+**Mac OS X 10.5+**
+
+[Ethan Tira-Thompson](http://ethan.tira-thompson.com/Mac_OS_X_Ports.html) has created ports for OS X and made them available as a .dmg installer.  Download and install the universal combo package [here](http://ethan.tira-thompson.com/Mac_OS_X_Ports_files/libjpeg-libpng%20%28universal%29.dmg).
+
+Once you have the packages installed, you can proceed to the pip installation.  PIL will automatically pick up these libraries and compile them for django use.
+
+### Install
 To install the latest stable release:
 
 `pip install wiki`
@@ -85,6 +126,7 @@ The following applications should be listed - NB! it's important to maintain the
         'wiki.plugins.attachments',
         'wiki.plugins.notifications',
         'wiki.plugins.images',
+        'wiki.plugins.macros',
 
 ### Database
 
@@ -95,7 +137,21 @@ To sync and create tables, do:
 
 ### Configure TEMPLATE_CONTEXT_PROCESSORS
 
-Add `'sekizai.context_processors.sekizai'` to `settings.TEMPLATE_CONTEXT_PROCESSORS`. Please refer to the [Django docs](https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors) to see the current default setting for this variable.
+Add `'sekizai.context_processors.sekizai'` and `'django.core.context_processors.debug'` to `settings.TEMPLATE_CONTEXT_PROCESSORS`. Please refer to the [Django docs](https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors) to see the current default setting for this variable.
+
+In Django 1.5, it should look like this:
+
+    TEMPLATE_CONTEXT_PROCESSORS = (
+        "django.contrib.auth.context_processors.auth",
+        "django.core.context_processors.debug",
+        "django.core.context_processors.i18n",
+        "django.core.context_processors.media",
+        "django.core.context_processors.request",
+        "django.core.context_processors.static",
+        "django.core.context_processors.tz",
+        "django.contrib.messages.context_processors.messages",
+        "sekizai.context_processors.sekizai",
+    )
 
 ### Include urlpatterns
 
@@ -192,11 +248,11 @@ Acknowledgements
  * The people at [edX](http://www.edxonline.org/) & MIT for finding and supporting the project both financially and with ideas.
  * [django-cms](https://github.com/divio/django-cms) for venturing where no django app has gone before in terms of well-planned features and high standards. It's a very big inspiration.
  * [django-mptt](https://github.com/django-mptt/django-mptt), a wonderful utility for inexpensively using tree structures in Django with a relational database backend.
- * [jdcaballero](https://github.com/jdcaballero), [yekibud](https://github.com/yekibud), [bridger](https://github.com/bridger), and [everyone else](https://github.com/benjaoming/django-wiki/contributors) involved!
+ * [jdcaballero](https://github.com/jdcaballero), [yekibud](https://github.com/yekibud), [bridger](https://github.com/bridger), [TomLottermann](https://github.com/TomLottermann), [crazyzubr](https://github.com/crazyzubr), and [everyone else](https://github.com/benjaoming/django-wiki/contributors) involved!
 
 Support
 -------
 
-This project is already alive and will remain alive, because it's free software and as long as it's essential, common interest will keep it alive... we hope :) You're more than welcome to help build benjaoming's economical independency which in turn will be used to create free software.
+This project is already alive and will remain alive, because it's free software and as long as it's essential, common interest will keep it alive... we hope :) You're more than welcome to show your appreciation through Flattr.
 
 [![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=benjaoming&url=https://github.com/benjaoming/django-wiki/&title=django-wiki&language=&tags=github&category=software) 

@@ -2,7 +2,7 @@
 {% load wiki_tags i18n humanize %}
 {% load url from future %}
 
-{% block pagetitle %}{% trans "Attachments" %}: {{ article.current_revision.title }}{% endblock %}
+{% block wiki_pagetitle %}{% trans "Attachments" %}: {{ article.current_revision.title }}{% endblock %}
 
 {% block wiki_contents_tab %}
 <div class="row-fluid">

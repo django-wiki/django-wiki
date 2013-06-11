@@ -2,7 +2,7 @@
 {% load wiki_tags i18n %}
 {% load url from future %}
 
-{% block pagetitle %}{% if article %}{{ article.current_revision.title }}{% else %}{% trans "Error" %}{% endif %}{% endblock %}
+{% block wiki_pagetitle %}{% if article %}{{ article.current_revision.title }}{% else %}{% trans "Error" %}{% endif %}{% endblock %}
 
 {% block wiki_breadcrumbs %}
 {% include "wiki/includes/breadcrumbs.html" %}

@@ -18,7 +18,10 @@ class BasePlugin(object):
     
     # Optional
     settings_form = None# A form class to add to the settings tab
-    urlpatterns = []
+    urlpatterns = {
+        'root': [], # General urlpatterns that will reside in /wiki/plugins/plugin-slug/...
+        'article': [], # urlpatterns that receive article_id or urlpath, i.e. /wiki/ArticleName/plugin/plugin-slug/...
+    }
     article_tab = None  #(_(u'Attachments'), "icon-file")
     article_view = None # A view for article_id/plugin/slug/
     notifications = []  # A list of notification handlers to be subscribed if the notification system is active

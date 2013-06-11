@@ -1,7 +1,7 @@
 {% extends "wiki/base.html" %}
 {% load i18n wiki_tags sekizai_tags %}
 {% load url from future %}
-{% block pagetitle %}{% trans "Log in" %}{% endblock %}
+{% block wiki_pagetitle %}wiki_pagetitle{% trans "Log in" %}{% endblock %}
 
 {% block wiki_contents %}
 <h1 class="page-header">{% trans "Please log in" %}</h1>

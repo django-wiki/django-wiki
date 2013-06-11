@@ -20,9 +20,11 @@ from wiki.editors import getEditor
 from wiki.core.diff import simple_merge
 from django.forms.widgets import HiddenInput
 from wiki.core.plugins.base import PluginSettingsFormMixin
-from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from wiki.core import permissions
+
+from wiki.core.compat import get_user_model
+User = get_user_model()
 
 class SpamProtectionMixin():
     """Check a form for spam. Only works if properties 'request' and 'revision_model' are set."""
@@ -57,7 +59,7 @@ class SpamProtectionMixin():
                 revisions = revisions.filter(ip_address=ip_address)
             revisions = revisions.count()
             if revisions >= max_count:
-                raise forms.ValidationError(_(u'Spam protection: You are only allowed to create or edit %(revisions)d article per %(interval_name)s.') % 
+                raise forms.ValidationError(_(u'Spam protection: You are only allowed to create or edit %(revisions)d article(s) per %(interval_name)s.') % 
                                             {'revisions': max_count,
                                              'interval_name': interval_name,})
             
@@ -120,7 +122,8 @@ class EditForm(forms.Form, SpamProtectionMixin):
             data = None
             if len(args) > 0:
                 data = args[0]
-            if not data:
+                args = args[1:]
+            if data is None:
                 data = kwargs.get('data', None)
             if data:
                 self.presumed_revision = data.get('current_revision', None)
@@ -133,6 +136,9 @@ class EditForm(forms.Form, SpamProtectionMixin):
                                                       data.get('content', ""))
                     newdata['title'] = current_revision.title
                     kwargs['data'] = newdata
+                else:
+                    # Always pass as kwarg
+                    kwargs['data'] = data
                 
             kwargs['initial'] = initial
         
@@ -155,21 +161,23 @@ class SelectWidgetBootstrap(forms.Select):
     http://twitter.github.com/bootstrap/components.html#buttonDropdowns
     Needs bootstrap and jquery
     """
-    def __init__(self, attrs={'class': 'btn-group pull-left btn-group-form'}, choices=()):
+    def __init__(self, attrs={}, choices=(), disabled=False):
+        attrs['class'] = 'btn-group pull-left btn-group-form'
+        self.disabled = disabled
         self.noscript_widget = forms.Select(attrs={}, choices=choices)
         super(SelectWidgetBootstrap, self).__init__(attrs, choices)
     
     def __setattr__(self, k, value):
         super(SelectWidgetBootstrap, self).__setattr__(k, value)
-        if k != 'attrs':
+        if k != 'attrs' and k != 'disabled':
             self.noscript_widget.__setattr__(k, value)
     
     def render(self, name, value, attrs=None, choices=()):
         if value is None: value = ''
         final_attrs = self.build_attrs(attrs, name=name)
         output = ["""<div%(attrs)s>"""
-                  """    <button class="btn btn-group-label" type="button">%(label)s</button>"""
-                  """    <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">"""
+                  """    <button class="btn btn-group-label%(disabled)s" type="button">%(label)s</button>"""
+                  """    <button class="btn dropdown-toggle%(disabled)s" type="button" data-toggle="dropdown">"""
                   """        <span class="caret"></span>"""
                   """    </button>"""
                   """    <ul class="dropdown-menu">"""
@@ -182,6 +190,7 @@ class SelectWidgetBootstrap(forms.Select):
                       'options':self.render_options(choices, [value]),
                       'label': _(u'Select an option'),
                       'name': name,
+                      'disabled': ' disabled' if self.disabled else '',
                       'noscript': self.noscript_widget.render(name, value, {}, choices)} ]
         return mark_safe(u'\n'.join(output))
 
@@ -321,6 +330,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
         self.request = request
         kwargs['instance'] = article
         kwargs['initial'] = {'locked': article.current_revision.locked}
+        
         super(PermissionsForm, self).__init__(*args, **kwargs)
         
         self.can_change_groups = False
@@ -333,10 +343,18 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
             self.fields['group'].queryset = models.Group.objects.filter(user=request.user)
             self.can_change_groups = True
         else:
-            self.fields['group'].widget = forms.TextInput(attrs={'readonly': 'true'})
+            # Quick-fix...
+            # Set the group dropdown to readonly and with the current
+            # group as only selectable option
+            self.fields['group'] = forms.ModelChoiceField(
+                queryset = models.Group.objects.filter(id=self.instance.group.id) if self.instance.group else models.Group.objects.none(),
+                empty_label = _(u'(none)'),
+                required = False,
+                widget = SelectWidgetBootstrap(disabled=True) if settings.USE_BOOTSTRAP_SELECT_WIDGET else forms.Select(attrs={'disabled': True})
+            )
             self.fields['group_read'].widget = forms.HiddenInput()
             self.fields['group_write'].widget = forms.HiddenInput()
-            
+
         if not self.can_assign:
             self.fields['owner_username'].widget = forms.TextInput(attrs={'readonly': 'true'})
             self.fields['recursive'].widget = forms.HiddenInput()
@@ -352,7 +370,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
             if username:
                 try:
                     user = User.objects.get(username=username)
-                except models.User.DoesNotExist:
+                except User.DoesNotExist:
                     raise forms.ValidationError(_(u'No user with that username'))
             else:
                 user = None
@@ -396,6 +414,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
         model = models.Article
         fields = ('locked', 'owner_username', 'recursive_owner', 'group', 'recursive_group', 'group_read', 'group_write', 'other_read', 'other_write',
                   'recursive')
+        widgets = {}
 
 
 class DirFilterForm(forms.Form):
@@ -428,7 +447,7 @@ class UserCreationForm(UserCreationForm):
         )
     
     def clean(self):
-        cd = self.cleaned_data
+        cd = super(UserCreationForm, self).clean()
         for fieldname in self.honeypot_fieldnames:
             if cd[fieldname]: raise forms.ValidationError("Thank you, non-human visitor. Please keep trying to fill in the form.")
         return cd

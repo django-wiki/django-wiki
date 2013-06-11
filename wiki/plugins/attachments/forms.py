@@ -35,7 +35,7 @@ class AttachmentForm(forms.ModelForm):
     def save(self, *args, **kwargs):
         attachment_revision = super(AttachmentForm, self).save(commit=False)
         
-        # Added because of AttachmentArcihveForm removing file from fields
+        # Added because of AttachmentArchiveForm removing file from fields
         # should be more elegant
         attachment_revision.file = self.cleaned_data['file']
         
@@ -53,7 +53,7 @@ class AttachmentForm(forms.ModelForm):
         model = models.AttachmentRevision
         fields = ('file', 'description',)
 
-class AttachmentArcihveForm(AttachmentForm):
+class AttachmentArchiveForm(AttachmentForm):
     
     file = forms.FileField( #@ReservedAssignment
         label=_(u'File or zip archive'),
@@ -67,7 +67,7 @@ class AttachmentArcihveForm(AttachmentForm):
     )
     
     def __init__(self, *args, **kwargs):
-        super(AttachmentArcihveForm, self).__init__(*args, **kwargs)
+        super(AttachmentArchiveForm, self).__init__(*args, **kwargs)
         ordered_fields = ['unzip_archive', 'file']
         self.fields.keyOrder = ordered_fields + [k for k in self.fields.keys() if k not in ordered_fields]
         
@@ -84,12 +84,12 @@ class AttachmentArcihveForm(AttachmentForm):
             except zipfile.BadZipfile:
                 raise forms.ValidationError(_(u"Not a zip file"))
         else:
-            return super(AttachmentArcihveForm, self).clean_file()
+            return super(AttachmentArchiveForm, self).clean_file()
         return uploaded_file
     
     def clean(self):
         if not can_moderate(self.article, self.request.user):
-            raise forms.ValidationError("User")
+            raise forms.ValidationError("User not allowed to moderate this article")
         return self.cleaned_data
         
     def save(self, *args, **kwargs):
@@ -125,7 +125,7 @@ class AttachmentArcihveForm(AttachmentForm):
                 raise
             return new_attachments
         else:
-            return super(AttachmentArcihveForm, self).save(*args, **kwargs)
+            return super(AttachmentArchiveForm, self).save(*args, **kwargs)
 
     class Meta(AttachmentForm.Meta):
         fields = ['description',]

@@ -1,4 +1,5 @@
 from django.conf import settings as django_settings
+from django import VERSION as DJANGO_VERSION
 
 _ = lambda x: x
 
@@ -41,6 +42,12 @@ INTERVALS = getattr(django_settings, 'NOTIFY_INTERVALS',
 
 INTERVALS_DEFAULT = INSTANTLY
 
+# Django 1.5+
+if DJANGO_VERSION >= (1,5):
+    USER_MODEL = getattr(django_settings, 'AUTH_USER_MODEL', 'auth.User')
+else:
+    USER_MODEL = 'auth.User'
+
 ####################
 # PLANNED SETTINGS #
 ####################
@@ -52,3 +59,9 @@ AUTO_DELETE = getattr(django_settings, 'NOTIFY_AUTO_DELETE', 120)
 
 # After how many days should all types of notifications be deleted?
 AUTO_DELETE_ALL = getattr(django_settings, 'NOTIFY_AUTO_DELETE_ALL', 120)
+
+NOTIFY_LOG = getattr(django_settings, 'NOTIFY_LOG', '/tmp/daemon_notify.log')
+
+NOTIFY_PID = getattr(django_settings, 'NOTIFY_PID', '/tmp/daemon_notify.pid')
+
+
