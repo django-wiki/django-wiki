@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.conf import settings as django_settings
 from django.conf.urls import patterns, url, include
 from django.utils.importlib import import_module
 
@@ -31,7 +32,7 @@ class WikiURLPatterns(object):
     revision_merge_view = 'wiki.views.article.merge'
 
     create_root = 'wiki.views.article.root_create'
-    search_view_class = article.SearchView
+    search_view_class = article.SearchViewHaystack if 'haystack' in django_settings.INSTALLED_APPS else article.SearchView
     article_diff_view = 'wiki.views.article.diff'
 
     # account views
