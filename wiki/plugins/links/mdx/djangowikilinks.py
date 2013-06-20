@@ -79,7 +79,7 @@ class WikiPath(markdown.inlinepatterns.Pattern):
             urlpath = None
             path = path_from_link
             try:
-                urlpath = models.URLPath.get_by_path(path_from_link)
+                urlpath = models.URLPath.get_by_path(article_title)
                 path = urlpath.get_absolute_url()
             except models.URLPath.DoesNotExist:
                 pass
