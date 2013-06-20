@@ -1,26 +1,25 @@
-{% comment %}
-
-  <li class="dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-      <span class="badge notification-cnt">0</span>
-      {% trans "notifications" %}
-      <b class="caret"></b>
-    </a>
-    <ul class="dropdown-menu notification-list">
-      <div class="notification-li-container"></div>
-      <li class="notifications-empty"><a href="#"><em>{% trans "No notifications" %}</em></a></li>
-      <li class="divider"></li>
-      <li><a href="#" onclick="notify_mark_read()">{% trans "Clear notifications list" %}</a></li>
-    </ul>
-  </li>
-
-{% endcomment %}
 {% load i18n sekizai_tags %}{% load url from future %}
+
+  <li class="divider notification-before-list"></li>
+  <li class="notifications-empty"><a href="#"><em>{% trans "No notifications" %}</em></a></li>
+  <li class="divider"></li>
+  <li>
+    <a href="#" onclick="notify_mark_read()">
+      <i class="icon-check"></i>
+      {% trans "Clear notifications list" %}
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'wiki:notification_settings' %}">
+      <i class="icon-wrench"></i>
+      {% trans "Notification settings" %}
+    </a>
+  </li>
 {% addtoblock "js" %}
 <script type="text/javascript">
   URL_NOTIFY_GET_NEW = "{% url "notify:json_get" %}";
   URL_NOTIFY_MARK_READ = "{% url "notify:json_mark_read_base" %}";
   URL_NOTIFY_GOTO = "{% url "notify:goto_base" %}";
 </script>
-<script type="text/javascript" src="{{ STATIC_URL }}wiki/plugins/notifications/js/ui.js"></script>
 {% endaddtoblock %}
+{% addtoblock "js" %}<script type="text/javascript" src="{{ STATIC_URL }}wiki/plugins/notifications/js/ui.js"></script>{% endaddtoblock %}

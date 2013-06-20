@@ -13,6 +13,7 @@ from wiki.core import article_markdown, permissions
 from wiki.core import compat
 from wiki import managers
 from mptt.models import MPTTModel
+from django.core.urlresolvers import reverse
 
 class Article(models.Model):
     
@@ -173,6 +174,14 @@ class Article(models.Model):
     
     def clear_cache(self):
         cache.delete(self.get_cache_key())
+    
+    def get_absolute_url(self):
+        urlpaths = self.urlpath_set.all()
+        if urlpaths.exists():
+            return urlpaths[0].get_absolute_url()
+        else:
+            return reverse('wiki:get', kwargs={'article_id': self.id})
+        
     
 class ArticleForObject(models.Model):
     

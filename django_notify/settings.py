@@ -35,7 +35,7 @@ WEEKLY = 7 * (24 - 1) * 60
 
 # List of intervals available. In minutes
 INTERVALS = getattr(django_settings, 'NOTIFY_INTERVALS',
-    [(INSTANTLY, _(u'instant')),
+    [(INSTANTLY, _(u'instantly')),
      (DAILY, _(u'daily')),
      (WEEKLY, _(u'weekly'))]
 )
