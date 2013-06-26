@@ -23,10 +23,7 @@ _cache = {}
 @register.assignment_tag(takes_context=True)
 def article_for_object(context, obj):
     if not isinstance(obj, Model):
-        raise TypeError(
-            "A Wiki article can only be associated to a Django Model "
-            "instance, not %s" % type(obj)
-        )
+        raise TypeError("A Wiki article can only be associated to a Django Model instance, not %s" % type(obj))
     
     content_type = ContentType.objects.get_for_model(obj)
     
@@ -39,7 +36,6 @@ def article_for_object(context, obj):
             article = None
         _cache[obj] = article
     return _cache[obj]
-
 
 @register.inclusion_tag('wiki/includes/render.html', takes_context=True)
 def wiki_render(context, article, preview_content=None):
@@ -58,14 +54,12 @@ def wiki_render(context, article, preview_content=None):
     })
     return context
 
-
 @register.inclusion_tag('wiki/includes/form.html', takes_context=True)
 def wiki_form(context, form_obj):
     if not isinstance(form_obj, BaseForm):
         raise TypeError("Error including form, it's not a form, it's a %s" % type(form_obj))
     context.update({'form': form_obj})
     return context
-
 
 @register.filter
 def get_content_snippet(content, keyword, max_words=30):
@@ -87,36 +81,39 @@ def get_content_snippet(content, keyword, max_words=30):
         html = " ".join(filter(lambda x: x!="", striptags(content).replace("\n", " ").split(" "))[:max_words])
     return html
 
-
 @register.filter
 def can_read(obj, user):
     """Articles and plugins have a can_read method..."""
     return obj.can_read(user)
-
 
 @register.filter
 def can_write(obj, user):
     """Articles and plugins have a can_write method..."""
     return obj.can_write(user)
 
-
 @register.filter
 def can_delete(obj, user):
     """Articles and plugins have a can_delete method..."""
     return obj.can_delete(user)
-
 
 @register.filter
 def can_moderate(obj, user):
     """Articles and plugins have a can_moderate method..."""
     return obj.can_moderate(user)
 
-
 @register.filter
 def is_locked(obj):
     """Articles and plugins have a can_delete method..."""
     return (obj.current_revision and obj.current_revision.locked)
 
+
+@register.inclusion_tag('wiki/includes/account_urls.html', takes_context=True)
+def wiki_account_urls(context):
+    context.update({
+        "SIGNUP_HANDLING": settings.SIGNUP_HANDLING,
+        "ACCOUNT_HANDLING": settings.ACCOUNT_HANDLING,
+    })
+    return context
 
 @register.assignment_tag(takes_context=True)
 def login_url(context):

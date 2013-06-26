@@ -61,14 +61,10 @@
               </li>
             </ul>
             {% else %}
-            <ul class="nav">
-              <li>
-                <a href="{% login_url as wiki_login_url %}{{ wiki_login_url }}">{% trans "Log in" %}</a>
-              </li>
-              <li>
-                <a href="{% url 'wiki:signup' %}">{% trans "Sign up" %}</a>
-              </li>
-            </ul>
+                {% comment %}
+                    wiki account Login and signup template.
+                {% endcomment %}
+                {% wiki_account_urls %}
             {% endif %}
           </div>
           <div class="nav-collapse">
