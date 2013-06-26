@@ -119,6 +119,16 @@ def is_locked(obj):
 
 
 @register.assignment_tag(takes_context=True)
+def handlings(context):
+    """Settings signup and account handlings"""
+    handling_list = {
+        "SIGNUP": settings.SIGNUP_HANDLING,
+        "ACCOUNT": settings.ACCOUNT_HANDLING,
+    }
+    return handling_list
+    
+
+@register.assignment_tag(takes_context=True)
 def login_url(context):
     request = context['request']
     qs = request.META.get('QUERY_STRING', '')
