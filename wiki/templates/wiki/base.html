@@ -43,7 +43,6 @@
           <div class="pull-right">
             {% if user.is_authenticated %}
             <ul class="nav">
-              {% include "wiki/plugins/notifications/menubaritem.html" %}
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <span class="badge notification-cnt">0</span>
@@ -53,32 +52,25 @@
                 <ul class="dropdown-menu">
                   <li>
                     <a href="{% url 'wiki:logout' %}">
-                      <span class="icon-off"></span>
+                      <i class="icon-off"></i>
                       {% trans "Log out" %}
                     </a>
                   </li>
-                  <li class="divider"></li>
-                  <div class="notification-list">
-                    <div class="notification-li-container"></div>
-                    <li class="notifications-empty"><a href="#"><em>{% trans "No notifications" %}</em></a></li>
-                    <li class="divider"></li>
-                    <li><a href="#" onclick="notify_mark_read()">{% trans "Clear notifications list" %}</a></li>
-                  </div>
+                  {% include "wiki/plugins/notifications/menubaritem.html" %}
                 </ul>
               </li>
             </ul>
             {% else %}
                 {% comment %}
-                     wiki account Login and signup template.
+                    wiki account Login and signup template.
                 {% endcomment %}
-               {% wiki_account_urls %}
-
+                {% wiki_account_urls %}
             {% endif %}
           </div>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class="active"><a href="/">Home</a></li>
-              <li><a href="https://github.com/benjaoming/django-wiki" target="_blank">About</a></li>
+              <li class="active"><a href="/">{% trans "Home" %}</a></li>
+              <li><a href="https://github.com/benjaoming/django-wiki" target="_blank">{% trans "About" %}</a></li>
             </ul>
           </div>
         </div>
@@ -111,7 +103,7 @@
         {% endblock %}
         {% block wiki_footer_prepend %}
         {% endblock %}
-        <p>Powered by <a href="http://www.django-wiki.org">django-wiki</a>, an open source application under the <a href="http://www.gnu.org/licenses/quick-guide-gplv3.html">GPLv3</a> license. Let knowledge be the cure.</p>
+        <p>{% blocktrans %}Powered by <a href="http://www.django-wiki.org">django-wiki</a>, an open source application under the <a href="http://www.gnu.org/licenses/quick-guide-gplv3.html">GPLv3</a> license. Let knowledge be the cure.{% endblocktrans %}</p>
         <div style="clear: both"></div>
       </footer>
       </div>
