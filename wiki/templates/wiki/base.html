@@ -43,6 +43,7 @@
           <div class="pull-right">
             {% if user.is_authenticated %}
             <ul class="nav">
+              {% include "wiki/plugins/notifications/menubaritem.html" %}
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <span class="badge notification-cnt">0</span>
@@ -52,39 +53,32 @@
                 <ul class="dropdown-menu">
                   <li>
                     <a href="{% url 'wiki:logout' %}">
-                      <i class="icon-off"></i>
+                      <span class="icon-off"></span>
                       {% trans "Log out" %}
                     </a>
                   </li>
-                  {% include "wiki/plugins/notifications/menubaritem.html" %}
+                  <li class="divider"></li>
+                  <div class="notification-list">
+                    <div class="notification-li-container"></div>
+                    <li class="notifications-empty"><a href="#"><em>{% trans "No notifications" %}</em></a></li>
+                    <li class="divider"></li>
+                    <li><a href="#" onclick="notify_mark_read()">{% trans "Clear notifications list" %}</a></li>
+                  </div>
                 </ul>
               </li>
             </ul>
             {% else %}
-            
                 {% comment %}
-                    get settings.SIGNUP_HANDLING, settings.ACCOUNT_HANDLING
+                     wiki account Login and signup template.
                 {% endcomment %}
-                {% handlings as handling %}
-                
-                {% if handling.ACCOUNT %}
-                    <ul class="nav">
-                        <li>
-                            <a href="{% login_url as wiki_login_url %}{{ wiki_login_url }}">{% trans "Log in" %}</a>
-                        </li>
-                        {% if handling.SIGNUP %}
-                            <li>
-                                <a href="{% url 'wiki:signup' %}">{% trans "Sign up" %}</a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                {% endif %}
+               {% wiki_account_urls %}
+
             {% endif %}
           </div>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class="active"><a href="/">{% trans "Home" %}</a></li>
-              <li><a href="https://github.com/benjaoming/django-wiki" target="_blank">{% trans "About" %}</a></li>
+              <li class="active"><a href="/">Home</a></li>
+              <li><a href="https://github.com/benjaoming/django-wiki" target="_blank">About</a></li>
             </ul>
           </div>
         </div>
@@ -117,7 +111,7 @@
         {% endblock %}
         {% block wiki_footer_prepend %}
         {% endblock %}
-        <p>{% blocktrans %}Powered by <a href="http://www.django-wiki.org">django-wiki</a>, an open source application under the <a href="http://www.gnu.org/licenses/quick-guide-gplv3.html">GPLv3</a> license. Let knowledge be the cure.{% endblocktrans %}</p>
+        <p>Powered by <a href="http://www.django-wiki.org">django-wiki</a>, an open source application under the <a href="http://www.gnu.org/licenses/quick-guide-gplv3.html">GPLv3</a> license. Let knowledge be the cure.</p>
         <div style="clear: both"></div>
       </footer>
       </div>
