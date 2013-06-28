@@ -91,6 +91,9 @@ ANONYMOUS_UPLOAD = getattr( django_settings, 'WIKI_ANONYMOUS_UPLOAD', False )
 # Sign up, login and logout views should be accessible 
 ACCOUNT_HANDLING = getattr( django_settings, 'WIKI_ACCOUNT_HANDLING', True )
 
+# Sign up views should be accessible 
+SIGNUP_HANDLING = getattr( django_settings, 'WIKI_SIGNUP_HANDLING', True )
+
 if ACCOUNT_HANDLING:
     LOGIN_URL = reverse_lazy("wiki:login")
     LOGOUT_URL = reverse_lazy("wiki:logout")
@@ -99,6 +102,9 @@ else:
     LOGIN_URL = getattr( django_settings, "LOGIN_URL", "/" )
     LOGOUT_URL = getattr( django_settings, "LOGOUT_URL", "/" )
     SIGNUP_URL = getattr( django_settings, "WIKI_SIGNUP_URL", "/" )
+
+if SIGNUP_HANDLING is False:
+    SIGNUP_URL = reverse_lazy("wiki:login")
 
 ##################
 # OTHER SETTINGS #

@@ -33,8 +33,8 @@ class Signup(CreateView):
     
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_anonymous():
-            return redirect('wiki:root')    
-        if not settings.ACCOUNT_HANDLING:
+            return redirect('wiki:root')
+        if not settings.ACCOUNT_HANDLING or not settings.SIGNUP_HANDLING:
             return redirect(settings.SIGNUP_URL)
         return super(Signup, self).dispatch(request, *args, **kwargs)
     
