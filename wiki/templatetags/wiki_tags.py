@@ -118,6 +118,15 @@ def is_locked(obj):
     return (obj.current_revision and obj.current_revision.locked)
 
 
+@register.inclusion_tag('wiki/includes/account_urls.html', takes_context=True)
+def wiki_account_urls(context):
+    context.update({
+        "SIGNUP_HANDLING": settings.SIGNUP_HANDLING,
+        "ACCOUNT_HANDLING": settings.ACCOUNT_HANDLING,
+    })
+    return context
+
+
 @register.assignment_tag(takes_context=True)
 def login_url(context):
     request = context['request']
