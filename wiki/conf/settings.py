@@ -117,6 +117,16 @@ USE_BOOTSTRAP_SELECT_WIDGET = getattr( django_settings, 'WIKI_USE_BOOTSTRAP_SELE
 #: you can derive from this.
 URL_CONFIG_CLASS = getattr( django_settings, 'WIKI_URL_CONFIG_CLASS', 'wiki.urls.WikiURLPatterns' )
 
+# Search view - dotted path denoting where the search view Class is located
+SEARCH_VIEW = getattr(
+    django_settings, 
+    'WIKI_SEARCH_VIEW', 
+    'wiki.views.article.SearchView' 
+        if not 'haystack' in django_settings.INSTALLED_APPS 
+        else
+    'wiki.plugins.haystack.views.HaystackSearchView'
+)
+
 # Seconds of timeout before renewing article cache. Articles are automatically
 # renewed whenever an edit occurs but article content may be generated from
 # other objects that are changed.

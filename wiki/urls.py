@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-from django.conf import settings as django_settings
 from django.conf.urls import patterns, url, include
-from django.utils.importlib import import_module
 
-from wiki.views import article, accounts
 from wiki.conf import settings
 from wiki.core.plugins import registry
+from wiki.views import article, accounts
+from wiki.core.utils import get_class_from_str
 
 class WikiURLPatterns(object):
     '''
@@ -32,14 +31,14 @@ class WikiURLPatterns(object):
     revision_merge_view = 'wiki.views.article.merge'
 
     create_root = 'wiki.views.article.root_create'
-    search_view_class = article.SearchViewHaystack if 'haystack' in django_settings.INSTALLED_APPS else article.SearchView
+    search_view_class = settings.SEARCH_VIEW
     article_diff_view = 'wiki.views.article.diff'
 
     # account views
     signup_view_class = accounts.Signup
     login_view_class = accounts.Login
     logout_view_class = accounts.Logout
-
+    
     def get_urls(self):
         urlpatterns = self.get_root_urls()
         urlpatterns += self.get_accounts_urls()
@@ -56,7 +55,7 @@ class WikiURLPatterns(object):
         urlpatterns = patterns('',
             url('^$', self.article_view_class.as_view(), name='root', kwargs={'path': ''}),
             url('^create-root/$', self.create_root, name='root_create'),
-            url('^_search/$', self.search_view_class.as_view(), name='search'),
+            url('^_search/$', get_class_from_str(self.search_view_class).as_view(), name='search'),
             url('^_revision/diff/(?P<revision_id>\d+)/$', self.article_diff_view, name='diff'),
        )
         return urlpatterns
@@ -142,8 +141,6 @@ def get_pattern(app_name="wiki", namespace="wiki", url_config_class=None):
         if url_config_classname is None:
             url_config_class = WikiURLPatterns
         else:
-            url_config_modname, config_classname=url_config_classname.rsplit('.', 1)
-            url_config_mod = import_module(url_config_modname)
-            url_config_class = getattr(url_config_mod, config_classname)
+            url_config_class = get_class_from_str(url_config_classname)
     urlpatterns = url_config_class().get_urls()
     return urlpatterns, app_name, namespace
