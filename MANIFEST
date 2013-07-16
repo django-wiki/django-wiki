@@ -1,5 +1,6 @@
 include COPYING
 include README.md
+include README.rst
 include setup.cfg
 include requirements.txt
 include model_chart_wiki.pdf

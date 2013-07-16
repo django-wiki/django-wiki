@@ -2,6 +2,7 @@
 build
 dist
 *.egg-info
+README.rst
 
 #Docs
 docs/_build

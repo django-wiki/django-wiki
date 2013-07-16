@@ -7,27 +7,25 @@ from setuptools import setup, find_packages
 # Used for the long_description.  It's nice, because now 1) we have a top level
 # README file and 2) it's easier to type in the README file than to put a raw
 # string in below ...
+def get_path(fname):
+    return os.path.join(os.path.dirname(__file__), fname)
+
 def read(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+    return open(get_path(fname)).read()
 
 packages = find_packages()
 
-#def build_media_pattern(base_folder, file_extension):
-#    return ["%s/%s*.%s" % (base_folder, "*/"*x, file_extension) if base_folder else "%s*.%s" % ("*/"*x, file_extension) for x in range(10)]
 
-#media_patterns = ( build_media_pattern("templates", "html") +
-#                   build_media_pattern("static", "js") +
-#                   build_media_pattern("static", "css") +
-#                   build_media_pattern("static", "png") +
-#                   build_media_pattern("static", "jpeg") +
-#                   build_media_pattern("static", "gif") +
-#                   build_media_pattern("", "md") +
-#                   build_media_pattern("", "requirements.txt")
-#)
-#package_data = dict(
-#    (package_name, media_patterns)
-#    for package_name in packages
-#)
+try:
+    import pypandoc
+    long_description = pypandoc.convert(get_path('README.md'), 'rst')
+    long_description = long_description.split('<!---Illegal PyPi RST data -->')[0]
+    f = open(get_path('README.rst'), 'w')
+    f.write(long_description)
+    f.close()
+except (IOError, ImportError):
+    # No long description... but nevermind, it's only for PyPi uploads.
+    long_description = ""
 
 setup(
     name = "wiki",
@@ -35,12 +33,12 @@ setup(
     author = "Benjamin Bach",
     author_email = "benjamin@overtag.dk",
     url = "http://www.django-wiki.org",
-    description = ("A wiki system written for the Django framework."),
+    description = "A wiki system written for the Django framework.",
     license = "GPLv3",
     keywords = "django wiki markdown",
     packages=find_packages(exclude=["testproject","testproject.*"]),
-    long_description=read('README.md'),
-    zip_safe = False,
+    #long_description=long_description,
+    zip_safe=False,
     install_requires=read('requirements.txt').split("\n"),
     classifiers=[
         'Development Status :: 3 - Alpha',
@@ -55,5 +53,4 @@ setup(
         'Topic :: Software Development :: Libraries :: Application Frameworks',
     ],
     include_package_data=True,
-#    package_data=package_data,
 )
