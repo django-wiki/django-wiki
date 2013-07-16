@@ -9,7 +9,7 @@ Highlights:
 
 - Fix missing translation activation in django-notify's email notifications (manage command) - credits TomLottermann
 - Add Russian on django-wiki and django-notify - credits crazyzubr
-- Support for AUTH_USER_MODEL settings (seriously, don't use it though, unless you really want trouble in most third party django apps). Please note, that this is only going to help you if you are starting new projects. If you are changing the setting and introducing a new model in a running project, you have to do all database migrations manuall. Django-wiki and its South migrations will silently ignore your changes.
+- Support for AUTH_USER_MODEL settings (seriously, don't use it though, unless you really want trouble in most third party django apps). **Please note** this is only going to help you if you are starting new projects. If you are changing the setting and introducing a new model in a running project, you have to do all database migrations manually. Django-wiki and its South migrations will silently ignore your changes.
 - Add settings for logging to files instead of stdout in django-notify daemon mode - credits: crazyzubr
 - Built-in account handling now properly asserts that usernames are not already taken when signing up.
 
@@ -19,7 +19,7 @@ Security fix included in 0.0.19. [View commit log >](https://github.com/benjaomi
 
 ***News: March 26, 2013***
 
-Thanks to TomLottermann for German translation and daltonmatos for Brazilian translations! French are also reported in the works. 0.0.18 is released with that plus Django 1.5 compatibility, and [a bunch of other things and fixes](https://groups.google.com/forum/#!topic/django-wiki/V-bZou8aTaI).
+Thanks to TomLottermann for German translation and daltonmatos for Brazilian translations! French is also reported in the works. 0.0.18 is released with that plus Django 1.5 compatibility, and [a bunch of other things and fixes](https://groups.google.com/forum/#!topic/django-wiki/V-bZou8aTaI).
 
 ***News: February 21, 2013***
 
