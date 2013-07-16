@@ -6,6 +6,13 @@ from django.http import HttpResponse
 from django.utils.http import http_date
 from django.utils import dateformat
 
+from wiki.conf import settings
+
+def django_sendfile_response(request, filepath):
+    from sendfile import sendfile
+    return sendfile(request, filepath)
+
+
 def send_file(request, filepath, last_modified=None, filename=None):
     fullpath = filepath
     # Respect the If-Modified-Since header.
@@ -16,7 +23,11 @@ def send_file(request, filepath, last_modified=None, filename=None):
         mimetype, encoding = mimetypes.guess_type(fullpath)
         
     mimetype = mimetype or 'application/octet-stream'
-    response = HttpResponse(open(fullpath, 'rb').read(), mimetype=mimetype)
+    
+    if settings.USE_SENDFILE:
+        response = django_sendfile_response(request, filepath)
+    else:
+        response = HttpResponse(open(fullpath, 'rb').read(), mimetype=mimetype)
     
     if not last_modified:
         response["Last-Modified"] = http_date(statobj.st_mtime)

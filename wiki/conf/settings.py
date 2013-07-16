@@ -158,6 +158,8 @@ REVISIONS_MINUTES_LOOKBACK = getattr( django_settings, 'WIKI_REVISIONS_MINUTES_L
 from django.core.files.storage import default_storage
 STORAGE_BACKEND = getattr(django_settings, 'WIKI_STORAGE_BACKEND', default_storage)
 
+USE_SENDFILE = getattr(django_settings, 'WIKI_ATTACHMENTS_USE_SENDFILE', False)
+
 ####################
 # PLANNED SETTINGS #
 ####################
