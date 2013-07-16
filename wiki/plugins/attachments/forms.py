@@ -18,6 +18,12 @@ class AttachmentForm(forms.ModelForm):
         required=False
     )
     
+    def __init__(self, *args, **kwargs):
+        self.article = kwargs.pop('article', None)
+        self.request = kwargs.pop('request', None)
+        self.attachment = kwargs.pop('attachment', None)
+        super(AttachmentForm, self).__init__(*args, **kwargs)
+
     def clean_file(self):
         uploaded_file = self.cleaned_data.get('file', None)
         if uploaded_file:
@@ -27,31 +33,42 @@ class AttachmentForm(forms.ModelForm):
                 raise forms.ValidationError(e)
         return uploaded_file
 
-    def __init__(self, *args, **kwargs):
-        self.article = kwargs.pop('article', None)
-        self.request = kwargs.pop('request', None)
-        super(AttachmentForm, self).__init__(*args, **kwargs)
-
     def save(self, *args, **kwargs):
+        commit = kwargs.get('commit', True)
         attachment_revision = super(AttachmentForm, self).save(commit=False)
         
         # Added because of AttachmentArchiveForm removing file from fields
         # should be more elegant
         attachment_revision.file = self.cleaned_data['file']
-        
-        attachment = models.Attachment()
-        attachment.article = self.article
-        attachment.original_filename = attachment_revision.get_filename()
-        attachment.save()
-        attachment.articles.add(self.article)
+        if not self.attachment:
+            attachment = models.Attachment()
+            attachment.article = self.article
+            attachment.original_filename = attachment_revision.get_filename()
+            if commit:
+                attachment.save()
+            attachment.articles.add(self.article)
+        else:
+            attachment = self.attachment
         attachment_revision.attachment = attachment
         attachment_revision.set_from_request(self.request)
-        attachment_revision.save()
+        if commit:
+            attachment_revision.save()
         return attachment_revision
     
     class Meta:
         model = models.AttachmentRevision
         fields = ('file', 'description',)
+
+
+class AttachmentReplaceForm(AttachmentForm):
+
+    replace = forms.BooleanField(
+        label=_(u'Remove previous'),
+        help_text=_(u'Remove previous attachment revisions and their files (to '
+            'save space)?'),
+        required=False,
+    )
+
 
 class AttachmentArchiveForm(AttachmentForm):
     

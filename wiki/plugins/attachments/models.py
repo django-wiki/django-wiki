@@ -19,11 +19,12 @@ class Attachment(ReusablePlugin):
 
     objects = managers.ArticleFkManager()
 
-    current_revision = models.OneToOneField('AttachmentRevision', 
-                                            verbose_name=_(u'current revision'),
-                                            blank=True, null=True, related_name='current_set',
-                                            help_text=_(u'The revision of this attachment currently in use (on all articles using the attachment)'),
-                                            )
+    current_revision = models.OneToOneField(
+        'AttachmentRevision', 
+        verbose_name=_(u'current revision'),
+        blank=True, null=True, related_name='current_set',
+        help_text=_(u'The revision of this attachment currently in use (on all articles using the attachment)'),
+    )
     
     original_filename = models.CharField(max_length=256, verbose_name=_(u'original filename'), blank=True, null=True)
 
@@ -146,6 +147,7 @@ class AttachmentRevision(BaseRevisionMixin, models.Model):
         return "%s: %s (r%d)" % (self.attachment.article.current_revision.title, 
                                  self.attachment.original_filename,
                                  self.revision_number)    
+
 
 def on_revision_delete(instance, *args, **kwargs):
     if not instance.file:

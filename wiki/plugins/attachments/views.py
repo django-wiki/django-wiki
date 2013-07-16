@@ -95,16 +95,25 @@ class AttachmentReplaceView(ArticleMixin, FormView):
         if request.user.is_anonymous() and not settings.ANONYMOUS:
             return response_forbidden(request, article, kwargs.get('urlpath', None))
         if article.can_moderate(request.user):
-            self.attachment = get_object_or_404(models.Attachment, id=attachment_id, articles=article)
+            self.attachment = get_object_or_404(models.Attachment, 
+                id=attachment_id, articles=article)
+            self.can_moderate = True
         else:
-            self.attachment = get_object_or_404(models.Attachment.objects.active(), id=attachment_id, articles=article)
+            self.attachment = get_object_or_404(models.Attachment.objects.active(), 
+                id=attachment_id, articles=article)
+            self.can_moderate = False
         return super(AttachmentReplaceView, self).dispatch(request, article, *args, **kwargs)
+    
+    def get_form_class(self):
+        if self.can_moderate:
+            return forms.AttachmentReplaceForm
+        else:
+            return forms.AttachmentForm
     
     def form_valid(self, form):
         
         try:
-            attachment_revision = form.save(commit=False)
-            attachment_revision.attachment = self.attachment
+            attachment_revision = form.save(commit=True)
             attachment_revision.set_from_request(self.request)
             attachment_revision.previous_revision = self.attachment.current_revision
             attachment_revision.save()
@@ -115,10 +124,15 @@ class AttachmentReplaceView(ArticleMixin, FormView):
             messages.error(self.request, _(u'Your file could not be saved: %s') % e)
             return redirect("wiki:attachments_replace", attachment_id=self.attachment.id,
                             path=self.urlpath.path, article_id=self.article.id)
-        except Exception:
-            messages.error(self.request, _(u'Your file could not be saved, probably because of a permission error on the web server.'))
-            return redirect("wiki:attachments_replace", attachment_id=self.attachment.id,
-                            path=self.urlpath.path, article_id=self.article.id)
+        
+        if self.can_moderate:
+            older_revisions = self.attachment.attachmentrevision_set.exclude(
+                id=attachment_revision.id,
+                created__lte=attachment_revision.created,
+            )
+            # Because of signalling, the files are automatically removed...
+            older_revisions.delete()
+            
         
         return redirect("wiki:attachments_index", path=self.urlpath.path, article_id=self.article.id)
     
@@ -127,6 +141,13 @@ class AttachmentReplaceView(ArticleMixin, FormView):
         form.fields['file'].help_text = _(u'Your new file will automatically be renamed to match the file already present. Files with different extensions are not allowed.')
         return form
     
+    def get_form_kwargs(self):
+        kwargs = super(AttachmentReplaceView, self).get_form_kwargs()
+        kwargs['article'] = self.article
+        kwargs['request'] = self.request
+        kwargs['attachment'] = self.attachment
+        return kwargs
+    
     def get_initial(self, **kwargs):
         return {'description': self.attachment.current_revision.description}
     
@@ -134,6 +155,7 @@ class AttachmentReplaceView(ArticleMixin, FormView):
         kwargs['attachment'] = self.attachment
         kwargs['selected_tab'] = 'attachments'
         return super(AttachmentReplaceView, self).get_context_data(**kwargs)
+
 
 class AttachmentDownloadView(ArticleMixin, View):
     
