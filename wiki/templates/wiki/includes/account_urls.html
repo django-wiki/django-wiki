@@ -1,0 +1,15 @@
+{% load wiki_tags i18n cache sekizai_tags %} {% load url from future %}
+
+{% if ACCOUNT_HANDLING  %} 
+    <ul class="nav">
+        <li>
+            <a href="{% login_url as wiki_login_url %}{{ wiki_login_url }}">{% trans "Log in" %}</a>
+        </li>
+
+        {% if SIGNUP_HANDLING %}
+            <li>
+                <a href="{% url 'wiki:signup' %}">{% trans "Sign up" %}</a>
+            </li>
+        {% endif %}
+    </ul>
+{% endif %}
