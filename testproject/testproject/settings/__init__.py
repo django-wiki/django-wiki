@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from os import path as os_path
-PROJECT_PATH = os_path.abspath(os_path.split(__file__)[0])
+PROJECT_PATH = os_path.abspath(os_path.split(os_path.dirname(__file__))[0])
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -8,9 +8,6 @@ TEMPLATE_DEBUG = DEBUG
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
-
-#from django.core.urlresolvers import reverse_lazy
-#LOGIN_REDIRECT_URL = reverse_lazy('wiki:get', kwargs={'path': ''})
 
 MANAGERS = ADMINS
 
@@ -20,12 +17,6 @@ DATABASES = {
         'NAME': os_path.join(PROJECT_PATH, 'db', 'prepopulated.db'),                      # Or path to database file if using sqlite3.
     }
 }
-
-#Django Haystack
-
-HAYSTACK_SEARCH_ENGINE = 'whoosh'
-HAYSTACK_WHOOSH_PATH = os_path.join(PROJECT_PATH, 'index_woosh')
-HAYSTACK_SITECONF = 'testproject.search_sites'
 
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 TIME_ZONE = 'Europe/Copenhagen'
@@ -52,15 +43,13 @@ STATICFILES_FINDERS = (
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-SECRET_KEY = 'b^fv_)t39h%9p40)fnkfblo##jkr!$0)lkp6bpy!fi*f$4*92!'
-
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
 #     'django.template.loaders.eggs.Loader',
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE_CLASSES = [
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -68,7 +57,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-)
+]
 
 ROOT_URLCONF = 'testproject.urls'
 
@@ -79,7 +68,7 @@ TEMPLATE_DIRS = (
     os_path.join(PROJECT_PATH, 'templates'),
 )
 
-TEMPLATE_CONTEXT_PROCESSORS =(
+TEMPLATE_CONTEXT_PROCESSORS = [
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.debug',
     'django.core.context_processors.i18n',
@@ -90,9 +79,9 @@ TEMPLATE_CONTEXT_PROCESSORS =(
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages',
     'sekizai.context_processors.sekizai',
-)
+]
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -114,8 +103,7 @@ INSTALLED_APPS = (
     'wiki.plugins.attachments',
     'wiki.plugins.notifications',
     'mptt',
-    'haystack',
-)
+]
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -150,9 +138,10 @@ WIKI_ANONYMOUS_WRITE = True
 WIKI_ANONYMOUS_CREATE = False
 
 # Do not user /accounts/profile as default
-LOGIN_REDIRECT_URL = "/"
+#LOGIN_REDIRECT_URL = "/"
+from django.core.urlresolvers import reverse_lazy
+LOGIN_REDIRECT_URL = reverse_lazy('wiki:get', kwargs={'path': ''})
 
-from settings_local import *
 
 try:
     import debug_toolbar #@UnusedImport
