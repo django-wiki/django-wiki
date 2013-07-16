@@ -26,7 +26,7 @@ import models
 
 _disable_notifications = False
 
-def notify(message, key, target_object=None, url=None):
+def notify(message, key, target_object=None, url=None, filter_exclude={}):
     """
     Notify subscribing users of a new event. Key can be any kind of string,
     just make sure to reuse it where applicable! Object_id is some identifier
@@ -42,6 +42,9 @@ def notify(message, key, target_object=None, url=None):
     
     notify("New comment posted", "new_comments")
     
+    filter_exclude: a dictionary to exclude special elements of subscriptions
+    in the queryset, for instance filter_exclude={''}
+    
     """
     
     if _disable_notifications:
@@ -54,7 +57,12 @@ def notify(message, key, target_object=None, url=None):
     else:
         object_id = None
         
-    objects = models.Notification.create_notifications(key, object_id=object_id, 
-                                                       message=message, url=url)
+    objects = models.Notification.create_notifications(
+        key, 
+        object_id=object_id, 
+        message=message, 
+        url=url, 
+        filter_exclude=filter_exclude,
+    )
     return len(objects)
     

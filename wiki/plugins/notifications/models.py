@@ -38,15 +38,16 @@ def post_article_revision_save(**kwargs):
     instance = kwargs['instance']
     if kwargs.get('created', False):
         url = default_url(instance.article)
+        filter_exclude = {'settings__user': instance.user}
         if instance.deleted:
             notify(_(u'Article deleted: %s') % get_title(instance), settings.ARTICLE_EDIT,
-                   target_object=instance.article, url=url)
+                   target_object=instance.article, url=url, filter_exclude=filter_exclude)
         elif instance.previous_revision:
             notify(_(u'Article modified: %s') % get_title(instance), settings.ARTICLE_EDIT,
-                   target_object=instance.article, url=url)
+                   target_object=instance.article, url=url, filter_exclude=filter_exclude)
         else:
             notify(_(u'New article created: %s') % get_title(instance), settings.ARTICLE_EDIT,
-                   target_object=instance, url=url)
+                   target_object=instance, url=url, filter_exclude=filter_exclude)
             
 # Whenever a new revision is created, we notifý users that an article
 # was edited

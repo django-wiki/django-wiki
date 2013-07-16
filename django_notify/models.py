@@ -116,11 +116,13 @@ class Notification(models.Model):
             raise KeyError('No notification key (string) specified.')
         
         object_id = kwargs.pop('object_id', None)
+        filter_exclude = kwargs.pop('filter_exclude', {})
         
         objects_created = []
         subscriptions = Subscription.objects.filter(
             Q(notification_type__key=key) | 
             Q(notification_type__key=None),
+            **filter_exclude
         )
         if object_id:
             subscriptions = subscriptions.filter(
