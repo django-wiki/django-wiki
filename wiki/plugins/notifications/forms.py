@@ -41,6 +41,7 @@ class SettingsModelForm(forms.ModelForm):
                 label=_(u"Remove subscriptions"),
                 required=False,
                 help_text=_(u"Select article subscriptions to remove from notifications"),
+                initial = models.ArticleSubscription.objects.none(),
             )
             self.fields['email'] = forms.TypedChoiceField(
                 label=_(u"Email digests"),
@@ -58,7 +59,10 @@ class SettingsModelForm(forms.ModelForm):
     def save(self, *args, **kwargs):
         instance = super(SettingsModelForm, self).save(*args, **kwargs)
         if self.__editing_instance:
-            self.cleaned_data['delete_subscriptions'].delete()
+            # Django < 1.5 returns list objects when ModelMultipleChoiceField
+            # is empty.. so check before calling delete()
+            if self.cleaned_data['delete_subscriptions']:
+                self.cleaned_data['delete_subscriptions'].delete()
             if self.cleaned_data['email'] == 1:
                 instance.subscription_set.all().update(
                     send_emails=False,
@@ -68,6 +72,7 @@ class SettingsModelForm(forms.ModelForm):
                     send_emails=True,
                 )
         return instance
+
 
 class BaseSettingsFormSet(BaseModelFormSet):
 
@@ -81,6 +86,7 @@ class BaseSettingsFormSet(BaseModelFormSet):
             subscription__articlesubscription__article__current_revision__deleted=False,
         ).prefetch_related('subscription_set__articlesubscription',)
 
+
 SettingsFormSet = modelformset_factory(
     Settings, 
     form=SettingsModelForm,
@@ -88,6 +94,7 @@ SettingsFormSet = modelformset_factory(
     extra=0,
     fields=('interval', ),
 )
+
 
 class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
     
