@@ -2,6 +2,8 @@ from wiki.decorators import json_view, get_article
 from django.views.generic.base import View
 from django.utils.decorators import method_decorator
 
+from wiki import models
+
 class QueryUrlPath(View):
     
     # TODO: get_article does not actually support JSON responses
@@ -11,7 +13,6 @@ class QueryUrlPath(View):
         max_num = kwargs.pop('max_num', 20)
         # TODO: Move this import when circularity issue is resolved
         # https://github.com/benjaoming/django-wiki/issues/23
-        from wiki import models
         query = request.GET.get('query', None)
         
         if query:

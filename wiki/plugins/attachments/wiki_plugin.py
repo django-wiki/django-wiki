@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns, url, include
 from django.utils.translation import ugettext as _
 
 from wiki.core.plugins import registry
@@ -11,20 +11,13 @@ from wiki.plugins.attachments.markdown_extensions import AttachmentExtension
 from wiki.plugins.notifications.settings import ARTICLE_EDIT
 from wiki.plugins.notifications.util import truncate_title
 
+
 class AttachmentPlugin(BasePlugin):
     
     slug = settings.SLUG
     urlpatterns = {
         'article': patterns('',
-            url(r'^$', views.AttachmentView.as_view(), name='attachments_index'),
-            url(r'^search/$', views.AttachmentSearchView.as_view(), name='attachments_search'),
-            url(r'^add/(?P<attachment_id>\d+)/$', views.AttachmentAddView.as_view(), name='attachments_add'),
-            url(r'^replace/(?P<attachment_id>\d+)/$', views.AttachmentReplaceView.as_view(), name='attachments_replace'),
-            url(r'^history/(?P<attachment_id>\d+)/$', views.AttachmentHistoryView.as_view(), name='attachments_history'),
-            url(r'^download/(?P<attachment_id>\d+)/$', views.AttachmentDownloadView.as_view(), name='attachments_download'),
-            url(r'^delete/(?P<attachment_id>\d+)/$', views.AttachmentDeleteView.as_view(), name='attachments_delete'),
-            url(r'^download/(?P<attachment_id>\d+)/revision/(?P<revision_id>\d+)/$', views.AttachmentDownloadView.as_view(), name='attachments_download'),
-            url(r'^change/(?P<attachment_id>\d+)/revision/(?P<revision_id>\d+)/$', views.AttachmentChangeRevisionView.as_view(), name='attachments_revision_change'),
+            url('', include('wiki.plugins.attachments.urls')),
         )
     }
     
@@ -33,12 +26,18 @@ class AttachmentPlugin(BasePlugin):
     
     # List of notifications to construct signal handlers for. This
     # is handled inside the notifications plugin.
-    notifications = [{'model': models.AttachmentRevision,
-                      'message': lambda obj: (_(u"A file was changed: %s") if not obj.deleted else _(u"A file was deleted: %s")) % truncate_title(obj.get_filename()),
-                      'key': ARTICLE_EDIT,
-                      'created': True,
-                      'get_article': lambda obj: obj.attachment.article}
-                     ]
+    notifications = [{
+        'model': models.AttachmentRevision,
+        'message': lambda obj: (
+            _(u"A file was changed: %s") 
+                if not obj.deleted 
+                else 
+            _(u"A file was deleted: %s")
+            ) % truncate_title(obj.get_filename()),
+        'key': ARTICLE_EDIT,
+        'created': True,
+        'get_article': lambda obj: obj.attachment.article}
+    ]
     
     markdown_extensions = [AttachmentExtension()]
     

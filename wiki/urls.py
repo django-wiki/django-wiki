@@ -144,3 +144,14 @@ def get_pattern(app_name="wiki", namespace="wiki", url_config_class=None):
             url_config_class = get_class_from_str(url_config_classname)
     urlpatterns = url_config_class().get_urls()
     return urlpatterns, app_name, namespace
+
+
+######################
+# PLUGINS
+######################
+
+from wiki.core.plugins.loader import load_wiki_plugins
+
+load_wiki_plugins()
+
+

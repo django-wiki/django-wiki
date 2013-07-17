@@ -43,15 +43,6 @@ if not 'south' in django_settings.INSTALLED_APPS:
     warnings.warn("django-wiki: No south in your INSTALLED_APPS. This is highly discouraged.")
 
 
-######################
-# PLUGINS
-######################
-
-from wiki.core.plugins.loader import load_wiki_plugins
-
-load_wiki_plugins()
-
-
 from django.core import urlresolvers
 
 original_django_reverse = urlresolvers.reverse

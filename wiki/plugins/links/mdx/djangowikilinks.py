@@ -24,6 +24,8 @@ Dependencies:
 import markdown
 from os import path as os_path
 
+from wiki import models
+
 try:
     # Markdown 2.1.0 changed from 2.0.3. We try importing the new version first,
     # but import the 2.0.3 version if it fails
@@ -35,9 +37,9 @@ class WikiPathExtension(markdown.Extension):
     def __init__(self, configs):
         # set extension defaults
         self.config = {
-                        'base_url' : ['/', 'String to append to beginning of URL.'],
-                        'html_class' : ['wikipath', 'CSS hook. Leave blank for none.'],
-                        'default_level' : [2, 'The level that most articles are created at. Relative links will tend to start at that level.']
+            'base_url' : ['/', 'String to append to beginning of URL.'],
+            'html_class' : ['wikipath', 'CSS hook. Leave blank for none.'],
+            'default_level' : [2, 'The level that most articles are created at. Relative links will tend to start at that level.']
         }
         
         # Override defaults with user settings
@@ -60,7 +62,6 @@ class WikiPath(markdown.inlinepatterns.Pattern):
         self.config = config
     
     def handleMatch(self, m) :
-        from wiki import models
         article_title = m.group('wikiTitle')
         absolute = False
         if article_title.startswith("/"):
@@ -131,6 +132,3 @@ class WikiPath(markdown.inlinepatterns.Pattern):
 def makeExtension(configs=None) :
     return WikiPathExtension(configs=configs)
 
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod()

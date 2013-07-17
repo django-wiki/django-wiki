@@ -10,6 +10,7 @@ from django.utils.safestring import mark_safe
 from wiki.plugins.notifications.settings import ARTICLE_EDIT
 from wiki.core.plugins.base import PluginSettingsFormMixin
 
+from wiki.plugins.notifications import models
 
 class SettingsModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
@@ -31,7 +32,6 @@ class ArticleSubscriptionModelMultipleChoiceField(forms.ModelMultipleChoiceField
 class SettingsModelForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(SettingsModelForm, self).__init__(*args, **kwargs)
-        import models
         instance = kwargs.get('instance', None)
         self.__editing_instance = False
         if instance:
@@ -120,9 +120,6 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
     
     def __init__(self, article, request, *args, **kwargs):
         
-        # This has to be here to avoid unresolved imports in wiki_plugins
-        from wiki.plugins.notifications import models
-        
         self.article = article
         self.user = request.user
         initial = kwargs.pop('initial', None)
@@ -159,9 +156,6 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
             return _('Your notification settings were unchanged, so nothing saved.')
     
     def save(self, *args, **kwargs):
-
-        # This has to be here to avoid unresolved imports in wiki_plugins
-        from wiki.plugins.notifications import models
 
         cd = self.cleaned_data
         if not self.changed_data:
