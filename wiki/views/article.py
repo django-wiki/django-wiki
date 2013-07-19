@@ -88,7 +88,7 @@ class Create(FormView, ArticleMixin):
         # TODO: Handle individual exceptions better and give good feedback.
         except Exception, e:
             transaction.rollback()
-            if self.request.user.is_superuser():
+            if self.request.user.is_superuser:
                 messages.error(self.request, _(u"There was an error creating this article: %s") % str(e))
             else:
                 messages.error(self.request, _(u"There was an error creating this article."))
@@ -646,7 +646,7 @@ def root_create(request):
         return redirect('wiki:get', path=root.path)
     except NoRootURL:
         pass
-    if not request.user.is_superuser():
+    if not request.user.is_superuser:
         return redirect(settings.LOGIN_URL + "?next=" + reverse("wiki:root_create"))
     if request.method == 'POST':
         create_form = forms.CreateRootForm(request.POST)
