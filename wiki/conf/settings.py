@@ -91,6 +91,12 @@ ANONYMOUS_UPLOAD = getattr( django_settings, 'WIKI_ANONYMOUS_UPLOAD', False )
 # Sign up, login and logout views should be accessible 
 ACCOUNT_HANDLING = getattr( django_settings, 'WIKI_ACCOUNT_HANDLING', True )
 
+# Signup allowed? If it's not allowed, logged in superusers can still access
+# the signup page to create new users.
+ACCOUNT_SIGNUP_ALLOWED = ACCOUNT_HANDLING and getattr(
+    django_settings, 'WIKI_ACCOUNT_SIGNUP_ALLOWED', True
+)
+
 if ACCOUNT_HANDLING:
     LOGIN_URL = reverse_lazy("wiki:login")
     LOGOUT_URL = reverse_lazy("wiki:logout")

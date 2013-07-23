@@ -37,6 +37,7 @@ class ArticleView(ArticleMixin, TemplateView):
         kwargs['selected_tab'] = 'view'
         return ArticleMixin.get_context_data(self, **kwargs)
 
+
 class Create(FormView, ArticleMixin):
     
     form_class = forms.CreateForm
