@@ -41,11 +41,11 @@ A demo is available here, sign up for an account to see the notification system.
 Community
 ---------
 
-Use our mailing list (google group) for getting in touch on development and support:
+Please use our IRC or mailing list (google group) for getting in touch on development and support. Please do not email developers asking for personal support.
 
-[django-wiki@googlegroups.com](https://groups.google.com/d/forum/django-wiki)
-
-[twitter:djangowiki](https://twitter.com/djangowiki)
+- #django-wiki on irc.freenode.net
+- [django-wiki@googlegroups.com](https://groups.google.com/d/forum/django-wiki)
+- [twitter:djangowiki](https://twitter.com/djangowiki)
 
 *THIS IS A WORK IN PROGRE...*
 ---------------------------------
