@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>{% block wiki_pagetitle %}{% endblock %} - django-\/\/  i K |</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="author" content="www.django-wiki.org">
 
@@ -123,6 +124,8 @@
     <script src="{{ STATIC_URL }}wiki/js/jquery.min.js"></script>
     <script src="{{ STATIC_URL }}wiki/js/core.js"></script>
     <script src="{{ STATIC_URL }}wiki/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Optionally enable responsive features in IE8 -->
+    <script src="{{ STATIC_URL }}wiki/js/respond.js"></script>
     {% render_block "js" %}
   
   </body>

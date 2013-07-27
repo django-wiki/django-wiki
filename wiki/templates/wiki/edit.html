@@ -13,19 +13,19 @@
 </p>
 {% endif %}
 
-<div class="row-fluid">
+<div class="row">
 
-  <div class="span8">
+  <div class="col-lg-8">
     <form method="POST" class="form-horizontal" id="article_edit_form">
       <input type="hidden" name="save" value="1" />
       <input type="hidden" name="preview" value="1" />
-    {% with edit_form as form %}
-      {% include "wiki/includes/editor.html" %}
-    {% endwith %}
+      {% with edit_form as form %}
+        {% include "wiki/includes/editor.html" %}
+      {% endwith %}
     </form>
   </div>
 
-  <div class="span4" id="edit_sidebar">
+  <div class="col-lg-4" id="wiki-edit-sidebar">
     {% include "wiki/includes/editor_sidebar.html" %}
   </div>
 
@@ -58,7 +58,7 @@
         <iframe name="previewWindow" frameborder="0"></iframe>
       </div>
       <div class="modal-footer">
-        <a href="#" class="btn btn-large" data-dismiss="modal">
+        <a href="#" class="btn btn-default btn-large" data-dismiss="modal">
           <span class="icon-circle-arrow-left"></span>
           {% trans "Back to editor" %}
         </a>
