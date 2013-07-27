@@ -2,18 +2,15 @@
 {% if urlpath %}
 <div id="article-breadcrumbs">
 
-<ul class="breadcrumb pull-left" class="">
+<ul class="breadcrumb pull-left">
   {% for ancestor in urlpath.cached_ancestors %}
-    <span class="divider">/</span>
     <li><a href="{% url 'wiki:get' path=ancestor.path %}">{{ ancestor.article.current_revision.title|truncatechars:25 }}</a></li>
   {% endfor %}
-  <span class="divider">/</span>
-  <li class="active"><a href="{% url 'wiki:get' path=urlpath.path %}">{{ article.current_revision.title|truncatechars:25 }}</a></li>
-  <span class="divider">/</span>
+  <li class="active">{{ article.current_revision.title|truncatechars:25 }}</li>
 </ul>
 <div class="pull-left" style="margin-left: 10px;">
   <div class="btn-group">
-    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="padding: 7px;" title="{% trans "Sub-articles for" %} {{ article.current_revision.title }}">
+    <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#" style="padding: 7px;" title="{% trans "Sub-articles for" %} {{ article.current_revision.title }}">
       <span class="icon-list"></span>
       <span class="caret"></span>
     </a>
@@ -39,7 +36,7 @@
 </div>
 <div class="pull-left" style="margin-left: 10px;">
   <div class="btn-group">
-    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" style="padding: 7px;" title="{% trans "Sub-articles for" %} {{ article.current_revision.title }}">
+    <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#" style="padding: 7px;" title="{% trans "Sub-articles for" %} {{ article.current_revision.title }}">
       <span class="icon-plus"></span>
       <span class="caret"></span>
     </a>    

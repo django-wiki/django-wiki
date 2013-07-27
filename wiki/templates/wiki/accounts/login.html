@@ -7,11 +7,14 @@
 <h1 class="page-header">{% trans "Please log in" %}</h1>
 <form method="POST" class="form-horizontal">
 {% wiki_form form %}
-<div class="form-actions">
+<div class="form-group form-actions">
+  <div class="col-lg-2"></div>
+  <div class="col-lg-10">
     <button type="submit" name="save_changes" class="btn btn-primary btn-large">
       <span class="icon-lock"></span>
       {% trans "Log me in..." %}
     </button>
+  </div>
 </div>
 </form>
 

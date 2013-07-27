@@ -122,7 +122,7 @@
     
     {% if revisions.count > 1 and article|can_write:user and not article.current_revision.locked %}
 
-    <div class="form-actions">
+    <div class="form-group form-actions">
       <div class="pull-right">
         <button type="submit" name="preview" value="1" class="btn btn-large" onclick="$('#mergeModal').modal('show'); this.form.target='mergeWindow'; this.form.action=$('input[type=radio]:checked').attr('merge-button-href'); $('.merge-revision-commit').attr('href', $('input[type=radio]:checked').attr('merge-button-commit-href'))">
           <span class="icon-random"></span>
@@ -133,6 +133,7 @@
           {% trans "Switch to selected version" %}
         </button>
       </div>
+      <div style="clear:both"></div>
     </div>
     
     {% endif %}
@@ -184,7 +185,7 @@
         <a href="#" class="btn btn-large btn-primary disabled">
           <span class="icon-lock"></span>
           {% trans "Create new merged version" %}
-        </a>                    
+        </a>
       {% endif %}
     </div>
   </div>
