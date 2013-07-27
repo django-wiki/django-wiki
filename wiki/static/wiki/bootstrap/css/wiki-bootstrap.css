@@ -4140,7 +4140,7 @@ h1#article-title {
 #attachment_form #id_description {
   width: 95%;
 }
-#edit_sidebar .accordion {
+#wiki-edit-sidebar .accordion {
   margin-bottom: 5px;
 }
 .wiki-article div.toc,
@@ -4476,6 +4476,9 @@ textarea.wiki-control textarea {
 @media screen and (min-width: 768px) {
   .pull-right-block-on-responsive {
     float: right;
+  }
+  #wiki-search-form {
+    width: 140px;
   }
 }
 /******************************

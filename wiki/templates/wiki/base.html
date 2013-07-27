@@ -37,8 +37,8 @@
         <a class="navbar-brand" href="{% url 'wiki:root' %}">django-\/\/ i K |</a>
         {% endblock %}
         <div class="nav-collapse collapse navbar-responsive-collapse">
-          <form class="navbar-form pull-right-block-on-responsive" id="navbar_wiki_search" method="GET" action="{% url 'wiki:search' %}">
-            <div class="input-group" style="width: 120px;">
+          <form class="navbar-form pull-right-block-on-responsive" id="wiki-search-form" method="GET" action="{% url 'wiki:search' %}">
+            <div class="input-group">
               <input type="search" class="form-control search-query" name="q" placeholder="{% trans "Search..." %}" />
               <span class="input-group-btn">
                 <button class="btn btn-default" type="button">
