@@ -10,7 +10,7 @@ News
 
 Furthermore, we have changed the **icon theme** to use Font Awesome. There are now many more icons to choose from, and most of the UI is likely to benefit from this.
 
-The **plugin API** has been looking very stable lately, and [a refactor](https://github.com/benjaoming/django-wiki/commit/c259b318b1c7bc74568d0c9000c016976b05d171) made it possible to much easier deal with circular dependencies which were greatly reducing the plugin writing experience.
+The **plugin API** has been looking very stable lately, and [one](https://github.com/benjaoming/django-wiki/commit/c259b318b1c7bc74568d0c9000c016976b05d171) or [two](https://github.com/benjaoming/django-wiki/commit/384fb62040dbf27805352d83443467ce175c34c8) refactorings made it possible to much easier deal with circular dependencies which were greatly reducing the plugin writing experience.
 
 **Haystack** is now supported through a plugin. But keep in mind that many things are broken in Haystack atm -- the Whoosh backend for instance.
 
