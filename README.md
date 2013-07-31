@@ -1,13 +1,16 @@
 django-wiki
 ===========
 
+News
+----
+
 ***News: June 31st, 2013***
 
 **Bootstrap 3** has landed in the django-wiki master branch! However, a new release is pending the full implementation of Bootstrap 3. If you are running a deployment with template overrides, keep in mind that some Bootstrap stuff has changed, especially fluid grids and names of a lot of classes. For instance, if you have put your own "brand" in the navbar, you need to change `class="brand"` to `class="navbar-brand"`.
 
 Furthermore, we have changed the **icon theme** to use Font Awesome. There are now many more icons to choose from, and most of the UI is likely to benefit from this.
 
-The **plugin API** has been looking very stable lately, and a refactor in c259b318b1c7bc74568d0c9000c016976b05d171 made it possible to much easier deal with circular dependencies which were greatly reducing the plugin writing experience.
+The **plugin API** has been looking very stable lately, and [a refactor](https://github.com/benjaoming/django-wiki/commit/c259b318b1c7bc74568d0c9000c016976b05d171) made it possible to much easier deal with circular dependencies which were greatly reducing the plugin writing experience.
 
 **Haystack** is now supported through a plugin. But keep in mind that many things are broken in Haystack atm -- the Whoosh backend for instance.
 
