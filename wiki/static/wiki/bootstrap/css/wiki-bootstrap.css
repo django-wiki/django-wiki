@@ -4150,45 +4150,30 @@ h1#article-title {
 }
 .wiki-article div.toc ul,
 .wiki-article div.article-list ul {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1000;
-  display: none;
-  float: left;
-  min-width: 160px;
-  padding: 5px 0;
-  margin: 2px 0 0;
+  padding-left: 0;
   list-style: none;
-  background-color: #ffffff;
-  border: 1px solid #cccccc;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 4px;
-  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-  background-clip: padding-box;
 }
-.wiki-article div.toc ul.pull-right,
-.wiki-article div.article-list ul.pull-right {
-  right: 0;
-  left: auto;
+.wiki-article div.toc > ul,
+.wiki-article div.article-list > ul {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  background-color: #f6f6f6;
+  padding-top: 5px;
 }
-.wiki-article div.toc ul .divider,
-.wiki-article div.article-list ul .divider {
-  height: 1px;
-  margin: 9px 0;
-  overflow: hidden;
-  background-color: #e5e5e5;
+.wiki-article div.toc ul li ul li,
+.wiki-article div.article-list ul li ul li {
+  padding-left: 10px;
 }
-.wiki-article div.toc ul > li > a,
-.wiki-article div.article-list ul > li > a {
+.wiki-article div.toc ul li a,
+.wiki-article div.article-list ul li a {
+  padding: 5px 10px;
   display: block;
-  padding: 3px 20px;
-  clear: both;
-  font-weight: normal;
-  line-height: 1.428571429;
-  color: #333333;
-  white-space: nowrap;
+  border-bottom: 1px solid #DDD;
+}
+.wiki-article div.toc ul li:last-child,
+.wiki-article div.article-list ul li:last-child {
+  margin-bottom: 7px;
 }
 .wiki-article div.toc .toctitle {
   display: block;
