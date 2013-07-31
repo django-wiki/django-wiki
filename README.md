@@ -250,7 +250,8 @@ Acknowledgements
  * [django-mptt](https://github.com/django-mptt/django-mptt), a wonderful utility for inexpensively using tree structures in Django with a relational database backend.
  * [jdcaballero](https://github.com/jdcaballero), [yekibud](https://github.com/yekibud), [bridger](https://github.com/bridger), [TomLottermann](https://github.com/TomLottermann), [crazyzubr](https://github.com/crazyzubr), and [everyone else](https://github.com/benjaoming/django-wiki/contributors) involved!
 
-<!---Illegal PyPi RST data --><!---Anything that isn't validly translateable to PyPi RST goes after this line -->
+<!---Illegal PyPi RST data -->
+<!---Anything that isn't validly translateable to PyPi RST goes after this line -->
 
 Support
 -------
