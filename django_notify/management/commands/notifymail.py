@@ -55,7 +55,7 @@ class Command(BaseCommand):
             if daemon:
                 handler = logging.FileHandler(filename=notify_settings.NOTIFY_LOG)
             else:
-                handler = logging.StreamHandler(stream=self.stdout)
+                handler = logging.StreamHandler(self.stdout)
             self.logger.addHandler(handler)
             self.logger.setLevel(logging.INFO)
 
