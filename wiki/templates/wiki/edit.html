@@ -36,7 +36,7 @@
 {% include "wiki/includes/modals.html" %}
 
     <div class="form-group form-actions">
-        <a class="btn btn-large" onclick="$('#previewModal').modal('show'); document.getElementById('article_edit_form').target='previewWindow'; document.getElementById('article_edit_form').action='{% url 'wiki:preview' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit()" href="#">
+        <a class="btn btn-default btn-large" onclick="$('#previewModal').modal('show'); document.getElementById('article_edit_form').target='previewWindow'; document.getElementById('article_edit_form').action='{% url 'wiki:preview' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit()" href="#">
           <span class="icon-eye-open"></span>
           {% trans "Preview" %}
         </a>

@@ -124,7 +124,7 @@
 
     <div class="form-group form-actions">
       <div class="pull-right">
-        <button type="submit" name="preview" value="1" class="btn btn-large" onclick="$('#mergeModal').modal('show'); this.form.target='mergeWindow'; this.form.action=$('input[type=radio]:checked').attr('merge-button-href'); $('.merge-revision-commit').attr('href', $('input[type=radio]:checked').attr('merge-button-commit-href'))">
+        <button type="submit" name="preview" value="1" class="btn btn-default btn-large" onclick="$('#mergeModal').modal('show'); this.form.target='mergeWindow'; this.form.action=$('input[type=radio]:checked').attr('merge-button-href'); $('.merge-revision-commit').attr('href', $('input[type=radio]:checked').attr('merge-button-commit-href'))">
           <span class="icon-random"></span>
           {% trans "Merge selected with current..." %}
         </button>
@@ -145,7 +145,7 @@
       <iframe name="previewWindow" frameborder="0"></iframe>
     </div>
     <div class="modal-footer">
-      <a href="#" class="btn btn-large" data-dismiss="modal">
+      <a href="#" class="btn btn-default btn-large" data-dismiss="modal">
         <span class="icon-circle-arrow-left"></span>
         {% trans "Back to history view" %}
       </a>
@@ -172,7 +172,7 @@
       <iframe name="mergeWindow" frameborder="0" style="min-height: 0;"></iframe>
     </div>
     <div class="modal-footer">
-      <a href="#" class="btn btn-large" data-dismiss="modal">
+      <a href="#" class="btn btn-default btn-large" data-dismiss="modal">
         <span class="icon-circle-arrow-left"></span>
         {% trans "Back to history view" %}
       </a>
