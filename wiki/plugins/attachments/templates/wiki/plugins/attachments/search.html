@@ -10,7 +10,7 @@
 
 <form method="GET" action="{% url 'wiki:attachments_search' path=urlpath.path article_id=article.id %}" class="form-search">
   {{ search_form.query }}
-  <button class="btn">
+  <button class="btn btn-default">
     <span class="icon-search"></span>
     {% trans "Search files and articles" %}
   </button>
@@ -46,7 +46,7 @@
     <td style="text-align: right">
       <form method="POST" action="{% url 'wiki:attachments_add' path=urlpath.path article_id=article.id attachment_id=attachment.id %}">
         {% csrf_token %}
-        <a href="{% url 'wiki:attachments_download' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn">
+        <a href="{% url 'wiki:attachments_download' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-default">
           <span class="icon-download"></span>
           {% trans "Download" %}
         </a>

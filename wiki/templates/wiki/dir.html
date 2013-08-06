@@ -12,12 +12,12 @@
 <div class="well well-small">
   <div class="btn-group pull-left">
     {% if urlpath.parent %}
-    <a href="{% url 'wiki:dir' path=urlpath.parent.path %}" class="btn">
+    <a href="{% url 'wiki:dir' path=urlpath.parent.path %}" class="btn btn-default">
       <span class="icon-arrow-up"></span>
       {% trans "Up one level" %}
     </a>
     {% endif %}
-    <a href="{% url 'wiki:create' path=urlpath.path %}" class="btn">
+    <a href="{% url 'wiki:create' path=urlpath.path %}" class="btn btn-default">
       <span class="icon-plus"></span>
       {% trans "Add article" %}
     </a>

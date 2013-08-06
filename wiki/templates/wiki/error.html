@@ -17,7 +17,7 @@
   <div class="missing">
     <p>{% trans "This article was not found, and neither was its parent article." %}</p>
     <p>
-      <a href="{% url 'wiki:get' path='' %}" class="btn"><i class="icon-arrow-left"></i> {% trans "Start page" %}</a>
+      <a href="{% url 'wiki:get' path='' %}" class="btn btn-default"><i class="icon-arrow-left"></i> {% trans "Start page" %}</a>
     </p>    
   </div>
   
@@ -35,7 +35,7 @@
   
   {% if article %}
   <p>
-    <a href="{% url 'wiki:get' path=urlpath.path article_id=article.id %}" class="btn"><i class="icon-arrow-left"></i> {% trans "Back to" %} {{ article.current_revision.title }}</a>  
+    <a href="{% url 'wiki:get' path=urlpath.path article_id=article.id %}" class="btn btn-default"><i class="icon-arrow-left"></i> {% trans "Back to" %} {{ article.current_revision.title }}</a>  
   </p>
   {% endif %}
   

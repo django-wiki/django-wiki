@@ -16,7 +16,7 @@
   <form method="POST" class="form-horizontal" enctype="multipart/form-data">
     {% wiki_form form %}
     <div class="form-group form-actions">
-      <a href="{% url 'wiki:images_index' path=urlpath.path article_id=article.id %}" class="btn">
+      <a href="{% url 'wiki:images_index' path=urlpath.path article_id=article.id %}" class="btn btn-default">
         <span class="icon-arrow-left"></span>
         {% trans "Go back" %}
       </a>

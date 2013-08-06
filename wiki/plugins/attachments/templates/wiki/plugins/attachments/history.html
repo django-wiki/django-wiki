@@ -36,7 +36,7 @@
           {% trans "Download" %}
         </a>
         {% if revision.attachment.article|can_write:user %}
-            <button{% if revision == attachment.current_revision %} disabled="disabled"{% endif %} class="btn">
+            <button{% if revision == attachment.current_revision %} disabled="disabled"{% endif %} class="btn btn-default">
               <span class="icon-flag"></span>
             {% trans "Use this!" %}
             </button>
