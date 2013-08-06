@@ -177,7 +177,7 @@ class SelectWidgetBootstrap(forms.Select):
         final_attrs = self.build_attrs(attrs, name=name)
         output = ["""<div%(attrs)s>"""
                   """    <button class="btn btn-group-label%(disabled)s" type="button">%(label)s</button>"""
-                  """    <button class="btn dropdown-toggle%(disabled)s" type="button" data-toggle="dropdown">"""
+                  """    <button class="btn btn-default dropdown-toggle%(disabled)s" type="button" data-toggle="dropdown">"""
                   """        <span class="caret"></span>"""
                   """    </button>"""
                   """    <ul class="dropdown-menu">"""
