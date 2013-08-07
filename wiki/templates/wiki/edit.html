@@ -35,39 +35,41 @@
 
 {% include "wiki/includes/modals.html" %}
 
-    <div class="form-group form-actions">
-        <a class="btn btn-default btn-large" onclick="$('#previewModal').modal('show'); document.getElementById('article_edit_form').target='previewWindow'; document.getElementById('article_edit_form').action='{% url 'wiki:preview' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit()" href="#">
-          <span class="icon-eye-open"></span>
-          {% trans "Preview" %}
-        </a>
-        <a class="btn btn-large btn-primary" onclick="document.getElementById('article_edit_form').target=''; document.getElementById('article_edit_form').action='{% url 'wiki:edit' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit();" href="#">
-          <span class="icon-ok"></span>
-          {% trans "Save changes" %}
-        </a>
-        
-        {% if article|can_delete:user %}
-        <a href="{% url 'wiki:delete' path=urlpath.path article_id=article.id %}" class="pull-right btn">
-          <span class="icon-trash"></span>
-          {% trans "Delete article" %}
-        </a>
-        {% endif %}
-        
+<div class="form-group form-actions row">
+  <div class="col-8 row">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-10">
+      <a class="btn btn-default btn-large" onclick="$('#previewModal').modal('show'); document.getElementById('article_edit_form').target='previewWindow'; document.getElementById('article_edit_form').action='{% url 'wiki:preview' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit()" href="#">
+        <span class="icon-eye-open"></span>
+        {% trans "Preview" %}
+      </a>
+      <a class="btn btn-large btn-primary" onclick="document.getElementById('article_edit_form').target=''; document.getElementById('article_edit_form').action='{% url 'wiki:edit' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit();" href="#">
+        <span class="icon-ok"></span>
+        {% trans "Save changes" %}
+      </a>
     </div>
-    <div class="modal hide wiki-modal" id="previewModal">
-      <div class="modal-body">
-        <iframe name="previewWindow" frameborder="0"></iframe>
-      </div>
-      <div class="modal-footer">
-        <a href="#" class="btn btn-default btn-large" data-dismiss="modal">
-          <span class="icon-circle-arrow-left"></span>
-          {% trans "Back to editor" %}
-        </a>
-        <a class="btn btn-large btn-primary" onclick="document.getElementById('article_edit_form').target=''; document.getElementById('article_edit_form').action='{% url 'wiki:edit' path=urlpath.path article_id=article.id %}'; document.getElementById('article_edit_form').submit();" href="#">
-          <span class="icon-ok"></span>
-          {% trans "Save changes" %}
-        </a>
-      </div>
-    </div>
-
+    {% if article|can_delete:user %}
+    <a href="{% url 'wiki:delete' path=urlpath.path article_id=article.id %}" class="pull-right btn">
+      <span class="icon-trash"></span>
+      {% trans "Delete article" %}
+    </a>
+    {% endif %}
+  </div>
+</div>
+<div class="modal hide wiki-modal" id="previewModal">
+  <div class="modal-body">
+    <iframe name="previewWindow" frameborder="0"></iframe>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn btn-default btn-large" data-dismiss="modal">
+      <span class="icon-circle-arrow-left"></span>
+      {% trans "Back to editor" %}
+    </a>
+    <a class="btn btn-large btn-primary" onclick="document.getElementById('article_edit_form').target=''; document.getElementById('article_edit_form').action='{% url 'wiki:edit' path=urlpath.path article_id=article.id %}'; document.getElementById('article_edit_form').submit();" href="#">
+      <span class="icon-ok"></span>
+      {% trans "Save changes" %}
+    </a>
+  </div>
+</div>
 {% endblock %}
 
