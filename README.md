@@ -1,6 +1,21 @@
 django-wiki
 ===========
 
+News
+----
+
+***News: June 31st, 2013***
+
+**Bootstrap 3** has landed in the django-wiki master branch! However, a new release is pending the full implementation of Bootstrap 3. If you are running a deployment with template overrides, keep in mind that some Bootstrap stuff has changed, especially fluid grids and names of a lot of classes. For instance, if you have put your own "brand" in the navbar, you need to change `class="brand"` to `class="navbar-brand"`.
+
+Furthermore, we have changed the **icon theme** to use Font Awesome. There are now many more icons to choose from, and most of the UI is likely to benefit from this.
+
+The **plugin API** has been looking very stable lately, and [one](https://github.com/benjaoming/django-wiki/commit/c259b318b1c7bc74568d0c9000c016976b05d171) or [two](https://github.com/benjaoming/django-wiki/commit/384fb62040dbf27805352d83443467ce175c34c8) refactorings made it possible to much easier deal with circular dependencies which were greatly reducing the plugin writing experience.
+
+**Haystack** is now supported through a plugin. But keep in mind that many things are broken in Haystack atm -- the Whoosh backend for instance.
+
+Last, but not least, we have an **IRC channel** - #django-wiki on freenode. Please hangout and share support and tips!
+
 ***News: June 7th, 2013***
 
 Yay! New alpha release! [View commit log on Github >](https://github.com/benjaoming/django-wiki/commits/alpha/0.0.20) or [a summary of all the commits](https://groups.google.com/forum/#!topic/django-wiki/ZnnGowlppj4)
@@ -251,7 +266,8 @@ Acknowledgements
  * [django-mptt](https://github.com/django-mptt/django-mptt), a wonderful utility for inexpensively using tree structures in Django with a relational database backend.
  * [jdcaballero](https://github.com/jdcaballero), [yekibud](https://github.com/yekibud), [bridger](https://github.com/bridger), [TomLottermann](https://github.com/TomLottermann), [crazyzubr](https://github.com/crazyzubr), and [everyone else](https://github.com/benjaoming/django-wiki/contributors) involved!
 
-<!---Illegal PyPi RST data --><!---Anything that isn't validly translateable to PyPi RST goes after this line -->
+<!---Illegal PyPi RST data -->
+<!---Anything that isn't validly translateable to PyPi RST goes after this line -->
 
 Support
 -------
