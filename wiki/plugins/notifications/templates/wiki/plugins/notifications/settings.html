@@ -28,10 +28,13 @@
   {% endfor %}
   {% if formset.forms %}
   <div class="form-group form-actions">
-    <button type="submit" class="btn btn-primary">
-      <span class="icon-ok"></span>
-      {% trans "Save changes" %}
-    </button>
+    <div class="col-lg-2"></div>
+    <div class="col-lg-10">
+      <button type="submit" class="btn btn-primary">
+        <span class="icon-ok"></span>
+        {% trans "Save changes" %}
+      </button>
+    </div>
   </div>
   {% endif %}
 </form>
