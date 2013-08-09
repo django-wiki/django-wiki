@@ -14,7 +14,7 @@
     <table class="table table-bordered table-striped">
       <tr>
         <th colspan="4">
-          <h4>
+          <h4 style="margin-top:0;">
             <a href="{% url 'wiki:attachments_download' path=urlpath.path article_id=article.id attachment_id=attachment.id %}">{{ attachment.current_revision.get_filename }}</a>
             <span class="badge">{{ attachment.current_revision.created|naturaltime }}</span>
             {% if attachment.current_revision.deleted %}
@@ -31,17 +31,17 @@
         <td style="width: 25%; text-align: right; white-space: nowrap;" rowspan="2">
           {% if attachment|can_write:user %}
             {% if not attachment.current_revision.deleted %}
-              <a href="{% url 'wiki:attachments_replace' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-default">{% trans "Replace" %}</a>
+              <a href="{% url 'wiki:attachments_replace' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-default btn-small">{% trans "Replace" %}</a>
               {% if attachment.article = article %}
-                <a href="{% url 'wiki:attachments_delete' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-default">{% trans "Delete" %}</a>
+                <a href="{% url 'wiki:attachments_delete' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-default btn-small">{% trans "Delete" %}</a>
               {% else %}
-                <a href="{% url 'wiki:attachments_delete' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-default">{% trans "Detach" %}</a>
+                <a href="{% url 'wiki:attachments_delete' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-default btn-small">{% trans "Detach" %}</a>
               {% endif %}
             {% else %}
                Deleted
             {% endif %}
           {% endif %}
-          <p style="margin-top: 10px;">
+          <p style="margin-top: 10px; margin-bottom:0;">
           <a href="{% url 'wiki:attachments_history' path=urlpath.path article_id=article.id attachment_id=attachment.id %}">
             <span class="icon-time"></span>
             {% trans "File history" %} ({{ attachment.attachmentrevision_set.all.count }} {% trans "revisions" %})
@@ -82,7 +82,7 @@
             {% else %}
             <form method="POST" class="form-vertical" id="attachment_form" enctype="multipart/form-data">
               {% wiki_form form %}
-              <button type="submit" name="save" value="1" class="btn btn-default btn-large">
+              <button type="submit" name="save" value="1" class="btn btn-primary">
                 {% trans "Upload file" %}
               </button>
             </form>
@@ -102,12 +102,15 @@
         <div id="collapse_add" class="accordion-body collapse">
           <div class="accordion-inner">
             <p>{% trans "You can reuse files from other articles. These files are subject to updates on other articles which may or may not be a good thing." %}</p>
-            <form method="GET" action="{% url 'wiki:attachments_search' path=urlpath.path article_id=article.id %}" class="form-search">
-              {{ search_form.query }}
-              <button class="btn btn-default">
-                <span class="icon-search"></span>
-                {% trans "Search" %}
-              </button>
+            <form method="GET" action="{% url 'wiki:attachments_search' path=urlpath.path article_id=article.id %}" class="wiki-form-block">
+              <div class="input-group">
+                {{ search_form.query }}
+                <span class="input-group-btn">
+                  <button class="btn btn-default" type="submit">
+                    <span class="icon-search"></span>
+                  </button>
+                </span>
+              </div><!-- /input-group -->
             </form>
           </div>
         </div>
