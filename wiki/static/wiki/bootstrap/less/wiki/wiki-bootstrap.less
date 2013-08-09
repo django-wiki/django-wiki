@@ -29,9 +29,6 @@
 
 h1#article-title {font-size: 2.5em; margin-top: 0px;}
 
-#article_edit_form label {max-width: 100px;}
-#article_edit_form .controls {margin-left: 120px;}
-
 label { font-size: 16px; font-weight: normal; color: #777;}
 
 .controls ul
@@ -231,7 +228,6 @@ input[type=file] {float: none; width: auto;}
 
 /* Special form class that just has 100% width elements */
 .wiki-form-block input[type='text'],
-.wiki-form-block textarea,
 .wiki-form-block select
 
 {
@@ -272,6 +268,12 @@ input[type=file] {float: none; width: auto;}
 {
     display: inline-table;
     width: 280px;
+}
+
+.form-vertical .wiki-control textarea,
+.form-horizontal .wiki-control textarea
+{
+    height: 200px;
 }
 
 .form-vertical .wiki-control input[type='text'],
