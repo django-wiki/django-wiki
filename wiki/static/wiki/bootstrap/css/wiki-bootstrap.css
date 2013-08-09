@@ -4094,6 +4094,7 @@ td.visible-print {
   margin-left: 10px;
   margin-right: 10px;
 }
+/* WIKI ARTICLE FORM ELEMENTS */
 #div_id_title .asteriskField {
   display: none;
 }
@@ -4106,6 +4107,10 @@ td.visible-print {
 }
 #id_summary {
   width: 98%;
+  padding: 6px;
+}
+#id_content {
+  width: 100%;
   padding: 6px;
 }
 h1#article-title {
@@ -4408,12 +4413,6 @@ textarea.wiki-form-block select {
   width: 280px;
   display: inline-block;
 }
-.form-horizontal .wiki-control input,
-.form-horizontal .wiki-control select,
-.form-horizontal .wiki-control textarea {
-  width: 280px;
-  display: inline-block;
-}
 .form-horizontal .wiki-control input[type='text'],
 .form-horizontal .wiki-control select,
 .form-horizontal .wiki-control textarea {
@@ -4432,6 +4431,8 @@ textarea.wiki-form-block select {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  width: 280px;
+  display: inline-block;
 }
 .form-horizontal .wiki-control input[type='text']:-moz-placeholder,
 .form-horizontal .wiki-control select:-moz-placeholder,
@@ -4494,9 +4495,14 @@ textarea.form-horizontal .wiki-control textarea {
   font-size: 12px;
   border-radius: 3px;
 }
-.form-horizontal .wiki-control .input-group {
-  display: inline-table;
+/* other fields */
+.form-horizontal .wiki-control input {
   width: 280px;
+  display: inline-block;
+}
+.form-horizontal .wiki-control .input-group {
+  width: 280px;
+  display: inline-table;
 }
 .form-vertical .wiki-control textarea,
 .form-horizontal .wiki-control textarea {

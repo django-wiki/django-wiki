@@ -17,6 +17,7 @@
 }
 
 
+/* WIKI ARTICLE FORM ELEMENTS */
 #div_id_title .asteriskField{display:none}
 #id_title {
     font-size: 20px;
@@ -26,6 +27,7 @@
     width: 98%;
 }
 #id_summary {width: 98%; padding: 6px;}
+#id_content {width: 100%; padding: 6px;}
 
 h1#article-title {font-size: 2.5em; margin-top: 0px;}
 
@@ -250,24 +252,26 @@ input[type=file] {float: none; width: auto;}
     display: inline-block;
 }
 
-.form-horizontal .wiki-control input,
-.form-horizontal .wiki-control select,
-.form-horizontal .wiki-control textarea
-{
-    width: 280px;
-    display: inline-block;
-}
-
 .form-horizontal .wiki-control input[type='text'],
 .form-horizontal .wiki-control select,
 .form-horizontal .wiki-control textarea
 {
     .form-control;
+    width: 280px;
+    display: inline-block;
 }
+
+/* other fields */
+.form-horizontal .wiki-control input
+{
+    width: 280px;
+    display: inline-block;
+}
+
 .form-horizontal .wiki-control .input-group
 {
-    display: inline-table;
     width: 280px;
+    display: inline-table;
 }
 
 .form-vertical .wiki-control textarea,
