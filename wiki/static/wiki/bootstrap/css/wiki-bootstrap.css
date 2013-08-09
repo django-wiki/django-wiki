@@ -4099,8 +4099,9 @@ td.visible-print {
 }
 #id_title {
   font-size: 20px;
-  height: 30px;
+  height: 40px;
   padding: 6px;
+  display: block;
   width: 98%;
 }
 #id_summary {
@@ -4117,21 +4118,10 @@ h1#article-title {
 #article_edit_form .controls {
   margin-left: 120px;
 }
-.form-horizontal label {
+label {
   font-size: 16px;
   font-weight: normal;
   color: #777;
-}
-.settings-form label {
-  min-width: 250px;
-  font-size: inherit;
-  font-weight: normal;
-}
-.settings-form .controls {
-  margin-left: 270px;
-}
-.settings-form .form-actions {
-  padding-left: 270px;
 }
 .controls ul {
   margin-left: 0;
@@ -4341,11 +4331,13 @@ input[type=file] {
   }
 }
 /******************************
- BOOTSTRAP 2 COMPAT
+ FORMS - horizontal and vertical
 *******************************/
-.wiki-control input,
-.wiki-control select,
-.wiki-control textarea {
+/* Special form class that just has 100% width elements */
+.wiki-form-block input[type='text'],
+.wiki-form-block textarea,
+.wiki-form-block select {
+  width: auto;
   display: block;
   width: 100%;
   height: 38px;
@@ -4361,69 +4353,261 @@ input[type=file] {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-  width: 280px;
-  display: inline-block;
 }
-.wiki-control input:-moz-placeholder,
-.wiki-control select:-moz-placeholder,
-.wiki-control textarea:-moz-placeholder {
+.wiki-form-block input[type='text']:-moz-placeholder,
+.wiki-form-block textarea:-moz-placeholder,
+.wiki-form-block select:-moz-placeholder {
   color: #999999;
 }
-.wiki-control input::-moz-placeholder,
-.wiki-control select::-moz-placeholder,
-.wiki-control textarea::-moz-placeholder {
+.wiki-form-block input[type='text']::-moz-placeholder,
+.wiki-form-block textarea::-moz-placeholder,
+.wiki-form-block select::-moz-placeholder {
   color: #999999;
 }
-.wiki-control input:-ms-input-placeholder,
-.wiki-control select:-ms-input-placeholder,
-.wiki-control textarea:-ms-input-placeholder {
+.wiki-form-block input[type='text']:-ms-input-placeholder,
+.wiki-form-block textarea:-ms-input-placeholder,
+.wiki-form-block select:-ms-input-placeholder {
   color: #999999;
 }
-.wiki-control input::-webkit-input-placeholder,
-.wiki-control select::-webkit-input-placeholder,
-.wiki-control textarea::-webkit-input-placeholder {
+.wiki-form-block input[type='text']::-webkit-input-placeholder,
+.wiki-form-block textarea::-webkit-input-placeholder,
+.wiki-form-block select::-webkit-input-placeholder {
   color: #999999;
 }
-.wiki-control input:focus,
-.wiki-control select:focus,
-.wiki-control textarea:focus {
+.wiki-form-block input[type='text']:focus,
+.wiki-form-block textarea:focus,
+.wiki-form-block select:focus {
   border-color: rgba(82, 168, 236, 0.8);
   outline: 0;
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6);
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6);
 }
-.wiki-control input[disabled],
-.wiki-control select[disabled],
-.wiki-control textarea[disabled],
-.wiki-control input[readonly],
-.wiki-control select[readonly],
-.wiki-control textarea[readonly],
-fieldset[disabled] .wiki-control input,
-fieldset[disabled] .wiki-control select,
-fieldset[disabled] .wiki-control textarea {
+.wiki-form-block input[type='text'][disabled],
+.wiki-form-block textarea[disabled],
+.wiki-form-block select[disabled],
+.wiki-form-block input[type='text'][readonly],
+.wiki-form-block textarea[readonly],
+.wiki-form-block select[readonly],
+fieldset[disabled] .wiki-form-block input[type='text'],
+fieldset[disabled] .wiki-form-block textarea,
+fieldset[disabled] .wiki-form-block select {
   cursor: not-allowed;
   background-color: #eeeeee;
 }
-textarea.wiki-control input,
-textarea.wiki-control select,
-textarea.wiki-control textarea {
+textarea.wiki-form-block input[type='text'],
+textarea.wiki-form-block textarea,
+textarea.wiki-form-block select {
   height: auto;
 }
-.wiki-control input.input-large,
-.wiki-control select.input-large,
-.wiki-control textarea.input-large {
+.wiki-form-block input[type='text'].input-large,
+.wiki-form-block textarea.input-large,
+.wiki-form-block select.input-large {
   height: 56px;
   padding: 14px 16px;
   font-size: 18px;
   border-radius: 6px;
 }
-.wiki-control input.input-small,
-.wiki-control select.input-small,
-.wiki-control textarea.input-small {
+.wiki-form-block input[type='text'].input-small,
+.wiki-form-block textarea.input-small,
+.wiki-form-block select.input-small {
   height: 30px;
   padding: 5px 10px;
   font-size: 12px;
   border-radius: 3px;
+}
+/* General styling, any kind of form input */
+.wiki-control input {
+  height: 38px;
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 1.428571429;
+  color: #555555;
+  vertical-align: middle;
+  width: 280px;
+  display: inline-block;
+}
+.form-horizontal .wiki-control input,
+.form-horizontal .wiki-control select,
+.form-horizontal .wiki-control textarea {
+  width: 280px;
+  display: inline-block;
+}
+.form-horizontal .wiki-control input[type='text'],
+.form-horizontal .wiki-control select,
+.form-horizontal .wiki-control textarea {
+  display: block;
+  width: 100%;
+  height: 38px;
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 1.428571429;
+  color: #555555;
+  vertical-align: middle;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+.form-horizontal .wiki-control input[type='text']:-moz-placeholder,
+.form-horizontal .wiki-control select:-moz-placeholder,
+.form-horizontal .wiki-control textarea:-moz-placeholder {
+  color: #999999;
+}
+.form-horizontal .wiki-control input[type='text']::-moz-placeholder,
+.form-horizontal .wiki-control select::-moz-placeholder,
+.form-horizontal .wiki-control textarea::-moz-placeholder {
+  color: #999999;
+}
+.form-horizontal .wiki-control input[type='text']:-ms-input-placeholder,
+.form-horizontal .wiki-control select:-ms-input-placeholder,
+.form-horizontal .wiki-control textarea:-ms-input-placeholder {
+  color: #999999;
+}
+.form-horizontal .wiki-control input[type='text']::-webkit-input-placeholder,
+.form-horizontal .wiki-control select::-webkit-input-placeholder,
+.form-horizontal .wiki-control textarea::-webkit-input-placeholder {
+  color: #999999;
+}
+.form-horizontal .wiki-control input[type='text']:focus,
+.form-horizontal .wiki-control select:focus,
+.form-horizontal .wiki-control textarea:focus {
+  border-color: rgba(82, 168, 236, 0.8);
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6);
+}
+.form-horizontal .wiki-control input[type='text'][disabled],
+.form-horizontal .wiki-control select[disabled],
+.form-horizontal .wiki-control textarea[disabled],
+.form-horizontal .wiki-control input[type='text'][readonly],
+.form-horizontal .wiki-control select[readonly],
+.form-horizontal .wiki-control textarea[readonly],
+fieldset[disabled] .form-horizontal .wiki-control input[type='text'],
+fieldset[disabled] .form-horizontal .wiki-control select,
+fieldset[disabled] .form-horizontal .wiki-control textarea {
+  cursor: not-allowed;
+  background-color: #eeeeee;
+}
+textarea.form-horizontal .wiki-control input[type='text'],
+textarea.form-horizontal .wiki-control select,
+textarea.form-horizontal .wiki-control textarea {
+  height: auto;
+}
+.form-horizontal .wiki-control input[type='text'].input-large,
+.form-horizontal .wiki-control select.input-large,
+.form-horizontal .wiki-control textarea.input-large {
+  height: 56px;
+  padding: 14px 16px;
+  font-size: 18px;
+  border-radius: 6px;
+}
+.form-horizontal .wiki-control input[type='text'].input-small,
+.form-horizontal .wiki-control select.input-small,
+.form-horizontal .wiki-control textarea.input-small {
+  height: 30px;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 3px;
+}
+.form-horizontal .wiki-control .input-group {
+  display: inline-table;
+  width: 280px;
+}
+.form-vertical .wiki-control input[type='text'],
+.form-vertical .wiki-control select,
+.form-vertical .wiki-control textarea {
+  display: block;
+  width: 100%;
+  height: 38px;
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 1.428571429;
+  color: #555555;
+  vertical-align: middle;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  width: 95%;
+  /* make room for an asterix */
+
+  display: inline-block;
+}
+.form-vertical .wiki-control input[type='text']:-moz-placeholder,
+.form-vertical .wiki-control select:-moz-placeholder,
+.form-vertical .wiki-control textarea:-moz-placeholder {
+  color: #999999;
+}
+.form-vertical .wiki-control input[type='text']::-moz-placeholder,
+.form-vertical .wiki-control select::-moz-placeholder,
+.form-vertical .wiki-control textarea::-moz-placeholder {
+  color: #999999;
+}
+.form-vertical .wiki-control input[type='text']:-ms-input-placeholder,
+.form-vertical .wiki-control select:-ms-input-placeholder,
+.form-vertical .wiki-control textarea:-ms-input-placeholder {
+  color: #999999;
+}
+.form-vertical .wiki-control input[type='text']::-webkit-input-placeholder,
+.form-vertical .wiki-control select::-webkit-input-placeholder,
+.form-vertical .wiki-control textarea::-webkit-input-placeholder {
+  color: #999999;
+}
+.form-vertical .wiki-control input[type='text']:focus,
+.form-vertical .wiki-control select:focus,
+.form-vertical .wiki-control textarea:focus {
+  border-color: rgba(82, 168, 236, 0.8);
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6);
+}
+.form-vertical .wiki-control input[type='text'][disabled],
+.form-vertical .wiki-control select[disabled],
+.form-vertical .wiki-control textarea[disabled],
+.form-vertical .wiki-control input[type='text'][readonly],
+.form-vertical .wiki-control select[readonly],
+.form-vertical .wiki-control textarea[readonly],
+fieldset[disabled] .form-vertical .wiki-control input[type='text'],
+fieldset[disabled] .form-vertical .wiki-control select,
+fieldset[disabled] .form-vertical .wiki-control textarea {
+  cursor: not-allowed;
+  background-color: #eeeeee;
+}
+textarea.form-vertical .wiki-control input[type='text'],
+textarea.form-vertical .wiki-control select,
+textarea.form-vertical .wiki-control textarea {
+  height: auto;
+}
+.form-vertical .wiki-control input[type='text'].input-large,
+.form-vertical .wiki-control select.input-large,
+.form-vertical .wiki-control textarea.input-large {
+  height: 56px;
+  padding: 14px 16px;
+  font-size: 18px;
+  border-radius: 6px;
+}
+.form-vertical .wiki-control input[type='text'].input-small,
+.form-vertical .wiki-control select.input-small,
+.form-vertical .wiki-control textarea.input-small {
+  height: 30px;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 3px;
+}
+/* Reset column grid layout for vertical forms */
+.form-vertical .wiki-control,
+.form-vertical .wiki-label {
+  display: block;
+  float: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
 }
 .form-actions {
   padding: 19px 15px 20px;
@@ -4434,6 +4618,40 @@ textarea.wiki-control textarea {
   border-top: 1px solid #e5e5e5;
   float: none;
 }
+.form-actions:before,
+.form-actions:after {
+  content: " ";
+  /* 1 */
+
+  display: table;
+  /* 2 */
+
+}
+.form-actions:after {
+  clear: both;
+}
+.form-actions:before,
+.form-actions:after {
+  content: " ";
+  /* 1 */
+
+  display: table;
+  /* 2 */
+
+}
+.form-actions:after {
+  clear: both;
+}
+@media (min-width: 768px) {
+  .form-actions {
+    margin-left: -15px;
+    margin-right: -15px;
+  }
+}
+.form-actions .row {
+  margin-left: -15px;
+  margin-right: -15px;
+}
 .accordion-heading .icon {
   color: #444;
   font-size: 75%;
@@ -4441,20 +4659,23 @@ textarea.wiki-control textarea {
 /******************************
  RESPONSIVE STUFF
 *******************************/
+.wiki-modal .modal-content {
+  width: 100%;
+}
 @media (min-width: 980px) {
-  .wiki-modal {
+  .wiki-modal .modal-dialog {
     width: 80%;
     margin-left: -40%;
   }
 }
 @media (max-width: 979px) {
-  .wiki-modal {
+  .wiki-modal .modal-dialog {
     width: 90%;
     margin-left: -45%;
   }
 }
 @media (max-width: 767px) {
-  .wiki-modal {
+  .wiki-modal .modal-dialog {
     width: 90%;
     margin-left: 0;
   }

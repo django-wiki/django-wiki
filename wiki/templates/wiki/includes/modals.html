@@ -3,18 +3,18 @@
 <script type="text/javascript" src="{{ STATIC_URL }}wiki/js/jqueryui/jquery-ui-1.10.0.custom.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-  $(".modal").on("resizestart", function(event, ui) {
+  $(".modal-content").on("resizestart", function(event, ui) {
     $(ui.element).find(".modal-body, iframe").each(function() {
       elem = $(this);
       elem.data("resizeoriginalheight", elem.height());
     });
   });
 
-  $(".modal").on("resize", function(event, ui) {
-      ui.element.css("margin-left", -ui.size.width/2);
-      ui.element.css("margin-top", -ui.size.height/2);
-      ui.element.css("top", "50%");
-      ui.element.css("left", "50%");
+  $(".modal-content").on("resize", function(event, ui) {
+      ui.element.parents('.modal-dialog').css("margin-left", -ui.size.width/2);
+      ui.element.parents('.modal-dialog').css("margin-top", -ui.size.height/2);
+      ui.element.parents('.modal-dialog').css("top", "50%");
+      ui.element.parents('.modal-dialog').css("left", "50%");
 
       $(ui.element).find(".modal-body,iframe").each(function() {
         elem = $(this);
@@ -22,7 +22,7 @@ $(document).ready(function() {
       });
   });
 
-  $(".modal").resizable();
+  $(".modal-content").resizable();
 });
 </script>
 {% endaddtoblock %}

@@ -18,7 +18,13 @@
 
 
 #div_id_title .asteriskField{display:none}
-#id_title {font-size: 20px; height: 30px; padding: 6px; width: 98%;}
+#id_title {
+    font-size: 20px;
+    height: 40px;
+    padding: 6px;
+    display: block;
+    width: 98%;
+}
 #id_summary {width: 98%; padding: 6px;}
 
 h1#article-title {font-size: 2.5em; margin-top: 0px;}
@@ -26,12 +32,7 @@ h1#article-title {font-size: 2.5em; margin-top: 0px;}
 #article_edit_form label {max-width: 100px;}
 #article_edit_form .controls {margin-left: 120px;}
 
-.form-horizontal label { font-size: 16px; font-weight: normal; color: #777;}
-
-.settings-form label {min-width: 250px; font-size: inherit; font-weight: normal;}
-.settings-form .controls {margin-left: 270px;}
-.settings-form select {}
-.settings-form .form-actions { padding-left: 270px; }
+label { font-size: 16px; font-weight: normal; color: #777;}
 
 .controls ul
 {
@@ -223,20 +224,77 @@ input[type=file] {float: none; width: auto;}
     }
 }
 
+
 /******************************
- BOOTSTRAP 2 COMPAT
+ FORMS - horizontal and vertical
 *******************************/
 
-.wiki-control input,
-.wiki-control select,
-.wiki-control textarea,
+/* Special form class that just has 100% width elements */
+.wiki-form-block input[type='text'],
+.wiki-form-block textarea,
+.wiki-form-block select
+
 {
+    display: block;
+    width: auto;
     .form-control;
+}
+
+/* General styling, any kind of form input */
+.wiki-control input
+{
+    display: inline-block;
+    height: @input-height-base; // Make inputs at least the height of their button counterpart (base line-height + padding + border)
+    padding: @padding-base-vertical @padding-base-horizontal;
+    font-size: @font-size-base;
+    line-height: @line-height-base;
+    color: @gray;
+    vertical-align: middle;
     width: 280px;
     display: inline-block;
 }
 
+.form-horizontal .wiki-control input,
+.form-horizontal .wiki-control select,
+.form-horizontal .wiki-control textarea
+{
+    width: 280px;
+    display: inline-block;
+}
+
+.form-horizontal .wiki-control input[type='text'],
+.form-horizontal .wiki-control select,
+.form-horizontal .wiki-control textarea
+{
+    .form-control;
+}
+.form-horizontal .wiki-control .input-group
+{
+    display: inline-table;
+    width: 280px;
+}
+
+.form-vertical .wiki-control input[type='text'],
+.form-vertical .wiki-control select,
+.form-vertical .wiki-control textarea
+{
+    .form-control;
+    width: 95%; /* make room for an asterix */
+    display: inline-block;
+}
+
+/* Reset column grid layout for vertical forms */
+.form-vertical .wiki-control,
+.form-vertical .wiki-label
+{
+    display: block;
+    float: none;
+    padding: 0; margin: 0;
+    width: 100%;
+}
+
 .form-actions {
+    .make-row();
     padding: 19px 15px 20px;
     padding-left: 0;
     margin-top: 20px;
@@ -257,22 +315,24 @@ input[type=file] {float: none; width: auto;}
  RESPONSIVE STUFF
 *******************************/
 
+.wiki-modal .modal-content { width: 100%; }
+
 @media (min-width: 980px) {
-    .wiki-modal
+    .wiki-modal .modal-dialog
     {
         width: 80%;
         margin-left: -40%;
     }
 }
 @media (max-width: 979px) {
-    .wiki-modal
+    .wiki-modal .modal-dialog
     {
         width: 90%;
         margin-left: -45%;
     }
 }
 @media (max-width: 767px) {
-    .wiki-modal
+    .wiki-modal .modal-dialog
     {
         width: 90%;
         margin-left: 0;

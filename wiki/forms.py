@@ -227,7 +227,7 @@ class TextInputPrepend(forms.TextInput):
     
     def render(self, *args, **kwargs):
         html = super(TextInputPrepend, self).render(*args, **kwargs)
-        return mark_safe('<div class="input-prepend"><span class="add-on">%s</span>%s</div>' % (self.prepend, html))
+        return mark_safe('<div class="input-group"><span class="input-group-addon">%s</span>%s</div>' % (self.prepend, html))
     
 
 class CreateForm(forms.Form, SpamProtectionMixin):

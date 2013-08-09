@@ -56,19 +56,23 @@
     {% endif %}
   </div>
 </div>
-<div class="modal hide wiki-modal" id="previewModal">
-  <div class="modal-body">
-    <iframe name="previewWindow" frameborder="0"></iframe>
-  </div>
-  <div class="modal-footer">
-    <a href="#" class="btn btn-default btn-large" data-dismiss="modal">
-      <span class="icon-circle-arrow-left"></span>
-      {% trans "Back to editor" %}
-    </a>
-    <a class="btn btn-large btn-primary" onclick="document.getElementById('article_edit_form').target=''; document.getElementById('article_edit_form').action='{% url 'wiki:edit' path=urlpath.path article_id=article.id %}'; document.getElementById('article_edit_form').submit();" href="#">
-      <span class="icon-ok"></span>
-      {% trans "Save changes" %}
-    </a>
+<div class="modal fade wiki-modal" id="previewModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <iframe name="previewWindow" frameborder="0"></iframe>
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn btn-default btn-large" data-dismiss="modal">
+          <span class="icon-circle-arrow-left"></span>
+          {% trans "Back to editor" %}
+        </a>
+        <a class="btn btn-large btn-primary" onclick="document.getElementById('article_edit_form').target=''; document.getElementById('article_edit_form').action='{% url 'wiki:edit' path=urlpath.path article_id=article.id %}'; document.getElementById('article_edit_form').submit();" href="#">
+          <span class="icon-ok"></span>
+          {% trans "Save changes" %}
+        </a>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}

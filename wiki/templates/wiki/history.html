@@ -140,53 +140,61 @@
     
   </div>
   <input type="hidden" name="r" value="" />
-  <div class="modal hide wiki-modal" id="previewModal">
-    <div class="modal-body">
-      <iframe name="previewWindow" frameborder="0"></iframe>
-    </div>
-    <div class="modal-footer">
-      <a href="#" class="btn btn-default btn-large" data-dismiss="modal">
-        <span class="icon-circle-arrow-left"></span>
-        {% trans "Back to history view" %}
-      </a>
-      {% if article|can_write:user %}
-      <a href="#" class="btn btn-large btn-primary switch-to-revision">
-        <span class="icon-flag"></span>
-        {% trans "Switch to this version" %}
-      </a>
-      {% else %}
-        <a href="#" class="btn btn-large btn-primary disabled">
-          <span class="icon-lock"></span>
-          {% trans "Switch to this version" %}
-        </a>                    
-      {% endif %}
+  <div class="modal fade wiki-modal" id="previewModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <iframe name="previewWindow" frameborder="0"></iframe>
+        </div>
+        <div class="modal-footer">
+          <a href="#" class="btn btn-default btn-large" data-dismiss="modal">
+            <span class="icon-circle-arrow-left"></span>
+            {% trans "Back to history view" %}
+          </a>
+          {% if article|can_write:user %}
+          <a href="#" class="btn btn-large btn-primary switch-to-revision">
+            <span class="icon-flag"></span>
+            {% trans "Switch to this version" %}
+          </a>
+          {% else %}
+            <a href="#" class="btn btn-large btn-primary disabled">
+              <span class="icon-lock"></span>
+              {% trans "Switch to this version" %}
+            </a>                    
+          {% endif %}
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="modal hide wiki-modal" id="mergeModal">
-    <div class="modal-header">
-      <h1>{% trans "Merge with current" %}</h1>
-      <p class="lead"><span class="icon-info-sign"></span> {% trans "When you merge a revision with the current, all data will be retained from both versions and merged at its approximate location from each revision." %} <strong>{% trans "After this, it's important to do a manual review." %}</strong></p>
-    </div>
-    <div class="modal-body">
-      <iframe name="mergeWindow" frameborder="0" style="min-height: 0;"></iframe>
-    </div>
-    <div class="modal-footer">
-      <a href="#" class="btn btn-default btn-large" data-dismiss="modal">
-        <span class="icon-circle-arrow-left"></span>
-        {% trans "Back to history view" %}
-      </a>
-      {% if article|can_write:user %}
-      <a href="#" class="btn btn-large btn-primary merge-revision-commit">
-        <span class="icon-file"></span>
-        {% trans "Create new merged version" %}
-      </a>                    
-      {% else %}
-        <a href="#" class="btn btn-large btn-primary disabled">
-          <span class="icon-lock"></span>
-          {% trans "Create new merged version" %}
-        </a>
-      {% endif %}
+  <div class="modal fade wiki-modal" id="mergeModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1>{% trans "Merge with current" %}</h1>
+          <p class="lead"><span class="icon-info-sign"></span> {% trans "When you merge a revision with the current, all data will be retained from both versions and merged at its approximate location from each revision." %} <strong>{% trans "After this, it's important to do a manual review." %}</strong></p>
+        </div>
+        <div class="modal-body">
+          <iframe name="mergeWindow" frameborder="0" style="min-height: 0;"></iframe>
+        </div>
+        <div class="modal-footer">
+          <a href="#" class="btn btn-default btn-large" data-dismiss="modal">
+            <span class="icon-circle-arrow-left"></span>
+            {% trans "Back to history view" %}
+          </a>
+          {% if article|can_write:user %}
+          <a href="#" class="btn btn-large btn-primary merge-revision-commit">
+            <span class="icon-file"></span>
+            {% trans "Create new merged version" %}
+          </a>                    
+          {% else %}
+            <a href="#" class="btn btn-large btn-primary disabled">
+              <span class="icon-lock"></span>
+              {% trans "Create new merged version" %}
+            </a>
+          {% endif %}
+        </div>
+      </div>
     </div>
   </div>
 </form>
