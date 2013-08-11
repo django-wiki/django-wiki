@@ -6,15 +6,11 @@
 
 <div class="wiki-article">
   {% if not preview %}
-
     {% if article.current_revision %}
       {{ article.get_cached_content }}
     {% endif %}
-
   {% else %}
-
     {{ content|default:"" }}
-
   {% endif %}
 </div>
 
