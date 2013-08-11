@@ -52,7 +52,7 @@ URLIZE_RE = (
     r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|' # ...or ipv4
     r'\[?[A-F0-9]*:[A-F0-9:]+\]?)' # ...or ipv6
     r'(?::\d+)?' # optional port
-    r'(?:/?|[/?]\S+))'
+    r'(?:/[^\s\[\(\]\)]*\s+)?)'
 )
 
 class UrlizePattern(markdown.inlinepatterns.Pattern):
