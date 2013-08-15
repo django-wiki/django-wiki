@@ -8,7 +8,7 @@ from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
-from django.views.generic.base import TemplateView, View
+from django.views.generic.base import TemplateView, View, RedirectView
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 
@@ -576,18 +576,30 @@ class Settings(ArticleMixin, TemplateView):
         return super(Settings, self).get_context_data(**kwargs)
 
 
-# TODO: Throw in a class-based view
-@get_article(can_write=True, not_locked=True)
-def change_revision(request, article, revision_id=None, urlpath=None):
-    revision = get_object_or_404(models.ArticleRevision, article=article, id=revision_id)
-    article.current_revision = revision
-    article.save()
-    messages.success(request, _(u"The article %(title)s is now set to display revision #%(revision_number)d") % {'title':revision.title, 'revision_number': revision.revision_number,})
+class ChangeRevisionView(RedirectView):
 
-    if urlpath:
-        return redirect("wiki:history", path=urlpath.path)
-    else:
-        return redirect('wiki:history', article_id=article.id)
+    @method_decorator(get_article(can_write=True, not_locked=True))
+    def dispatch(self, request, article, *args, **kwargs):
+        self.article = article
+        self.urlpath = kwargs.pop('kwargs', False)
+        self.change_revision()
+
+        return super(ChangeRevisionView, self).dispatch(request, *args, **kwargs)
+
+    def get_redirect_url(self, **kwargs):
+        if self.urlpath:
+            return reverse("wiki:history", kwargs={'path':self.urlpath.path})
+        else:
+            return reverse('wiki:history', kwargs={'article_id':self.article.id})
+
+    def change_revision(self):
+        revision = get_object_or_404(models.ArticleRevision, article=self.article, id=self.kwargs['revision_id'])
+        self.article.current_revision = revision
+        self.article.save()
+        messages.success(self.request, _(u"The article %(title)s is now set to display revision #%(revision_number)d") % {
+            'title': revision.title,
+            'revision_number': revision.revision_number,
+        })
 
 class Preview(ArticleMixin, TemplateView):
 
