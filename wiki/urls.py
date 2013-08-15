@@ -6,10 +6,11 @@ from wiki.core.plugins import registry
 from wiki.views import article, accounts
 from wiki.core.utils import get_class_from_str
 
+
 class WikiURLPatterns(object):
     '''
     configurator for wiki urls.
-    
+
     To customize, you can define your own subclass, either overriding
     the view providers, or overriding the functions that collect
     views.
@@ -30,7 +31,6 @@ class WikiURLPatterns(object):
     revision_change_view = 'wiki.views.article.change_revision'
     revision_merge_view = 'wiki.views.article.merge'
 
-    create_root = 'wiki.views.article.root_create'
     search_view_class = settings.SEARCH_VIEW
     article_diff_view = 'wiki.views.article.diff'
 
@@ -38,14 +38,14 @@ class WikiURLPatterns(object):
     signup_view_class = accounts.Signup
     login_view_class = accounts.Login
     logout_view_class = accounts.Logout
-    
+
     def get_urls(self):
         urlpatterns = self.get_root_urls()
         urlpatterns += self.get_accounts_urls()
         urlpatterns += self.get_revision_urls()
         urlpatterns += self.get_article_urls()
         urlpatterns += self.get_plugin_urls()
-        
+
         # This ALWAYS has to be the last of all the patterns since
         # the paths in theory could wrongly match other targets.
         urlpatterns += self.get_article_path_urls()
@@ -54,7 +54,7 @@ class WikiURLPatterns(object):
     def get_root_urls(self):
         urlpatterns = patterns('',
             url('^$', self.article_view_class.as_view(), name='root', kwargs={'path': ''}),
-            url('^create-root/$', self.create_root, name='root_create'),
+            url('^create-root/$', article.CreateRootView.as_view(), name='root_create'),
             url('^_search/$', get_class_from_str(self.search_view_class).as_view(), name='search'),
             url('^_revision/diff/(?P<revision_id>\d+)/$', self.article_diff_view, name='diff'),
        )
@@ -70,7 +70,7 @@ class WikiURLPatterns(object):
 
     def get_revision_urls(self):
         urlpatterns = patterns('',
-            # This one doesn't work because it don't know where to redirect after...   
+            # This one doesn't work because it don't know where to redirect after...
             url('^_revision/change/(?P<article_id>\d+)/(?P<revision_id>\d+)/$', self.revision_change_view, name='change_revision'),
             url('^_revision/preview/(?P<article_id>\d+)/$', self.article_preview_view_class.as_view(), name='preview_revision'),
             url('^_revision/merge/(?P<article_id>\d+)/(?P<revision_id>\d+)/preview/$', self.revision_merge_view, name='merge_revision_preview', kwargs={'preview': True}),
