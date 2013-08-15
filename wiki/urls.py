@@ -28,7 +28,7 @@ class WikiURLPatterns(object):
     article_settings_view_class = article.Settings
     article_source_view_class = article.Source
     article_plugin_view_class = article.Plugin
-    revision_change_view = 'wiki.views.article.change_revision'
+    revision_change_view = article.ChangeRevisionView
     revision_merge_view = 'wiki.views.article.merge'
 
     search_view_class = settings.SEARCH_VIEW
@@ -71,7 +71,7 @@ class WikiURLPatterns(object):
     def get_revision_urls(self):
         urlpatterns = patterns('',
             # This one doesn't work because it don't know where to redirect after...
-            url('^_revision/change/(?P<article_id>\d+)/(?P<revision_id>\d+)/$', self.revision_change_view, name='change_revision'),
+            url('^_revision/change/(?P<article_id>\d+)/(?P<revision_id>\d+)/$', self.revision_change_view.as_view(), name='change_revision'),
             url('^_revision/preview/(?P<article_id>\d+)/$', self.article_preview_view_class.as_view(), name='preview_revision'),
             url('^_revision/merge/(?P<article_id>\d+)/(?P<revision_id>\d+)/preview/$', self.revision_merge_view, name='merge_revision_preview', kwargs={'preview': True}),
            )
@@ -88,7 +88,7 @@ class WikiURLPatterns(object):
             url('^(?P<article_id>\d+)/history/$', self.article_history_view_class.as_view(), name='history'),
             url('^(?P<article_id>\d+)/settings/$', self.article_settings_view_class.as_view(), name='settings'),
             url('^(?P<article_id>\d+)/source/$', self.article_source_view_class.as_view(), name='source'),
-            url('^(?P<article_id>\d+)/revision/change/(?P<revision_id>\d+)/$', self.revision_change_view, name='change_revision'),
+            url('^(?P<article_id>\d+)/revision/change/(?P<revision_id>\d+)/$', self.revision_change_view.as_view(), name='change_revision'),
             url('^(?P<article_id>\d+)/revision/merge/(?P<revision_id>\d+)/$', self.revision_merge_view, name='merge_revision'),
             url('^(?P<article_id>\d+)/plugin/(?P<slug>\w+)/$', self.article_plugin_view_class.as_view(), name='plugin'),
            )
@@ -106,7 +106,7 @@ class WikiURLPatterns(object):
             url('^(?P<path>.+/|)_dir/$', self.article_dir_view_class.as_view(), name='dir'),
             url('^(?P<path>.+/|)_settings/$', self.article_settings_view_class.as_view(), name='settings'),
             url('^(?P<path>.+/|)_source/$', self.article_source_view_class.as_view(), name='source'),
-            url('^(?P<path>.+/|)_revision/change/(?P<revision_id>\d+)/$', self.revision_change_view, name='change_revision'),
+            url('^(?P<path>.+/|)_revision/change/(?P<revision_id>\d+)/$', self.revision_change_view.as_view(), name='change_revision'),
             url('^(?P<path>.+/|)_revision/merge/(?P<revision_id>\d+)/$', self.revision_merge_view, name='merge_revision'),
             url('^(?P<path>.+/|)_plugin/(?P<slug>\w+)/$', self.article_plugin_view_class.as_view(), name='plugin'),
             # This should always go last!
