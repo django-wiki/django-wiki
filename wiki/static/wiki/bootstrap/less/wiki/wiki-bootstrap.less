@@ -239,7 +239,8 @@ input[type=file] {float: none; width: auto;}
 }
 
 /* General styling, any kind of form input */
-.wiki-control input
+.wiki-control input[type=text],
+.wiki-control input[type=password]
 {
     display: inline-block;
     height: @input-height-base; // Make inputs at least the height of their button counterpart (base line-height + padding + border)
@@ -253,6 +254,7 @@ input[type=file] {float: none; width: auto;}
 }
 
 .form-horizontal .wiki-control input[type='text'],
+.form-horizontal .wiki-control input[type='password'],
 .form-horizontal .wiki-control select,
 .form-horizontal .wiki-control textarea
 {
@@ -262,7 +264,8 @@ input[type=file] {float: none; width: auto;}
 }
 
 /* other fields */
-.form-horizontal .wiki-control input
+.form-horizontal .wiki-control input[type=text],
+.form-horizontal .wiki-control input[type=password]
 {
     width: 280px;
     display: inline-block;
@@ -364,3 +367,10 @@ input[type=file] {float: none; width: auto;}
 *******************************/
 
 @import "codehilite.less";
+
+/******************************
+ TWITTER TYPEAHEAD
+*******************************/
+
+@import "typeahead.less";
+

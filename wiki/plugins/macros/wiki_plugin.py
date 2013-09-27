@@ -7,6 +7,7 @@ from wiki.plugins.macros import settings
 
 from wiki.plugins.macros.mdx.macro import MacroExtension
 from wiki.plugins.macros.mdx.toc import WikiTocExtension
+from wiki.plugins.macros.mdx.wikilinks import WikiLinkExtension
 
 class MacroPlugin(BasePlugin):
     
@@ -18,7 +19,7 @@ class MacroPlugin(BasePlugin):
                'form_class': None,
                'get_form_kwargs': (lambda a: {})}
     
-    markdown_extensions = [MacroExtension(), WikiTocExtension()]
+    markdown_extensions = [WikiLinkExtension(), MacroExtension(), WikiTocExtension()]
     
     def __init__(self):
         pass

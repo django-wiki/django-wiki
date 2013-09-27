@@ -6,6 +6,7 @@ README.rst
 testproject/testproject/whoosh_index/
 testproject/testproject/xapian_index/
 
+
 #Docs
 docs/_build
 docs/_build/*
