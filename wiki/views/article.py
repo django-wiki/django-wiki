@@ -720,8 +720,8 @@ class CreateRootView(FormView):
     template_name = 'wiki/create_root.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_superuser:
-            return redirect(settings.LOGIN_URL + "?next=" + reverse("wiki:root_create"))
+        if not self.request.user.is_superuser:
+            return redirect("wiki:root_missing")
 
         try:
             root = models.URLPath.root()
@@ -748,3 +748,7 @@ class CreateRootView(FormView):
         data = super(CreateRootView, self).get_context_data(**kwargs)
         data['editor'] = editors.getEditor()
         return data
+
+
+class MissingRootView(TemplateView):
+    template_name = 'wiki/root_missing.html'
