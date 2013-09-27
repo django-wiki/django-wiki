@@ -13,8 +13,8 @@ class ArticleIndex(indexes.SearchIndex, indexes.Indexable):
     other_read = indexes.BooleanField(model_attr='other_read',default=False)
     group_read = indexes.BooleanField(model_attr='group_read',default=False)
 
-    owner_id = indexes.IntegerField(model_attr='owner__id')
-    group_id = indexes.IntegerField(model_attr='group__id')
+    owner_id = indexes.IntegerField(model_attr='owner__id', null=True)
+    group_id = indexes.IntegerField(model_attr='group__id', null=True)
     
 
     def get_model(self):
