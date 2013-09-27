@@ -8,12 +8,16 @@
 
 <pre>[Title of link](wiki:ArticleSlug)</pre>
 
-<p>
-  <input type="text" class="page_title_query" id="links_page_title_query" value="" placeholder="Type to search..." style="max-width: 90%;" />
-  <button type="button" class="btn btn-default" onclick="wikiInsertLink()">
-    {% trans "Insert" %}
-  </button>
-</p>
+<div class="row">
+<div class="input-group col-sm-12">
+  <input type="text" class="page_title_query form-control" id="links_page_title_query" value="" placeholder="Type to search..." />
+  <span class="input-group-btn">
+    <button type="button" class="btn btn-default" onclick="wikiInsertLink()">
+      {% trans "Insert" %}
+    </button>
+  </span>
+</div>
+</div>
 
 <hr />
 
@@ -24,15 +28,15 @@
 </p>
 <pre>[Clickable text](http://example.com)</pre>
 
+{% addtoblock "js" %}<script type="text/javascript" src="{{ STATIC_URL }}wiki/js/typeahead.min.js"></script>{% endaddtoblock %}
 {% addtoblock "js" %}
 <script type="text/javascript">
-$('.page_title_query').typeahead({
-    source: function (query, process) {
-        return $.get('{% url 'wiki:links_query_urlpath' path=urlpath.path article_id=article.id %}', { query: query }, function (data) {
-            return process(data);
-        });
-    }
-});
+  $(document).ready(function() {
+      $('.page_title_query').typeahead({
+        remote: "{% url 'wiki:links_query_urlpath' path=urlpath.path article_id=article.id %}?query=%QUERY",
+        dataType: String
+      });
+  });
 
 function wikiInsertLink() {
   $('#id_content').insertAtCaret($('#links_page_title_query').val());
