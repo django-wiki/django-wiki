@@ -1,0 +1,14 @@
+{% extends "wiki/create_root.html" %}
+{% load i18n %}
+
+{% block wiki_contents %}
+
+  <h1>{% trans "Congratulations!" %}</h1>
+  <p class="lead">
+    {% trans "You have django-wiki installed... but there are no articles. So it's time to create the first one, the root article." %}
+  </p>
+  <p class="lead">
+    {% trans "In can be created and/or edited only by administrators, but you can define permissions after." %}
+  </p>
+
+{% endblock %}
