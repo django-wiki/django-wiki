@@ -118,11 +118,6 @@ class TocTreeprocessor(markdown.treeprocessors.Treeprocessor):
             c.append(anchor)
     
     def build_toc_etree(self, div, toc_list):
-        # Add title to the div
-        if self.config["title"]:
-            header = etree.SubElement(div, "span")
-            header.attrib["class"] = "toctitle"
-            header.text = self.config["title"]
 
         def build_etree_ul(toc_list, parent):
             ul = etree.SubElement(parent, "ul")
@@ -172,7 +167,7 @@ class TocTreeprocessor(markdown.treeprocessors.Treeprocessor):
                         p[i] = div
                         break
                 marker_found = True
-                            
+            
             if header_rgx.match(c.tag):
                 
                 # Do not override pre-existing ids 
@@ -233,7 +228,7 @@ class TocExtension(markdown.Extension):
         # by the header id extension) if both are used. Same goes for 
         # attr_list extension. This must come last because we don't want
         # to redefine ids after toc is created. But we do want toc prettified.
-        md.treeprocessors.add("toc", tocext, "<prettify")
+        md.treeprocessors.add("toc", tocext, ">headerid")
 
 
 def makeExtension(configs={}):
