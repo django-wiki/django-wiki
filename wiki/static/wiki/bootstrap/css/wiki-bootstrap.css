@@ -4403,7 +4403,8 @@ textarea.wiki-form-block select {
   border-radius: 3px;
 }
 /* General styling, any kind of form input */
-.wiki-control input {
+.wiki-control input[type=text],
+.wiki-control input[type=password] {
   height: 38px;
   padding: 8px 12px;
   font-size: 14px;
@@ -4414,6 +4415,7 @@ textarea.wiki-form-block select {
   display: inline-block;
 }
 .form-horizontal .wiki-control input[type='text'],
+.form-horizontal .wiki-control input[type='password'],
 .form-horizontal .wiki-control select,
 .form-horizontal .wiki-control textarea {
   display: block;
@@ -4435,26 +4437,31 @@ textarea.wiki-form-block select {
   display: inline-block;
 }
 .form-horizontal .wiki-control input[type='text']:-moz-placeholder,
+.form-horizontal .wiki-control input[type='password']:-moz-placeholder,
 .form-horizontal .wiki-control select:-moz-placeholder,
 .form-horizontal .wiki-control textarea:-moz-placeholder {
   color: #999999;
 }
 .form-horizontal .wiki-control input[type='text']::-moz-placeholder,
+.form-horizontal .wiki-control input[type='password']::-moz-placeholder,
 .form-horizontal .wiki-control select::-moz-placeholder,
 .form-horizontal .wiki-control textarea::-moz-placeholder {
   color: #999999;
 }
 .form-horizontal .wiki-control input[type='text']:-ms-input-placeholder,
+.form-horizontal .wiki-control input[type='password']:-ms-input-placeholder,
 .form-horizontal .wiki-control select:-ms-input-placeholder,
 .form-horizontal .wiki-control textarea:-ms-input-placeholder {
   color: #999999;
 }
 .form-horizontal .wiki-control input[type='text']::-webkit-input-placeholder,
+.form-horizontal .wiki-control input[type='password']::-webkit-input-placeholder,
 .form-horizontal .wiki-control select::-webkit-input-placeholder,
 .form-horizontal .wiki-control textarea::-webkit-input-placeholder {
   color: #999999;
 }
 .form-horizontal .wiki-control input[type='text']:focus,
+.form-horizontal .wiki-control input[type='password']:focus,
 .form-horizontal .wiki-control select:focus,
 .form-horizontal .wiki-control textarea:focus {
   border-color: rgba(82, 168, 236, 0.8);
@@ -4463,23 +4470,28 @@ textarea.wiki-form-block select {
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6);
 }
 .form-horizontal .wiki-control input[type='text'][disabled],
+.form-horizontal .wiki-control input[type='password'][disabled],
 .form-horizontal .wiki-control select[disabled],
 .form-horizontal .wiki-control textarea[disabled],
 .form-horizontal .wiki-control input[type='text'][readonly],
+.form-horizontal .wiki-control input[type='password'][readonly],
 .form-horizontal .wiki-control select[readonly],
 .form-horizontal .wiki-control textarea[readonly],
 fieldset[disabled] .form-horizontal .wiki-control input[type='text'],
+fieldset[disabled] .form-horizontal .wiki-control input[type='password'],
 fieldset[disabled] .form-horizontal .wiki-control select,
 fieldset[disabled] .form-horizontal .wiki-control textarea {
   cursor: not-allowed;
   background-color: #eeeeee;
 }
 textarea.form-horizontal .wiki-control input[type='text'],
+textarea.form-horizontal .wiki-control input[type='password'],
 textarea.form-horizontal .wiki-control select,
 textarea.form-horizontal .wiki-control textarea {
   height: auto;
 }
 .form-horizontal .wiki-control input[type='text'].input-large,
+.form-horizontal .wiki-control input[type='password'].input-large,
 .form-horizontal .wiki-control select.input-large,
 .form-horizontal .wiki-control textarea.input-large {
   height: 56px;
@@ -4488,6 +4500,7 @@ textarea.form-horizontal .wiki-control textarea {
   border-radius: 6px;
 }
 .form-horizontal .wiki-control input[type='text'].input-small,
+.form-horizontal .wiki-control input[type='password'].input-small,
 .form-horizontal .wiki-control select.input-small,
 .form-horizontal .wiki-control textarea.input-small {
   height: 30px;
@@ -4496,7 +4509,8 @@ textarea.form-horizontal .wiki-control textarea {
   border-radius: 3px;
 }
 /* other fields */
-.form-horizontal .wiki-control input {
+.form-horizontal .wiki-control input[type=text],
+.form-horizontal .wiki-control input[type=password] {
   width: 280px;
   display: inline-block;
 }
