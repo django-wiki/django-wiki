@@ -123,7 +123,7 @@ To install the latest stable release:
 
 `pip install wiki`
 
-Install directly from Github, since there is no release yet:
+Install directly from Github (in case you have no worries about deploying our master branch directly):
 
 `pip install git+git://github.com/benjaoming/django-wiki.git`
 
