@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.18\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-17 21:41+0200\n"
+"POT-Creation-Date: 2013-10-22 08:57+0200\n"
 "PO-Revision-Date: 2013-03-17 19:30+CET\n"
 "Last-Translator: Thomas Lottermann <TomLottermann@googlemail.com>\n"
 "Language-Team: \n"
@@ -31,8 +31,8 @@ msgstr ""
 #: forms.py:62
 #, fuzzy, python-format
 msgid ""
-"Spam protection: You are only allowed to create or edit %(revisions)d "
-"article(s) per %(interval_name)s."
+"Spam protection: You are only allowed to create or edit %(revisions)d article"
+"(s) per %(interval_name)s."
 msgstr ""
 "Spam Schutz: Du darfst pro %(interval_name)s nur %(revisions)d Artikel "
 "erzeugen oder verändern"
@@ -50,8 +50,9 @@ msgstr "%d Minuten"
 msgid "hour"
 msgstr "Stunde"
 
-#: forms.py:90 forms.py:98 forms.py:240 templates/wiki/dir.html:48
-#: templates/wiki/search.html:24
+#: forms.py:90 forms.py:98 forms.py:240
+#: plugins/search/haystack/templates/wiki/plugins/search/search.html:24
+#: templates/wiki/dir.html:48 templates/wiki/search.html:24
 msgid "Title"
 msgstr "Titel"
 
@@ -131,7 +132,7 @@ msgstr "Die Adresse darf nicht mit _ beginnen."
 
 #: forms.py:254
 msgid "'admin' is not a permitted slug name."
-msgstr ""
+msgstr "'admin' ist als Adresse erlaubt."
 
 #: forms.py:263
 #, python-format
@@ -496,6 +497,7 @@ msgstr "Bildrevisionen"
 #: plugins/attachments/forms.py:67
 msgid "Remove previous attachment revisions and their files (to save space)?"
 msgstr ""
+"Vorherige Versionen des Anhangs samt Dateien entfernen (um Platz zu sparen)?"
 
 #: plugins/attachments/forms.py:76
 msgid "File or zip archive"
@@ -906,8 +908,7 @@ msgstr ""
 "den Link klickst kommst du zum Artikelformular."
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:6
-#: plugins/highlighter/templates/wiki/plugins/links/sidebar.html:20
-#: plugins/links/templates/wiki/plugins/links/sidebar.html:20
+#: plugins/links/templates/wiki/plugins/links/sidebar.html:24
 msgid "An external link"
 msgstr "Ein externer Link"
 
@@ -933,40 +934,6 @@ msgstr "Listen"
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:38
 msgid "Tables"
 msgstr "Tabellen"
-
-#: plugins/highlighter/wiki_plugin.py:22 plugins/links/wiki_plugin.py:22
-msgid "Links"
-msgstr "Links"
-
-#: plugins/highlighter/templates/wiki/plugins/links/sidebar.html:3
-#: plugins/links/templates/wiki/plugins/links/sidebar.html:3
-msgid "Link to another wiki page"
-msgstr "Link zu anderer Wikiseite"
-
-#: plugins/highlighter/templates/wiki/plugins/links/sidebar.html:6
-#: plugins/links/templates/wiki/plugins/links/sidebar.html:6
-msgid ""
-"Type in something from another wiki page's title and auto-complete will help "
-"you create a tag for you wiki link. Tags for links look like this:"
-msgstr ""
-"Gib etwas aus dem Titel des anderen Wikieintrags ein. Auto-complete wird dir "
-"helfen, den Tag zu erstellen. Tags für links sehen so aus:"
-
-#: plugins/highlighter/templates/wiki/plugins/links/sidebar.html:14
-#: plugins/images/templates/wiki/plugins/images/sidebar.html:32
-#: plugins/links/templates/wiki/plugins/links/sidebar.html:14
-msgid "Insert"
-msgstr "Einfügen"
-
-#: plugins/highlighter/templates/wiki/plugins/links/sidebar.html:23
-#: plugins/links/templates/wiki/plugins/links/sidebar.html:23
-msgid ""
-"You can link to another website simply by inserting an address example.com "
-"or http://example.com or by using the markdown syntax:"
-msgstr ""
-"Du darfst auf eine andere Webseite verlinken indem du einfach eine Adresse "
-"(z.B. example.com oder http://example.com) eingibst oder folgende Syntax "
-"benutzt:"
 
 #: plugins/images/forms.py:17
 #, python-format
@@ -1112,6 +1079,11 @@ msgstr "Wähle ein Bild aus, mit dem das aktuelle ersetzt werden soll."
 msgid "Image id"
 msgstr "Bild id"
 
+#: plugins/images/templates/wiki/plugins/images/sidebar.html:32
+#: plugins/links/templates/wiki/plugins/links/sidebar.html:16
+msgid "Insert"
+msgstr "Einfügen"
+
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:48
 msgid "No images found for this article"
 msgstr "Es wurden keine Bilder für diesen Artikel gefunden"
@@ -1155,7 +1127,32 @@ msgstr ""
 "bilder sieht wie folgt aus, wobei mögliche Ausrichtungen \"right\" und \"left"
 "\" sind:"
 
-#: plugins/macros/wiki_plugin.py:15
+#: plugins/links/wiki_plugin.py:22
+msgid "Links"
+msgstr "Links"
+
+#: plugins/links/templates/wiki/plugins/links/sidebar.html:3
+msgid "Link to another wiki page"
+msgstr "Link zu anderer Wikiseite"
+
+#: plugins/links/templates/wiki/plugins/links/sidebar.html:6
+msgid ""
+"Type in something from another wiki page's title and auto-complete will help "
+"you create a tag for you wiki link. Tags for links look like this:"
+msgstr ""
+"Gib etwas aus dem Titel des anderen Wikieintrags ein. Auto-complete wird dir "
+"helfen, den Tag zu erstellen. Tags für links sehen so aus:"
+
+#: plugins/links/templates/wiki/plugins/links/sidebar.html:27
+msgid ""
+"You can link to another website simply by inserting an address example.com "
+"or http://example.com or by using the markdown syntax:"
+msgstr ""
+"Du darfst auf eine andere Webseite verlinken indem du einfach eine Adresse "
+"(z.B. example.com oder http://example.com) eingibst oder folgende Syntax "
+"benutzt:"
+
+#: plugins/macros/wiki_plugin.py:16
 msgid "Macros"
 msgstr "Macros"
 
@@ -1187,6 +1184,19 @@ msgstr "Füge ein Inhaltsverzeichnis passend zu den Überschriften ein."
 msgid "[TOC]"
 msgstr "[TOC]"
 
+#: plugins/macros/mdx/macro.py:90
+#, fuzzy
+msgid "WikiLinks"
+msgstr "WikiLinks"
+
+#: plugins/macros/mdx/macro.py:91
+msgid "Insert a link to another wiki page with a short notation."
+msgstr "Füge einen Link zu einer anderen Wikiseite mittels Kurznotation ein."
+
+#: plugins/macros/mdx/macro.py:92
+msgid "[[WikiLink]]"
+msgstr "[[WikiLink]]"
+
 #: plugins/macros/templates/wiki/plugins/macros/article_list.html:6
 msgid "Article index"
 msgstr "Artikelindex"
@@ -1203,7 +1213,7 @@ msgstr "Leere Benachrichtigungsliste"
 #: plugins/notifications/forms.py:25
 #, python-format
 msgid "%(title)s - %(url)s"
-msgstr ""
+msgstr "%(title)s - %(url)s"
 
 # ################ PLUGINS #################
 #: plugins/notifications/forms.py:41
@@ -1213,23 +1223,23 @@ msgstr "Beschreibung"
 
 #: plugins/notifications/forms.py:43
 msgid "Select article subscriptions to remove from notifications"
-msgstr ""
+msgstr "Artikel Abonnements auswählen um Benachrichtigungen zu entfernen"
 
 #: plugins/notifications/forms.py:47
 msgid "Email digests"
-msgstr ""
+msgstr "Email Benachrichtigungen"
 
 #: plugins/notifications/forms.py:49
 msgid "Unchanged (selected on each article)"
-msgstr ""
+msgstr "Unverändert (bei jedem Artikel ausgewählt)"
 
 #: plugins/notifications/forms.py:50
 msgid "No emails"
-msgstr ""
+msgstr "Keine Emails"
 
 #: plugins/notifications/forms.py:51
 msgid "Email on any change"
-msgstr ""
+msgstr "Email bei jeder Veränderung"
 
 #: plugins/notifications/forms.py:101
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:5
@@ -1300,7 +1310,7 @@ msgstr "Deine Benachrichtigungseinstellungen wurden aktualisiert."
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:11
 msgid "Manage how often you receive notifications"
-msgstr ""
+msgstr "Wähle aus wie oft du Benachrichtigungen erhalten willst"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:20
 #, fuzzy
@@ -1314,13 +1324,39 @@ msgstr "Artikel"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:27
 msgid "You are not subscribed to any notifications yet."
-msgstr ""
+msgstr "Du hast noch keine Benachrichtigungen abonniert."
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:35
 #: templates/wiki/edit.html:46 templates/wiki/edit.html.py:77
 #: templates/wiki/settings.html:18
 msgid "Save changes"
 msgstr "Speichern"
+
+#: plugins/search/haystack/wiki_plugin.py:19
+msgid "Search"
+msgstr "Suchen"
+
+#: plugins/search/haystack/templates/wiki/plugins/search/search.html:5
+#: plugins/search/haystack/templates/wiki/plugins/search/search.html:9
+#: templates/wiki/search.html:5 templates/wiki/search.html.py:9
+msgid "Search results for:"
+msgstr "Suchergebnisse für:"
+
+#: plugins/search/haystack/templates/wiki/plugins/search/search.html:17
+#: templates/wiki/search.html:17
+#, python-format
+msgid "Your search returned <strong>%(cnt)s</strong> results."
+msgstr "Deine Suche hat <strong>%(cnt)s</strong> Ergebnisse geliefert."
+
+#: plugins/search/haystack/templates/wiki/plugins/search/search.html:25
+#: templates/wiki/dir.html:50 templates/wiki/search.html:25
+msgid "Last modified"
+msgstr "Zuletzt modifiziert"
+
+#: plugins/search/haystack/templates/wiki/plugins/search/search.html:53
+#: templates/wiki/dir.html:74 templates/wiki/search.html:34
+msgid "There are no articles in this level"
+msgstr "Es gibt keine Artikel auf dieser Ebene"
 
 # ############################### Rest #######################################
 #: templates/wiki/article.html:39
@@ -1509,14 +1545,6 @@ msgstr ""
 "Ebene.\n"
 "    "
 
-#: templates/wiki/dir.html:50 templates/wiki/search.html:25
-msgid "Last modified"
-msgstr "Zuletzt modifiziert"
-
-#: templates/wiki/dir.html:74 templates/wiki/search.html:34
-msgid "There are no articles in this level"
-msgstr "Es gibt keine Artikel auf dieser Ebene"
-
 #: templates/wiki/edit.html:5 templates/wiki/includes/article_menu.html:34
 msgid "Edit"
 msgstr "Bearbeiten"
@@ -1674,18 +1702,11 @@ msgstr ""
 
 #: templates/wiki/root_missing.html:11
 msgid ""
-"In can be created and/or edited only by administrators, but you can define "
+"It can be created and/or edited only by administrators, but you can define "
 "permissions after."
 msgstr ""
-
-#: templates/wiki/search.html:5 templates/wiki/search.html.py:9
-msgid "Search results for:"
-msgstr "Suchergebnisse für:"
-
-#: templates/wiki/search.html:17
-#, python-format
-msgid "Your search returned <strong>%(cnt)s</strong> results."
-msgstr "Deine Suche hat <strong>%(cnt)s</strong> Ergebnisse geliefert."
+"Er kann nur von Administratoren erstellt und/oder bearbeitet werden. Die "
+"Berechtigungen können allerdings danach geändert werden."
 
 #: templates/wiki/settings.html:5 templates/wiki/includes/article_menu.html:9
 msgid "Settings"
@@ -1790,7 +1811,7 @@ msgstr "entsprerrt"
 
 #: views/accounts.py:45
 msgid "Account signup is only allowed for administrators."
-msgstr ""
+msgstr "Die Registrierung ist nur für Administratoren erlaubt."
 
 #: views/accounts.py:58
 msgid "You are now signed up... and now you can sign in!"
@@ -1890,6 +1911,3 @@ msgstr ""
 #~ msgstr ""
 #~ "Deine Datei konnte nicht gespeichert werden. Das liegt wahrscheinlich an "
 #~ "einem Rechtefehler auf dem Webserver."
-
-#~ msgid "Search"
-#~ msgstr "Suchen"

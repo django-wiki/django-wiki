@@ -86,7 +86,7 @@ class MacroPreprocessor(markdown.preprocessors.Preprocessor):
 
     def wikilink(self):
         return ""
-    toc.meta = dict(
+    wikilink.meta = dict(
         short_description = _(u'WikiLinks'),
         help_text = _(u'Insert a link to another wiki page with a short notation.'),
         example_code = _(u'[[WikiLink]]'),
