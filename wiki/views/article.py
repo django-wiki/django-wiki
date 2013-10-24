@@ -720,7 +720,8 @@ class CreateRootView(FormView):
     template_name = 'wiki/create_root.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if not self.request.user.is_superuser:
+
+        if not request.user.is_superuser:
             return redirect("wiki:root_missing")
 
         try:
