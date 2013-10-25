@@ -307,7 +307,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
     owner_username = forms.CharField(required=False, label=_(u'Owner'),
                                      help_text=_(u'Enter the username of the owner.'))
     group = forms.ModelChoiceField(models.Group.objects.all(), empty_label=_(u'(none)'),
-                                     required=False)
+                                     label=_(u'Group'), required=False)
     if settings.USE_BOOTSTRAP_SELECT_WIDGET:
         group.widget= SelectWidgetBootstrap()
     

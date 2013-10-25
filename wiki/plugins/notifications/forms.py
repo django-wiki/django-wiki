@@ -14,10 +14,10 @@ from wiki.plugins.notifications import models
 
 class SettingsModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
-        return _(u"Receive notifications %(interval)s" % {
+        return _(u"Receive notifications %(interval)s") % {
                        'interval': obj.get_interval_display()
                    }
-               )
+               
 
 
 class ArticleSubscriptionModelMultipleChoiceField(forms.ModelMultipleChoiceField):
@@ -105,6 +105,7 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
     settings = SettingsModelChoiceField(
         Settings,
         empty_label=None,
+        label=_(u'Settings')
     )
     edit = forms.BooleanField(
         required=False, 

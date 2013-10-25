@@ -2,15 +2,16 @@
 # Copyright (C) 2013 ROSTISLAV GRIGORIEV
 # This file is distributed under the same license as the DJANGO-WIKI package.
 # Rostislav Grigoriev <hjcnbckfd@gmail.com>, 2013.
+# Corrections: Sergey Minozhenko <sergey.minozhenko@stratatech.ru> and Mary Chikitkina<mchikitkina@gmail.com>, 2013.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.18\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-17 21:41+0200\n"
+"POT-Creation-Date: 2013-10-25 15:23+0400\n"
 "PO-Revision-Date: 2013-03-17 19:30+CET\n"
-"Last-Translator: Rostislav Grigoriev <hjcnbckfd@gmail.com>\n"
+"Last-Translator: Sergey Minozhenko <sergey.minozhenko@stratatech.ru>\n"
 "Language-Team: \n"
 "Language: Russian\n"
 "MIME-Version: 1.0\n"
@@ -27,7 +28,7 @@ msgid "Spam protection failed to find both a logged in user and an IP address."
 msgstr "Блокировщику спама не удалось найти пользователя и IP-адрес."
 
 #: forms.py:62
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Spam protection: You are only allowed to create or edit %(revisions)d "
 "article(s) per %(interval_name)s."
@@ -90,9 +91,9 @@ msgid ""
 "have been automatically merged with the new contents. Please review the text "
 "below."
 msgstr ""
-"В то время как вы редатировали, кто-то изменил ревизию. Ваши изменения были "
-"автоматически объединены с новым содержанием. Пожалуйста, ознакомтесь с "
-"текстом ниже."
+"В то время как вы редатировали статью, кто-то изменил ревизию. Ваши "
+"изменения были автоматически объединены с новым содержанием. Пожалуйста, "
+"ознакомтесь с текстом ниже."
 
 #: forms.py:154
 msgid "No changes made. Nothing to save."
@@ -127,7 +128,7 @@ msgstr "Адрес (URL Path) не может начинаться с симво
 
 #: forms.py:254
 msgid "'admin' is not a permitted slug name."
-msgstr ""
+msgstr "Адрес (URL Path) не может называться 'admin'."
 
 #: forms.py:263
 #, python-format
@@ -153,9 +154,10 @@ msgid ""
 "Purging is a good idea if you want to free the slug such that users can "
 "create new articles in its place."
 msgstr ""
-"Очистить статью: полное удаление (со всем содержимым) безвозвратно. Очистка "
-"статьи может быть полезна в том случае, если вы хотите освободить адрес URL, "
-"чтобы пользователи могли создать новую статью по этому адресу."
+"Очистить статью: полное удаление (со всем содержимым) без возможности "
+"восстановить. Очистка статьи может быть полезна в том случае, если вы хотите "
+"освободить адрес URL, чтобы пользователи могли создать новую статью по этому "
+"адресу."
 
 #: forms.py:292 plugins/attachments/forms.py:157 plugins/images/forms.py:66
 msgid "You are not sure enough!"
@@ -189,6 +191,10 @@ msgstr "Введите имя (ник) владельца."
 #: forms.py:309 forms.py:353 plugins/notifications/util.py:10
 msgid "(none)"
 msgstr "(пусто)"
+
+#: forms.py:310
+msgid "Group"
+msgstr "Группа"
 
 #: forms.py:314
 msgid "Inherit permissions"
@@ -239,18 +245,17 @@ msgstr "Нет пользователя на указанное имя (ник).
 
 #: forms.py:402
 msgid "Article locked for editing"
-msgstr "Статья заблокирована от редактирования"
+msgstr "Статья доступна для редактирования"
 
 #: forms.py:409
 msgid "Article unlocked for editing"
-msgstr "Статья разблокирована для редактирования"
+msgstr "Статья не доступна для редактирования"
 
 #: forms.py:424
 msgid "Filter..."
 msgstr "Фильтр..."
 
 #: forms.py:430 templates/wiki/base.html:42
-#, fuzzy
 msgid "Search..."
 msgstr "Поиск..."
 
@@ -332,7 +337,7 @@ msgstr "Статья без содержания (%(id)d)"
 #: models/article.py:149
 msgid "Can edit all articles and lock/unlock/restore"
 msgstr ""
-"Darf alle Artikel bearbeiten und sie sperren/entsperren/wiederherstellen"
+"Может редактировать, блокировать, разблокировать и восстанавливать все статьи"
 
 #: models/article.py:150
 msgid "Can change ownership of any article"
@@ -348,7 +353,7 @@ msgstr ""
 
 #: models/article.py:195
 msgid "object ID"
-msgstr "ID"
+msgstr ""
 
 #: models/article.py:202
 msgid "Article for object"
@@ -356,7 +361,7 @@ msgstr "Статья для объекта"
 
 #: models/article.py:203
 msgid "Articles for object"
-msgstr "Статьи для объектов"
+msgstr "Статьи для объекта"
 
 #: models/article.py:211
 msgid "revision number"
@@ -429,7 +434,7 @@ msgstr "Кэш-значение статьи"
 
 #: models/urlpath.py:44
 msgid "slug"
-msgstr ""
+msgstr "URL-путь"
 
 #: models/urlpath.py:141
 msgid "(root)"
@@ -437,11 +442,11 @@ msgstr "(корень)"
 
 #: models/urlpath.py:151
 msgid "URL path"
-msgstr ""
+msgstr "Адрес (URL)"
 
 #: models/urlpath.py:152
 msgid "URL paths"
-msgstr ""
+msgstr "Адреса (URL)"
 
 #: models/urlpath.py:158
 msgid "Sorry but you cannot have a root article with a slug."
@@ -485,13 +490,14 @@ msgid "A short summary of what the file contains"
 msgstr "Краткое описание содержания файла"
 
 #: plugins/attachments/forms.py:66
-#, fuzzy
 msgid "Remove previous"
-msgstr "ревизии изображения"
+msgstr "Удалить предыдущие"
 
 #: plugins/attachments/forms.py:67
 msgid "Remove previous attachment revisions and their files (to save space)?"
 msgstr ""
+"Удалить предыдущие ревизии вложений и их файлы (для освобождения свободного "
+"места)"
 
 #: plugins/attachments/forms.py:76
 msgid "File or zip archive"
@@ -797,7 +803,6 @@ msgstr ""
 "добавить вложение."
 
 #: plugins/attachments/templates/wiki/plugins/attachments/render.html:6
-#, fuzzy
 msgid "This attachment is not permitted on this page."
 msgstr "К этой статье больше не привязан файл %s."
 
@@ -829,7 +834,7 @@ msgstr ""
 "  "
 
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:17
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "  Articles using %(filename)s\n"
@@ -901,8 +906,7 @@ msgstr ""
 "создадите страницу."
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:6
-#: plugins/highlighter/templates/wiki/plugins/links/sidebar.html:20
-#: plugins/links/templates/wiki/plugins/links/sidebar.html:20
+#: plugins/links/templates/wiki/plugins/links/sidebar.html:24
 msgid "An external link"
 msgstr "Внешняя ссылка"
 
@@ -926,39 +930,6 @@ msgstr "Списки"
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:38
 msgid "Tables"
 msgstr "Таблицы"
-
-#: plugins/highlighter/wiki_plugin.py:22 plugins/links/wiki_plugin.py:22
-msgid "Links"
-msgstr "Ссылки"
-
-#: plugins/highlighter/templates/wiki/plugins/links/sidebar.html:3
-#: plugins/links/templates/wiki/plugins/links/sidebar.html:3
-msgid "Link to another wiki page"
-msgstr "Ссылка на другую вики-страницу"
-
-#: plugins/highlighter/templates/wiki/plugins/links/sidebar.html:6
-#: plugins/links/templates/wiki/plugins/links/sidebar.html:6
-msgid ""
-"Type in something from another wiki page's title and auto-complete will help "
-"you create a tag for you wiki link. Tags for links look like this:"
-msgstr ""
-"Введите часть названия другой вики-страницы и автозаполнения поможет вам "
-"создать тег для вики ссылки. Теги для ссылки выглядеть следующим образом:"
-
-#: plugins/highlighter/templates/wiki/plugins/links/sidebar.html:14
-#: plugins/images/templates/wiki/plugins/images/sidebar.html:32
-#: plugins/links/templates/wiki/plugins/links/sidebar.html:14
-msgid "Insert"
-msgstr "Вставить"
-
-#: plugins/highlighter/templates/wiki/plugins/links/sidebar.html:23
-#: plugins/links/templates/wiki/plugins/links/sidebar.html:23
-msgid ""
-"You can link to another website simply by inserting an address example.com "
-"or http://example.com or by using the markdown syntax:"
-msgstr ""
-"Можно сделать ссылку на другой сайт, просто вставив адрес example.com или "
-"http://example.com или с помощью markdown синтаксиса:"
 
 #: plugins/images/forms.py:17
 #, python-format
@@ -1104,6 +1075,11 @@ msgstr "Выберите изображение для замены текуще
 msgid "Image id"
 msgstr "ID изображения"
 
+#: plugins/images/templates/wiki/plugins/images/sidebar.html:32
+#: plugins/links/templates/wiki/plugins/links/sidebar.html:16
+msgid "Insert"
+msgstr "Вставить"
+
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:48
 msgid "No images found for this article"
 msgstr "Нет найдено изображений для этой статьи"
@@ -1147,7 +1123,31 @@ msgstr ""
 "подписи. Синтаксис Markdown-кода изображения выглядит следующим образом, "
 "возможные значения для выравнивания \"слева\" и \"справа\" : "
 
-#: plugins/macros/wiki_plugin.py:15
+#: plugins/links/wiki_plugin.py:22
+msgid "Links"
+msgstr "Ссылки"
+
+#: plugins/links/templates/wiki/plugins/links/sidebar.html:3
+msgid "Link to another wiki page"
+msgstr "Ссылка на другую вики-страницу"
+
+#: plugins/links/templates/wiki/plugins/links/sidebar.html:6
+msgid ""
+"Type in something from another wiki page's title and auto-complete will help "
+"you create a tag for you wiki link. Tags for links look like this:"
+msgstr ""
+"Введите часть названия другой вики-страницы и автозаполнения поможет вам "
+"создать тег для вики ссылки. Теги для ссылки выглядеть следующим образом:"
+
+#: plugins/links/templates/wiki/plugins/links/sidebar.html:27
+msgid ""
+"You can link to another website simply by inserting an address example.com "
+"or http://example.com or by using the markdown syntax:"
+msgstr ""
+"Можно сделать ссылку на другой сайт, просто вставив адрес example.com или "
+"http://example.com или с помощью markdown синтаксиса:"
+
+#: plugins/macros/wiki_plugin.py:16
 msgid "Macros"
 msgstr "Макрос"
 
@@ -1179,6 +1179,18 @@ msgstr "Вставка оглавления с соответствующими 
 msgid "[TOC]"
 msgstr "[TOC]"
 
+#: plugins/macros/mdx/macro.py:90
+msgid "WikiLinks"
+msgstr "Вики-ссылки"
+
+#: plugins/macros/mdx/macro.py:91
+msgid "Insert a link to another wiki page with a short notation."
+msgstr "Вставить ссылку на другую страницу с комментарием"
+
+#: plugins/macros/mdx/macro.py:92
+msgid "[[WikiLink]]"
+msgstr ""
+
 #: plugins/macros/templates/wiki/plugins/macros/article_list.html:6
 msgid "Article index"
 msgstr "Дерево статей"
@@ -1188,9 +1200,9 @@ msgid "Nothing below this level"
 msgstr "Нет подпунктов"
 
 #: plugins/notifications/forms.py:17
-#, fuzzy, python-format
+#, python-format
 msgid "Receive notifications %(interval)s"
-msgstr "Очистить список уведомлений"
+msgstr "Получать уведомления %(interval)s"
 
 #: plugins/notifications/forms.py:25
 #, python-format
@@ -1199,29 +1211,29 @@ msgstr ""
 
 # ################ PLUGINS #################
 #: plugins/notifications/forms.py:41
-#, fuzzy
 msgid "Remove subscriptions"
-msgstr "Описание"
+msgstr "Удалить подписки"
 
 #: plugins/notifications/forms.py:43
 msgid "Select article subscriptions to remove from notifications"
-msgstr ""
+msgstr "Выберите подписки на статьи, для которых вы больше не хотите"
+" получать уведомления"
 
 #: plugins/notifications/forms.py:47
 msgid "Email digests"
-msgstr ""
+msgstr "Уведомления по эл. почте"
 
 #: plugins/notifications/forms.py:49
 msgid "Unchanged (selected on each article)"
-msgstr ""
+msgstr "Без изменений"
 
 #: plugins/notifications/forms.py:50
 msgid "No emails"
-msgstr ""
+msgstr "Не получать уведомления по эл. почте"
 
 #: plugins/notifications/forms.py:51
 msgid "Email on any change"
-msgstr ""
+msgstr "Получать уведомления по эл. почте при каждом изменении"
 
 #: plugins/notifications/forms.py:101
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:5
@@ -1278,32 +1290,28 @@ msgid "Clear notifications list"
 msgstr "Очистить список уведомлений"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/menubaritem.html:15
-#, fuzzy
 msgid "Notification settings"
-msgstr "Уведомления"
+msgstr "Настройки уведомлений"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:9
-#, fuzzy
 msgid "Your notification settings"
-msgstr "Настройки уведомлений были обновлены."
+msgstr "Ваши настройки уведомлений"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:11
 msgid "Manage how often you receive notifications"
-msgstr ""
+msgstr "Настройка периодичности получения уведомлений"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:20
-#, fuzzy
 msgid "Settings for"
-msgstr "Настройки"
+msgstr "Настройки для"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:20
-#, fuzzy
 msgid "articles"
-msgstr "статья"
+msgstr "статей"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:27
 msgid "You are not subscribed to any notifications yet."
-msgstr ""
+msgstr "У вас пока не настроено ни одно уведомление."
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:35
 #: templates/wiki/edit.html:46 templates/wiki/edit.html.py:77
@@ -1364,24 +1372,20 @@ msgid "Congratulations!"
 msgstr "Поздравления!"
 
 #: templates/wiki/create_root.html:24 templates/wiki/root_missing.html:8
-#, fuzzy
 msgid ""
 "You have django-wiki installed... but there are no articles. So it's time to "
 "create the first one, the root article."
 msgstr ""
 "Django-вики установлена... Но статей еще нет. Так что пришло время для "
-"создания первой, основной статьи. Сначала, ее сможет редактировать только "
-"администратором, но вы можете определить права доступа."
+"создания первой, основной статьи."
 
 #: templates/wiki/create_root.html:25
-#, fuzzy
 msgid ""
 "In the beginning, it will only be editable by administrators, but you can "
 "define permissions after."
 msgstr ""
-"Django-вики установлена... Но статей еще нет. Так что пришло время для "
-"создания первой, основной статьи. Сначала, ее сможет редактировать только "
-"администратором, но вы можете определить права доступа."
+"Сейчас, ее сможет редактировать только администратор, но, позже, вы можете "
+"определить права доступа."
 
 #: templates/wiki/create_root.html:28
 msgid "Root article"
@@ -1654,9 +1658,11 @@ msgstr "Восстановление к этой ревизии отметит �
 
 #: templates/wiki/root_missing.html:11
 msgid ""
-"In can be created and/or edited only by administrators, but you can define "
+"It can be created and/or edited only by administrators, but you can define "
 "permissions after."
 msgstr ""
+"Страница может быть создана и/или отредактирована только администраторами, "
+"но вы можете настроить права позже."
 
 #: templates/wiki/search.html:5 templates/wiki/search.html.py:9
 msgid "Search results for:"

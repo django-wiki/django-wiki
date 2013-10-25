@@ -1,7 +1,8 @@
 from django.conf import settings as django_settings
 from django import VERSION as DJANGO_VERSION
+from django.utils.translation import ugettext_lazy
 
-_ = lambda x: x
+_ = lambda x: ugettext_lazy(x)
 
 DB_TABLE_PREFIX = 'notify'
 
