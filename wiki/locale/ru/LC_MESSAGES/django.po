@@ -245,11 +245,11 @@ msgstr "Нет пользователя на указанное имя (ник).
 
 #: forms.py:402
 msgid "Article locked for editing"
-msgstr "Статья доступна для редактирования"
+msgstr "Статья не доступна для редактирования"
 
 #: forms.py:409
 msgid "Article unlocked for editing"
-msgstr "Статья не доступна для редактирования"
+msgstr "Статья доступна для редактирования"
 
 #: forms.py:424
 msgid "Filter..."
