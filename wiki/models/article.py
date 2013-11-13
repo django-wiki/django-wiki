@@ -228,8 +228,14 @@ class BaseRevisionMixin(models.Model):
     # NOTE! The semantics of these fields are not related to the revision itself
     # but the actual related object. If the latest revision says "deleted=True" then
     # the related object should be regarded as deleted.
-    deleted = models.BooleanField(verbose_name=_(u'deleted'))
-    locked  = models.BooleanField(verbose_name=_(u'locked'))
+    deleted = models.BooleanField(
+        verbose_name=_(u'deleted'),
+        default=False,
+    )
+    locked  = models.BooleanField(
+        verbose_name=_(u'locked'),
+        default=False,
+    )
 
     def set_from_request(self, request):
         if request.user.is_authenticated():
