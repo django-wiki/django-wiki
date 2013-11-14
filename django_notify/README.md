@@ -8,10 +8,12 @@ and we will try to get the keys for their PyPi repo or something... but meanwhil
 
 django_notify does this:
 
-    from django_notify import notify
-    
-    EVENT_KEY = "my_key"
-    notify(_("OMG! Something happened"), EVENT_KEY)
+```python
+from django_notify import notify
+
+EVENT_KEY = "my_key"
+notify(_("OMG! Something happened"), EVENT_KEY)
+```
 
 All users subscribing to `EVENT_KEY` will have a notification created in their
 stack. If you have emails enabled, they may get a summary of notifications at an
@@ -35,30 +37,32 @@ this:
 
 Here is a snippet example to get you started, but you need to get ui.js from [django-wiki/plugins/notifications](https://github.com/benjaoming/django-wiki/tree/master/wiki/plugins/notifications)
 
-    <h2>Notifications:</h2>
-    <ul>
-      <li class="notifications-empty"><a href="#"><em>{% trans "No notifications" %}</em></a></li>
-      <li class="divider"></li>
-      <li>
-        <a href="#" onclick="notify_mark_read()">
-          <i class="icon-check"></i>
-          {% trans "Clear notifications list" %}
-        </a>
-      </li>
-      <!-- Example of a settings page linked directly under the notifications -->
-      <li>
-        <a href="{% url 'wiki:notification_settings' %}">
-          <i class="icon-wrench"></i>
-          {% trans "Notification settings" %}
-        </a>
-      </li>
-    </ul>
-    <script type="text/javascript">
-      URL_NOTIFY_GET_NEW = "{% url "notify:json_get" %}";
-      URL_NOTIFY_MARK_READ = "{% url "notify:json_mark_read_base" %}";
-      URL_NOTIFY_GOTO = "{% url "notify:goto_base" %}";
-    </script>
-    <script type="text/javascript" src="{{ STATIC_URL }}wiki/plugins/notifications/js/ui.js"></script>
+```html
+<h2>Notifications:</h2>
+<ul>
+  <li class="notifications-empty"><a href="#"><em>{% trans "No notifications" %}</em></a></li>
+  <li class="divider"></li>
+  <li>
+    <a href="#" onclick="notify_mark_read()">
+      <i class="icon-check"></i>
+      {% trans "Clear notifications list" %}
+    </a>
+  </li>
+  <!-- Example of a settings page linked directly under the notifications -->
+  <li>
+    <a href="{% url 'wiki:notification_settings' %}">
+      <i class="icon-wrench"></i>
+      {% trans "Notification settings" %}
+    </a>
+  </li>
+</ul>
+<script type="text/javascript">
+  URL_NOTIFY_GET_NEW = "{% url "notify:json_get" %}";
+  URL_NOTIFY_MARK_READ = "{% url "notify:json_mark_read_base" %}";
+  URL_NOTIFY_GOTO = "{% url "notify:goto_base" %}";
+</script>
+<script type="text/javascript" src="{{ STATIC_URL }}wiki/plugins/notifications/js/ui.js"></script>
+```
 
 Usage
 -----
@@ -66,10 +70,12 @@ Usage
 
 ### Adding a notification
 
+```python
     from django_notify import notify
     
     EVENT_KEY = "my_key"
     notify(_("OMG! Something happened"), EVENT_KEY)
+```
 
 ### Adding a notification with a certain target object
 
@@ -77,7 +83,9 @@ The Notification model has a GenericForeignKey which can link it to any other
 object. This is nice, because you might have an intention to go the other way
 around and ask "for this object, are there any notifications?"
 
+```python
     notify(_("OMG! Something happened"), EVENT_KEY, target_object=my_model_instance)
+```
 
 ### Excluding certain recepients
 
@@ -85,10 +93,12 @@ By setting the kwarg `filter_exclude` to a dictionary of lookup fields for
 `models.Subscription`, you may exclude certain users from getting a notification.
 For instance, if a notification is solely for staff members:
 
+```python
     notify(
         _("OMG! Something happened"), EVENT_KEY, 
         filter_exclude={'settings__user__is_staff': True}
     )
+```
 
 ### Disabling notifications
 
@@ -96,10 +106,12 @@ Use `decorators.disable_notify` to ensure that all notifications within a functi
 
 For instance:
 
+```python
     from django_notify.decorators import disable_notify
     @disable_notify
     def my_view(request):
         ...
+```
 
 *This is a work in progress*
 ----------------------------
