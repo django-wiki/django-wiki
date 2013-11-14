@@ -30,12 +30,14 @@ What do you need to do?
 
 You need to do a lot. Firstly, you need to write some javascript that will
 fetch the latest notifications and display them in some area of the screen.
-Upon clicking that icon, they latest notifications are displayed. Something like
+Upon clicking that icon, the latest notifications are displayed. Something like
 this:
 
 ![Javascript drop-down](./docs/misc/screenshot_dropdown.png)
 
-Here is a snippet example to get you started, but you need to get ui.js from [django-wiki/plugins/notifications](https://github.com/benjaoming/django-wiki/tree/master/wiki/plugins/notifications)
+Here is a snippet example to get you started, but you need to get ui.js from [django-wiki/plugins/notifications](https://github.com/benjaoming/django-wiki/tree/master/wiki/plugins/notifications/static/wiki/plugins/notifications/js)
+which is a couple of utility functions that use JQuery to get notifications from
+a JSON view and display them in the right DOM element.
 
 ```html
 <h2>Notifications:</h2>
