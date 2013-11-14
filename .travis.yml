@@ -6,6 +6,7 @@ python:
 install:
   - pip install -r .travis/requirements_1.4.txt
   - pip install -r .travis/requirements_1.5.txt
+  - pip install -r .travis/requirements_1.6.txt
 script:
   - python -W error:"":"":0 testproject/manage.py test wiki --settings=testproject.settings.travis
 
