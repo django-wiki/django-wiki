@@ -689,7 +689,7 @@ def root_create(request):
     else:
         create_form = forms.CreateRootForm()
     
-    c = RequestContext(request, {'create_form': create_form,
+    c = RequestContext(request, {'form': create_form,
                                  'editor': editors.getEditor(),})
     return render_to_response("wiki/article/create_root.html", context_instance=c)
 
