@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseNotFound, \
-    HttpResponseForbidden
+    HttpResponseForbidden, HttpResponseRedirect
 
 from django.shortcuts import redirect, get_object_or_404
 from django.template.context import RequestContext
@@ -90,7 +90,7 @@ def get_article(func=None, can_read=True, can_write=False,
                     pathlist = filter(lambda x: x!="", path.split("/"),)
                     path = "/".join(pathlist[:-1])
                     parent = models.URLPath.get_by_path(path)
-                    return redirect(reverse("wiki:create", kwargs={'path': parent.path,}) + "?slug=%s" % pathlist[-1])
+                    return HttpResponseRedirect(reverse("wiki:create", kwargs={'path': parent.path,}) + "?slug=%s" % pathlist[-1])
                 except models.URLPath.DoesNotExist:
                     c = RequestContext(request, {'error_type' : 'ancestors_missing'})
                     return HttpResponseNotFound(render_to_string("wiki/error.html", context_instance=c))
@@ -101,7 +101,7 @@ def get_article(func=None, can_read=True, can_write=False,
                 # Be robust: Somehow article is gone but urlpath exists... clean up
                 return_url = reverse('wiki:get', kwargs={'path': urlpath.parent.path})
                 urlpath.delete()
-                return redirect(return_url)
+                return HttpResponseRedirect(return_url)
         
         
         # fetch by article.id
