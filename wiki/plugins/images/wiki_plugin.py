@@ -33,7 +33,7 @@ class ImagePlugin(BasePlugin):
     
     class RenderMedia:
         js = [
-            'wiki/colorbox/colorbox/jquery.colorbox-min.js',
+            'wiki/colorbox/jquery.colorbox-min.js',
             'wiki/js/images.js',
         ]
         
