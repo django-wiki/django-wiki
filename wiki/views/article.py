@@ -107,11 +107,12 @@ class Create(FormView, ArticleMixin):
         return redirect('wiki:get', self.newpath.path)
 
     def get_context_data(self, **kwargs):
-        kwargs['parent_urlpath'] = self.urlpath
-        kwargs['parent_article'] = self.article
-        kwargs['create_form'] = kwargs.pop('form', None)
-        kwargs['editor'] = editors.getEditor()
-        return super(Create, self).get_context_data(**kwargs)
+        c = ArticleMixin.get_context_data(self, **kwargs)
+        c['parent_urlpath'] = self.urlpath
+        c['parent_article'] = self.article
+        c['create_form'] = kwargs.pop('form', None)
+        c['editor'] = editors.getEditor()
+        return c
 
 
 class Delete(FormView, ArticleMixin):
