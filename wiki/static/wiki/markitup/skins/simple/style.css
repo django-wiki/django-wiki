@@ -17,27 +17,21 @@
 }
 .markItUpContainer  {
 	font:11px Verdana, Arial, Helvetica, sans-serif;
-	
-}
-.markItUpHeader
-{
-    padding-top: 5px;
-    padding-bottom: 15px;
 }
 .markItUpEditor {
 	font:12px 'Courier New', Courier, monospace;
 	padding:5px;
 	width:690px;
 	height:320px;
-	clear:both; display:block;
+	clear:both;
 	line-height:18px;
 	overflow:auto;
 }
 .markItUpPreviewFrame	{
 	overflow:auto;
-	background-color:#FFFFFF;
+	background-color:#FFF;
 	width:99.9%;
-	height:350px;
+	height:300px;
 	margin:5px 0;
 }
 .markItUpFooter {

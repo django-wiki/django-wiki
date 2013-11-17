@@ -6,6 +6,7 @@ from django.utils.safestring import mark_safe
 
 from wiki.editors.base import BaseEditor
 
+
 class MarkItUpAdminWidget(forms.Widget):
     """A simplified more fail-safe widget for the backend"""
     def __init__(self, attrs=None):
@@ -22,6 +23,7 @@ class MarkItUpAdminWidget(forms.Widget):
         return mark_safe(u'<textarea%s>%s</textarea>' % (flatatt(final_attrs),
                 conditional_escape(force_unicode(value))))
 
+
 class MarkItUpWidget(forms.Widget):
     def __init__(self, attrs=None):
         # The 'rows' and 'cols' attributes are required for HTML correctness.
@@ -36,6 +38,7 @@ class MarkItUpWidget(forms.Widget):
         final_attrs = self.build_attrs(attrs, name=name)
         return mark_safe(u'<div><textarea%s>%s</textarea></div>' % (flatatt(final_attrs),
                 conditional_escape(force_unicode(value))))
+
 
 class MarkItUp(BaseEditor):
     editor_id = 'markitup'
