@@ -4,6 +4,14 @@ django-wiki
 News
 ----
 
+***News: November 18th, 2013***
+
+Better late than never! A new release is out with promising support of django 1.6 and Bootstrap 3. Also, jquery, colorbox, and markitup editor have been bumped to newer releases.
+
+A big callout to anyone who feels like getting into documentation.. we need good docs!
+
+Also, the [Changelog](https://github.com/benjaoming/django-wiki/blob/master/CHANGELOG.md) is updated!
+
 ***News: June 31st, 2013***
 
 **Bootstrap 3** has landed in the django-wiki master branch! However, a new release is pending the full implementation of Bootstrap 3. If you are running a deployment with template overrides, keep in mind that some Bootstrap stuff has changed, especially fluid grids and names of a lot of classes. For instance, if you have put your own "brand" in the navbar, you need to change `class="brand"` to `class="navbar-brand"`.

@@ -1,12 +1,13 @@
 Latest Changes
 ==============
-Compiled on: Mon Nov 18 01:24:18 CET 2013
+Compiled on: Mon Nov 18 01:34:24 CET 2013
 
-    * 6e47242 - (HEAD, origin/master, origin/HEAD, master) Fix #191 - introduce DRY in plugins.notifications default_url (4 minutes ago) <benjaoming>
-    * 363f50a - Fix #206 by upgrading markitup to newer version (27 minutes ago) <benjaoming>
-    * 34ac301 - Fix #207 and upgrade to jquery 1.10.2 (32 minutes ago) <benjaoming>
-    * 57a3c97 - Fix #211 by adding a bit more clarity on the context variable handling (41 minutes ago) <benjaoming>
-    * e08b54d - Fix bug in decorator causing double reverse lookups (4 hours ago) <benjaoming>
+    * 2f59ecb - (HEAD, origin/master, origin/HEAD, master) version bump to 0.0.21 (9 minutes ago) <benjaoming>
+    * 6e47242 - Fix #191 - introduce DRY in plugins.notifications default_url (14 minutes ago) <benjaoming>
+    * 363f50a - Fix #206 by upgrading markitup to newer version (37 minutes ago) <benjaoming>
+    * 34ac301 - Fix #207 and upgrade to jquery 1.10.2 (42 minutes ago) <benjaoming>
+    * 57a3c97 - Fix #211 by adding a bit more clarity on the context variable handling (51 minutes ago) <benjaoming>
+    * e08b54d - Fix bug in decorator causing double reverse lookups (5 hours ago) <benjaoming>
     * e4d904e - Remove tests from plugins that are just stub implementations and not django 1.6 compat (4 days ago) <benjaoming>
     * a71b0ff - README updated (4 days ago) <benjaoming>
     * a5395e8 - syntax highlighting for README (4 days ago) <benjaoming>
