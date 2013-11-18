@@ -6,6 +6,9 @@ README.rst
 testproject/testproject/whoosh_index/
 testproject/testproject/xapian_index/
 
+#PyCharm
+.idea
+
 
 #Docs
 docs/_build
