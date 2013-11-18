@@ -66,7 +66,7 @@ Community
 
 Please use our IRC or mailing list (google group) for getting in touch on development and support. Please do not email developers asking for personal support.
 
-- #django-wiki on irc.freenode.net
+- \#django-wiki on irc.freenode.net
 - [django-wiki@googlegroups.com](https://groups.google.com/d/forum/django-wiki)
 - [twitter:djangowiki](https://twitter.com/djangowiki)
 
@@ -277,9 +277,3 @@ Acknowledgements
 <!---Illegal PyPi RST data -->
 <!---Anything that isn't validly translateable to PyPi RST goes after this line -->
 
-Support
--------
-
-This project is already alive and will remain alive, because it's free software and as long as it's essential, common interest will keep it alive... we hope :) You're more than welcome to show your appreciation through Flattr.
-
-[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=benjaoming&url=https://github.com/benjaoming/django-wiki/&title=django-wiki&language=&tags=github&category=software) 
