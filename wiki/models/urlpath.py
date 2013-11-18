@@ -33,11 +33,19 @@ class URLPath(MPTTModel):
     objects = managers.URLPathManager()
     _default_manager = objects
     
-    articles = generic.GenericRelation(ArticleForObject)
+    articles = generic.GenericRelation(
+        ArticleForObject,
+        content_type_field='content_type',
+        object_id_field='object_id',
+    )
     
     # Do NOT modify this field - it is updated with signals whenever ArticleForObject is changed.
-    article = models.ForeignKey(Article, on_delete=models.CASCADE, editable=False,
-                                verbose_name=_(u'Cache lookup value for articles'))
+    article = models.ForeignKey(
+        Article, 
+        on_delete=models.CASCADE, 
+        editable=False,
+        verbose_name=_(u'Cache lookup value for articles'),
+    )
     
     SLUG_MAX_LENGTH = 50
     

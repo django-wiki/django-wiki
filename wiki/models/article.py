@@ -193,7 +193,7 @@ class ArticleForObject(models.Model):
                                        verbose_name=_('content type'),
                                        related_name="content_type_set_for_%(class)s")
     object_id      = models.PositiveIntegerField(_('object ID'))
-    content_object = generic.GenericForeignKey(ct_field="content_type", fk_field="object_id")
+    content_object = generic.GenericForeignKey("content_type", "object_id")
     
     is_mptt = models.BooleanField(default=False, editable=False)
     
