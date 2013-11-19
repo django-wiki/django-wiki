@@ -239,7 +239,7 @@ class RevisionPluginRevision(BaseRevisionMixin, models.Model):
         # Override this setting with app_label = '' in your extended model
         # if it lives outside the wiki app.
         app_label = settings.APP_LABEL
-        get_latest_by = ('revision_number',)
+        get_latest_by = 'revision_number',
         ordering = ('-created',)
 
 ######################################################
