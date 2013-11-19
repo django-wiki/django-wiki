@@ -106,19 +106,28 @@ Installation
 
 ### Pre-requisites
 
-Django-wiki uses the [PIL library](http://www.pythonware.com/products/pil/) for image processing. The preferred method should be to get a system-wide version of PIL, for instance by getting the binaries from your Linux distribution repos.
+Django-wiki uses the [PIL library](http://www.pythonware.com/products/pil/) for image processing. The preferred method should be to get a system-wide, pre-compiled version of PIL or Pillow, for instance by getting the binaries from your Linux distribution repos.
 
-**PIL Directly from repository: Debian-based Linux Distros**
+**Debian-based Linux Distros**
+
+You may find this a bit annoying: On Ubuntu 12.04, PIL is satisfied by installing `python-imaging`, however Pillow is not! On later versions of Ubuntu (tested on 13.10), Pillow is satisfied, but PIL is not. Therefore, the requirements
+for django-wiki may trigger installation of PIL on later versions of Ubuntu, even though you already have it.
 
     sudo apt-get install python-imaging
 
+If you have problems satisfying the dependency, simply go for `pip install Pillow` as it will satisfy django-wiki's requirements.
+
 **PIL/Pillow for Pypi**
 
-Firstly, you need to get development libraries that PIP needs before compiling. For instance on Debian/Ubuntu:
+Firstly, you need to get development libraries that PIP needs before compiling. For instance on Debian/Ubuntu 12.04:
 
     sudo apt-get install libjpeg8 libjpeg-dev libpng libpng-dev
 
-After that, choose either `pip install PIL` or `pip install Pillow`. Pillow is the pip-friendly version of PIL. You might as well install PIL system-wide, because there are little version-specific dependencies in Django applications when it comes to PIL.
+Later versions of Ubuntu:
+
+    sudo apt-get install libjpeg8 libjpeg-dev libpng12-0 libpng12-dev
+
+After that, install with `pip install PIL` or `pip install Pillow`. Pillow is the pip-friendly version of PIL. You might as well install PIL system-wide, because there are little version-specific dependencies in Django applications when it comes to PIL (`sudo pip install ...`).
 
 **Mac OS X 10.5+**
 
