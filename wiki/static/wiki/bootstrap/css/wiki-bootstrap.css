@@ -217,7 +217,7 @@ table {
   img {
     max-width: 100% !important;
   }
-  @page  {
+  @page {
     margin: 2cm .5cm;
   }
   p,
@@ -497,10 +497,8 @@ dd {
 .dl-horizontal dd:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .dl-horizontal dd:after {
   clear: both;
@@ -509,10 +507,8 @@ dd {
 .dl-horizontal dd:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .dl-horizontal dd:after {
   clear: both;
@@ -623,10 +619,8 @@ pre code {
 .container:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .container:after {
   clear: both;
@@ -635,10 +629,8 @@ pre code {
 .container:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .container:after {
   clear: both;
@@ -647,10 +639,8 @@ pre code {
 .row:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .row:after {
   clear: both;
@@ -659,10 +649,8 @@ pre code {
 .row:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .row:after {
   clear: both;
@@ -1165,7 +1153,6 @@ input[type="checkbox"] {
   margin: 4px 0 0;
   margin-top: 1px \9;
   /* IE8-9 */
-
   line-height: normal;
 }
 input[type="file"] {
@@ -1470,10 +1457,8 @@ select.input-small {
 .form-horizontal .form-group:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .form-horizontal .form-group:after {
   clear: both;
@@ -1482,10 +1467,8 @@ select.input-small {
 .form-horizontal .form-group:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .form-horizontal .form-group:after {
   clear: both;
@@ -2125,10 +2108,8 @@ button.close {
 .nav:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .nav:after {
   clear: both;
@@ -2137,10 +2118,8 @@ button.close {
 .nav:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .nav:after {
   clear: both;
@@ -2285,10 +2264,8 @@ button.close {
 .tabbable:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .tabbable:after {
   clear: both;
@@ -2297,10 +2274,8 @@ button.close {
 .tabbable:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .tabbable:after {
   clear: both;
@@ -2339,10 +2314,8 @@ button.close {
 .navbar:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .navbar:after {
   clear: both;
@@ -2351,10 +2324,8 @@ button.close {
 .navbar:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .navbar:after {
   clear: both;
@@ -2646,10 +2617,8 @@ button.close {
 .btn-toolbar:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .btn-toolbar:after {
   clear: both;
@@ -2658,10 +2627,8 @@ button.close {
 .btn-toolbar:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .btn-toolbar:after {
   clear: both;
@@ -2870,10 +2837,8 @@ button.close {
 .pager:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .pager:after {
   clear: both;
@@ -2882,10 +2847,8 @@ button.close {
 .pager:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .pager:after {
   clear: both;
@@ -3013,10 +2976,8 @@ button.close {
 .modal-footer:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .modal-footer:after {
   clear: both;
@@ -3025,10 +2986,8 @@ button.close {
 .modal-footer:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .modal-footer:after {
   clear: both;
@@ -3827,10 +3786,8 @@ a.list-group-item.active > .badge,
 .clearfix:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .clearfix:after {
   clear: both;
@@ -4542,7 +4499,6 @@ textarea.form-horizontal .wiki-control textarea {
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   width: 95%;
   /* make room for an asterix */
-
   display: inline-block;
 }
 .form-vertical .wiki-control input[type='text']:-moz-placeholder,
@@ -4628,10 +4584,8 @@ textarea.form-vertical .wiki-control textarea {
 .form-actions:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .form-actions:after {
   clear: both;
@@ -4640,10 +4594,8 @@ textarea.form-vertical .wiki-control textarea {
 .form-actions:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .form-actions:after {
   clear: both;
@@ -6479,14 +6431,11 @@ a .icon-flip-vertical:before {
   z-index: 2;
   border-radius: 4px!important;
   /* add these 2 statements if you have an appended input group */
-
   border-top-right-radius: 0!important;
   border-bottom-right-radius: 0!important;
   /* add these 2 statements if you have an prepended input group */
-
   /*  border-top-left-radius: 0!important;
     border-bottom-left-radius: 0!important; */
-
 }
 .tt-dropdown-menu {
   min-width: 160px;
