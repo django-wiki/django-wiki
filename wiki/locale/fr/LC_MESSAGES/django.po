@@ -1380,7 +1380,7 @@ msgid ""
 "create the first one, the root article."
 msgstr ""
 "Vous avez reussi à installer django-wiki... mais il n'y a aucun article !. "
-"Alors il est temps de créer le premier artcile qui sera l'article racine de "
+"Alors il est temps de créer le premier article qui sera l'article racine de "
 "votre wiki. Au début, il sera uniquement modifiable par les administrateurs, "
 "mais vous pourrez ensuite changer les autorisations de celui-ci."
 
@@ -1391,7 +1391,7 @@ msgid ""
 "define permissions after."
 msgstr ""
 "Vous avez reussi à installer django-wiki... mais il n'y a aucun article !. "
-"Alors il est temps de créer le premier artcile qui sera l'article racine de "
+"Alors il est temps de créer le premier article qui sera l'article racine de "
 "votre wiki. Au début, il sera uniquement modifiable par les administrateurs, "
 "mais vous pourrez ensuite changer les autorisations de celui-ci."
 
@@ -1761,7 +1761,7 @@ msgstr "...et plus"
 
 #: templates/wiki/includes/breadcrumbs.html:32
 msgid "Browse articles in this level"
-msgstr "Afficher tous les artciles de ce niveau"
+msgstr "Afficher tous les articles de ce niveau"
 
 #: templates/wiki/includes/breadcrumbs.html:48
 msgid "New article next to"
