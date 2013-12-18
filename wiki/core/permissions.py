@@ -14,7 +14,12 @@ from wiki.conf import settings
 def can_read(article, user):
     if callable(settings.CAN_READ):
         return settings.CAN_READ(article, user)
-    else:
+    try:       
+        module_name = settings.PERMISSIONS_MODULE
+        m = module_name.split('.')
+        per = imp.load_source(module_name, m[0])
+        return per.can_read(article, user)        
+    except:
         # Deny reading access to deleted articles if user has no delete access
         article_is_deleted = article.current_revision and article.current_revision.deleted
         if article_is_deleted and not article.can_delete(user):
@@ -39,54 +44,96 @@ def can_read(article, user):
 def can_write(article, user):
     if callable(settings.CAN_WRITE):
         return settings.CAN_WRITE(article, user)
-    # Check access for other users...
-    if user.is_anonymous() and not settings.ANONYMOUS_WRITE:
-        return False
-    elif article.other_write:
-        return True
-    elif user.is_anonymous():
-        return  False
-    if user == article.owner:
-        return True
-    if article.group_write:
-        if article.group and user and user.groups.filter(id=article.group.id).exists():
-            return True
-    if article.can_moderate(user):
-        return True
-    return False
+    try:       
+        module_name = settings.PERMISSIONS_MODULE
+        m = module_name.split('.')
+        per = imp.load_source(module_name, m[0])
+        return per.can_write(article, user)        
+    except:
+      # Check access for other users...
+      if user.is_anonymous() and not settings.ANONYMOUS_WRITE:
+          return False
+      elif article.other_write:
+          return True
+      elif user.is_anonymous():
+          return  False
+      if user == article.owner:
+          return True
+      if article.group_write:
+          if article.group and user and user.groups.filter(id=article.group.id).exists():
+              return True
+      if article.can_moderate(user):
+          return True
+      return False
 
 def can_assign(article, user):
     if callable(settings.CAN_ASSIGN):
         return settings.CAN_ASSIGN(article, user)
-    return not user.is_anonymous() and user.has_perm('wiki.assign')
+    try:       
+        module_name = settings.PERMISSIONS_MODULE
+        m = module_name.split('.')
+        per = imp.load_source(module_name, m[0])
+        return per.can_assign(article, user)        
+    except:
+      return not user.is_anonymous() and user.has_perm('wiki.assign')
 
 def can_assign_owner(article, user):
     if callable(settings.CAN_ASSIGN_OWNER):
         return settings.CAN_ASSIGN_OWNER(article, user)
-    return False
+    try:       
+        module_name = settings.PERMISSIONS_MODULE
+        m = module_name.split('.')
+        per = imp.load_source(module_name, m[0])
+        return per.can_assign_owner(article, user)        
+    except:
+      return False
 
 def can_change_permissions(article, user):
     if callable(settings.CAN_CHANGE_PERMISSIONS):
         return settings.CAN_CHANGE_PERMISSIONS(article, user)
-    return (
-        not user.is_anonymous() and (
-            article.owner == user or 
-            user.has_perm('wiki.assign')
-        )
-    )
+    try:       
+        module_name = settings.PERMISSIONS_MODULE
+        m = module_name.split('.')
+        per = imp.load_source(module_name, m[0])
+        return per.can_change_permissions(article, user)        
+    except:
+      return (
+          not user.is_anonymous() and (
+              article.owner == user or 
+              user.has_perm('wiki.assign')
+          )
+      )
 
 def can_delete(article, user):
     if callable(settings.CAN_DELETE):
         return settings.CAN_DELETE(article, user)
-    return not user.is_anonymous() and article.can_write(user)
+    try:       
+        module_name = settings.PERMISSIONS_MODULE
+        m = module_name.split('.')
+        per = imp.load_source(module_name, m[0])
+        return per.can_delete(article, user)        
+    except:
+      return not user.is_anonymous() and article.can_write(user)
 
 def can_moderate(article, user):
     if callable(settings.CAN_MODERATE):
         return settings.CAN_MODERATE(article, user)
-    return not user.is_anonymous() and user.has_perm('wiki.moderate')
+    try:       
+        module_name = settings.PERMISSIONS_MODULE
+        m = module_name.split('.')
+        per = imp.load_source(module_name, m[0])
+        return per.can_moderate(article, user)        
+    except:
+      return not user.is_anonymous() and user.has_perm('wiki.moderate')
 
 def can_admin(article, user):
     if callable(settings.CAN_ADMIN):
         return settings.CAN_ADMIN(article, user)
-    return not user.is_anonymous() and user.has_perm('wiki.admin')
+    try:       
+        module_name = settings.PERMISSIONS_MODULE
+        m = module_name.split('.')
+        per = imp.load_source(module_name, m[0])
+        return per.can_admin(article, user)        
+    except:
+      return not user.is_anonymous() and user.has_perm('wiki.admin')
 

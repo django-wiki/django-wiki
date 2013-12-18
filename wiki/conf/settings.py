@@ -37,6 +37,15 @@ LOG_IPS_USERS = getattr( django_settings, 'WIKI_LOG_IPS_USERS', False )
 # NB! None of these callables need to handle anonymous users as they are treated
 # in separate settings...
 
+# Permissions module loaded dynamically
+# This file may contain any permission you want to override
+# can_read, can_write, can_assign, can_assign_owner, 
+# can_change_permissions, can_delete, can_moderate, can_admin
+# In your settings use for example
+# WIKI_PERMISSIONS_MODULE = 'my_app.permssions' 
+# If you have defined your functions in permissions.py in 'my_app'
+PERMISSIONS_MODULE = getattr( django_settings, 'WIKI_PERMISSIONS_MODULE', None )
+
 # A function returning True/False if a user has permission to
 # read contents of an article + plugins
 # Relevance: viewing articles and plugins
