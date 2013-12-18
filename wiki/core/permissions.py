@@ -1,4 +1,5 @@
 from wiki.conf import settings
+import imp
 
 ###############################
 # ARTICLE PERMISSION HANDLING #
