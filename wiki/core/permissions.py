@@ -7,7 +7,14 @@ if settings.PERMISSIONS_MODULE:
     try:
         module_name = settings.PERMISSIONS_MODULE
         m = module_name.split('.')
-        per = imp.load_source(module_name, m[0])
+
+        file, pathname, description = imp.find_module(m[0])       
+        try:
+            per = imp.load_module(module_name, file, pathname, description)
+        finally:
+            # Since we may exit via an exception, close fp explicitly.
+            if file:
+                file.close()
         
         #Helper for app loading order problem.
         if (not hasattr(per, 'can_read') and not hasattr(per, 'can_write') and not hasattr(per, 'can_admin') and
