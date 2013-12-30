@@ -7,6 +7,13 @@ from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models, transaction
+
+#Django 1.6 transaction API, required for 1.8+
+try:
+   notrans=transaction.non_atomic_requests 
+except:
+   notrans=transaction.commit_manually
+
 from django.db.models.signals import post_save, pre_delete
 from django.utils.translation import ugettext_lazy as _, ugettext
 
@@ -108,7 +115,7 @@ class URLPath(MPTTModel):
                 return ancestor
         return None
     
-    @transaction.commit_manually
+    @notrans
     def delete_subtree(self):
         """
         NB! This deletes this urlpath, its children, and ALL of the related

@@ -20,6 +20,13 @@ from wiki.core.diff import simple_merge
 from wiki.decorators import get_article, json_view
 from django.core.urlresolvers import reverse
 from django.db import transaction
+
+#Django 1.6 transaction API, required for 1.8+
+try:
+   notrans=transaction.non_atomic_requests 
+except:
+   notrans=transaction.commit_manually
+
 from wiki.core.exceptions import NoRootURL
 from wiki.core import permissions
 from django.http import Http404
@@ -60,7 +67,7 @@ class Create(FormView, ArticleMixin):
         form.fields['slug'].widget = forms.TextInputPrepend(prepend='/'+self.urlpath.path)
         return form
 
-    @transaction.commit_manually
+    @notrans
     def form_valid(self, form):
         user=None
         ip_address = None
