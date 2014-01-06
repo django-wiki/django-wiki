@@ -345,6 +345,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
 
         if permissions.can_assign(article, request.user):
             self.can_assign = True
+            self.can_change_groups = True
             self.fields['group'].queryset = models.Group.objects.all()
         elif permissions.can_assign_owner(article, request.user):
             self.fields['group'].queryset = models.Group.objects.filter(user=request.user)
@@ -387,7 +388,14 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
     
     def save(self, commit=True):
         article = super(PermissionsForm, self).save(commit=False)
+
+        # Alter the owner according to the form field owner_username
+        # TODO: Why not rename this field to 'owner' so this happens automatically?
         article.owner = self.cleaned_data['owner_username']
+
+        # Revert any changes to group permissions if the
+        # current user is not allowed (see __init__)
+        # TODO: Write clean methods for this instead!
         if not self.can_change_groups:
             article.group = self.article.group
             article.group_read = self.article.group_read

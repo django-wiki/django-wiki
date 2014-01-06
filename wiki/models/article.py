@@ -91,7 +91,7 @@ class Article(models.Model):
                 descendant.article.group_write = self.group_write
                 descendant.article.other_read = self.other_read
                 descendant.article.other_write = self.other_write
-                descendant.save()
+                descendant.article.save()
     
     def set_group_recursive(self):
         for descendant in self.descendant_objects():
