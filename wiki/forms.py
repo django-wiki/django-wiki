@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 import random
 import string
 
@@ -50,7 +51,7 @@ class SpamProtectionMixin():
             ip_address = request.META.get('REMOTE_ADDR', None)
         
         if not (user or ip_address):
-            raise forms.ValidationError(_(u'Spam protection failed to find both a logged in user and an IP address.'))
+            raise forms.ValidationError(_('Spam protection failed to find both a logged in user and an IP address.'))
         
         def check_interval(from_time, max_count, interval_name):
             from_time = timezone.now() - timedelta(minutes=settings.REVISIONS_MINUTES_LOOKBACK)
@@ -63,7 +64,7 @@ class SpamProtectionMixin():
                 revisions = revisions.filter(ip_address=ip_address)
             revisions = revisions.count()
             if revisions >= max_count:
-                raise forms.ValidationError(_(u'Spam protection: You are only allowed to create or edit %(revisions)d article(s) per %(interval_name)s.') % 
+                raise forms.ValidationError(_('Spam protection: You are only allowed to create or edit %(revisions)d article(s) per %(interval_name)s.') % 
                                             {'revisions': max_count,
                                              'interval_name': interval_name,})
             
@@ -79,7 +80,7 @@ class SpamProtectionMixin():
         else:
             per_minute = settings.REVISIONS_PER_MINUTES_ANONYMOUS
         check_interval(from_time, per_minute,
-                       _('minute') if settings.REVISIONS_MINUTES_LOOKBACK==1 else (_(u'%d minutes') % settings.REVISIONS_MINUTES_LOOKBACK),)
+                       _('minute') if settings.REVISIONS_MINUTES_LOOKBACK==1 else (_('%d minutes') % settings.REVISIONS_MINUTES_LOOKBACK),)
             
         from_time = timezone.now() - timedelta(minutes=60)
         if request.user.is_authenticated():
@@ -91,19 +92,19 @@ class SpamProtectionMixin():
 
 class CreateRootForm(forms.Form):
     
-    title = forms.CharField(label=_(u'Title'), help_text=_(u'Initial title of the article. May be overridden with revision titles.'))
-    content = forms.CharField(label=_(u'Type in some contents'),
-                              help_text=_(u'This is just the initial contents of your article. After creating it, you can use more complex features like adding plugins, meta data, related articles etc...'),
+    title = forms.CharField(label=_('Title'), help_text=_('Initial title of the article. May be overridden with revision titles.'))
+    content = forms.CharField(label=_('Type in some contents'),
+                              help_text=_('This is just the initial contents of your article. After creating it, you can use more complex features like adding plugins, meta data, related articles etc...'),
                               required=False, widget=getEditor().get_widget()) #@UndefinedVariable
     
 
 class EditForm(forms.Form, SpamProtectionMixin):
     
-    title = forms.CharField(label=_(u'Title'),)
-    content = forms.CharField(label=_(u'Contents'),
+    title = forms.CharField(label=_('Title'),)
+    content = forms.CharField(label=_('Contents'),
                               required=False, widget=getEditor().get_widget()) #@UndefinedVariable
     
-    summary = forms.CharField(label=_(u'Summary'), help_text=_(u'Give a short reason for your edit, which will be stated in the revision log.'),
+    summary = forms.CharField(label=_('Summary'), help_text=_('Give a short reason for your edit, which will be stated in the revision log.'),
                               required=False)
     
     current_revision = forms.IntegerField(required=False, widget=forms.HiddenInput())
@@ -153,9 +154,9 @@ class EditForm(forms.Form, SpamProtectionMixin):
         if self.no_clean or self.preview:
             return cd
         if not str(self.initial_revision.id) == str(self.presumed_revision):
-            raise forms.ValidationError(_(u'While you were editing, someone else changed the revision. Your contents have been automatically merged with the new contents. Please review the text below.'))
+            raise forms.ValidationError(_('While you were editing, someone else changed the revision. Your contents have been automatically merged with the new contents. Please review the text below.'))
         if cd['title'] == self.initial_revision.title and cd['content'] == self.initial_revision.content:
-            raise forms.ValidationError(_(u'No changes made. Nothing to save.'))
+            raise forms.ValidationError(_('No changes made. Nothing to save.'))
         self.check_spam()
         return cd
 
@@ -184,7 +185,7 @@ class SelectWidgetBootstrap(forms.Select):
                   """    <button class="btn btn-default dropdown-toggle%(disabled)s" type="button" data-toggle="dropdown">"""
                   """        <span class="caret"></span>"""
                   """    </button>"""
-                  """    <ul class="dropdown-menu">"""
+                  """    <ul class="dropdown-men">"""
                   """        %(options)s"""
                   """    </ul>"""
                   """    <input type="hidden" name="%(name)s" value="" class="btn-group-value" />"""
@@ -192,16 +193,16 @@ class SelectWidgetBootstrap(forms.Select):
                   """<noscript>%(noscript)s</noscript>"""
                    % {'attrs': flatatt(final_attrs),
                       'options':self.render_options(choices, [value]),
-                      'label': _(u'Select an option'),
+                      'label': _('Select an option'),
                       'name': name,
                       'disabled': ' disabled' if self.disabled else '',
                       'noscript': self.noscript_widget.render(name, value, {}, choices)} ]
-        return mark_safe(u'\n'.join(output))
+        return mark_safe('\n'.join(output))
 
     def render_option(self, selected_choices, option_value, option_label):
         option_value = force_unicode(option_value)
-        selected_html = (option_value in selected_choices) and u' selected="selected"' or ''
-        return u'<li><a href="javascript:void(0)" data-value="%s"%s>%s</a></li>' % (
+        selected_html = (option_value in selected_choices) and ' selected="selected"' or ''
+        return '<li><a href="javascript:void(0)" data-value="%s"%s>%s</a></li>' % (
             escape(option_value), selected_html,
             conditional_escape(force_unicode(option_label)))
 
@@ -211,12 +212,12 @@ class SelectWidgetBootstrap(forms.Select):
         output = []
         for option_value, option_label in chain(self.choices, choices):
             if isinstance(option_label, (list, tuple)):
-                output.append(u'<li class="divider" label="%s"></li>' % escape(force_unicode(option_value)))
+                output.append('<li class="divider" label="%s"></li>' % escape(force_unicode(option_value)))
                 for option in option_label:
                     output.append(self.render_option(selected_choices, *option))
             else:
                 output.append(self.render_option(selected_choices, option_value, option_label))
-        return u'\n'.join(output)
+        return '\n'.join(output)
     
     class Media(forms.Media):
             
@@ -241,21 +242,21 @@ class CreateForm(forms.Form, SpamProtectionMixin):
         self.request = request
         self.urlpath_parent = urlpath_parent
     
-    title = forms.CharField(label=_(u'Title'),)
-    slug = forms.SlugField(label=_(u'Slug'), help_text=_(u"This will be the address where your article can be found. Use only alphanumeric characters and - or _. Note that you cannot change the slug after creating the article."),
+    title = forms.CharField(label=_('Title'),)
+    slug = forms.SlugField(label=_('Slug'), help_text=_("This will be the address where your article can be found. Use only alphanumeric characters and - or _. Note that you cannot change the slug after creating the article."),
                            max_length=models.URLPath.SLUG_MAX_LENGTH)
-    content = forms.CharField(label=_(u'Contents'),
+    content = forms.CharField(label=_('Contents'),
                               required=False, widget=getEditor().get_widget()) #@UndefinedVariable
     
-    summary = forms.CharField(label=_(u'Summary'), help_text=_(u"Write a brief message for the article's history log."),
+    summary = forms.CharField(label=_('Summary'), help_text=_("Write a brief message for the article's history log."),
                               required=False)
     
     def clean_slug(self):
         slug = self.cleaned_data['slug']
         if slug.startswith("_"):
-            raise forms.ValidationError(_(u'A slug may not begin with an underscore.'))
+            raise forms.ValidationError(_('A slug may not begin with an underscore.'))
         if slug == 'admin':
-            raise forms.ValidationError(_(u"'admin' is not a permitted slug name."))
+            raise forms.ValidationError(_("'admin' is not a permitted slug name."))
         
         if settings.URL_CASE_SENSITIVE:
             already_existing_slug = models.URLPath.objects.filter(slug=slug, parent=self.urlpath_parent)
@@ -264,9 +265,9 @@ class CreateForm(forms.Form, SpamProtectionMixin):
         if already_existing_slug:
             already_urlpath = already_existing_slug[0]
             if already_urlpath.article and already_urlpath.article.current_revision.deleted:
-                raise forms.ValidationError(_(u'A deleted article with slug "%s" already exists.') % already_urlpath.slug)
+                raise forms.ValidationError(_('A deleted article with slug "%s" already exists.') % already_urlpath.slug)
             else:
-                raise forms.ValidationError(_(u'A slug named "%s" already exists.') % already_urlpath.slug)
+                raise forms.ValidationError(_('A slug named "%s" already exists.') % already_urlpath.slug)
         
         return slug
     
@@ -283,45 +284,45 @@ class DeleteForm(forms.Form):
         super(DeleteForm, self).__init__(*args, **kwargs)
     
     confirm = forms.BooleanField(required=False,
-                                 label=_(u'Yes, I am sure'))
+                                 label=_('Yes, I am sure'))
     purge = forms.BooleanField(widget=HiddenInput(), required=False,
-                               label=_(u'Purge'),
-                               help_text=_(u'Purge the article: Completely remove it (and all its contents) with no undo. Purging is a good idea if you want to free the slug such that users can create new articles in its place.'))
+                               label=_('Purge'),
+                               help_text=_('Purge the article: Completely remove it (and all its contents) with no undo. Purging is a good idea if you want to free the slug such that users can create new articles in its place.'))
     revision = forms.ModelChoiceField(models.ArticleRevision.objects.all(),
                                       widget=HiddenInput(), required=False)
     
     def clean(self):
         cd = self.cleaned_data
         if not cd['confirm']:
-            raise forms.ValidationError(_(u'You are not sure enough!'))
+            raise forms.ValidationError(_('You are not sure enough!'))
         if cd['revision'] != self.article.current_revision:
-            raise forms.ValidationError(_(u'While you tried to delete this article, it was modified. TAKE CARE!'))
+            raise forms.ValidationError(_('While you tried to delete this article, it was modified. TAKE CARE!'))
         return cd
 
 
 class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
     
-    locked = forms.BooleanField(label=_(u'Lock article'), help_text=_(u'Deny all users access to edit this article.'),
+    locked = forms.BooleanField(label=_('Lock article'), help_text=_('Deny all users access to edit this article.'),
                                 required=False)
 
-    settings_form_headline = _(u'Permissions')
+    settings_form_headline = _('Permissions')
     settings_order = 5
     settings_write_access = False
 
-    owner_username = forms.CharField(required=False, label=_(u'Owner'),
-                                     help_text=_(u'Enter the username of the owner.'))
-    group = forms.ModelChoiceField(models.Group.objects.all(), empty_label=_(u'(none)'),
-                                     label=_(u'Group'), required=False)
+    owner_username = forms.CharField(required=False, label=_('Owner'),
+                                     help_text=_('Enter the username of the owner.'))
+    group = forms.ModelChoiceField(models.Group.objects.all(), empty_label=_('(none)'),
+                                     label=_('Group'), required=False)
     if settings.USE_BOOTSTRAP_SELECT_WIDGET:
         group.widget= SelectWidgetBootstrap()
     
-    recursive = forms.BooleanField(label=_(u'Inherit permissions'), help_text=_(u'Check here to apply the above permissions (excluding group and owner of the article) recursively to articles below this one.'),
+    recursive = forms.BooleanField(label=_('Inherit permissions'), help_text=_('Check here to apply the above permissions (excluding group and owner of the article) recursively to articles below this one.'),
                                    required=False)
     
-    recursive_owner = forms.BooleanField(label=_(u'Inherit owner'), help_text=_(u'Check here to apply the ownership setting recursively to articles below this one.'),
+    recursive_owner = forms.BooleanField(label=_('Inherit owner'), help_text=_('Check here to apply the ownership setting recursively to articles below this one.'),
                                          required=False)
 
-    recursive_group = forms.BooleanField(label=_(u'Inherit group'), help_text=_(u'Check here to apply the group setting recursively to articles below this one.'),
+    recursive_group = forms.BooleanField(label=_('Inherit group'), help_text=_('Check here to apply the group setting recursively to articles below this one.'),
                                          required=False)
 
     def get_usermessage(self):
@@ -355,7 +356,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
             # group as only selectable option
             self.fields['group'] = forms.ModelChoiceField(
                 queryset = models.Group.objects.filter(id=self.instance.group.id) if self.instance.group else models.Group.objects.none(),
-                empty_label = _(u'(none)'),
+                empty_label = _('(none)'),
                 required = False,
                 widget = SelectWidgetBootstrap(disabled=True) if settings.USE_BOOTSTRAP_SELECT_WIDGET else forms.Select(attrs={'disabled': True})
             )
@@ -378,7 +379,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
                 try:
                     user = User.objects.get(username=username)
                 except User.DoesNotExist:
-                    raise forms.ValidationError(_(u'No user with that username'))
+                    raise forms.ValidationError(_('No user with that username'))
             else:
                 user = None
         else:
@@ -411,14 +412,14 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
                 revision = models.ArticleRevision()
                 revision.inherit_predecessor(self.article)
                 revision.set_from_request(self.request)
-                revision.automatic_log = _(u'Article locked for editing')
+                revision.automatic_log = _('Article locked for editing')
                 revision.locked = True
                 self.article.add_revision(revision)
             elif not self.cleaned_data['locked'] and article.current_revision.locked:
                 revision = models.ArticleRevision()
                 revision.inherit_predecessor(self.article)
                 revision.set_from_request(self.request)
-                revision.automatic_log = _(u'Article unlocked for editing')
+                revision.automatic_log = _('Article unlocked for editing')
                 revision.locked = False
                 self.article.add_revision(revision)                
 
@@ -433,13 +434,13 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
 
 class DirFilterForm(forms.Form):
     
-    query = forms.CharField(widget=forms.TextInput(attrs={'placeholder': _(u'Filter...'),
+    query = forms.CharField(widget=forms.TextInput(attrs={'placeholder': _('Filter...'),
                                                           'class': 'search-query'}), required=False)
 
 
 class SearchForm(forms.Form):
     
-    q = forms.CharField(widget=forms.TextInput(attrs={'placeholder': _(u'Search...'),
+    q = forms.CharField(widget=forms.TextInput(attrs={'placeholder': _('Search...'),
                                                           'class': 'search-query'}), required=False)
 
 

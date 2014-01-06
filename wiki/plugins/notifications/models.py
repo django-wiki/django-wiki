@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import signals
@@ -15,7 +16,7 @@ from wiki.plugins.notifications.util import get_title
 class ArticleSubscription(ArticlePlugin, Subscription):
     
     def __unicode__(self):
-        title = (_(u"%(user)s subscribing to %(article)s (%(type)s)") % 
+        title = (_("%(user)s subscribing to %(article)s (%(type)s)") % 
                  {'user': self.settings.user.username,
                   'article': self.article.current_revision.title,
                   'type': self.notification_type.label})
@@ -37,13 +38,13 @@ def post_article_revision_save(**kwargs):
         url = default_url(instance.article)
         filter_exclude = {'settings__user': instance.user}
         if instance.deleted:
-            notify(_(u'Article deleted: %s') % get_title(instance), settings.ARTICLE_EDIT,
+            notify(_('Article deleted: %s') % get_title(instance), settings.ARTICLE_EDIT,
                    target_object=instance.article, url=url, filter_exclude=filter_exclude)
         elif instance.previous_revision:
-            notify(_(u'Article modified: %s') % get_title(instance), settings.ARTICLE_EDIT,
+            notify(_('Article modified: %s') % get_title(instance), settings.ARTICLE_EDIT,
                    target_object=instance.article, url=url, filter_exclude=filter_exclude)
         else:
-            notify(_(u'New article created: %s') % get_title(instance), settings.ARTICLE_EDIT,
+            notify(_('New article created: %s') % get_title(instance), settings.ARTICLE_EDIT,
                    target_object=instance, url=url, filter_exclude=filter_exclude)
             
 # Whenever a new revision is created, we notifý users that an article

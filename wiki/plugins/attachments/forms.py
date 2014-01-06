@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from django import forms
 from django.utils.translation import ugettext as _
 
@@ -13,8 +14,8 @@ from wiki.plugins.attachments.models import IllegalFileExtension
 class AttachmentForm(forms.ModelForm):
     
     description = forms.CharField(
-        label=_(u'Description'),
-        help_text=_(u'A short summary of what the file contains'),
+        label=_('Description'),
+        help_text=_('A short summary of what the file contains'),
         required=False
     )
     
@@ -63,8 +64,8 @@ class AttachmentForm(forms.ModelForm):
 class AttachmentReplaceForm(AttachmentForm):
 
     replace = forms.BooleanField(
-        label=_(u'Remove previous'),
-        help_text=_(u'Remove previous attachment revisions and their files (to '
+        label=_('Remove previous'),
+        help_text=_('Remove previous attachment revisions and their files (to '
             'save space)?'),
         required=False,
     )
@@ -73,13 +74,13 @@ class AttachmentReplaceForm(AttachmentForm):
 class AttachmentArchiveForm(AttachmentForm):
     
     file = forms.FileField( #@ReservedAssignment
-        label=_(u'File or zip archive'),
+        label=_('File or zip archive'),
         required=True
     )
     
     unzip_archive = forms.BooleanField(
-        label=_(u'Unzip file'),
-        help_text=_(u'Create individual attachments for files in a .zip file - directories do not work.'),
+        label=_('Unzip file'),
+        help_text=_('Create individual attachments for files in a .zip file - directories do not work.'),
         required=False
     )
     
@@ -99,7 +100,7 @@ class AttachmentArchiveForm(AttachmentForm):
                     except IllegalFileExtension as e:
                         raise forms.ValidationError(e)
             except zipfile.BadZipfile:
-                raise forms.ValidationError(_(u"Not a zip file"))
+                raise forms.ValidationError(_("Not a zip file"))
         else:
             return super(AttachmentArchiveForm, self).clean_file()
         return uploaded_file
@@ -149,12 +150,12 @@ class AttachmentArchiveForm(AttachmentForm):
 
 class DeleteForm(forms.Form):
     """This form is both used for dereferencing and deleting attachments"""
-    confirm = forms.BooleanField(label=_(u'Yes I am sure...'),
+    confirm = forms.BooleanField(label=_('Yes I am sure...'),
                                  required=False)
     
     def clean_confirm(self):
         if not self.cleaned_data['confirm']:
-            raise forms.ValidationError(_(u'You are not sure enough!'))
+            raise forms.ValidationError(_('You are not sure enough!'))
         return True
 
 class SearchForm(forms.Form):

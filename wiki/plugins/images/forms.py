@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django import forms
 from django.utils.translation import ugettext as _
 
@@ -14,7 +15,7 @@ class SidebarForm(PluginSidebarFormMixin):
         self.fields['image'].required = True
     
     def get_usermessage(self):
-        return _(u"New image %s was successfully uploaded. You can use it by selecting it from the list of available images.") % self.instance.get_filename()
+        return _("New image %s was successfully uploaded. You can use it by selecting it from the list of available images.") % self.instance.get_filename()
     
     def save(self, *args, **kwargs):
         if not self.instance.id:
@@ -58,10 +59,10 @@ class RevisionForm(forms.ModelForm):
 
 class PurgeForm(forms.Form):
     
-    confirm = forms.BooleanField(label=_(u'Are you sure?'), required=False)
+    confirm = forms.BooleanField(label=_('Are you sure?'), required=False)
     
     def clean_confirm(self):
         confirm = self.cleaned_data['confirm']
         if not confirm:
-            raise forms.ValidationError(_(u'You are not sure enough!'))
+            raise forms.ValidationError(_('You are not sure enough!'))
         return confirm

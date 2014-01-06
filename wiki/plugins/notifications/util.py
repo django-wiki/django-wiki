@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django.utils.translation import ugettext as _
 
 def get_title(article):
@@ -7,7 +8,7 @@ def get_title(article):
 def truncate_title(title):
     """Truncate a title (of an article, file, image etc) to be displayed in notifications messages."""
     if not title:
-        return _(u"(none)")
+        return _("(none)")
     if len(title) > 25:
         return "%s..." % title[:22]
     return title
