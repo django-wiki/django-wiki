@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
+#^was before coding line, is this required?
 import logging
 
 from django.contrib.contenttypes import generic
@@ -7,6 +9,7 @@ from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models, transaction
+from six.moves import filter
 
 #Django 1.6 transaction API, required for 1.8+
 try:
@@ -123,7 +126,7 @@ class URLPath(MPTTModel):
         """
         try:
             for descendant in self.get_descendants(include_self=True).order_by("-level"):
-                print "deleting " , descendant
+                print("deleting " , descendant) #space in string -> "  "?
                 descendant.article.delete()
             
             transaction.commit()

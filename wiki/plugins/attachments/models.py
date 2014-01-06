@@ -10,6 +10,8 @@ from wiki import managers
 from wiki.models.pluginbase import ReusablePlugin
 from wiki.models.article import BaseRevisionMixin
 from django.db.models import signals
+from six.moves import map
+from six.moves import zip
 
 class IllegalFileExtension(Exception):
     """File extension on upload is not allowed"""
@@ -133,7 +135,8 @@ class AttachmentRevision(BaseRevisionMixin, models.Model):
                 previous_revision = self.attachment.attachmentrevision_set.latest()
                 self.revision_number = previous_revision.revision_number + 1
             # NB! The above should not raise the below exception, but somehow it does.
-            except AttachmentRevision.DoesNotExist, Attachment.DoesNotExist:
+            except AttachmentRevision.DoesNotExist as noattach 
+                Attachment.DoesNotExist = noattach
                 self.revision_number = 1
         
         super(AttachmentRevision, self).save(*args, **kwargs)

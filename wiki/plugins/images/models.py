@@ -5,7 +5,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-import settings
+from . import settings
 
 from wiki.models.pluginbase import RevisionPlugin, RevisionPluginRevision
 from django.db.models import signals
