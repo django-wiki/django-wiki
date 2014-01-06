@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django.utils.translation import ugettext as _
 
 """Base classes for different plugin objects.
@@ -22,12 +23,12 @@ class BasePlugin(object):
         'root': [], # General urlpatterns that will reside in /wiki/plugins/plugin-slug/...
         'article': [], # urlpatterns that receive article_id or urlpath, i.e. /wiki/ArticleName/plugin/plugin-slug/...
     }
-    article_tab = None  #(_(u'Attachments'), "icon-file")
+    article_tab = None  #(_('Attachments'), "icon-file")
     article_view = None # A view for article_id/plugin/slug/
     notifications = []  # A list of notification handlers to be subscribed if the notification system is active
                         # Example
                         #        [{'model': models.AttachmentRevision,
-                        #          'message': lambda obj: _(u"A file was changed: %s") % obj.get_filename(),
+                        #          'message': lambda obj: _("A file was changed: %s") % obj.get_filename(),
                         #          'key': ARTICLE_EDIT,
                         #          'created': True,
                         #          'get_article': lambda obj: obj.attachment.article}
@@ -50,7 +51,7 @@ class PluginSidebarFormMixin(forms.ModelForm):
         pass
 
 class PluginSettingsFormMixin(object):    
-    settings_form_headline = _(u'Settings for plugin')
+    settings_form_headline = _('Settings for plugin')
     settings_order = 1
     settings_write_access = False
     

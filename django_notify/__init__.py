@@ -18,6 +18,7 @@
 # Unused feature, atm. everything is bundled with django-wiki
 VERSION = "0.0.4"
 
+from __future__ import unicode_literals
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model
 from django.utils.translation import ugettext as _
@@ -52,7 +53,7 @@ def notify(message, key, target_object=None, url=None, filter_exclude={}):
     
     if target_object:
         if not isinstance(target_object, Model):
-            raise TypeError(_(u"You supplied a target_object that's not an instance of a django Model."))
+            raise TypeError(_("You supplied a target_object that's not an instance of a django Model."))
         object_id = target_object.id
     else:
         object_id = None

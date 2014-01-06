@@ -1,4 +1,5 @@
 # Create your views here.
+from __future__ import unicode_literals
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
@@ -27,7 +28,7 @@ class NotificationSettings(FormView):
             ).select_related('article', 'article__current_revision')
             messages.info(
                 self.request, 
-                _(u"You will receive notifications %(interval)s for "
+                _("You will receive notifications %(interval)s for "
                    "%(articles)d articles") % 
                     {
                         'interval': settings.get_interval_display(),

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 import difflib
 
 from django.contrib import messages
@@ -93,16 +94,16 @@ class Create(FormView, ArticleMixin):
                                 'other_read': self.article.other_read,
                                 'other_write': self.article.other_write,
                                 })
-            messages.success(self.request, _(u"New article '%s' created.") % self.newpath.article.current_revision.title)
+            messages.success(self.request, _("New article '%s' created.") % self.newpath.article.current_revision.title)
 
             transaction.commit()
         # TODO: Handle individual exceptions better and give good feedback.
         except Exception as e:
             transaction.rollback()
             if self.request.user.is_superuser:
-                messages.error(self.request, _(u"There was an error creating this article: %s") % str(e))
+                messages.error(self.request, _("There was an error creating this article: %s") % str(e))
             else:
-                messages.error(self.request, _(u"There was an error creating this article."))
+                messages.error(self.request, _("There was an error creating this article."))
             transaction.commit()
             return redirect('wiki:get', '')
 
@@ -180,7 +181,7 @@ class Delete(FormView, ArticleMixin):
             cannot_delete_children = True
 
         if self.cannot_delete_root or cannot_delete_children:
-            messages.error(self.request, _(u'This article cannot be deleted because it has children or is a root article.'))
+            messages.error(self.request, _('This article cannot be deleted because it has children or is a root article.'))
             return redirect('wiki:get', article_id=self.article.id)
 
 
@@ -189,14 +190,14 @@ class Delete(FormView, ArticleMixin):
             if self.urlpath:
                 self.urlpath.delete_subtree()
             self.article.delete()
-            messages.success(self.request, _(u'This article together with all its contents are now completely gone! Thanks!'))
+            messages.success(self.request, _('This article together with all its contents are now completely gone! Thanks!'))
         else:
             revision = models.ArticleRevision()
             revision.inherit_predecessor(self.article)
             revision.set_from_request(self.request)
             revision.deleted = True
             self.article.add_revision(revision)
-            messages.success(self.request, _(u'The article "%s" is now marked as deleted! Thanks for keeping the site free from unwanted material!') % revision.title)
+            messages.success(self.request, _('The article "%s" is now marked as deleted! Thanks for keeping the site free from unwanted material!') % revision.title)
         return self.get_success_url()
 
     def get_success_url(self):
@@ -284,7 +285,7 @@ class Edit(FormView, ArticleMixin):
                         if usermessage:
                             messages.success(self.request, usermessage)
                         else:
-                            messages.success(self.request, _(u'Your changes were saved.'))
+                            messages.success(self.request, _('Your changes were saved.'))
 
                         title = form.cleaned_data['unsaved_article_title']
                         content = form.cleaned_data['unsaved_article_content']
@@ -317,7 +318,7 @@ class Edit(FormView, ArticleMixin):
         revision.deleted = False
         revision.set_from_request(self.request)
         self.article.add_revision(revision)
-        messages.success(self.request, _(u'A new revision of the article was succesfully added.'))
+        messages.success(self.request, _('A new revision of the article was succesfully added.'))
         return self.get_success_url()
 
     def get_success_url(self):
@@ -372,7 +373,7 @@ class Deleted(Delete):
                 revision.deleted = False
                 revision.automatic_log = _('Restoring article')
                 self.article.add_revision(revision)
-                messages.success(request, _(u'The article "%s" and its children are now restored.') % revision.title)
+                messages.success(request, _('The article "%s" and its children are now restored.') % revision.title)
                 if self.urlpath:
                     return redirect('wiki:get', path=self.urlpath.path)
                 else:
@@ -604,7 +605,7 @@ class ChangeRevisionView(RedirectView):
         revision = get_object_or_404(models.ArticleRevision, article=self.article, id=self.kwargs['revision_id'])
         self.article.current_revision = revision
         self.article.save()
-        messages.success(self.request, _(u"The article %(title)s is now set to display revision #%(revision_number)d") % {
+        messages.success(self.request, _("The article %(title)s is now set to display revision #%(revision_number)d") % {
             'title': revision.title,
             'revision_number': revision.revision_number,
         })
@@ -665,7 +666,7 @@ def diff(request, revision_id, other_revision_id=None):
     other_changes = []
 
     if not other_revision or other_revision.title != revision.title:
-        other_changes.append((_(u'New title'), revision.title))
+        other_changes.append((_('New title'), revision.title))
 
     return dict(diff=list(diff), other_changes=other_changes)
 
@@ -685,7 +686,7 @@ def merge(request, article, revision_id, urlpath=None, template_file="wiki/previ
         old_revision = article.current_revision
 
         if revision.deleted:
-            c = RequestContext(request, {'error_msg': _(u'You cannot merge with a deleted revision'),
+            c = RequestContext(request, {'error_msg': _('You cannot merge with a deleted revision'),
                                          'article': article,
                                          'urlpath': urlpath})
             return render_to_response("wiki/error.html", context_instance=c)
@@ -696,7 +697,7 @@ def merge(request, article, revision_id, urlpath=None, template_file="wiki/previ
         new_revision.locked = False
         new_revision.title=article.current_revision.title
         new_revision.content=content
-        new_revision.automatic_log = (_(u'Merge between revision #%(r1)d and revision #%(r2)d') %
+        new_revision.automatic_log = (_('Merge between revision #%(r1)d and revision #%(r2)d') %
                                       {'r1': revision.revision_number,
                                        'r2': old_revision.revision_number})
         article.add_revision(new_revision, save=True)
@@ -704,7 +705,7 @@ def merge(request, article, revision_id, urlpath=None, template_file="wiki/previ
         old_revision.simpleplugin_set.all().update(article_revision=new_revision)
         revision.simpleplugin_set.all().update(article_revision=new_revision)
 
-        messages.success(request, _(u'A new revision was created: Merge between revision #%(r1)d and revision #%(r2)d') %
+        messages.success(request, _('A new revision was created: Merge between revision #%(r1)d and revision #%(r2)d') %
                          {'r1': revision.revision_number,
                           'r2': old_revision.revision_number})
         if urlpath:

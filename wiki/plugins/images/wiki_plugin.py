@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from django.conf.urls import patterns, url
 from django.utils.translation import ugettext as _
 
@@ -24,7 +25,7 @@ class ImagePlugin(BasePlugin):
     # is handled inside the notifications plugin.
     notifications = [
         {'model': models.ImageRevision,
-         'message': lambda obj: _(u"An image was added: %s") % truncate_title(obj.get_filename()),
+         'message': lambda obj: _("An image was added: %s") % truncate_title(obj.get_filename()),
          'key': ARTICLE_EDIT,
          'created': False,
          'ignore': lambda revision: bool(revision.previous_revision), # Ignore if there is a previous revision... the image isn't new
