@@ -87,7 +87,7 @@ def get_article(func=None, can_read=True, can_write=False,
                 return redirect('wiki:root_create')
             except models.URLPath.DoesNotExist:
                 try:
-                    pathlist = filter(lambda x: x!="", path.split("/"),)
+                    pathlist = list(filter(lambda x: x!="", path.split("/"),))
                     path = "/".join(pathlist[:-1])
                     parent = models.URLPath.get_by_path(path)
                     return HttpResponseRedirect(reverse("wiki:create", kwargs={'path': parent.path,}) + "?slug=%s" % pathlist[-1])
