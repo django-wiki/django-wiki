@@ -16,9 +16,10 @@
 # along with django_notify. If not, see <http://www.gnu.org/licenses/>.
 
 # Unused feature, atm. everything is bundled with django-wiki
+from __future__ import unicode_literals
+
 VERSION = "0.0.4"
 
-from __future__ import unicode_literals
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model
 from django.utils.translation import ugettext as _
