@@ -44,7 +44,7 @@ class MacroPreprocessor(markdown.preprocessors.Preprocessor):
                             value = kwarg.group('value')
                             if value is None:
                                 value = True
-                            if isinstance(value, basestring):
+                            if isinstance(value, six.string_types):
                                 # If value is enclosed with ': Remove and remove escape sequences
                                 if value.startswith(u"'") and len(value) > 2:
                                     value = value[1:-1]
