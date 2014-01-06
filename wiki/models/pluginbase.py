@@ -24,7 +24,7 @@ There are three kinds of plugin base models:
 
 """
 
-from article import ArticleRevision, BaseRevisionMixin
+from .article import ArticleRevision, BaseRevisionMixin
 from wiki.conf import settings 
 
 class ArticlePlugin(models.Model):

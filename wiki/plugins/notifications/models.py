@@ -65,7 +65,7 @@ for plugin in registry.get_plugins():
                 return
             if kwargs.get('created', False) == notification_dict.get('created', True):
                 url = None
-                if notification_dict.has_key('get_url'):
+                if 'get_url' in notification_dict:
                     url = notification_dict['get_url'](instance)
                 else:
                     url = default_url(notification_dict['get_article'](instance))

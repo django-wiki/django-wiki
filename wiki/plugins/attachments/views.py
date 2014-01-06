@@ -120,7 +120,7 @@ class AttachmentReplaceView(ArticleMixin, FormView):
             self.attachment.current_revision = attachment_revision
             self.attachment.save()
             messages.success(self.request, _(u'%s uploaded and replaces old attachment.') % attachment_revision.get_filename())
-        except models.IllegalFileExtension, e:
+        except models.IllegalFileExtension as e:
             messages.error(self.request, _(u'Your file could not be saved: %s') % e)
             return redirect("wiki:attachments_replace", attachment_id=self.attachment.id,
                             path=self.urlpath.path, article_id=self.article.id)
