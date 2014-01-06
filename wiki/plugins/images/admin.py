@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django import forms
-import models
+from . import models
 
 class ImageForm(forms.ModelForm):
 

@@ -3,7 +3,7 @@ from wiki.core.plugins.base import BasePlugin
 
 from django.conf.urls import patterns, url
 
-import settings, views
+from . import settings, views
 
 class NotifyPlugin(BasePlugin):
     

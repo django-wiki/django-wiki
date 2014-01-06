@@ -97,7 +97,7 @@ class Create(FormView, ArticleMixin):
 
             transaction.commit()
         # TODO: Handle individual exceptions better and give good feedback.
-        except Exception, e:
+        except Exception as e:
             transaction.rollback()
             if self.request.user.is_superuser:
                 messages.error(self.request, _(u"There was an error creating this article: %s") % str(e))
