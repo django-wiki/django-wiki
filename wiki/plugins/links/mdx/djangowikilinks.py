@@ -123,9 +123,9 @@ class WikiPath(markdown.inlinepatterns.Pattern):
         base_url = self.config['base_url'][0]
         html_class = self.config['html_class'][0]
         if hasattr(self.md, 'Meta'):
-            if self.md.Meta.has_key('wiki_base_url'):
+            if 'wiki_base_url' in self.md.Meta:
                 base_url = self.md.Meta['wiki_base_url'][0]
-            if self.md.Meta.has_key('wiki_html_class'):
+            if 'wiki_html_class' in self.md.Meta:
                 html_class = self.md.Meta['wiki_html_class'][0]
         return base_url, html_class
 

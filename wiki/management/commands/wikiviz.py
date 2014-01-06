@@ -43,6 +43,7 @@ options:
     -e, --inheritance
     show inheritance arrows.
 """
+from __future__ import print_function
 __version__ = "0.99"
 __svnid__ = "$Id$"
 __license__ = "Python"
@@ -406,8 +407,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         if not args and not options.get('all_applications', False):
-            print __doc__
+            print(__doc__)
             sys.exit()
     
-        print generate_dot(args, **options)
+        print(generate_dot(args, **options))
 

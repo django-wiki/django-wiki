@@ -5,10 +5,11 @@ from django.core.exceptions import ImproperlyConfigured
 import warnings
 
 # TODO: Don't use wildcards
-from article import *
-from urlpath import *
+from .article import *
+from .urlpath import *
 
 # TODO: Should the below stuff be executed a more logical place?
+# Follow Django's default_settings.py / settings.py pattern and put these in d_s.py? That might be confusing, though.
 
 ######################
 # Configuration stuff

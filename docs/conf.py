@@ -1,3 +1,4 @@
+from __future__ import print_function
 # -*- coding: utf-8 -*-
 #
 # django-wiki documentation build configuration file, created by
@@ -57,7 +58,7 @@ sys.path = [os.path.join(path, 'wiki')] + sys.path
 
 import wiki
 
-print wiki.__file__
+print(wiki.__file__)
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

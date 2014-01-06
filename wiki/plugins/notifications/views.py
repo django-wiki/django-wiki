@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.views.generic.edit import FormView
 
-import forms
+from . import forms
 
 class NotificationSettings(FormView):
     
@@ -20,7 +20,7 @@ class NotificationSettings(FormView):
     def form_valid(self, formset):
         for form in formset:
             settings = form.save()
-            import models
+            from . import models
             article_subscriptions = models.ArticleSubscription.objects.filter(
                 settings = form.instance,
                 article__current_revision__deleted=False,
@@ -44,7 +44,7 @@ class NotificationSettings(FormView):
     def get_context_data(self, **kwargs):
         context = FormView.get_context_data(self, **kwargs)
         context['formset'] = kwargs['form']
-        import models
+        from . import models
         for form in context['formset']:
             if form.instance:
                 setattr(form.instance, 'articlesubscriptions', 

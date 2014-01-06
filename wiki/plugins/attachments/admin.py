@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-import models
+from . import models
 
 class AttachmentRevisionAdmin(admin.TabularInline):
     model = models.AttachmentRevision
