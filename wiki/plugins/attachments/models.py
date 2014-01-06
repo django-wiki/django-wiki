@@ -135,7 +135,7 @@ class AttachmentRevision(BaseRevisionMixin, models.Model):
                 previous_revision = self.attachment.attachmentrevision_set.latest()
                 self.revision_number = previous_revision.revision_number + 1
             # NB! The above should not raise the below exception, but somehow it does.
-            except AttachmentRevision.DoesNotExist as noattach 
+	    except AttachmentRevision.DoesNotExist as noattach: 
                 Attachment.DoesNotExist = noattach
                 self.revision_number = 1
         
