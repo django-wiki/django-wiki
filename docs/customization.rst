@@ -9,9 +9,9 @@ Templates
 
 django-wiki can be customized by providing your own templates.
 
-All templates used by django-wiki inherit from ``wiki/base_site.html``, which in
-turn simply inherits from ``wiki/base.html`` (adding
-nothing). ``wiki/base.html`` provides a complete HTML page, but provides a
+All templates used by django-wiki inherit from ``wiki/base.html``, which in
+turn simply inherits from ``wiki/base_site.html`` (adding
+nothing). ``wiki/base_site.html`` provides a complete HTML page, but provides a
 number of blocks that you might want to override. The most useful are:
 
 * ``wiki_header_branding``
@@ -20,7 +20,8 @@ number of blocks that you might want to override. The most useful are:
 These can be overridden to provide your own branding and links in the top bar of
 the page. The ``wiki/base_site.html`` template uses Bootstrap 3, so the
 following example shows how to use this in practice, assuming you want a single
-link to your home page, and one to the wiki:
+link to your home page, and one to the wiki. Add the following as
+``wiki/base.html`` somewhere in your ``TEMPLATE_DIRS``:
 
 .. code-block:: html+django
 
