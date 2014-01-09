@@ -1,8 +1,9 @@
 Latest Changes
 ==============
-Compiled on: Mon Jan  6 23:44:59 CET 2014
+Compiled on: Mon Jan  6 23:50:32 CET 2014
 
-    * 57e9bcf - (HEAD, origin/master, origin/HEAD, master) Fix #221 - not correctly inheriting some permissions, save() called on URLPath object instead of Article object! (6 minutes ago) <benjaoming>
+    * 2eaf23e - (HEAD, tag: alpha/0.0.23, origin/master, origin/HEAD, master) Bump to 0.0.23 (5 minutes ago) <benjaoming>
+    * 57e9bcf - Fix #221 - not correctly inheriting some permissions, save() called on URLPath object instead of Article object! (12 minutes ago) <benjaoming>
     *   489f2c5 - Merge pull request #220 from Russell-Jones/master (7 days ago) <benjaoming>
     |\  
     | * d36dbed - Add try catch block to test for and use if available new in 1.6 db transaction API (7 days ago) <Russell Jones>
