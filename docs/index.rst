@@ -13,6 +13,7 @@ Contents:
 
    installation
    plugins
+   customization
    settings
    tips
 
