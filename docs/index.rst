@@ -11,6 +11,11 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   installation
+   plugins
+   customization
+   settings
+   tips
 
 
 Indices and tables
