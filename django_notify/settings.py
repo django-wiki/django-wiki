@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django.conf import settings as django_settings
 from django import VERSION as DJANGO_VERSION
 from django.utils.translation import ugettext_lazy as _
@@ -35,9 +36,9 @@ WEEKLY = 7 * (24 - 1) * 60
 
 # List of intervals available. In minutes
 INTERVALS = getattr(django_settings, 'NOTIFY_INTERVALS',
-    [(INSTANTLY, _(u'instantly')),
-     (DAILY, _(u'daily')),
-     (WEEKLY, _(u'weekly'))]
+    [(INSTANTLY, _('instantly')),
+     (DAILY, _('daily')),
+     (WEEKLY, _('weekly'))]
 )
 
 INTERVALS_DEFAULT = INSTANTLY
@@ -63,5 +64,3 @@ AUTO_DELETE_ALL = getattr(django_settings, 'NOTIFY_AUTO_DELETE_ALL', 120)
 NOTIFY_LOG = getattr(django_settings, 'NOTIFY_LOG', '/tmp/daemon_notify.log')
 
 NOTIFY_PID = getattr(django_settings, 'NOTIFY_PID', '/tmp/daemon_notify.pid')
-
-
