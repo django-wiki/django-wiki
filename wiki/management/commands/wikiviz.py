@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import unicode_literals
 
 """Django model to DOT (Graphviz) converter
 by Antonio Cavedoni <antonio@cavedoni.org>

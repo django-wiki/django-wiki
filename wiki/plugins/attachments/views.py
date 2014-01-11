@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from django.contrib import messages
 from django.db.models import Q
 from django.http import Http404, HttpResponseRedirect
@@ -45,9 +46,9 @@ class AttachmentView(ArticleMixin, FormView):
         
         attachment_revision = form.save()
         if isinstance(attachment_revision, list):
-            messages.success(self.request, _(u'Successfully added: %s') % (", ".join([ar.get_filename() for ar in attachment_revision])))
+            messages.success(self.request, _('Successfully added: %s') % (", ".join([ar.get_filename() for ar in attachment_revision])))
         else:
-            messages.success(self.request, _(u'%s was successfully added.') % attachment_revision.get_filename())
+            messages.success(self.request, _('%s was successfully added.') % attachment_revision.get_filename())
         
         return redirect("wiki:attachments_index", path=self.urlpath.path, article_id=self.article.id)
     
@@ -119,9 +120,9 @@ class AttachmentReplaceView(ArticleMixin, FormView):
             attachment_revision.save()
             self.attachment.current_revision = attachment_revision
             self.attachment.save()
-            messages.success(self.request, _(u'%s uploaded and replaces old attachment.') % attachment_revision.get_filename())
+            messages.success(self.request, _('%s uploaded and replaces old attachment.') % attachment_revision.get_filename())
         except models.IllegalFileExtension as e:
-            messages.error(self.request, _(u'Your file could not be saved: %s') % e)
+            messages.error(self.request, _('Your file could not be saved: %s') % e)
             return redirect("wiki:attachments_replace", attachment_id=self.attachment.id,
                             path=self.urlpath.path, article_id=self.article.id)
         
@@ -138,7 +139,7 @@ class AttachmentReplaceView(ArticleMixin, FormView):
     
     def get_form(self, form_class):
         form = FormView.get_form(self, form_class)
-        form.fields['file'].help_text = _(u'Your new file will automatically be renamed to match the file already present. Files with different extensions are not allowed.')
+        form.fields['file'].help_text = _('Your new file will automatically be renamed to match the file already present. Files with different extensions are not allowed.')
         return form
     
     def get_form_kwargs(self):
@@ -201,7 +202,7 @@ class AttachmentChangeRevisionView(ArticleMixin, View):
     def post(self, request, *args, **kwargs):
         self.attachment.current_revision = self.revision
         self.attachment.save()
-        messages.success(self.request, _(u'Current revision changed for %s.') % self.attachment.original_filename)
+        messages.success(self.request, _('Current revision changed for %s.') % self.attachment.original_filename)
         
         return redirect("wiki:attachments_index", path=self.urlpath.path, article_id=self.article.id)
     
@@ -220,7 +221,7 @@ class AttachmentAddView(ArticleMixin, View):
         if self.attachment.articles.filter(id=self.article.id):
             self.attachment.articles.add(self.article)
             self.attachment.save()
-        messages.success(self.request, _(u'Added a reference to "%(att)s" from "%(art)s".') % 
+        messages.success(self.request, _('Added a reference to "%(att)s" from "%(art)s".') % 
                          {'att': self.attachment.original_filename,
                           'art': self.article.current_revision.title})        
         return redirect("wiki:attachments_index", path=self.urlpath.path, article_id=self.article.id)
@@ -250,10 +251,10 @@ class AttachmentDeleteView(ArticleMixin, FormView):
             revision.save()
             self.attachment.current_revision = revision
             self.attachment.save()
-            messages.info(self.request, _(u'The file %s was deleted.') % self.attachment.original_filename)
+            messages.info(self.request, _('The file %s was deleted.') % self.attachment.original_filename)
         else:
             self.attachment.articles.remove(self.article)
-            messages.info(self.request, _(u'This article is no longer related to the file %s.') % self.attachment.original_filename)
+            messages.info(self.request, _('This article is no longer related to the file %s.') % self.attachment.original_filename)
         
         return redirect("wiki:get", path=self.urlpath.path, article_id=self.article.id)
 

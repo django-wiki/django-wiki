@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 """
 Code modified from:
 https://github.com/r0wb0t/markdown-urlize
@@ -13,30 +14,30 @@ Positive examples:
 >>> md = markdown.Markdown(extensions=['urlize'])
 
 >>> md.convert('http://example.com/')
-u'<p><a href="http://example.com/">http://example.com/</a></p>'
+'<p><a href="http://example.com/">http://example.com/</a></p>'
 
 >>> md.convert('go to http://example.com')
-u'<p>go to <a href="http://example.com">http://example.com</a></p>'
+'<p>go to <a href="http://example.com">http://example.com</a></p>'
 
 >>> md.convert('example.com')
-u'<p><a href="http://example.com">example.com</a></p>'
+'<p><a href="http://example.com">example.com</a></p>'
 
 >>> md.convert('example.net')
-u'<p><a href="http://example.net">example.net</a></p>'
+'<p><a href="http://example.net">example.net</a></p>'
 
 >>> md.convert('www.example.us')
-u'<p><a href="http://www.example.us">www.example.us</a></p>'
+'<p><a href="http://www.example.us">www.example.us</a></p>'
 
 >>> md.convert('(www.example.us/path/?name=val)')
-u'<p>(<a href="http://www.example.us/path/?name=val">www.example.us/path/?name=val</a>)</p>'
+'<p>(<a href="http://www.example.us/path/?name=val">www.example.us/path/?name=val</a>)</p>'
 
 >>> md.convert('go to <http://example.com> now!')
-u'<p>go to <a href="http://example.com">http://example.com</a> now!</p>'
+'<p>go to <a href="http://example.com">http://example.com</a> now!</p>'
 
 Negative examples:
 
 >>> md.convert('del.icio.us')
-u'<p>del.icio.us</p>'
+'<p>del.icio.us</p>'
 
 """
 

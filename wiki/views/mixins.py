@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django.views.generic.base import TemplateResponseMixin
 
 from wiki.core.plugins import registry

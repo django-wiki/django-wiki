@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django.contrib import admin
 from django.contrib.contenttypes.generic import GenericTabularInline
 from django.utils.translation import ugettext_lazy as _
@@ -69,7 +70,7 @@ class URLPathAdmin(MPTTModelAdmin):
     
     def get_created(self, instance):
         return instance.article.created
-    get_created.short_description = _(u'created')
+    get_created.short_description = _('created')
     
 admin.site.register(models.URLPath, URLPathAdmin)
 admin.site.register(models.Article, ArticleAdmin)
