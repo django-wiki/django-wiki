@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function, unicode_literals
 #
 # django-wiki documentation build configuration file, created by
 # sphinx-quickstart on Mon Jul 23 16:13:51 2012.

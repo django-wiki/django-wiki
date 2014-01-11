@@ -13,7 +13,7 @@ Basic usage:
     >>> text = "Some text with a [Link Name](wiki:ArticleName)."
     >>> html = markdown.markdown(text, ['wikipath(base_url="/wiki/view/")'])
     >>> html
-    u'<p>Some text with a <a class="wikipath" href="/wiki/view/ArticleName/">Link Name</a>.</p>'
+    '<p>Some text with a <a class="wikipath" href="/wiki/view/ArticleName/">Link Name</a>.</p>'
 
 Dependencies:
 * [Python 2.3+](http://python.org)
