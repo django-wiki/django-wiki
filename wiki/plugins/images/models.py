@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import os.path
 
 from django.conf import settings as django_settings
@@ -38,12 +39,12 @@ class Image(RevisionPlugin):
         return self.can_write(user)
 
     class Meta:
-        verbose_name = _(u'image')
-        verbose_name_plural = _(u'images')
+        verbose_name = _('image')
+        verbose_name_plural = _('images')
         app_label = settings.APP_LABEL
     
     def __unicode__(self):
-        title = (_(u'Image: %s') % self.current_revision.imagerevision.get_filename()) if self.current_revision else _(u'Current revision not set!!')
+        title = (_('Image: %s') % self.current_revision.imagerevision.get_filename()) if self.current_revision else _('Current revision not set!!')
         return unicode(title)
 
 class ImageRevision(RevisionPluginRevision):
@@ -91,13 +92,13 @@ class ImageRevision(RevisionPluginRevision):
                 self.image = None
 
     class Meta:
-        verbose_name = _(u'image revision')
-        verbose_name_plural = _(u'image revisions')
+        verbose_name = _('image revision')
+        verbose_name_plural = _('image revisions')
         app_label = settings.APP_LABEL
         ordering = ('-created',)
 
     def __unicode__(self):
-        title = _(u'Image Revsion: %d') % self.revision_number
+        title = _('Image Revsion: %d') % self.revision_number
         return unicode(title)
 
 
