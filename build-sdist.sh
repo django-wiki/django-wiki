@@ -18,10 +18,10 @@ git log --graph --pretty=format:'%h -%d %s (%cr) <%an>' --abbrev-commit | sed "s
 echo "Compiling LESS files to CSS..."
 ./build-less.sh
 
-echo "Building docs..."
-cd docs
-make html
-cd ..
+#echo "Building docs..."
+#cd docs
+#make html
+#cd ..
 
 echo "Building model chart PDF (needs graphviz)..."
 cd testproject/
@@ -31,4 +31,8 @@ cd ..
 echo "Building Python source distribution..."
 rm -Rf *egg-info/
 python setup.py sdist
+
+echo "OK, done. But ensure that you have pypandoc installed so the README.rst file is made for PyPi.. otherwise rerun."
+
+echo "Now run python setup.py sdist upload"
 
