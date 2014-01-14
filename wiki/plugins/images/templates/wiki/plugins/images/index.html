@@ -71,7 +71,7 @@
           {% for old_revision in image.revision_set.all %}
             <tr>
               <td>
-              {% thumbnail revision.imagerevision.image "50x50" crop="center" as thumb %}
+              {% thumbnail old_revision.imagerevision.image "50x50" crop="center" as thumb %}
                 <img src="{{ thumb.url }}" alt="{{ revision.imagerevision.get_filename }}" />
               {% endthumbnail %}
               </td>
