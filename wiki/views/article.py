@@ -23,9 +23,9 @@ from django.db import transaction
 
 #Django 1.6 transaction API, required for 1.8+
 try:
-   notrans=transaction.non_atomic_requests 
+    notrans=transaction.non_atomic_requests
 except:
-   notrans=transaction.commit_manually
+    notrans=transaction.commit_manually
 
 from wiki.core.exceptions import NoRootURL
 from wiki.core import permissions
