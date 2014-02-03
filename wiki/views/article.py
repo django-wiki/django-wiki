@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import difflib
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -19,17 +20,12 @@ from wiki.core.plugins import registry as plugin_registry
 from wiki.core.diff import simple_merge
 from wiki.decorators import get_article, json_view
 from django.core.urlresolvers import reverse
-from django.db import transaction
-
-#Django 1.6 transaction API, required for 1.8+
-try:
-    notrans=transaction.non_atomic_requests
-except:
-    notrans=transaction.commit_manually
 
 from wiki.core.exceptions import NoRootURL
 from wiki.core import permissions
 from django.http import Http404
+
+log = logging.getLogger(__name__)
 
 
 class ArticleView(ArticleMixin, TemplateView):
@@ -67,7 +63,6 @@ class Create(FormView, ArticleMixin):
         form.fields['slug'].widget = forms.TextInputPrepend(prepend='/'+self.urlpath.path)
         return form
 
-    @notrans
     def form_valid(self, form):
         user=None
         ip_address = None
@@ -77,6 +72,7 @@ class Create(FormView, ArticleMixin):
                 ip_address = self.request.META.get('REMOTE_ADDR', None)
         elif settings.LOG_IPS_ANONYMOUS:
             ip_address = self.request.META.get('REMOTE_ADDR', None)
+
         try:
             self.newpath = models.URLPath.create_article(
                 self.urlpath,
@@ -94,20 +90,15 @@ class Create(FormView, ArticleMixin):
                                 'other_write': self.article.other_write,
                                 })
             messages.success(self.request, _(u"New article '%s' created.") % self.newpath.article.current_revision.title)
-
-            transaction.commit()
-        # TODO: Handle individual exceptions better and give good feedback.
         except Exception, e:
-            transaction.rollback()
+            log.exception("Exception creating article.")
             if self.request.user.is_superuser:
                 messages.error(self.request, _(u"There was an error creating this article: %s") % str(e))
             else:
                 messages.error(self.request, _(u"There was an error creating this article."))
-            transaction.commit()
             return redirect('wiki:get', '')
 
         url = self.get_success_url()
-        transaction.commit()
         return url
 
     def get_success_url(self):
