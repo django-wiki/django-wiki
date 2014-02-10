@@ -22,7 +22,7 @@ except:
    notrans=transaction.commit_manually
 
 from django.db.models.signals import post_save, pre_delete
-from django.utils.translation import ugettext_lazy as _, ugettext
+from django.utils.translation import ugettext_lazy as _
 
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
@@ -161,7 +161,7 @@ class URLPath(MPTTModel):
     
     def __str__(self):
         path = self.path
-        return path if path else ugettext("(root)")
+        return path if path else _("(root)")
     
     def save(self, *args, **kwargs):
         super(URLPath, self).save(*args, **kwargs)

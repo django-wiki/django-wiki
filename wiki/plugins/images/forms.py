@@ -1,7 +1,6 @@
 from __future__ import unicode_literals
 from __future__ import absolute_import
 from django import forms
-from django.utils.translation import ugettext
 from django.utils.translation import ugettext_lazy as _
 
 from wiki.core.plugins.base import PluginSidebarFormMixin
@@ -17,7 +16,9 @@ class SidebarForm(PluginSidebarFormMixin):
         self.fields['image'].required = True
     
     def get_usermessage(self):
-        return ugettext("New image %s was successfully uploaded. You can use it by selecting it from the list of available images.") % self.instance.get_filename()
+        return _("New image {image_name} was successfully uploaded. You can use it by selecting it from the list of available images.").format(
+            image_name=self.instance.get_filename()
+        )
     
     def save(self, *args, **kwargs):
         if not self.instance.id:
@@ -66,5 +67,5 @@ class PurgeForm(forms.Form):
     def clean_confirm(self):
         confirm = self.cleaned_data['confirm']
         if not confirm:
-            raise forms.ValidationError(ugettext('You are not sure enough!'))
+            raise forms.ValidationError(_('You are not sure enough!'))
         return confirm
