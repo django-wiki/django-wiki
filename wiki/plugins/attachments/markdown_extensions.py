@@ -2,7 +2,7 @@ import markdown
 import re
 
 from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 
 ATTACHMENT_RE = re.compile(r'.*(\[attachment\:(?P<id>\d+)\]).*', re.IGNORECASE)
 

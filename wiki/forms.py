@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.forms.util import flatatt
 from django.utils.encoding import force_unicode
@@ -261,9 +261,9 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
     owner_username = forms.CharField(required=False, label=_(u'Owner'),
                                      help_text=_(u'Enter the username of the owner.'))
     group = forms.ModelChoiceField(models.Group.objects.all(), empty_label=_(u'(none)'),
-                                     required=False)
+                                     required=False, label=_("Group"))
     if settings.USE_BOOTSTRAP_SELECT_WIDGET:
-        group.widget= SelectWidgetBootstrap()
+        group.widget = SelectWidgetBootstrap()
     
     recursive = forms.BooleanField(label=_(u'Inherit permissions'), help_text=_(u'Check here to apply the above permissions recursively to articles under this one.'),
                                    required=False)
