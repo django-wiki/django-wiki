@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls.defaults import patterns, url
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 
 from wiki.conf import settings
 from wiki.core.plugins import registry
