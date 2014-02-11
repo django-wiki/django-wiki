@@ -15,8 +15,8 @@ from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
 
 from wiki import managers
-from wiki.compat import atomic, transaction_commit_on_success
 from wiki.conf import settings
+from wiki.core.compat import atomic, transaction_commit_on_success
 from wiki.core.exceptions import NoRootURL, MultipleRootURLs
 from wiki.models.article import ArticleRevision, ArticleForObject, Article
 
