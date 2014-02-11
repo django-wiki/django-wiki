@@ -1,6 +1,6 @@
 from django import forms
 from django.forms.models import modelformset_factory, BaseModelFormSet
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 
 from django_notify.models import Settings, NotificationType
 from django_notify import settings as notify_settings
