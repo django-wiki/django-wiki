@@ -10,7 +10,7 @@ from django.utils.translation import ugettext as _
 from django.utils.safestring import mark_safe
 from django.forms.util import flatatt
 from django.utils.encoding import force_unicode
-from django.utils.html import escape, conditional_escape
+from django.utils.html import escape, conditional_escape, strip_tags
 
 from itertools import chain
 
@@ -144,6 +144,10 @@ class EditForm(forms.Form, SpamProtectionMixin):
         
         super(EditForm, self).__init__(*args, **kwargs)
     
+    def clean_title(self):
+        title = strip_tags(self.cleaned_data['title'])
+        return title
+
     def clean(self):
         cd = self.cleaned_data
         if self.no_clean or self.preview:
@@ -246,6 +250,10 @@ class CreateForm(forms.Form, SpamProtectionMixin):
     summary = forms.CharField(label=_(u'Summary'), help_text=_(u"Write a brief message for the article's history log."),
                               required=False)
     
+    def clean_title(self):
+        title = strip_tags(self.cleaned_data['title'])
+        return title
+
     def clean_slug(self):
         slug = self.cleaned_data['slug']
         if slug.startswith("_"):
