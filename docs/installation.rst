@@ -145,6 +145,16 @@ In Django 1.5, it should look like this:
         "sekizai.context_processors.sekizai",
     )
 
+Set ``SITE_ID``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you're working with fresh Django installation, you need to set the SITE_ID
+
+::
+
+    SITE_ID = 1
+    
+
 Include urlpatterns
 ~~~~~~~~~~~~~~~~~~~
 
