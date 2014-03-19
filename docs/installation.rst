@@ -97,18 +97,19 @@ The following applications should be listed - NB! it's important to
 maintain the order due to database relational constraints:
 
 ::
-        'django.contrib.sites', # django 1.6.2
-        'django.contrib.humanize',
-        'south',
-        'django_notify',
-        'mptt',
-        'sekizai',
-        'sorl.thumbnail',
-        'wiki',
-        'wiki.plugins.attachments',
-        'wiki.plugins.notifications',
-        'wiki.plugins.images',
-        'wiki.plugins.macros',
+
+    'django.contrib.sites', # django 1.6.2
+    'django.contrib.humanize',
+    'south',
+    'django_notify',
+    'mptt',
+    'sekizai',
+    'sorl.thumbnail',
+    'wiki',
+    'wiki.plugins.attachments',
+    'wiki.plugins.notifications',
+    'wiki.plugins.images',
+    'wiki.plugins.macros',
 
 Database
 ~~~~~~~~
