@@ -90,6 +90,11 @@ Consider any moment in life that you could have been writing **unit tests** for 
 
 The easiest way to add features is to write a plugin. Please create an issue to discuss whether your plugin idea is a core plugin (`wiki.plugins.*`) or external plugin. If there are additions needed to the plugin API, we can discuss that as well!
 
+To run the tests, run "python runtests.py" after installing the requirements. Better, install "tox" (using "pip install tox") and then just run "tox" to run the test suite on multiple environments.
+
+To run specific tests, call runtests.py with the arguments that you would pass to the normal "manage.py test" command.
+
+
 Manifesto
 ---------
 

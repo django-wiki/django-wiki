@@ -1,4 +1,6 @@
+#!/usr/bin/env python
 import sys
+import django
 from django.conf import settings
 
 settings.configure(
@@ -45,14 +47,23 @@ settings.configure(
     SOUTH_TESTS_MIGRATE=True,
 )
 
-from django.test.simple import DjangoTestSuiteRunner
-test_runner = DjangoTestSuiteRunner(verbosity=1)
 
 # If you use South for migrations, uncomment this to monkeypatch
 # syncdb to get migrations to run.
 from south.management.commands import patch_for_test_db_setup
 patch_for_test_db_setup()
 
-failures = test_runner.run_tests(['wiki', ])
-if failures:
-    sys.exit(failures)
+from django.core.management import execute_from_command_line
+argv = [sys.argv[0], "test"]
+
+if len(sys.argv) == 1:
+    # Nothing following 'runtests.py':
+    if django.VERSION < (1,6):
+        argv.append("wiki")
+    else:
+        argv.append("wiki.tests")
+else:
+    # Allow tests to be specified:
+    argv.extend(sys.argv[1:])
+
+execute_from_command_line(argv)
