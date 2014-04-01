@@ -8,7 +8,8 @@ please feel free to contribute to this contribution doc as well :D
 When submitting an Issue, please provide the following:
 
 * If it's a **feature request**, then write why *you* want it, but also which other
-  cases you find it useful for -- i.e. motivate it.
+  cases you find it useful for. Best way to get a new feature made by others
+  is to motivate.
   * Think about challenges.
   * Have you read the Manifesto (below) ? New features should maintain the focus
     of the project.
@@ -26,8 +27,10 @@ When submitting an Issue, please provide the following:
 
 When submitting a pull request, please do the following.
 
-* Add a test case to test/test_autopep8.py that demonstrates what your change does.
-* Make sure all tests pass.
+* If it contains Python code, please consider adding a test case.
+* If it's a look and feel change, please add a screenshot.
+* If you add support to other versions of dependencies, please add a Travis
+  .yml configuration.
 
 ## Manifesto
 
