@@ -97,7 +97,7 @@ class ImageRevision(RevisionPluginRevision):
         ordering = ('-created',)
 
     def __unicode__(self):
-        title = _(u'Image Revsion: %d') % self.revision_number
+        title = _(u'Image Revision: %d') % self.revision_number
         return unicode(title)
 
 
