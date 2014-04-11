@@ -6,7 +6,7 @@ from datetime import timedelta
 from django.utils import timezone
 
 from django import forms
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.forms.util import flatatt
 from django.utils.encoding import force_unicode
