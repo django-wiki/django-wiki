@@ -60,7 +60,7 @@ class Create(FormView, ArticleMixin):
         initial['slug'] = self.request.GET.get('slug', None)
         kwargs['initial'] = initial
         form = form_class(self.request, self.urlpath, **kwargs)
-        form.fields['slug'].widget = forms.TextInputPrepend(prepend='/'+self.urlpath.path)
+        form.fields['slug'].widget = forms.TextInputPrepend(prepend='/'+self.urlpath.path, attrs={'pattern': '[^-A-Z]+', 'title': 'Please only use lowercase alphanumeric characters and underscores'})
         return form
 
     def form_valid(self, form):

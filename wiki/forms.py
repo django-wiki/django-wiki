@@ -264,6 +264,8 @@ class CreateForm(forms.Form, SpamProtectionMixin):
             else:
                 raise forms.ValidationError(_(u'A slug named "%s" already exists.') % already_urlpath.slug)
         
+        slug = slug.lower()
+        slug = slug.replace('-', '_')
         return slug
     
     def clean(self):
