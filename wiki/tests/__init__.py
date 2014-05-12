@@ -152,3 +152,11 @@ class WebClientTest(TestCase):
         self.assertRedirects(response, reverse('wiki:get', kwargs={'path': 'Test/'}))
         self.assertContains(self.get_by_path('Test/'), 'Other content on level 1')
         self.assertContains(self.get_by_path('Level1/Test/'), 'Content') # on level 2')
+
+    def test_empty_search(self):
+        c = self.c
+        response = c.get(reverse('wiki:search'), {'q': 'Article'})
+        self.assertContains(response, 'Root Article')
+
+        response = c.get(reverse('wiki:search'), {'q': ''})
+        self.assertFalse(response.context['articles'])

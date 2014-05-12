@@ -1,15 +1,9 @@
 from django.db import models
 from django.db.models import Q
 from django.db.models.query import QuerySet, EmptyQuerySet
+
 from mptt.managers import TreeManager
 
-class ArticleEmptyQuerySet(EmptyQuerySet):
-    def can_read(self, user):
-        return self
-    def can_write(self, user):
-        return self
-    def active(self):
-        return self
 
 class ArticleQuerySet(QuerySet):
     
@@ -95,7 +89,7 @@ class ArticleFkEmptyQuerySet(ArticleFkEmptyQuerySetMixin, EmptyQuerySet):
 
 class ArticleManager(models.Manager):
     def get_empty_query_set(self):
-        return ArticleEmptyQuerySet(model=self.model)
+        return self.get_query_set().none()
     def get_query_set(self):
         return ArticleQuerySet(self.model, using=self._db)
     def active(self):
