@@ -261,6 +261,8 @@ class CreateForm(forms.Form, SpamProtectionMixin):
         if settings.URL_CASE_SENSITIVE:
             already_existing_slug = models.URLPath.objects.filter(slug=slug, parent=self.urlpath_parent)
         else:
+            slug = slug.lower()
+            slug = slug.replace('-', '_')
             already_existing_slug = models.URLPath.objects.filter(slug__iexact=slug, parent=self.urlpath_parent)
         if already_existing_slug:
             already_urlpath = already_existing_slug[0]
