@@ -101,14 +101,14 @@ class WebClientTest(TestCase):
         # revealed only by sequence of tests in some particular order
         c = self.c
         response = c.post(reverse('wiki:create', kwargs={'path': ''}),
-                {'title': 'Test cache', 'slug': 'TestCache', 'content': 'Content 1'})
-        self.assertRedirects(response, reverse('wiki:get', kwargs={'path': 'TestCache/'}))
-        response = c.post(reverse('wiki:delete', kwargs={'path': 'TestCache/'}),
+                {'title': 'Test cache', 'slug': 'testcache', 'content': 'Content 1'})
+        self.assertRedirects(response, reverse('wiki:get', kwargs={'path': 'testcache/'}))
+        response = c.post(reverse('wiki:delete', kwargs={'path': 'testcache/'}),
                 {'confirm': 'on', 'purge': 'on', 'revision': '2'})
         self.assertRedirects(response, reverse('wiki:get', kwargs={'path': ''}))
         response = c.post(reverse('wiki:create', kwargs={'path': ''}),
                 {'title': 'Test cache', 'slug': 'TestCache', 'content': 'Content 2'})
-        self.assertRedirects(response, reverse('wiki:get', kwargs={'path': 'TestCache/'}))
+        self.assertRedirects(response, reverse('wiki:get', kwargs={'path': 'testcache/'}))
         # test the cache
         self.assertContains(self.get_by_path('TestCache/'), 'Content 2')
 
@@ -121,9 +121,9 @@ class WebClientTest(TestCase):
         # verify the new article is added to article_list
         response = c.post(reverse('wiki:create', kwargs={'path': ''}),
                 {'title': 'Sub Article 1', 'slug': 'SubArticle1'})
-        self.assertRedirects(response, reverse('wiki:get', kwargs={'path': 'SubArticle1/'}))
+        self.assertRedirects(response, reverse('wiki:get', kwargs={'path': 'subarticle1/'}))
         self.assertContains(self.get_by_path(''), 'Sub Article 1')
-        self.assertContains(self.get_by_path(''), 'SubArticle1/')
+        self.assertContains(self.get_by_path(''), 'subarticle1/')
         # verify the deleted article is removed from article_list
         response = c.post(reverse('wiki:delete', kwargs={'path': 'SubArticle1/'}),
                 {'confirm': 'on', 'purge': 'on', 'revision': '3'})
@@ -145,12 +145,12 @@ class WebClientTest(TestCase):
         c = self.c
         response = c.post(reverse('wiki:create', kwargs={'path': ''}), 
                 {'title': 'Level 1', 'slug': 'Level1', 'content': 'Content level 1'})
-        self.assertRedirects(response, reverse('wiki:get', kwargs={'path': 'Level1/'}))
+        self.assertRedirects(response, reverse('wiki:get', kwargs={'path': 'level1/'}))
         response = c.post(reverse('wiki:create', kwargs={'path': 'Level1/'}), 
                 {'title': 'test', 'slug': 'Test', 'content': 'Content on level 2'})
-        self.assertRedirects(response, reverse('wiki:get', kwargs={'path': 'Level1/Test/'}))
+        self.assertRedirects(response, reverse('wiki:get', kwargs={'path': 'level1/test/'}))
         response = c.post(reverse('wiki:create', kwargs={'path': ''}), 
                 {'title': 'test', 'slug': 'Test', 'content': 'Other content on level 1'})
-        self.assertRedirects(response, reverse('wiki:get', kwargs={'path': 'Test/'}))
+        self.assertRedirects(response, reverse('wiki:get', kwargs={'path': 'test/'}))
         self.assertContains(self.get_by_path('Test/'), 'Other content on level 1')
         self.assertContains(self.get_by_path('Level1/Test/'), 'Content') # on level 2')
