@@ -94,7 +94,7 @@ class Create(FormView, ArticleMixin):
             messages.success(self.request, _("New article '%s' created.") % self.newpath.article.current_revision.title)
             transaction.commit()
         # TODO: Handle individual exceptions better and give good feedback.
-        except Exception, e:
+        except Exception as e:
             log.exception("Exception creating article.")
             transaction.rollback()
             if self.request.user.is_superuser:
