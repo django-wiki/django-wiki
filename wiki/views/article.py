@@ -101,7 +101,6 @@ class Create(FormView, ArticleMixin):
                 messages.error(self.request, _("There was an error creating this article: %s") % str(e))
             else:
                 messages.error(self.request, _("There was an error creating this article."))
-            transaction.commit()
             return redirect('wiki:get', '')
 
         url = self.get_success_url()
