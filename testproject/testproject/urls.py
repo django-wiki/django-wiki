@@ -19,7 +19,7 @@ if settings.DEBUG:
    )
 
 from wiki.urls import get_pattern as get_wiki_pattern
-from django_notify.urls import get_pattern as get_notify_pattern
+from django_nyt.urls import get_pattern as get_notify_pattern
 urlpatterns += patterns('',
     (r'^notify/', get_notify_pattern()),
     (r'', get_wiki_pattern())

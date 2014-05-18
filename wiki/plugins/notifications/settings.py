@@ -2,7 +2,7 @@
 
 APP_LABEL = 'wiki'
 
-# Key for django_notify - changing it will break any existing notifications.
+# Key for django_nyt - changing it will break any existing notifications.
 ARTICLE_EDIT = "article_edit"
 
 SLUG = 'notifications'

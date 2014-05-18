@@ -22,7 +22,7 @@ settings.configure(
         'django.contrib.humanize',
         'django.contrib.sites',
         'south',
-        'django_notify',
+        'django_nyt',
         'mptt',
         'sekizai',
         'sorl.thumbnail',

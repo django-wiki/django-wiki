@@ -3,8 +3,8 @@ from django import forms
 from django.forms.models import modelformset_factory, BaseModelFormSet
 from django.utils.translation import ugettext as _
 
-from django_notify.models import Settings, NotificationType
-from django_notify import settings as notify_settings
+from django_nyt.models import Settings, NotificationType
+from django_nyt import settings as notify_settings
 from django.contrib.contenttypes.models import ContentType
 from django.utils.safestring import mark_safe
 

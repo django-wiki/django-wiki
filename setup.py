@@ -8,11 +8,28 @@ from setuptools import setup, find_packages
 # Used for the long_description.  It's nice, because now 1) we have a top level
 # README file and 2) it's easier to type in the README file than to put a raw
 # string in below ...
+
+
 def get_path(fname):
     return os.path.join(os.path.dirname(__file__), fname)
 
+
 def read(fname):
     return open(get_path(fname)).read()
+
+
+def dynamic_requirements(requirements):
+    
+    try:
+        from django import VERSION
+        if VERSION < (1, 7):
+            requirements.append("South>=0.8,!=0.8.3")
+    except ImportError:
+        # No django so assuming that a new one will
+        # get installed...
+        pass
+    return requirements
+
 
 packages = find_packages()
 
@@ -20,7 +37,8 @@ packages = find_packages()
 try:
     import pypandoc
     long_description = pypandoc.convert(get_path('README.md'), 'rst')
-    long_description = long_description.split('<!---Illegal PyPi RST data -->')[0]
+    long_description = long_description.split(
+        '<!---Illegal PyPi RST data -->')[0]
     f = open(get_path('README.rst'), 'w')
     f.write(long_description)
     f.close()
@@ -29,18 +47,18 @@ except (IOError, ImportError):
     long_description = ""
 
 setup(
-    name = "wiki",
-    version = VERSION,
-    author = "Benjamin Bach",
-    author_email = "benjamin@overtag.dk",
-    url = "http://www.django-wiki.org",
-    description = "A wiki system written for the Django framework.",
-    license = "GPLv3",
-    keywords = "django wiki markdown",
-    packages=find_packages(exclude=["testproject","testproject.*"]),
-    #long_description=long_description,
+    name="wiki",
+    version=VERSION,
+    author="Benjamin Bach",
+    author_email="benjamin@overtag.dk",
+    url="http://www.django-wiki.org",
+    description="A wiki system written for the Django framework.",
+    license="GPLv3",
+    keywords="django wiki markdown",
+    packages=find_packages(exclude=["testproject", "testproject.*"]),
+    # long_description=long_description,
     zip_safe=False,
-    install_requires=read('requirements.txt').split("\n"),
+    install_requires=dynamic_requirements(read('requirements.txt').split("\n")),
     classifiers=[
         'Development Status :: 3 - Alpha',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',

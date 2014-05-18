@@ -14,7 +14,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os_path.join(PROJECT_PATH, 'db', 'prepopulated.db'),                      # Or path to database file if using sqlite3.
+        'NAME': 'prepopulated.db',  # Or path to database file if using sqlite3.
     }
 }
 
@@ -91,10 +91,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    'south',
     'sekizai',
     'sorl.thumbnail',
-    'django_notify',
+    'django_nyt',
     'wiki',
     'wiki.plugins.macros',
     'wiki.plugins.help',
@@ -104,6 +103,15 @@ INSTALLED_APPS = [
     'wiki.plugins.notifications',
     'mptt',
 ]
+
+from django import VERSION
+if VERSION <= (1, 6):
+    INSTALLED_APPS.append('south')
+    SOUTH_MIGRATION_MODULES = {
+        'django_nyt': 'django_nyt.south_migrations',
+    }
+else:
+    TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -162,4 +170,3 @@ try:
     from testproject.settings.local import *
 except ImportError:
     pass
-

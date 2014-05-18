@@ -1,2 +1,0 @@
-{% load i18n %}
-{% blocktrans with site.name as site %} {{ digest }} Notifications {{ site }}.{% endblocktrans %}

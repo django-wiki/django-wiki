@@ -4,7 +4,7 @@ from django import VERSION as DJANGO_VERSION
 from django.db import transaction
 from django.conf import settings as django_settings
 
-    
+
 # Django 1.5+
 if DJANGO_VERSION >= (1,5):
     USER_MODEL = getattr(django_settings, 'AUTH_USER_MODEL', 'auth.User')

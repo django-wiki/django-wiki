@@ -101,7 +101,7 @@ maintain the order due to database relational constraints:
     'django.contrib.sites', # django 1.6.2
     'django.contrib.humanize',
     'south',
-    'django_notify',
+    'django_nyt',
     'mptt',
     'sekizai',
     'sorl.thumbnail',
@@ -165,9 +165,9 @@ following lines at the end of your project's ``urls.py``.
 ::
 
     from wiki.urls import get_pattern as get_wiki_pattern
-    from django_notify.urls import get_pattern as get_notify_pattern
+    from django_nyt.urls import get_pattern as get_nyt_pattern
     urlpatterns += patterns('',
-        (r'^notify/', get_notify_pattern()),
+        (r'^notifications/', get_nyt_pattern()),
         (r'', get_wiki_pattern())
     )
 

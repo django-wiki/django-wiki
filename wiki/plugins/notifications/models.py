@@ -4,8 +4,8 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import signals
 
-from django_notify import notify
-from django_notify.models import Subscription
+from django_nyt.utils import notify
+from django_nyt.models import Subscription
 
 from wiki import models as wiki_models
 from wiki.models.pluginbase import ArticlePlugin
