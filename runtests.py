@@ -44,7 +44,7 @@ settings.configure(
         "sekizai.context_processors.sekizai",
     ),
     USE_TZ=True,
-    SOUTH_TESTS_MIGRATE=True,
+    SOUTH_TESTS_MIGRATE=False,
 )
 
 
