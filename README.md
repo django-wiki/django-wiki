@@ -6,7 +6,7 @@ News
 
 ***News: May 18th, 2014***
 
-Django-wiki 0.1 is landing, please see the Release Notes.
+Django-wiki 0.1 is landing, please see the [Release Notes](http://django-wiki.readthedocs.org/en/latest/release_notes.html).
 
 The overall plan is that we'll be supporting Python 2.7, Python 3.3+, and
 Django 1.5+ simultaneuously. That actually means a lot under the hood.
