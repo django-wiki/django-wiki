@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import signals
+from django.db import models
 
 from django_nyt.utils import notify
 from django_nyt.models import Subscription
@@ -13,17 +14,22 @@ from wiki.core.plugins import registry
 from wiki.plugins.notifications import settings
 from wiki.plugins.notifications.util import get_title
 
-class ArticleSubscription(ArticlePlugin, Subscription):
+
+class ArticleSubscription(ArticlePlugin):
+    
+    subscription_ptr = models.OneToOneField(Subscription, related_name='deprecated_subscriptions')
+    subscription = models.OneToOneField(Subscription, null=True)
     
     def __unicode__(self):
-        title = (_("%(user)s subscribing to %(article)s (%(type)s)") % 
+        title = (_("%(user)s subscribing to %(article)s (%(type)s)") %
                  {'user': self.settings.user.username,
                   'article': self.article.current_revision.title,
                   'type': self.notification_type.label})
         return unicode(title)
     
     class Meta:
-        app_label = settings.APP_LABEL
+        if settings.APP_LABEL:
+            app_label = settings.APP_LABEL
     
 
 def default_url(article, urlpath=None):

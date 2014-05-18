@@ -17,6 +17,7 @@ class ArticleRevisionForm(forms.ModelForm):
     
     class Meta:
         model = models.ArticleRevision
+        exclude = ()
         
     def __init__(self, *args, **kwargs):
         super(ArticleRevisionForm, self).__init__(*args, **kwargs)
@@ -47,6 +48,7 @@ class ArticleForm(forms.ModelForm):
 
     class Meta:
         model = models.Article
+        exclude = ()
 
     def __init__(self, *args, **kwargs):
         super(ArticleForm, self).__init__(*args, **kwargs)

@@ -16,6 +16,7 @@ Contents:
    customization
    settings
    tips
+   release_notes
 
 
 Indices and tables

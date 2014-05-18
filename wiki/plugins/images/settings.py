@@ -1,8 +1,11 @@
+from django import VERSION
 from django.conf import settings as django_settings
 from wiki.conf import settings as wiki_settings
 
 SLUG = 'images'
-APP_LABEL = 'wiki'
+
+# This is deprecated in django 1.7+
+APP_LABEL = 'images' if VERSION < (1, 7) else None
 
 # Where to store images
 IMAGE_PATH = getattr(django_settings, 'WIKI_IMAGES_PATH', "wiki/images/%aid/")

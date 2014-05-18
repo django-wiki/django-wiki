@@ -6,6 +6,7 @@ class ImageForm(forms.ModelForm):
 
     class Meta:
         model = models.Image
+        exclude = ()
 
     def __init__(self, *args, **kwargs):
         super(ImageForm, self).__init__(*args, **kwargs)

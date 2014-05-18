@@ -100,7 +100,6 @@ maintain the order due to database relational constraints:
 
     'django.contrib.sites', # django 1.6.2
     'django.contrib.humanize',
-    'south',
     'django_nyt',
     'mptt',
     'sekizai',
@@ -110,6 +109,26 @@ maintain the order due to database relational constraints:
     'wiki.plugins.notifications',
     'wiki.plugins.images',
     'wiki.plugins.macros',
+
+
+Django < 1.7
+~~~~~~~~~~~~
+
+If you run older versions of django, please point south to the correct
+migrations modules like so:
+
+::
+
+    INSTALLED_APPS.append('south')
+    SOUTH_MIGRATION_MODULES = {
+        'django_nyt': 'django_nyt.south_migrations',
+        'wiki': 'wiki.south_migrations',
+        'images': 'wiki.plugins.images.south_migrations',
+        'notifications': 'wiki.plugins.notifications.south_migrations',
+        'attachments': 'wiki.plugins.attachments.south_migrations',
+    }
+
+
 
 Database
 ~~~~~~~~

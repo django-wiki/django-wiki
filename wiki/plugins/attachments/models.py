@@ -43,7 +43,8 @@ class Attachment(ReusablePlugin):
     class Meta:
         verbose_name = _('attachment')
         verbose_name_plural = _('attachments')
-        app_label = settings.APP_LABEL 
+        if settings.APP_LABEL:
+            app_label = settings.APP_LABEL
     
     def __unicode__(self):
         return "%s: %s" % (self.article.current_revision.title, self.original_filename)    
@@ -102,7 +103,8 @@ class AttachmentRevision(BaseRevisionMixin, models.Model):
         verbose_name_plural = _('attachment revisions')
         ordering = ('created',)
         get_latest_by = 'revision_number'
-        app_label = settings.APP_LABEL
+        if settings.APP_LABEL:
+            app_label = settings.APP_LABEL
         
     def get_filename(self):
         """Used to retrieve the filename of a revision.

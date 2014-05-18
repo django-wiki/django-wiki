@@ -1,8 +1,10 @@
+from django import VERSION
 from django.conf import settings as django_settings
 from wiki.conf import settings as wiki_settings
 from django.core.exceptions import ImproperlyConfigured
 
-APP_LABEL = 'wiki'
+# This is not used in django 1.7+
+APP_LABEL = 'attachments' if VERSION < (1, 7) else None
 SLUG = "attachments"
 
 # Please see this note about support for UTF-8 files on django/apache:

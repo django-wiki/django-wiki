@@ -4,6 +4,25 @@ django-wiki
 News
 ----
 
+***News: May 18th, 2014***
+
+Django-wiki 0.1 is landing, please see the Release Notes.
+
+The overall plan is that we'll be supporting Python 2.7, Python 3.3+, and
+Django 1.5+ simultaneuously. That actually means a lot under the hood.
+Firstly, South is both unnecessary and incompatible with Django 1.7 as the
+new django.db.migrations framework has arrived. Secondly, we still need
+South migrations for Django installations before 1.7 (and those are still plenty).
+
+Another big thing in 0.1 is the plugins API which is now freezing as is. This
+means that proper documentation for writing plugins will arrive soon.
+
+If you want to upgrade a system running django-wiki \< 0.1, please make sure to
+have an installation of 0.0.24 first and do the migrations in that one!
+Otherwise 0.1 will **not** work. Migration trees in 0.1 are reset and most likely,
+the same thing will happen in 0.2, each minor number denoting that migrations
+trees are squashed.
+
 ***News: November 18th, 2013***
 
 Better late than never! A new release is out with promising support of django 1.6 and Bootstrap 3. Also, jquery, colorbox, and markitup editor have been bumped to newer releases.

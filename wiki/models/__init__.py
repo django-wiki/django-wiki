@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from django import VERSION
 from django.conf import settings as django_settings
 from django.core.exceptions import ImproperlyConfigured
 import warnings
@@ -41,8 +42,10 @@ if not 'django.core.context_processors.request' in django_settings.TEMPLATE_CONT
 # Warnings
 ######################
 
-if not 'south' in django_settings.INSTALLED_APPS:
-    warnings.warn("django-wiki: No south in your INSTALLED_APPS. This is highly discouraged.")
+
+if VERSION < (1, 7):
+    if not 'south' in django_settings.INSTALLED_APPS:
+        warnings.warn("django-wiki: No south in your INSTALLED_APPS. This is highly discouraged.")
 
 
 from django.core import urlresolvers

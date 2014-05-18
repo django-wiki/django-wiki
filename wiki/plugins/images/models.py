@@ -40,7 +40,8 @@ class Image(RevisionPlugin):
     class Meta:
         verbose_name = _('image')
         verbose_name_plural = _('images')
-        app_label = settings.APP_LABEL
+        if settings.APP_LABEL:
+            app_label = settings.APP_LABEL
     
     def __unicode__(self):
         title = (_('Image: %s') % self.current_revision.imagerevision.get_filename()) if self.current_revision else _('Current revision not set!!')
@@ -93,7 +94,8 @@ class ImageRevision(RevisionPluginRevision):
     class Meta:
         verbose_name = _('image revision')
         verbose_name_plural = _('image revisions')
-        app_label = settings.APP_LABEL
+        if settings.APP_LABEL:
+            app_label = settings.APP_LABEL
         ordering = ('-created',)
 
     def __unicode__(self):
