@@ -1,6 +1,10 @@
 Release notes
 =============
 
+.. warning::
+   THIS IS A DRAFT, NONE OF THE BELOW ARE RELEASED YET!!
+
+
 About the versioning
 --------------------
 
