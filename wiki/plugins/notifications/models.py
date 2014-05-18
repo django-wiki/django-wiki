@@ -17,7 +17,10 @@ from wiki.plugins.notifications.util import get_title
 
 class ArticleSubscription(ArticlePlugin):
     
-    subscription_ptr = models.OneToOneField(Subscription, related_name='deprecated_subscriptions')
+    subscription_ptr = models.OneToOneField(
+        Subscription, related_name='deprecated_subscriptions',
+        db_column='subscription_ptr'
+    )
     subscription = models.OneToOneField(Subscription, null=True)
     
     def __unicode__(self):

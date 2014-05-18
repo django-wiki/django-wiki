@@ -1,2 +1,3 @@
 -r requirements.txt
 Django>=1.5,<1.6
+South

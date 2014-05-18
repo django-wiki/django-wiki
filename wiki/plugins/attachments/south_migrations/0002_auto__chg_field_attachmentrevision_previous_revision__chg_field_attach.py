@@ -19,27 +19,51 @@ user_model_label = '%s.%s' % (User._meta.app_label, User._meta.module_name)
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'ArticleSubscription.subscription'
-        db.add_column(u'notifications_articlesubscription', 'subscription',
-                      self.gf('django.db.models.fields.related.OneToOneField')(to=orm['django_nyt.Subscription'], unique=True, null=True),
-                      keep_default=False)
 
+        # Changing field 'AttachmentRevision.previous_revision'
+        db.alter_column(u'attachments_attachmentrevision', 'previous_revision_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['attachments.AttachmentRevision'], null=True, on_delete=models.SET_NULL))
 
-        # Renaming column for 'ArticleSubscription.subscription_ptr' to match new field type.
-        # db.rename_column(u'notifications_articlesubscription', 'subscription_ptr_id', u'subscription_ptr')
-        # Changing field 'ArticleSubscription.subscription_ptr'
-        # db.alter_column(u'notifications_articlesubscription', u'subscription_ptr', self.gf('django.db.models.fields.related.OneToOneField')(unique=True, db_column=u'subscription_ptr', to=orm['django_nyt.Subscription']))
+        # Changing field 'AttachmentRevision.user'
+        db.alter_column(u'attachments_attachmentrevision', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm[user_orm_label], null=True, on_delete=models.SET_NULL))
+
+        # Changing field 'AttachmentRevision.file'
+        db.alter_column(u'attachments_attachmentrevision', 'file', self.gf('django.db.models.fields.files.FileField')(max_length=255))
 
     def backwards(self, orm):
-        # Deleting field 'ArticleSubscription.subscription'
-        db.delete_column(u'notifications_articlesubscription', 'subscription_id')
 
-        # Renaming column for 'ArticleSubscription.subscription_ptr' to match new field type.
-        #  db.rename_column(u'notifications_articlesubscription', u'subscription_ptr', 'subscription_ptr_id')
-        # Changing field 'ArticleSubscription.subscription_ptr'
-        # db.alter_column(u'notifications_articlesubscription', 'subscription_ptr_id', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['django_notify.Subscription'], unique=True))
+        # Changing field 'AttachmentRevision.previous_revision'
+        db.alter_column(u'attachments_attachmentrevision', 'previous_revision_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['attachments.AttachmentRevision'], null=True))
+
+        # Changing field 'AttachmentRevision.user'
+        db.alter_column(u'attachments_attachmentrevision', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm[user_orm_label], null=True))
+
+        # Changing field 'AttachmentRevision.file'
+        db.alter_column(u'attachments_attachmentrevision', 'file', self.gf('django.db.models.fields.files.FileField')(max_length=100))
 
     models = {
+        'attachments.attachment': {
+            'Meta': {'object_name': 'Attachment', '_ormbases': ['wiki.ReusablePlugin']},
+            'current_revision': ('django.db.models.fields.related.OneToOneField', [], {'blank': 'True', 'related_name': "u'current_set'", 'unique': 'True', 'null': 'True', 'to': "orm['attachments.AttachmentRevision']"}),
+            'original_filename': ('django.db.models.fields.CharField', [], {'max_length': '256', 'null': 'True', 'blank': 'True'}),
+            u'reusableplugin_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['wiki.ReusablePlugin']", 'unique': 'True', 'primary_key': 'True'})
+        },
+        'attachments.attachmentrevision': {
+            'Meta': {'ordering': "(u'created',)", 'object_name': 'AttachmentRevision'},
+            'attachment': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['attachments.Attachment']"}),
+            'automatic_log': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'deleted': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'file': ('django.db.models.fields.files.FileField', [], {'max_length': '255'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'ip_address': ('django.db.models.fields.IPAddressField', [], {'max_length': '15', 'null': 'True', 'blank': 'True'}),
+            'locked': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
+            'previous_revision': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['attachments.AttachmentRevision']", 'null': 'True', 'on_delete': 'models.SET_NULL', 'blank': 'True'}),
+            'revision_number': ('django.db.models.fields.IntegerField', [], {}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']", 'null': 'True', 'on_delete': 'models.SET_NULL', 'blank': 'True'}),
+            'user_message': ('django.db.models.fields.TextField', [], {'blank': 'True'})
+        },
         u'auth.group': {
             'Meta': {'object_name': 'Group'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -75,44 +99,6 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
-        },
-        u'django_nyt.notification': {
-            'Meta': {'ordering': "('-id',)", 'object_name': 'Notification', 'db_table': "'nyt_notification'"},
-            'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'is_emailed': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'is_viewed': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'message': ('django.db.models.fields.TextField', [], {}),
-            'occurrences': ('django.db.models.fields.PositiveIntegerField', [], {'default': '1'}),
-            'subscription': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['django_nyt.Subscription']", 'null': 'True', 'on_delete': 'models.SET_NULL', 'blank': 'True'}),
-            'url': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
-        },
-        u'django_nyt.notificationtype': {
-            'Meta': {'object_name': 'NotificationType', 'db_table': "'nyt_notificationtype'"},
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']", 'null': 'True', 'blank': 'True'}),
-            'key': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '128', 'primary_key': 'True'}),
-            'label': ('django.db.models.fields.CharField', [], {'max_length': '128', 'null': 'True', 'blank': 'True'})
-        },
-        u'django_nyt.settings': {
-            'Meta': {'object_name': 'Settings', 'db_table': "'nyt_settings'"},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'interval': ('django.db.models.fields.SmallIntegerField', [], {'default': '0'}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
-        },
-        u'django_nyt.subscription': {
-            'Meta': {'object_name': 'Subscription', 'db_table': "'nyt_subscription'"},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'latest': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'latest_for'", 'null': 'True', 'to': u"orm['django_nyt.Notification']"}),
-            'notification_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['django_nyt.NotificationType']"}),
-            'object_id': ('django.db.models.fields.CharField', [], {'max_length': '64', 'null': 'True', 'blank': 'True'}),
-            'send_emails': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'settings': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['django_nyt.Settings']"})
-        },
-        'notifications.articlesubscription': {
-            'Meta': {'object_name': 'ArticleSubscription', '_ormbases': ['wiki.ArticlePlugin']},
-            u'articleplugin_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['wiki.ArticlePlugin']", 'unique': 'True', 'primary_key': 'True'}),
-            'subscription': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['django_nyt.Subscription']", 'unique': 'True', 'null': 'True'}),
-            'subscription_ptr': ('django.db.models.fields.related.OneToOneField', [], {'related_name': "u'deprecated_subscriptions'", 'unique': 'True', 'db_column': "u'subscription_ptr'", 'to': u"orm['django_nyt.Subscription']"})
         },
         'wiki.article': {
             'Meta': {'object_name': 'Article'},
@@ -150,7 +136,12 @@ class Migration(SchemaMigration):
             'title': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']", 'null': 'True', 'on_delete': 'models.SET_NULL', 'blank': 'True'}),
             'user_message': ('django.db.models.fields.TextField', [], {'blank': 'True'})
+        },
+        'wiki.reusableplugin': {
+            'Meta': {'object_name': 'ReusablePlugin', '_ormbases': ['wiki.ArticlePlugin']},
+            u'articleplugin_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['wiki.ArticlePlugin']", 'unique': 'True', 'primary_key': 'True'}),
+            'articles': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "u'shared_plugins_set'", 'symmetrical': 'False', 'to': "orm['wiki.Article']"})
         }
     }
 
-    complete_apps = ['notifications']
+    complete_apps = ['attachments']
