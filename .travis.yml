@@ -22,6 +22,5 @@ matrix:
         - python: "3.2"
           env: DJANGO="Django==1.4"
 # command to run tests
-- script:
+script:
   - cd testproject ; python -W error:"":"":0 manage.py test wiki --settings=testproject.settings.travis
-
