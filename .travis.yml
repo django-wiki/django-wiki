@@ -5,9 +5,9 @@ python:
   - "3.2"
   - "3.3"
 env:
-    - DJANGO="Django==1.4" SOUTH="South>=0.8.4" SORLTHUMBNAIL="sorl-thumbnail<11.12.1"
-    - DJANGO="Django==1.5" SOUTH="South>=0.8.4" SORLTHUMBNAIL="sorl-thumbnail>=11.12.1b"
-    - DJANGO="Django==1.6" SOUTH="South>=0.8.4" SORLTHUMBNAIL="sorl-thumbnail>=11.12.1b"
+    - DJANGO="Django>=1.4<1.5" SOUTH="South>=0.8.4" SORLTHUMBNAIL="sorl-thumbnail<11.12.1"
+    - DJANGO="Django>=1.5<1.6" SOUTH="South>=0.8.4" SORLTHUMBNAIL="sorl-thumbnail>=11.12.1b"
+    - DJANGO="Django>=1.6<1.7" SOUTH="South>=0.8.4" SORLTHUMBNAIL="sorl-thumbnail>=11.12.1b"
     - DJANGO="https://www.djangoproject.com/download/1.7.b4/tarball/" SOUTH="" SORLTHUMBNAIL="sorl-thumbnail>=11.12.1b"
 install:
   - pip install $DJANGO $SOUTH $SORLTHUMBNAIL -r .travis/requirements.txt
@@ -18,9 +18,9 @@ matrix:
           env: DJANGO="https://www.djangoproject.com/download/1.7.b4/tarball/"
         # Support for python 3 was added in Django 1.5
         - python: "3.3"
-          env: DJANGO="Django==1.4"
+          env: DJANGO="Django>=1.4<1.5"
         - python: "3.2"
-          env: DJANGO="Django==1.4"
+          env: DJANGO="Django>=1.4<1.5"
 # command to run tests
 script:
   - cd testproject ; python -W error:"":"":0 manage.py test wiki --settings=testproject.settings.travis
