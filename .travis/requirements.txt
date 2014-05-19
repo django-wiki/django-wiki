@@ -9,7 +9,7 @@ django-sekizai>=0.7
 # Switch to Pillow and the dev version of sorl v12
 Pillow
 # Notification system
-django-nyt>=0.9
+django-nyt>=0.9.1
 django-mptt>=0.5.5
 six
 

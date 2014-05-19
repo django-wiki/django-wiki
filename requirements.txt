@@ -6,4 +6,4 @@ sorl-thumbnail>=11.12.1b
 Pillow
 six
 # Notification system
-django-nyt>=0.9
+django-nyt>=0.9.1
