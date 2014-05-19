@@ -5,12 +5,12 @@ python:
   - "3.2"
   - "3.3"
 env:
-    - DJANGO="Django==1.4" SOUTH="South>=0.8.4"
-    - DJANGO="Django==1.5" SOUTH="South>=0.8.4"
-    - DJANGO="Django==1.6" SOUTH="South>=0.8.4"
-    - DJANGO="https://www.djangoproject.com/download/1.7.b4/tarball/" SOUTH=""
+    - DJANGO="Django==1.4" SOUTH="South>=0.8.4" SORLTHUMBNAIL="sorl-thumbnail<11.12.1"
+    - DJANGO="Django==1.5" SOUTH="South>=0.8.4" SORLTHUMBNAIL="sorl-thumbnail>=11.12.1b"
+    - DJANGO="Django==1.6" SOUTH="South>=0.8.4" SORLTHUMBNAIL="sorl-thumbnail>=11.12.1b"
+    - DJANGO="https://www.djangoproject.com/download/1.7.b4/tarball/" SOUTH="" SORLTHUMBNAIL="sorl-thumbnail>=11.12.1b"
 install:
-  - pip install $DJANGO $SOUTH -r .travis/requirements.txt
+  - pip install $DJANGO $SOUTH $SORLTHUMBNAIL -r .travis/requirements.txt
 matrix:
     exclude:
         # Python 2.6 support has been dropped in Django 1.7

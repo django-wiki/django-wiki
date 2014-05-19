@@ -17,6 +17,7 @@ Contents:
    settings
    tips
    release_notes
+   known_issues
 
 
 Indices and tables
