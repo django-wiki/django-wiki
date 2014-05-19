@@ -10,6 +10,6 @@ django-sekizai>=0.7
 Pillow
 # Notification system
 django-nyt>=0.9
-django-mptt>=0.5.3
+django-mptt>=0.5.5
 six
 
