@@ -2,7 +2,10 @@
 Markdown>=2.2.0
 django-sekizai>=0.7
 # Switch to Pillow and the dev version of sorl v12
-git+https://github.com/mariocesar/sorl-thumbnail.git
+sorl-thumbnail>=11.12.1b
+Pillow
 # Notification system
 django-nyt>=0.9
+django-mptt>=0.5.3
+six
 
