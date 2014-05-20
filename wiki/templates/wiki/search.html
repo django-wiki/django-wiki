@@ -11,8 +11,14 @@
 <form class="form-search directory-toolbar">
 <p class="lead">
   <div class="pull-right">
-    {{ search_form.q }}
-    <button class="btn btn-default"><span class="icon-search"></span></button>
+    <div class="input-group">
+      <input type="search" class="form-control search-query" name="q" value="{{ search_query }}" />
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button">
+          <span class="icon-search"></span>
+        </button>
+      </span>
+    </div>
   </div>
   <p>{% blocktrans with paginator.object_list.count as cnt %}Your search returned <strong>{{ cnt }}</strong> results.{% endblocktrans %}</p>
   <div class="clearfix"></div>

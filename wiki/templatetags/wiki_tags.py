@@ -21,6 +21,7 @@ from wiki.core.plugins import registry as plugin_registry
 # called more than once per page in multiple template blocks.
 _cache = {}
 
+
 @register.assignment_tag(takes_context=True)
 def article_for_object(context, obj):
     if not isinstance(obj, Model):
@@ -28,14 +29,16 @@ def article_for_object(context, obj):
             "A Wiki article can only be associated to a Django Model "
             "instance, not %s" % type(obj)
         )
-    
+
     content_type = ContentType.objects.get_for_model(obj)
-    
+
     # TODO: This is disabled for now, as it should only fire once per request
     # Maybe store cache in the request object?
     if True or not obj in _cache.keys():
         try:
-            article = models.ArticleForObject.objects.get(content_type=content_type, object_id=obj.pk).article
+            article = models.ArticleForObject.objects.get(
+                content_type=content_type,
+                object_id=obj.pk).article
         except models.ArticleForObject.DoesNotExist:
             article = None
         _cache[obj] = article
@@ -44,7 +47,7 @@ def article_for_object(context, obj):
 
 @register.inclusion_tag('wiki/includes/render.html', takes_context=True)
 def wiki_render(context, article, preview_content=None):
-    
+
     if preview_content:
         content = article.render(preview_content=preview_content)
     else:
@@ -63,7 +66,9 @@ def wiki_render(context, article, preview_content=None):
 @register.inclusion_tag('wiki/includes/form.html', takes_context=True)
 def wiki_form(context, form_obj):
     if not isinstance(form_obj, BaseForm):
-        raise TypeError("Error including form, it's not a form, it's a %s" % type(form_obj))
+        raise TypeError(
+            "Error including form, it's not a form, it's a %s" %
+            type(form_obj))
     context.update({'form': form_obj})
     return context
 
@@ -71,21 +76,40 @@ def wiki_form(context, form_obj):
 @register.filter
 def get_content_snippet(content, keyword, max_words=30):
     max_words = int(max_words)
-    p = re.compile(r'(?P<before>.*)%s(?P<after>.*)' % re.escape(keyword), re.MULTILINE | re.IGNORECASE | re.DOTALL)
+    p = re.compile(
+        r'(?P<before>.*)%s(?P<after>.*)' %
+        re.escape(keyword),
+        re.MULTILINE | re.IGNORECASE | re.DOTALL)
     m = p.search(content)
     html = ""
     if m:
-        words = filter(lambda x: x!="", striptags(m.group("before")).replace("\n", " ").split(" "))
-        before_words = words[-max_words/2:]
-        words = filter(lambda x: x!="", striptags(m.group("after")).replace("\n", " ").split(" "))
+        words = list(filter(
+            lambda x: x != "",
+            striptags(
+                m.group("before")).replace(
+                "\n",
+                " ").split(" ")))
+        before_words = words[-max_words / 2:]
+        words = list(filter(
+            lambda x: x != "",
+            striptags(
+                m.group("after")).replace(
+                "\n",
+                " ").split(" ")))
         after = " ".join(words[:max_words - len(before_words)])
         before = " ".join(before_words)
         html = "%s %s %s" % (before, striptags(keyword), after)
-        kw_p = re.compile(r'(%s)'%keyword, re.IGNORECASE)
+        kw_p = re.compile(r'(%s)' % keyword, re.IGNORECASE)
         html = kw_p.sub(r"<strong>\1</strong>", html)
         html = mark_safe(html)
     else:
-        html = " ".join(filter(lambda x: x!="", striptags(content).replace("\n", " ").split(" "))[:max_words])
+        html = " ".join(
+            filter(
+                lambda x: x != "",
+                striptags(content).replace(
+                    "\n",
+                    " ").split(" "))[
+                :max_words])
     return html
 
 
@@ -127,4 +151,4 @@ def login_url(context):
         qs = urlquote('?' + qs)
     else:
         qs = ''
-    return settings.LOGIN_URL+"?next="+request.path + qs
+    return settings.LOGIN_URL + "?next=" + request.path + qs
