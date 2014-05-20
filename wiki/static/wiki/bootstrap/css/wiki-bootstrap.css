@@ -4133,6 +4133,10 @@ label {
 }
 .wiki-article pre {
   max-width: 700px;
+  max-height: 150px;
+  overflow: auto;
+  word-wrap: normal;
+  white-space: pre;
 }
 .wiki-article table {
   width: 100%;
