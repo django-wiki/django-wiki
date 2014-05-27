@@ -155,19 +155,19 @@ Q&A
  * **Why not use django-reversion?** It's a great project, but if the wiki has to grow ambitious, someone will have to optimize its behavior, and using a third-party application for something as crucial as the revision system is a no-go in this regard.
  * **Any support for multiple wikis?** Yes, in an sense you can just imagine that you always have multiple wikis, because you always have hierarchies and full control of their permissions. See this discussion: https://github.com/benjaoming/django-wiki/issues/63
 
-Dependencies
+Requirements
 ------------
 
-So far the dependencies are:
+So far the dependencies/requirements are:
 
- * [django>=1.4](http://www.djangoproject.com)
+ * [django>=1.4<1.7](http://www.djangoproject.com) - Django 1.7 will be released in version 0.1.
  * [django-south](http://south.aeracode.org/)
  * [Markdown>=2.2.0](https://github.com/waylan/Python-Markdown)
  * [django-mptt>=0.5.3](https://github.com/django-mptt/django-mptt)
  * [django-sekizai](https://github.com/ojii/django-sekizai/)
  * [sorl-thumbnail](https://github.com/sorl/sorl-thumbnail)
  * Pillow (Python Imaging Library)
- * Python>=2.5<3 (Python 3 not yet supported)
+ * Python>=2.5<3 (Python 3 not yet supported, will be supported in 0.0.24)
 
 Development
 ------------
@@ -175,6 +175,8 @@ Development
 In your Git fork, run `pip install -r requirements.txt` to install the requirements.
 
 The folder **testproject/** contains a pre-configured django project and an sqlite database. Login for django admin is *admin:admin*. This project should always be maintained, but please do not commit changes to the SQLite database as we only care about its contents in case data models are changed.
+
+**Build status update May 2014** : Builds are currently failing, because we are experimenting with Python 3 support for the upcoming transitional release.
 
 [![Build Status](https://travis-ci.org/benjaoming/django-wiki.png?branch=master)](https://travis-ci.org/benjaoming/django-wiki)
 
