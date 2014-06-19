@@ -77,18 +77,18 @@ CAN_ADMIN = getattr( django_settings, 'WIKI_CAN_ADMIN', None )
 ANONYMOUS = getattr( django_settings, 'WIKI_ANONYMOUS', True )
 
 # Globally enable write access for anonymous users, if true anonymous users will be treated
-# as the others_write boolean field on models.Article. 
+# as the others_write boolean field on models.Article.
 ANONYMOUS_WRITE = getattr( django_settings, 'WIKI_ANONYMOUS_WRITE', False )
 
 # Globally enable create access for anonymous users
-# Defaults to ANONYMOUS_WRITE.  
+# Defaults to ANONYMOUS_WRITE.
 ANONYMOUS_CREATE = getattr( django_settings, 'WIKI_ANONYMOUS_CREATE', ANONYMOUS_WRITE )
 
 # Default setting to allow anonymous users upload access (used in
-# plugins.attachments and plugins.images). 
+# plugins.attachments and plugins.images).
 ANONYMOUS_UPLOAD = getattr( django_settings, 'WIKI_ANONYMOUS_UPLOAD', False )
 
-# Sign up, login and logout views should be accessible 
+# Sign up, login and logout views should be accessible
 ACCOUNT_HANDLING = getattr( django_settings, 'WIKI_ACCOUNT_HANDLING', True )
 
 # Signup allowed? If it's not allowed, logged in superusers can still access
@@ -118,17 +118,17 @@ SHOW_MAX_CHILDREN = getattr( django_settings, 'WIKI_SHOW_MAX_CHILDREN', 20 )
 USE_BOOTSTRAP_SELECT_WIDGET = getattr( django_settings, 'WIKI_USE_BOOTSTRAP_SELECT_WIDGET', True )
 
 #: dottedname of class used to construct urlpatterns for wiki.
-#: 
+#:
 #: Default is wiki.urls.WikiURLPatterns. To customize urls or view handlers,
 #: you can derive from this.
 URL_CONFIG_CLASS = getattr( django_settings, 'WIKI_URL_CONFIG_CLASS', 'wiki.urls.WikiURLPatterns' )
 
 # Search view - dotted path denoting where the search view Class is located
 SEARCH_VIEW = getattr(
-    django_settings, 
-    'WIKI_SEARCH_VIEW', 
-    'wiki.views.article.SearchView' 
-        if not 'haystack' in django_settings.INSTALLED_APPS 
+    django_settings,
+    'WIKI_SEARCH_VIEW',
+    'wiki.views.article.SearchView'
+        if not 'wiki.plugins.haystack' in django_settings.INSTALLED_APPS
         else
     'wiki.plugins.haystack.views.HaystackSearchView'
 )
