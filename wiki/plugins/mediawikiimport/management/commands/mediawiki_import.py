@@ -8,11 +8,23 @@ from django.contrib.sites.models import Site
 from django.contrib.auth import get_user_model
 
 from optparse import make_option
+import string
+from django.template.defaultfilters import slugify
+from django.template.defaultfilters import striptags
+import urllib
+
+
+def only_printable(s):
+    return filter(lambda x: x in string.printable, s)
 
 
 class Command(BaseCommand):
     help = 'Import everything from a MediaWiki'
     args = 'ApiUrl Username [Password]'
+
+    articles_worked_on = []
+    articles_imported = []
+    matching_old_link_new_link = {}
 
     option_list = BaseCommand.option_list + (
         make_option('--user-matching',
@@ -62,11 +74,26 @@ class Command(BaseCommand):
 
         import pypandoc
 
-        print "Working on %s (%s)" % (page.title, page.urltitle)
+        # Filter titles, to avoid stranges charaters.
+        title = only_printable(page.title)
+        urltitle = slugify(only_printable(urllib.unquote(page.urltitle))[:50])
+
+        added = 1
+
+        while urltitle in self.articles_worked_on:
+            title = only_printable(page.title) + " " + str(added)
+            urltitle = only_printable(slugify((urllib.unquote(page.urltitle))[:47] + " " + str(added)))
+            added += 1
+
+        self.articles_worked_on.append(urltitle)
+
+        print "Working on %s (%s)" % (title, urltitle)
 
         # Check if the URL path already exists
         try:
-            urlp = URLPath.objects.get(slug=page.urltitle[:50])
+            urlp = URLPath.objects.get(slug=urltitle)
+
+            self.matching_old_link_new_link[page.title] = urlp.article.get_absolute_url()
 
             if not replace_existing:
                 print "\tAlready existing, skipping..."
@@ -81,7 +108,7 @@ class Command(BaseCommand):
         # Create article
         article = Article()
 
-        for history_page in page.getHistory()[::-1]:
+        for history_page in page.getHistory()[-2:][::-1]:
 
             try:
                 if history_page['user'] in user_matching:
@@ -94,7 +121,7 @@ class Command(BaseCommand):
 
             article_revision = ArticleRevision()
             article_revision.content = pypandoc.convert(history_page['*'], 'md', 'mediawiki')
-            article_revision.title = page.title
+            article_revision.title = title
             article_revision.user = user
             article_revision.owner = user
 
@@ -103,10 +130,31 @@ class Command(BaseCommand):
             article_revision.created = history_page['timestamp']
             article_revision.save()
 
+        # Updated lastest content WITH expended templates
+        # TODO ? Do that for history as well ?
+        article_revision.content = pypandoc.convert(striptags(page.getWikiText(True, True).decode('utf-8')).replace('__NOEDITSECTION__', '').replace('__NOTOC__', ''), 'md', 'mediawiki')
+        article_revision.save()
+
         article.save()
 
-        upath = URLPath.objects.create(site=current_site, parent=url_root, slug=page.urltitle[:50], article=article)
+        upath = URLPath.objects.create(site=current_site, parent=url_root, slug=urltitle, article=article)
         article.add_object_relation(upath)
+
+        self.matching_old_link_new_link[page.title] = upath.article.get_absolute_url()
+
+        self.articles_imported.append((article, article_revision))
+
+    def update_links(self):
+        """Update link in imported articles"""
+
+        # TODO: nsquare is bad
+        for (article, article_revision) in self.articles_imported:
+            print "Updating links of %s" % (article_revision.title, )
+            for id_from, id_to in self.matching_old_link_new_link.iteritems():
+                print "Replacing (%s \"wikilink\") with (%s)" % (id_from, id_to)
+                article_revision.content = article_revision.content.replace("(%s \"wikilink\")" % (id_from, ), "(%s)" % (id_to,))
+
+            article_revision.save()
 
     def handle(self, *args, **options):
 
@@ -143,3 +191,5 @@ class Command(BaseCommand):
 
         for page in pages:
             self.import_page(wikitools.api, site, page, current_site, url_root, user_matching, options['replace_existing'])
+
+        self.update_links()
