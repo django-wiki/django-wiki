@@ -10,8 +10,9 @@ from wiki.plugins.notifications.settings import ARTICLE_EDIT
 from wiki.plugins.notifications.util import truncate_title
 from wiki.plugins.images.markdown_extensions import ImageExtension
 
+
 class ImagePlugin(BasePlugin):
-    
+
     slug = settings.SLUG
     sidebar = {
         'headline': _('Images'),
@@ -20,7 +21,7 @@ class ImagePlugin(BasePlugin):
         'form_class': forms.SidebarForm,
         'get_form_kwargs': (lambda a: {'instance': models.Image(article=a)})
     }
-    
+
     # List of notifications to construct signal handlers for. This
     # is handled inside the notifications plugin.
     notifications = [
@@ -28,20 +29,20 @@ class ImagePlugin(BasePlugin):
          'message': lambda obj: _("An image was added: %s") % truncate_title(obj.get_filename()),
          'key': ARTICLE_EDIT,
          'created': False,
-         'ignore': lambda revision: bool(revision.previous_revision), # Ignore if there is a previous revision... the image isn't new
+         'ignore': lambda revision: bool(revision.previous_revision),  # Ignore if there is a previous revision... the image isn't new
          'get_article': lambda obj: obj.article}
     ]
-    
+
     class RenderMedia:
         js = [
             'wiki/colorbox/jquery.colorbox-min.js',
             'wiki/js/images.js',
         ]
-        
+
         css = {
             'screen': 'wiki/colorbox/example1/colorbox.css'
         }
-    
+
     urlpatterns = {
         'article': patterns('',
             url('^$', views.ImageView.as_view(), name='images_index'),
@@ -54,10 +55,9 @@ class ImagePlugin(BasePlugin):
     }
 
     markdown_extensions = [ImageExtension()]
-    
-    def __init__(self):
-        #print "I WAS LOADED!"
-        pass
-    
-registry.register(ImagePlugin)
 
+    def __init__(self):
+        # print "I WAS LOADED!"
+        pass
+
+registry.register(ImagePlugin)

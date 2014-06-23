@@ -22,5 +22,5 @@ IMAGE_PATH_OBSCURIFY = getattr(django_settings, 'WIKI_IMAGES_PATH_OBSCURIFY', Tr
 
 # Allow anonymous users upload access (not nice on an open network)
 # WIKI_IMAGES_ANONYMOUS can override this, otherwise the default
-# in wiki.conf.settings is used. 
-ANONYMOUS = getattr( django_settings, 'WIKI_IMAGES_ANONYMOUS', wiki_settings.ANONYMOUS_UPLOAD )
+# in wiki.conf.settings is used.
+ANONYMOUS = getattr(django_settings, 'WIKI_IMAGES_ANONYMOUS', wiki_settings.ANONYMOUS_UPLOAD)
