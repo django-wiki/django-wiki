@@ -9,6 +9,7 @@ from __future__ import print_function
 from django.conf import settings
 from django.utils.importlib import import_module
 
+
 def get_module(app, modname, verbose, failfast):
     """
     Internal function to load a module from a single app.
@@ -26,6 +27,7 @@ def get_module(app, modname, verbose, failfast):
         print("Loaded %r from %r" % (modname, app))
     return module
 
+
 def load(modname, verbose=False, failfast=False):
     """
     Loads all modules with name 'modname' from all installed apps.
@@ -34,6 +36,7 @@ def load(modname, verbose=False, failfast=False):
     """
     for app in settings.INSTALLED_APPS:
         get_module(app, modname, verbose, failfast)
+
 
 def load_wiki_plugins():
     load('wiki_plugin', verbose=False, failfast=False)
