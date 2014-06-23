@@ -34,7 +34,7 @@ from docopt import docopt
 import os
 import re
 
-RE_CLASS_NAME = re.compile(r'^()^(class\s+Migration\s*\(\s*(SchemaMigration|DataMigration)\s*\)\s*:)', 
+RE_CLASS_NAME = re.compile(r'^()^(class\s+Migration\s*\(\s*(SchemaMigration|DataMigration)\s*\)\s*:)',
     re.MULTILINE)
 
 INSERT_AT_TOP_OF_MIGRATION = """try:
@@ -45,7 +45,7 @@ else:
     User = get_user_model()
 
 user_orm_label = '%s.%s' % (User._meta.app_label, User._meta.object_name)
-user_model_label = '%s.%s' % (User._meta.app_label, User._meta.module_name) 
+user_model_label = '%s.%s' % (User._meta.app_label, User._meta.module_name)
 
 
 """
@@ -78,7 +78,7 @@ if __name__ == '__main__':
         if RE_FK_LABEL.search(contents) or RE_META_STRING.search(contents) or RE_AUTH_MODEL.search(contents) or RE_FK_LABEL.search(contents):
             print("Refactoring {0}".format(fname))
             f = open(full_path, 'w')
-            contents = RE_CLASS_NAME.sub(INSERT_AT_TOP_OF_MIGRATION + r"\2", 
+            contents = RE_CLASS_NAME.sub(INSERT_AT_TOP_OF_MIGRATION + r"\2",
                 contents)
             contents = RE_AUTH_MODEL.sub(RE_AUTH_MODEL_TO, contents)
             contents = RE_META_STRING.sub(RE_META_TO, contents)
@@ -87,6 +87,6 @@ if __name__ == '__main__':
             f.write(contents)
             f.close()
         else:
-            print("Skipping {0}".format(fname))            
+            print("Skipping {0}".format(fname))
         if RE_TEST_OK.search(contents):
             print("    WARNING! Still found occurrences of auth.User. Fix manually!")
