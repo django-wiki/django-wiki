@@ -59,7 +59,7 @@ class WikiURLPatterns(object):
             url('^missing-root/$', article.MissingRootView.as_view(), name='root_missing'),
             url('^_search/$', get_class_from_str(self.search_view_class).as_view(), name='search'),
             url('^_revision/diff/(?P<revision_id>\d+)/$', self.article_diff_view, name='diff'),
-       )
+        )
         return urlpatterns
 
     def get_accounts_urls(self):
@@ -67,7 +67,7 @@ class WikiURLPatterns(object):
             url('^_accounts/sign-up/$', self.signup_view_class.as_view(), name='signup'),
             url('^_accounts/logout/$', self.logout_view_class.as_view(), name='logout'),
             url('^_accounts/login/$', self.login_view_class.as_view(), name='login'),
-           )
+        )
         return urlpatterns
 
     def get_revision_urls(self):
@@ -76,7 +76,7 @@ class WikiURLPatterns(object):
             url('^_revision/change/(?P<article_id>\d+)/(?P<revision_id>\d+)/$', self.revision_change_view.as_view(), name='change_revision'),
             url('^_revision/preview/(?P<article_id>\d+)/$', self.article_preview_view_class.as_view(), name='preview_revision'),
             url('^_revision/merge/(?P<article_id>\d+)/(?P<revision_id>\d+)/preview/$', self.revision_merge_view, name='merge_revision_preview', kwargs={'preview': True}),
-           )
+        )
         return urlpatterns
 
     def get_article_urls(self):
@@ -93,7 +93,7 @@ class WikiURLPatterns(object):
             url('^(?P<article_id>\d+)/revision/change/(?P<revision_id>\d+)/$', self.revision_change_view.as_view(), name='change_revision'),
             url('^(?P<article_id>\d+)/revision/merge/(?P<revision_id>\d+)/$', self.revision_merge_view, name='merge_revision'),
             url('^(?P<article_id>\d+)/plugin/(?P<slug>\w+)/$', self.article_plugin_view_class.as_view(), name='plugin'),
-           )
+        )
         return urlpatterns
 
     def get_article_path_urls(self):
@@ -113,7 +113,7 @@ class WikiURLPatterns(object):
             url('^(?P<path>.+/|)_plugin/(?P<slug>\w+)/$', self.article_plugin_view_class.as_view(), name='plugin'),
             # This should always go last!
             url('^(?P<path>.+/|)$', self.article_view_class.as_view(), name='get'),
-           )
+        )
         return urlpatterns
 
     def get_plugin_urls(self):
@@ -129,8 +129,9 @@ class WikiURLPatterns(object):
                 root_urlpatterns = plugin.urlpatterns.get('root', [])
                 urlpatterns += patterns('',
                     url('^_plugin/' + slug + '/', include(root_urlpatterns)),
-               )
+                )
         return urlpatterns
+
 
 def get_pattern(app_name="wiki", namespace="wiki", url_config_class=None):
     """Every url resolution takes place as "wiki:view_name".
@@ -155,5 +156,3 @@ def get_pattern(app_name="wiki", namespace="wiki", url_config_class=None):
 from wiki.core.plugins.loader import load_wiki_plugins
 
 load_wiki_plugins()
-
-
