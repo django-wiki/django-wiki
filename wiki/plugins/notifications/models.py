@@ -16,24 +16,24 @@ from wiki.plugins.notifications.util import get_title
 
 
 class ArticleSubscription(ArticlePlugin):
-    
+
     subscription_ptr = models.OneToOneField(
         Subscription, related_name='deprecated_subscriptions',
         db_column='subscription_ptr'
     )
     subscription = models.OneToOneField(Subscription, null=True)
-    
+
     def __unicode__(self):
         title = (_("%(user)s subscribing to %(article)s (%(type)s)") %
                  {'user': self.settings.user.username,
                   'article': self.article.current_revision.title,
                   'type': self.notification_type.label})
         return unicode(title)
-    
+
     class Meta:
         if settings.APP_LABEL:
             app_label = settings.APP_LABEL
-    
+
 
 def default_url(article, urlpath=None):
     if urlpath:
@@ -55,7 +55,7 @@ def post_article_revision_save(**kwargs):
         else:
             notify(_('New article created: %s') % get_title(instance), settings.ARTICLE_EDIT,
                    target_object=instance, url=url, filter_exclude=filter_exclude)
-            
+
 # Whenever a new revision is created, we notifý users that an article
 # was edited
 signals.post_save.connect(post_article_revision_save, sender=wiki_models.ArticleRevision,)
@@ -67,7 +67,7 @@ signals.post_save.connect(post_article_revision_save, sender=wiki_models.Article
 # NOTIFICATIONS FOR PLUGINS
 ##################################################
 for plugin in registry.get_plugins():
-    
+
     notifications = getattr(plugin, 'notifications', [])
     for notification_dict in notifications:
         def plugin_notification(instance, **kwargs):
@@ -79,7 +79,7 @@ for plugin in registry.get_plugins():
                     url = notification_dict['get_url'](instance)
                 else:
                     url = default_url(notification_dict['get_article'](instance))
-                
+
                 message = notification_dict['message'](instance)
                 notify(message, notification_dict['key'],
                        target_object=notification_dict['get_article'](instance), url=url)
