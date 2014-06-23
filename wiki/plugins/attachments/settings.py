@@ -12,8 +12,8 @@ SLUG = "attachments"
 
 # Allow anonymous users upload access (not nice on an open network)
 # WIKI_ATTACHMENTS_ANONYMOUS can override this, otherwise the default
-# in wiki.conf.settings is used. 
-ANONYMOUS = getattr( django_settings, 'WIKI_ATTACHMENTS_ANONYMOUS', wiki_settings.ANONYMOUS_UPLOAD )
+# in wiki.conf.settings is used.
+ANONYMOUS = getattr(django_settings, 'WIKI_ATTACHMENTS_ANONYMOUS', wiki_settings.ANONYMOUS_UPLOAD)
 
 # Maximum file sizes: Please using something like LimitRequestBody on
 # your web server.
@@ -47,8 +47,8 @@ STORAGE_BACKEND = getattr(django_settings, 'WIKI_ATTACHMENTS_STORAGE_BACKEND', w
 # that something nasty does not get executed on the server.
 APPEND_EXTENSION = getattr(django_settings, 'WIKI_ATTACHMENTS_APPEND_EXTENSION', True)
 
-# Important for S3 backends etc.: If your storage backend does not have a .path 
-# attribute for the file, but only a .url attribute, you should use False. 
+# Important for S3 backends etc.: If your storage backend does not have a .path
+# attribute for the file, but only a .url attribute, you should use False.
 # This will reveal the direct download URL so it does not work perfectly for
 # files you wish to be kept private.
 USE_LOCAL_PATH = getattr(django_settings, 'WIKI_ATTACHMENTS_LOCAL_PATH', True)

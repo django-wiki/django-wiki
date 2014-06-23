@@ -63,7 +63,7 @@ class Create(FormView, ArticleMixin):
         kwargs['initial'] = initial
         form = form_class(self.request, self.urlpath, **kwargs)
         form.fields['slug'].widget = forms.TextInputPrepend(
-            prepend='/'+self.urlpath.path,
+            prepend='/' + self.urlpath.path,
             attrs={
                 # Make patterns force lowercase if we are case insensitive to bless the user with a
                 # bit of strictness, anyways
@@ -177,7 +177,7 @@ class Delete(FormView, ArticleMixin):
 
         purge = cd['purge']
 
-        #If we are purging, only moderators can delete articles with children
+        # If we are purging, only moderators can delete articles with children
         cannot_delete_children = False
         can_moderate = self.article.can_moderate(self.request.user)
         if purge and self.children_slice and not can_moderate:
@@ -186,7 +186,6 @@ class Delete(FormView, ArticleMixin):
         if self.cannot_delete_root or cannot_delete_children:
             messages.error(self.request, _('This article cannot be deleted because it has children or is a root article.'))
             return redirect('wiki:get', article_id=self.article.id)
-
 
         if can_moderate and purge:
             # First, remove children
@@ -396,6 +395,7 @@ class Deleted(Delete):
         kwargs['purge_form'] = kwargs.pop('form', None)
         return super(Delete, self).get_context_data(**kwargs)
 
+
 class Source(ArticleMixin, TemplateView):
 
     template_name="wiki/source.html"
@@ -510,6 +510,7 @@ class SearchView(ListView):
         kwargs['search_query'] = self.query
         return kwargs
 
+
 class Plugin(View):
 
     def dispatch(self, request, path=None, slug=None, **kwargs):
@@ -518,6 +519,7 @@ class Plugin(View):
             if getattr(plugin, 'slug', None) == slug:
                 return plugin.article_view(request, **kwargs)
         raise Http404()
+
 
 class Settings(ArticleMixin, TemplateView):
 
@@ -600,9 +602,9 @@ class ChangeRevisionView(RedirectView):
 
     def get_redirect_url(self, **kwargs):
         if self.urlpath:
-            return reverse("wiki:history", kwargs={'path':self.urlpath.path})
+            return reverse("wiki:history", kwargs={'path': self.urlpath.path})
         else:
-            return reverse('wiki:history', kwargs={'article_id':self.article.id})
+            return reverse('wiki:history', kwargs={'article_id': self.article.id})
 
     def change_revision(self):
         revision = get_object_or_404(models.ArticleRevision, article=self.article, id=self.kwargs['revision_id'])
@@ -612,6 +614,7 @@ class ChangeRevisionView(RedirectView):
             'title': revision.title,
             'revision_number': revision.revision_number,
         })
+
 
 class Preview(ArticleMixin, TemplateView):
 
@@ -642,7 +645,7 @@ class Preview(ArticleMixin, TemplateView):
             self.title = self.revision.title
         if self.revision and not self.content:
             self.content = self.revision.content
-        return super(Preview, self).get( request, *args, **kwargs)
+        return super(Preview, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         kwargs['title'] = self.title
@@ -672,6 +675,7 @@ def diff(request, revision_id, other_revision_id=None):
         other_changes.append((_('New title'), revision.title))
 
     return dict(diff=list(diff), other_changes=other_changes)
+
 
 # TODO: Throw in a class-based view
 @get_article(can_write=True)
@@ -715,7 +719,6 @@ def merge(request, article, revision_id, urlpath=None, template_file="wiki/previ
             return redirect('wiki:edit', path=urlpath.path)
         else:
             return redirect('wiki:edit', article_id=article.id)
-
 
     c = RequestContext(request, {'article': article,
                                  'title': article.current_revision.title,

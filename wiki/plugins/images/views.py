@@ -15,44 +15,42 @@ from django.views.generic.edit import FormView
 
 
 class ImageView(ArticleMixin, ListView):
-    
+
     template_name = 'wiki/plugins/images/index.html'
     allow_empty = True
     context_object_name = 'images'
     paginate_by = 10
-    
+
     @method_decorator(get_article(can_read=True, not_locked=True))
     def dispatch(self, request, article, *args, **kwargs):
         return super(ImageView, self).dispatch(request, article, *args, **kwargs)
-    
+
     def get_queryset(self):
-        if (self.article.can_moderate(self.request.user) or
-            self.article.can_delete(self.request.user)):
+        if (self.article.can_moderate(self.request.user) or self.article.can_delete(self.request.user)):
             images = models.Image.objects.filter(article=self.article)
         else:
-            images = models.Image.objects.filter(article=self.article,
-                                                 current_revision__deleted=False)            
+            images = models.Image.objects.filter(article=self.article, current_revision__deleted=False)
         images.select_related()
         return images
-    
+
     def get_context_data(self, **kwargs):
         kwargs.update(ArticleMixin.get_context_data(self, **kwargs))
         return ListView.get_context_data(self, **kwargs)
 
 
 class DeleteView(ArticleMixin, RedirectView):
-    
+
     permanent = False
-    
+
     @method_decorator(get_article(can_write=True, not_locked=True))
     def dispatch(self, request, article, *args, **kwargs):
         self.image = get_object_or_404(models.Image, article=article,
                                        id=kwargs.get('image_id', None))
         self.restore = kwargs.get('restore', False)
         return ArticleMixin.dispatch(self, request, article, *args, **kwargs)
-    
+
     def get_redirect_url(self, **kwargs):
-        
+
         new_revision = models.ImageRevision()
         new_revision.inherit_predecessor(self.image)
         new_revision.set_from_request(self.request)
@@ -70,27 +68,27 @@ class DeleteView(ArticleMixin, RedirectView):
 
 
 class PurgeView(ArticleMixin, FormView):
-    
+
     template_name = "wiki/plugins/images/purge.html"
     permanent = False
     form_class = forms.PurgeForm
-    
+
     @method_decorator(get_article(can_write=True, can_moderate=True))
     def dispatch(self, request, article, *args, **kwargs):
         self.image = get_object_or_404(models.Image, article=article,
                                        id=kwargs.get('image_id', None))
         return ArticleMixin.dispatch(self, request, article, *args, **kwargs)
-    
+
     def form_valid(self, form):
-        
+
         for revision in self.image.revision_set.all().select_related("imagerevision"):
             revision.imagerevision.image.delete(save=False)
             revision.imagerevision.delete()
-        
+
         if self.urlpath:
             return redirect('wiki:images_index', path=self.urlpath.path)
         return redirect('wiki:images_index', article_id=self.article_id)
-    
+
     def get_context_data(self, **kwargs):
         kwargs = ArticleMixin.get_context_data(self, **kwargs)
         kwargs.update(FormView.get_context_data(self, **kwargs))
@@ -100,7 +98,7 @@ class PurgeView(ArticleMixin, FormView):
 class RevisionChangeView(ArticleMixin, RedirectView):
 
     permanent = False
-    
+
     @method_decorator(get_article(can_write=True, not_locked=True))
     def dispatch(self, request, article, *args, **kwargs):
         self.image = get_object_or_404(models.Image, article=article,
@@ -108,9 +106,9 @@ class RevisionChangeView(ArticleMixin, RedirectView):
         self.revision = get_object_or_404(models.ImageRevision, plugin__article=article,
                                        id=kwargs.get('rev_id', None))
         return ArticleMixin.dispatch(self, request, article, *args, **kwargs)
-    
+
     def get_redirect_url(self, **kwargs):
-        
+
         self.image.current_revision = self.revision
         self.image.save()
         messages.info(self.request, _('%(file)s has been changed to revision #%(revision)d') %
@@ -122,10 +120,10 @@ class RevisionChangeView(ArticleMixin, RedirectView):
 
 
 class RevisionAddView(ArticleMixin, FormView):
-    
+
     template_name = "wiki/plugins/images/revision_add.html"
     form_class = forms.RevisionForm
-    
+
     @method_decorator(get_article(can_write=True, not_locked=True))
     def dispatch(self, request, article, *args, **kwargs):
         self.image = get_object_or_404(models.Image, article=article,
@@ -133,18 +131,18 @@ class RevisionAddView(ArticleMixin, FormView):
         if not self.image.can_write(request.user):
             return redirect(wiki_settings.LOGIN_URL)
         return ArticleMixin.dispatch(self, request, article, *args, **kwargs)
-    
+
     def get_form_kwargs(self, **kwargs):
         kwargs = super(RevisionAddView, self).get_form_kwargs(**kwargs)
         kwargs['image'] = self.image
         kwargs['request'] = self.request
         return kwargs
-    
+
     def get_context_data(self, **kwargs):
         kwargs = super(RevisionAddView, self).get_context_data(**kwargs)
         kwargs['image'] = self.image
         return kwargs
-    
+
     def form_valid(self, form, **kwargs):
         form.save()
         messages.info(self.request, _('%(file)s has been saved.') %

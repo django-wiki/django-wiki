@@ -6,6 +6,7 @@ from django.test.client import Client
 
 import pprint
 
+
 class InitialWebClientTest(TestCase):
     """Tests by the dummy web client, with manual creating the root article."""
 
@@ -15,7 +16,7 @@ class InitialWebClientTest(TestCase):
             User = get_user_model()
         except ImportError:
             from django.contrib.auth.models import User
-        
+
         User.objects.create_superuser('admin', 'nobody@example.com', 'secret')
         self.c = c = Client()
         c.login(username='admin', password='secret')
@@ -45,12 +46,12 @@ class WebClientTest(TestCase):
         c.login(username='admin', password='secret')
         response = self.c.post(reverse('wiki:root_create'), {'content': 'root article content', 'title': 'Root Article'})
         self.example_data = {
-                'content': 'The modified text',
-                'current_revision': '1',
-                'preview': '1',
-                #'save': '1',  # probably not too important
-                'summary': 'why edited',
-                'title': 'wiki test'}
+            'content': 'The modified text',
+            'current_revision': '1',
+            'preview': '1',
+            # 'save': '1',  # probably not too important
+            'summary': 'why edited',
+            'title': 'wiki test'}
 
     def tearDown(self):
         # clear Article cache before the next test
@@ -61,8 +62,8 @@ class WebClientTest(TestCase):
         """Get the article response for the path.
            Example:  self.get_by_path("Level1/Slug2/").title
         """
-        return  self.c.get(reverse('wiki:get', kwargs={'path': path}))
-    
+        return self.c.get(reverse('wiki:get', kwargs={'path': path}))
+
     def dump_db_status(self, message=''):
         """Debug printing of the complete important database content."""
         print('*** db status *** {}'.format(message))
@@ -70,7 +71,6 @@ class WebClientTest(TestCase):
         for klass in (Article, ArticleRevision, URLPath):
             print('* {} *'.format(klass.__name__))
             pprint.pprint(list(klass.objects.values()), width=240)
-
 
     def test_preview_save(self):
         """Test edit preview, edit save and messages."""
@@ -85,7 +85,7 @@ class WebClientTest(TestCase):
         message = c.cookies['messages'].value if 'messages' in c.cookies else None
         self.assertRedirects(response, reverse('wiki:root'))
         response = c.get(reverse('wiki:root'))
-        #self.dump_db_status('test_preview_save')
+        # self.dump_db_status('test_preview_save')
         # Why it doesn't display the latest revison text if other test preceded? It is correctly in the db.
         self.assertContains(response, 'Something 2')
         self.assertTrue('succesfully added' in message)
@@ -139,21 +139,21 @@ class WebClientTest(TestCase):
         self.assertRedirects(response, reverse('wiki:root'))
         response = c.post(reverse('wiki:edit', kwargs={'path': ''}), self.example_data)
         self.assertContains(response, 'While you were editing, someone else changed the revision.')
-        #self.dump_db_status('after test_revision_conflict')
+        # self.dump_db_status('after test_revision_conflict')
 
     def test_nested_create(self):
         c = self.c
-        response = c.post(reverse('wiki:create', kwargs={'path': ''}), 
+        response = c.post(reverse('wiki:create', kwargs={'path': ''}),
                 {'title': 'Level 1', 'slug': 'Level1', 'content': 'Content level 1'})
         self.assertRedirects(response, reverse('wiki:get', kwargs={'path': 'level1/'}))
-        response = c.post(reverse('wiki:create', kwargs={'path': 'Level1/'}), 
+        response = c.post(reverse('wiki:create', kwargs={'path': 'Level1/'}),
                 {'title': 'test', 'slug': 'Test', 'content': 'Content on level 2'})
         self.assertRedirects(response, reverse('wiki:get', kwargs={'path': 'level1/test/'}))
-        response = c.post(reverse('wiki:create', kwargs={'path': ''}), 
+        response = c.post(reverse('wiki:create', kwargs={'path': ''}),
                 {'title': 'test', 'slug': 'Test', 'content': 'Other content on level 1'})
         self.assertRedirects(response, reverse('wiki:get', kwargs={'path': 'test/'}))
         self.assertContains(self.get_by_path('Test/'), 'Other content on level 1')
-        self.assertContains(self.get_by_path('Level1/Test/'), 'Content') # on level 2')
+        self.assertContains(self.get_by_path('Level1/Test/'), 'Content')  # on level 2')
 
     def test_empty_search(self):
         c = self.c

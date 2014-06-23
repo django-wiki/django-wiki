@@ -2,6 +2,7 @@ from django.contrib import admin
 from django import forms
 from . import models
 
+
 class ImageForm(forms.ModelForm):
 
     class Meta:
@@ -22,7 +23,8 @@ class ImageRevisionInline(admin.TabularInline):
     model = models.ImageRevision
     extra = 1
     fields = ('image', 'locked', 'deleted')
-    
+
+
 class ImageAdmin(admin.ModelAdmin):
     form = ImageForm
     inlines = (ImageRevisionInline,)

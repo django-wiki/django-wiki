@@ -11,12 +11,13 @@ from . import settings
 from wiki.models.pluginbase import RevisionPlugin, RevisionPluginRevision
 from django.db.models import signals
 
-if not "sorl.thumbnail" in django_settings.INSTALLED_APPS:
+if "sorl.thumbnail" not in django_settings.INSTALLED_APPS:
     raise ImproperlyConfigured('wiki.plugins.images: needs sorl.thumbnail in INSTALLED_APPS')
+
 
 def upload_path(instance, filename):
     # Has to match original extension filename
-        
+
     upload_path = settings.IMAGE_PATH
     upload_path = upload_path.replace('%aid', str(instance.plugin.image.article.id))
     if settings.IMAGE_PATH_OBSCURIFY:
@@ -24,11 +25,12 @@ def upload_path(instance, filename):
         upload_path = os.path.join(upload_path, uuid.uuid4().hex)
     return os.path.join(upload_path, filename)
 
+
 class Image(RevisionPlugin):
-    
+
     # The plugin system is so awesome that the inheritor doesn't need to do
     # anything! :D
-    
+
     def can_write(self, user):
         if not settings.ANONYMOUS and (not user or user.is_anonymous()):
             return False
@@ -42,21 +44,22 @@ class Image(RevisionPlugin):
         verbose_name_plural = _('images')
         if settings.APP_LABEL:
             app_label = settings.APP_LABEL
-    
+
     def __unicode__(self):
         title = (_('Image: %s') % self.current_revision.imagerevision.get_filename()) if self.current_revision else _('Current revision not set!!')
         return unicode(title)
 
+
 class ImageRevision(RevisionPluginRevision):
-    
+
     image = models.ImageField(upload_to=upload_path,
                               max_length=2000, height_field='height',
                               width_field='width', blank=True, null=True,
                               storage=settings.STORAGE_BACKEND)
-    
+
     width = models.SmallIntegerField(blank=True, null=True)
     height = models.SmallIntegerField(blank=True, null=True)
-    
+
     def get_filename(self):
         if self.image:
             try:
@@ -64,7 +67,7 @@ class ImageRevision(RevisionPluginRevision):
             except OSError:
                 pass
         return None
-    
+
     def get_size(self):
         """Used to retrieve the file size and not cause exceptions."""
         try:
@@ -73,11 +76,11 @@ class ImageRevision(RevisionPluginRevision):
             return None
         except OSError:
             return None
-    
+
     def inherit_predecessor(self, image, skip_image_file=False):
         """
         Inherit certain properties from predecessor because it's very
-        convenient. Remember to always call this method before 
+        convenient. Remember to always call this method before
         setting properties :)"""
         predecessor = image.current_revision.imagerevision
         self.plugin = predecessor.plugin
@@ -109,9 +112,9 @@ def on_image_revision_delete(instance, *args, **kwargs):
     # Remove image file
     path = instance.image.path.split("/")[:-1]
     instance.image.delete(save=False)
-    
+
     # Clean up empty directories
-    
+
     # Check for empty folders in the path. Delete the first two.
     if len(path[-1]) == 32:
         # Path was (most likely) obscurified so we should look 2 levels down

@@ -19,7 +19,7 @@ def read(fname):
 
 
 def dynamic_requirements(requirements):
-    
+
     try:
         from django import VERSION
         if VERSION < (1, 7):

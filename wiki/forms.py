@@ -31,16 +31,17 @@ from wiki.core import permissions
 from wiki.core.compat import get_user_model
 User = get_user_model()
 
+
 class SpamProtectionMixin():
     """Check a form for spam. Only works if properties 'request' and 'revision_model' are set."""
-    
+
     revision_model = models.ArticleRevision
-    
+
     def check_spam(self):
         """Check that user or IP address does not perform content edits that
         are not allowed.
-        
-        current_revision can be any object inheriting from models.BaseRevisionMixin 
+
+        current_revision can be any object inheriting from models.BaseRevisionMixin
         """
         request = self.request
         user = None
@@ -49,26 +50,22 @@ class SpamProtectionMixin():
             user = request.user
         else:
             ip_address = request.META.get('REMOTE_ADDR', None)
-        
+
         if not (user or ip_address):
             raise forms.ValidationError(_('Spam protection failed to find both a logged in user and an IP address.'))
-        
+
         def check_interval(from_time, max_count, interval_name):
             from_time = timezone.now() - timedelta(minutes=settings.REVISIONS_MINUTES_LOOKBACK)
-            revisions = self.revision_model.objects.filter(
-                            created__gte=from_time,
-                        )
+            revisions = self.revision_model.objects.filter(created__gte=from_time)
             if user:
                 revisions = revisions.filter(user=user)
             if ip_address:
                 revisions = revisions.filter(ip_address=ip_address)
             revisions = revisions.count()
             if revisions >= max_count:
-                raise forms.ValidationError(_('Spam protection: You are only allowed to create or edit %(revisions)d article(s) per %(interval_name)s.') % 
+                raise forms.ValidationError(_('Spam protection: You are only allowed to create or edit %(revisions)d article(s) per %(interval_name)s.') %
                                             {'revisions': max_count,
-                                             'interval_name': interval_name,})
-            
-        
+                                             'interval_name': interval_name, })
         if not settings.LOG_IPS_ANONYMOUS:
             return
         if request.user.has_perm('wiki.moderator'):
@@ -81,7 +78,7 @@ class SpamProtectionMixin():
             per_minute = settings.REVISIONS_PER_MINUTES_ANONYMOUS
         check_interval(from_time, per_minute,
                        _('minute') if settings.REVISIONS_MINUTES_LOOKBACK==1 else (_('%d minutes') % settings.REVISIONS_MINUTES_LOOKBACK),)
-            
+
         from_time = timezone.now() - timedelta(minutes=60)
         if request.user.is_authenticated():
             per_hour = settings.REVISIONS_PER_MINUTES
@@ -91,26 +88,26 @@ class SpamProtectionMixin():
 
 
 class CreateRootForm(forms.Form):
-    
+
     title = forms.CharField(label=_('Title'), help_text=_('Initial title of the article. May be overridden with revision titles.'))
     content = forms.CharField(label=_('Type in some contents'),
                               help_text=_('This is just the initial contents of your article. After creating it, you can use more complex features like adding plugins, meta data, related articles etc...'),
-                              required=False, widget=getEditor().get_widget()) #@UndefinedVariable
-    
+                              required=False, widget=getEditor().get_widget())  # @UndefinedVariable
+
 
 class EditForm(forms.Form, SpamProtectionMixin):
-    
+
     title = forms.CharField(label=_('Title'),)
     content = forms.CharField(label=_('Contents'),
-                              required=False, widget=getEditor().get_widget()) #@UndefinedVariable
-    
+                              required=False, widget=getEditor().get_widget())  # @UndefinedVariable
+
     summary = forms.CharField(label=_('Summary'), help_text=_('Give a short reason for your edit, which will be stated in the revision log.'),
                               required=False)
-    
+
     current_revision = forms.IntegerField(required=False, widget=forms.HiddenInput())
-    
+
     def __init__(self, request, current_revision, *args, **kwargs):
-        
+
         self.request = request
         self.no_clean = kwargs.pop('no_clean', False)
         self.preview = kwargs.pop('preview', False)
@@ -121,7 +118,7 @@ class EditForm(forms.Form, SpamProtectionMixin):
                        'title': current_revision.title,
                        'current_revision': current_revision.id}
             initial.update(kwargs.get('initial', {}))
-            
+
             # Manipulate any data put in args[0] such that the current_revision
             # is reset to match the actual current revision.
             data = None
@@ -134,7 +131,7 @@ class EditForm(forms.Form, SpamProtectionMixin):
                 self.presumed_revision = data.get('current_revision', None)
                 if not str(self.presumed_revision) == str(self.initial_revision.id):
                     newdata = {}
-                    for k,v in data.items():
+                    for k, v in data.items():
                         newdata[k] = v
                     newdata['current_revision'] = self.initial_revision.id
                     newdata['content'] = simple_merge(self.initial_revision.content,
@@ -144,11 +141,11 @@ class EditForm(forms.Form, SpamProtectionMixin):
                 else:
                     # Always pass as kwarg
                     kwargs['data'] = data
-                
+
             kwargs['initial'] = initial
-        
+
         super(EditForm, self).__init__(*args, **kwargs)
-    
+
     def clean(self):
         cd = self.cleaned_data
         if self.no_clean or self.preview:
@@ -171,14 +168,15 @@ class SelectWidgetBootstrap(forms.Select):
         self.disabled = disabled
         self.noscript_widget = forms.Select(attrs={}, choices=choices)
         super(SelectWidgetBootstrap, self).__init__(attrs, choices)
-    
+
     def __setattr__(self, k, value):
         super(SelectWidgetBootstrap, self).__setattr__(k, value)
         if k != 'attrs' and k != 'disabled':
             self.noscript_widget.__setattr__(k, value)
-    
+
     def render(self, name, value, attrs=None, choices=()):
-        if value is None: value = ''
+        if not value:
+            value = ''
         final_attrs = self.build_attrs(attrs, name=name)
         output = ["""<div%(attrs)s>"""
                   """    <button class="btn btn-group-label%(disabled)s" type="button">%(label)s</button>"""
@@ -190,13 +188,12 @@ class SelectWidgetBootstrap(forms.Select):
                   """    </ul>"""
                   """    <input type="hidden" name="%(name)s" value="" class="btn-group-value" />"""
                   """</div>"""
-                  """<noscript>%(noscript)s</noscript>"""
-                   % {'attrs': flatatt(final_attrs),
-                      'options':self.render_options(choices, [value]),
+                  """<noscript>%(noscript)s</noscript>""" % {'attrs': flatatt(final_attrs),
+                      'options': self.render_options(choices, [value]),
                       'label': _('Select an option'),
                       'name': name,
                       'disabled': ' disabled' if self.disabled else '',
-                      'noscript': self.noscript_widget.render(name, value, {}, choices)} ]
+                      'noscript': self.noscript_widget.render(name, value, {}, choices)}]
         return mark_safe('\n'.join(output))
 
     def render_option(self, selected_choices, option_value, option_label):
@@ -218,46 +215,46 @@ class SelectWidgetBootstrap(forms.Select):
             else:
                 output.append(self.render_option(selected_choices, option_value, option_label))
         return '\n'.join(output)
-    
+
     class Media(forms.Media):
-            
+
         js = ("wiki/js/forms.js",)
 
 
 class TextInputPrepend(forms.TextInput):
-    
+
     def __init__(self, *args, **kwargs):
         self.prepend = kwargs.pop('prepend', "")
         super(TextInputPrepend, self).__init__(*args, **kwargs)
-    
+
     def render(self, *args, **kwargs):
         html = super(TextInputPrepend, self).render(*args, **kwargs)
         return mark_safe('<div class="input-group"><span class="input-group-addon">%s</span>%s</div>' % (self.prepend, html))
-    
+
 
 class CreateForm(forms.Form, SpamProtectionMixin):
-    
+
     def __init__(self, request, urlpath_parent, *args, **kwargs):
         super(CreateForm, self).__init__(*args, **kwargs)
         self.request = request
         self.urlpath_parent = urlpath_parent
-    
+
     title = forms.CharField(label=_('Title'),)
     slug = forms.SlugField(label=_('Slug'), help_text=_("This will be the address where your article can be found. Use only alphanumeric characters and - or _. Note that you cannot change the slug after creating the article."),
                            max_length=models.URLPath.SLUG_MAX_LENGTH)
     content = forms.CharField(label=_('Contents'),
-                              required=False, widget=getEditor().get_widget()) #@UndefinedVariable
-    
+                              required=False, widget=getEditor().get_widget())  # @UndefinedVariable
+
     summary = forms.CharField(label=_('Summary'), help_text=_("Write a brief message for the article's history log."),
                               required=False)
-    
+
     def clean_slug(self):
         slug = self.cleaned_data['slug']
         if slug.startswith("_"):
             raise forms.ValidationError(_('A slug may not begin with an underscore.'))
         if slug == 'admin':
             raise forms.ValidationError(_("'admin' is not a permitted slug name."))
-        
+
         if settings.URL_CASE_SENSITIVE:
             already_existing_slug = models.URLPath.objects.filter(slug=slug, parent=self.urlpath_parent)
         else:
@@ -270,21 +267,21 @@ class CreateForm(forms.Form, SpamProtectionMixin):
                 raise forms.ValidationError(_('A deleted article with slug "%s" already exists.') % already_urlpath.slug)
             else:
                 raise forms.ValidationError(_('A slug named "%s" already exists.') % already_urlpath.slug)
-        
+
         return slug
-    
+
     def clean(self):
         self.check_spam()
         return self.cleaned_data
-    
+
 
 class DeleteForm(forms.Form):
-    
+
     def __init__(self, *args, **kwargs):
         self.article = kwargs.pop('article')
         self.has_children = kwargs.pop('has_children')
         super(DeleteForm, self).__init__(*args, **kwargs)
-    
+
     confirm = forms.BooleanField(required=False,
                                  label=_('Yes, I am sure'))
     purge = forms.BooleanField(widget=HiddenInput(), required=False,
@@ -292,7 +289,7 @@ class DeleteForm(forms.Form):
                                help_text=_('Purge the article: Completely remove it (and all its contents) with no undo. Purging is a good idea if you want to free the slug such that users can create new articles in its place.'))
     revision = forms.ModelChoiceField(models.ArticleRevision.objects.all(),
                                       widget=HiddenInput(), required=False)
-    
+
     def clean(self):
         cd = self.cleaned_data
         if not cd['confirm']:
@@ -303,7 +300,7 @@ class DeleteForm(forms.Form):
 
 
 class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
-    
+
     locked = forms.BooleanField(label=_('Lock article'), help_text=_('Deny all users access to edit this article.'),
                                 required=False)
 
@@ -314,13 +311,13 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
     owner_username = forms.CharField(required=False, label=_('Owner'),
                                      help_text=_('Enter the username of the owner.'))
     group = forms.ModelChoiceField(models.Group.objects.all(), empty_label=_('(none)'),
-                                     label=_('Group'), required=False)
+                                   label=_('Group'), required=False)
     if settings.USE_BOOTSTRAP_SELECT_WIDGET:
         group.widget= SelectWidgetBootstrap()
-    
+
     recursive = forms.BooleanField(label=_('Inherit permissions'), help_text=_('Check here to apply the above permissions (excluding group and owner of the article) recursively to articles below this one.'),
                                    required=False)
-    
+
     recursive_owner = forms.BooleanField(label=_('Inherit owner'), help_text=_('Check here to apply the ownership setting recursively to articles below this one.'),
                                          required=False)
 
@@ -332,16 +329,16 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
             return _('Permission settings for the article were updated.')
         else:
             return _('Your permission settings were unchanged, so nothing saved.')
-    
+
     def __init__(self, article, request, *args, **kwargs):
         self.article = article
         self.user = request.user
         self.request = request
         kwargs['instance'] = article
         kwargs['initial'] = {'locked': article.current_revision.locked}
-        
+
         super(PermissionsForm, self).__init__(*args, **kwargs)
-        
+
         self.can_change_groups = False
         self.can_assign = False
 
@@ -357,10 +354,10 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
             # Set the group dropdown to readonly and with the current
             # group as only selectable option
             self.fields['group'] = forms.ModelChoiceField(
-                queryset = models.Group.objects.filter(id=self.instance.group.id) if self.instance.group else models.Group.objects.none(),
-                empty_label = _('(none)'),
-                required = False,
-                widget = SelectWidgetBootstrap(disabled=True) if settings.USE_BOOTSTRAP_SELECT_WIDGET else forms.Select(attrs={'disabled': True})
+                queryset=models.Group.objects.filter(id=self.instance.group.id) if self.instance.group else models.Group.objects.none(),
+                empty_label=_('(none)'),
+                required=False,
+                widget=SelectWidgetBootstrap(disabled=True) if settings.USE_BOOTSTRAP_SELECT_WIDGET else forms.Select(attrs={'disabled': True})
             )
             self.fields['group_read'].widget = forms.HiddenInput()
             self.fields['group_write'].widget = forms.HiddenInput()
@@ -371,9 +368,9 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
             self.fields['recursive_group'].widget = forms.HiddenInput()
             self.fields['recursive_owner'].widget = forms.HiddenInput()
             self.fields['locked'].widget = forms.HiddenInput()
-        
+
         self.fields['owner_username'].initial = article.owner.username if article.owner else ""
-    
+
     def clean_owner_username(self):
         if self.can_assign:
             username = self.cleaned_data['owner_username']
@@ -387,7 +384,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
         else:
             user = self.article.owner
         return user
-    
+
     def save(self, commit=True):
         article = super(PermissionsForm, self).save(commit=False)
 
@@ -402,7 +399,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
             article.group = self.article.group
             article.group_read = self.article.group_read
             article.group_write = self.article.group_write
-        
+
         if self.can_assign:
             if self.cleaned_data['recursive']:
                 article.set_permissions_recursive()
@@ -423,10 +420,10 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
                 revision.set_from_request(self.request)
                 revision.automatic_log = _('Article unlocked for editing')
                 revision.locked = False
-                self.article.add_revision(revision)                
+                self.article.add_revision(revision)
 
         article.save()
-    
+
     class Meta:
         model = models.Article
         fields = ('locked', 'owner_username', 'recursive_owner', 'group', 'recursive_group', 'group_read', 'group_write', 'other_read', 'other_write',
@@ -435,40 +432,41 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
 
 
 class DirFilterForm(forms.Form):
-    
+
     query = forms.CharField(widget=forms.TextInput(attrs={'placeholder': _('Filter...'),
                                                           'class': 'search-query'}), required=False)
 
 
 class SearchForm(forms.Form):
-    
+
     q = forms.CharField(widget=forms.TextInput(attrs={'placeholder': _('Search...'),
-                                                          'class': 'search-query'}), required=False)
+                                                      'class': 'search-query'}), required=False)
 
 
 class UserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
-    
+
     def __init__(self, *args, **kwargs):
         super(UserCreationForm, self).__init__(*args, **kwargs)
-        
+
         # Add honeypots
         self.honeypot_fieldnames = "address", "phone"
         self.honeypot_class = ''.join(random.choice(string.ascii_uppercase + string.digits) for __ in range(10))
-        self.honeypot_jsfunction = 'f'+''.join(random.choice(string.ascii_uppercase + string.digits) for __ in range(10))
-        
+        self.honeypot_jsfunction = 'f' + ''.join(random.choice(string.ascii_uppercase + string.digits) for __ in range(10))
+
         for fieldname in self.honeypot_fieldnames:
             self.fields[fieldname] = forms.CharField(
                 widget=forms.TextInput(attrs={'class': self.honeypot_class}),
                 required=False,
-        )
-    
+            )
+
     def clean(self):
         cd = super(UserCreationForm, self).clean()
         for fieldname in self.honeypot_fieldnames:
-            if cd[fieldname]: raise forms.ValidationError("Thank you, non-human visitor. Please keep trying to fill in the form.")
+            if cd[fieldname]:
+                raise forms.ValidationError("Thank you, non-human visitor. Please keep trying to fill in the form.")
         return cd
-    
+
     class Meta:
         model = User
-        fields = ( "username", "email" )
+        fields = ("username", "email")
