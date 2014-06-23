@@ -40,7 +40,7 @@ options:
 
     -X, --exclude_models
     exclude specific model(s) from the graph.
-    
+
     -e, --inheritance
     show inheritance arrows.
 """
@@ -49,8 +49,7 @@ __version__ = "0.99"
 __svnid__ = "$Id$"
 __license__ = "Python"
 __author__ = "Antonio Cavedoni <http://cavedoni.com/>"
-__contributors__ = [
-   "Stefano J. Attardi <http://attardi.org/>",
+__contributors__ = ["Stefano J. Attardi <http://attardi.org/>",
    "limodou <http://www.donews.net/limodou/>",
    "Carlo C8E Miron",
    "Andre Campos <cahenan@gmail.com>",
@@ -58,10 +57,10 @@ __contributors__ = [
    "Alexander Houben <alexander@houben.ch>",
    "Bas van Oostveen <v.oostveen@gmail.com>",
    "Joern Hees <gitdev@joernhees.de>",
-   "Benjamin Bach <benjamin@overtag.dk>",
-]
+   "Benjamin Bach <benjamin@overtag.dk>", ]
 
-import sys, os
+import sys
+import os
 from django.core.management.base import BaseCommand
 from optparse import make_option
 
@@ -78,10 +77,11 @@ try:
 except ImportError:
     from django.contrib.contenttypes.generic import GenericRelation
 
+
 def parse_file_or_list(arg):
     if not arg:
         return []
-    if not ',' in arg and os.path.isfile(arg):
+    if ',' not in arg and os.path.isfile(arg):
         return [e.strip() for e in open(arg).readlines()]
     return arg.split(',')
 
@@ -108,9 +108,6 @@ def generate_dot(app_labels, **kwargs):
                 return True
         return False
 
-
-
-
     t = loader.get_template_from_string("""
 digraph name {
   fontname = "Helvetica"
@@ -136,7 +133,7 @@ digraph name {
 
     for app_label in app_labels:
         app = models.get_app(app_label)
-        if not app in apps:
+        if app not in apps:
             apps.append(app)
 
     graphs = []
@@ -154,9 +151,8 @@ digraph name {
         abstract_models = []
         for appmodel in appmodels:
             abstract_models = abstract_models + [abstract_model for abstract_model in appmodel.__bases__ if hasattr(abstract_model, '_meta') and abstract_model._meta.abstract]
-        abstract_models = list(set(abstract_models)) # remove duplicates
+        abstract_models = list(set(abstract_models))  # remove duplicates
         appmodels = abstract_models + appmodels
-        
 
         for appmodel in appmodels:
             appmodel_abstracts = [abstract_model.__name__ for abstract_model in appmodel.__bases__ if hasattr(abstract_model, '_meta') and abstract_model._meta.abstract]
@@ -225,9 +221,9 @@ digraph name {
                     continue
                 if not field.primary_key:
                     add_attributes(field)
-            
+
             # FIXME: actually many_to_many fields aren't saved in this model's db table, so why should we add an attribute-line for them in the resulting graph?
-            #if appmodel._meta.many_to_many:
+            # if appmodel._meta.many_to_many:
             #    for field in appmodel._meta.many_to_many:
             #        if skip_field(field):
             #            continue
@@ -239,14 +235,14 @@ digraph name {
                     label = field.verbose_name
                 else:
                     label = field.name
-                    
+
                 # show related field name
                 if hasattr(field, 'related_query_name'):
                     label += ' (%s)' % field.related_query_name()
 
                 # handle self-relationships
                 if field.rel.to == 'self':
-                    target_model = field.model 
+                    target_model = field.model
                 else:
                     target_model = field.rel.to
 
@@ -263,9 +259,9 @@ digraph name {
                     model['relations'].append(_rel)
 
             for field in appmodel._meta.local_fields:
-                if field.attname.endswith('_ptr_id'): # excluding field redundant with inheritance relation
+                if field.attname.endswith('_ptr_id'):  # excluding field redundant with inheritance relation
                     continue
-                if field in abstract_fields: # excluding fields inherited from abstract classes. they too show as local_fields
+                if field in abstract_fields:  # excluding fields inherited from abstract classes. they too show as local_fields
                     continue
                 if skip_field(field):
                     continue
@@ -279,15 +275,15 @@ digraph name {
                     continue
                 if isinstance(field, ManyToManyField):
                     if (getattr(field, 'creates_table', False) or  # django 1.1.
-                        (hasattr(field.rel.through, '_meta') and field.rel.through._meta.auto_created)):  # django 1.2
+                       (hasattr(field.rel.through, '_meta') and field.rel.through._meta.auto_created)):  # django 1.2
                         add_relation(field, '[arrowhead=dot arrowtail=dot, dir=both]')
                     elif isinstance(field, GenericRelation):
                         add_relation(field, mark_safe('[style="dotted", arrowhead=normal, arrowtail=normal, dir=both]'))
-            
+
             if inheritance:
                 # add inheritance arrows
                 for parent in appmodel.__bases__:
-                    if hasattr(parent, "_meta"): # parent is a model
+                    if hasattr(parent, "_meta"):  # parent is a model
                         l = "multi-table"
                         if parent._meta.abstract:
                             l = "abstract"
@@ -306,7 +302,7 @@ digraph name {
                         # TODO: seems as if abstract models aren't part of models.getModels, which is why they are printed by this without any attributes.
                         if _rel not in model['relations'] and consider(_rel['target']):
                             model['relations'].append(_rel)
-            
+
             graph['models'].append(model)
         graphs.append(graph)
 
@@ -375,22 +371,22 @@ subgraph {{ cluster_app_name }} {
 {% endfor %}""")
         dot += '\n' + t.render(graph)
 
-
     t = loader.get_template_from_string("}")
     c = Context({})
     dot += '\n' + t.render(c)
     return dot
 
+
 class Command(BaseCommand):
     args = ('--dummy')
-    help = 'Create a graph of your app!' #@ReservedAssignment
+    help = 'Create a graph of your app!'  # @ReservedAssignment
     option_list = BaseCommand.option_list + (
         make_option('--all_applications', '-a', dest='all_applications', default=False,
                     action='store_true',
                     help='Include all applications'),
-        make_option('--disable_fields', '-d', action='store', 
+        make_option('--disable_fields', '-d', action='store',
                     dest='disable_fields',
-                    default="", 
+                    default="",
                     help='Specify fields to exclude'),
         make_option('--group_models', '-g', action='store', dest='group_models',
                     help=''),
@@ -404,12 +400,12 @@ class Command(BaseCommand):
                     help=''),
         make_option('--inheritance', '-e', action='store_true', dest='inheritance',
                     help=''),
-        )
+    )
+
     def handle(self, *args, **options):
 
         if not args and not options.get('all_applications', False):
             print(__doc__)
             sys.exit()
-    
-        print(generate_dot(args, **options))
 
+        print(generate_dot(args, **options))
