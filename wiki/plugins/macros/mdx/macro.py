@@ -16,6 +16,7 @@ KWARG_RE = re.compile(r'\s*(?P<arg>\w+)(:(?P<value>([^\']+|%s)))?' % re_sq_short
 
 from wiki.plugins.macros import settings
 
+
 class MacroExtension(markdown.Extension):
     """ Macro plugin markdown extension for django-wiki. """
 
@@ -25,9 +26,9 @@ class MacroExtension(markdown.Extension):
 
 
 class MacroPreprocessor(markdown.preprocessors.Preprocessor):
-    """django-wiki macro preprocessor - parse text for various [some_macro] and 
+    """django-wiki macro preprocessor - parse text for various [some_macro] and
     [some_macro (kw:arg)*] references. """
-    
+
     def run(self, lines):
         # Look at all those indentations.
         # That's insane, let's get a helper library
@@ -57,7 +58,7 @@ class MacroPreprocessor(markdown.preprocessors.Preprocessor):
                         line = getattr(self, macro)(**kwargs_dict)
                     else:
                         line = getattr(self, macro)()
-            if not line is None:
+            if line:
                 new_text.append(line)
         return new_text
 
@@ -71,26 +72,26 @@ class MacroPreprocessor(markdown.preprocessors.Preprocessor):
         )
         return self.markdown.htmlStash.store(html, safe=True)
     article_list.meta = dict(
-        short_description = _('Article list'),
-        help_text = _('Insert a list of articles in this level.'),
-        example_code = _('[article_list depth:2]'),
-        args = {'depth': _('Maximum depth to show levels for.')}
+        short_description=_('Article list'),
+        help_text=_('Insert a list of articles in this level.'),
+        example_code=_('[article_list depth:2]'),
+        args={'depth': _('Maximum depth to show levels for.')}
     )
 
     def toc(self):
         return "[TOC]"
     toc.meta = dict(
-        short_description = _('Table of contents'),
-        help_text = _('Insert a table of contents matching the headings.'),
-        example_code = _('[TOC]'),
-        args = {}
+        short_description=_('Table of contents'),
+        help_text=_('Insert a table of contents matching the headings.'),
+        example_code=_('[TOC]'),
+        args={}
     )
 
     def wikilink(self):
         return ""
     wikilink.meta = dict(
-        short_description = _('WikiLinks'),
-        help_text = _('Insert a link to another wiki page with a short notation.'),
-        example_code = _('[[WikiLink]]'),
-        args = {}
+        short_description=_('WikiLinks'),
+        help_text=_('Insert a link to another wiki page with a short notation.'),
+        example_code=_('[[WikiLink]]'),
+        args={}
     )
