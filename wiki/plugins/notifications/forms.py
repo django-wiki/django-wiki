@@ -18,7 +18,7 @@ class SettingsModelChoiceField(forms.ModelChoiceField):
         return _("Receive notifications %(interval)s") % {
                        'interval': obj.get_interval_display()
                    }
-               
+
 
 
 class ArticleSubscriptionModelMultipleChoiceField(forms.ModelMultipleChoiceField):
@@ -56,7 +56,7 @@ class SettingsModelForm(forms.ModelForm):
                 required=False,
                 initial=0,
             )
-    
+
     def save(self, *args, **kwargs):
         instance = super(SettingsModelForm, self).save(*args, **kwargs)
         if self.__editing_instance:
@@ -89,7 +89,7 @@ class BaseSettingsFormSet(BaseModelFormSet):
 
 
 SettingsFormSet = modelformset_factory(
-    Settings, 
+    Settings,
     form=SettingsModelForm,
     formset=BaseSettingsFormSet,
     extra=0,
@@ -98,30 +98,30 @@ SettingsFormSet = modelformset_factory(
 
 
 class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
-    
+
     settings_form_headline = _('Notifications')
     settings_order = 1
     settings_write_access = False
-    
+
     settings = SettingsModelChoiceField(
         Settings,
         empty_label=None,
         label=_('Settings')
     )
     edit = forms.BooleanField(
-        required=False, 
+        required=False,
         label=_('When this article is edited')
     )
     edit_email = forms.BooleanField(
-        required=False, 
+        required=False,
         label=_('Also receive emails about article edits'),
         widget=forms.CheckboxInput(
             attrs={'onclick': mark_safe("$('#id_edit').attr('checked', $(this).is(':checked'));")}
         )
     )
-    
+
     def __init__(self, article, request, *args, **kwargs):
-        
+
         self.article = article
         self.user = request.user
         initial = kwargs.pop('initial', None)
@@ -150,13 +150,13 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
         self.fields['settings'].queryset = Settings.objects.filter(
             user=request.user,
         )
-    
+
     def get_usermessage(self):
         if self.changed_data:
             return _('Your notification settings were updated.')
         else:
             return _('Your notification settings were unchanged, so nothing saved.')
-    
+
     def save(self, *args, **kwargs):
 
         cd = self.cleaned_data
