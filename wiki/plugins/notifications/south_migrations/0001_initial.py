@@ -13,7 +13,7 @@ else:
     User = get_user_model()
 
 user_orm_label = '%s.%s' % (User._meta.app_label, User._meta.object_name)
-user_model_label = '%s.%s' % (User._meta.app_label, User._meta.module_name) 
+user_model_label = '%s.%s' % (User._meta.app_label, User._meta.module_name)
 
 
 class Migration(SchemaMigration):
@@ -21,7 +21,7 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         # Adding model 'ArticleSubscription'
         db.create_table('notifications_articlesubscription', (
-            ('subscription_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['django_notify.Subscription'], unique=True)),
+            ('subscription_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['django_nyt.Subscription'], unique=True)),
             ('articleplugin_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['wiki.ArticlePlugin'], unique=True, primary_key=True)),
         ))
         db.send_create_signal('notifications', ['ArticleSubscription'])
@@ -69,30 +69,30 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        'django_notify.notificationtype': {
-            'Meta': {'object_name': 'NotificationType', 'db_table': "'notify_notificationtype'"},
+        'django_nyt.notificationtype': {
+            'Meta': {'object_name': 'NotificationType', 'db_table': "'nyt_notificationtype'"},
             'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['contenttypes.ContentType']", 'null': 'True', 'blank': 'True'}),
             'key': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '128', 'primary_key': 'True'}),
             'label': ('django.db.models.fields.CharField', [], {'max_length': '128', 'null': 'True', 'blank': 'True'})
         },
-        'django_notify.settings': {
-            'Meta': {'object_name': 'Settings', 'db_table': "'notify_settings'"},
+        'django_nyt.settings': {
+            'Meta': {'object_name': 'Settings', 'db_table': "'nyt_settings'"},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'interval': ('django.db.models.fields.SmallIntegerField', [], {'default': '0'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['%s']" % user_orm_label})
         },
-        'django_notify.subscription': {
-            'Meta': {'object_name': 'Subscription', 'db_table': "'notify_subscription'"},
+        'django_nyt.subscription': {
+            'Meta': {'object_name': 'Subscription', 'db_table': "'nyt_subscription'"},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'notification_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['django_notify.NotificationType']"}),
+            'notification_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['django_nyt.NotificationType']"}),
             'object_id': ('django.db.models.fields.CharField', [], {'max_length': '64', 'null': 'True', 'blank': 'True'}),
             'send_emails': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'settings': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['django_notify.Settings']"})
+            'settings': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['django_nyt.Settings']"})
         },
         'notifications.articlesubscription': {
-            'Meta': {'object_name': 'ArticleSubscription', '_ormbases': ['wiki.ArticlePlugin', 'django_notify.Subscription']},
+            'Meta': {'object_name': 'ArticleSubscription', '_ormbases': ['wiki.ArticlePlugin', 'django_nyt.Subscription']},
             'articleplugin_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['wiki.ArticlePlugin']", 'unique': 'True', 'primary_key': 'True'}),
-            'subscription_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['django_notify.Subscription']", 'unique': 'True'})
+            'subscription_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['django_nyt.Subscription']", 'unique': 'True'})
         },
         'wiki.article': {
             'Meta': {'object_name': 'Article'},
