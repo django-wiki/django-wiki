@@ -27,8 +27,8 @@ class AttachmentPreprocessor(markdown.preprocessors.Preprocessor):
             m = ATTACHMENT_RE.match(line)
             if m:
                 attachment_id = m.group('id').strip()
-                before = m.group('before')
-                after = m.group('after')
+                before = self.run([m.group('before')])[0]
+                after = self.run([m.group('after')])[0]
                 try:
                     attachment = models.Attachment.objects.get(
                         articles__current_revision__deleted=False,
@@ -36,7 +36,7 @@ class AttachmentPreprocessor(markdown.preprocessors.Preprocessor):
                     )
                     url = reverse('wiki:attachments_download', kwargs={'article_id': self.markdown.article.id,
                                                                        'attachment_id':attachment.id,})
-                    
+
                     # The readability of the attachment is decided relative
                     # to the owner of the original article.
                     # I.e. do not insert attachments in other articles that
@@ -47,14 +47,14 @@ class AttachmentPreprocessor(markdown.preprocessors.Preprocessor):
                     html = render_to_string(
                         "wiki/plugins/attachments/render.html",
                         Context({
-                            'url': url, 
+                            'url': url,
                             'filename': attachment.original_filename,
                             'attachment_can_read': attachment_can_read,
                         }))
                     line = self.markdown.htmlStash.store(html, safe=True)
                 except models.Attachment.DoesNotExist:
                     line = line.replace(m.group(1), """<span class="attachment attachment-deleted">Attachment with ID #%s is deleted.</span>""" % attachment_id)
-                line = before + line + after                    
+                line = before + line + after
             new_text.append(line)
         return new_text
-    
+
