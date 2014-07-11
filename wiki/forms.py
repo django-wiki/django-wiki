@@ -370,7 +370,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
             self.fields['recursive_owner'].widget = forms.HiddenInput()
             self.fields['locked'].widget = forms.HiddenInput()
         
-        self.fields['owner_username'].initial = article.owner.username if article.owner else ""
+        self.fields['owner_username'].initial = getattr(article.owner, User.USERNAME_FIELD) if article.owner else ""
     
     def clean_owner_username(self):
         if self.can_assign:
