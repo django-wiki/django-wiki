@@ -12,7 +12,9 @@ Up until the django-wiki 0.1 release, versions have been 0.0.1-0.0.24 with
 migrations kept in South and without any serious issues of upgrading,
 ``python manage.py migrate`` was enough.
 
-*django-wiki 0.1* is cutting ties in the sense that a project's
+*django-wiki 0.1* is cutting ties in the sense that migrations are being reset.
+This means that you can upgrade directly the upcoming 0.0.24 to 0.1 but upgrades
+from previous versions are not possible.
 
 
 django-wiki 0.0.24
