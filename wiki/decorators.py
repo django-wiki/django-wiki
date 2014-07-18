@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseNotFound, \
     HttpResponseForbidden, HttpResponseRedirect
@@ -72,7 +73,7 @@ def get_article(func=None, can_read=True, can_write=False,
     """
     
     def wrapper(request, *args, **kwargs):
-        import models
+        from . import models
 
         path = kwargs.pop('path', None)
         article_id = kwargs.pop('article_id', None)
@@ -87,7 +88,7 @@ def get_article(func=None, can_read=True, can_write=False,
                 return redirect('wiki:root_create')
             except models.URLPath.DoesNotExist:
                 try:
-                    pathlist = filter(lambda x: x!="", path.split("/"),)
+                    pathlist = list(filter(lambda x: x!="", path.split("/"),))
                     path = "/".join(pathlist[:-1])
                     parent = models.URLPath.get_by_path(path)
                     return HttpResponseRedirect(reverse("wiki:create", kwargs={'path': parent.path,}) + "?slug=%s" % pathlist[-1])
@@ -112,7 +113,8 @@ def get_article(func=None, can_read=True, can_write=False,
             article = get_object_or_404(articles, id=article_id)
             try:
                 urlpath = models.URLPath.objects.get(articles__article=article)
-            except models.URLPath.DoesNotExist, models.URLPath.MultipleObjectsReturned:
+            except models.URLPath.DoesNotExist as noarticle:
+                models.URLPath.MultipleObjectsReturned = noarticle
                 urlpath = None
         
         

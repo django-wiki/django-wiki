@@ -3,5 +3,6 @@ South
 Markdown>2.2.0
 django-sekizai>=0.7
 django-mptt>=0.5.3
-sorl-thumbnail
+sorl-thumbnail==11.12.1b
 Pillow
+six

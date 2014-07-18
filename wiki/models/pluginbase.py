@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import signals
@@ -24,7 +25,7 @@ There are three kinds of plugin base models:
 
 """
 
-from article import ArticleRevision, BaseRevisionMixin
+from .article import ArticleRevision, BaseRevisionMixin
 from wiki.conf import settings 
 
 class ArticlePlugin(models.Model):
@@ -34,7 +35,7 @@ class ArticlePlugin(models.Model):
     properties in the future..."""    
     
     article = models.ForeignKey('wiki.Article', on_delete=models.CASCADE, 
-                                verbose_name=_(u"article"))
+                                verbose_name=_("article"))
     
     deleted = models.BooleanField(default=False)
     
@@ -74,8 +75,8 @@ class ReusablePlugin(ArticlePlugin):
     # The article on which the plugin was originally created.
     # Used to apply permissions.
     ArticlePlugin.article.on_delete=models.SET_NULL
-    ArticlePlugin.article.verbose_name=_(u'original article')
-    ArticlePlugin.article.help_text=_(u'Permissions are inherited from this article')
+    ArticlePlugin.article.verbose_name=_('original article')
+    ArticlePlugin.article.help_text=_('Permissions are inherited from this article')
     ArticlePlugin.article.null = True
     ArticlePlugin.article.blank = True
     
@@ -141,7 +142,7 @@ class SimplePlugin(ArticlePlugin):
             self.article = article
         
     def get_logmessage(self):
-        return _(u"A plugin was changed")
+        return _("A plugin was changed")
     
     def save(self, *args, **kwargs):
         if not self.pk:
@@ -170,9 +171,9 @@ class RevisionPlugin(ArticlePlugin):
     """
     # The current revision of this plugin, if any!
     current_revision = models.OneToOneField('RevisionPluginRevision', 
-                                            verbose_name=_(u'current revision'),
+                                            verbose_name=_('current revision'),
                                             blank=True, null=True, related_name='plugin_set',
-                                            help_text=_(u'The revision being displayed for this plugin. '
+                                            help_text=_('The revision being displayed for this plugin. '
                                                          'If you need to do a roll-back, simply change the value of this field.'),
                                             )
     

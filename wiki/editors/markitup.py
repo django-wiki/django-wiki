@@ -2,7 +2,11 @@
 from __future__ import unicode_literals
 from django import forms
 from django.forms.util import flatatt
-from django.utils.encoding import force_unicode
+try:
+    from django.utils.encoding import force_unicode
+except ImportError:
+    def force_unicode(x):
+        return(x)
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 import markdown
 import re
+from six import string_types
 
 from django.utils.translation import ugettext as _
 from django.template.loader import render_to_string
@@ -44,13 +46,13 @@ class MacroPreprocessor(markdown.preprocessors.Preprocessor):
                             value = kwarg.group('value')
                             if value is None:
                                 value = True
-                            if isinstance(value, basestring):
+                            if isinstance(value, string_types):
                                 # If value is enclosed with ': Remove and remove escape sequences
-                                if value.startswith(u"'") and len(value) > 2:
+                                if value.startswith("'") and len(value) > 2:
                                     value = value[1:-1]
-                                    value = value.replace(u"\\\\", u"¤KEEPME¤")
-                                    value = value.replace(u"\\", u"")
-                                    value = value.replace(u"¤KEEPME¤", u"\\")
+                                    value = value.replace("\\\\", "¤KEEPME¤")
+                                    value = value.replace("\\", "")
+                                    value = value.replace("¤KEEPME¤", "\\")
                             kwargs_dict[str(arg)] = value
                         line = getattr(self, macro)(**kwargs_dict)
                     else:
@@ -69,26 +71,26 @@ class MacroPreprocessor(markdown.preprocessors.Preprocessor):
         )
         return self.markdown.htmlStash.store(html, safe=True)
     article_list.meta = dict(
-        short_description = _(u'Article list'),
-        help_text = _(u'Insert a list of articles in this level.'),
-        example_code = _(u'[article_list depth:2]'),
+        short_description = _('Article list'),
+        help_text = _('Insert a list of articles in this level.'),
+        example_code = _('[article_list depth:2]'),
         args = {'depth': _('Maximum depth to show levels for.')}
     )
 
     def toc(self):
         return "[TOC]"
     toc.meta = dict(
-        short_description = _(u'Table of contents'),
-        help_text = _(u'Insert a table of contents matching the headings.'),
-        example_code = _(u'[TOC]'),
+        short_description = _('Table of contents'),
+        help_text = _('Insert a table of contents matching the headings.'),
+        example_code = _('[TOC]'),
         args = {}
     )
 
     def wikilink(self):
         return ""
     wikilink.meta = dict(
-        short_description = _(u'WikiLinks'),
-        help_text = _(u'Insert a link to another wiki page with a short notation.'),
-        example_code = _(u'[[WikiLink]]'),
+        short_description = _('WikiLinks'),
+        help_text = _('Insert a link to another wiki page with a short notation.'),
+        example_code = _('[[WikiLink]]'),
         args = {}
     )

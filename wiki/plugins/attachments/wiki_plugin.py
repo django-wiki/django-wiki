@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from django.conf.urls import patterns, url, include
 from django.utils.translation import ugettext as _
 
@@ -21,7 +22,7 @@ class AttachmentPlugin(BasePlugin):
         )
     }
     
-    article_tab = (_(u'Attachments'), "icon-file")
+    article_tab = (_('Attachments'), "icon-file")
     article_view = views.AttachmentView().dispatch
     
     # List of notifications to construct signal handlers for. This
@@ -29,10 +30,10 @@ class AttachmentPlugin(BasePlugin):
     notifications = [{
         'model': models.AttachmentRevision,
         'message': lambda obj: (
-            _(u"A file was changed: %s") 
+            _("A file was changed: %s") 
                 if not obj.deleted 
                 else 
-            _(u"A file was deleted: %s")
+            _("A file was deleted: %s")
             ) % truncate_title(obj.get_filename()),
         'key': ARTICLE_EDIT,
         'created': True,

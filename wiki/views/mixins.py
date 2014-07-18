@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django.views.generic.base import TemplateResponseMixin
 
 from wiki.core.plugins import registry
@@ -18,7 +19,7 @@ class ArticleMixin(TemplateResponseMixin):
                                                        articles__article__current_revision__deleted=False,
                                                        user_can_read=request.user):
                     self.children_slice.append(child)
-            except AttributeError, e:
+            except AttributeError as e:
                 raise Exception("Attribute error most likely caused by wrong MPTT version. Use 0.5.3+.\n\n" + str(e))
         return super(ArticleMixin, self).dispatch(request, *args, **kwargs)
 

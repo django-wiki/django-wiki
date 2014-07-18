@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+from __future__ import print_function
+
 import logging
 
 from django.contrib.contenttypes import generic
@@ -6,7 +9,14 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
-from django.db import models
+from django.db import models, transaction
+from six.moves import filter
+
+#Django 1.6 transaction API, required for 1.8+
+try:
+   notrans=transaction.non_atomic_requests 
+except:
+   notrans=transaction.commit_manually
 
 from django.db.models.signals import post_save, pre_delete
 from django.utils.translation import ugettext_lazy as _, ugettext
@@ -46,12 +56,12 @@ class URLPath(MPTTModel):
         Article, 
         on_delete=models.CASCADE, 
         editable=False,
-        verbose_name=_(u'Cache lookup value for articles'),
+        verbose_name=_('Cache lookup value for articles'),
     )
     
     SLUG_MAX_LENGTH = 50
     
-    slug = models.SlugField(verbose_name=_(u'slug'), null=True, blank=True,
+    slug = models.SlugField(verbose_name=_('slug'), null=True, blank=True,
                             max_length=SLUG_MAX_LENGTH)
     site = models.ForeignKey(Site)
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children')    
@@ -93,7 +103,7 @@ class URLPath(MPTTModel):
     def path(self):
         if not self.parent: return ""
         
-        ancestors = filter(lambda ancestor: ancestor.parent is not None, self.cached_ancestors)
+        ancestors = list(filter(lambda ancestor: ancestor.parent is not None, self.cached_ancestors))
         slugs = [obj.slug if obj.slug else "" for obj in ancestors + [self] ]
         
         return "/".join(slugs) + "/"
@@ -117,9 +127,16 @@ class URLPath(MPTTModel):
         NB! This deletes this urlpath, its children, and ALL of the related
         articles. This is a purged delete and CANNOT be undone.
         """
-        for descendant in self.get_descendants(include_self=True).order_by("-level"):
-            descendant.article.delete()
-
+        try:
+            for descendant in self.get_descendants(include_self=True).order_by("-level"):
+                print("deleting " , descendant) #space in string -> "  "?
+                descendant.article.delete()
+            
+            transaction.commit()
+        except:
+            transaction.rollback()
+            log.exception("Exception deleting article subtree.")
+            
     @classmethod
     def root(cls):
         site = Site.objects.get_current()
@@ -140,7 +157,7 @@ class URLPath(MPTTModel):
     
     def __unicode__(self):
         path = self.path
-        return path if path else ugettext(u"(root)")
+        return path if path else ugettext("(root)")
     
     def save(self, *args, **kwargs):
         super(URLPath, self).save(*args, **kwargs)
@@ -150,19 +167,19 @@ class URLPath(MPTTModel):
         super(URLPath, self).delete(*args, **kwargs)
     
     class Meta:
-        verbose_name = _(u'URL path')
-        verbose_name_plural = _(u'URL paths')
+        verbose_name = _('URL path')
+        verbose_name_plural = _('URL paths')
         unique_together = ('site', 'parent', 'slug')
         app_label = settings.APP_LABEL
     
     def clean(self, *args, **kwargs):
         if self.slug and not self.parent:
-            raise ValidationError(_(u'Sorry but you cannot have a root article with a slug.'))
+            raise ValidationError(_('Sorry but you cannot have a root article with a slug.'))
         if not self.slug and self.parent:
-            raise ValidationError(_(u'A non-root note must always have a slug.'))
+            raise ValidationError(_('A non-root note must always have a slug.'))
         if not self.parent:
             if URLPath.objects.root_nodes().filter(site=self.site).exclude(id=self.id):
-                raise ValidationError(_(u'There is already a root node on %s') % self.site)
+                raise ValidationError(_('There is already a root node on %s') % self.site)
         super(URLPath, self).clean(*args, **kwargs)
     
     @classmethod
@@ -282,10 +299,10 @@ def on_article_delete(instance, *args, **kwargs):
                               other_read = False,
                               other_write = False)
             article.add_revision(ArticleRevision(
-                     content=_(u'Articles who lost their parents\n'
+                     content=_('Articles who lost their parents\n'
                                 '===============================\n\n'
                                 'The children of this article have had their parents deleted. You should probably find a new home for them.'),
-                     title=_(u"Lost and found")))
+                     title=_("Lost and found")))
             ns.lost_and_found = URLPath.objects.create(slug=settings.LOST_AND_FOUND_SLUG,
                                                     parent=URLPath.root(),
                                                     site=site,

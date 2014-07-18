@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import os.path
 
 from django.conf import settings as django_settings
@@ -5,7 +6,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-import settings
+from . import settings
 
 from wiki.models.pluginbase import RevisionPlugin, RevisionPluginRevision
 from django.db.models import signals
@@ -19,9 +20,8 @@ def upload_path(instance, filename):
     upload_path = settings.IMAGE_PATH
     upload_path = upload_path.replace('%aid', str(instance.plugin.image.article.id))
     if settings.IMAGE_PATH_OBSCURIFY:
-        import random, hashlib
-        m=hashlib.md5(str(random.randint(0,100000000000000)))
-        upload_path = os.path.join(upload_path, m.hexdigest())
+        import uuid
+        upload_path = os.path.join(upload_path, uuid.uuid4().hex)
     return os.path.join(upload_path, filename)
 
 class Image(RevisionPlugin):
@@ -38,12 +38,12 @@ class Image(RevisionPlugin):
         return self.can_write(user)
 
     class Meta:
-        verbose_name = _(u'image')
-        verbose_name_plural = _(u'images')
+        verbose_name = _('image')
+        verbose_name_plural = _('images')
         app_label = settings.APP_LABEL
     
     def __unicode__(self):
-        title = (_(u'Image: %s') % self.current_revision.imagerevision.get_filename()) if self.current_revision else _(u'Current revision not set!!')
+        title = (_('Image: %s') % self.current_revision.imagerevision.get_filename()) if self.current_revision else _('Current revision not set!!')
         return unicode(title)
 
 class ImageRevision(RevisionPluginRevision):
@@ -91,13 +91,13 @@ class ImageRevision(RevisionPluginRevision):
                 self.image = None
 
     class Meta:
-        verbose_name = _(u'image revision')
-        verbose_name_plural = _(u'image revisions')
+        verbose_name = _('image revision')
+        verbose_name_plural = _('image revisions')
         app_label = settings.APP_LABEL
         ordering = ('-created',)
 
     def __unicode__(self):
-        title = _(u'Image Revision: %d') % self.revision_number
+        title = _('Image Revision: %d') % self.revision_number
         return unicode(title)
 
 

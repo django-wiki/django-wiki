@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 import markdown
 
 from wiki.core.plugins import registry as plugin_registry
@@ -15,4 +17,4 @@ class ArticleMarkdown(markdown.Markdown):
 
 def article_markdown(text, article, *args, **kwargs):
     md = ArticleMarkdown(article, *args, **kwargs)
-    return md.convert(unicode(text))
+    return md.convert(text)

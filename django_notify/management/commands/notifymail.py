@@ -1,3 +1,5 @@
+from __future__ import print_function
+from __future__ import unicode_literals
 import os
 import sys
 import time
@@ -62,7 +64,7 @@ class Command(BaseCommand):
         self.logger.info("Starting django_notify e-mail dispatcher")
 
         if not notify_settings.SEND_EMAILS:
-            print "E-mails disabled - quitting."
+            print("E-mails disabled - quitting.")
             sys.exit()
 
 
@@ -79,14 +81,14 @@ class Command(BaseCommand):
                     pid_file.write(str(fpid))
                     pid_file.close()
                     sys.exit(0)
-            except OSError, e:
+            except OSError as e:
                 sys.stderr.write("fork failed: %d (%s)\n" % (e.errno, e.strerror))
                 sys.exit(1)
 
         try:
             self.send_loop()
         except KeyboardInterrupt:
-            print "\nQuitting..."
+            print("\nQuitting...")
 
         # deactivate the language
         deactivate()

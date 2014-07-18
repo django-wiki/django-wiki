@@ -1,4 +1,5 @@
 # Create your views here.
+from __future__ import unicode_literals
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
@@ -6,7 +7,7 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.views.generic.edit import FormView
 
-import forms
+from . import forms
 
 class NotificationSettings(FormView):
     
@@ -20,14 +21,14 @@ class NotificationSettings(FormView):
     def form_valid(self, formset):
         for form in formset:
             settings = form.save()
-            import models
+            from . import models
             article_subscriptions = models.ArticleSubscription.objects.filter(
                 settings = form.instance,
                 article__current_revision__deleted=False,
             ).select_related('article', 'article__current_revision')
             messages.info(
                 self.request, 
-                _(u"You will receive notifications %(interval)s for "
+                _("You will receive notifications %(interval)s for "
                    "%(articles)d articles") % 
                     {
                         'interval': settings.get_interval_display(),
@@ -44,7 +45,7 @@ class NotificationSettings(FormView):
     def get_context_data(self, **kwargs):
         context = FormView.get_context_data(self, **kwargs)
         context['formset'] = kwargs['form']
-        import models
+        from . import models
         for form in context['formset']:
             if form.instance:
                 setattr(form.instance, 'articlesubscriptions', 

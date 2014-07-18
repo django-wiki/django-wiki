@@ -28,6 +28,8 @@ Options:
   --version     Show version.
 
 """
+from __future__ import print_function
+from __future__ import unicode_literals
 from docopt import docopt
 import os
 import re
@@ -74,7 +76,7 @@ if __name__ == '__main__':
         contents = f.read()
         f.close()
         if RE_FK_LABEL.search(contents) or RE_META_STRING.search(contents) or RE_AUTH_MODEL.search(contents) or RE_FK_LABEL.search(contents):
-            print "Refactoring {0}".format(fname)
+            print("Refactoring {0}".format(fname))
             f = open(full_path, 'w')
             contents = RE_CLASS_NAME.sub(INSERT_AT_TOP_OF_MIGRATION + r"\2", 
                 contents)
@@ -85,6 +87,6 @@ if __name__ == '__main__':
             f.write(contents)
             f.close()
         else:
-            print "Skipping {0}".format(fname)            
+            print("Skipping {0}".format(fname))            
         if RE_TEST_OK.search(contents):
-            print "    WARNING! Still found occurrences of auth.User. Fix manually!"
+            print("    WARNING! Still found occurrences of auth.User. Fix manually!")

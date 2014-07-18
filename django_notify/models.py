@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from django.db import models
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
@@ -15,12 +16,12 @@ class NotificationType(models.Model):
     key = models.CharField(
         max_length=128, 
         primary_key=True, 
-        verbose_name=_(u'unique key'),
+        verbose_name=_('unique key'),
         unique=True
     )
     label = models.CharField(
         max_length=128, 
-        verbose_name=_(u'verbose name'),
+        verbose_name=_('verbose name'),
         blank=True, 
         null=True
     )
@@ -31,8 +32,8 @@ class NotificationType(models.Model):
     
     class Meta:
         db_table = settings.DB_TABLE_PREFIX + '_notificationtype'
-        verbose_name = _(u'type')
-        verbose_name_plural = _(u'types')
+        verbose_name = _('type')
+        verbose_name_plural = _('types')
     
 class Settings(models.Model):
     """
@@ -44,18 +45,18 @@ class Settings(models.Model):
     )
     interval = models.SmallIntegerField(
         choices=settings.INTERVALS, 
-        verbose_name=_(u'interval'),
+        verbose_name=_('interval'),
         default=settings.INTERVALS_DEFAULT
     )
     
     def __unicode__(self):
-        obj_name = _(u"Settings for %s") % self.user.username
+        obj_name = _("Settings for %s") % self.user.username
         return unicode(obj_name)
     
     class Meta:
         db_table = settings.DB_TABLE_PREFIX + '_settings'
-        verbose_name = _(u'settings')
-        verbose_name_plural = _(u'settings')
+        verbose_name = _('settings')
+        verbose_name_plural = _('settings')
 
 class Subscription(models.Model):
     
@@ -65,7 +66,7 @@ class Subscription(models.Model):
         max_length=64, 
         null=True, 
         blank=True, 
-        help_text=_(u'Leave this blank to subscribe to any kind of object')
+        help_text=_('Leave this blank to subscribe to any kind of object')
     )
     send_emails = models.BooleanField(default=True)
     latest = models.ForeignKey('Notification', 
@@ -80,8 +81,8 @@ class Subscription(models.Model):
 
     class Meta:
         db_table = settings.DB_TABLE_PREFIX + '_subscription'
-        verbose_name = _(u'subscription')
-        verbose_name_plural = _(u'subscriptions')
+        verbose_name = _('subscription')
+        verbose_name_plural = _('subscriptions')
 
 class Notification(models.Model):
     
@@ -93,7 +94,7 @@ class Notification(models.Model):
     )
     message = models.TextField()
     url = models.CharField(
-        verbose_name=_(u'link for notification'),
+        verbose_name=_('link for notification'),
         blank=True, 
         null=True, 
         max_length=200
@@ -103,9 +104,9 @@ class Notification(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     occurrences = models.PositiveIntegerField(
         default=1, 
-        verbose_name=_(u'occurrences'),
+        verbose_name=_('occurrences'),
         help_text=_(
-            u'If the same notification was fired multiple '
+            'If the same notification was fired multiple '
              'times with no intermediate notifications'
          )
     )
@@ -167,6 +168,6 @@ class Notification(models.Model):
 
     class Meta:
         db_table = settings.DB_TABLE_PREFIX + '_notification'
-        verbose_name = _(u'notification')
-        verbose_name_plural = _(u'notifications')
+        verbose_name = _('notification')
+        verbose_name_plural = _('notifications')
         ordering = ('-id',)

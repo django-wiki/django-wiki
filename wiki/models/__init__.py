@@ -3,12 +3,14 @@
 from django.conf import settings as django_settings
 from django.core.exceptions import ImproperlyConfigured
 import warnings
+from six import string_types
 
 # TODO: Don't use wildcards
-from article import *
-from urlpath import *
+from .article import *
+from .urlpath import *
 
 # TODO: Should the below stuff be executed a more logical place?
+# Follow Django's default_settings.py / settings.py pattern and put these in d_s.py? That might be confusing, though.
 
 ######################
 # Configuration stuff
@@ -57,7 +59,7 @@ def reverse(*args, **kwargs):
     return the result of calling reverse._transform_url(reversed_url)
     for every url in the wiki namespace.
     """
-    if isinstance(args[0], basestring) and args[0].startswith('wiki:'):
+    if isinstance(args[0], string_types) and args[0].startswith('wiki:'):
         url_kwargs = kwargs.get('kwargs', {})
         path = url_kwargs.get('path', False)
         # If a path is supplied then discard the article_id
