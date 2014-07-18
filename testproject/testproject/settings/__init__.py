@@ -104,7 +104,7 @@ INSTALLED_APPS = [
     'mptt',
 ]
 from django import VERSION
-if VERSION <= (1, 6):
+if VERSION < (1, 7):
     INSTALLED_APPS.append('south')
     SOUTH_MIGRATION_MODULES = {
         'django_nyt': 'django_nyt.south_migrations',
