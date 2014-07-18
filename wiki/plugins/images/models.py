@@ -42,9 +42,9 @@ class Image(RevisionPlugin):
         verbose_name_plural = _('images')
         app_label = settings.APP_LABEL
     
-    def __unicode__(self):
+    def __str__(self):
         title = (_('Image: %s') % self.current_revision.imagerevision.get_filename()) if self.current_revision else _('Current revision not set!!')
-        return unicode(title)
+        return title
 
 class ImageRevision(RevisionPluginRevision):
     
@@ -96,9 +96,9 @@ class ImageRevision(RevisionPluginRevision):
         app_label = settings.APP_LABEL
         ordering = ('-created',)
 
-    def __unicode__(self):
+    def __str__(self):
         title = _('Image Revsion: %d') % self.revision_number
-        return unicode(title)
+        return title
 
 
 def on_image_revision_delete(instance, *args, **kwargs):
