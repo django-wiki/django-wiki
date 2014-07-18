@@ -15,3 +15,6 @@ Other tips
    that already has the syntax highlighting CSS rules built-in. Oh, and
    you need to ensure ``pip install pygments`` because Pygments is what
    the codehilite extension is using!
+
+3. **Project Templates:** Create new django-wiki projects quickly and easily using django-wiki project templates
+   https://github.com/django-wiki/django-wiki-project-template
