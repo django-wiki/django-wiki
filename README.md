@@ -1,8 +1,28 @@
 django-wiki
 ===========
 
+Important notice
+----------------
+
+Want to write a pull request? Yay :) Please do it, however, please consider scheduling anything new for the 0.1 release by creating pull requests against `django1.7` branch...
+
+Changes underway
+----------------
+
+    - Change to use django-nyt #288
+    - Py3: python_2_unicode_compatible decorator #282
+    - pep8 the whole codebase #287
+
 News
 ----
+
+***News: July 19th, 2014***
+
+Python 3 and django 1.7 compatibility is being worked on simultaneously in the `django1.7` branch. The plan is to have Python 2.6.5+, 3.2+ and Django 1.5-1.7 compatibility in the same release.
+
+Furthermore, django_notify will leave the distribution and be replaced by a dependency of [django-nyt](https://github.com/benjaoming/django-nyt).
+
+The work is a bit tedious because of refactoring and 
 
 ***News: May 18th, 2014***
 
