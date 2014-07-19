@@ -3,7 +3,7 @@ from django import forms
 from django.forms.models import modelformset_factory, BaseModelFormSet
 from django.utils.translation import ugettext as _
 
-from django_nyt.models import Settings, NotificationType
+from django_nyt.models import Settings, NotificationType, Subscription
 from django_nyt import settings as notify_settings
 from django.contrib.contenttypes.models import ContentType
 from django.utils.safestring import mark_safe
@@ -131,18 +131,19 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
         )[0]
         self.edit_notifications = models.ArticleSubscription.objects.filter(
             article=article,
-            notification_type=self.notification_type
+            subscription__notification_type=self.notification_type,
+            subscription__settings__user=self.user,
         )
         self.default_settings = Settings.objects.get_or_create(
             user=request.user,
             interval=notify_settings.INTERVALS_DEFAULT
         )[0]
         if self.edit_notifications:
-            self.default_settings = self.edit_notifications[0].settings
+            self.default_settings = self.edit_notifications[0].subscription.settings
         if not initial:
             initial = {
                 'edit': bool(self.edit_notifications),
-                'edit_email': bool(self.edit_notifications.filter(send_emails=True)),
+                'edit_email': bool(self.edit_notifications.filter(subscription__send_emails=True)),
                 'settings': self.default_settings,
             }
         kwargs['initial'] = initial
@@ -163,13 +164,26 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
         if not self.changed_data:
             return
         if cd['edit']:
-            edit_notification = models.ArticleSubscription.objects.get_or_create(
-                article=self.article,
-                notification_type=self.notification_type,
-                settings=cd['settings'],
-            )[0]
-            edit_notification.settings = cd['settings']
-            edit_notification.send_emails = cd['edit_email']
-            edit_notification.save()
+            try:
+                edit_notification = models.ArticleSubscription.objects.get(
+                    subscription__notification_type=self.notification_type,
+                    article=self.article,
+                    subscription__settings=cd['settings'],
+                )
+                edit_notification.subscription.send_emails = cd['edit_email']
+                edit_notification.subscription.save()
+            except models.ArticleSubscription.DoesNotExist:
+                subscription, __ = Subscription.objects.get_or_create(
+                    settings=cd['settings'],
+                    notification_type=self.notification_type,
+                    object_id=self.article.id,
+                )
+                edit_notification = models.ArticleSubscription.objects.create(
+                    subscription=subscription,
+                    article=self.article,
+                )
+                subscription.send_emails = cd['edit_email']
+                subscription.save()
+
         else:
             self.edit_notifications.delete()

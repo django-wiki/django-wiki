@@ -17,11 +17,7 @@ from wiki.plugins.notifications.util import get_title
 
 class ArticleSubscription(ArticlePlugin):
     
-    subscription_ptr = models.OneToOneField(
-        Subscription, related_name='deprecated_subscriptions',
-        db_column='subscription_ptr'
-    )
-    subscription = models.OneToOneField(Subscription, null=True)
+    subscription = models.OneToOneField(Subscription)
     
     def __unicode__(self):
         title = (_("%(user)s subscribing to %(article)s (%(type)s)") %
@@ -31,6 +27,7 @@ class ArticleSubscription(ArticlePlugin):
         return unicode(title)
     
     class Meta:
+        unique_together = ('subscription', 'articleplugin_ptr')
         if settings.APP_LABEL:
             app_label = settings.APP_LABEL
     
