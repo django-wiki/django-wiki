@@ -32,6 +32,36 @@ the final release.
  * Django < 1.7 (That means Django 1.7 is **not** supported)
  * South 0.8.4+ (if you are un an older South, you **need** to upgrade)
 
+**Notifications**
+
+Unfortunately, previous releases of django-wiki have had the wrong APP_LABEL
+set for wiki.plugins.notifications and thus all notification subscriptions
+will be reset. The error could not be fixed as it was introduced in 0.0.23
+as a stupid renaming of the notifications plugin tables with a subsequent
+automatic removal of the original notifications tables.
+
+So it's not actually a missing data migration in 0.0.24 that's the reason
+why django-nyt starts out with zero subscriptions. It was a table renaming
+in 0.0.23 that caused the error.
+
+If you are having problems, please consider re-running the migrations
+for notifications like so:
+  
+    python manage.py migrate notifications zero
+    python manage.py migrate notifications
+
+If you get `DatabaseError: no such table: notifications_articlesubscription`,
+you have been running django-wiki version with differently named tables.
+Don't worry, just fake the backwards migration:
+  
+    python manage.py migrate notifications zero --fake  
+
+In order to create notifications for all article authors and editors,
+run the following management command:
+  
+    python manage.py default_notifications
+
+
 django-wiki 0.1
 ---------------
 
