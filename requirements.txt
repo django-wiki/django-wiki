@@ -1,8 +1,13 @@
-django>=1.4
+django>=1.4,<1.7
 Markdown>2.2.0
 django-sekizai>=0.7
-django-mptt>=0.5.3
+
+# django-mptt 0.6.1 is broken, see #316
+django-mptt==0.6.0
+
+# Now with compatibility for django 1.6
 sorl-thumbnail>=11.12.1b
+
 Pillow
 six
 # Notification system
