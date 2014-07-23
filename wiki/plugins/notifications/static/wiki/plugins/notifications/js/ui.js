@@ -8,8 +8,10 @@ function notify_update() {
     if (data.success) {
       $('.notification-cnt').html(data.total_count);
       if (data.objects.length> 0) {
-        $('.notification-cnt').addClass('badge-important');
         $('.notifications-empty').hide();
+      }
+      if (data.total_count > 0) {
+        $('.notification-cnt').addClass('badge-important');
       } else {
         $('.notification-cnt').removeClass('badge-important');
       }
