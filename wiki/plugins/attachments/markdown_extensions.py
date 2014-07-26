@@ -5,6 +5,7 @@ import re
 from django.core.urlresolvers import reverse
 from django.template.context import Context
 from django.template.loader import render_to_string
+from django.contrib.auth.models import AnonymousUser
 from wiki.core.permissions import can_read
 
 ATTACHMENT_RE = re.compile(r'(?P<before>.*)(\[attachment\:(?P<id>\d+)\])(?P<after>.*)', re.IGNORECASE)
@@ -42,8 +43,12 @@ class AttachmentPreprocessor(markdown.preprocessors.Preprocessor):
                     # I.e. do not insert attachments in other articles that
                     # the original uploader cannot read, that would be out
                     # of scope!
-                    attachment_can_read = can_read( self.markdown.article,
-                        attachment.article.owner)
+                    article_owner = attachment.article.owner
+                    if not article_owner:
+                        article_owner = AnonymousUser()
+
+                    attachment_can_read = can_read(
+                        self.markdown.article, article_owner)
                     html = render_to_string(
                         "wiki/plugins/attachments/render.html",
                         Context({
