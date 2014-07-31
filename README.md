@@ -22,7 +22,7 @@ Python 3 and django 1.7 compatibility is being worked on simultaneously in the `
 
 Furthermore, django_notify will leave the distribution and be replaced by a dependency of [django-nyt](https://github.com/benjaoming/django-nyt).
 
-The work is a bit tedious because of refactoring and 
+The work is a bit tedious because of refactoring, having cross-compatibility for many Python *and* Django versions simultaneously, and having both South and django.db.migrations compatibility. But we'll get it fixed!! :)
 
 ***News: May 18th, 2014***
 
