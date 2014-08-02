@@ -24,3 +24,6 @@ matrix:
 # command to run tests
 script:
   - cd testproject ; python -W error:"":"":0 manage.py test wiki --settings=testproject.settings.travis
+notifications:
+    irc:
+        - "irc.freenode.org#django-blog-zinnia"
