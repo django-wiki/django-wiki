@@ -272,7 +272,7 @@ class CreateForm(forms.Form, SpamProtectionMixin):
             else:
                 raise forms.ValidationError(_('A slug named "%s" already exists.') % already_urlpath.slug)
         
-        if not settings.ALLOW_OVERLAPPING_THIRD_PARTY_URL:
+        if settings.CHECK_SLUG_URL_AVAILABLE:
             try:
                 # Fail validation if URL resolves to non-wiki app
                 match = resolve(self.urlpath_parent.path + '/' + slug + '/')

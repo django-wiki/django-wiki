@@ -26,9 +26,9 @@ MARKDOWN_KWARGS.update(getattr( django_settings, 'WIKI_MARKDOWN_KWARGS', {} ))
 # and all their content.
 LOST_AND_FOUND_SLUG = getattr( django_settings, 'WIKI_LOST_AND_FOUND_SLUG', 'lost-and-found' )
 
-# When False, this blocks new slugs that resolve to non-wiki views, stopping
+# When True, this blocks new slugs that resolve to non-wiki views, stopping
 # users creating articles that conflict with overlapping URLs from other apps.
-ALLOW_OVERLAPPING_THIRD_PARTY_URL = getattr( django_settings, 'WIKI_ALLOW_OVERLAPPING_THIRD_PARTY_URL', False )
+CHECK_SLUG_URL_AVAILABLE = getattr( django_settings, 'WIKI_CHECK_SLUG_URL_AVAILABLE', True )
 
 # Do we want to log IPs?
 LOG_IPS_ANONYMOUS = getattr( django_settings, 'WIKI_LOG_IPS_ANONYMOUS', True )
