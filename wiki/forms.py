@@ -16,6 +16,7 @@ except ImportError:
     def force_unicode(x):
         return(x)
 from django.utils.html import escape, conditional_escape
+from django.core.urlresolvers import resolve, Resolver404
 
 from itertools import chain
 
@@ -270,6 +271,15 @@ class CreateForm(forms.Form, SpamProtectionMixin):
                 raise forms.ValidationError(_('A deleted article with slug "%s" already exists.') % already_urlpath.slug)
             else:
                 raise forms.ValidationError(_('A slug named "%s" already exists.') % already_urlpath.slug)
+        
+        if not settings.ALLOW_OVERLAPPING_THIRD_PARTY_URL:
+            try:
+                # Fail validation if URL resolves to non-wiki app
+                match = resolve(self.urlpath_parent.path + '/' + slug + '/')
+                if match.app_name != 'wiki':
+                    raise forms.ValidationError(_('This slug conflicts with an existing URL.'))
+            except Resolver404:
+                pass
         
         return slug
     
