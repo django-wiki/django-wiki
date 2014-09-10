@@ -26,4 +26,4 @@ script:
   - cd testproject ; python -W error:"":"":0 manage.py test wiki --settings=testproject.settings.travis
 notifications:
     irc:
-        - "irc.freenode.org#django-blog-zinnia"
+        - "irc.freenode.org#django-wiki"
