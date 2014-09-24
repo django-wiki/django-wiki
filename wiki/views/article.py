@@ -14,6 +14,7 @@ from django.utils.translation import ugettext as _
 from django.views.generic.base import TemplateView, View, RedirectView
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
+from django.contrib.auth.models import Group
 
 from wiki.views.mixins import ArticleMixin
 from wiki import editors, forms, models
@@ -84,6 +85,10 @@ class Create(FormView, ArticleMixin):
             ip_address = self.request.META.get('REMOTE_ADDR', None)
 
         try:
+            content_management = None
+            if Group.objects.filter(name = "Content Management").exists():
+                content_management = Group.objects.get(name = "Content Management")
+
             self.newpath = models.URLPath.create_article(
                 self.urlpath,
                 form.cleaned_data['slug'],
@@ -93,7 +98,7 @@ class Create(FormView, ArticleMixin):
                 user=user,
                 ip_address=ip_address,
                 article_kwargs={'owner': user,
-                                'group': self.article.group,
+                                'group': content_management,
                                 'group_read': self.article.group_read,
                                 'group_write': self.article.group_write,
                                 'other_read': self.article.other_read,

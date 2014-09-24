@@ -389,7 +389,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
             username = self.cleaned_data['owner_username']
             if username:
                 try:
-                    user = User.objects.get(username=username)
+                    user = User.objects.get(email=username)
                 except User.DoesNotExist:
                     raise forms.ValidationError(_('No user with that username'))
             else:
