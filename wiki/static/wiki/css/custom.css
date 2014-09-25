@@ -1,0 +1,26 @@
+.container {
+	position:relative;
+}
+#navigation-container {
+	display:block;
+	width: 260px;
+	position:absolute;
+	z-index:2;
+  min-height:400px;
+}
+#article-container {
+	display:block;
+	width:100%;
+	padding-left:290px;
+  min-height:400px;
+  margin-top:0 !important;
+}
+#navigation-container .article-list {
+	width:260px;
+	max-width:260px;
+	clear:none !important;
+}
+#wiki-footer {
+	margin-left:290px;
+	font-size:12px;
+}
