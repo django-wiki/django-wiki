@@ -3,6 +3,7 @@ from django.views.generic.base import TemplateResponseMixin
 
 from wiki.core.plugins import registry
 from wiki.conf import settings
+from wiki import models
 
 class ArticleMixin(TemplateResponseMixin):
     """A mixin that receives an article object as a parameter (usually from a wiki
@@ -30,5 +31,7 @@ class ArticleMixin(TemplateResponseMixin):
         kwargs['children_slice'] = self.children_slice[:20]
         kwargs['children_slice_more'] = len(self.children_slice) > 20
         kwargs['plugins'] = registry.get_plugins()
+        kwargs['article_children'] = models.URLPath.root().article.get_children(article__current_revision__deleted=False)
+        kwargs['depth'] = 3
 
         return kwargs
