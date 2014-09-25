@@ -8,6 +8,8 @@ from django.utils.translation import ugettext as _
 from django.template.loader import render_to_string
 from django.template import Context
 
+from wiki import models
+
 # See: http://stackoverflow.com/questions/430759/regex-for-managing-escaped-characters-for-items-like-string-literals
 re_sq_short = r"'([^'\\]*(?:\\.[^'\\]*)*)'"
 
@@ -65,7 +67,8 @@ class MacroPreprocessor(markdown.preprocessors.Preprocessor):
         html = render_to_string(
             "wiki/plugins/macros/article_list.html",
             Context({
-                'article_children': self.markdown.article.get_children(article__current_revision__deleted=False),
+                'article_children': models.URLPath.root().article.get_children(article__current_revision__deleted=False),
+#self.markdown.article.get_children(article__current_revision__deleted=False),
                 'depth': int(depth) + 1,
             })
         )
