@@ -20,7 +20,18 @@
 	max-width:260px;
 	clear:none !important;
 }
-#wiki-footer {
-	margin-left:290px;
-	font-size:12px;
+#btFooter {
+	display: block;
+	width: 100%;
+	padding-top: 20px;
+}
+#footMenu {
+	text-align: center;
+	margin: 0;
+	padding: 8px 20px;
+}
+#footMenu li {
+	display: inline-block;
+	list-style-type: none;
+	font-size: 11px;
 }

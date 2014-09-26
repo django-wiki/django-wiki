@@ -112,17 +112,16 @@
       <!-- Main page contents go here -->
       {% block wiki_contents %}{% endblock %}
       
-      <footer id="wiki-footer">
-        <hr />
-        {% block wiki_footer_logo %}
-        <a href="https://github.com/benjaoming/django-wiki" class="pull-right"><img src="{{ STATIC_URL }}wiki/img/github_icon.png" /></a>
-        {% endblock %}
-        {% block wiki_footer_prepend %}
-        {% endblock %}
-        <p>{% blocktrans %}Powered by <a href="http://www.django-wiki.org">django-wiki</a>, an open source application under the <a href="http://www.gnu.org/licenses/quick-guide-gplv3.html">GPLv3</a> license. Let knowledge be the cure.{% endblocktrans %}</p>
-        <div style="clear: both"></div>
+      <footer id="btFooter">
+        <ul id="footMenu">
+            <li>&copy;2014 BitSight Technologies</li> |
+            <li><a href="/policy">Privacy Policy</a></li> |
+            <li><a href="/disclaimer">Disclaimer</a></li> |
+            <li><a href="/release-notes/">Release Notes</a></li> |
+            <li><a target="_blank" href="http://www.bitsighttech.com/contact.html">Contact</a></li>
+        </ul>
       </footer>
-      </div>
+    </div>
 
     </div> <!-- /container -->
 
