@@ -1,24 +1,12 @@
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import print_function, unicode_literals, absolute_import
 from django.core.urlresolvers import reverse
-from django.test import TestCase
-from django.test.client import Client
 
 import pprint
 
-class InitialWebClientTest(TestCase):
-    """Tests by the dummy web client, with manual creating the root article."""
+from .base import ArticleTestBase, WebTestBase
 
-    def setUp(self):
-        try:
-            from django.contrib.auth import get_user_model
-            User = get_user_model()
-        except ImportError:
-            from django.contrib.auth.models import User
-        
-        User.objects.create_superuser('admin', 'nobody@example.com', 'secret')
-        self.c = c = Client()
-        c.login(username='admin', password='secret')
+class RootArticleViewTests(WebTestBase):
+    """Tests for creating/viewing the root article."""
 
     def test_root_article(self):
         """Test redirecting to /create-root/, creating the root article and a simple markup."""
@@ -32,37 +20,11 @@ class InitialWebClientTest(TestCase):
         self.assertContains(response, 'test heading h1</h1>')
 
 
-class WebClientTest(TestCase):
-    """Tests by the dummy web client."""
-    def setUp(self):
-        try:
-            from django.contrib.auth import get_user_model
-            User = get_user_model()
-        except ImportError:
-            from django.contrib.auth.models import User
-        User.objects.create_superuser('admin', 'nobody@example.com', 'secret')
-        self.c = c = Client()
-        c.login(username='admin', password='secret')
-        response = self.c.post(reverse('wiki:root_create'), {'content': 'root article content', 'title': 'Root Article'})
-        self.example_data = {
-                'content': 'The modified text',
-                'current_revision': '1',
-                'preview': '1',
-                #'save': '1',  # probably not too important
-                'summary': 'why edited',
-                'title': 'wiki test'}
+class ArticleViewTests(ArticleTestBase):
+    """
+    Tests for article views, assuming a root article already created.
+    """
 
-    def tearDown(self):
-        # clear Article cache before the next test
-        from wiki.models import Article
-        Article.objects.all().delete()
-
-    def get_by_path(self, path):
-        """Get the article response for the path.
-           Example:  self.get_by_path("Level1/Slug2/").title
-        """
-        return  self.c.get(reverse('wiki:get', kwargs={'path': path}))
-    
     def dump_db_status(self, message=''):
         """Debug printing of the complete important database content."""
         print('*** db status *** {}'.format(message))
