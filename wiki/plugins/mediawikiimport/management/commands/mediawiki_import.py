@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from django.core.management.base import BaseCommand, CommandError
 import getpass
 
@@ -87,7 +89,7 @@ class Command(BaseCommand):
 
         self.articles_worked_on.append(urltitle)
 
-        print "Working on %s (%s)" % (title, urltitle)
+        print("Working on %s (%s)" % (title, urltitle))
 
         # Check if the URL path already exists
         try:
@@ -96,10 +98,10 @@ class Command(BaseCommand):
             self.matching_old_link_new_link[page.title] = urlp.article.get_absolute_url()
 
             if not replace_existing:
-                print "\tAlready existing, skipping..."
+                print("\tAlready existing, skipping...")
                 return
 
-            print "\tDestorying old version of the article"
+            print("\tDestorying old version of the article")
             urlp.article.delete()
 
         except URLPath.DoesNotExist:
@@ -116,7 +118,7 @@ class Command(BaseCommand):
                 else:
                     user = get_user_model().objects.get(username=history_page['user'])
             except get_user_model().DoesNotExist:
-                print "\tCannot found user with username=%s. Use --user-matching \"%s:<user_pk>\" to manualy set it" % (history_page['user'], history_page['user'], )
+                print("\tCannot found user with username=%s. Use --user-matching \"%s:<user_pk>\" to manualy set it" % (history_page['user'], history_page['user'], ))
                 user = None
 
             article_revision = ArticleRevision()
@@ -149,9 +151,9 @@ class Command(BaseCommand):
 
         # TODO: nsquare is bad
         for (article, article_revision) in self.articles_imported:
-            print "Updating links of %s" % (article_revision.title, )
+            print("Updating links of %s" % (article_revision.title, ))
             for id_from, id_to in self.matching_old_link_new_link.iteritems():
-                print "Replacing (%s \"wikilink\") with (%s)" % (id_from, id_to)
+                print("Replacing (%s \"wikilink\") with (%s)" % (id_from, id_to))
                 article_revision.content = article_revision.content.replace("(%s \"wikilink\")" % (id_from, ), "(%s)" % (id_to,))
 
             article_revision.save()
