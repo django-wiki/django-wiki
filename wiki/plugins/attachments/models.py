@@ -78,7 +78,7 @@ def upload_path(instance, filename):
     upload_path = upload_path.replace('%aid', str(instance.attachment.article.id))
     if settings.UPLOAD_PATH_OBSCURIFY:
         import random, hashlib
-        m=hashlib.md5(str(random.randint(0,100000000000000)))
+        m=hashlib.md5(str(random.randint(0,100000000000000)).encode('ascii'))
         upload_path = path.join(upload_path, m.hexdigest())
         
     if settings.APPEND_EXTENSION:
