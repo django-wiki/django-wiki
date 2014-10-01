@@ -5,6 +5,7 @@ from django.conf import settings as django_settings
 from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.utils.six import text_type
 
 from . import settings
 
@@ -28,7 +29,7 @@ class Image(RevisionPlugin):
     
     # The plugin system is so awesome that the inheritor doesn't need to do
     # anything! :D
-    
+
     def can_write(self, user):
         if not settings.ANONYMOUS and (not user or user.is_anonymous()):
             return False
@@ -44,7 +45,7 @@ class Image(RevisionPlugin):
     
     def __unicode__(self):
         title = (_('Image: %s') % self.current_revision.imagerevision.get_filename()) if self.current_revision else _('Current revision not set!!')
-        return unicode(title)
+        return text_type(title)
 
 class ImageRevision(RevisionPluginRevision):
     
