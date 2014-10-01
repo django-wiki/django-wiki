@@ -30,12 +30,6 @@ class ArticleTestBase(WebTestBase):
                 'summary': 'why edited',
                 'title': 'wiki test'}
 
-    def tearDown(self):
-        super(ArticleTestBase, self).tearDown()
-        # clear Article cache before the next test
-        from wiki.models import Article
-        Article.objects.all().delete()
-
     def get_by_path(self, path):
         """Get the article response for the path.
            Example:  self.get_by_path("Level1/Slug2/").title
