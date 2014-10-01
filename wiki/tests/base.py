@@ -2,6 +2,7 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client
 
+from wiki.models import URLPath
 
 class WebTestBase(TestCase):
     def setUp(self):
@@ -22,6 +23,7 @@ class ArticleTestBase(WebTestBase):
         super(ArticleTestBase, self).setUp()
         response = self.c.post(reverse('wiki:root_create'), {'content': 'root article content', 'title': 'Root Article'}, follow=True)
         self.assertEqual(response.status_code, 200) # sanity check
+        self.root_article = URLPath.root().article
         self.example_data = {
                 'content': 'The modified text',
                 'current_revision': '1',
