@@ -57,7 +57,7 @@ class WikiURLPatterns(object):
             url('^$', self.article_view_class.as_view(), name='root', kwargs={'path': ''}),
             url('^create-root/$', article.CreateRootView.as_view(), name='root_create'),
             url('^missing-root/$', article.MissingRootView.as_view(), name='root_missing'),
-            url('^_search/$', get_class_from_str(self.search_view_class).as_view(), name='search'),
+            #url('^_search/$', get_class_from_str(self.search_view_class).as_view(), name='search'),
             url('^_revision/diff/(?P<revision_id>\d+)/$', self.article_diff_view, name='diff'),
        )
         return urlpatterns
