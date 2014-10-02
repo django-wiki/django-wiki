@@ -19,17 +19,16 @@
       <li class="pull-left" id="article-title-li">
         <h1 id="article-title">
           {{ article.current_revision.title }}
-          <!--
+          {% comment %}
           <small style="font-size: 14px;">
-            {# {% if urlpath.parent %}
+            {% if urlpath.parent %}
             <a href="{% url 'wiki:get' path=urlpath.path %}"><span class="icon-bookmark"></span> {{ urlpath.slug }}</a>
             {% endif %}
             {% if article.current_revision.locked %}
               <span class="icon-lock"></span> {% trans "locked" %}
             {% endif %}
-            #}
           </small>
-          -->
+          {% endcomment %}
         </h1>
       </li>
       {% include "wiki/includes/article_menu.html" %}
