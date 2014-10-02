@@ -15,13 +15,12 @@
     <link rel="stylesheet" href="{% get_static_prefix %}css/bitsight-bootstrap-theme.css" type="text/css"/>
     <link rel="stylesheet" href="{% get_static_prefix %}css/smoothness/jquery-ui-1.9.2.custom.css" type="text/css"/>
     <link href="{{ STATIC_URL }}wiki/bootstrap/css/wiki-bootstrap.min.css" rel="stylesheet">
-    <link href="{{ STATIC_URL }}wiki/css/custom.css" rel="stylesheet">
     {% render_block "css" %}
-    
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <style>@import url("{{ STATIC_URL }}wiki/css/custom.css"); </style>
   </head>
 
   <body>
