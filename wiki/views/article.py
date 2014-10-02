@@ -14,6 +14,7 @@ from django.utils.translation import ugettext as _
 from django.views.generic.base import TemplateView, View, RedirectView
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
+from django.contrib.auth.models import Group
 
 from wiki.views.mixins import ArticleMixin
 from wiki import editors, forms, models
@@ -84,6 +85,10 @@ class Create(FormView, ArticleMixin):
             ip_address = self.request.META.get('REMOTE_ADDR', None)
 
         try:
+            content_management = None
+            if Group.objects.filter(name = "Content Management").exists():
+                content_management = Group.objects.get(name = "Content Management")
+
             self.newpath = models.URLPath.create_article(
                 self.urlpath,
                 form.cleaned_data['slug'],
@@ -93,7 +98,7 @@ class Create(FormView, ArticleMixin):
                 user=user,
                 ip_address=ip_address,
                 article_kwargs={'owner': user,
-                                'group': self.article.group,
+                                'group': content_management,
                                 'group_read': self.article.group_read,
                                 'group_write': self.article.group_write,
                                 'other_read': self.article.other_read,
@@ -345,7 +350,7 @@ class Deleted(Delete):
     template_name="wiki/deleted.html"
     form_class = forms.DeleteForm
 
-    @method_decorator(get_article(can_read=True, deleted_contents=True))
+    @method_decorator(get_article(can_read=True, deleted_contents=True, can_write=True))
     def dispatch(self, request, article, *args, **kwargs):
 
         self.urlpath = kwargs.get('urlpath', None)
@@ -400,7 +405,7 @@ class Source(ArticleMixin, TemplateView):
 
     template_name="wiki/source.html"
 
-    @method_decorator(get_article(can_read=True))
+    @method_decorator(get_article(can_write=True))
     def dispatch(self, request, article, *args, **kwargs):
         return super(Source, self).dispatch(request, article, *args, **kwargs)
 
@@ -428,7 +433,7 @@ class History(ListView, ArticleMixin):
         kwargs['selected_tab'] = 'history'
         return kwargs
 
-    @method_decorator(get_article(can_read=True))
+    @method_decorator(get_article(can_write=True))
     def dispatch(self, request, article, *args, **kwargs):
         return super(History, self).dispatch(request, article, *args, **kwargs)
 
@@ -441,7 +446,7 @@ class Dir(ListView, ArticleMixin):
     model = models.URLPath
     paginate_by = 30
 
-    @method_decorator(get_article(can_read=True))
+    @method_decorator(get_article(can_write=True))
     def dispatch(self, request, article, *args, **kwargs):
         self.filter_form = forms.DirFilterForm(request.GET)
         if self.filter_form.is_valid():
@@ -525,7 +530,7 @@ class Settings(ArticleMixin, TemplateView):
     template_name="wiki/settings.html"
 
     @method_decorator(login_required)
-    @method_decorator(get_article(can_read=True))
+    @method_decorator(get_article(can_write=True))
     def dispatch(self, request, article, *args, **kwargs):
         return super(Settings, self).dispatch(request, article, *args, **kwargs)
 
@@ -617,7 +622,7 @@ class Preview(ArticleMixin, TemplateView):
 
     template_name="wiki/preview_inline.html"
 
-    @method_decorator(get_article(can_read=True, deleted_contents=True))
+    @method_decorator(get_article(can_write=True, deleted_contents=True))
     def dispatch(self, request, article, *args, **kwargs):
         revision_id = request.GET.get('r', None)
         self.title = None

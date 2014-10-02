@@ -1,27 +1,33 @@
-{% load sekizai_tags i18n wiki_tags %}{% load url from future %}<!DOCTYPE html>
+{% load sekizai_tags i18n wiki_tags static %}{% load url from future %}<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    {% block wiki_title %}
     <title>{% block wiki_pagetitle %}{% endblock %} - django-\/\/  i K |</title>
+    {% endblock %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="author" content="www.django-wiki.org">
 
     <!-- Le styles -->
+    <link href="{% get_static_prefix %}css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% get_static_prefix %}css/bitsight-bootstrap-theme.css" type="text/css"/>
+    <link rel="stylesheet" href="{% get_static_prefix %}css/smoothness/jquery-ui-1.9.2.custom.css" type="text/css"/>
     <link href="{{ STATIC_URL }}wiki/bootstrap/css/wiki-bootstrap.min.css" rel="stylesheet">
-        
     {% render_block "css" %}
-    
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
+    <style>@import url("{{ STATIC_URL }}wiki/css/custom.css"); </style>
   </head>
 
   <body>
-
+    {% block google_analytics %}
+    {% endblock %}
+    {% block header %}
+    {% endblock %}
     {% block wiki_body %}
     
     {% block wiki_navbar %}
@@ -36,6 +42,7 @@
         {% block wiki_header_branding %}
         <a class="navbar-brand" href="{% url 'wiki:root' %}">django-\/\/ i K |</a>
         {% endblock %}
+        {% block search %}
         <div class="nav-collapse collapse navbar-responsive-collapse">
           <form class="navbar-form pull-right-block-on-responsive" id="wiki-search-form" method="GET" action="{% url 'wiki:search' %}">
             <div class="input-group">
@@ -52,7 +59,9 @@
             <ul class="nav navbar-nav">
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  {% block notification_count %}
                   <span class="badge notification-cnt">0</span>
+                  {% endblock %}
                   {{ user }}
                   <b class="caret"></b>
                 </a>
@@ -63,7 +72,7 @@
                       {% trans "Log out" %}
                     </a>
                   </li>
-                  {% include "wiki/plugins/notifications/menubaritem.html" %}
+                  {#% include "wiki/plugins/notifications/menubaritem.html" %#}
                 </ul>
               </li>
             </ul>
@@ -85,11 +94,12 @@
           </ul>
           {% endblock %}
         </div>
+        {% endblock %}
       </div>
     </div>
     {% endblock %}
 
-    <div class="container" style="margin-top: 60px;">
+    <div class="container">
 
       {% if messages %}
         <!-- Messages for this instance -->
@@ -107,17 +117,16 @@
       <!-- Main page contents go here -->
       {% block wiki_contents %}{% endblock %}
       
-      <footer id="wiki-footer">
-        <hr />
-        {% block wiki_footer_logo %}
-        <a href="https://github.com/benjaoming/django-wiki" class="pull-right"><img src="{{ STATIC_URL }}wiki/img/github_icon.png" /></a>
-        {% endblock %}
-        {% block wiki_footer_prepend %}
-        {% endblock %}
-        <p>{% blocktrans %}Powered by <a href="http://www.django-wiki.org">django-wiki</a>, an open source application under the <a href="http://www.gnu.org/licenses/quick-guide-gplv3.html">GPLv3</a> license. Let knowledge be the cure.{% endblocktrans %}</p>
-        <div style="clear: both"></div>
+      <footer id="btFooter">
+        <ul id="footMenu">
+            <li><a href="http://www.bitsighttech.com/">BitSight Technologies</a></li> |
+            <li><a href="/policy">Privacy Policy</a></li> |
+            <li><a href="/disclaimer">Disclaimer</a></li> |
+            <li><a href="/release-notes/">Release Notes</a></li> |
+            <li><a target="_blank" href="http://www.bitsighttech.com/contact.html">Contact</a></li>
+        </ul>
       </footer>
-      </div>
+    </div>
 
     </div> <!-- /container -->
 
@@ -128,6 +137,12 @@
     <script src="{{ STATIC_URL }}wiki/bootstrap/js/bootstrap.min.js"></script>
     <!-- Optionally enable responsive features in IE8 -->
     <script src="{{ STATIC_URL }}wiki/js/respond.min.js"></script>
+    <script src="{% get_static_prefix %}js/libs/jquery-1.8.3.js"></script>
+    <script src="{% get_static_prefix %}js/libs/jquery-ui-1.9.2.custom.min.js"></script>
+    <script src="{% get_static_prefix %}js/jquery.blockUI.min.js"></script>
+    <script src="{% get_static_prefix %}js/jquery.ui.autocomplete.html.js"></script>
+    <script src="{% get_static_prefix %}js/bitsightlib.js"></script>
+    <script src="{{ STATIC_URL }}wiki/js/custom.js"></script>
     {% render_block "js" %}
   
   </body>

@@ -1,5 +1,5 @@
 {% extends "wiki/article.html" %}
-{% load wiki_tags i18n sekizai_tags %}
+{% load wiki_tags i18n sekizai_tags wiki_macro_tags %}
 
 
 {% block wiki_contents_tab %}
@@ -8,3 +8,18 @@
 
 {% endblock %}
 
+{% block navigation %}
+
+{% if article_children %}
+  <div class="article-list">
+    <ul>
+    {% for child in article_children %}
+      {% article_list child depth %}
+      {% empty %}
+      <i>{% trans "Nothing below this level" %}</i>
+    {% endfor %}
+    <ul>
+  </div>
+{% endif %}
+
+{% endblock %}

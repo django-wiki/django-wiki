@@ -1,4 +1,4 @@
-{% load i18n %}{% load url from future %}
+{% load i18n wiki_tags %}{% load url from future %}
 {% if urlpath %}
 <div id="article-breadcrumbs">
 
@@ -8,6 +8,7 @@
   {% endfor %}
   <li class="active">{{ article.current_revision.title|truncatechars:25 }}</li>
 </ul>
+{% if article|can_write:user %}
 <div class="pull-left" style="margin-left: 10px;">
   <div class="btn-group">
     <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#" style="padding: 7px;" title="{% trans "Sub-articles for" %} {{ article.current_revision.title }}">
@@ -56,6 +57,7 @@
     </ul>
   </div>
 </div>
+{% endif %}
 <div style="clear: both"></div>
 </div>
 {% endif %}

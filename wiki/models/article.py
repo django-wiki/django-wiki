@@ -43,7 +43,7 @@ class Article(models.Model):
     group_read = models.BooleanField(default=True, verbose_name=_('group read access'))
     group_write = models.BooleanField(default=True, verbose_name=_('group write access'))
     other_read = models.BooleanField(default=True, verbose_name=_('others read access'))
-    other_write = models.BooleanField(default=True, verbose_name=_('others write access'))
+    other_write = models.BooleanField(default=False, verbose_name=_('others write access'))
     
     # PERMISSIONS
     def can_read(self, user):
