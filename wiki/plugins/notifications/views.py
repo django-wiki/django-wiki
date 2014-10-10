@@ -50,7 +50,7 @@ class NotificationSettings(FormView):
             if form.instance:
                 setattr(form.instance, 'articlesubscriptions', 
                     models.ArticleSubscription.objects.filter(
-                        settings = form.instance,
+                        subscription__settings = form.instance,
                         article__current_revision__deleted=False,
                     ).select_related('article', 'article__current_revision')
                 )
