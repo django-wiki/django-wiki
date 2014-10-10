@@ -23,7 +23,7 @@ class NotificationSettings(FormView):
             settings = form.save()
             from . import models
             article_subscriptions = models.ArticleSubscription.objects.filter(
-                settings = form.instance,
+                subscription_settings = form.instance,
                 article__current_revision__deleted=False,
             ).select_related('article', 'article__current_revision')
             messages.info(
