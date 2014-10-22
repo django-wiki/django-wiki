@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: django-wiki\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-09-07 19:52+0800\n"
-"PO-Revision-Date: 2014-09-08 00:26+0800\n"
+"PO-Revision-Date: 2014-10-22 21:11+0800\n"
 "Last-Translator: Ronald Bai <ouyanghongyu@gmail.com>\n"
 "Language-Team: Chinese team\n"
 "Language: zh_CN\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.6.9\n"
+"X-Generator: Poedit 1.6.10\n"
 
 #: admin.py:75 models/article.py:29
 msgid "created"
@@ -209,26 +209,26 @@ msgid ""
 "Check here to apply the above permissions (excluding group and owner of the "
 "article) recursively to articles below this one."
 msgstr ""
-"点击这里申请上述权限(不包括组和文章的所有者), 会递归的应用到下面这篇文章."
+"点击这里, 使上述权限设置(不包括组和文章的所有者), 在此文章的递归子文章上生效."
 
 #: forms.py:324
 msgid "Inherit owner"
-msgstr "继承所有者"
+msgstr "继承所有者的权限"
 
 #: forms.py:324
 msgid ""
 "Check here to apply the ownership setting recursively to articles below this "
 "one."
-msgstr "点击这里申请所有权限, 会递归的应用到下面这篇文章."
+msgstr "点击这里, 使所有者的设置也在此文章的递归子文章上生效."
 
 #: forms.py:327
 msgid "Inherit group"
-msgstr "继承组"
+msgstr "继承所属组的权限"
 
 #: forms.py:327
 msgid ""
 "Check here to apply the group setting recursively to articles below this one."
-msgstr "点击这里应用组的设置, 会递归的应用到下面这篇文章."
+msgstr "点击这里, 使所属组的设置也在此文章的递归子文章上生效."
 
 #: forms.py:332
 msgid "Permission settings for the article were updated."
@@ -496,7 +496,7 @@ msgstr "解压文件"
 msgid ""
 "Create individual attachments for files in a .zip file - directories do not "
 "work."
-msgstr "为文件创建一个.zip压缩包 -- 目录是不行的."
+msgstr "此文件是一个.zip压缩包 -- 内部不能包含目录结构."
 
 #: plugins/attachments/forms.py:103
 msgid "Not a zip file"
@@ -702,7 +702,7 @@ msgid ""
 "The following files are available for this article. Copy the markdown tag to "
 "directly refer to a file from the article text."
 msgstr ""
-"以下文件可供这篇文章使用, 直接复制markdown标签到文章的文本中来指向文件."
+"以下附件可供这篇文章使用, 直接复制markdown标签到文章的文本中来指向附件."
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:28
 #: plugins/images/templates/wiki/plugins/images/index.html:20
@@ -755,8 +755,8 @@ msgid ""
 "You can reuse files from other articles. These files are subject to updates "
 "on other articles which may or may not be a good thing."
 msgstr ""
-"你可以从其他文章重复使用这个文件. 这些文件会受其他文章的更新影响, 这可能是或"
-"可能不是一件好事."
+"你可以在这里引用其他文章的附件. 这些附件会受其他文章更新的影响, 这也许是或者"
+"不是一件好事."
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:123
 msgid "Restore attachments"
@@ -1166,7 +1166,7 @@ msgstr "此级别一下没有内容"
 #: plugins/notifications/forms.py:18
 #, python-format
 msgid "Receive notifications %(interval)s"
-msgstr "收到 %(interval)s 个通知"
+msgstr "发送提醒间隔: %(interval)s"
 
 #: plugins/notifications/forms.py:26
 #, python-format
@@ -1209,11 +1209,11 @@ msgstr "设置"
 
 #: plugins/notifications/forms.py:113
 msgid "When this article is edited"
-msgstr "当此文章被编辑"
+msgstr "当此文章被编辑时发送"
 
 #: plugins/notifications/forms.py:117
 msgid "Also receive emails about article edits"
-msgstr "同时接收关于文章被编辑的邮件"
+msgstr "邮件提醒"
 
 #: plugins/notifications/forms.py:157
 msgid "Your notification settings were updated."
@@ -1278,7 +1278,7 @@ msgstr "文章"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:27
 msgid "You are not subscribed to any notifications yet."
-msgstr "你还为订阅任何通知."
+msgstr "你还未订阅任何通知."
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:35
 #: templates/wiki/edit.html:46 templates/wiki/edit.html.py:77
@@ -1454,8 +1454,9 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"      浏览 <strong><a href=\"%(self_url)s\">/%(path)s</a></strong>. 这些 "
-"%(articles_plur_verb)s <strong>%(cnt)s %(articles_plur)s</strong> 在此级别.\n"
+"      浏览 <strong><a href=\"%(self_url)s\">/%(path)s</a></strong>. 共 "
+"%(articles_plur_verb)s <strong>%(cnt)s 篇 %(articles_plur)s</strong> 在此级"
+"别.\n"
 "    "
 
 #: templates/wiki/dir.html:50 templates/wiki/search.html:31
@@ -1524,7 +1525,7 @@ msgstr ""
 
 #: templates/wiki/history.html:72
 msgid "no log message"
-msgstr "没有记录信息"
+msgstr "没有关于此次变更的说明"
 
 #: templates/wiki/history.html:84 templates/wiki/history.html.py:89
 msgid "Preview this revision"
@@ -1536,7 +1537,7 @@ msgstr "自动输出:"
 
 #: templates/wiki/history.html:111
 msgid "Change"
-msgstr "修改"
+msgstr "改动"
 
 #: templates/wiki/history.html:129
 msgid "Merge selected with current..."
@@ -1695,7 +1696,7 @@ msgstr "你需要注册或登录以便使用此功能."
 
 #: templates/wiki/includes/article_menu.html:26
 msgid "Changes"
-msgstr "修改"
+msgstr "变更历史"
 
 #: templates/wiki/includes/article_menu.html:41
 msgid "View Source"
@@ -1818,7 +1819,7 @@ msgstr "文章 \"%s\" 和它的后续版本被恢复."
 #, python-format
 msgid ""
 "The article %(title)s is now set to display revision #%(revision_number)d"
-msgstr "文章标题 %(title)s 被设置显示为 #%(revision_number)d 版本"
+msgstr "文章 %(title)s 被设置为显示 #%(revision_number)d 版本"
 
 #: views/article.py:672
 msgid "New title"
