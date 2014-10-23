@@ -186,7 +186,7 @@ class SelectWidgetBootstrap(forms.Select):
                   """    <button class="btn btn-default dropdown-toggle%(disabled)s" type="button" data-toggle="dropdown">"""
                   """        <span class="caret"></span>"""
                   """    </button>"""
-                  """    <ul class="dropdown-men">"""
+                  """    <ul class="dropdown-menu">"""
                   """        %(options)s"""
                   """    </ul>"""
                   """    <input type="hidden" name="%(name)s" value="" class="btn-group-value" />"""
