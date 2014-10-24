@@ -198,7 +198,7 @@ The folder **testproject/** contains a pre-configured django project and an sqli
 
 **Build status update May 2014** : Builds are currently failing, because we are experimenting with Python 3 support for the upcoming transitional release.
 
-[![Build Status](https://travis-ci.org/benjaoming/django-wiki.png?branch=master)](https://travis-ci.org/benjaoming/django-wiki)
+[![Build Status](https://travis-ci.org/django-wiki/django-wiki.png?branch=master)](https://travis-ci.org/django-wiki/django-wiki)
 
 [![Downloads](https://pypip.in/d/wiki/badge.png)](https://crate.io/package/wiki)
 
