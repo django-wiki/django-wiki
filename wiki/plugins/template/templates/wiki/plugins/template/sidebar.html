@@ -1,0 +1,43 @@
+{% load i18n sekizai_tags %}
+{% load url from future %}
+<h4>{% trans "Insert a template" %}</h4>
+
+<p>
+  {% trans "Type in something from template title and auto-complete will help you create a template tag for you article. Tags for template look like this:" %}<br />
+</p>
+
+<pre>&#123;&#123;Template title&#125;&#125;</pre>
+
+<div class="row">
+<div class="input-group col-sm-12">
+  <input type="text" class="template_title_query form-control" id="template_title_query" value="" placeholder="Type to search..." />
+  <span class="input-group-btn">
+    <button type="button" class="btn btn-default" onclick="wikiInsertTemplate()">
+      {% trans "Insert" %}
+    </button>
+  </span>
+</div>
+</div>
+
+<p>
+  <a href="{% url 'wiki:template_index' path=urlpath.path article_id=article.id %}">
+    {% trans "Manage template" %} &raquo;
+  </a>
+</p>
+
+{% addtoblock "js" %}<script type="text/javascript" src="{{ STATIC_URL }}wiki/js/typeahead.min.js"></script>{% endaddtoblock %}
+{% addtoblock "js" %}
+<script type="text/javascript">
+  $(document).ready(function() {
+      $('.template_title_query').typeahead({
+        remote: "{% url 'wiki:template_query_title' path=urlpath.path article_id=article.id %}?query=%QUERY",
+        dataType: String
+      });
+  });
+
+function wikiInsertTemplate() {
+  $('#id_content').insertAtCaret($('#template_title_query').val());
+}
+
+</script>
+{% endaddtoblock %}
