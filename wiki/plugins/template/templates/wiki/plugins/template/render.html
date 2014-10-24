@@ -1,0 +1,9 @@
+{% load i18n %}
+{% comment %}
+  Render an attachment to HTML in the markdown extension
+{% endcomment %}
+{% if not attachment_can_read %}
+<em>{% trans "This attachment is not permitted on this page." %}</em>
+{% else %}
+<span class="attachment"><a href="{{ url }}" title="{% trans "Click to download" %} {{ filename }}">{{ filename }}</a>
+{% endif %}

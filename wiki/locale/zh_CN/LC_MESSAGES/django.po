@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django-wiki\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-07 19:52+0800\n"
-"PO-Revision-Date: 2014-10-22 21:11+0800\n"
+"POT-Creation-Date: 2014-10-24 21:24+0800\n"
+"PO-Revision-Date: 2014-10-24 21:24+0800\n"
 "Last-Translator: Ronald Bai <ouyanghongyu@gmail.com>\n"
 "Language-Team: Chinese team\n"
 "Language: zh_CN\n"
@@ -34,11 +34,11 @@ msgstr "Wiki图片"
 msgid "Wiki attachments"
 msgstr "Wiki附件"
 
-#: forms.py:54
+#: forms.py:55
 msgid "Spam protection failed to find both a logged in user and an IP address."
 msgstr "垃圾邮件防护找不到一个登录的用户或IP地址."
 
-#: forms.py:67
+#: forms.py:68
 #, python-format
 msgid ""
 "Spam protection: You are only allowed to create or edit %(revisions)d "
@@ -47,33 +47,33 @@ msgstr ""
 "垃圾邮件防护: 对于每个 %(interval_name)s 你仅可以创建或编辑 %(revisions)d 文"
 "章."
 
-#: forms.py:83
+#: forms.py:84
 msgid "minute"
 msgstr "分钟"
 
-#: forms.py:83
+#: forms.py:84
 #, python-format
 msgid "%d minutes"
 msgstr "%d 分钟"
 
-#: forms.py:90
+#: forms.py:91
 msgid "hour"
 msgstr "小时"
 
-#: forms.py:95 forms.py:103 forms.py:245 templates/wiki/dir.html:48
+#: forms.py:96 forms.py:104 forms.py:246 templates/wiki/dir.html:48
 #: templates/wiki/search.html:30
 msgid "Title"
 msgstr "标题"
 
-#: forms.py:95
+#: forms.py:96
 msgid "Initial title of the article. May be overridden with revision titles."
 msgstr "文章最初的标题. 可以修改并覆盖标题."
 
-#: forms.py:96
+#: forms.py:97
 msgid "Type in some contents"
 msgstr "输入一些内容"
 
-#: forms.py:97
+#: forms.py:98
 msgid ""
 "This is just the initial contents of your article. After creating it, you "
 "can use more complex features like adding plugins, meta data, related "
@@ -82,20 +82,20 @@ msgstr ""
 "这只是文章的初始内容.在创建后你可以使用更丰富的功能, 如添加插件, 元数据, 相关"
 "文章等等."
 
-#: forms.py:104 forms.py:248
+#: forms.py:105 forms.py:249
 msgid "Contents"
 msgstr "内容"
 
-#: forms.py:107 forms.py:251
+#: forms.py:108 forms.py:252
 msgid "Summary"
 msgstr "摘要"
 
-#: forms.py:107
+#: forms.py:108
 msgid ""
 "Give a short reason for your edit, which will be stated in the revision log."
 msgstr "请给出一个简短的编辑缘由, 会在版本日志中注明."
 
-#: forms.py:157
+#: forms.py:158
 msgid ""
 "While you were editing, someone else changed the revision. Your contents "
 "have been automatically merged with the new contents. Please review the text "
@@ -104,19 +104,19 @@ msgstr ""
 "在你编辑的同时, 其他人变更了此文章. 你的内容会自动合并为新的内容.请再次审查此"
 "文, 以便确认改动正确."
 
-#: forms.py:159
+#: forms.py:160
 msgid "No changes made. Nothing to save."
 msgstr "没有任何变动, 没有需要保存的内容."
 
-#: forms.py:196
+#: forms.py:197
 msgid "Select an option"
 msgstr "选择一个选项"
 
-#: forms.py:246 templates/wiki/dir.html:49
+#: forms.py:247 templates/wiki/dir.html:49
 msgid "Slug"
 msgstr "标识"
 
-#: forms.py:246
+#: forms.py:247
 msgid ""
 "This will be the address where your article can be found. Use only "
 "alphanumeric characters and - or _. Note that you cannot change the slug "
@@ -125,37 +125,41 @@ msgstr ""
 "它会表现在URL地址上. 仅可使用字母数字以及短横线和下划线.在创建文章后, 标识便"
 "不能更改."
 
-#: forms.py:251
+#: forms.py:252
 msgid "Write a brief message for the article's history log."
 msgstr "为文章的历史记录写一条简短的信息."
 
-#: forms.py:257
+#: forms.py:258
 msgid "A slug may not begin with an underscore."
 msgstr "标识不能以下划线开头."
 
-#: forms.py:259
+#: forms.py:260
 msgid "'admin' is not a permitted slug name."
 msgstr "'admin' 不是一个合法的标识"
 
-#: forms.py:270
+#: forms.py:271
 #, python-format
 msgid "A deleted article with slug \"%s\" already exists."
 msgstr "一个被删除的 \"%s\" 标识的文章已经存在了."
 
-#: forms.py:272
+#: forms.py:273
 #, python-format
 msgid "A slug named \"%s\" already exists."
 msgstr "标识名 \"%s\" 已经存在了."
 
-#: forms.py:289
+#: forms.py:280
+msgid "This slug conflicts with an existing URL."
+msgstr "这个标识符与一个已经存在的URL冲突"
+
+#: forms.py:299
 msgid "Yes, I am sure"
 msgstr "是的, 我确定"
 
-#: forms.py:291 templates/wiki/deleted.html:47
+#: forms.py:301 templates/wiki/deleted.html:47
 msgid "Purge"
 msgstr "清除"
 
-#: forms.py:292
+#: forms.py:302
 msgid ""
 "Purge the article: Completely remove it (and all its contents) with no undo. "
 "Purging is a good idea if you want to free the slug such that users can "
@@ -164,97 +168,98 @@ msgstr ""
 "清除此文章: 没有撤销方法, 将删除它和相关的内容.清除使被此文章占用的标识可以再"
 "次被使用."
 
-#: forms.py:299 plugins/attachments/forms.py:158 plugins/images/forms.py:67
+#: forms.py:309 plugins/attachments/forms.py:158 plugins/images/forms.py:67
+#: plugins/template/forms.py:98
 msgid "You are not sure enough!"
 msgstr "你还不确定!"
 
-#: forms.py:301
+#: forms.py:311
 msgid "While you tried to delete this article, it was modified. TAKE CARE!"
 msgstr "当你尝试删除此文章时, 它已经被修改. 请小心!"
 
-#: forms.py:307
+#: forms.py:317
 msgid "Lock article"
 msgstr "锁定文章"
 
-#: forms.py:307
+#: forms.py:317
 msgid "Deny all users access to edit this article."
 msgstr "禁止所有用户编辑此文章."
 
-#: forms.py:310
+#: forms.py:320
 msgid "Permissions"
 msgstr "权限"
 
-#: forms.py:314
+#: forms.py:324
 msgid "Owner"
 msgstr "所有者"
 
-#: forms.py:315
+#: forms.py:325
 msgid "Enter the username of the owner."
 msgstr "输入所有者的用户名."
 
-#: forms.py:316 forms.py:361 plugins/notifications/util.py:11
+#: forms.py:326 forms.py:371 plugins/notifications/util.py:11
 msgid "(none)"
 msgstr "(无)"
 
-#: forms.py:317
+#: forms.py:327
 msgid "Group"
 msgstr "组"
 
-#: forms.py:321
+#: forms.py:331
 msgid "Inherit permissions"
 msgstr "继承权限"
 
-#: forms.py:321
+#: forms.py:331
 msgid ""
 "Check here to apply the above permissions (excluding group and owner of the "
 "article) recursively to articles below this one."
 msgstr ""
 "点击这里, 使上述权限设置(不包括组和文章的所有者), 在此文章的递归子文章上生效."
 
-#: forms.py:324
+#: forms.py:334
 msgid "Inherit owner"
 msgstr "继承所有者的权限"
 
-#: forms.py:324
+#: forms.py:334
 msgid ""
 "Check here to apply the ownership setting recursively to articles below this "
 "one."
 msgstr "点击这里, 使所有者的设置也在此文章的递归子文章上生效."
 
-#: forms.py:327
+#: forms.py:337
 msgid "Inherit group"
 msgstr "继承所属组的权限"
 
-#: forms.py:327
+#: forms.py:337
 msgid ""
 "Check here to apply the group setting recursively to articles below this one."
 msgstr "点击这里, 使所属组的设置也在此文章的递归子文章上生效."
 
-#: forms.py:332
+#: forms.py:342
 msgid "Permission settings for the article were updated."
 msgstr "对于文章的权限设置已经进行了更新."
 
-#: forms.py:334
+#: forms.py:344
 msgid "Your permission settings were unchanged, so nothing saved."
 msgstr "你的权限设置没有改变, 没有需要保存的内容."
 
-#: forms.py:384
+#: forms.py:394
 msgid "No user with that username"
 msgstr "没有具有此用户名的用户"
 
-#: forms.py:417
+#: forms.py:427
 msgid "Article locked for editing"
 msgstr "文章编辑被锁定"
 
-#: forms.py:424
+#: forms.py:434
 msgid "Article unlocked for editing"
 msgstr "文章编辑已解锁"
 
-#: forms.py:439
+#: forms.py:449
 msgid "Filter..."
 msgstr "过滤..."
 
-#: forms.py:445 templates/wiki/base_site.html:42
+#: forms.py:455 templates/wiki/base_site.html:42
 msgid "Search..."
 msgstr "搜索..."
 
@@ -267,7 +272,7 @@ msgid "Settings for plugin"
 msgstr "插件设置"
 
 #: models/article.py:24 models/pluginbase.py:174
-#: plugins/attachments/models.py:28
+#: plugins/attachments/models.py:28 plugins/template/models.py:24
 msgid "current revision"
 msgstr "当前版本"
 
@@ -372,6 +377,9 @@ msgstr "用户"
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:23
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:21
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:40
+#: plugins/template/templates/wiki/plugins/template/history.html:24
+#: plugins/template/templates/wiki/plugins/template/index.html:20
+#: plugins/template/templates/wiki/plugins/template/search.html:58
 #: templates/wiki/includes/revision_info.html:15
 msgid "deleted"
 msgstr "已删除"
@@ -469,6 +477,7 @@ msgstr "失物认领"
 
 #: plugins/attachments/forms.py:17
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:14
+#: plugins/template/templates/wiki/plugins/template/history.html:15
 msgid "Description"
 msgstr "描述"
 
@@ -502,7 +511,7 @@ msgstr "此文件是一个.zip压缩包 -- 内部不能包含目录结构."
 msgid "Not a zip file"
 msgstr "不是一个zip文件"
 
-#: plugins/attachments/forms.py:153
+#: plugins/attachments/forms.py:153 plugins/template/forms.py:93
 msgid "Yes I am sure..."
 msgstr "是的, 我确定...\t"
 
@@ -541,7 +550,7 @@ msgstr "附件版本"
 msgid "Successfully added: %s"
 msgstr "成功添加: %s"
 
-#: plugins/attachments/views.py:51
+#: plugins/attachments/views.py:51 plugins/template/views.py:37
 #, python-format
 msgid "%s was successfully added."
 msgstr "%s 添加成功."
@@ -562,7 +571,7 @@ msgid ""
 "present. Files with different extensions are not allowed."
 msgstr "你的新文件因为重名已被自动重命名. 相同文件名不同文件扩展名是不允许的."
 
-#: plugins/attachments/views.py:205
+#: plugins/attachments/views.py:205 plugins/template/views.py:219
 #, python-format
 msgid "Current revision changed for %s."
 msgstr "当前版本变更为 %s."
@@ -570,7 +579,7 @@ msgstr "当前版本变更为 %s."
 #: plugins/attachments/views.py:224
 #, python-format
 msgid "Added a reference to \"%(att)s\" from \"%(art)s\"."
-msgstr "添加关联, 到 \"%(att)s\" 从 \"%(art)s\"."
+msgstr "添加从 \"%(art)s\" 到 \"%(att)s\" 的关联."
 
 #: plugins/attachments/views.py:254
 #, python-format
@@ -600,6 +609,7 @@ msgstr "一个文件被删除了: %s"
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:5
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:10
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:36
+#: plugins/template/templates/wiki/plugins/template/index.html:40
 #: templates/wiki/delete.html:8
 msgid "Delete"
 msgstr "删除"
@@ -624,16 +634,25 @@ msgstr ""
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:71
 #: plugins/images/templates/wiki/plugins/images/purge.html:23
 #: plugins/images/templates/wiki/plugins/images/revision_add.html:23
+#: plugins/template/templates/wiki/plugins/template/delete.html:29
+#: plugins/template/templates/wiki/plugins/template/delete.html:53
+#: plugins/template/templates/wiki/plugins/template/history.html:52
+#: plugins/template/templates/wiki/plugins/template/replace.html:39
+#: plugins/template/templates/wiki/plugins/template/revision_add.html:34
+#: plugins/template/templates/wiki/plugins/template/search.html:84
+#: plugins/template/templates/wiki/plugins/template/template_create.html:26
 #: templates/wiki/create.html:53 templates/wiki/delete.html:12
 #: templates/wiki/delete.html.py:48
 msgid "Go back"
 msgstr "返回"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:33
+#: plugins/template/templates/wiki/plugins/template/delete.html:33
 msgid "Delete it!"
 msgstr "删除它!"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:40
+#: plugins/template/templates/wiki/plugins/template/delete.html:40
 msgid "Remove"
 msgstr "删除"
 
@@ -649,6 +668,7 @@ msgstr ""
 "    "
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:57
+#: plugins/template/templates/wiki/plugins/template/delete.html:57
 msgid "Remove reference"
 msgstr "删除引用"
 
@@ -659,10 +679,13 @@ msgstr "历史"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:12
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:24
+#: plugins/template/templates/wiki/plugins/template/history.html:13
+#: plugins/template/templates/wiki/plugins/template/search.html:43
 msgid "Date"
 msgstr "日期"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:13
+#: plugins/template/templates/wiki/plugins/template/history.html:14
 msgid "User"
 msgstr "用户"
 
@@ -680,13 +703,17 @@ msgstr "大小"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:17
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:27
+#: plugins/template/templates/wiki/plugins/template/history.html:17
+#: plugins/template/templates/wiki/plugins/template/search.html:45
 msgid "Action"
-msgstr "动作"
+msgstr "操作"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:28
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:33
+#: plugins/template/templates/wiki/plugins/template/history.html:29
+#: plugins/template/templates/wiki/plugins/template/search.html:51
 msgid "<em>No description</em>"
-msgstr "<em>没有订阅</em>"
+msgstr "<em>没有描述</em>"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:36
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:51
@@ -694,6 +721,7 @@ msgid "Download"
 msgstr "下载"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:41
+#: plugins/template/templates/wiki/plugins/template/history.html:38
 msgid "Use this!"
 msgstr "使用这个!"
 
@@ -706,6 +734,7 @@ msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:28
 #: plugins/images/templates/wiki/plugins/images/index.html:20
+#: plugins/template/templates/wiki/plugins/template/index.html:27
 msgid "Markdown tag"
 msgstr "Markdown 标签"
 
@@ -713,16 +742,19 @@ msgstr "Markdown 标签"
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:25
 #: plugins/images/templates/wiki/plugins/images/index.html:21
 msgid "Uploaded by"
-msgstr "上传由"
+msgstr "上传者"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:34
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:5
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:9
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:34
+#: plugins/template/templates/wiki/plugins/template/replace.html:5
+#: plugins/template/templates/wiki/plugins/template/replace.html:9
 msgid "Replace"
 msgstr "替换"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:38
+#: plugins/template/templates/wiki/plugins/template/index.html:45
 msgid "Detach"
 msgstr "脱离"
 
@@ -731,6 +763,7 @@ msgid "File history"
 msgstr "文件历史"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:47
+#: plugins/template/templates/wiki/plugins/template/index.html:55
 msgid "revisions"
 msgstr "修订"
 
@@ -763,11 +796,13 @@ msgid "Restore attachments"
 msgstr "恢复附件"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:136
+#: plugins/template/templates/wiki/plugins/template/index.html:143
 #: templates/wiki/deleted.html:25 templates/wiki/deleted.html.py:30
 msgid "Restore"
 msgstr "恢复"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:143
+#: plugins/template/templates/wiki/plugins/template/index.html:149
 msgid "Nothing to restore"
 msgstr "没有可恢复的"
 
@@ -778,14 +813,17 @@ msgid ""
 msgstr "这篇文章已锁定, 所以不能添加新的附件."
 
 #: plugins/attachments/templates/wiki/plugins/attachments/render.html:6
+#: plugins/template/templates/wiki/plugins/template/render.html:6
 msgid "This attachment is not permitted on this page."
 msgstr "此附件不允许在此页面上."
 
 #: plugins/attachments/templates/wiki/plugins/attachments/render.html:8
+#: plugins/template/templates/wiki/plugins/template/render.html:8
 msgid "Click to download"
 msgstr "点此下载"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:12
+#: plugins/template/templates/wiki/plugins/template/replace.html:12
 #, python-format
 msgid ""
 "\n"
@@ -806,6 +844,7 @@ msgstr ""
 "  "
 
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:17
+#: plugins/template/templates/wiki/plugins/template/replace.html:17
 #, python-format
 msgid ""
 "\n"
@@ -817,6 +856,7 @@ msgstr ""
 "  "
 
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:26
+#: plugins/template/templates/wiki/plugins/template/replace.html:26
 #, python-format
 msgid ""
 "\n"
@@ -833,30 +873,37 @@ msgstr ""
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:43
 #: plugins/images/templates/wiki/plugins/images/index.html:35
 #: plugins/images/templates/wiki/plugins/images/revision_add.html:27
+#: plugins/template/templates/wiki/plugins/template/replace.html:43
 msgid "Upload replacement"
 msgstr "上传并替换"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:5
+#: plugins/template/templates/wiki/plugins/template/search.html:5
 msgid "Add file to"
 msgstr "添加文件到"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:9
+#: plugins/template/templates/wiki/plugins/template/search.html:22
 msgid "Add attachment from other article"
 msgstr "从其他文章添加附件"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:15
+#: plugins/template/templates/wiki/plugins/template/search.html:31
 msgid "Search files and articles"
 msgstr "搜索文件和文章"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:23
+#: plugins/template/templates/wiki/plugins/template/search.html:42
 msgid "Main article"
-msgstr "主要文章"
+msgstr "所在文章"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:55
+#: plugins/template/templates/wiki/plugins/template/search.html:68
 msgid "Add to article"
 msgstr "添加到文章"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:63
+#: plugins/template/templates/wiki/plugins/template/search.html:76
 msgid "Your search did not return any results"
 msgstr "你的搜索没有分会任何内容"
 
@@ -1001,6 +1048,7 @@ msgid "Completely delete"
 msgstr "删除完成"
 
 #: plugins/images/templates/wiki/plugins/images/index.html:66
+#: plugins/template/templates/wiki/plugins/template/index.html:55
 #: templates/wiki/history.html:5
 msgid "History"
 msgstr "历史"
@@ -1044,6 +1092,7 @@ msgstr "图片id"
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:32
 #: plugins/links/templates/wiki/plugins/links/sidebar.html:16
+#: plugins/template/templates/wiki/plugins/template/sidebar.html:16
 msgid "Insert"
 msgstr "插入"
 
@@ -1281,10 +1330,261 @@ msgid "You are not subscribed to any notifications yet."
 msgstr "你还未订阅任何通知."
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:35
+#: plugins/template/templates/wiki/plugins/template/edit.html:46
+#: plugins/template/templates/wiki/plugins/template/edit.html:77
+#: plugins/template/templates/wiki/plugins/template/revision_add.html:42
+#: plugins/template/templates/wiki/plugins/template/revision_add.html:64
+#: plugins/template/templates/wiki/plugins/template/template_create.html:56
 #: templates/wiki/edit.html:46 templates/wiki/edit.html.py:77
 #: templates/wiki/settings.html:18
 msgid "Save changes"
 msgstr "保存更改"
+
+#: plugins/template/forms.py:13
+#: plugins/template/templates/wiki/plugins/template/revision_add.html:23
+msgid "Template title"
+msgstr "模板标题"
+
+#: plugins/template/forms.py:17
+msgid "Note that you cannot change the title after creating the template."
+msgstr "注意! 在你创建模板之后, 就不能更改它的标题了."
+
+#: plugins/template/forms.py:32
+#, python-format
+msgid "A template named \"%s\" already exists."
+msgstr "模板名 \"%s\" 已经存在了."
+
+#: plugins/template/models.py:27
+msgid ""
+"The revision of this template currently in use (on all articles using the "
+"template)"
+msgstr "使用此模板的所有版本(使用模板的所有文章)"
+
+#: plugins/template/models.py:31
+msgid "template title"
+msgstr "模板标题"
+
+#: plugins/template/models.py:48
+msgid "template"
+msgstr "模板"
+
+#: plugins/template/models.py:49
+msgid "templates"
+msgstr "模板"
+
+#: plugins/template/models.py:70
+msgid "template content"
+msgstr "模板内容"
+
+#: plugins/template/models.py:75
+msgid "template revision"
+msgstr "模板版本"
+
+#: plugins/template/models.py:76
+msgid "template revisions"
+msgstr "模板版本"
+
+#: plugins/template/views.py:124 plugins/template/views.py:152
+#, python-format
+msgid "Preview Template: %s"
+msgstr "模板被删除: %s"
+
+#: plugins/template/views.py:268
+#, python-format
+msgid "%(template)s has been saved."
+msgstr "%(template)s 已被保存."
+
+#: plugins/template/views.py:295
+#, python-format
+msgid "Added a reference to \"%(template_title)s\" from \"%(article_title)s\"."
+msgstr "添加从 \"%(article_title)s\" 到 \"%(template_title)s\" 的关联."
+
+#: plugins/template/views.py:339
+#, python-format
+msgid "The template %s was deleted."
+msgstr "模板 %s 已被删除."
+
+#: plugins/template/views.py:345
+#, python-format
+msgid "This article is no longer related to the template %s."
+msgstr "这篇文章不再关联模板 %s."
+
+#: plugins/template/wiki_plugin.py:20 plugins/template/wiki_plugin.py:31
+#: plugins/template/templates/wiki/plugins/template/index.html:5
+#: plugins/template/templates/wiki/plugins/template/search.html:41
+msgid "Template"
+msgstr "模板"
+
+#: plugins/template/wiki_plugin.py:38
+#, python-format
+msgid "A tempalte was changed: %s"
+msgstr "一个模板被修改了: %s"
+
+#: plugins/template/templates/wiki/plugins/template/delete.html:5
+#: plugins/template/templates/wiki/plugins/template/delete.html:10
+msgid "Delete template"
+msgstr "删除模板"
+
+#: plugins/template/templates/wiki/plugins/template/delete.html:12
+msgid ""
+"\n"
+"    The template may be referenced on other articles. Deleting it means that "
+"they will loose their references to this template. The following articles "
+"reference this template:\n"
+"    "
+msgstr ""
+"\n"
+"    该模板可能被其他文章引用. 删除它意味着它们将失去它们引用的这个模板. 以下"
+"文章引用了这个模板:\n"
+"    "
+
+#: plugins/template/templates/wiki/plugins/template/delete.html:42
+msgid ""
+"\n"
+"    You can remove a reference to a template, but it will retain its "
+"references on other articles.\n"
+"    "
+msgstr ""
+"\n"
+"    你可以删除对一个模板的引用, 但是在其他文章中, 引用被保留.\n"
+"    "
+
+#: plugins/template/templates/wiki/plugins/template/edit.html:5
+#: plugins/template/templates/wiki/plugins/template/index.html:34
+#: templates/wiki/edit.html:5 templates/wiki/includes/article_menu.html:34
+msgid "Edit"
+msgstr "编辑"
+
+#: plugins/template/templates/wiki/plugins/template/edit.html:11
+#: templates/wiki/edit.html:11
+msgid ""
+"<strong>Warning:</strong> You are not logged in. Your IP address will be "
+"logged."
+msgstr "<strong>警告:</strong> 你没有登录. 你的IP地址将被记录."
+
+#: plugins/template/templates/wiki/plugins/template/edit.html:12
+#: templates/wiki/edit.html:12
+msgid "Click here to log in"
+msgstr "点击这里登录"
+
+#: plugins/template/templates/wiki/plugins/template/edit.html:42
+#: plugins/template/templates/wiki/plugins/template/revision_add.html:38
+#: plugins/template/templates/wiki/plugins/template/template_create.html:30
+#: templates/wiki/edit.html:42
+msgid "Preview"
+msgstr "预览"
+
+#: plugins/template/templates/wiki/plugins/template/edit.html:55
+#: templates/wiki/delete.html:5 templates/wiki/delete.html.py:52
+#: templates/wiki/edit.html:55
+msgid "Delete article"
+msgstr "删除文章"
+
+#: plugins/template/templates/wiki/plugins/template/edit.html:73
+#: plugins/template/templates/wiki/plugins/template/revision_add.html:60
+#: plugins/template/templates/wiki/plugins/template/template_create.html:52
+#: templates/wiki/edit.html:73
+msgid "Back to editor"
+msgstr "返回到编辑"
+
+#: plugins/template/templates/wiki/plugins/template/history.html:5
+#: plugins/template/templates/wiki/plugins/template/history.html:9
+msgid "History of template"
+msgstr "模板的历史"
+
+#: plugins/template/templates/wiki/plugins/template/history.html:12
+msgid "ID"
+msgstr "ID"
+
+#: plugins/template/templates/wiki/plugins/template/history.html:16
+msgid "Markdown text"
+msgstr "Markdown 文本"
+
+#: plugins/template/templates/wiki/plugins/template/history.html:43
+msgid "Current version"
+msgstr "当前版本"
+
+#: plugins/template/templates/wiki/plugins/template/index.html:10
+msgid ""
+"The following template are available for this article. Copy the markdown tag "
+"to directly refer to a file from the article text."
+msgstr ""
+"以下模板可供这篇文章使用, 直接复制markdown标签到文章的文本中来引用模板."
+
+#: plugins/template/templates/wiki/plugins/template/index.html:28
+#: plugins/template/templates/wiki/plugins/template/search.html:44
+msgid "Created by"
+msgstr "创建者"
+
+#: plugins/template/templates/wiki/plugins/template/index.html:29
+#: plugins/template/templates/wiki/plugins/template/index.html:181
+msgid "View markdown text"
+msgstr "查看Markdown文本"
+
+#: plugins/template/templates/wiki/plugins/template/index.html:66
+#: templates/wiki/includes/article_menu.html:49
+msgid "View"
+msgstr "查看"
+
+#: plugins/template/templates/wiki/plugins/template/index.html:73
+msgid "There are no template for this article."
+msgstr "这篇文章没有可用模板."
+
+#: plugins/template/templates/wiki/plugins/template/index.html:85
+#: plugins/template/templates/wiki/plugins/template/index.html:95
+msgid "Create new template"
+msgstr "创建新模板"
+
+#: plugins/template/templates/wiki/plugins/template/index.html:106
+msgid "Search and add template"
+msgstr "搜索并添加模板"
+
+#: plugins/template/templates/wiki/plugins/template/index.html:112
+msgid ""
+"You can reuse template from other articles. These templates are subject to "
+"updates on other articles which may or may not be a good thing."
+msgstr ""
+"你可以在这里引用其他文章的模板. 这些模板会受其他文章更新的影响, 这也许是或者"
+"不是一件好事."
+
+#: plugins/template/templates/wiki/plugins/template/index.html:131
+msgid "Restore template"
+msgstr "恢复模板"
+
+#: plugins/template/templates/wiki/plugins/template/index.html:165
+msgid ""
+"The article is currently locked for editing, and therefore no new template "
+"can be added."
+msgstr "这篇文章已锁定, 所以不能添加新的模板."
+
+#: plugins/template/templates/wiki/plugins/template/index.html:189
+msgid "Close"
+msgstr "关闭"
+
+#: plugins/template/templates/wiki/plugins/template/revision_add.html:5
+#: plugins/template/templates/wiki/plugins/template/template_create.html:5
+msgid "Update template"
+msgstr "更新模板"
+
+#: plugins/template/templates/wiki/plugins/template/sidebar.html:3
+msgid "Insert a template"
+msgstr "插入一个模板"
+
+#: plugins/template/templates/wiki/plugins/template/sidebar.html:6
+msgid ""
+"Type in something from template title and auto-complete will help you create "
+"a template tag for you article. Tags for template look like this:"
+msgstr ""
+"键入其它已存在模板的标题并自动完成, 将帮助你获取一个模板标签。模板标签看起来"
+"像这样:"
+
+#: plugins/template/templates/wiki/plugins/template/sidebar.html:24
+msgid "Manage template"
+msgstr "管理模板"
+
+#: plugins/template/templates/wiki/plugins/template/template_create.html:34
+msgid "Save"
+msgstr "保存"
 
 #: templates/wiki/article.html:39
 msgid "This article was last modified:"
@@ -1358,11 +1658,6 @@ msgstr "根文章"
 #: templates/wiki/create_root.html:35
 msgid "Create root"
 msgstr "创建根"
-
-#: templates/wiki/delete.html:5 templates/wiki/delete.html.py:52
-#: templates/wiki/edit.html:55
-msgid "Delete article"
-msgstr "删除文章"
 
 #: templates/wiki/delete.html:11
 msgid "You cannot delete a root article."
@@ -1466,28 +1761,6 @@ msgstr "最后一次修改"
 #: templates/wiki/dir.html:74 templates/wiki/search.html:40
 msgid "There are no articles in this level"
 msgstr "没有在此级别的文章"
-
-#: templates/wiki/edit.html:5 templates/wiki/includes/article_menu.html:34
-msgid "Edit"
-msgstr "编辑"
-
-#: templates/wiki/edit.html:11
-msgid ""
-"<strong>Warning:</strong> You are not logged in. Your IP address will be "
-"logged."
-msgstr "<strong>警告:</strong> 你没有登录. 你的IP地址将被记录."
-
-#: templates/wiki/edit.html:12
-msgid "Click here to log in"
-msgstr "点击这里登录"
-
-#: templates/wiki/edit.html:42
-msgid "Preview"
-msgstr "预览"
-
-#: templates/wiki/edit.html:73
-msgid "Back to editor"
-msgstr "返回到编辑"
 
 #: templates/wiki/error.html:5 templates/wiki/error.html.py:26
 msgid "Error"
@@ -1701,10 +1974,6 @@ msgstr "变更历史"
 #: templates/wiki/includes/article_menu.html:41
 msgid "View Source"
 msgstr "查看源码"
-
-#: templates/wiki/includes/article_menu.html:49
-msgid "View"
-msgstr "查看"
 
 #: templates/wiki/includes/breadcrumbs.html:13
 #: templates/wiki/includes/breadcrumbs.html:39

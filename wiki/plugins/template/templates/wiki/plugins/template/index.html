@@ -1,0 +1,210 @@
+{% extends "wiki/article.html" %}
+{% load wiki_tags i18n humanize sekizai_tags %}
+{% load url from future %}
+
+{% block wiki_pagetitle %}{% trans "Template" %}: {{ article.current_revision.title }}{% endblock %}
+
+{% block wiki_contents_tab %}
+<div class="row">
+  <div class="col-lg-8">
+    <p class="lead">{% trans "The following template are available for this article. Copy the markdown tag to directly refer to a file from the article text." %}</p>
+
+
+    {% for template in templates %}
+    <table class="table table-bordered table-striped">
+      <tr>
+        <th colspan="4">
+          <h4 style="margin-top:0;">
+            <span class="badge">{{ template.current_revision.created|naturaltime }}</span>
+            {% if template.current_revision.deleted %}
+            <span class="badge badge-important">{% trans "deleted" %}</span>
+            {% endif %}
+          </h4>
+          {{ template.current_revision.description }}
+        </th>
+      </tr>
+      <tr>
+        <th style="width: 25%">{% trans "Markdown tag" %}</th>
+        <th style="width: 15%">{% trans "Created by" %}</th>
+        <th style="width: 40%">{% trans "View markdown text" %}</th>
+        <td style="width: 20%; text-align: right; white-space: nowrap;" rowspan="2">
+          {% if template|can_write:user %}
+            <a class="btn btn-success btn-small" href="{% url 'wiki:template_add_revision' path=urlpath.path article_id=article.id template_id=template.id %}">
+              <span class="icon-edit"></span>
+              {% trans "Edit" %}
+            </a>
+            {% if not template.current_revision.deleted %}
+              {% if template.article = article %}
+                <a href="{% url 'wiki:template_delete' path=urlpath.path article_id=article.id template_id=template.id %}" class="btn btn-danger btn-small">
+                  <span class="icon-remove-circle"></span>
+                  {% trans "Delete" %}
+                </a>
+              {% else %}
+                <a href="{% url 'wiki:template_delete' path=urlpath.path article_id=article.id template_id=template.id %}" class="btn btn-danger btn-small">
+                  <span class="icon-remove-circle"></span>
+                  {% trans "Detach" %}
+                </a>
+              {% endif %}
+            {% else %}
+               Deleted
+            {% endif %}
+          {% endif %}
+          <p style="margin-top: 10px; margin-bottom:0;">
+            <a href="{% url 'wiki:template_history' path=urlpath.path article_id=article.id template_id=template.id %}">
+              <span class="icon-time"></span>
+              {% trans "History" %} ({{ template.templaterevision_set.all.count }} {% trans "revisions" %})
+            </a>
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td><code>&#123;&#123;{{ template.template_title }}&#125;&#125;</code></td>
+        <td>
+        {% include "wiki/includes/revision_info.html" with revision=template.current_revision hidedate=1 hidenumber=1 %}
+        </td>
+        <td>
+          <button class="btn btn-default btn-small previewmdtext" data-mdid="mdtext{{template.id}}">{% trans "View" %}</button>
+          <div style="display:none;" id="mdtext{{template.id}}">{{ template.current_revision.template_content|linebreaks }}</div>
+        </td>
+      </tr>
+    </table>
+    {% empty %}
+
+      <p style="margin-bottom: 20px;"><em>{% trans "There are no template for this article." %}</em></p>
+
+    {% endfor %}
+  </div>
+  <div class="col-lg-4" style="min-width: 330px;">
+  {% if article|can_write:user and not article|is_locked %}
+    <div class="accordion">
+
+      <div class="accordion-group">
+        
+        <div class="accordion-heading">
+          <a class="accordion-toggle" href="#collapse_upload" data-toggle="collapse">
+            <h3>{% trans "Create new template" %} <span class="icon icon-upload"></span></h3>
+          </a>
+        </div>
+        
+        <div id="collapse_upload" class="accordion-body collapse in">
+          <div class="accordion-inner">
+            {% if anonymous_disallowed %}
+              {% include "wiki/includes/anonymous_blocked.html" %}
+            {% else %}
+            <a class="btn btn-large btn-success" href="{% url 'wiki:template_create' path=urlpath.path article_id=article.id %}">
+              {% trans "Create new template" %} <span class="icon icon-upload"></span>
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      
+      </div>
+      
+      <div class="accordion-group">
+        <div class="accordion-heading">
+          <a class="accordion-toggle" data-toggle="collapse" href="#collapse_add">
+            <h3>{% trans "Search and add template" %} <span class="icon icon-plus-sign"></span></h3>
+          </a>
+        </div>
+        
+        <div id="collapse_add" class="accordion-body collapse in">
+          <div class="accordion-inner">
+            <p>{% trans "You can reuse template from other articles. These templates are subject to updates on other articles which may or may not be a good thing." %}</p>
+            <form method="GET" action="{% url 'wiki:template_search' path=urlpath.path article_id=article.id %}" class="wiki-form-block">
+              <div class="input-group">
+                {{ search_form.query }}
+                <span class="input-group-btn">
+                  <button class="btn btn-default" type="submit">
+                    <span class="icon-search"></span>
+                  </button>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+      {% if article|can_write:user %}
+        <div class="accordion-group">
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" href="#collapse_restore">
+              <h3>{% trans "Restore template" %} <span class="icon icon-trash"></span></h3>
+            </a>
+          </div>
+          <div id="collapse_restore" class="accordion-body collapse in">
+            <div class="accordion-inner">
+            
+            {% for template in deleted_template %}
+            <div style="border:1px solid #e5e5e5;border-radius:4px;padding:5px;">
+              <p>{{ template.template_title }}</p>
+              {% if template.current_revision.previous_revision.id %}
+              <form method="POST" action="{% url 'wiki:template_revision_change' path=urlpath.path article_id=article.id template_id=template.id revision_id=template.current_revision.previous_revision.id %}" style="margin:0; padding:0;">
+                {% csrf_token %}
+                <button class="btn btn-default">{% trans "Restore" %}</button>
+              </form>
+              {% endif %}
+            </div>
+            {% empty %}
+            
+            <p><em>{% trans "Nothing to restore" %}</em></p>
+            
+            {% endfor %}
+            
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      
+    </div>
+  {% else %}
+  
+    {% if article|is_locked %}
+    <p class="muted">
+      <i class="icon-lock"></i>
+      {% trans "The article is currently locked for editing, and therefore no new template can be added." %}
+    </p>
+    {% endif %}
+  
+  {% endif %}
+  </div>
+  
+</div>
+
+{% include "wiki/includes/modals.html" %}
+
+<div class="modal fade wiki-modal" id="previewModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>{% trans "View markdown text" %}</h3>
+      </div>
+      <div class="modal-body">
+        <p class="previewWindow"></p>
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn btn-default btn-large" data-dismiss="modal">
+          <span class="icon-circle-arrow-left"></span>
+          {% trans "Close" %}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% addtoblock "js" %}
+<script>
+  (function($){
+    $(".previewmdtext").click(function(event){
+      var this_btn = $(event.currentTarget);
+      $(".previewWindow").html($("#"+this_btn.data('mdid')).html());
+      $("#previewModal").modal('show');
+      return false;
+    });
+  })(jQuery);
+</script>
+{% endaddtoblock %}
+
+{% endblock %}
+

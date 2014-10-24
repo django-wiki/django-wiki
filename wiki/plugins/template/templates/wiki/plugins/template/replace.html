@@ -1,0 +1,49 @@
+{% extends "wiki/article.html" %}
+{% load wiki_tags i18n humanize %}
+{% load url from future %}
+
+{% block wiki_pagetitle %}{% trans "Replace" %} "{{ attachment.current_revision.get_filename }}"{% endblock %}
+
+{% block wiki_contents_tab %}
+
+<h2>{% trans "Replace" %} "{{ attachment.current_revision.get_filename }}"</h2>
+{% if attachment.articles.count > 1 %}
+<p class="lead">
+  {% blocktrans with attachment.original_filename as filename %}
+  Replacing an attachment means adding a new file that will be used in its place. All references to the file will be replaced by the one you upload and the file will be downloaded as <strong>{{ filename }}</strong>. Please note that this attachment is in use on other articles, you may distort contents. However, do not hestitate to take advantage of this and make replacements for the listed articles where necessary. This way of working is more efficient....
+  {% endblocktrans %}
+</p>
+<h3>
+  {% blocktrans with attachment.current_revision.get_filename as filename %}
+  Articles using {{ filename }}
+  {% endblocktrans %}</h3>
+<ul>
+  {% for a in attachment.articles.all %}<li>{{ a.current_revision.title }}</li>{% endfor %}
+</ul>
+<hr />
+{% else %}
+<p class="lead">
+  {% blocktrans with attachment.original_filename as filename %}
+  Replacing an attachment means adding a new file that will be used in its place. All references to the file will be replaced by the one you upload and the file will be downloaded as <strong>{{ filename }}</strong>.
+  {% endblocktrans %}
+</p>
+{% endif %}
+
+<form method="POST" class="form-horizontal" id="attachment_form" enctype="multipart/form-data">
+  {% wiki_form form %}
+  <div class="form-group form-actions">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-10">
+      <a href="{% url 'wiki:attachments_index' path=urlpath.path article_id=article.id %}" class="btn btn-default">
+        <span class="icon-arrow-left"></span>
+        {% trans "Go back" %}
+      </a>
+      <button class="btn btn-primary">
+        <span class="icon-upload"></span>
+        {% trans "Upload replacement" %}
+      </button>
+    </div>
+  </div>
+</form>
+  
+{% endblock %}
