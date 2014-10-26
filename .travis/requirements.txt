@@ -10,6 +10,7 @@ django-sekizai>=0.7
 Pillow
 # Notification system
 django-nyt>=0.9.1
-django-mptt>=0.5.5
+# django-mptt 0.6.1 is broken, see #316
+django-mptt==0.6.0
 six
 
