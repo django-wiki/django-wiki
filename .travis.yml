@@ -23,7 +23,7 @@ matrix:
           env: DJANGO="Django>=1.4,<1.5"
 # command to run tests
 script:
-  - cd testproject ; python -W error:"":"":0 manage.py test wiki --settings=testproject.settings.travis
+  - cd testproject ; python -W error:"":"":0 manage.py test wiki --settings=testproject.settings.travis --traceback
 notifications:
     irc:
         - "irc.freenode.org#django-wiki"
