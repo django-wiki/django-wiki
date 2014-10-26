@@ -27,8 +27,7 @@ class Template(ReusablePlugin):
             'The revision of this template currently in use (on all articles using the template)'),
     )
 
-    template_title = models.CharField(
-        _('template title'), max_length=256, unique=True)
+    template_title = models.SlugField(unique=True)
 
     def can_write(self, user):
         if not settings.ANONYMOUS_WRITE and (not user or user.is_anonymous()):
@@ -72,7 +71,7 @@ class TemplateRevision(BaseRevisionMixin, models.Model):
         help_text=_("Does not support nested template."),
     )
 
-    description = models.TextField(blank=True)
+    description = models.TextField(verbose_name=_('description'), blank=True)
 
     class Meta:
         verbose_name = _('template revision')

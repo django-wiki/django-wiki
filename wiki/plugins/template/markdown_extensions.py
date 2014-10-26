@@ -2,20 +2,20 @@
 import markdown
 import re
 
-# from django.template.loader import render_to_string
-# from django.template import Context
+from wiki.plugins.template.models import Template
 
-IMAGE_RE = re.compile(r'{{(?P<template_title>.+?)}}')
-
-from wiki.plugins.template import models
+TEMPLATE_RE = r"((?:^[^ \t].* )?){{(?P<title>(?:%s)(?:\|[^}]+)*)}}((?: .+)|$)"
 
 
 class TemplateExtension(markdown.Extension):
 
     def extendMarkdown(self, md, md_globals):
-        """ Insert ImagePreprocessor before ReferencePreprocessor. """
+        """ Insert TemplatePreprocessor before ReferencePreprocessor. """
         md.preprocessors.add(
-            'insert-template', TemplatePreprocessor(md), '>html_block')
+            'insert-template',
+            TemplatePreprocessor(md),
+            '>html_block'
+        )
 
 
 class TemplatePreprocessor(markdown.preprocessors.Preprocessor):
@@ -23,55 +23,63 @@ class TemplatePreprocessor(markdown.preprocessors.Preprocessor):
     def run(self, lines):
         new_text = []
         template_cache = dict(
-            models.Template.objects.filter(
+            Template.objects.filter(
                 articles=self.markdown.article
-            ).values_list('template_title', 'current_revision__template_content')
+            ).values_list(
+                'template_title',
+                'current_revision__template_content'
+            )
         )
+        RE_TEXT = TEMPLATE_RE % "|".join(template_cache.keys())
+        fenced_code_block = False
+
+        # This function replaces the template parameters and generate content.
+        def gen_content(tag_split):
+            content = template_cache[tag_split[0]]
+            vals = tag_split[1:]
+            for i, val_str in enumerate(vals):
+                val_split = val_str.split("=")
+                if len(val_split) >= 2:
+                    val_name = val_split[0]
+                    val = val_split[1]
+                elif len(val_split) == 1:
+                    val_name = str(i)
+                    val = val_split[0]
+                else:
+                    val_name = str(i)
+                    val = ""
+                val_tag = "{{{%s}}}" % val_name
+                content = content.replace(val_tag, val)
+            return content
+
         for line in lines:
-            if IMAGE_RE.search(line):
-                template_titles = IMAGE_RE.findall(line)
-                for title in template_titles:
-                    if title in template_cache:
-                        line = line.replace(
-                            "{{%s}}" % title, template_cache[title])
+            if (line.startswith("```") or line.startswith("~~~")
+                    and not fenced_code_block):
+                new_text.append(line)
+                fenced_code_block = True
+                continue
+            if fenced_code_block and line.startswith("```"):
+                new_text.append(line)
+                fenced_code_block = False
+                continue
+            if fenced_code_block:
+                new_text.append(line)
+                continue
+            m = re.match(RE_TEXT, line)
+            while m:
+                template_tag = re.findall(RE_TEXT, line)[0][1].split("|")
+                content = gen_content(template_tag).replace(
+                    u"{{", u"\u0018-\u0018"
+                ).replace(
+                    u"}}", u"\u0018+\u0018"
+                )
+                sub_line = ur"\1{0}\3".format(content)
+                line = re.sub(RE_TEXT, sub_line, line)
+                m = re.match(RE_TEXT, line)
+            line = line.replace(
+                u"\u0018-\u0018", u"{{"
+            ).replace(
+                u"\u0018+\u0018", u"}}"
+            )
             new_text.append(line)
         return new_text
-
-        # new_text = []
-        # previous_line_was_image = False
-        # image = None
-        # image_id = None
-        # alignment = None
-        # caption_lines = []
-        # for line in lines:
-        #     m = IMAGE_RE.match(line)
-        #     if m:
-        #         previous_line_was_image = True
-        #         image_id = m.group('id').strip()
-        #         alignment = m.group('align')
-        #         try:
-        #             image = models.Image.objects.get(article=self.markdown.article,
-        #                                             id=image_id,
-        #                                             current_revision__deleted=False)
-        #         except models.Image.DoesNotExist:
-        #             pass
-        #         line = line.replace(m.group(1), "")
-        #         caption_lines = []
-        #     elif previous_line_was_image:
-        #         if line.startswith("    "):
-        #             caption_lines.append(line[4:])
-        #             line = None
-        #         else:
-        #             caption_placeholder = "{{{IMAGECAPTION}}}"
-        #             html = render_to_string("wiki/plugins/images/render.html",
-        #                                     Context({'image': image,
-        #                                              'caption': caption_placeholder,
-        #                                              'align': alignment}))
-        #             html_before, html_after = html.split(caption_placeholder)
-        #             placeholder_before = self.markdown.htmlStash.store(html_before, safe=True)
-        #             placeholder_after = self.markdown.htmlStash.store(html_after, safe=True)
-        #             line = placeholder_before + "\n".join(caption_lines) + placeholder_after + "\n" + line
-        #             previous_line_was_image = False
-        #     if not line is None:
-        #         new_text.append(line)
-        # return new_text
