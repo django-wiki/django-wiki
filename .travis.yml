@@ -8,14 +8,14 @@ env:
     - DJANGO="Django>=1.4,<1.5"
     - DJANGO="Django>=1.5,<1.6"
     - DJANGO="Django>=1.6,<1.7"
-    - DJANGO="https://www.djangoproject.com/download/1.7.b4/tarball/"
+    - DJANGO="Django>=1.7,<1.8"
 install:
   - pip install $DJANGO -r requirements.txt
 matrix:
     exclude:
         # Python 2.6 support has been dropped in Django 1.7
         - python: "2.6"
-          env: DJANGO="https://www.djangoproject.com/download/1.7.b4/tarball/"
+          env: DJANGO="Django>=1.7,<1.8"
         # Support for python 3 was added in Django 1.5
         - python: "3.3"
           env: DJANGO="Django>=1.4,<1.5"
