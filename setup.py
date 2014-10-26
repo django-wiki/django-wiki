@@ -18,18 +18,41 @@ def read(fname):
     return open(get_path(fname)).read()
 
 
-def dynamic_requirements(requirements):
-    
-    try:
-        from django import VERSION
-        if VERSION < (1, 7):
-            requirements.append("South>=0.8,!=0.8.3")
-    except ImportError:
-        # No django so assuming that a new one will
-        # get installed...
-        pass
-    return requirements
+requirements = [
+    "Django>=1.4,<1.7",
+    "django-sekizai>=0.7",
+    "Pillow",
+    "django-nyt>=0.9.3",
+    "django-mptt==0.6.0", # 0.6.1 broken: https://github.com/django-mptt/django-mptt/issues/316
+    "six"
+    ]
 
+# Requirements that depend on Django version: South and sorl-thumbnail
+try:
+    from django import VERSION as DJANGO_VERSION
+except ImportError:
+    # No django so assuming that a new one will get installed...
+    # TODO/FIXME: Remove the South req line here when Django>=1.7 is accepted
+    requirements.append("South>=0.8.4")
+    requirements.append("sorl-thumbnail>=11.12.1b")
+else:
+    if DJANGO_VERSION < (1, 7):
+        requirements.append("South>=0.8.4")
+    if DJANGO_VERSION < (1, 5):
+        # For Django 1.4, use sorl-thumbnail<11.12.1:
+        # https://github.com/mariocesar/sorl-thumbnail/issues/255
+        requirements.append("sorl-thumbnail<11.12.1")
+    else:
+        requirements.append("sorl-thumbnail>=11.12.1b")
+
+# Requirements that depend on Python version: Markdown
+from sys import version_info as PYTHON_VERSION
+if PYTHON_VERSION < (2, 7):
+    # For Python 2.6, use Markdown<2.5.0, see
+    # https://github.com/waylan/Python-Markdown/issues/349
+    requirements.append("Markdown>2.2.0,<2.5.0")
+else:
+    requirements.append("Markdown>2.2.0")
 
 packages = find_packages()
 
@@ -58,7 +81,7 @@ setup(
     packages=find_packages(exclude=["testproject", "testproject.*"]),
     # long_description=long_description,
     zip_safe=False,
-    install_requires=dynamic_requirements(read('requirements.txt').split("\n")),
+    install_requires=requirements,
     classifiers=[
         'Development Status :: 3 - Alpha',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
