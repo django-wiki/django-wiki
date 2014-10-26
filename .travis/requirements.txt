@@ -2,8 +2,7 @@
 
 # sorl-thumbnail requirement is set in .travis.yml or requirements.txt
 
-# Wiki language processor
-Markdown>2.2.0
+# Markdown requirement is set in .travis.yml or requirements.txt
 
 # Package for flexible block handling
 django-sekizai>=0.7

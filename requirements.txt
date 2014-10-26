@@ -9,5 +9,10 @@ sorl-thumbnail>=11.12.1b
 # Migrations in Django
 South>=0.8.4
 
+# Wiki language processor
+# For Python 2.6, use Markdown<2.5.0, see
+# https://github.com/waylan/Python-Markdown/issues/349
+Markdown>2.2.0
+
 # Use requirements that are common with Travis tests
 -r .travis/requirements.txt

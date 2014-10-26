@@ -10,6 +10,8 @@ env:
     - DJANGO="Django>=1.6,<1.7" SOUTH="South>=0.8.4" SORLTHUMBNAIL="sorl-thumbnail>=11.12.1b"
     - DJANGO="https://www.djangoproject.com/download/1.7.b4/tarball/" SOUTH="" SORLTHUMBNAIL="sorl-thumbnail>=11.12.1b"
 install:
+  - if [[ $TRAVIS_PYTHON_VERSION == 2.6 ]]; then pip install "markdown>2.2.0,<2.5.0"; fi
+  - if [[ $TRAVIS_PYTHON_VERSION != 2.6 ]]; then pip install "markdown>2.2.0"; fi
   - pip install $DJANGO $SOUTH $SORLTHUMBNAIL -r .travis/requirements.txt
 matrix:
     exclude:
