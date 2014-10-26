@@ -54,9 +54,6 @@ if PYTHON_VERSION < (2, 7):
 else:
     requirements.append("Markdown>2.2.0")
 
-print(requirements)
-
-
 packages = find_packages()
 
 
