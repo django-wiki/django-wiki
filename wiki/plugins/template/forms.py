@@ -9,12 +9,13 @@ from wiki.plugins.template import models
 
 class TemplateForm(forms.ModelForm):
 
-    template_title = forms.CharField(
+    template_title = forms.SlugField(
         label=_('Template title'),
         required=True,
-        max_length=256,
         help_text=_(
-            'Note that you cannot change the title after creating the template.'),
+            'Use only alphanumeric characters and - or _. '
+            'Note that you cannot change the title after creating the template.'
+        ),
     )
 
     def __init__(self, *args, **kwargs):

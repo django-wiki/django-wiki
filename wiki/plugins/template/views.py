@@ -187,9 +187,6 @@ class TemplateHistoryView(ArticleMixin, DjTemplateView):
 
 class TemplateChangeRevisionView(ArticleMixin, View):
 
-    form_class = forms.TemplateForm
-    template_name = "wiki/plugins/template/replace.html"
-
     @method_decorator(get_article(can_write=True, not_locked=True))
     def dispatch(self, request, article, template_id, revision_id, *args, **kwargs):
         if article.can_moderate(request.user):
@@ -216,18 +213,15 @@ class TemplateChangeRevisionView(ArticleMixin, View):
         self.template.save()
         messages.success(
             self.request,
-            _('Current revision changed for %s.') % self.template.template_title
+            _('Current revision changed for # %s.') % self.revision.revision_number
         )
 
         return redirect(
-            "wiki:template_index",
+            "wiki:template_history",
             path=self.urlpath.path,
-            article_id=self.article.id
+            article_id=self.article.id,
+            template_id=self.template.id
         )
-
-    def get_context_data(self, **kwargs):
-        kwargs['selected_tab'] = 'template'
-        return ArticleMixin.get_context_data(self, **kwargs)
 
 
 class RevisionAddView(ArticleMixin, FormView):
