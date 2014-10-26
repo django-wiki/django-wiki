@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django-wiki\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-24 21:24+0800\n"
-"PO-Revision-Date: 2014-10-24 21:24+0800\n"
+"POT-Creation-Date: 2014-10-26 13:26+0800\n"
+"PO-Revision-Date: 2014-10-26 13:28+0800\n"
 "Last-Translator: Ronald Bai <ouyanghongyu@gmail.com>\n"
 "Language-Team: Chinese team\n"
 "Language: zh_CN\n"
@@ -169,7 +169,7 @@ msgstr ""
 "次被使用."
 
 #: forms.py:309 plugins/attachments/forms.py:158 plugins/images/forms.py:67
-#: plugins/template/forms.py:98
+#: plugins/template/forms.py:99
 msgid "You are not sure enough!"
 msgstr "你还不确定!"
 
@@ -511,7 +511,7 @@ msgstr "此文件是一个.zip压缩包 -- 内部不能包含目录结构."
 msgid "Not a zip file"
 msgstr "不是一个zip文件"
 
-#: plugins/attachments/forms.py:153 plugins/template/forms.py:93
+#: plugins/attachments/forms.py:153 plugins/template/forms.py:94
 msgid "Yes I am sure..."
 msgstr "是的, 我确定...\t"
 
@@ -571,7 +571,7 @@ msgid ""
 "present. Files with different extensions are not allowed."
 msgstr "你的新文件因为重名已被自动重命名. 相同文件名不同文件扩展名是不允许的."
 
-#: plugins/attachments/views.py:205 plugins/template/views.py:219
+#: plugins/attachments/views.py:205
 #, python-format
 msgid "Current revision changed for %s."
 msgstr "当前版本变更为 %s."
@@ -813,12 +813,10 @@ msgid ""
 msgstr "这篇文章已锁定, 所以不能添加新的附件."
 
 #: plugins/attachments/templates/wiki/plugins/attachments/render.html:6
-#: plugins/template/templates/wiki/plugins/template/render.html:6
 msgid "This attachment is not permitted on this page."
 msgstr "此附件不允许在此页面上."
 
 #: plugins/attachments/templates/wiki/plugins/attachments/render.html:8
-#: plugins/template/templates/wiki/plugins/template/render.html:8
 msgid "Click to download"
 msgstr "点此下载"
 
@@ -1330,8 +1328,8 @@ msgid "You are not subscribed to any notifications yet."
 msgstr "你还未订阅任何通知."
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:35
-#: plugins/template/templates/wiki/plugins/template/edit.html:46
-#: plugins/template/templates/wiki/plugins/template/edit.html:77
+#: plugins/template/templates/wiki/plugins/template/edit.html:57
+#: plugins/template/templates/wiki/plugins/template/edit.html:88
 #: plugins/template/templates/wiki/plugins/template/revision_add.html:42
 #: plugins/template/templates/wiki/plugins/template/revision_add.html:64
 #: plugins/template/templates/wiki/plugins/template/template_create.html:56
@@ -1345,11 +1343,14 @@ msgstr "保存更改"
 msgid "Template title"
 msgstr "模板标题"
 
-#: plugins/template/forms.py:17
-msgid "Note that you cannot change the title after creating the template."
-msgstr "注意! 在你创建模板之后, 就不能更改它的标题了."
+#: plugins/template/forms.py:16
+msgid ""
+"Use only alphanumeric characters and - or _. Note that you cannot change the "
+"title after creating the template."
+msgstr ""
+"仅支持字母数字和 - 或者 _ 注意! 在你创建模板之后, 就不能更改它的标题了."
 
-#: plugins/template/forms.py:32
+#: plugins/template/forms.py:33
 #, python-format
 msgid "A template named \"%s\" already exists."
 msgstr "模板名 \"%s\" 已经存在了."
@@ -1360,27 +1361,31 @@ msgid ""
 "template)"
 msgstr "使用此模板的所有版本(使用模板的所有文章)"
 
-#: plugins/template/models.py:31
-msgid "template title"
-msgstr "模板标题"
-
-#: plugins/template/models.py:48
+#: plugins/template/models.py:47
 msgid "template"
 msgstr "模板"
 
-#: plugins/template/models.py:49
+#: plugins/template/models.py:48
 msgid "templates"
 msgstr "模板"
 
-#: plugins/template/models.py:70
+#: plugins/template/models.py:69
 msgid "template content"
 msgstr "模板内容"
 
-#: plugins/template/models.py:75
+#: plugins/template/models.py:71
+msgid "Does not support nested template."
+msgstr "不支持嵌套模板."
+
+#: plugins/template/models.py:74
+msgid "description"
+msgstr "描述"
+
+#: plugins/template/models.py:77
 msgid "template revision"
 msgstr "模板版本"
 
-#: plugins/template/models.py:76
+#: plugins/template/models.py:78
 msgid "template revisions"
 msgstr "模板版本"
 
@@ -1389,22 +1394,27 @@ msgstr "模板版本"
 msgid "Preview Template: %s"
 msgstr "模板被删除: %s"
 
-#: plugins/template/views.py:268
+#: plugins/template/views.py:216
+#, python-format
+msgid "Current revision changed for # %s."
+msgstr "当前版本变更为 # %s."
+
+#: plugins/template/views.py:262
 #, python-format
 msgid "%(template)s has been saved."
 msgstr "%(template)s 已被保存."
 
-#: plugins/template/views.py:295
+#: plugins/template/views.py:289
 #, python-format
 msgid "Added a reference to \"%(template_title)s\" from \"%(article_title)s\"."
 msgstr "添加从 \"%(article_title)s\" 到 \"%(template_title)s\" 的关联."
 
-#: plugins/template/views.py:339
+#: plugins/template/views.py:333
 #, python-format
 msgid "The template %s was deleted."
 msgstr "模板 %s 已被删除."
 
-#: plugins/template/views.py:345
+#: plugins/template/views.py:339
 #, python-format
 msgid "This article is no longer related to the template %s."
 msgstr "这篇文章不再关联模板 %s."
@@ -1455,32 +1465,32 @@ msgstr ""
 msgid "Edit"
 msgstr "编辑"
 
-#: plugins/template/templates/wiki/plugins/template/edit.html:11
+#: plugins/template/templates/wiki/plugins/template/edit.html:22
 #: templates/wiki/edit.html:11
 msgid ""
 "<strong>Warning:</strong> You are not logged in. Your IP address will be "
 "logged."
 msgstr "<strong>警告:</strong> 你没有登录. 你的IP地址将被记录."
 
-#: plugins/template/templates/wiki/plugins/template/edit.html:12
+#: plugins/template/templates/wiki/plugins/template/edit.html:23
 #: templates/wiki/edit.html:12
 msgid "Click here to log in"
 msgstr "点击这里登录"
 
-#: plugins/template/templates/wiki/plugins/template/edit.html:42
+#: plugins/template/templates/wiki/plugins/template/edit.html:53
 #: plugins/template/templates/wiki/plugins/template/revision_add.html:38
 #: plugins/template/templates/wiki/plugins/template/template_create.html:30
 #: templates/wiki/edit.html:42
 msgid "Preview"
 msgstr "预览"
 
-#: plugins/template/templates/wiki/plugins/template/edit.html:55
+#: plugins/template/templates/wiki/plugins/template/edit.html:66
 #: templates/wiki/delete.html:5 templates/wiki/delete.html.py:52
 #: templates/wiki/edit.html:55
 msgid "Delete article"
 msgstr "删除文章"
 
-#: plugins/template/templates/wiki/plugins/template/edit.html:73
+#: plugins/template/templates/wiki/plugins/template/edit.html:84
 #: plugins/template/templates/wiki/plugins/template/revision_add.html:60
 #: plugins/template/templates/wiki/plugins/template/template_create.html:52
 #: templates/wiki/edit.html:73
@@ -1493,8 +1503,8 @@ msgid "History of template"
 msgstr "模板的历史"
 
 #: plugins/template/templates/wiki/plugins/template/history.html:12
-msgid "ID"
-msgstr "ID"
+msgid "Version"
+msgstr "版本"
 
 #: plugins/template/templates/wiki/plugins/template/history.html:16
 msgid "Markdown text"
@@ -2105,3 +2115,9 @@ msgid ""
 "A new revision was created: Merge between revision #%(r1)d and revision #"
 "%(r2)d"
 msgstr "一个新的修订被创建: 合并版本 #%(r1)d 和 #%(r2)d"
+
+#~ msgid "template title"
+#~ msgstr "模板标题"
+
+#~ msgid "ID"
+#~ msgstr "ID"
