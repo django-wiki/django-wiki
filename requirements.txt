@@ -1,17 +1,8 @@
-# The web framework
-django>=1.4,<1.7
+# For general guidance on setup.py vs requirements.txt, see:
+# https://caremad.io/blog/setup-vs-requirement/
 
-# Thumbnails in Django
-# For Django 1.4, use sorl-thumbnail<11.12.1:
-# https://github.com/mariocesar/sorl-thumbnail/issues/255
-sorl-thumbnail>=11.12.1b
+# You can add installation specific requirements here
+# ...
 
-# South (migrations in Django) is handled in setup.py
-
-# Wiki language processor
-# For Python 2.6, use Markdown<2.5.0, see
-# https://github.com/waylan/Python-Markdown/issues/349
-Markdown>2.2.0
-
-# Use requirements that are common with Travis tests
--r .travis/requirements.txt
+# Install requirements from setup.py (and install the local package)
+-e .
