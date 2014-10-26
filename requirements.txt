@@ -6,8 +6,7 @@ django>=1.4,<1.7
 # https://github.com/mariocesar/sorl-thumbnail/issues/255
 sorl-thumbnail>=11.12.1b
 
-# Migrations in Django
-South>=0.8.4
+# South (migrations in Django) is handled in setup.py
 
 # Wiki language processor
 # For Python 2.6, use Markdown<2.5.0, see
