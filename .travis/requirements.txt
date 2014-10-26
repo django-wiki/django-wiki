@@ -1,16 +1,24 @@
-# Common denominators for testing
-Markdown>=2.2.0
+# Django requirement is set in .travis.yml or requirements.txt
+
+# sorl-thumbnail requirement is set in .travis.yml or requirements.txt
+
+# Wiki language processor
+Markdown>2.2.0
+
+# Package for flexible block handling
 django-sekizai>=0.7
 
-# Removed for now because it is not universal as sorl is broken on
-# django 1.4: https://github.com/mariocesar/sorl-thumbnail/issues/255
-# sorl-thumbnail>=11.12.1b
-
-# Switch to Pillow and the dev version of sorl v12
+# Imaging library
 Pillow
+
 # Notification system
-django-nyt>=0.9.1
-# django-mptt 0.6.1 is broken, see #316
+django-nyt>=0.9.3
+
+# Tree structure handling
+# django-mptt 0.6.1 is broken, see
+# https://github.com/django-mptt/django-mptt/issues/316
 django-mptt==0.6.0
+
+# Python 2 and 3 compatibility
 six
 
