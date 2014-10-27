@@ -89,7 +89,7 @@ def get_content_snippet(content, keyword, max_words=30):
                 m.group("before")).replace(
                 "\n",
                 " ").split(" ")))
-        before_words = words[-max_words / 2:]
+        before_words = words[-max_words // 2:]
         words = list(filter(
             lambda x: x != "",
             striptags(
