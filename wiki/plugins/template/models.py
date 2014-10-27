@@ -108,6 +108,10 @@ class TemplateRevision(BaseRevisionMixin, models.Model):
             self.template.current_revision = self
             self.template.save()
 
+        # Clear article cache
+        for article in self.template.articles.all():
+            article.clear_cache()
+
     def __unicode__(self):
         return "%s: %s (r%d)" % (self.template.article.current_revision.title,
                                  self.template.template_title,
