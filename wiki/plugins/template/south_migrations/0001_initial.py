@@ -12,7 +12,7 @@ class Migration(SchemaMigration):
         db.create_table(u'template_template', (
             (u'reusableplugin_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['wiki.ReusablePlugin'], unique=True, primary_key=True)),
             ('current_revision', self.gf('django.db.models.fields.related.OneToOneField')(blank=True, related_name=u'current_set', unique=True, null=True, to=orm['template.TemplateRevision'])),
-            ('template_title', self.gf('django.db.models.fields.CharField')(max_length=256)),
+            ('template_title', self.gf('django.db.models.fields.SlugField')(unique=True, max_length=50)),
         ))
         db.send_create_signal('template', ['Template'])
 
@@ -30,7 +30,6 @@ class Migration(SchemaMigration):
             ('deleted', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('locked', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('template', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['template.Template'])),
-            ('template_title', self.gf('django.db.models.fields.CharField')(max_length=256)),
             ('template_content', self.gf('django.db.models.fields.TextField')(blank=True)),
             ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
         ))
@@ -86,7 +85,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Template', '_ormbases': ['wiki.ReusablePlugin']},
             'current_revision': ('django.db.models.fields.related.OneToOneField', [], {'blank': 'True', 'related_name': "u'current_set'", 'unique': 'True', 'null': 'True', 'to': "orm['template.TemplateRevision']"}),
             u'reusableplugin_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['wiki.ReusablePlugin']", 'unique': 'True', 'primary_key': 'True'}),
-            'template_title': ('django.db.models.fields.CharField', [], {'max_length': '256'})
+            'template_title': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '50'})
         },
         'template.templaterevision': {
             'Meta': {'ordering': "(u'created',)", 'object_name': 'TemplateRevision'},
@@ -102,7 +101,6 @@ class Migration(SchemaMigration):
             'revision_number': ('django.db.models.fields.IntegerField', [], {}),
             'template': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['template.Template']"}),
             'template_content': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'template_title': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']", 'null': 'True', 'on_delete': 'models.SET_NULL', 'blank': 'True'}),
             'user_message': ('django.db.models.fields.TextField', [], {'blank': 'True'})
         },
