@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 import markdown
 import re
 
@@ -24,7 +25,8 @@ class TemplatePreprocessor(markdown.preprocessors.Preprocessor):
         new_text = []
         template_cache = dict(
             Template.objects.filter(
-                articles=self.markdown.article
+                articles=self.markdown.article,
+                current_revision__deleted=False,
             ).values_list(
                 'template_title',
                 'current_revision__template_content'
@@ -69,17 +71,17 @@ class TemplatePreprocessor(markdown.preprocessors.Preprocessor):
             while m:
                 template_tag = re.findall(RE_TEXT, line)[0][1].split("|")
                 content = gen_content(template_tag).replace(
-                    u"{{", u"\u0018-\u0018"
+                    "{{", "\u0018-\u0018"
                 ).replace(
-                    u"}}", u"\u0018+\u0018"
+                    "}}", "\u0018+\u0018"
                 )
-                sub_line = ur"\1{0}\3".format(content)
+                sub_line = r"\1{0}\3".format(content)
                 line = re.sub(RE_TEXT, sub_line, line)
                 m = re.match(RE_TEXT, line)
             line = line.replace(
-                u"\u0018-\u0018", u"{{"
+                "\u0018-\u0018", "{{"
             ).replace(
-                u"\u0018+\u0018", u"}}"
+                "\u0018+\u0018", "}}"
             )
             new_text.append(line)
         return new_text
