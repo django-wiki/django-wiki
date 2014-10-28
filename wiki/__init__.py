@@ -17,3 +17,4 @@ from __future__ import unicode_literals
 # along with django-wiki. If not, see <http://www.gnu.org/licenses/>.
 
 VERSION = "0.0.24dev"
+__version__ = VERSION
