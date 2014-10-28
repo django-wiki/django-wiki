@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from __future__ import absolute_import
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseNotFound, \
     HttpResponseForbidden, HttpResponseRedirect
@@ -13,6 +14,7 @@ from wiki.core.exceptions import NoRootURL
 
 from wiki.conf import settings
 from django.utils.http import urlquote
+from six.moves import filter
 
 def json_view(func):
     def wrap(request, *args, **kwargs):

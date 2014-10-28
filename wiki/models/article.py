@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from __future__ import absolute_import
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.contrib.auth.models import Group
@@ -142,7 +143,7 @@ class Article(models.Model):
         if self.current_revision:
             return self.current_revision.title
         obj_name = _('Article without content (%(id)d)') % {'id': self.id}
-        return unicode(obj_name)
+        return str(obj_name)
     
     class Meta:
         app_label = settings.APP_LABEL

@@ -11,6 +11,7 @@ SETTINGS.LOGOUT_URL
 """
 
 from __future__ import unicode_literals
+from __future__ import absolute_import
 from django.conf import settings as django_settings
 from django.contrib import messages
 from django.contrib.auth import logout as auth_logout, login as auth_login

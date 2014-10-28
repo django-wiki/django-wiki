@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from __future__ import unicode_literals
 from wiki.core import settings
 from wiki.core import permissions
 from wiki import models

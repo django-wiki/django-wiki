@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from __future__ import unicode_literals
 # -*- coding: utf-8 -*-
 import re
 
@@ -34,7 +36,7 @@ def article_for_object(context, obj):
 
     # TODO: This is disabled for now, as it should only fire once per request
     # Maybe store cache in the request object?
-    if True or not obj in _cache.keys():
+    if True or not obj in list(_cache.keys()):
         try:
             article = models.ArticleForObject.objects.get(
                 content_type=content_type,

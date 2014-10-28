@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import unicode_literals
 
 from django.core.management.base import BaseCommand, CommandError
 import getpass
@@ -14,10 +16,11 @@ import string
 from django.template.defaultfilters import slugify
 from django.template.defaultfilters import striptags
 import urllib
+import six
 
 
 def only_printable(s):
-    return filter(lambda x: x in string.printable, s)
+    return [x for x in s if x in string.printable]
 
 
 class Command(BaseCommand):
@@ -152,7 +155,7 @@ class Command(BaseCommand):
         # TODO: nsquare is bad
         for (article, article_revision) in self.articles_imported:
             print("Updating links of %s" % (article_revision.title, ))
-            for id_from, id_to in self.matching_old_link_new_link.iteritems():
+            for id_from, id_to in six.iteritems(self.matching_old_link_new_link):
                 print("Replacing (%s \"wikilink\") with (%s)" % (id_from, id_to))
                 article_revision.content = article_revision.content.replace("(%s \"wikilink\")" % (id_from, ), "(%s)" % (id_to,))
 

@@ -45,6 +45,7 @@ options:
     show inheritance arrows.
 """
 from __future__ import print_function
+from __future__ import absolute_import
 __version__ = "0.99"
 __svnid__ = "$Id$"
 __license__ = "Python"

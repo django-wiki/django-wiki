@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from __future__ import absolute_import
 from django.conf.urls import patterns, url, include
 
 from wiki.conf import settings
@@ -118,7 +119,7 @@ class WikiURLPatterns(object):
 
     def get_plugin_urls(self):
         urlpatterns = patterns('',)
-        for plugin in registry.get_plugins().values():
+        for plugin in list(registry.get_plugins().values()):
             slug = getattr(plugin, 'slug', None)
             if slug:
                 article_urlpatterns = plugin.urlpatterns.get('article', [])

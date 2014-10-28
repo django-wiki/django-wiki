@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from __future__ import unicode_literals
 # -*- coding: utf-8 -*-
 from django.utils.importlib import import_module
 from six import string_types
@@ -13,7 +15,7 @@ def register(PluginClass):
     Register a plugin class. This function will call back your plugin's
     constructor.
     """
-    if PluginClass in _cache.keys():
+    if PluginClass in list(_cache.keys()):
         raise Exception("Plugin class already registered")
     plugin = PluginClass()
     _cache[PluginClass] = plugin

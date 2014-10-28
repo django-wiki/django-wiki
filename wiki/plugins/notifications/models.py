@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from __future__ import absolute_import
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import signals
@@ -24,7 +25,7 @@ class ArticleSubscription(ArticlePlugin):
                  {'user': self.settings.user.username,
                   'article': self.article.current_revision.title,
                   'type': self.notification_type.label})
-        return unicode(title)
+        return str(title)
     
     class Meta:
         unique_together = ('subscription', 'articleplugin_ptr')

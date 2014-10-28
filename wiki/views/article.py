@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from __future__ import absolute_import
 import difflib
 import logging
 
@@ -26,6 +27,7 @@ from django.core.urlresolvers import reverse
 from wiki.core.exceptions import NoRootURL
 from wiki.core import permissions
 from django.http import Http404
+from six.moves import range
 
 log = logging.getLogger(__name__)
 
@@ -236,7 +238,7 @@ class Edit(FormView, ArticleMixin):
 
         for field_name in ['title', 'content']:
             session_key = 'unsaved_article_%s_%d' % (field_name, self.article.id)
-            if session_key in self.request.session.keys():
+            if session_key in list(self.request.session.keys()):
                 content = self.request.session[session_key]
                 initial[field_name] = content
                 del self.request.session[session_key]
@@ -266,7 +268,7 @@ class Edit(FormView, ArticleMixin):
     def get(self, request, *args, **kwargs):
         # Generate sidebar forms
         self.sidebar_forms = []
-        for form_id, (plugin, Form) in self.get_sidebar_form_classes().items():
+        for form_id, (plugin, Form) in list(self.get_sidebar_form_classes().items()):
             if Form:
                 form = Form(self.article, self.request.user)
                 setattr(form, 'form_id', form_id)
@@ -278,7 +280,7 @@ class Edit(FormView, ArticleMixin):
     def post(self, request, *args, **kwargs):
         # Generate sidebar forms
         self.sidebar_forms = []
-        for form_id, (plugin, Form) in self.get_sidebar_form_classes().items():
+        for form_id, (plugin, Form) in list(self.get_sidebar_form_classes().items()):
             if Form:
                 if form_id == self.request.GET.get('f', None):
                     form = Form(self.article, self.request, data=self.request.POST, files=self.request.FILES)
@@ -514,7 +516,7 @@ class Plugin(View):
 
     def dispatch(self, request, path=None, slug=None, **kwargs):
         kwargs['path'] = path
-        for plugin in plugin_registry.get_plugins().values():
+        for plugin in list(plugin_registry.get_plugins().values()):
             if getattr(plugin, 'slug', None) == slug:
                 return plugin.article_view(request, **kwargs)
         raise Http404()

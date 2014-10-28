@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from __future__ import absolute_import
 import random
 import string
 
@@ -10,6 +11,7 @@ from django import forms
 from django.utils.translation import ugettext as _
 from django.utils.safestring import mark_safe
 from django.forms.util import flatatt
+from six.moves import range
 try:
     from django.utils.encoding import force_unicode
 except ImportError:
@@ -135,7 +137,7 @@ class EditForm(forms.Form, SpamProtectionMixin):
                 self.presumed_revision = data.get('current_revision', None)
                 if not str(self.presumed_revision) == str(self.initial_revision.id):
                     newdata = {}
-                    for k,v in data.items():
+                    for k,v in list(data.items()):
                         newdata[k] = v
                     newdata['current_revision'] = self.initial_revision.id
                     newdata['content'] = simple_merge(self.initial_revision.content,

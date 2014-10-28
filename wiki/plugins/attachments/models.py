@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function, unicode_literals
+from __future__ import absolute_import
 import os.path
 
 from django.db import models
@@ -14,6 +15,7 @@ from wiki.models.article import BaseRevisionMixin
 from django.db.models import signals
 from six.moves import map
 from six.moves import zip
+from six.moves import range
 
 class IllegalFileExtension(Exception):
     """File extension on upload is not allowed"""

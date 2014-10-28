@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from __future__ import unicode_literals
 from wiki.views.article import SearchView
 from haystack.query import SearchQuerySet
 from haystack.inputs import AutoQuery

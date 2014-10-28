@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from wiki.conf import settings
 from django.core.urlresolvers import get_callable
 
