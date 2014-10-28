@@ -15,6 +15,8 @@ Until it's released, we have a copy here.
 /benjaoming
 
 """
+from __future__ import absolute_import
+from __future__ import unicode_literals
 import markdown
 from markdown.util import etree
 from markdown.extensions.headerid import slugify, itertext
@@ -22,6 +24,7 @@ from markdown.extensions.headerid import slugify, itertext
 import re
 
 from wiki.plugins.macros import settings
+from six.moves import range
 
 IDCOUNT_RE = re.compile(r'^(.*)_([0-9]+)$')
 def unique(elem_id, ids):
@@ -53,7 +56,7 @@ def order_toc_list(toc_list):
             return [], []
         
         current = remaining_list.pop(0)
-        if not 'children' in current.keys():
+        if not 'children' in list(current.keys()):
             current['children'] = []
         
         if not prev_elements:
@@ -194,7 +197,7 @@ class TocTreeprocessor(markdown.treeprocessors.Treeprocessor):
             prettify = self.markdown.treeprocessors.get('prettify')
             if prettify: prettify.run(div)
             toc = self.markdown.serializer(div)
-            for pp in self.markdown.postprocessors.values():
+            for pp in list(self.markdown.postprocessors.values()):
                 toc = pp.run(toc)
             self.markdown.toc = toc
 

@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from __future__ import unicode_literals
 from django import VERSION
 from django.conf import settings as django_settings
 from wiki.conf import settings as wiki_settings

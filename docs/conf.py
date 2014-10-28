@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function, unicode_literals
+from __future__ import absolute_import
 #
 # django-wiki documentation build configuration file, created by
 # sphinx-quickstart on Mon Jul 23 16:13:51 2012.

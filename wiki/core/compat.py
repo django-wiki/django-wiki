@@ -1,5 +1,7 @@
 """Abstraction layer to deal with Django related changes in order to keep
 compatibility with several Django versions simultaneously."""
+from __future__ import absolute_import
+from __future__ import unicode_literals
 from django import VERSION as DJANGO_VERSION
 from django.db import transaction
 from django.conf import settings as django_settings

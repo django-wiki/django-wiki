@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from __future__ import absolute_import
 from django.conf.urls import patterns, url, include
 from django.utils.translation import ugettext as _
 

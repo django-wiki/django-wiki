@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+from __future__ import absolute_import
 import os.path
 
 from django.conf import settings as django_settings
@@ -10,6 +11,7 @@ from . import settings
 
 from wiki.models.pluginbase import RevisionPlugin, RevisionPluginRevision
 from django.db.models import signals
+from six.moves import range
 
 if not "sorl.thumbnail" in django_settings.INSTALLED_APPS:
     raise ImproperlyConfigured('wiki.plugins.images: needs sorl.thumbnail in INSTALLED_APPS')
@@ -45,7 +47,7 @@ class Image(RevisionPlugin):
     
     def __unicode__(self):
         title = (_('Image: %s') % self.current_revision.imagerevision.get_filename()) if self.current_revision else _('Current revision not set!!')
-        return unicode(title)
+        return str(title)
 
 class ImageRevision(RevisionPluginRevision):
     
@@ -100,7 +102,7 @@ class ImageRevision(RevisionPluginRevision):
 
     def __unicode__(self):
         title = _('Image Revsion: %d') % self.revision_number
-        return unicode(title)
+        return str(title)
 
 
 def on_image_revision_delete(instance, *args, **kwargs):

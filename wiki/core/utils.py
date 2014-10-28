@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from __future__ import unicode_literals
 # -*- coding: utf-8 -*-
 from django.utils.importlib import import_module
 

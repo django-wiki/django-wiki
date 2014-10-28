@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from __future__ import unicode_literals
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
@@ -22,7 +24,7 @@ requirements = [
     "Django>=1.4,<1.7",
     "django-sekizai>=0.7",
     "Pillow",
-    "django-nyt>=0.9.3",
+    "django-nyt>=0.9.4",
     "django-mptt==0.6.0", # 0.6.1 broken: https://github.com/django-mptt/django-mptt/issues/316
     "six"
     ]

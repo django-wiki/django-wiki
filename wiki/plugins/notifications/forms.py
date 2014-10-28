@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+from __future__ import absolute_import
 from django import forms
 from django.forms.models import modelformset_factory, BaseModelFormSet
 from django.utils.translation import ugettext as _

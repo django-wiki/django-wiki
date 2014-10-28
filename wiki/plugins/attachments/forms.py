@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from __future__ import absolute_import
 from django import forms
 from django.utils.translation import ugettext as _
 
@@ -87,7 +88,7 @@ class AttachmentArchiveForm(AttachmentForm):
     def __init__(self, *args, **kwargs):
         super(AttachmentArchiveForm, self).__init__(*args, **kwargs)
         ordered_fields = ['unzip_archive', 'file']
-        self.fields.keyOrder = ordered_fields + [k for k in self.fields.keys() if k not in ordered_fields]
+        self.fields.keyOrder = ordered_fields + [k for k in list(self.fields.keys()) if k not in ordered_fields]
         
     def clean_file(self):
         uploaded_file = self.cleaned_data.get('file', None)
