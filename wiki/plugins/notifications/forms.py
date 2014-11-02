@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 from __future__ import absolute_import
 from django import forms
 from django.forms.models import modelformset_factory, BaseModelFormSet
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 
 from django_nyt.models import Settings, NotificationType, Subscription
 from django_nyt import settings as notify_settings
