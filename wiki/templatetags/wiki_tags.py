@@ -106,11 +106,11 @@ def get_content_snippet(content, keyword, max_words=30):
         html = mark_safe(html)
     else:
         html = " ".join(
-            filter(
+            list(filter(
                 lambda x: x != "",
                 striptags(content).replace(
                     "\n",
-                    " ").split(" "))[
+                    " ").split(" ")))[
                 :max_words])
     return html
 
