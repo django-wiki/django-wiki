@@ -3,7 +3,7 @@
 {% if article_children %}
   <div class="article-list">
     <ul>
-    <li class="nav-header">{% trans "Article index" %} <i class="icon-list"></i></li>
+    <li class="nav-header">{{ title }} <i class="icon-list"></i></li>
     {% for child in article_children %}
       {% article_list child depth %}
       {% empty %}
