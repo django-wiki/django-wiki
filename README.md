@@ -4,7 +4,9 @@ django-wiki
 Important notice
 ----------------
 
-Want to write a pull request? Yay :) Please do it, however, please consider scheduling anything new for the 0.1 release by creating pull requests against `django1.7` branch...
+Want to write a pull request? Yay :) Please do it, however, please consider scheduling anything new for the 0.1 release by creating pull requests against `django1.7` branch.
+
+We are readying the 0.0.24 release in the `master`, and anything else should go to `django1.7` which is currently being given less importance.
 
 Changes underway
 ----------------
