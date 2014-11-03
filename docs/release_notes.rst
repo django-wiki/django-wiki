@@ -44,6 +44,11 @@ So it's not actually a missing data migration in 0.0.24 that's the reason
 why django-nyt starts out with zero subscriptions. It was a table renaming
 in 0.0.23 that caused the error.
 
+If you wish to preserve your subscription data as much as possible, you should
+do a plain text dump of the table ``notifications_articlesubscription`` using
+your database tools. At the end up the upgrade process, you will have to
+manually import this data into the database.
+
 If you are having problems, please consider re-running the migrations
 for notifications like so:
   
@@ -55,6 +60,10 @@ you have been running django-wiki version with differently named tables.
 Don't worry, just fake the backwards migration:
   
     python manage.py migrate notifications zero --fake  
+
+If you get ``relation "notifications_articlesubscription" already exists`` you
+may need to do a manual ``DROP TABLE notifications_articlesubscription;`` using
+your DB shell (after backing up this data).
 
 In order to create notifications for all article authors and editors,
 run the following management command:
