@@ -39,7 +39,7 @@ class SettingsModelForm(forms.ModelForm):
         if instance:
             self.__editing_instance = True
             self.fields['delete_subscriptions'] = ArticleSubscriptionModelMultipleChoiceField(
-                models.ArticleSubscription.objects.filter(settings=instance),
+                models.ArticleSubscription.objects.filter(subscription__settings=instance),
                 label=_("Remove subscriptions"),
                 required=False,
                 help_text=_("Select article subscriptions to remove from notifications"),
