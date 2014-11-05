@@ -81,9 +81,17 @@ class MacroPreprocessor(markdown.preprocessors.Preprocessor):
                                     value = value.replace("\\", "")
                                     value = value.replace("¤KEEPME¤", "\\")
                             kwargs_dict[str(arg)] = value
-                        new_line += getattr(self, macro)(**kwargs_dict)
+                        try:
+                            new_line += getattr(self, macro)(**kwargs_dict)
+                        except TypeError:
+                            # Catch invalid args
+                            new_line += line[m.start():m.end()]
+                        except ValueError:
+                            # Catch invalid values
+                            new_line += line[m.start():m.end()]
                     else:
                         new_line += getattr(self, macro)()
+                        
             if not line is None:
                 if pos != 0:
                     new_line += line[pos:]
