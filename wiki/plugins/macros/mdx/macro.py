@@ -31,9 +31,9 @@ value_re = r"""%s|%s|%s""" % (uq_re, sq_re, dq_re)
 # Optional argument as name:value
 kwarg_re = r"""(%s)\s*:\s*(%s)""" % (arg_re, value_re)
 # A list of optional arguments
-kwargs_re = r"""(%s)?(\s+%s)*""" % (kwarg_re, kwarg_re)
+kwargs_re = r"""(\s+%s)*""" % (kwarg_re,)
 # RE for the whole macro
-MACRO_RE = re.compile(r"""\[\s*(?P<macro>%s)\s+(?P<kwargs>%s)\s*\]""" % (name_re, kwargs_re), re.IGNORECASE)
+MACRO_RE = re.compile(r"""\[\s*(?P<macro>%s)(?P<kwargs>%s)\s*\]""" % (name_re, kwargs_re), re.IGNORECASE)
 # RE for an optional argument name:value
 KWARG_RE = re.compile(r"""\s*(?P<arg>%s)\s*:\s*(?P<value>%s)\s*""" % (arg_re, value_re), re.IGNORECASE)
 
