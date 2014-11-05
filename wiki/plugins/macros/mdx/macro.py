@@ -58,8 +58,11 @@ class MacroPreprocessor(markdown.preprocessors.Preprocessor):
         # Please note that this pattern is also in plugins.images
         new_text = []
         for line in lines:
-            m = MACRO_RE.match(line)
-            if m:
+            new_line = ""
+            pos = 0
+            for m in MACRO_RE.finditer(line):
+                new_line += line[pos:m.start()]
+                pos = m.end()
                 macro = m.group('macro').strip()
                 if macro in settings.METHODS and hasattr(self, macro):
                     kwargs = m.group('kwargs')
@@ -78,10 +81,13 @@ class MacroPreprocessor(markdown.preprocessors.Preprocessor):
                                     value = value.replace("\\", "")
                                     value = value.replace("¤KEEPME¤", "\\")
                             kwargs_dict[str(arg)] = value
-                        line = getattr(self, macro)(**kwargs_dict)
+                        new_line += getattr(self, macro)(**kwargs_dict)
                     else:
-                        line = getattr(self, macro)()
+                        new_line += getattr(self, macro)()
             if not line is None:
+                if pos != 0:
+                    new_line += line[pos:]
+                    line = new_line
                 new_text.append(line)
         return new_text
 
