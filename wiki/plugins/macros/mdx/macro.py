@@ -74,7 +74,7 @@ class MacroPreprocessor(markdown.preprocessors.Preprocessor):
     article_list.meta = dict(
         short_description = _('Article list'),
         help_text = _('Insert a list of articles in this level.'),
-        example_code = _('[article_list depth:2]'),
+        example_code = _('[article_list depth:2 title:\'My list\']'),
         args = {'depth': _('Maximum depth to show levels for.'),
                 'title': _('Title for the list.'),}
     )
