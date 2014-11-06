@@ -69,7 +69,7 @@ class URLPathAdmin(MPTTModelAdmin):
     list_filter = ('site', 'articles__article__current_revision__deleted',
                    'articles__article__created',
                    'articles__article__modified')
-    list_display = ('__unicode__', 'article', 'get_created')
+    list_display = ('__str__', 'article', 'get_created')
     
     def get_created(self, instance):
         return instance.article.created

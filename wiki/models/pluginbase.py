@@ -29,6 +29,7 @@ There are three kinds of plugin base models:
 from .article import ArticleRevision, BaseRevisionMixin
 from wiki.conf import settings 
 
+
 class ArticlePlugin(models.Model):
     """This is the mother of all plugins. Extending from it means a deletion
     of an article will CASCADE to your plugin, and the database will be kept
@@ -45,10 +46,13 @@ class ArticlePlugin(models.Model):
     # Permission methods - you should override these, if they don't fit your logic.
     def can_read(self, user):
         return self.article.can_read(user)
+
     def can_write(self, user):
         return self.article.can_write(user)
+
     def can_delete(self, user):
         return self.article.can_delete(user)
+
     def can_moderate(self, user):
         return self.article.can_moderate(user)
 
@@ -60,7 +64,8 @@ class ArticlePlugin(models.Model):
         # Override this setting with app_label = '' in your extended model
         # if it lives outside the wiki app.
         app_label = settings.APP_LABEL
-    
+
+
 class ReusablePlugin(ArticlePlugin):
     """Extend from this model if you have a plugin that may be related to many
     articles. Please note that the ArticlePlugin.article ForeignKey STAYS! This
@@ -75,9 +80,9 @@ class ReusablePlugin(ArticlePlugin):
     """
     # The article on which the plugin was originally created.
     # Used to apply permissions.
-    ArticlePlugin.article.on_delete=models.SET_NULL
-    ArticlePlugin.article.verbose_name=_('original article')
-    ArticlePlugin.article.help_text=_('Permissions are inherited from this article')
+    ArticlePlugin.article.on_delete = models.SET_NULL
+    ArticlePlugin.article.verbose_name = _('original article')
+    ArticlePlugin.article.help_text = _('Permissions are inherited from this article')
     ArticlePlugin.article.null = True
     ArticlePlugin.article.blank = True
     
@@ -87,10 +92,13 @@ class ReusablePlugin(ArticlePlugin):
     # before handling permissions....
     def can_read(self, user):
         return self.article.can_read(user) if self.article else False
+
     def can_write(self, user):
         return self.article.can_write(user) if self.article else False
+
     def can_delete(self, user):
         return self.article.can_delete(user) if self.article else False
+
     def can_moderate(self, user):
         return self.article.can_moderate(user) if self.article else False
 
@@ -109,7 +117,9 @@ class ReusablePlugin(ArticlePlugin):
         # if it lives outside the wiki app.
         app_label = settings.APP_LABEL
 
+
 class SimplePluginCreateError(Exception): pass
+
 
 class SimplePlugin(ArticlePlugin):
     """
@@ -161,6 +171,7 @@ class SimplePlugin(ArticlePlugin):
         # Override this setting with app_label = '' in your extended model
         # if it lives outside the wiki app.
         app_label = settings.APP_LABEL
+
 
 class RevisionPlugin(ArticlePlugin):
     """
@@ -253,6 +264,7 @@ class RevisionPluginRevision(BaseRevisionMixin, models.Model):
 # It's my art, when I disguise my body in the shape of a plane.
 # (Shellac, 1993)
 
+
 def update_simple_plugins(**kwargs):
     """Every time a new article revision is created, we update all active 
     plugins to match this article revision"""
@@ -262,14 +274,17 @@ def update_simple_plugins(**kwargs):
         # TODO: This was breaking things. SimplePlugin doesn't have a revision?
         p_revisions.update(article_revision=instance)
 
+
 def on_article_plugin_post_save(**kwargs):
     articleplugin = kwargs['instance']
     articleplugin.article.clear_cache()
+
 
 def on_reusable_plugin_post_save(**kwargs):
     reusableplugin = kwargs['instance']
     for article in reusableplugin.articles.all():
         article.clear_cache()
+
 
 def on_revision_plugin_revision_post_save(**kwargs):
     revision = kwargs['instance']
