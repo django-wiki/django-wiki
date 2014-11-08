@@ -2,7 +2,8 @@ language: python
 python:
   - "2.6"
   - "2.7"
-  - "3.2"
+# Python 3.2 support removed as South migrations wont run
+#  - "3.2"
   - "3.3"
 env:
 # Django 1.4 support is dumped because of introduction of python3 support
@@ -14,15 +15,13 @@ install:
   - pip install $DJANGO -r requirements.txt
 matrix:
     exclude:
-        # Python 2.6 support has been dropped in Django 1.7
-        #- python: "2.6"
-        #  env: DJANGO="Django>=1.7,<1.8"
-        # Support for python 3 was added in Django 1.5
-        #- python: "3.3"
-        #  env: DJANGO="Django>=1.4,<1.5"
-        # Example left, although not in use.
-        - python: "3.2"
-          env: DJANGO="Django>=1.4,<1.5"
+        # Invalid example left to fill in the exclude block.
+        - python: "2.0"
+          env: DJANGO="Django>=2000.0"
+        # Python 3.2, migrations are broken with South so we should take care not to include
+        # it when adding 1.7 support
+        #- python: "3.2"
+        #  env: DJANGO="Django>=1.7"
 # command to run tests
 script:
   - cd testproject ; python -W error:"":"":0 manage.py test wiki --settings=testproject.settings.travis --traceback

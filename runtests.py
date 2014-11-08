@@ -1,6 +1,6 @@
+#!/usr/bin/env python
 from __future__ import absolute_import
 from __future__ import unicode_literals
-#!/usr/bin/env python
 import sys
 import django
 from django.conf import settings
@@ -61,9 +61,9 @@ argv = [sys.argv[0], "test"]
 if len(sys.argv) == 1:
     # Nothing following 'runtests.py':
     if django.VERSION < (1,6):
-        argv.append("wiki")
+        argv.extend(["wiki", "attachments"])
     else:
-        argv.append("wiki.tests")
+        argv.extend(["wiki.tests", "wiki.plugins.attachments.tests"])
 else:
     # Allow tests to be specified:
     argv.extend(sys.argv[1:])
