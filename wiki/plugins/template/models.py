@@ -73,7 +73,7 @@ class Template(ReusablePlugin):
             urlapth = urlapth.parent
         return cls.objects.filter(
             Q(current_revision__deleted=False),
-            Q(article=article) | (
+            Q(articles=article) | (
                 Q(article__in=articles) & Q(extend_to_children=True))
         )
 
