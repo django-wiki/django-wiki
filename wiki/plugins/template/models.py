@@ -95,6 +95,7 @@ class Template(ReusablePlugin):
 
     @property
     def md_vals(self):
+        from functools import reduce
         content = self.current_revision.template_content
         vals = []
         RE_TEXT = r'.*{{{(.*?)}}}.*'
