@@ -31,6 +31,9 @@ class TemplateForm(forms.ModelForm):
         self.request = kwargs.pop('request', None)
         self.template = kwargs.pop('template', None)
         super(TemplateForm, self).__init__(*args, **kwargs)
+        if self.template and self.template.extend_to_children:
+            self.fields["extend_to_children"].widget.attrs[
+                "checked"] = "checked"
 
     def clean_template_title(self):
         title = self.cleaned_data['template_title']
@@ -92,6 +95,9 @@ class RevisionForm(forms.ModelForm):
         self.request = kwargs.pop('request')
         self.template = kwargs.pop('template')
         super(RevisionForm, self).__init__(*args, **kwargs)
+        if self.template and self.template.extend_to_children:
+            self.fields["extend_to_children"].widget.attrs[
+                "checked"] = "checked"
 
     def save(self, *args, **kwargs):
         template_revision = super(RevisionForm, self).save(commit=False)
