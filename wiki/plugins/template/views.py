@@ -60,15 +60,8 @@ class TemplateView(ArticleMixin, DjTemplateView):
 
     @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, *args, **kwargs):
-        if article.can_moderate(request.user):
-            self.template = models.Template.objects.filter(
-                articles=article,
-                current_revision__deleted=False
-            ).order_by('template_title')
-        else:
-            self.template = models.Template.objects.active().filter(
-                articles=article
-            )
+        self.template = models.Template.get_by_article(
+            article).order_by('template_title')
 
         # Fixing some weird transaction issue caused by adding commit_manually
         # to form_valid
@@ -398,11 +391,11 @@ class QueryTitle(View):
         query = request.GET.get('query', None)
 
         if query:
-            matches = models.Template.objects.can_read(request.user).active().filter(
+            matches = models.Template.get_by_article(article).can_read(request.user).active().filter(
                 template_title__contains=query,
                 article__current_revision__deleted=False,
             )
             # matches = matches.select_related_common()
-            return [("{{%s}}") % (m.template_title,) for m in matches[:max_num]]
+            return [m.md_tag for m in matches[:max_num]]
 
         return []

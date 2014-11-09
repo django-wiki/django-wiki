@@ -12,31 +12,49 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         # Adding model 'Template'
         db.create_table('template_template', (
-            ('reusableplugin_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['wiki.ReusablePlugin'], unique=True, primary_key=True)),
-            ('current_revision', self.gf('django.db.models.fields.related.OneToOneField')(blank=True, related_name='current_set', unique=True, null=True, to=orm['template.TemplateRevision'])),
-            ('template_title', self.gf('django.db.models.fields.SlugField')(unique=True, max_length=50)),
+            ('reusableplugin_ptr', self.gf('django.db.models.fields.related.OneToOneField')(
+                to=orm['wiki.ReusablePlugin'], unique=True, primary_key=True)),
+            ('current_revision', self.gf('django.db.models.fields.related.OneToOneField')(
+                blank=True, related_name='current_set', unique=True, null=True, to=orm['template.TemplateRevision'])),
+            ('template_title', self.gf('django.db.models.fields.SlugField')
+             (unique=True, max_length=50)),
+            ('extend_to_children', self.gf(
+                'django.db.models.fields.BooleanField')(default=False)),
         ))
         db.send_create_signal('template', ['Template'])
 
         # Adding model 'TemplateRevision'
         db.create_table('template_templaterevision', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('revision_number', self.gf('django.db.models.fields.IntegerField')()),
-            ('user_message', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('automatic_log', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('ip_address', self.gf('django.db.models.fields.IPAddressField')(max_length=15, null=True, blank=True)),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'], null=True, on_delete=models.SET_NULL, blank=True)),
-            ('modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
-            ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('previous_revision', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['template.TemplateRevision'], null=True, on_delete=models.SET_NULL, blank=True)),
-            ('deleted', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('locked', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('template', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['template.Template'])),
-            ('template_content', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('id', self.gf('django.db.models.fields.AutoField')
+             (primary_key=True)),
+            ('revision_number', self.gf(
+                'django.db.models.fields.IntegerField')()),
+            ('user_message', self.gf(
+                'django.db.models.fields.TextField')(blank=True)),
+            ('automatic_log', self.gf(
+                'django.db.models.fields.TextField')(blank=True)),
+            ('ip_address', self.gf('django.db.models.fields.IPAddressField')
+             (max_length=15, null=True, blank=True)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(
+                to=orm['auth.User'], null=True, on_delete=models.SET_NULL, blank=True)),
+            ('modified', self.gf('django.db.models.fields.DateTimeField')
+             (auto_now=True, blank=True)),
+            ('created', self.gf('django.db.models.fields.DateTimeField')
+             (auto_now_add=True, blank=True)),
+            ('previous_revision', self.gf('django.db.models.fields.related.ForeignKey')(to=orm[
+             'template.TemplateRevision'], null=True, on_delete=models.SET_NULL, blank=True)),
+            ('deleted', self.gf('django.db.models.fields.BooleanField')
+             (default=False)),
+            ('locked', self.gf('django.db.models.fields.BooleanField')
+             (default=False)),
+            ('template', self.gf('django.db.models.fields.related.ForeignKey')
+             (to=orm['template.Template'])),
+            ('template_content', self.gf(
+                'django.db.models.fields.TextField')(blank=True)),
+            ('description', self.gf(
+                'django.db.models.fields.TextField')(blank=True)),
         ))
         db.send_create_signal('template', ['TemplateRevision'])
-
 
     def backwards(self, orm):
         # Deleting model 'Template'
@@ -44,7 +62,6 @@ class Migration(SchemaMigration):
 
         # Deleting model 'TemplateRevision'
         db.delete_table('template_templaterevision')
-
 
     models = {
         'auth.group': {
@@ -87,7 +104,8 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Template', '_ormbases': ['wiki.ReusablePlugin']},
             'current_revision': ('django.db.models.fields.related.OneToOneField', [], {'blank': 'True', 'related_name': "'current_set'", 'unique': 'True', 'null': 'True', 'to': "orm['template.TemplateRevision']"}),
             'reusableplugin_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['wiki.ReusablePlugin']", 'unique': 'True', 'primary_key': 'True'}),
-            'template_title': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '50'})
+            'template_title': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '50'}),
+            'extend_to_children': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
         },
         'template.templaterevision': {
             'Meta': {'ordering': "('created',)", 'object_name': 'TemplateRevision'},

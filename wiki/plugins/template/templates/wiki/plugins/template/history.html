@@ -49,7 +49,6 @@
   </tr>
 {% endfor %}
 </table>
-<a href="{% url 'wiki:template_index' path=urlpath.path article_id=article.id %}"><span class="icon-arrow-left"></span> {% trans "Go back" %}</a>
-  
+<a href="javascript:history.go(-1);"><span class="icon-arrow-left"></span> {% trans "Go back" %}</a>
 {% endblock %}
 

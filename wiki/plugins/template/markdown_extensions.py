@@ -24,10 +24,7 @@ class TemplatePreprocessor(markdown.preprocessors.Preprocessor):
     def run(self, lines):
         new_text = []
         template_cache = dict(
-            Template.objects.filter(
-                articles=self.markdown.article,
-                current_revision__deleted=False,
-            ).values_list(
+            Template.get_by_article(self.markdown.article).values_list(
                 'template_title',
                 'current_revision__template_content'
             )
@@ -75,8 +72,11 @@ class TemplatePreprocessor(markdown.preprocessors.Preprocessor):
                 ).replace(
                     "}}", "\u0018+\u0018"
                 )
-                sub_line = r"\1{0}\3".format(content)
-                line = re.sub(RE_TEXT, sub_line, line)
+                line = re.sub(
+                    RE_TEXT,
+                    lambda x: x.group(1)+content+x.group(3),
+                    line
+                )
                 m = re.match(RE_TEXT, line)
             line = line.replace(
                 "\u0018-\u0018", "{{"
