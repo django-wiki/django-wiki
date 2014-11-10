@@ -96,6 +96,7 @@ class Template(ReusablePlugin):
     @property
     def md_vals(self):
         from functools import reduce
+        from six import text_type
         content = self.current_revision.template_content
         vals = []
         RE_TEXT = r'.*{{{(.*?)}}}.*'
@@ -105,11 +106,11 @@ class Template(ReusablePlugin):
                 li = li.replace("{{{%s}}}" % sss, "")
                 vals.append(sss)
         vals.sort()
-        number_val = filter(lambda x: x.isdigit(), vals)
+        number_val = map(int, filter(lambda x: x.isdigit(), vals))
         if number_val:
-            max_num_val = reduce(lambda x, y: max(int(x), int(y)), number_val)
+            max_num_val = reduce(lambda x, y: max(x, y), number_val)
             num_vals = "|" + \
-                "|".join(map(lambda x: str(x), range(max_num_val+1)))
+                "|".join(map(lambda x: text_type(x), range(max_num_val+1)))
         else:
             num_vals = ""
         named_val = filter(lambda x: not x.isdigit(), vals)
