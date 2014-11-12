@@ -21,9 +21,22 @@ class ModelTests(ArticleTestBase):
         1.5 to 1.6 to 1.7 so there will be 3 patterns in play at the
         same time.
         """
+        
+        # Test methods directly on manager
         self.assertEqual(models.Article.objects.can_read(self.superuser1).count(), 1)
         self.assertEqual(models.Article.objects.can_write(self.superuser1).count(), 1)
         self.assertEqual(models.Article.objects.active().count(), 1)
+        
+        # Test methods on querysets
+        self.assertEqual(models.Article.objects.all().can_read(self.superuser1).count(), 1)
+        self.assertEqual(models.Article.objects.all().can_write(self.superuser1).count(), 1)
+        self.assertEqual(models.Article.objects.all().active().count(), 1)
+
+        # Test empty query sets
+        # See: https://code.djangoproject.com/ticket/22817
+        self.assertEqual(models.Article.objects.none().can_read(self.superuser1).count(), 0)
+        self.assertEqual(models.Article.objects.none().can_write(self.superuser1).count(), 0)
+        self.assertEqual(models.Article.objects.none().active().count(), 0)
 
 
 class RootArticleViewTests(WebTestBase):
