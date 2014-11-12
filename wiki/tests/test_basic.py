@@ -9,6 +9,7 @@ import pprint
 from .base import ArticleTestBase, WebTestBase
 
 from wiki import models
+from wiki.plugins.attachments.models import Attachment
 
 
 class ModelTests(ArticleTestBase):
@@ -37,6 +38,23 @@ class ModelTests(ArticleTestBase):
         self.assertEqual(models.Article.objects.none().can_read(self.superuser1).count(), 0)
         self.assertEqual(models.Article.objects.none().can_write(self.superuser1).count(), 0)
         self.assertEqual(models.Article.objects.none().active().count(), 0)
+
+        # Do the same for Attachment which uses ArtickeFkManager
+        # Test methods directly on manager
+        self.assertEqual(Attachment.objects.can_read(self.superuser1).count(), 0)
+        self.assertEqual(Attachment.objects.can_write(self.superuser1).count(), 0)
+        self.assertEqual(Attachment.objects.active().count(), 0)
+        
+        # Test methods on querysets
+        self.assertEqual(Attachment.objects.all().can_read(self.superuser1).count(), 0)
+        self.assertEqual(Attachment.objects.all().can_write(self.superuser1).count(), 0)
+        self.assertEqual(Attachment.objects.all().active().count(), 0)
+
+        # Test empty query sets
+        # See: https://code.djangoproject.com/ticket/22817
+        self.assertEqual(Attachment.objects.none().can_read(self.superuser1).count(), 0)
+        self.assertEqual(Attachment.objects.none().can_write(self.superuser1).count(), 0)
+        self.assertEqual(Attachment.objects.none().active().count(), 0)
 
 
 class RootArticleViewTests(WebTestBase):

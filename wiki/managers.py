@@ -138,7 +138,14 @@ class ArticleManager(models.Manager):
 class ArticleFkManager(models.Manager):
 
     def get_empty_query_set(self):
-        return ArticleFkEmptyQuerySet(model=self.model)
+        # Pre 1.6 django, we needed a custom inheritor of EmptyQuerySet
+        # to pass custom methods. However, 1.6 introduced that EmptyQuerySet
+        # cannot be instantiated but instead passes through the methods
+        # of the custom QuerySet.
+        # See: https://code.djangoproject.com/ticket/22817
+        if DJANGO_VERSION < (1, 6):
+            return ArticleFkEmptyQuerySet(model=self.model)
+        return self.get_query_set().none()
 
     def get_query_set(self):
         return ArticleFkQuerySet(self.model, using=self._db)
@@ -171,7 +178,14 @@ class URLPathQuerySet(QuerySet, ArticleFkQuerySetMixin):
 class URLPathManager(TreeManager):
 
     def get_empty_query_set(self):
-        return URLPathEmptyQuerySet(model=self.model)
+        # Pre 1.6 django, we needed a custom inheritor of EmptyQuerySet
+        # to pass custom methods. However, 1.6 introduced that EmptyQuerySet
+        # cannot be instantiated but instead passes through the methods
+        # of the custom QuerySet.
+        # See: https://code.djangoproject.com/ticket/22817
+        if DJANGO_VERSION < (1, 6):
+            return URLPathEmptyQuerySet(model=self.model)
+        return self.get_query_set().none()
 
     def get_query_set(self):
         """Return a QuerySet with the same ordering as the TreeManager."""
