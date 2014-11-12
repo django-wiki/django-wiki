@@ -8,7 +8,8 @@ from datetime import timedelta
 from django.utils import timezone
 
 from django import forms
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext
+from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.forms.util import flatatt
 from six.moves import range
@@ -54,7 +55,7 @@ class SpamProtectionMixin():
             ip_address = request.META.get('REMOTE_ADDR', None)
         
         if not (user or ip_address):
-            raise forms.ValidationError(_('Spam protection failed to find both a logged in user and an IP address.'))
+            raise forms.ValidationError(ugettext('Spam protection failed to find both a logged in user and an IP address.'))
         
         def check_interval(from_time, max_count, interval_name):
             from_time = timezone.now() - timedelta(minutes=settings.REVISIONS_MINUTES_LOOKBACK)
@@ -67,7 +68,7 @@ class SpamProtectionMixin():
                 revisions = revisions.filter(ip_address=ip_address)
             revisions = revisions.count()
             if revisions >= max_count:
-                raise forms.ValidationError(_('Spam protection: You are only allowed to create or edit %(revisions)d article(s) per %(interval_name)s.') % 
+                raise forms.ValidationError(ugettext('Spam protection: You are only allowed to create or edit %(revisions)d article(s) per %(interval_name)s.') % 
                                             {'revisions': max_count,
                                              'interval_name': interval_name,})
             
@@ -157,9 +158,9 @@ class EditForm(forms.Form, SpamProtectionMixin):
         if self.no_clean or self.preview:
             return cd
         if not str(self.initial_revision.id) == str(self.presumed_revision):
-            raise forms.ValidationError(_('While you were editing, someone else changed the revision. Your contents have been automatically merged with the new contents. Please review the text below.'))
+            raise forms.ValidationError(ugettext('While you were editing, someone else changed the revision. Your contents have been automatically merged with the new contents. Please review the text below.'))
         if cd['title'] == self.initial_revision.title and cd['content'] == self.initial_revision.content:
-            raise forms.ValidationError(_('No changes made. Nothing to save.'))
+            raise forms.ValidationError(ugettext('No changes made. Nothing to save.'))
         self.check_spam()
         return cd
 
@@ -257,9 +258,9 @@ class CreateForm(forms.Form, SpamProtectionMixin):
     def clean_slug(self):
         slug = self.cleaned_data['slug']
         if slug.startswith("_"):
-            raise forms.ValidationError(_('A slug may not begin with an underscore.'))
+            raise forms.ValidationError(ugettext('A slug may not begin with an underscore.'))
         if slug == 'admin':
-            raise forms.ValidationError(_("'admin' is not a permitted slug name."))
+            raise forms.ValidationError(ugettext("'admin' is not a permitted slug name."))
         
         if settings.URL_CASE_SENSITIVE:
             already_existing_slug = models.URLPath.objects.filter(slug=slug, parent=self.urlpath_parent)
@@ -270,16 +271,16 @@ class CreateForm(forms.Form, SpamProtectionMixin):
         if already_existing_slug:
             already_urlpath = already_existing_slug[0]
             if already_urlpath.article and already_urlpath.article.current_revision.deleted:
-                raise forms.ValidationError(_('A deleted article with slug "%s" already exists.') % already_urlpath.slug)
+                raise forms.ValidationError(ugettext('A deleted article with slug "%s" already exists.') % already_urlpath.slug)
             else:
-                raise forms.ValidationError(_('A slug named "%s" already exists.') % already_urlpath.slug)
+                raise forms.ValidationError(ugettext('A slug named "%s" already exists.') % already_urlpath.slug)
         
         if settings.CHECK_SLUG_URL_AVAILABLE:
             try:
                 # Fail validation if URL resolves to non-wiki app
                 match = resolve(self.urlpath_parent.path + '/' + slug + '/')
                 if match.app_name != 'wiki':
-                    raise forms.ValidationError(_('This slug conflicts with an existing URL.'))
+                    raise forms.ValidationError(ugettext('This slug conflicts with an existing URL.'))
             except Resolver404:
                 pass
         
@@ -308,9 +309,9 @@ class DeleteForm(forms.Form):
     def clean(self):
         cd = self.cleaned_data
         if not cd['confirm']:
-            raise forms.ValidationError(_('You are not sure enough!'))
+            raise forms.ValidationError(ugettext('You are not sure enough!'))
         if cd['revision'] != self.article.current_revision:
-            raise forms.ValidationError(_('While you tried to delete this article, it was modified. TAKE CARE!'))
+            raise forms.ValidationError(ugettext('While you tried to delete this article, it was modified. TAKE CARE!'))
         return cd
 
 
@@ -393,7 +394,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
                 try:
                     user = User.objects.get(username=username)
                 except User.DoesNotExist:
-                    raise forms.ValidationError(_('No user with that username'))
+                    raise forms.ValidationError(ugettext('No user with that username'))
             else:
                 user = None
         else:
