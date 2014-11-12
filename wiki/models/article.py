@@ -7,6 +7,7 @@ from django.contrib.auth.models import Group
 from django.core.cache import cache
 from django.db import models
 from django.db.models.signals import post_save, pre_delete
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
@@ -17,6 +18,7 @@ from wiki import managers
 from mptt.models import MPTTModel
 from django.core.urlresolvers import reverse
 
+@python_2_unicode_compatible
 class Article(models.Model):
     
     objects = managers.ArticleManager()
@@ -139,7 +141,7 @@ class Article(models.Model):
     def get_for_object(cls, obj):
         return ArticleForObject.objects.get(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj)).article
     
-    def __unicode__(self):
+    def __str__(self):
         if self.current_revision:
             return self.current_revision.title
         obj_name = _('Article without content (%(id)d)') % {'id': self.id}
@@ -184,17 +186,17 @@ class Article(models.Model):
         else:
             return reverse('wiki:get', kwargs={'article_id': self.id})
         
-    
+
 class ArticleForObject(models.Model):
     
     objects = managers.ArticleFkManager()
     
     article = models.ForeignKey('Article', on_delete=models.CASCADE)
     # Same as django.contrib.comments
-    content_type   = models.ForeignKey(ContentType,
-                                       verbose_name=_('content type'),
-                                       related_name="content_type_set_for_%(class)s")
-    object_id      = models.PositiveIntegerField(_('object ID'))
+    content_type = models.ForeignKey(ContentType,
+                                     verbose_name=_('content type'),
+                                     related_name="content_type_set_for_%(class)s")
+    object_id = models.PositiveIntegerField(_('object ID'))
     content_object = generic.GenericForeignKey("content_type", "object_id")
     
     is_mptt = models.BooleanField(default=False, editable=False)
@@ -206,6 +208,7 @@ class ArticleForObject(models.Model):
         # Do not allow several objects
         unique_together = ('content_type', 'object_id')
 
+
 class BaseRevisionMixin(models.Model):
     """This is an abstract model used as a mixin: Do not override any of the 
     core model methods but respect the inheritor's freedom to do so itself."""
@@ -215,10 +218,10 @@ class BaseRevisionMixin(models.Model):
     user_message = models.TextField(blank=True,)
     automatic_log = models.TextField(blank=True, editable=False,)
     
-    ip_address  = models.IPAddressField(_('IP address'), blank=True, null=True, editable=False)
-    user        = models.ForeignKey(compat.USER_MODEL, verbose_name=_('user'),
-                                    blank=True, null=True,
-                                    on_delete=models.SET_NULL)
+    ip_address = models.IPAddressField(_('IP address'), blank=True, null=True, editable=False)
+    user = models.ForeignKey(compat.USER_MODEL, verbose_name=_('user'),
+                             blank=True, null=True,
+                             on_delete=models.SET_NULL)
     
     modified = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -234,7 +237,7 @@ class BaseRevisionMixin(models.Model):
         verbose_name=_('deleted'),
         default=False,
     )
-    locked  = models.BooleanField(
+    locked = models.BooleanField(
         verbose_name=_('locked'),
         default=False,
     )
@@ -249,7 +252,9 @@ class BaseRevisionMixin(models.Model):
     
     class Meta:
         abstract = True
-    
+
+
+@python_2_unicode_compatible
 class ArticleRevision(BaseRevisionMixin, models.Model):
     """This is where main revision data is stored. To make it easier to
     copy, do NEVER create m2m relationships."""
@@ -273,7 +278,7 @@ class ArticleRevision(BaseRevisionMixin, models.Model):
     #                             help_text=_('If set, the article will redirect to the contents of another article.'),
     #                             related_name='redirect_set')
     
-    def __unicode__(self):
+    def __str__(self):
         return "%s (%d)" % (self.title, self.revision_number)
     
     def inherit_predecessor(self, article):
@@ -328,9 +333,11 @@ def _clear_ancestor_cache(article):
     for ancestor in article.ancestor_objects():
         ancestor.article.clear_cache()
 
+
 def on_article_save_clear_cache(instance, **kwargs):
     on_article_delete_clear_cache(instance, **kwargs)
 post_save.connect(on_article_save_clear_cache, Article)
+
 
 def on_article_delete_clear_cache(instance, **kwargs):
     _clear_ancestor_cache(instance)

@@ -14,6 +14,8 @@ from django.db import models, transaction
 from six.moves import filter
 
 #Django 1.6 transaction API, required for 1.8+
+from django.utils.encoding import python_2_unicode_compatible
+
 try:
    notrans=transaction.non_atomic_requests 
 except:
@@ -33,6 +35,8 @@ from wiki.models.article import ArticleRevision, ArticleForObject, Article
 
 log = logging.getLogger(__name__)
 
+
+@python_2_unicode_compatible
 class URLPath(MPTTModel):
     """
     Strategy: Very few fields go here, as most has to be managed through an
@@ -155,7 +159,7 @@ class URLPath(MPTTModel):
     class MPTTMeta:
         pass
     
-    def __unicode__(self):
+    def __str__(self):
         path = self.path
         return path if path else ugettext("(root)")
     
@@ -260,6 +264,7 @@ class URLPath(MPTTModel):
 # Just get this once
 urlpath_content_type = None
 
+
 def on_article_relation_save(**kwargs):
     global urlpath_content_type
     instance = kwargs['instance']
@@ -270,11 +275,13 @@ def on_article_relation_save(**kwargs):
 
 post_save.connect(on_article_relation_save, ArticleForObject)
 
+
 class Namespace:
     # An instance of Namespace simulates "nonlocal variable_name" declaration
     # in any nested function, that is possible in Python 3. It allows assigning
     # to non local variable without rebinding it local. See PEP 3104.
     pass
+
 
 def on_article_delete(instance, *args, **kwargs):
     # If an article is deleted, then throw out its URLPaths
@@ -286,18 +293,19 @@ def on_article_delete(instance, *args, **kwargs):
     # that the lost-and-found article can be deleted without being recreated!
     ns = Namespace()   # nonlocal namespace backported to Python 2.x
     ns.lost_and_found = None
+
     def get_lost_and_found():
         if ns.lost_and_found:
             return ns.lost_and_found
         try:
             ns.lost_and_found = URLPath.objects.get(slug=settings.LOST_AND_FOUND_SLUG,
-                                                 parent=URLPath.root(),
-                                                 site=site)
+                                                    parent=URLPath.root(),
+                                                    site=site)
         except URLPath.DoesNotExist:
-            article = Article(group_read = True,
-                              group_write = False,
-                              other_read = False,
-                              other_write = False)
+            article = Article(group_read=True,
+                              group_write=False,
+                              other_read=False,
+                              other_write=False)
             article.add_revision(ArticleRevision(
                      content=_('Articles who lost their parents\n'
                                 '===============================\n\n'
