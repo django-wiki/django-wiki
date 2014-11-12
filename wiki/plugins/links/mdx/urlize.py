@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
 from __future__ import unicode_literals
 """
 Code modified from:
@@ -40,7 +41,6 @@ Negative examples:
 '<p>del.icio.us</p>'
 
 """
-from __future__ import absolute_import
 
 import markdown
 import re
