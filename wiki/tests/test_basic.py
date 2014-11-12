@@ -8,6 +8,23 @@ import pprint
 
 from .base import ArticleTestBase, WebTestBase
 
+from wiki import models
+
+
+class ModelTests(ArticleTestBase):
+    """Tests basic model and queryset functionalities"""
+    
+    def test_custom_querysets(self):
+        """
+        Tests that the custom queryset methods work, this is important
+        because the pattern of building them is different from Django
+        1.5 to 1.6 to 1.7 so there will be 3 patterns in play at the
+        same time.
+        """
+        self.assertEqual(models.Article.objects.can_read(self.superuser1).count(), 1)
+        self.assertEqual(models.Article.objects.can_write(self.superuser1).count(), 1)
+        self.assertEqual(models.Article.objects.active().count(), 1)
+
 
 class RootArticleViewTests(WebTestBase):
 
