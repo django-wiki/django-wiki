@@ -5,7 +5,7 @@ import markdown
 import re
 from six import string_types
 
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
 from django.template import Context
 
