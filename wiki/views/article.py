@@ -499,7 +499,7 @@ class SearchView(ListView):
 
     def get_queryset(self):
         if not self.query:
-            return models.Article.objects.get_empty_query_set()
+            return models.Article.objects.none()
         articles = models.Article.objects.filter(Q(current_revision__title__icontains=self.query) |
                                                  Q(current_revision__content__icontains=self.query))
         if not permissions.can_moderate(models.URLPath.root().article, self.request.user):

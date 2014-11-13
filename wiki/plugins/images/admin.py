@@ -16,7 +16,7 @@ class ImageForm(forms.ModelForm):
             revisions = models.ImageRevision.objects.filter(plugin=self.instance)
             self.fields['current_revision'].queryset = revisions
         else:
-            self.fields['current_revision'].queryset = models.ImageRevision.objects.get_empty_query_set()
+            self.fields['current_revision'].queryset = models.ImageRevision.objects.none()
             self.fields['current_revision'].widget = forms.HiddenInput()
 
 
