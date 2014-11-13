@@ -88,7 +88,7 @@ class BaseSettingsFormSet(BaseModelFormSet):
         return Settings.objects.filter(
             user=self.user,
             subscription__articlesubscription__article__current_revision__deleted=False,
-        ).prefetch_related('subscription_set__articlesubscription',)
+        ).prefetch_related('subscription_set__articlesubscription',).distinct()
 
 
 SettingsFormSet = modelformset_factory(
