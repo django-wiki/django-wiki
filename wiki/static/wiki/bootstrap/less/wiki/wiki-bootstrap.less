@@ -48,6 +48,12 @@ label { font-size: 16px; font-weight: normal; color: #777;}
 .wiki-article div.article-list {
     max-width: 340px;
     clear: left;
+    display: inline-block; /* Fix height problem when next to floating elements */
+    .nav-header {
+        padding: 3px 10px;
+        border-bottom: 1px solid #DDD;
+        font-weight: bold;
+    }
 }
 
 .wiki-article div.toc ul,

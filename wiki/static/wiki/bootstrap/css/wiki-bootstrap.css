@@ -4093,6 +4093,14 @@ label {
 .wiki-article div.article-list {
   max-width: 340px;
   clear: left;
+  display: inline-block;
+  /* Fix height problem when next to floating elements */
+}
+.wiki-article div.toc .nav-header,
+.wiki-article div.article-list .nav-header {
+  padding: 3px 10px;
+  border-bottom: 1px solid #DDD;
+  font-weight: bold;
 }
 .wiki-article div.toc ul,
 .wiki-article div.article-list ul {
