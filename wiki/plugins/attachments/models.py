@@ -4,6 +4,7 @@ from __future__ import absolute_import
 import os.path
 
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings as django_settings
 
@@ -17,10 +18,12 @@ from six.moves import map
 from six.moves import zip
 from six.moves import range
 
+
 class IllegalFileExtension(Exception):
     """File extension on upload is not allowed"""
     pass
 
+@python_2_unicode_compatible
 class Attachment(ReusablePlugin):
 
     objects = managers.ArticleFkManager()
@@ -48,7 +51,7 @@ class Attachment(ReusablePlugin):
         if settings.APP_LABEL:
             app_label = settings.APP_LABEL
     
-    def __unicode__(self):
+    def __str__(self):
         return "%s: %s" % (self.article.current_revision.title, self.original_filename)    
 
 def extension_allowed(filename):
@@ -89,6 +92,7 @@ def upload_path(instance, filename):
     return path.join(upload_path, filename)
 
 
+@python_2_unicode_compatible
 class AttachmentRevision(BaseRevisionMixin, models.Model):
     
     attachment = models.ForeignKey('Attachment')
@@ -152,7 +156,7 @@ class AttachmentRevision(BaseRevisionMixin, models.Model):
             self.attachment.current_revision = self
             self.attachment.save()
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s: %s (r%d)" % (self.attachment.article.current_revision.title, 
                                  self.attachment.original_filename,
                                  self.revision_number)    

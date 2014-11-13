@@ -187,6 +187,7 @@ class Article(models.Model):
             return reverse('wiki:get', kwargs={'article_id': self.id})
         
 
+@python_2_unicode_compatible
 class ArticleForObject(models.Model):
     
     objects = managers.ArticleFkManager()
@@ -200,7 +201,10 @@ class ArticleForObject(models.Model):
     content_object = generic.GenericForeignKey("content_type", "object_id")
     
     is_mptt = models.BooleanField(default=False, editable=False)
-    
+
+    def __str__(self):
+        return "{}".format(self.article)
+
     class Meta:
         app_label = settings.APP_LABEL
         verbose_name = _('Article for object')
