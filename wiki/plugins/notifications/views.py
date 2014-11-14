@@ -29,7 +29,7 @@ class NotificationSettings(FormView):
                 _("You will receive notifications %(interval)s for "
                   "%(articles)d articles") % {
                     'interval': settings.get_interval_display(),
-                    'articles': self.get_article_subscriptions(form.instance),
+                    'articles': self.get_article_subscriptions(form.instance).count(),
                 }
             )
         return redirect('wiki:notification_settings')
