@@ -226,9 +226,11 @@ class AttachmentAddView(ArticleMixin, View):
             self.attachment.articles.add(self.article)
             self.attachment.save()
             self.article.clear_cache()
-        messages.success(self.request, _('Added a reference to "%(att)s" from "%(art)s".') % 
-                         {'att': self.attachment.original_filename,
-                          'art': self.article.current_revision.title})        
+            messages.success(self.request, _('Added a reference to "%(att)s" from "%(art)s".') %
+                             {'att': self.attachment.original_filename,
+                              'art': self.article.current_revision.title})
+        else:
+            messages.error(self.request, _('"%(att)s" is already referenced.') % {'att': self.attachment.original_filename})
         return redirect("wiki:attachments_index", path=self.urlpath.path, article_id=self.article.id)
     
 
