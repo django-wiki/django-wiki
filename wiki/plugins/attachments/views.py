@@ -219,7 +219,7 @@ class AttachmentAddView(ArticleMixin, View):
         return super(AttachmentAddView, self).dispatch(request, article, *args, **kwargs)
     
     def post(self, request, *args, **kwargs):
-        if self.attachment.articles.filter(id=self.article.id):
+        if not self.attachment.articles.filter(id=self.article.id):
             self.attachment.articles.add(self.article)
             self.attachment.save()
         messages.success(self.request, _('Added a reference to "%(att)s" from "%(art)s".') % 
