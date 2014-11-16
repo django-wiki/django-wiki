@@ -34,7 +34,8 @@ class AttachmentPreprocessor(markdown.preprocessors.Preprocessor):
                 try:
                     attachment = models.Attachment.objects.get(
                         articles__current_revision__deleted=False,
-                        id=attachment_id, current_revision__deleted=False
+                        id=attachment_id, current_revision__deleted=False,
+                        articles=self.markdown.article
                     )
                     url = reverse('wiki:attachments_download', kwargs={'article_id': self.markdown.article.id,
                                                                        'attachment_id':attachment.id,})
