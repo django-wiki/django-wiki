@@ -50,6 +50,7 @@ class AttachmentView(ArticleMixin, FormView):
             messages.success(self.request, _('Successfully added: %s') % (", ".join([ar.get_filename() for ar in attachment_revision])))
         else:
             messages.success(self.request, _('%s was successfully added.') % attachment_revision.get_filename())
+        self.article.clear_cache()
         
         return redirect("wiki:attachments_index", path=self.urlpath.path, article_id=self.article.id)
     
@@ -122,6 +123,7 @@ class AttachmentReplaceView(ArticleMixin, FormView):
             self.attachment.current_revision = attachment_revision
             self.attachment.save()
             messages.success(self.request, _('%s uploaded and replaces old attachment.') % attachment_revision.get_filename())
+            self.article.clear_cache()
         except models.IllegalFileExtension as e:
             messages.error(self.request, _('Your file could not be saved: %s') % e)
             return redirect("wiki:attachments_replace", attachment_id=self.attachment.id,
@@ -203,6 +205,7 @@ class AttachmentChangeRevisionView(ArticleMixin, View):
     def post(self, request, *args, **kwargs):
         self.attachment.current_revision = self.revision
         self.attachment.save()
+        self.article.clear_cache()
         messages.success(self.request, _('Current revision changed for %s.') % self.attachment.original_filename)
         
         return redirect("wiki:attachments_index", path=self.urlpath.path, article_id=self.article.id)
@@ -219,12 +222,15 @@ class AttachmentAddView(ArticleMixin, View):
         return super(AttachmentAddView, self).dispatch(request, article, *args, **kwargs)
     
     def post(self, request, *args, **kwargs):
-        if self.attachment.articles.filter(id=self.article.id):
+        if not self.attachment.articles.filter(id=self.article.id):
             self.attachment.articles.add(self.article)
             self.attachment.save()
-        messages.success(self.request, _('Added a reference to "%(att)s" from "%(art)s".') % 
-                         {'att': self.attachment.original_filename,
-                          'art': self.article.current_revision.title})        
+            self.article.clear_cache()
+            messages.success(self.request, _('Added a reference to "%(att)s" from "%(art)s".') %
+                             {'att': self.attachment.original_filename,
+                              'art': self.article.current_revision.title})
+        else:
+            messages.error(self.request, _('"%(att)s" is already referenced.') % {'att': self.attachment.original_filename})
         return redirect("wiki:attachments_index", path=self.urlpath.path, article_id=self.article.id)
     
 
@@ -252,11 +258,12 @@ class AttachmentDeleteView(ArticleMixin, FormView):
             revision.save()
             self.attachment.current_revision = revision
             self.attachment.save()
+            self.article.clear_cache()
             messages.info(self.request, _('The file %s was deleted.') % self.attachment.original_filename)
         else:
             self.attachment.articles.remove(self.article)
             messages.info(self.request, _('This article is no longer related to the file %s.') % self.attachment.original_filename)
-        
+        self.article.clear_cache()
         return redirect("wiki:get", path=self.urlpath.path, article_id=self.article.id)
 
     def get_context_data(self, **kwargs):

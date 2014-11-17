@@ -34,7 +34,8 @@ class AttachmentPreprocessor(markdown.preprocessors.Preprocessor):
                 try:
                     attachment = models.Attachment.objects.get(
                         articles__current_revision__deleted=False,
-                        id=attachment_id, current_revision__deleted=False
+                        id=attachment_id, current_revision__deleted=False,
+                        articles=self.markdown.article
                     )
                     url = reverse('wiki:attachments_download', kwargs={'article_id': self.markdown.article.id,
                                                                        'attachment_id':attachment.id,})
@@ -59,7 +60,8 @@ class AttachmentPreprocessor(markdown.preprocessors.Preprocessor):
                         }))
                     line = self.markdown.htmlStash.store(html, safe=True)
                 except models.Attachment.DoesNotExist:
-                    line = line.replace(m.group(1), """<span class="attachment attachment-deleted">Attachment with ID #%s is deleted.</span>""" % attachment_id)
+                    html = """<span class="attachment attachment-deleted">Attachment with ID #%s is deleted.</span>""" % attachment_id
+                    line = line.replace(m.group(2), self.markdown.htmlStash.store(html, safe=True))
                 line = before + line + after
             new_text.append(line)
         return new_text
