@@ -5,6 +5,7 @@ import os.path
 from django.conf import settings as django_settings
 from django.core.exceptions import ImproperlyConfigured
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
 from . import settings
@@ -26,6 +27,8 @@ def upload_path(instance, filename):
         upload_path = os.path.join(upload_path, uuid.uuid4().hex)
     return os.path.join(upload_path, filename)
 
+
+@python_2_unicode_compatible
 class Image(RevisionPlugin):
     
     # The plugin system is so awesome that the inheritor doesn't need to do
@@ -45,10 +48,12 @@ class Image(RevisionPlugin):
         if settings.APP_LABEL:
             app_label = settings.APP_LABEL
     
-    def __unicode__(self):
+    def __str__(self):
         title = (_('Image: %s') % self.current_revision.imagerevision.get_filename()) if self.current_revision else _('Current revision not set!!')
         return str(title)
 
+
+@python_2_unicode_compatible
 class ImageRevision(RevisionPluginRevision):
     
     image = models.ImageField(upload_to=upload_path,
@@ -100,7 +105,7 @@ class ImageRevision(RevisionPluginRevision):
             app_label = settings.APP_LABEL
         ordering = ('-created',)
 
-    def __unicode__(self):
+    def __str__(self):
         title = _('Image Revsion: %d') % self.revision_number
         return str(title)
 
