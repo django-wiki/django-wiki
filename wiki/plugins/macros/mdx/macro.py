@@ -99,22 +99,20 @@ class MacroPreprocessor(markdown.preprocessors.Preprocessor):
                 new_text.append(line)
         return new_text
 
-    def article_list(self, depth="2", title=_("Article index")):
+    def article_list(self, depth="2"):
         html = render_to_string(
             "wiki/plugins/macros/article_list.html",
             Context({
                 'article_children': self.markdown.article.get_children(article__current_revision__deleted=False),
                 'depth': int(depth) + 1,
-                'title': title,
             })
         )
         return self.markdown.htmlStash.store(html, safe=True)
     article_list.meta = dict(
         short_description = _('Article list'),
         help_text = _('Insert a list of articles in this level.'),
-        example_code = _('[article_list depth:2 title:\'My list\']'),
-        args = {'depth': _('Maximum depth to show levels for.'),
-                'title': _('Title for the list.'),}
+        example_code = _('[article_list depth:2]'),
+        args = {'depth': _('Maximum depth to show levels for.')}
     )
 
     def toc(self):
