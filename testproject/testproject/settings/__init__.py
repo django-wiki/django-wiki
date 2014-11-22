@@ -108,13 +108,6 @@ INSTALLED_APPS = [
 from django import VERSION
 if VERSION < (1, 7):
     INSTALLED_APPS.append('south')
-    SOUTH_MIGRATION_MODULES = {
-        'django_nyt': 'django_nyt.south_migrations',
-        'wiki': 'wiki.south_migrations',
-        'images': 'wiki.plugins.images.south_migrations',
-        'notifications': 'wiki.plugins.notifications.south_migrations',
-        'attachments': 'wiki.plugins.attachments.south_migrations',
-    }
 else:
     TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
