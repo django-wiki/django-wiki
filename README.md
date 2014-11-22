@@ -194,7 +194,7 @@ So far the dependencies/requirements are:
 Development
 ------------
 
-In your Git fork, run `pip install -r requirements.txt` to install the requirements.
+In your Git fork, run `setup.py develop` to install the requirements.
 
 The folder **testproject/** contains a pre-configured django project and an sqlite database. Login for django admin is *admin:admin*. This project should always be maintained, but please do not commit changes to the SQLite database as we only care about its contents in case data models are changed.
 
