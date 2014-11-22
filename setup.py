@@ -35,11 +35,11 @@ try:
 except ImportError:
     # No django so assuming that a new one will get installed...
     # TODO/FIXME: Remove the South req line here when Django>=1.7 is accepted
-    requirements.append("South>=0.8.4")
+    requirements.append("South>=1.0.1")
     requirements.append("sorl-thumbnail>=11.12.1b")
 else:
     if DJANGO_VERSION < (1, 7):
-        requirements.append("South>=0.8.4")
+        requirements.append("South>=1.0.1")
     if DJANGO_VERSION < (1, 5):
         # For Django 1.4, use sorl-thumbnail<11.12.1:
         # https://github.com/mariocesar/sorl-thumbnail/issues/255
