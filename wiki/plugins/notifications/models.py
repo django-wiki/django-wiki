@@ -24,9 +24,9 @@ class ArticleSubscription(ArticlePlugin):
     
     def __str__(self):
         title = (_("%(user)s subscribing to %(article)s (%(type)s)") %
-                 {'user': self.settings.user.username,
+                 {'user': self.subscription.settings.user.username,
                   'article': self.article.current_revision.title,
-                  'type': self.notification_type.label})
+                  'type': self.subscription.notification_type.label})
         return str(title)
     
     class Meta:
