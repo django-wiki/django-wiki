@@ -158,6 +158,7 @@ class Article(models.Model):
     def render(self, preview_content=None):
         if not self.current_revision:
             return ""
+        self.preview = preview_content is not None
         if preview_content:
             content = preview_content
         else:
