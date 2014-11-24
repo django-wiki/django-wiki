@@ -1,30 +1,16 @@
 language: python
-python:
-  - "2.6"
-  - "2.7"
-# Python 3.2 support removed as South migrations wont run
-#  - "3.2"
-  - "3.3"
+# See tox.ini for env list
 env:
-# Django 1.4 support is dumped because of introduction of python3 support
-#    - DJANGO="Django>=1.4,<1.5"
-    - DJANGO="Django>=1.5,<1.6"
-    - DJANGO="Django>=1.6,<1.7"
-#    - DJANGO="Django>=1.7,<1.8"
+- TOXENV=py26-django15
+- TOXENV=py26-django16
+- TOXENV=py27-django15
+- TOXENV=py27-django16
+- TOXENV=py33-django15
+- TOXENV=py33-django16
 install:
-  - pip install $DJANGO -r requirements.txt
-matrix:
-    exclude:
-        # Invalid example left to fill in the exclude block.
-        - python: "2.0"
-          env: DJANGO="Django>=2000.0"
-        # Python 3.2, migrations are broken with South so we should take care not to include
-        # it when adding 1.7 support
-        #- python: "3.2"
-        #  env: DJANGO="Django>=1.7"
-# command to run tests
+- pip install tox
 script:
-  - cd testproject ; python -W error:"":"":0 manage.py test wiki --settings=testproject.settings.travis --traceback
+- tox
 notifications:
     irc:
         - "irc.freenode.org#django-wiki"

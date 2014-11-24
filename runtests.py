@@ -15,7 +15,7 @@ settings.configure(
     },
     SITE_ID=1,
     ROOT_URLCONF='wiki.tests.testdata.urls',
-    INSTALLED_APPS=(
+    INSTALLED_APPS=[
         'wiki.tests.testdata',
         'django.contrib.auth',
         'django.contrib.contenttypes',
@@ -33,7 +33,7 @@ settings.configure(
         'wiki.plugins.notifications',
         'wiki.plugins.images',
         'wiki.plugins.macros',
-    ),
+    ],
     TEMPLATE_CONTEXT_PROCESSORS=(
         "django.contrib.auth.context_processors.auth",
         "django.core.context_processors.debug",
@@ -47,8 +47,8 @@ settings.configure(
     ),
     USE_TZ=True,
     SOUTH_TESTS_MIGRATE=True,
+    SECRET_KEY = 'b^fv_)t39h%9p40)fnkfblo##jkr!$0)lkp6bpy!fi*f$4*92!',
 )
-
 
 # If you use South for migrations, uncomment this to monkeypatch
 # syncdb to get migrations to run.
@@ -56,7 +56,7 @@ from south.management.commands import patch_for_test_db_setup
 patch_for_test_db_setup()
 
 from django.core.management import execute_from_command_line
-argv = [sys.argv[0], "test"]
+argv = [sys.argv[0], "test", "--traceback"]
 
 if len(sys.argv) == 1:
     # Nothing following 'runtests.py':
