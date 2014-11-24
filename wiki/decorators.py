@@ -8,7 +8,10 @@ from django.http import HttpResponse, HttpResponseNotFound, \
 from django.shortcuts import redirect, get_object_or_404
 from django.template.context import RequestContext
 from django.template.loader import render_to_string
-from django.utils import simplejson as json
+try:
+    import json
+except ImportError:
+    from django.utils import simplejson as json
 
 from wiki.core.exceptions import NoRootURL
 
