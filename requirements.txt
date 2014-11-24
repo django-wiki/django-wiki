@@ -1,8 +1,0 @@
-# For general guidance on setup.py vs requirements.txt, see:
-# https://caremad.io/blog/setup-vs-requirement/
-
-# You can add installation specific requirements here
-# ...
-
-# Install requirements from setup.py (and install the local package)
--e .
