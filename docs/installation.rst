@@ -119,7 +119,7 @@ migrations modules like so:
 
 ::
 
-    INSTALLED_APPS += ('south',)
+    INSTALLED_APPS += ['south',]
     SOUTH_MIGRATION_MODULES = {
         'django_nyt': 'django_nyt.south_migrations',
         'wiki': 'wiki.south_migrations',
