@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 
 from markdown.treeprocessors import Treeprocessor
 import markdown
@@ -14,13 +12,9 @@ class PreviewLinksExtension(markdown.Extension):
 
 class PreviewLinksTree(Treeprocessor):
     def run(self, root):
-        if self.markdown.article.preview:
+        if self.markdown.preview:
             for a in root.findall('.//a'):
                 # Do not set target for links like href='#markdown'
                 if not a.get('href').startswith('#'):
                     a.set('target', '_blank')
         return root
-
-
-def makeExtension():
-    return PreviewLinksExtension()
