@@ -4,7 +4,6 @@ from __future__ import absolute_import
 import os.path
 
 from django.db import models
-from django.utils.translation import ugettext
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import python_2_unicode_compatible
 from django.conf import settings as django_settings
@@ -60,9 +59,9 @@ def extension_allowed(filename):
         extension = filename.split(".")[-1]
     except IndexError:
         # No extension
-        raise IllegalFileExtension(ugettext("No file extension found in filename. That's not okay!"))
+        raise IllegalFileExtension(_("No file extension found in filename. That's not okay!"))
     if not extension.lower() in map(lambda x: x.lower(), settings.FILE_EXTENSIONS):
-        raise IllegalFileExtension(ugettext("The following filename is illegal: %s. Extension has to be one of %s") % 
+        raise IllegalFileExtension(_("The following filename is illegal: %s. Extension has to be one of %s") % 
                                    (filename, ", ".join(settings.FILE_EXTENSIONS)))
     
     return extension

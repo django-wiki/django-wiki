@@ -11,7 +11,7 @@ from django.db import transaction
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.decorators import method_decorator
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import TemplateView, View, RedirectView
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView

@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 from __future__ import absolute_import
 from django import forms
-from django.utils.translation import ugettext
 from django.utils.translation import ugettext_lazy as _
 
 from wiki.plugins.attachments import models
@@ -102,14 +101,14 @@ class AttachmentArchiveForm(AttachmentForm):
                     except IllegalFileExtension as e:
                         raise forms.ValidationError(e)
             except zipfile.BadZipfile:
-                raise forms.ValidationError(ugettext("Not a zip file"))
+                raise forms.ValidationError(_("Not a zip file"))
         else:
             return super(AttachmentArchiveForm, self).clean_file()
         return uploaded_file
     
     def clean(self):
         if not can_moderate(self.article, self.request.user):
-            raise forms.ValidationError(ugettext("User not allowed to moderate this article"))
+            raise forms.ValidationError(_("User not allowed to moderate this article"))
         return self.cleaned_data
         
     def save(self, *args, **kwargs):
@@ -157,7 +156,7 @@ class DeleteForm(forms.Form):
     
     def clean_confirm(self):
         if not self.cleaned_data['confirm']:
-            raise forms.ValidationError(ugettext('You are not sure enough!'))
+            raise forms.ValidationError(_('You are not sure enough!'))
         return True
 
 class SearchForm(forms.Form):

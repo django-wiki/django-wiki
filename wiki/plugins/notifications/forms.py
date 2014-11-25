@@ -2,7 +2,6 @@ from __future__ import unicode_literals
 from __future__ import absolute_import
 from django import forms
 from django.forms.models import modelformset_factory, BaseModelFormSet
-from django.utils.translation import ugettext
 from django.utils.translation import ugettext_lazy as _
 
 from django_nyt.models import Settings, NotificationType, Subscription
@@ -17,7 +16,7 @@ from wiki.plugins.notifications import models
 
 class SettingsModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
-        return ugettext(
+        return _(
             "Receive notifications %(interval)s"
         ) % {
             'interval': obj.get_interval_display()
@@ -27,7 +26,7 @@ class SettingsModelChoiceField(forms.ModelChoiceField):
 
 class ArticleSubscriptionModelMultipleChoiceField(forms.ModelMultipleChoiceField):
     def label_from_instance(self, obj):
-        return ugettext("%(title)s - %(url)s") % {
+        return _("%(title)s - %(url)s") % {
             'title': obj.article.current_revision.title,
             'url': obj.article.get_absolute_url()
         }
@@ -42,17 +41,17 @@ class SettingsModelForm(forms.ModelForm):
             self.__editing_instance = True
             self.fields['delete_subscriptions'] = ArticleSubscriptionModelMultipleChoiceField(
                 models.ArticleSubscription.objects.filter(subscription__settings=instance),
-                label=ugettext("Remove subscriptions"),
+                label=_("Remove subscriptions"),
                 required=False,
-                help_text=ugettext("Select article subscriptions to remove from notifications"),
+                help_text=_("Select article subscriptions to remove from notifications"),
                 initial = models.ArticleSubscription.objects.none(),
             )
             self.fields['email'] = forms.TypedChoiceField(
                 label=_("Email digests"),
                 choices = (
-                    (0, ugettext('Unchanged (selected on each article)')),
-                    (1, ugettext('No emails')),
-                    (2, ugettext('Email on any change')),
+                    (0, _('Unchanged (selected on each article)')),
+                    (1, _('No emails')),
+                    (2, _('Email on any change')),
                 ),
                 coerce=lambda x: int(x) if not x is None else None,
                 widget=forms.RadioSelect(),

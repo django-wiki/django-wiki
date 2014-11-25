@@ -8,6 +8,8 @@ from django.template.context import Context
 from django.template.loader import render_to_string
 from django.contrib.auth.models import AnonymousUser
 from wiki.core.permissions import can_read
+from django.utils.translation import ugettext_lazy as _
+
 
 ATTACHMENT_RE = re.compile(r'(?P<before>.*)(\[attachment\:(?P<id>\d+)\])(?P<after>.*)', re.IGNORECASE)
 
@@ -60,7 +62,9 @@ class AttachmentPreprocessor(markdown.preprocessors.Preprocessor):
                         }))
                     line = self.markdown.htmlStash.store(html, safe=True)
                 except models.Attachment.DoesNotExist:
-                    html = """<span class="attachment attachment-deleted">Attachment with ID #%s is deleted.</span>""" % attachment_id
+                    html = """<span class="attachment attachment-deleted">{text}</span>""".format(
+                        text=_("Attachment with ID #{id_number} is deleted.").format(id_number=attachment_id)
+                    )
                     line = line.replace(m.group(2), self.markdown.htmlStash.store(html, safe=True))
                 line = before + line + after
             new_text.append(line)
