@@ -115,7 +115,7 @@ Django < 1.7
 ~~~~~~~~~~~~
 
 If you run older versions of Django, please upgrade South to 1.0 or later so
-that correct migrations files are found. You also need to ``'south'`` to
+that correct migrations files are found. You also need to add ``'south'`` to
 ``INSTALLED_APPS``.
 
 
