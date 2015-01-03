@@ -4373,6 +4373,7 @@ textarea.wiki-form-block select {
 }
 /* General styling, any kind of form input */
 .wiki-control input[type=text],
+.wiki-control input[type=email],
 .wiki-control input[type=password] {
   height: 38px;
   padding: 8px 12px;
@@ -4479,6 +4480,7 @@ textarea.form-horizontal .wiki-control textarea {
 }
 /* other fields */
 .form-horizontal .wiki-control input[type=text],
+.form-horizontal .wiki-control input[type=email],
 .form-horizontal .wiki-control input[type=password] {
   width: 280px;
   display: inline-block;
