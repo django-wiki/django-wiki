@@ -30,7 +30,7 @@ the final release.
 **Compatibility**
 
  * Django < 1.7 (That means Django 1.7 is **not** supported)
- * South 0.8.4+ (if you are un an older South, you **need** to upgrade)
+ * South 0.8.4+ (if you are on an older South, you **need** to upgrade)
 
 **Notifications**
 
@@ -52,6 +52,8 @@ manually import this data into the database.
 If you are having problems, please consider re-running the migrations
 for notifications like so:
   
+::
+
     python manage.py migrate notifications zero
     python manage.py migrate notifications
 
@@ -59,6 +61,8 @@ If you get `DatabaseError: no such table: notifications_articlesubscription`,
 you have been running django-wiki version with differently named tables.
 Don't worry, just fake the backwards migration:
   
+::
+
     python manage.py migrate notifications zero --fake  
 
 If you get ``relation "notifications_articlesubscription" already exists`` you
@@ -68,6 +72,8 @@ your DB shell (after backing up this data).
 In order to create notifications for all article authors and editors,
 run the following management command:
   
+::
+
     python manage.py default_notifications
 
 
