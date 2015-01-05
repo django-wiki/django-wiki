@@ -40,6 +40,9 @@ if not 'django.contrib.auth.context_processors.auth' in django_settings.TEMPLATE
 if not 'django.core.context_processors.request' in django_settings.TEMPLATE_CONTEXT_PROCESSORS:
     raise ImproperlyConfigured('django-wiki: needs django.core.context_processors.request in TEMPLATE_CONTEXT_PROCESSORS')
 
+if 'django_notify' in django_settings.INSTALLED_APPS:
+    raise ImproperlyConfigured('django-wiki: You need to change from django_notify to django_nyt in INSTALLED_APPS and your urlconfig.')
+
 ######################
 # Warnings
 ######################
