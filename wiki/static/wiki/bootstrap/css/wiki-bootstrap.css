@@ -264,7 +264,7 @@ html {
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
-  line-height: 1.428571429;
+  line-height: 1.42857143;
   color: #333333;
   background-color: #ffffff;
 }
@@ -315,7 +315,7 @@ p {
 }
 .lead {
   margin-bottom: 20px;
-  font-size: 16.099999999999998px;
+  font-size: 16.1px;
   font-weight: 200;
   line-height: 1.4;
 }
@@ -473,7 +473,7 @@ dl {
 }
 dt,
 dd {
-  line-height: 1.428571429;
+  line-height: 1.42857143;
 }
 dt {
   font-weight: bold;
@@ -537,7 +537,7 @@ blockquote p:last-child {
 }
 blockquote small {
   display: block;
-  line-height: 1.428571429;
+  line-height: 1.42857143;
   color: #999999;
 }
 blockquote small:before {
@@ -570,7 +570,7 @@ address {
   display: block;
   margin-bottom: 20px;
   font-style: normal;
-  line-height: 1.428571429;
+  line-height: 1.42857143;
 }
 code,
 pre {
@@ -589,7 +589,7 @@ pre {
   padding: 9.5px;
   margin: 0 0 10px;
   font-size: 13px;
-  line-height: 1.428571429;
+  line-height: 1.42857143;
   word-break: break-all;
   word-wrap: break-word;
   color: #333333;
@@ -721,37 +721,37 @@ pre code {
   float: left;
 }
 .col-1 {
-  width: 8.333333333333332%;
+  width: 8.33333333%;
 }
 .col-2 {
-  width: 16.666666666666664%;
+  width: 16.66666667%;
 }
 .col-3 {
   width: 25%;
 }
 .col-4 {
-  width: 33.33333333333333%;
+  width: 33.33333333%;
 }
 .col-5 {
-  width: 41.66666666666667%;
+  width: 41.66666667%;
 }
 .col-6 {
   width: 50%;
 }
 .col-7 {
-  width: 58.333333333333336%;
+  width: 58.33333333%;
 }
 .col-8 {
-  width: 66.66666666666666%;
+  width: 66.66666667%;
 }
 .col-9 {
   width: 75%;
 }
 .col-10 {
-  width: 83.33333333333334%;
+  width: 83.33333333%;
 }
 .col-11 {
-  width: 91.66666666666666%;
+  width: 91.66666667%;
 }
 .col-12 {
   width: 100%;
@@ -775,106 +775,106 @@ pre code {
     float: left;
   }
   .col-sm-1 {
-    width: 8.333333333333332%;
+    width: 8.33333333%;
   }
   .col-sm-2 {
-    width: 16.666666666666664%;
+    width: 16.66666667%;
   }
   .col-sm-3 {
     width: 25%;
   }
   .col-sm-4 {
-    width: 33.33333333333333%;
+    width: 33.33333333%;
   }
   .col-sm-5 {
-    width: 41.66666666666667%;
+    width: 41.66666667%;
   }
   .col-sm-6 {
     width: 50%;
   }
   .col-sm-7 {
-    width: 58.333333333333336%;
+    width: 58.33333333%;
   }
   .col-sm-8 {
-    width: 66.66666666666666%;
+    width: 66.66666667%;
   }
   .col-sm-9 {
     width: 75%;
   }
   .col-sm-10 {
-    width: 83.33333333333334%;
+    width: 83.33333333%;
   }
   .col-sm-11 {
-    width: 91.66666666666666%;
+    width: 91.66666667%;
   }
   .col-sm-12 {
     width: 100%;
   }
   .col-push-1 {
-    left: 8.333333333333332%;
+    left: 8.33333333%;
   }
   .col-push-2 {
-    left: 16.666666666666664%;
+    left: 16.66666667%;
   }
   .col-push-3 {
     left: 25%;
   }
   .col-push-4 {
-    left: 33.33333333333333%;
+    left: 33.33333333%;
   }
   .col-push-5 {
-    left: 41.66666666666667%;
+    left: 41.66666667%;
   }
   .col-push-6 {
     left: 50%;
   }
   .col-push-7 {
-    left: 58.333333333333336%;
+    left: 58.33333333%;
   }
   .col-push-8 {
-    left: 66.66666666666666%;
+    left: 66.66666667%;
   }
   .col-push-9 {
     left: 75%;
   }
   .col-push-10 {
-    left: 83.33333333333334%;
+    left: 83.33333333%;
   }
   .col-push-11 {
-    left: 91.66666666666666%;
+    left: 91.66666667%;
   }
   .col-pull-1 {
-    right: 8.333333333333332%;
+    right: 8.33333333%;
   }
   .col-pull-2 {
-    right: 16.666666666666664%;
+    right: 16.66666667%;
   }
   .col-pull-3 {
     right: 25%;
   }
   .col-pull-4 {
-    right: 33.33333333333333%;
+    right: 33.33333333%;
   }
   .col-pull-5 {
-    right: 41.66666666666667%;
+    right: 41.66666667%;
   }
   .col-pull-6 {
     right: 50%;
   }
   .col-pull-7 {
-    right: 58.333333333333336%;
+    right: 58.33333333%;
   }
   .col-pull-8 {
-    right: 66.66666666666666%;
+    right: 66.66666667%;
   }
   .col-pull-9 {
     right: 75%;
   }
   .col-pull-10 {
-    right: 83.33333333333334%;
+    right: 83.33333333%;
   }
   .col-pull-11 {
-    right: 91.66666666666666%;
+    right: 91.66666667%;
   }
 }
 @media (min-width: 992px) {
@@ -896,73 +896,73 @@ pre code {
     float: left;
   }
   .col-lg-1 {
-    width: 8.333333333333332%;
+    width: 8.33333333%;
   }
   .col-lg-2 {
-    width: 16.666666666666664%;
+    width: 16.66666667%;
   }
   .col-lg-3 {
     width: 25%;
   }
   .col-lg-4 {
-    width: 33.33333333333333%;
+    width: 33.33333333%;
   }
   .col-lg-5 {
-    width: 41.66666666666667%;
+    width: 41.66666667%;
   }
   .col-lg-6 {
     width: 50%;
   }
   .col-lg-7 {
-    width: 58.333333333333336%;
+    width: 58.33333333%;
   }
   .col-lg-8 {
-    width: 66.66666666666666%;
+    width: 66.66666667%;
   }
   .col-lg-9 {
     width: 75%;
   }
   .col-lg-10 {
-    width: 83.33333333333334%;
+    width: 83.33333333%;
   }
   .col-lg-11 {
-    width: 91.66666666666666%;
+    width: 91.66666667%;
   }
   .col-lg-12 {
     width: 100%;
   }
   .col-offset-1 {
-    margin-left: 8.333333333333332%;
+    margin-left: 8.33333333%;
   }
   .col-offset-2 {
-    margin-left: 16.666666666666664%;
+    margin-left: 16.66666667%;
   }
   .col-offset-3 {
     margin-left: 25%;
   }
   .col-offset-4 {
-    margin-left: 33.33333333333333%;
+    margin-left: 33.33333333%;
   }
   .col-offset-5 {
-    margin-left: 41.66666666666667%;
+    margin-left: 41.66666667%;
   }
   .col-offset-6 {
     margin-left: 50%;
   }
   .col-offset-7 {
-    margin-left: 58.333333333333336%;
+    margin-left: 58.33333333%;
   }
   .col-offset-8 {
-    margin-left: 66.66666666666666%;
+    margin-left: 66.66666667%;
   }
   .col-offset-9 {
     margin-left: 75%;
   }
   .col-offset-10 {
-    margin-left: 83.33333333333334%;
+    margin-left: 83.33333333%;
   }
   .col-offset-11 {
-    margin-left: 91.66666666666666%;
+    margin-left: 91.66666667%;
   }
 }
 @media (min-width: 1200px) {
@@ -988,7 +988,7 @@ th {
 .table tbody > tr > td,
 .table tfoot > tr > td {
   padding: 8px;
-  line-height: 1.428571429;
+  line-height: 1.42857143;
   vertical-align: top;
   border-top: 1px solid #dddddd;
 }
@@ -1196,7 +1196,7 @@ input[type="number"]::-webkit-inner-spin-button {
   height: 38px;
   padding: 8px 12px;
   font-size: 14px;
-  line-height: 1.428571429;
+  line-height: 1.42857143;
   color: #555555;
   vertical-align: middle;
   background-color: #ffffff;
@@ -1388,7 +1388,7 @@ select.input-small {
   padding: 8px 12px;
   font-size: 14px;
   font-weight: normal;
-  line-height: 1.428571429;
+  line-height: 1.42857143;
   text-align: center;
   background-color: #eeeeee;
   border: 1px solid #cccccc;
@@ -1494,7 +1494,7 @@ select.input-small {
   margin-bottom: 0;
   font-size: 14px;
   font-weight: 500;
-  line-height: 1.428571429;
+  line-height: 1.42857143;
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
@@ -1832,7 +1832,7 @@ input[type="button"].btn-block {
   padding: 3px 20px;
   clear: both;
   font-weight: normal;
-  line-height: 1.428571429;
+  line-height: 1.42857143;
   color: #333333;
   white-space: nowrap;
 }
@@ -1885,7 +1885,7 @@ input[type="button"].btn-block {
   display: block;
   padding: 3px 20px;
   font-size: 12px;
-  line-height: 1.428571429;
+  line-height: 1.42857143;
   color: #999999;
 }
 .dropdown-backdrop {
@@ -2182,7 +2182,7 @@ button.close {
 }
 .nav-tabs > li > a {
   margin-right: 2px;
-  line-height: 1.428571429;
+  line-height: 1.42857143;
   border: 1px solid transparent;
   border-radius: 4px 4px 0 0;
 }
@@ -2761,7 +2761,7 @@ button.close {
 .pagination > li > span {
   float: left;
   padding: 4px 12px;
-  line-height: 1.428571429;
+  line-height: 1.42857143;
   text-decoration: none;
   background-color: #ffffff;
   border: 1px solid #dddddd;
@@ -2953,14 +2953,14 @@ button.close {
 .modal-header {
   padding: 15px;
   border-bottom: 1px solid #e5e5e5;
-  min-height: 16.428571429px;
+  min-height: 16.42857143px;
 }
 .modal-header .close {
   margin-top: -2px;
 }
 .modal-title {
   margin: 0;
-  line-height: 1.428571429;
+  line-height: 1.42857143;
 }
 .modal-body {
   position: relative;
@@ -3307,7 +3307,7 @@ button.close {
 .thumbnail,
 .img-thumbnail {
   padding: 4px;
-  line-height: 1.428571429;
+  line-height: 1.42857143;
   background-color: #ffffff;
   border: 1px solid #dddddd;
   border-radius: 4px;
@@ -3762,7 +3762,7 @@ a.list-group-item.active > .badge,
   margin-bottom: 30px;
   font-size: 21px;
   font-weight: 200;
-  line-height: 2.1428571435;
+  line-height: 2.14285714;
   color: inherit;
   background-color: #eeeeee;
 }
@@ -4133,7 +4133,7 @@ label {
   display: block;
   padding: 3px 20px;
   font-size: 12px;
-  line-height: 1.428571429;
+  line-height: 1.42857143;
   color: #999999;
 }
 .wiki-article a.linknotfound {
@@ -4158,7 +4158,7 @@ label {
 .wiki-article table tbody > tr > td,
 .wiki-article table tfoot > tr > td {
   padding: 8px;
-  line-height: 1.428571429;
+  line-height: 1.42857143;
   vertical-align: top;
   border-top: 1px solid #dddddd;
 }
@@ -4310,7 +4310,7 @@ input[type=file] {
   height: 38px;
   padding: 8px 12px;
   font-size: 14px;
-  line-height: 1.428571429;
+  line-height: 1.42857143;
   color: #555555;
   vertical-align: middle;
   background-color: #ffffff;
@@ -4377,7 +4377,7 @@ textarea.wiki-form-block select {
   height: 38px;
   padding: 8px 12px;
   font-size: 14px;
-  line-height: 1.428571429;
+  line-height: 1.42857143;
   color: #555555;
   vertical-align: middle;
   width: 280px;
@@ -4392,7 +4392,7 @@ textarea.wiki-form-block select {
   height: 38px;
   padding: 8px 12px;
   font-size: 14px;
-  line-height: 1.428571429;
+  line-height: 1.42857143;
   color: #555555;
   vertical-align: middle;
   background-color: #ffffff;
@@ -4499,7 +4499,7 @@ textarea.form-horizontal .wiki-control textarea {
   height: 38px;
   padding: 8px 12px;
   font-size: 14px;
-  line-height: 1.428571429;
+  line-height: 1.42857143;
   color: #555555;
   vertical-align: middle;
   background-color: #ffffff;
@@ -4715,7 +4715,7 @@ textarea.form-vertical .wiki-control textarea {
 /* makes the font 33% larger relative to the icon container */
 .icon-large:before {
   vertical-align: -10%;
-  font-size: 1.3333333333333333em;
+  font-size: 1.33333333;
 }
 /* makes sure icons active on rollover in links */
 a [class^="icon-"],
@@ -4726,16 +4726,16 @@ a [class*=" icon-"] {
 [class^="icon-"].icon-fixed-width,
 [class*=" icon-"].icon-fixed-width {
   display: inline-block;
-  width: 1.1428571428571428em;
+  width: 1.14285714;
   text-align: right;
-  padding-right: 0.2857142857142857em;
+  padding-right: 0.28571429;
 }
 [class^="icon-"].icon-fixed-width.icon-large,
 [class*=" icon-"].icon-fixed-width.icon-large {
-  width: 1.4285714285714286em;
+  width: 1.42857143;
 }
 .icons-ul {
-  margin-left: 2.142857142857143em;
+  margin-left: 2.14285714;
   list-style-type: none;
 }
 .icons-ul > li {
@@ -4743,8 +4743,8 @@ a [class*=" icon-"] {
 }
 .icons-ul .icon-li {
   position: absolute;
-  left: -2.142857142857143em;
-  width: 2.142857142857143em;
+  left: -2.14285714;
+  width: 2.14285714;
   text-align: center;
   line-height: inherit;
 }
@@ -6417,7 +6417,6 @@ a .icon-flip-vertical:before {
   color: #0000D0;
   font-weight: bold;
 }
-/* Literal.Number.Integer.Long */
 /******************************
  TWITTER TYPEAHEAD
 *******************************/
