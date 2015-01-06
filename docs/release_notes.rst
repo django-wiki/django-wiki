@@ -34,6 +34,30 @@ the final release.
 
 **Notifications**
 
+After upgrading, your first migrate will give the following error:
+
+::
+
+     ! These migrations are in the database but not on disk:
+        <notifications: 0002_auto__del_articlesubscription>
+     ! I'm not trusting myself; either fix this yourself by fiddling
+     ! with the south_migrationhistory table, or pass --delete-ghost-migrations
+     ! to South to have it delete ALL of these records (this may not be good).
+
+
+If you are fine about loosing all subscriptions and recreate default
+subscriptions after, just follow these steps:
+
+::
+
+    python manage.py migrate notifications zero --fake
+    python manage.py migrate notifications
+    python manage.py wiki_notifications_create_defaults
+
+
+Further explanation
+___________________
+
 Unfortunately, previous releases of django-wiki have had the wrong APP_LABEL
 set for wiki.plugins.notifications and thus all notification subscriptions
 will be reset. The error could not be fixed as it was introduced in 0.0.23
@@ -49,12 +73,11 @@ do a plain text dump of the table ``notifications_articlesubscription`` using
 your database tools. At the end up the upgrade process, you will have to
 manually import this data into the database.
 
-If you are having problems, please consider re-running the migrations
-for notifications like so:
-  
+If you are having problems, you need to re-run the migrations entirely.
+
 ::
 
-    python manage.py migrate notifications zero
+    python manage.py migrate notifications zero --delete-ghost-migrations
     python manage.py migrate notifications
 
 If you get `DatabaseError: no such table: notifications_articlesubscription`,
@@ -71,10 +94,10 @@ your DB shell (after backing up this data).
 
 In order to create notifications for all article authors and editors,
 run the following management command:
-  
+
 ::
 
-    python manage.py default_notifications
+    python manage.py wiki_notifications_create_defaults
 
 
 django-wiki 0.1
