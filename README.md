@@ -100,7 +100,7 @@ Demo
 
 A demo is available here, sign up for an account to see the notification system.
 
-[wiki.overtag.dk](http://wiki.overtag.dk)
+[http://demo.django-wiki.org/](http://demo.django-wiki.org/)
 
 Community
 ---------
