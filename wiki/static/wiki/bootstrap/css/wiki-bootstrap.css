@@ -4373,6 +4373,7 @@ textarea.wiki-form-block select {
 }
 /* General styling, any kind of form input */
 .wiki-control input[type=text],
+.wiki-control input[type=email],
 .wiki-control input[type=password] {
   height: 38px;
   padding: 8px 12px;
@@ -4385,6 +4386,7 @@ textarea.wiki-form-block select {
 }
 .form-horizontal .wiki-control input[type='text'],
 .form-horizontal .wiki-control input[type='password'],
+.form-horizontal .wiki-control input[type='email'],
 .form-horizontal .wiki-control select,
 .form-horizontal .wiki-control textarea {
   display: block;
@@ -4407,30 +4409,35 @@ textarea.wiki-form-block select {
 }
 .form-horizontal .wiki-control input[type='text']:-moz-placeholder,
 .form-horizontal .wiki-control input[type='password']:-moz-placeholder,
+.form-horizontal .wiki-control input[type='email']:-moz-placeholder,
 .form-horizontal .wiki-control select:-moz-placeholder,
 .form-horizontal .wiki-control textarea:-moz-placeholder {
   color: #999999;
 }
 .form-horizontal .wiki-control input[type='text']::-moz-placeholder,
 .form-horizontal .wiki-control input[type='password']::-moz-placeholder,
+.form-horizontal .wiki-control input[type='email']::-moz-placeholder,
 .form-horizontal .wiki-control select::-moz-placeholder,
 .form-horizontal .wiki-control textarea::-moz-placeholder {
   color: #999999;
 }
 .form-horizontal .wiki-control input[type='text']:-ms-input-placeholder,
 .form-horizontal .wiki-control input[type='password']:-ms-input-placeholder,
+.form-horizontal .wiki-control input[type='email']:-ms-input-placeholder,
 .form-horizontal .wiki-control select:-ms-input-placeholder,
 .form-horizontal .wiki-control textarea:-ms-input-placeholder {
   color: #999999;
 }
 .form-horizontal .wiki-control input[type='text']::-webkit-input-placeholder,
 .form-horizontal .wiki-control input[type='password']::-webkit-input-placeholder,
+.form-horizontal .wiki-control input[type='email']::-webkit-input-placeholder,
 .form-horizontal .wiki-control select::-webkit-input-placeholder,
 .form-horizontal .wiki-control textarea::-webkit-input-placeholder {
   color: #999999;
 }
 .form-horizontal .wiki-control input[type='text']:focus,
 .form-horizontal .wiki-control input[type='password']:focus,
+.form-horizontal .wiki-control input[type='email']:focus,
 .form-horizontal .wiki-control select:focus,
 .form-horizontal .wiki-control textarea:focus {
   border-color: rgba(82, 168, 236, 0.8);
@@ -4440,14 +4447,17 @@ textarea.wiki-form-block select {
 }
 .form-horizontal .wiki-control input[type='text'][disabled],
 .form-horizontal .wiki-control input[type='password'][disabled],
+.form-horizontal .wiki-control input[type='email'][disabled],
 .form-horizontal .wiki-control select[disabled],
 .form-horizontal .wiki-control textarea[disabled],
 .form-horizontal .wiki-control input[type='text'][readonly],
 .form-horizontal .wiki-control input[type='password'][readonly],
+.form-horizontal .wiki-control input[type='email'][readonly],
 .form-horizontal .wiki-control select[readonly],
 .form-horizontal .wiki-control textarea[readonly],
 fieldset[disabled] .form-horizontal .wiki-control input[type='text'],
 fieldset[disabled] .form-horizontal .wiki-control input[type='password'],
+fieldset[disabled] .form-horizontal .wiki-control input[type='email'],
 fieldset[disabled] .form-horizontal .wiki-control select,
 fieldset[disabled] .form-horizontal .wiki-control textarea {
   cursor: not-allowed;
@@ -4455,12 +4465,14 @@ fieldset[disabled] .form-horizontal .wiki-control textarea {
 }
 textarea.form-horizontal .wiki-control input[type='text'],
 textarea.form-horizontal .wiki-control input[type='password'],
+textarea.form-horizontal .wiki-control input[type='email'],
 textarea.form-horizontal .wiki-control select,
 textarea.form-horizontal .wiki-control textarea {
   height: auto;
 }
 .form-horizontal .wiki-control input[type='text'].input-large,
 .form-horizontal .wiki-control input[type='password'].input-large,
+.form-horizontal .wiki-control input[type='email'].input-large,
 .form-horizontal .wiki-control select.input-large,
 .form-horizontal .wiki-control textarea.input-large {
   height: 56px;
@@ -4470,6 +4482,7 @@ textarea.form-horizontal .wiki-control textarea {
 }
 .form-horizontal .wiki-control input[type='text'].input-small,
 .form-horizontal .wiki-control input[type='password'].input-small,
+.form-horizontal .wiki-control input[type='email'].input-small,
 .form-horizontal .wiki-control select.input-small,
 .form-horizontal .wiki-control textarea.input-small {
   height: 30px;
