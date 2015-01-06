@@ -198,13 +198,17 @@ In your Git fork, run `setup.py develop` to install the requirements.
 
 The folder **testproject/** contains a pre-configured django project and an sqlite database. Login for django admin is *admin:admin*. This project should always be maintained, but please do not commit changes to the SQLite database as we only care about its contents in case data models are changed.
 
-**Build status update May 2014** : Builds are currently failing, because we are experimenting with Python 3 support for the upcoming transitional release.
+
+Badgers Badgers Badgers
+-----------------------
 
 [![Build Status](https://travis-ci.org/django-wiki/django-wiki.png?branch=master)](https://travis-ci.org/django-wiki/django-wiki)
 
 [![Downloads](https://pypip.in/d/wiki/badge.png)](https://crate.io/package/wiki)
 
 [![Downloads](https://pypip.in/v/wiki/badge.png)](https://crate.io/package/wiki)
+
+[![Documentation Status](https://readthedocs.org/projects/django-wiki/badge/?version=latest)](https://readthedocs.org/projects/django-wiki/?badge=latest)
 
 
 Python 2.5
