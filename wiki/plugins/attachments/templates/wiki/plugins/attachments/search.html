@@ -11,7 +11,7 @@
 <form method="GET" action="{% url 'wiki:attachments_search' path=urlpath.path article_id=article.id %}" class="form-search">
   {{ search_form.query }}
   <button class="btn btn-default">
-    <span class="icon-search"></span>
+    <span class="fa fa-search"></span>
     {% trans "Search files and articles" %}
   </button>
 </form>
@@ -47,11 +47,11 @@
       <form method="POST" action="{% url 'wiki:attachments_add' path=urlpath.path article_id=article.id attachment_id=attachment.id %}">
         {% csrf_token %}
         <a href="{% url 'wiki:attachments_download' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-default">
-          <span class="icon-download"></span>
+          <span class="fa fa-download"></span>
           {% trans "Download" %}
         </a>
         <button class="btn btn-primary">
-          <span class="icon-plus"></span>
+          <span class="fa fa-plus-circle"></span>
         {% trans "Add to article" %}
         </button>
       </form>
@@ -68,7 +68,7 @@
 {% endwith %}
 
 <p>
-  <a href="{% url 'wiki:attachments_index' path=urlpath.path article_id=article.id %}"><span class="icon-arrow-left"></span> {% trans "Go back" %}</a>
+  <a href="{% url 'wiki:attachments_index' path=urlpath.path article_id=article.id %}"><span class="fa fa-arrow-left"></span> {% trans "Go back" %}</a>
 </p>
 
 {% endblock %}

@@ -43,7 +43,7 @@
           {% endif %}
           <p style="margin-top: 10px; margin-bottom:0;">
           <a href="{% url 'wiki:attachments_history' path=urlpath.path article_id=article.id attachment_id=attachment.id %}">
-            <span class="icon-time"></span>
+            <span class="fa fa-clock-o"></span>
             {% trans "File history" %} ({{ attachment.attachmentrevision_set.all.count }} {% trans "revisions" %})
           </a>
           </p>
@@ -69,7 +69,7 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <a class="panel-toggle" href="#collapse_upload" data-toggle="collapse">
-            <h4 class="panel-title">{% trans "Upload new file" %} <span class="icon icon-upload"></span></h4>
+            <h4 class="panel-title">{% trans "Upload new file" %} <span class="fa fa-upload"></span></h4>
           </a>
         </div>
         
@@ -92,7 +92,7 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <a class="panel-toggle" data-toggle="collapse" href="#collapse_add">
-            <h4 class="panel-title">{% trans "Search and add file" %} <span class="icon icon-plus-sign"></span></h4>
+            <h4 class="panel-title">{% trans "Search and add file" %} <span class="fa fa-plus-circle"></span></h4>
           </a>
         </div>
         
@@ -104,7 +104,7 @@
                 {{ search_form.query }}
                 <span class="input-group-btn">
                   <button class="btn btn-default" type="submit">
-                    <span class="icon-search"></span>
+                    <span class="fa fa-search"></span>
                   </button>
                 </span>
               </div><!-- /input-group -->
@@ -117,7 +117,7 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             <a class="panel-toggle" data-toggle="collapse" href="#collapse_restore">
-              <h4 class="panel-title">{% trans "Restore attachments" %} <span class="icon icon-trash"></span></h4>
+              <h4 class="panel-title">{% trans "Restore attachments" %} <span class="fa fa-trash"></span></h4>
             </a>
           </div>
           <div id="collapse_restore" class="panel-collapse collapse">
@@ -152,7 +152,7 @@
   
     {% if article|is_locked %}
     <p class="muted">
-      <i class="icon-lock"></i>
+      <i class="fa fa-lock"></i>
       {% trans "The article is currently locked for editing, and therefore no new attachments can be added." %}
     </p>
     {% endif %}
