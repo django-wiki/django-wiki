@@ -372,3 +372,10 @@ input[type=file] {float: none; width: auto;}
 
 @import "typeahead.less";
 
+/*
+Twitter Typeahead does not officially support Bootstrap 3 anymore
+https://github.com/twitter/typeahead.js/issues/378
+*/
+.twitter-typeahead {
+  display: block !important;
+}

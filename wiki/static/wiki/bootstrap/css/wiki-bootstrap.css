@@ -8869,3 +8869,10 @@ textarea.form-vertical .wiki-control textarea {
   line-height: 1.428571429;
   border: 1px solid transparent;
 }
+/*
+Twitter Typeahead does not officially support Bootstrap 3 anymore
+https://github.com/twitter/typeahead.js/issues/378
+*/
+.twitter-typeahead {
+  display: block !important;
+}
