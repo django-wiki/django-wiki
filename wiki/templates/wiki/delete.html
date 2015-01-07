@@ -43,11 +43,11 @@
       <div class="form-group form-actions">
         <div class="col-lg-2"></div>
         <div class="col-lg-10">
-          <a href="{% url 'wiki:get' path=urlpath.path article_id=article.id %}" class="btn btn-default btn-large">
+          <a href="{% url 'wiki:get' path=urlpath.path article_id=article.id %}" class="btn btn-default btn-lg">
             <span class="icon-circle-arrow-left"></span>
             {% trans "Go back" %}
           </a>
-          <button type="submit" name="save_changes" class="btn btn-danger btn-large">
+          <button type="submit" name="save_changes" class="btn btn-danger btn-lg">
             <span class="icon-trash icon-white"></span>
             {% trans "Delete article" %}
           </button>

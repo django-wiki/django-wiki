@@ -6337,9 +6337,6 @@ label {
 #attachment_form #id_description {
   width: 95%;
 }
-#wiki-edit-sidebar .accordion {
-  margin-bottom: 5px;
-}
 .wiki-article div.toc,
 .wiki-article div.article-list {
   max-width: 340px;
@@ -6821,19 +6818,16 @@ textarea.form-vertical .wiki-control textarea {
 @media (min-width: 980px) {
   .wiki-modal .modal-dialog {
     width: 80%;
-    margin-left: -40%;
   }
 }
 @media (max-width: 979px) {
   .wiki-modal .modal-dialog {
     width: 90%;
-    margin-left: -45%;
   }
 }
 @media (max-width: 767px) {
   .wiki-modal .modal-dialog {
     width: 90%;
-    margin-left: 0;
   }
 }
 @media screen and (min-width: 768px) {
@@ -6842,7 +6836,7 @@ textarea.form-vertical .wiki-control textarea {
     float: right;
   }
   #wiki-search-form {
-    width: 140px;
+    width: 170px;
   }
 }
 /******************************

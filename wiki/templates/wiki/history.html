@@ -52,10 +52,10 @@
 <form method="GET">
   <div class="tab-content" style="overflow: visible;">
     {% for revision in revisions %}
-      <div class="accordion" id="accordion{{ revision.revision_number }}">
-        <div class="accordion-group">
-          <div class="accordion-heading">
-            <a class="accordion-toggle" style="float: left;" href="#collapse{{ revision.revision_number }}" onclick="get_diff_json('{% url 'wiki:diff' revision.id %}', $('#collapse{{ revision.revision_number }}'))">
+      <div class="panel-group" id="accordion{{ revision.revision_number }}">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <a class="panel-toggle" style="float: left;" href="#collapse{{ revision.revision_number }}" onclick="get_diff_json('{% url 'wiki:diff' revision.id %}', $('#collapse{{ revision.revision_number }}'))">
               {% if revision == article.current_revision %}
                 <i class="icon-flag"></i>
               {% else %}
@@ -97,8 +97,8 @@
             </div>
             <div style="clear: both"></div>
           </div>
-          <div id="collapse{{ revision.revision_number }}" class="accordion-body collapse">
-            <div class="accordion-inner diff-container" style="padding: 0;">
+          <div id="collapse{{ revision.revision_number }}" class="panel-collapse collapse">
+            <div class="panel-body diff-container" style="padding: 0;">
               <dl class="dl-horizontal">
                 <dt>{% trans "Auto log:" %}</dt>
                 <dd>{{ revision.automatic_log|default:"-"|linebreaksbr }}</dd>
@@ -124,11 +124,11 @@
 
     <div class="form-group form-actions">
       <div class="pull-right">
-        <button type="submit" name="preview" value="1" class="btn btn-default btn-large" onclick="$('#mergeModal').modal('show'); this.form.target='mergeWindow'; this.form.action=$('input[type=radio]:checked').attr('merge-button-href'); $('.merge-revision-commit').attr('href', $('input[type=radio]:checked').attr('merge-button-commit-href'))">
+        <button type="submit" name="preview" value="1" class="btn btn-default btn-lg" onclick="$('#mergeModal').modal('show'); this.form.target='mergeWindow'; this.form.action=$('input[type=radio]:checked').attr('merge-button-href'); $('.merge-revision-commit').attr('href', $('input[type=radio]:checked').attr('merge-button-commit-href'))">
           <span class="icon-random"></span>
           {% trans "Merge selected with current..." %}
         </button>
-        <button type="submit" name="save" value="1" class="btn btn-large btn-primary" onclick="this.form.target='_self'; this.form.action=$('input[type=radio]:checked').attr('switch-button-href')">
+        <button type="submit" name="save" value="1" class="btn btn-lg btn-primary" onclick="this.form.target='_self'; this.form.action=$('input[type=radio]:checked').attr('switch-button-href')">
           <span class="icon-flag"></span>
           {% trans "Switch to selected version" %}
         </button>
@@ -147,17 +147,17 @@
           <iframe name="previewWindow" frameborder="0"></iframe>
         </div>
         <div class="modal-footer">
-          <a href="#" class="btn btn-default btn-large" data-dismiss="modal">
+          <a href="#" class="btn btn-default btn-lg" data-dismiss="modal">
             <span class="icon-circle-arrow-left"></span>
             {% trans "Back to history view" %}
           </a>
           {% if article|can_write:user %}
-          <a href="#" class="btn btn-large btn-primary switch-to-revision">
+          <a href="#" class="btn btn-lg btn-primary switch-to-revision">
             <span class="icon-flag"></span>
             {% trans "Switch to this version" %}
           </a>
           {% else %}
-            <a href="#" class="btn btn-large btn-primary disabled">
+            <a href="#" class="btn btn-lg btn-primary disabled">
               <span class="icon-lock"></span>
               {% trans "Switch to this version" %}
             </a>                    
@@ -178,17 +178,17 @@
           <iframe name="mergeWindow" frameborder="0" style="min-height: 0;"></iframe>
         </div>
         <div class="modal-footer">
-          <a href="#" class="btn btn-default btn-large" data-dismiss="modal">
+          <a href="#" class="btn btn-default btn-lg" data-dismiss="modal">
             <span class="icon-circle-arrow-left"></span>
             {% trans "Back to history view" %}
           </a>
           {% if article|can_write:user %}
-          <a href="#" class="btn btn-large btn-primary merge-revision-commit">
+          <a href="#" class="btn btn-lg btn-primary merge-revision-commit">
             <span class="icon-file"></span>
             {% trans "Create new merged version" %}
           </a>                    
           {% else %}
-            <a href="#" class="btn btn-large btn-primary disabled">
+            <a href="#" class="btn btn-lg btn-primary disabled">
               <span class="icon-lock"></span>
               {% trans "Create new merged version" %}
             </a>

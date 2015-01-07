@@ -31,11 +31,11 @@
         <td style="width: 25%; text-align: right; white-space: nowrap;" rowspan="2">
           {% if attachment|can_write:user %}
             {% if not attachment.current_revision.deleted %}
-              <a href="{% url 'wiki:attachments_replace' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-default btn-small">{% trans "Replace" %}</a>
+              <a href="{% url 'wiki:attachments_replace' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-default btn-sm">{% trans "Replace" %}</a>
               {% if attachment.article = article %}
-                <a href="{% url 'wiki:attachments_delete' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-default btn-small">{% trans "Delete" %}</a>
+                <a href="{% url 'wiki:attachments_delete' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-default btn-sm">{% trans "Delete" %}</a>
               {% else %}
-                <a href="{% url 'wiki:attachments_delete' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-default btn-small">{% trans "Detach" %}</a>
+                <a href="{% url 'wiki:attachments_delete' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-default btn-sm">{% trans "Detach" %}</a>
               {% endif %}
             {% else %}
                Deleted
@@ -65,18 +65,16 @@
   </div>
   <div class="col-lg-4" style="min-width: 330px;">
   {% if article|can_write:user and not article|is_locked %}
-    <div class="accordion">
-
-      <div class="accordion-group">
-        
-        <div class="accordion-heading">
-          <a class="accordion-toggle" href="#collapse_upload" data-toggle="collapse">
-            <h3>{% trans "Upload new file" %} <span class="icon icon-upload"></span></h3>
+    <div class="panel-group">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <a class="panel-toggle" href="#collapse_upload" data-toggle="collapse">
+            <h4 class="panel-title">{% trans "Upload new file" %} <span class="icon icon-upload"></span></h4>
           </a>
         </div>
         
-        <div id="collapse_upload" class="accordion-body collapse{% if form.errors %} in{% endif %}">
-          <div class="accordion-inner">
+        <div id="collapse_upload" class="panel-collapse collapse{% if form.errors %} in{% endif %}">
+          <div class="panel-body">
             {% if anonymous_disallowed %}
               {% include "wiki/includes/anonymous_blocked.html" %}
             {% else %}
@@ -89,18 +87,17 @@
             {% endif %}
           </div>
         </div>
-      
       </div>
-      
-      <div class="accordion-group">
-        <div class="accordion-heading">
-          <a class="accordion-toggle" data-toggle="collapse" href="#collapse_add">
-            <h3>{% trans "Search and add file" %} <span class="icon icon-plus-sign"></span></h3>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <a class="panel-toggle" data-toggle="collapse" href="#collapse_add">
+            <h4 class="panel-title">{% trans "Search and add file" %} <span class="icon icon-plus-sign"></span></h4>
           </a>
         </div>
         
-        <div id="collapse_add" class="accordion-body collapse">
-          <div class="accordion-inner">
+        <div id="collapse_add" class="panel-collapse collapse">
+          <div class="panel-body">
             <p>{% trans "You can reuse files from other articles. These files are subject to updates on other articles which may or may not be a good thing." %}</p>
             <form method="GET" action="{% url 'wiki:attachments_search' path=urlpath.path article_id=article.id %}" class="wiki-form-block">
               <div class="input-group">
@@ -117,14 +114,14 @@
       </div>
       
       {% if article|can_write:user %}
-        <div class="accordion-group">
-          <div class="accordion-heading">
-            <a class="accordion-toggle" data-toggle="collapse" href="#collapse_restore">
-              <h3>{% trans "Restore attachments" %} <span class="icon icon-trash"></span></h3>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <a class="panel-toggle" data-toggle="collapse" href="#collapse_restore">
+              <h4 class="panel-title">{% trans "Restore attachments" %} <span class="icon icon-trash"></span></h4>
             </a>
           </div>
-          <div id="collapse_restore" class="accordion-body collapse">
-            <div class="accordion-inner">
+          <div id="collapse_restore" class="panel-collapse collapse">
+            <div class="panel-body">
             
             {% for attachment in deleted_attachments %}
             <p>
