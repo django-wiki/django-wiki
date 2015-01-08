@@ -2,7 +2,7 @@
 function get_diff_json(url, put_in_element) {
   jsonWrapper(url, function (data) {
     if (!$(put_in_element).find('.diff-container tbody').length > 0) {
-      $(put_in_element).parentsUntil('.accordion').find('.progress').show(0 , function() {
+      $(put_in_element).parentsUntil('.panel-group').find('.progress').show(0 , function() {
         tbody = pydifferviewer.as_tbody({differ_output: data.diff});
         $(put_in_element).find('.diff-container table').append(
           tbody
@@ -14,7 +14,7 @@ function get_diff_json(url, put_in_element) {
           }
         }        
         put_in_element.find('.diff-container').show('fast', function() {put_in_element.collapse('show');});
-        $(put_in_element).parentsUntil('.accordion').find('.progress').detach();
+        $(put_in_element).parentsUntil('.panel-group').find('.progress').detach();
       });
     } else {
       put_in_element.find('.diff-container').show('fast', function() {put_in_element.collapse('toggle');});
