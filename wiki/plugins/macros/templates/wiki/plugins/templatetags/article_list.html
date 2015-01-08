@@ -4,7 +4,7 @@
 <li>
   <a href="{% url 'wiki:get' path=parent.path article_id=parent.article.id %}">
     {{ parent.article.current_revision.title }}
-    {% if not parent.article.other_read %}<i class="icon-lock"></i>{% endif %}
+    {% if not parent.article.other_read %}<i class="fa fa-lock"></i>{% endif %}
   </a>
 {% if parent.article.other_read %}
   {% with parent.children.active as children %}

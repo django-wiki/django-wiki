@@ -16,7 +16,7 @@ class MacroPlugin(BasePlugin):
     slug = settings.SLUG
     
     sidebar = {'headline': _('Macros'),
-               'icon_class': 'icon-play',
+               'icon_class': 'fa-play',
                'template': 'wiki/plugins/macros/sidebar.html',
                'form_class': None,
                'get_form_kwargs': (lambda a: {})}

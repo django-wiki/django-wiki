@@ -80,7 +80,7 @@ class UrlizePattern(markdown.inlinepatterns.Pattern):
                 url = 'http://' + url
         
         icon = markdown.util.etree.Element("span")
-        icon.set('class', 'icon-external-link')
+        icon.set('class', 'fa fa-external-link')
         
         span_text = markdown.util.etree.Element("span")
         span_text.text = markdown.util.AtomicString(" " + text)

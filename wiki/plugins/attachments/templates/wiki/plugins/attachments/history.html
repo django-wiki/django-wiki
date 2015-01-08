@@ -32,12 +32,12 @@
       <form method="POST" action="{% url 'wiki:attachments_revision_change' path=urlpath.path article_id=article.id attachment_id=attachment.id revision_id=revision.id %}">
         {% csrf_token %}
         <a href="{% url 'wiki:attachments_download' path=urlpath.path article_id=article.id attachment_id=attachment.id revision_id=revision.id %}" class="btn btn-primary">
-          <span class="icon-download"></span>
+          <span class="fa fa-download"></span>
           {% trans "Download" %}
         </a>
         {% if revision.attachment.article|can_write:user %}
             <button{% if revision == attachment.current_revision %} disabled="disabled"{% endif %} class="btn btn-default">
-              <span class="icon-flag"></span>
+              <span class="fa fa-flag"></span>
             {% trans "Use this!" %}
             </button>
         {% endif %}
@@ -46,7 +46,7 @@
   </tr>
 {% endfor %}
 </table>
-<a href="{% url 'wiki:attachments_index' path=urlpath.path article_id=article.id %}"><span class="icon-arrow-left"></span> {% trans "Go back" %}</a>
+<a href="{% url 'wiki:attachments_index' path=urlpath.path article_id=article.id %}"><span class="fa fa-arrow-left"></span> {% trans "Go back" %}</a>
   
 {% endblock %}
 

@@ -29,9 +29,9 @@ function insert_image(image_id) {
           <td style="white-space: nowrap;">
             <p>{% trans "Image id" %}: {{ image.id }}</code></p>
             <p>
-              <a href="javascript:void(insert_image({{ image.id }}))"><span class="icon-edit"></span> {% trans "Insert" %}</a><br />
+              <a href="javascript:void(insert_image({{ image.id }}))"><span class="fa fa-edit"></span> {% trans "Insert" %}</a><br />
               {% if image|can_write:user %}
-              <a href="{% url 'wiki:images_add_revision' path=urlpath.path article_id=article.id image_id=image.id %}"><span class="icon-upload"></span> {% trans "Replace" %}</a>
+              <a href="{% url 'wiki:images_add_revision' path=urlpath.path article_id=article.id image_id=image.id %}"><span class="fa fa-upload"></span> {% trans "Replace" %}</a>
               {% endif %}
             </p>
           </td>
@@ -99,8 +99,8 @@ function insert_image(image_id) {
   {% endfor %}
 
   <p>
-    <button type="submit" name="{{ plugin.slug }}_save" value="1" class="btn btn-default btn-large">
-      <span class="icon-upload"></span>
+    <button type="submit" name="{{ plugin.slug }}_save" value="1" class="btn btn-default btn-lg">
+      <span class="fa fa-upload"></span>
       {% trans "Add image" %}
     </button>
   </p>

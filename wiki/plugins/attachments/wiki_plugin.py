@@ -23,7 +23,7 @@ class AttachmentPlugin(BasePlugin):
         )
     }
     
-    article_tab = (_('Attachments'), "icon-file")
+    article_tab = (_('Attachments'), "fa fa-file")
     article_view = views.AttachmentView().dispatch
     
     # List of notifications to construct signal handlers for. This

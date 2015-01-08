@@ -32,8 +32,6 @@ label { font-size: 16px; font-weight: normal; color: #777;}
 #attachment_form #id_description
 { width: 95% }
 
-#wiki-edit-sidebar .accordion {margin-bottom: 5px;}
-
 .wiki-article div.toc,
 .wiki-article div.article-list {
     max-width: 340px;
@@ -53,7 +51,7 @@ label { font-size: 16px; font-weight: normal; color: #777;}
 
 .wiki-article div.toc > ul,
 .wiki-article div.article-list > ul {
-    .border-radius(5px);
+    border-radius: 5px;
     background-color: #f6f6f6;
     padding-top: 5px;
 }
@@ -155,7 +153,11 @@ input[type=file] {float: none; width: auto;}
 
 .directory-toolbar .filter-clear { margin-right: 10px; position: relative; top: 5px; }
 
-.accordion-heading h3 {margin: 0;}
+.panel-heading h3 {margin: 0;}
+
+.diff-container {
+    overflow-x: scroll;
+}
 
 .breadcrumb .icon-bar {
     display: block;
@@ -316,7 +318,7 @@ input[type=file] {float: none; width: auto;}
 }
 
 // Assuming it's a nested icon
-.accordion-heading .icon
+.panel-heading .icon
 {
     color: #444;
     font-size: 75%;
@@ -332,21 +334,18 @@ input[type=file] {float: none; width: auto;}
     .wiki-modal .modal-dialog
     {
         width: 80%;
-        margin-left: -40%;
     }
 }
 @media (max-width: 979px) {
     .wiki-modal .modal-dialog
     {
         width: 90%;
-        margin-left: -45%;
     }
 }
 @media (max-width: 767px) {
     .wiki-modal .modal-dialog
     {
         width: 90%;
-        margin-left: 0;
     }
 }
 @media screen and (min-width: @grid-float-breakpoint) {
@@ -354,7 +353,7 @@ input[type=file] {float: none; width: auto;}
         .pull-right;
     }
     #wiki-search-form {
-        width: 140px;
+        width: 170px;
     }
 }
 
@@ -363,6 +362,7 @@ input[type=file] {float: none; width: auto;}
 *******************************/
 
 @import "../../../font-awesome/less/font-awesome.less";
+@fa-font-path: "../../font-awesome/font";
 
 /******************************
  CODEHILITE / PYGMENTS
@@ -376,3 +376,10 @@ input[type=file] {float: none; width: auto;}
 
 @import "typeahead.less";
 
+/*
+Twitter Typeahead does not officially support Bootstrap 3 anymore
+https://github.com/twitter/typeahead.js/issues/378
+*/
+.twitter-typeahead {
+  display: block !important;
+}

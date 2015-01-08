@@ -22,7 +22,7 @@ class LinkPlugin(BasePlugin):
     }
     
     sidebar = {'headline': _('Links'),
-               'icon_class': 'icon-bookmark',
+               'icon_class': 'fa-bookmark',
                'template': 'wiki/plugins/links/sidebar.html',
                'form_class': None,
                'get_form_kwargs': (lambda a: {})}

@@ -27,27 +27,29 @@
     {% block wiki_navbar %}
     <div class="navbar navbar-fixed-top navbar-inverse">
       <div class="container">
-        <!-- .navbar-toggle is used as the toggle for collapsed navbar content -->
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        {% block wiki_header_branding %}
-        <a class="navbar-brand" href="{% url 'wiki:root' %}">django-\/\/ i K |</a>
-        {% endblock %}
-        <div class="nav-collapse collapse navbar-responsive-collapse">
-          <form class="navbar-form pull-right-block-on-responsive" id="wiki-search-form" method="GET" action="{% url 'wiki:search' %}">
+        <div class="navbar-header">
+          <!-- .navbar-toggle is used as the toggle for collapsed navbar content -->
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          {% block wiki_header_branding %}
+          <a class="navbar-brand" href="{% url 'wiki:root' %}">django-\/\/ i K |</a>
+          {% endblock %}
+        </div>
+        <div class="navbar-collapse collapse">
+          <form class="navbar-form navbar-right" id="wiki-search-form" method="GET" action="{% url 'wiki:search' %}">
             <div class="input-group">
               <input type="search" class="form-control search-query" name="q" placeholder="{% trans "Search..." %}" />
               <span class="input-group-btn">
                 <button class="btn btn-default" type="button">
-                  <span class="icon-search"></span>
+                  <span class="fa fa-search"></span>
                 </button>
               </span>
             </div><!-- /input-group -->
           </form>
-          <div class="pull-right-block-on-responsive">
+          <div class="navbar-right">
             {% if user.is_authenticated %}
             <ul class="nav navbar-nav">
               <li class="dropdown">
@@ -59,7 +61,7 @@
                 <ul class="dropdown-menu">
                   <li>
                     <a href="{% url 'wiki:logout' %}">
-                      <i class="icon-off"></i>
+                      <i class="fa fa-power-off"></i>
                       {% trans "Log out" %}
                     </a>
                   </li>

@@ -17,10 +17,10 @@
           {{ article.current_revision.title }}
           <small style="font-size: 14px;">
             {% if urlpath.parent %}
-            <a href="{% url 'wiki:get' path=urlpath.path %}"><span class="icon-bookmark"></span> {{ urlpath.slug }}</a>
+            <a href="{% url 'wiki:get' path=urlpath.path %}"><span class="fa fa-bookmark"></span> {{ urlpath.slug }}</a>
             {% endif %}
             {% if article.current_revision.locked %}
-              <span class="icon-lock"></span> {% trans "locked" %}
+              <span class="fa fa-lock"></span> {% trans "locked" %}
             {% endif %}
           </small>
         </h1>

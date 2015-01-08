@@ -5,7 +5,7 @@
 <li class="pull-right{% if selected == "settings" %} active{% endif %}">
   {% if not user.is_anonymous %}
   <a href="{% url 'wiki:settings' article_id=article.id path=urlpath.path %}">
-    <span class="icon-wrench"></span>
+    <span class="fa fa-wrench"></span>
     {% trans "Settings" %}
   </a>
   {% endif %}
@@ -22,7 +22,7 @@
 
 <li class="pull-right{% if selected == "history" %} active{% endif %}">
   <a href="{% url 'wiki:history' article_id=article.id path=urlpath.path %}">
-    <span class="icon-time"></span>
+    <span class="fa fa-clock-o"></span>
     {% trans "Changes" %}
   </a>
 </li>
@@ -30,14 +30,14 @@
 {% if article|can_write:user and not article.current_revision.locked %}
 <li class="pull-right{% if selected == "edit" %} active{% endif %}">
   <a href="{% url 'wiki:edit' article_id=article.id path=urlpath.path %}">
-    <span class="icon-edit"></span>
+    <span class="fa fa-edit"></span>
     {% trans "Edit" %}
   </a>
 </li>
 {% else %}
 <li class="pull-right{% if selected == "source" %} active{% endif %}">
   <a href="{% url 'wiki:source' article_id=article.id path=urlpath.path %}">
-    <span class="icon-lock"></span>
+    <span class="fa fa-lock"></span>
     {% trans "View Source" %}
   </a>
 </li>
@@ -45,7 +45,7 @@
 
 <li class="pull-right{% if selected == "view" %} active{% endif %}">
   <a href="{% url 'wiki:get' article_id=article.id path=urlpath.path %}">
-    <span class="icon-home"></span>
+    <span class="fa fa-home"></span>
     {% trans "View" %}
   </a>
 </li>
