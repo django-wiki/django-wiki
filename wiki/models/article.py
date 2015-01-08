@@ -12,8 +12,9 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
 from wiki.conf import settings
-from wiki.core import article_markdown, permissions
+from wiki.core import permissions
 from wiki.core import compat
+from wiki.core.markdown import article_markdown
 from wiki import managers
 from mptt.models import MPTTModel
 from django.core.urlresolvers import reverse
@@ -162,8 +163,9 @@ class Article(models.Model):
             content = preview_content
         else:
             content = self.current_revision.content
-        return mark_safe(article_markdown(content, self))
-    
+        return mark_safe(article_markdown(content, self,
+                         preview=preview_content is not None))
+
     def get_cache_key(self):
         return "wiki:article:%d" % (self.current_revision.id if self.current_revision else self.id)
     
