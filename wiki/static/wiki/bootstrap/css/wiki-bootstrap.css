@@ -6496,8 +6496,11 @@ input[type=file] {
   position: relative;
   top: 5px;
 }
-.accordion-heading h3 {
+.panel-heading h3 {
   margin: 0;
+}
+.diff-container {
+  overflow-x: scroll;
 }
 .breadcrumb .icon-bar {
   display: block;
@@ -6803,7 +6806,7 @@ textarea.form-vertical .wiki-control textarea {
   border-top: 1px solid #e5e5e5;
   float: none;
 }
-.accordion-heading .icon {
+.panel-heading .icon {
   color: #444;
   font-size: 75%;
 }
