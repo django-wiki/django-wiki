@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import absolute_import
 
 """Django model to DOT (Graphviz) converter
 by Antonio Cavedoni <antonio@cavedoni.org>
@@ -40,12 +42,10 @@ options:
 
     -X, --exclude_models
     exclude specific model(s) from the graph.
-    
+
     -e, --inheritance
     show inheritance arrows.
 """
-from __future__ import print_function
-from __future__ import absolute_import
 __version__ = "0.99"
 __svnid__ = "$Id$"
 __license__ = "Python"
@@ -157,7 +157,7 @@ digraph name {
             abstract_models = abstract_models + [abstract_model for abstract_model in appmodel.__bases__ if hasattr(abstract_model, '_meta') and abstract_model._meta.abstract]
         abstract_models = list(set(abstract_models)) # remove duplicates
         appmodels = abstract_models + appmodels
-        
+
 
         for appmodel in appmodels:
             appmodel_abstracts = [abstract_model.__name__ for abstract_model in appmodel.__bases__ if hasattr(abstract_model, '_meta') and abstract_model._meta.abstract]
@@ -226,7 +226,7 @@ digraph name {
                     continue
                 if not field.primary_key:
                     add_attributes(field)
-            
+
             # FIXME: actually many_to_many fields aren't saved in this model's db table, so why should we add an attribute-line for them in the resulting graph?
             #if appmodel._meta.many_to_many:
             #    for field in appmodel._meta.many_to_many:
@@ -240,14 +240,14 @@ digraph name {
                     label = field.verbose_name
                 else:
                     label = field.name
-                    
+
                 # show related field name
                 if hasattr(field, 'related_query_name'):
                     label += ' (%s)' % field.related_query_name()
 
                 # handle self-relationships
                 if field.rel.to == 'self':
-                    target_model = field.model 
+                    target_model = field.model
                 else:
                     target_model = field.rel.to
 
@@ -284,7 +284,7 @@ digraph name {
                         add_relation(field, '[arrowhead=dot arrowtail=dot, dir=both]')
                     elif isinstance(field, GenericRelation):
                         add_relation(field, mark_safe('[style="dotted", arrowhead=normal, arrowtail=normal, dir=both]'))
-            
+
             if inheritance:
                 # add inheritance arrows
                 for parent in appmodel.__bases__:
@@ -307,7 +307,7 @@ digraph name {
                         # TODO: seems as if abstract models aren't part of models.getModels, which is why they are printed by this without any attributes.
                         if _rel not in model['relations'] and consider(_rel['target']):
                             model['relations'].append(_rel)
-            
+
             graph['models'].append(model)
         graphs.append(graph)
 
@@ -389,9 +389,9 @@ class Command(BaseCommand):
         make_option('--all_applications', '-a', dest='all_applications', default=False,
                     action='store_true',
                     help='Include all applications'),
-        make_option('--disable_fields', '-d', action='store', 
+        make_option('--disable_fields', '-d', action='store',
                     dest='disable_fields',
-                    default="", 
+                    default="",
                     help='Specify fields to exclude'),
         make_option('--group_models', '-g', action='store', dest='group_models',
                     help=''),
@@ -411,6 +411,6 @@ class Command(BaseCommand):
         if not args and not options.get('all_applications', False):
             print(__doc__)
             sys.exit()
-    
+
         print(generate_dot(args, **options))
 
