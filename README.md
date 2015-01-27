@@ -168,19 +168,17 @@ Requirements
 
 So far the dependencies/requirements are:
 
- * [django>=1.4<1.7](http://www.djangoproject.com) - Django 1.7 will be released in version 0.1.
+ * [django>=1.5<1.7](http://www.djangoproject.com) - Django 1.7 will be released in version 0.1, but should run on 0.0.24
  * [django-south](http://south.aeracode.org/)
  * [Markdown>=2.2.0](https://github.com/waylan/Python-Markdown)
- * [django-mptt>=0.5.3](https://github.com/django-mptt/django-mptt)
+ * [django-mptt](https://github.com/django-mptt/django-mptt)
  * [django-sekizai](https://github.com/ojii/django-sekizai/)
  * [sorl-thumbnail](https://github.com/sorl/sorl-thumbnail)
  * Pillow (Python Imaging Library)
- * Python>=2.5<3 (Python 3 not yet supported, will be supported in 0.0.24)
+ * Python>=2.6 or Python>=3.2
 
 Development
 ------------
-
-In your Git fork, run `setup.py develop` to install the requirements.
 
 The folder **testproject/** contains a pre-configured django project and an sqlite database. Login for django admin is *admin:admin*. This project should always be maintained, but please do not commit changes to the SQLite database as we only care about its contents in case data models are changed.
 
