@@ -21,10 +21,10 @@ def read(fname):
 
 
 requirements = [
-    "Django>=1.4,<1.7",
+    "Django>=1.4",
     "django-sekizai>=0.7",
     "Pillow",
-    "django-nyt>=0.9.4",
+    "django-nyt>=0.9.5",
     "django-mptt==0.6.0", # 0.6.1 broken: https://github.com/django-mptt/django-mptt/issues/316
     "six"
     ]
@@ -33,13 +33,17 @@ requirements = [
 try:
     from django import VERSION as DJANGO_VERSION
 except ImportError:
-    # No django so assuming that a new one will get installed...
-    # TODO/FIXME: Remove the South req line here when Django>=1.7 is accepted
-    requirements.append("South>=0.8.4")
+    # No Django so assuming that one will get installed, but we don't know which
+    # one.
+    # For Django 1.7, we don't need South at all, but installing it
+    # doesn't harm anything (as long as it's not added to INSTALLED_APPS).
+    # For Django <= 1.6, we need to ensure a recent South version,
+    # so to be safe we include South here.
+    requirements.append("South>=1.0.1")
     requirements.append("sorl-thumbnail>=11.12.1b")
 else:
     if DJANGO_VERSION < (1, 7):
-        requirements.append("South>=0.8.4")
+        requirements.append("South>=1.0.1")
     if DJANGO_VERSION < (1, 5):
         # For Django 1.4, use sorl-thumbnail<11.12.1:
         # https://github.com/mariocesar/sorl-thumbnail/issues/255
