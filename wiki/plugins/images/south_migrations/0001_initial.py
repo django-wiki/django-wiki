@@ -15,7 +15,7 @@ class Migration(SchemaMigration):
         db.send_create_signal(u'images', ['Image'])
 
         # Adding model 'ImageRevision'
-        db.create_table(u'wiki_images_image', (
+        db.create_table(u'wiki_images_imagerevision', (
             (u'revisionpluginrevision_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['wiki.RevisionPluginRevision'], unique=True, primary_key=True)),
             ('image', self.gf('django.db.models.fields.files.ImageField')(max_length=2000, null=True, blank=True)),
             ('width', self.gf('django.db.models.fields.SmallIntegerField')(null=True, blank=True)),
