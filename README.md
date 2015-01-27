@@ -196,6 +196,7 @@ Badgers Badgers Badgers
 
 [![Documentation Status](https://readthedocs.org/projects/django-wiki/badge/?version=latest)](https://readthedocs.org/projects/django-wiki/?badge=latest)
 
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/django-wiki/django-wiki/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 Python 2.5
 ----------
