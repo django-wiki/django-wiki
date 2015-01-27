@@ -14,6 +14,12 @@ Until it's released, we have a copy here.
 
 /benjaoming
 
+
+UPDATE PR WAS MERGED FOR MARKDOWN 2.3
+
+SO WE AN JUST DEPEND ON THAT!
+
+
 """
 from __future__ import absolute_import
 from __future__ import unicode_literals
