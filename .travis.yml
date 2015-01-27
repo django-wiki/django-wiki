@@ -1,12 +1,14 @@
 language: python
 # See tox.ini for env list
 env:
-  - TOXENV=py26-django15
-  - TOXENV=py26-django16
-  - TOXENV=py27-django15
-  - TOXENV=py27-django16
-  - TOXENV=py33-django15
-  - TOXENV=py33-django16
+- TOXENV=py26-django15
+- TOXENV=py26-django16
+- TOXENV=py27-django15
+- TOXENV=py27-django16
+- TOXENV=py27-django17
+- TOXENV=py33-django15
+- TOXENV=py33-django16
+- TOXENV=py33-django17
 install:
   - pip install tox coveralls
 script:

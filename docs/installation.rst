@@ -114,20 +114,9 @@ maintain the order due to database relational constraints:
 Django < 1.7
 ~~~~~~~~~~~~
 
-If you run older versions of django, please point south to the correct
-migrations modules like so:
-
-::
-
-    INSTALLED_APPS += ['south',]
-    SOUTH_MIGRATION_MODULES = {
-        'django_nyt': 'django_nyt.south_migrations',
-        'wiki': 'wiki.south_migrations',
-        'images': 'wiki.plugins.images.south_migrations',
-        'notifications': 'wiki.plugins.notifications.south_migrations',
-        'attachments': 'wiki.plugins.attachments.south_migrations',
-    }
-
+If you run older versions of Django, please upgrade South to 1.0 or later so
+that correct migrations files are found. You also need to add ``'south'`` to
+``INSTALLED_APPS``.
 
 
 Database

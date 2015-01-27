@@ -23,7 +23,6 @@ settings.configure(
         'django.contrib.admin',
         'django.contrib.humanize',
         'django.contrib.sites',
-        'south',
         'django_nyt',
         'mptt',
         'sekizai',
@@ -33,6 +32,13 @@ settings.configure(
         'wiki.plugins.notifications',
         'wiki.plugins.images',
         'wiki.plugins.macros',
+    ] + (['south'] if django.VERSION < (1, 7) else []),
+    MIDDLEWARE_CLASSES = [
+        'django.middleware.common.CommonMiddleware',
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.middleware.csrf.CsrfViewMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'django.contrib.messages.middleware.MessageMiddleware',
     ],
     TEMPLATE_CONTEXT_PROCESSORS=(
         "django.contrib.auth.context_processors.auth",
@@ -52,8 +58,9 @@ settings.configure(
 
 # If you use South for migrations, uncomment this to monkeypatch
 # syncdb to get migrations to run.
-from south.management.commands import patch_for_test_db_setup
-patch_for_test_db_setup()
+if django.VERSION < (1, 7):
+    from south.management.commands import patch_for_test_db_setup
+    patch_for_test_db_setup()
 
 from django.core.management import execute_from_command_line
 argv = [sys.argv[0], "test", "--traceback"]

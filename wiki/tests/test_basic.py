@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from __future__ import absolute_import
 
 from django.core.urlresolvers import reverse
+from django.test import TestCase
 
 import pprint
 
@@ -270,3 +271,12 @@ class ArticleViewTests(ArticleTestBase):
         self.assertContains(response, 'Root Article')
         response = c.get(reverse('wiki:search'), {'q': ''})
         self.assertFalse(response.context['articles'])
+
+
+class URLPathTests(TestCase):
+
+    def test_manager(self):
+        root = models.URLPath.create_root()
+        self.assertEqual(root.parent, None)
+        child = models.URLPath.create_article(root, "child")
+        self.assertEqual(list(root.children.active()), [child])
