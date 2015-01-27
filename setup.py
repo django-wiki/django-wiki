@@ -21,13 +21,13 @@ def read(fname):
 
 
 requirements = [
-    "Django>=1.4,<1.7",
+    "Django>=1.4,<1.8",
     "django-sekizai>=0.7",
     "Pillow",
-    "django-nyt>=0.9.4",
+    "django-nyt>=0.9.6",
     "django-mptt==0.6.0", # 0.6.1 broken: https://github.com/django-mptt/django-mptt/issues/316
     "six"
-    ]
+]
 
 # Requirements that depend on Django version: South and sorl-thumbnail
 try:
@@ -39,7 +39,7 @@ except ImportError:
     requirements.append("sorl-thumbnail>=11.12.1b")
 else:
     if DJANGO_VERSION < (1, 7):
-        requirements.append("South>=0.8.4")
+        requirements.append("South>=1.0.1")
     if DJANGO_VERSION < (1, 5):
         # For Django 1.4, use sorl-thumbnail<11.12.1:
         # https://github.com/mariocesar/sorl-thumbnail/issues/255
