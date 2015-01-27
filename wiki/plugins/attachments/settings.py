@@ -14,8 +14,11 @@ SLUG = "attachments"
 
 # Allow anonymous users upload access (not nice on an open network)
 # WIKI_ATTACHMENTS_ANONYMOUS can override this, otherwise the default
-# in wiki.conf.settings is used. 
-ANONYMOUS = getattr( django_settings, 'WIKI_ATTACHMENTS_ANONYMOUS', wiki_settings.ANONYMOUS_UPLOAD )
+# in wiki.conf.settings is used.
+ANONYMOUS = getattr(
+    django_settings,
+    'WIKI_ATTACHMENTS_ANONYMOUS',
+    wiki_settings.ANONYMOUS_UPLOAD)
 
 # Maximum file sizes: Please using something like LimitRequestBody on
 # your web server.
@@ -25,12 +28,19 @@ ANONYMOUS = getattr( django_settings, 'WIKI_ATTACHMENTS_ANONYMOUS', wiki_setting
 # You should NEVER enable directory indexing in MEDIA_ROOT/UPLOAD_PATH !
 # Actually, you can completely disable serving it, if you want. Files are
 # sent to the user through a Django view that reads and streams a file.
-UPLOAD_PATH = getattr(django_settings, 'WIKI_ATTACHMENTS_PATH', 'wiki/attachments/%aid/')
+UPLOAD_PATH = getattr(
+    django_settings,
+    'WIKI_ATTACHMENTS_PATH',
+    'wiki/attachments/%aid/')
 
 # Should the upload path be obscurified? If so, a random hash will be added to the path
 # such that someone can not guess the location of files (if you have
-# restricted permissions and the files are still located within the web server's
-UPLOAD_PATH_OBSCURIFY = getattr(django_settings, 'WIKI_ATTACHMENTS_PATH_OBSCURIFY', True)
+# restricted permissions and the files are still located within the web
+# server's
+UPLOAD_PATH_OBSCURIFY = getattr(
+    django_settings,
+    'WIKI_ATTACHMENTS_PATH_OBSCURIFY',
+    True)
 
 # Allowed extensions. Empty to disallow uploads completely.
 # No files are saved without appending ".upload" to the file to ensure that
@@ -38,19 +48,27 @@ UPLOAD_PATH_OBSCURIFY = getattr(django_settings, 'WIKI_ATTACHMENTS_PATH_OBSCURIF
 # Case insensitive.
 # You are asked to explicitly enter all file extensions that you want
 # to allow. For your own safety.
-FILE_EXTENSIONS = getattr(django_settings, 'WIKI_ATTACHMENTS_EXTENSIONS', ['pdf', 'doc', 'odt', 'docx', 'txt'])
+FILE_EXTENSIONS = getattr(
+    django_settings, 'WIKI_ATTACHMENTS_EXTENSIONS',
+    ['pdf', 'doc', 'odt', 'docx', 'txt'])
 
 # Storage backend to use, default is to use the same as the rest of the
 # wiki, which is set in WIKI_STORAGE_BACKEND, but you can override it
 # with WIKI_ATTACHMENTS_STORAGE_BACKEND
-STORAGE_BACKEND = getattr(django_settings, 'WIKI_ATTACHMENTS_STORAGE_BACKEND', wiki_settings.STORAGE_BACKEND)
+STORAGE_BACKEND = getattr(
+    django_settings,
+    'WIKI_ATTACHMENTS_STORAGE_BACKEND',
+    wiki_settings.STORAGE_BACKEND)
 
 # SAFETY FIRST! Only store files with an appended .upload extension to be sure
 # that something nasty does not get executed on the server.
-APPEND_EXTENSION = getattr(django_settings, 'WIKI_ATTACHMENTS_APPEND_EXTENSION', True)
+APPEND_EXTENSION = getattr(
+    django_settings,
+    'WIKI_ATTACHMENTS_APPEND_EXTENSION',
+    True)
 
-# Important for S3 backends etc.: If your storage backend does not have a .path 
-# attribute for the file, but only a .url attribute, you should use False. 
+# Important for S3 backends etc.: If your storage backend does not have a .path
+# attribute for the file, but only a .url attribute, you should use False.
 # This will reveal the direct download URL so it does not work perfectly for
 # files you wish to be kept private.
 USE_LOCAL_PATH = getattr(django_settings, 'WIKI_ATTACHMENTS_LOCAL_PATH', True)
@@ -61,5 +79,4 @@ if (not USE_LOCAL_PATH) and APPEND_EXTENSION:
         "You have configured to append .upload and not use local paths. That won't "
         "work as all your attachments will be stored and sent with a .upload "
         "extension. You have to trust your storage backend to be safe for storing"
-        "the extensions you have allowed."
-    )
+        "the extensions you have allowed.")

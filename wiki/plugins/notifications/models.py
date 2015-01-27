@@ -19,22 +19,23 @@ from wiki.plugins.notifications.util import get_title
 
 @python_2_unicode_compatible
 class ArticleSubscription(ArticlePlugin):
-    
+
     subscription = models.OneToOneField(Subscription)
-    
+
     def __str__(self):
         title = (_("%(user)s subscribing to %(article)s (%(type)s)") %
                  {'user': self.subscription.settings.user.username,
                   'article': self.article.current_revision.title,
                   'type': self.subscription.notification_type.label})
         return str(title)
-    
+
     class Meta:
         unique_together = ('subscription', 'articleplugin_ptr')
-        db_table = 'wiki_notifications_articlesubscription'  # Matches label of upcoming 0.1 release
+        # Matches label of upcoming 0.1 release
+        db_table = 'wiki_notifications_articlesubscription'
         if settings.APP_LABEL:
             app_label = settings.APP_LABEL
-    
+
 
 def default_url(article, urlpath=None):
     if urlpath:
@@ -48,18 +49,36 @@ def post_article_revision_save(**kwargs):
         url = default_url(instance.article)
         filter_exclude = {'settings__user': instance.user}
         if instance.deleted:
-            notify(_('Article deleted: %s') % get_title(instance), settings.ARTICLE_EDIT,
-                   target_object=instance.article, url=url, filter_exclude=filter_exclude)
+            notify(
+                _('Article deleted: %s') %
+                get_title(instance),
+                settings.ARTICLE_EDIT,
+                target_object=instance.article,
+                url=url,
+                filter_exclude=filter_exclude)
         elif instance.previous_revision:
-            notify(_('Article modified: %s') % get_title(instance), settings.ARTICLE_EDIT,
-                   target_object=instance.article, url=url, filter_exclude=filter_exclude)
+            notify(
+                _('Article modified: %s') %
+                get_title(instance),
+                settings.ARTICLE_EDIT,
+                target_object=instance.article,
+                url=url,
+                filter_exclude=filter_exclude)
         else:
-            notify(_('New article created: %s') % get_title(instance), settings.ARTICLE_EDIT,
-                   target_object=instance, url=url, filter_exclude=filter_exclude)
-            
+            notify(
+                _('New article created: %s') %
+                get_title(instance),
+                settings.ARTICLE_EDIT,
+                target_object=instance,
+                url=url,
+                filter_exclude=filter_exclude)
+
 # Whenever a new revision is created, we notifý users that an article
 # was edited
-signals.post_save.connect(post_article_revision_save, sender=wiki_models.ArticleRevision,)
+signals.post_save.connect(
+    post_article_revision_save,
+    sender=wiki_models.ArticleRevision,
+)
 
 # TODO: We should notify users when the current_revision of an article is
 # changed...
@@ -68,21 +87,31 @@ signals.post_save.connect(post_article_revision_save, sender=wiki_models.Article
 # NOTIFICATIONS FOR PLUGINS
 ##################################################
 for plugin in registry.get_plugins():
-    
+
     notifications = getattr(plugin, 'notifications', [])
     for notification_dict in notifications:
         def plugin_notification(instance, **kwargs):
             if notification_dict.get('ignore', lambda x: False)(instance):
                 return
-            if kwargs.get('created', False) == notification_dict.get('created', True):
+            if kwargs.get(
+                    'created',
+                    False) == notification_dict.get(
+                    'created',
+                    True):
                 url = None
                 if 'get_url' in notification_dict:
                     url = notification_dict['get_url'](instance)
                 else:
-                    url = default_url(notification_dict['get_article'](instance))
-                
-                message = notification_dict['message'](instance)
-                notify(message, notification_dict['key'],
-                       target_object=notification_dict['get_article'](instance), url=url)
+                    url = default_url(
+                        notification_dict['get_article'](instance))
 
-        signals.post_save.connect(plugin_notification, sender=notification_dict['model'])
+                message = notification_dict['message'](instance)
+                notify(
+                    message,
+                    notification_dict['key'],
+                    target_object=notification_dict['get_article'](instance),
+                    url=url)
+
+        signals.post_save.connect(
+            plugin_notification,
+            sender=notification_dict['model'])

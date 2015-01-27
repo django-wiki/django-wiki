@@ -33,38 +33,41 @@ from wiki.plugins.macros import settings
 from six.moves import range
 
 IDCOUNT_RE = re.compile(r'^(.*)_([0-9]+)$')
+
+
 def unique(elem_id, ids):
     """ Ensure id is unique in set of ids. Append '_1', '_2'... if not """
     while elem_id in ids:
         m = IDCOUNT_RE.match(elem_id)
         if m:
-            elem_id = '%s_%d'% (m.group(1), int(m.group(2))+1)
+            elem_id = '%s_%d' % (m.group(1), int(m.group(2)) + 1)
         else:
-            elem_id = '%s_%d'% (elem_id, 1)
+            elem_id = '%s_%d' % (elem_id, 1)
     ids.add(elem_id)
     return elem_id
+
 
 def order_toc_list(toc_list):
     """Given an unsorted list with errors and skips, return a nested one.
     [{'level': 1}, {'level': 2}]
     =>
     [{'level': 1, 'children': [{'level': 2, 'children': []}]}]
-    
+
     A wrong list is also converted:
     [{'level': 2}, {'level': 1}]
     =>
     [{'level': 2, 'children': []}, {'level': 1, 'children': []}]
     """
-    
+
     def build_correct(remaining_list, prev_elements=[{'level': 1000}]):
-        
+
         if not remaining_list:
             return [], []
-        
+
         current = remaining_list.pop(0)
         if not 'children' in list(current.keys()):
             current['children'] = []
-        
+
         if not prev_elements:
             # This happens for instance with [8, 1, 1], ie. when some
             # header level is outside a scope. We treat it as a
@@ -72,49 +75,54 @@ def order_toc_list(toc_list):
             next_elements, children = build_correct(remaining_list, [current])
             current['children'].append(children)
             return [current] + next_elements, []
-        
+
         prev_element = prev_elements.pop()
         children = []
         next_elements = []
         # Is current part of the child list or next list?
         if current['level'] > prev_element['level']:
-            #print "%d is a child of %d" % (current['level'], prev_element['level'])
+            # print "%d is a child of %d" % (current['level'],
+            # prev_element['level'])
             prev_elements.append(prev_element)
             prev_elements.append(current)
             prev_element['children'].append(current)
-            next_elements2, children2 = build_correct(remaining_list, prev_elements)
+            next_elements2, children2 = build_correct(
+                remaining_list, prev_elements)
             children += children2
             next_elements += next_elements2
         else:
-            #print "%d is ancestor of %d" % (current['level'], prev_element['level'])
+            # print "%d is ancestor of %d" % (current['level'],
+            # prev_element['level'])
             if not prev_elements:
-                #print "No previous elements, so appending to the next set"
+                # print "No previous elements, so appending to the next set"
                 next_elements.append(current)
                 prev_elements = [current]
-                next_elements2, children2 = build_correct(remaining_list, prev_elements)
+                next_elements2, children2 = build_correct(
+                    remaining_list, prev_elements)
                 current['children'].extend(children2)
             else:
-                #print "Previous elements, comparing to those first"
+                # print "Previous elements, comparing to those first"
                 remaining_list.insert(0, current)
-                next_elements2, children2 = build_correct(remaining_list, prev_elements)
+                next_elements2, children2 = build_correct(
+                    remaining_list, prev_elements)
                 children.extend(children2)
             next_elements += next_elements2
-        
+
         return next_elements, children
-    
+
     flattened_list, __ = build_correct(toc_list)
     return flattened_list
 
 
 class TocTreeprocessor(markdown.treeprocessors.Treeprocessor):
-    
+
     # Iterator wrapper to get parent and child all at once
     def iterparent(self, root):
         for parent in root.getiterator():
             for child in parent:
                 yield parent, child
-    
-    def add_anchor(self, c, elem_id): #@ReservedAssignment
+
+    def add_anchor(self, c, elem_id):  # @ReservedAssignment
         if self.use_anchors:
             anchor = etree.Element("a")
             anchor.text = c.text
@@ -125,7 +133,7 @@ class TocTreeprocessor(markdown.treeprocessors.Treeprocessor):
                 anchor.append(elem)
                 c.remove(elem)
             c.append(anchor)
-    
+
     def build_toc_etree(self, div, toc_list):
 
         def build_etree_ul(toc_list, parent):
@@ -139,17 +147,22 @@ class TocTreeprocessor(markdown.treeprocessors.Treeprocessor):
                 if item['children']:
                     build_etree_ul(item['children'], li)
             return ul
-        
+
         return build_etree_ul(toc_list, div)
-        
+
     def run(self, doc):
 
         div = etree.Element("div")
         div.attrib["class"] = "toc"
         header_rgx = re.compile("[Hh][123456]")
-        
-        self.use_anchors = self.config["anchorlink"] in [1, '1', True, 'True', 'true']
-        
+
+        self.use_anchors = self.config["anchorlink"] in [
+            1,
+            '1',
+            True,
+            'True',
+            'true']
+
         # Get a list of id attributes
         used_ids = set()
         for c in doc.getiterator():
@@ -167,7 +180,7 @@ class TocTreeprocessor(markdown.treeprocessors.Treeprocessor):
             # validation by putting a <div> inside of a <p>
             # we actually replace the <p> in its entirety.
             # We do not allow the marker inside a header as that
-            # would causes an enless loop of placing a new TOC 
+            # would causes an enless loop of placing a new TOC
             # inside previously generated TOC.
             if c.text and c.text.strip() == self.config["marker"] and \
                not header_rgx.match(c.tag) and c.tag not in ['pre', 'code']:
@@ -176,32 +189,37 @@ class TocTreeprocessor(markdown.treeprocessors.Treeprocessor):
                         p[i] = div
                         break
                 marker_found = True
-            
+
             if header_rgx.match(c.tag):
-                
-                # Do not override pre-existing ids 
+
+                # Do not override pre-existing ids
                 if not "id" in c.attrib:
-                    elem_id = unique(self.config["slugify"](text, '-'), used_ids)
+                    elem_id = unique(
+                        self.config["slugify"](
+                            text,
+                            '-'),
+                        used_ids)
                     c.attrib["id"] = elem_id
                 else:
                     elem_id = c.attrib["id"]
 
                 tag_level = int(c.tag[-1])
-                
+
                 toc_list.append({
                     'level': tag_level,
                     'id': elem_id,
                     'name': c.text
                 })
-                
+
                 self.add_anchor(c, elem_id)
-                
+
         if marker_found:
             toc_list_nested = order_toc_list(toc_list)
             self.build_toc_etree(div, toc_list_nested)
             # serialize and attach to markdown instance.
             prettify = self.markdown.treeprocessors.get('prettify')
-            if prettify: prettify.run(div)
+            if prettify:
+                prettify.run(div)
             toc = self.markdown.serializer(div)
             for pp in list(self.markdown.postprocessors.values()):
                 toc = pp.run(toc)
@@ -209,22 +227,20 @@ class TocTreeprocessor(markdown.treeprocessors.Treeprocessor):
 
 
 class TocExtension(markdown.Extension):
-    
+
     TreeProcessorClass = TocTreeprocessor
-    
+
     def __init__(self, configs=[]):
-        self.config = { "marker" : ["[TOC]", 
-                            "Text to find and replace with Table of Contents -"
-                            "Defaults to \"[TOC]\""],
-                        "slugify" : [slugify,
-                            "Function to generate anchors based on header text-"
-                            "Defaults to the headerid ext's slugify function."],
-                        "title" : [None,
-                            "Title to insert into TOC <div> - "
-                            "Defaults to None"],
-                        "anchorlink" : [0,
-                            "1 if header should be a self link"
-                            "Defaults to 0"]}
+        self.config = {
+            "marker": [
+                "[TOC]", "Text to find and replace with Table of Contents -"
+                "Defaults to \"[TOC]\""], "slugify": [
+                slugify, "Function to generate anchors based on header text-"
+                "Defaults to the headerid ext's slugify function."], "title": [
+                None, "Title to insert into TOC <div> - "
+                "Defaults to None"], "anchorlink": [
+                    0, "1 if header should be a self link"
+                    "Defaults to 0"]}
 
         for key, value in configs:
             self.setConfig(key, value)
@@ -233,8 +249,8 @@ class TocExtension(markdown.Extension):
         tocext = self.TreeProcessorClass(md)
         tocext.config = self.getConfigs()
         # Headerid ext is set to '>inline'. With this set to '<prettify',
-        # it should always come after headerid ext (and honor ids assinged 
-        # by the header id extension) if both are used. Same goes for 
+        # it should always come after headerid ext (and honor ids assinged
+        # by the header id extension) if both are used. Same goes for
         # attr_list extension. This must come last because we don't want
         # to redefine ids after toc is created. But we do want toc prettified.
         md.treeprocessors.add("toc", tocext, ">headerid")
@@ -245,7 +261,7 @@ def makeExtension(configs={}):
 
 
 class WikiTreeProcessorClass(TocTreeprocessor):
-    
+
     def build_toc_etree(self, div, toc_list):
         # Add title to the div
         if self.config["title"]:
@@ -264,10 +280,10 @@ class WikiTreeProcessorClass(TocTreeprocessor):
                 if item['children']:
                     build_etree_ul(item['children'], li)
             return ul
-        
+
         return build_etree_ul(toc_list, div)
-    
-    
+
+
 class WikiTocExtension(TocExtension):
     TreeProcessorClass = WikiTreeProcessorClass
 

@@ -5,12 +5,15 @@ import markdown
 
 
 class PreviewLinksExtension(markdown.Extension):
+
     """Markdown Extension that sets all anchor targets to _blank when in preview mode"""
+
     def extendMarkdown(self, md, md_globals):
         md.treeprocessors.add('previewlinks', PreviewLinksTree(md), "_end")
 
 
 class PreviewLinksTree(Treeprocessor):
+
     def run(self, root):
         if self.markdown.preview:
             for a in root.findall('.//a'):

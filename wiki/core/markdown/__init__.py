@@ -7,6 +7,7 @@ import markdown
 
 
 class ArticleMarkdown(markdown.Markdown):
+
     def __init__(self, article, preview=False, *args, **kwargs):
         kwargs = settings.MARKDOWN_KWARGS
         kwargs['extensions'] = self.get_markdown_extensions()

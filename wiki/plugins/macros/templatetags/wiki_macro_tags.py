@@ -12,9 +12,9 @@ register = template.Library()
     takes_context=True
 )
 def article_list(context, urlpath, depth):
-    context['parent'] = urlpath 
-    context['depth'] = depth 
-    return context 
+    context['parent'] = urlpath
+    context['depth'] = depth
+    return context
 
 
 @register.assignment_tag
@@ -24,5 +24,3 @@ def allowed_macros():
             yield getattr(MacroPreprocessor, method).meta
         except AttributeError:
             continue
-    
-    

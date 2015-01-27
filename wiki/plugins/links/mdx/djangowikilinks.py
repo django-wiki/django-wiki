@@ -31,45 +31,54 @@ from wiki import models
 try:
     # Markdown 2.1.0 changed from 2.0.3. We try importing the new version first,
     # but import the 2.0.3 version if it fails
-    from markdown.util import etree #@UnusedImport
+    from markdown.util import etree  # @UnusedImport
 except ImportError:
-    from markdown import etree #@UnresolvedImport @Reimport @UnusedImport
+    from markdown import etree  # @UnresolvedImport @Reimport @UnusedImport
+
 
 class WikiPathExtension(markdown.Extension):
+
     def __init__(self, configs):
         # set extension defaults
         self.config = {
-            'base_url' : ['/', 'String to append to beginning of URL.'],
-            'html_class' : ['wikipath', 'CSS hook. Leave blank for none.'],
-            'default_level' : [2, 'The level that most articles are created at. Relative links will tend to start at that level.']
-        }
-        
+            'base_url': [
+                '/',
+                'String to append to beginning of URL.'],
+            'html_class': [
+                'wikipath',
+                'CSS hook. Leave blank for none.'],
+            'default_level': [
+                2,
+                'The level that most articles are created at. Relative links will tend to start at that level.']}
+
         # Override defaults with user settings
-        for key, value in configs :
+        for key, value in configs:
             # self.config[key][0] = value
             self.setConfig(key, value)
-        
+
     def extendMarkdown(self, md, md_globals):
         self.md = md
-        
+
         # append to end of inline patterns
-        WIKI_RE =  r'\[(?P<linkTitle>[^\]]+?)\]\(wiki:(?P<wikiTitle>[a-zA-Z\d\./_-]*?)\)'
+        WIKI_RE = r'\[(?P<linkTitle>[^\]]+?)\]\(wiki:(?P<wikiTitle>[a-zA-Z\d\./_-]*?)\)'
         wikiPathPattern = WikiPath(WIKI_RE, self.config, markdown_instance=md)
         wikiPathPattern.md = md
         md.inlinePatterns.add('djangowikipath', wikiPathPattern, "<reference")
 
+
 class WikiPath(markdown.inlinepatterns.Pattern):
+
     def __init__(self, pattern, config, **kwargs):
         markdown.inlinepatterns.Pattern.__init__(self, pattern, **kwargs)
         self.config = config
-    
-    def handleMatch(self, m) :
+
+    def handleMatch(self, m):
         article_title = m.group('wikiTitle')
         absolute = False
         if article_title.startswith("/"):
             absolute = True
         article_title = article_title.strip("/")
-        
+
         # Use this to calculate some kind of meaningful path
         # from the link, regardless of whether or not something can be
         # looked up
@@ -78,7 +87,7 @@ class WikiPath(markdown.inlinepatterns.Pattern):
         if absolute:
             base_path = self.config['base_url'][0]
             path_from_link = os_path.join(base_path, article_title)
-            
+
             urlpath = None
             path = path_from_link
             try:
@@ -90,25 +99,27 @@ class WikiPath(markdown.inlinepatterns.Pattern):
             urlpath = models.URLPath.objects.get(article=self.markdown.article)
             source_components = urlpath.path.strip("/").split("/")
             # We take the first (self.config['default_level'] - 1) components, so adding
-            # one more component would make a path of length self.config['default_level']
-            starting_level = max(0, self.config['default_level'][0] - 1 )
-            starting_path = "/".join(source_components[ : starting_level ])
-            
+            # one more component would make a path of length
+            # self.config['default_level']
+            starting_level = max(0, self.config['default_level'][0] - 1)
+            starting_path = "/".join(source_components[: starting_level])
+
             path_from_link = os_path.join(starting_path, article_title)
-            
+
             lookup = models.URLPath.objects.none()
             if urlpath.parent:
-                lookup = urlpath.parent.get_descendants().filter(slug=article_title)
+                lookup = urlpath.parent.get_descendants().filter(
+                    slug=article_title)
             else:
                 lookup = urlpath.get_descendants().filter(slug=article_title)
-            
+
             if lookup.count() > 0:
                 urlpath = lookup[0]
                 path = urlpath.get_absolute_url()
             else:
                 urlpath = None
                 path = self.config['base_url'][0] + path_from_link
-            
+
         label = m.group('linkTitle')
         a = etree.Element('a')
         a.set('href', path)
@@ -117,9 +128,9 @@ class WikiPath(markdown.inlinepatterns.Pattern):
         else:
             a.set('class', self.config['html_class'][0])
         a.text = label
-            
+
         return a
-        
+
     def _getMeta(self):
         """ Return meta data or config data. """
         base_url = self.config['base_url'][0]
@@ -131,6 +142,6 @@ class WikiPath(markdown.inlinepatterns.Pattern):
                 html_class = self.md.Meta['wiki_html_class'][0]
         return base_url, html_class
 
-def makeExtension(configs=None) :
-    return WikiPathExtension(configs=configs)
 
+def makeExtension(configs=None):
+    return WikiPathExtension(configs=configs)

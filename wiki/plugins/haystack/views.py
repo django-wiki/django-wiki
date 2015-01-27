@@ -9,13 +9,15 @@ from wiki import models
 
 
 class HaystackSearchView(SearchView):
-    
+
     template_name = 'wiki/plugins/haystack/search.html'
-    
+
     def get_queryset(self):
         qs = SearchQuerySet().all()
         if self.request.user.is_authenticated():
-            if not permissions.can_moderate(models.URLPath.root().article, self.request.user):
+            if not permissions.can_moderate(
+                    models.URLPath.root().article,
+                    self.request.user):
                 qs = qs.filter(
                     SQ(owner_id=self.request.user.id) |
                     (
@@ -26,7 +28,7 @@ class HaystackSearchView(SearchView):
                 )
         else:
             qs = qs.exclude(other_read=False)
-        
+
         qs = qs.filter(content=AutoQuery(self.query))
         qs = qs.load_all()
         return qs

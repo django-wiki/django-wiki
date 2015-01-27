@@ -107,7 +107,8 @@ class ImageRevision(RevisionPluginRevision):
     class Meta:
         verbose_name = _('image revision')
         verbose_name_plural = _('image revisions')
-        db_table = 'wiki_images_imagerevision'  # Matches label of upcoming 0.1 release
+        # Matches label of upcoming 0.1 release
+        db_table = 'wiki_images_imagerevision'
         if settings.APP_LABEL:
             app_label = settings.APP_LABEL
         ordering = ('-created',)

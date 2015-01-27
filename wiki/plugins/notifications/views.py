@@ -12,14 +12,19 @@ from . import models
 
 
 class NotificationSettings(FormView):
-    
+
     template_name = 'wiki/plugins/notifications/settings.html'
     form_class = forms.SettingsFormSet
-    
+
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        return super(NotificationSettings, self).dispatch(request, *args, **kwargs)
-    
+        return super(
+            NotificationSettings,
+            self).dispatch(
+            request,
+            *args,
+            **kwargs)
+
     def form_valid(self, formset):
         for form in formset:
             settings = form.save()
@@ -32,7 +37,7 @@ class NotificationSettings(FormView):
                 }
             )
         return redirect('wiki:notification_settings')
-    
+
     def get_article_subscriptions(self, nyt_settings):
         return models.ArticleSubscription.objects.filter(
             subscription__settings=nyt_settings,
@@ -41,12 +46,12 @@ class NotificationSettings(FormView):
             'article',
             'article__current_revision'
         ).distinct()
-    
+
     def get_form_kwargs(self):
         kwargs = FormView.get_form_kwargs(self)
         kwargs['user'] = self.request.user
         return kwargs
-    
+
     def get_context_data(self, **kwargs):
         context = FormView.get_context_data(self, **kwargs)
         context['formset'] = kwargs['form']

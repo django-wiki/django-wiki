@@ -9,10 +9,17 @@ from wiki.tests.base import ArticleTestBase
 
 
 class AttachmentTests(ArticleTestBase):
+
     def test_upload(self):
         data = "This is a plain text file".encode('utf-8')
         filedata = BytesIO(data)
-        filestream = InMemoryUploadedFile(filedata, None, 'test.txt', 'text', len(data), None)
+        filestream = InMemoryUploadedFile(
+            filedata,
+            None,
+            'test.txt',
+            'text',
+            len(data),
+            None)
         article = self.root_article
         url = reverse('wiki:attachments_index', kwargs={'path': ''})
         response = self.c.post(url,
