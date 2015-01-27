@@ -1,16 +1,20 @@
 language: python
 # See tox.ini for env list
 env:
-- TOXENV=py26-django15
-- TOXENV=py26-django16
-- TOXENV=py27-django15
-- TOXENV=py27-django16
-- TOXENV=py33-django15
-- TOXENV=py33-django16
+  - TOXENV=py26-django15
+  - TOXENV=py26-django16
+  - TOXENV=py27-django15
+  - TOXENV=py27-django16
+  - TOXENV=py33-django15
+  - TOXENV=py33-django16
 install:
-- pip install tox
+  - pip install tox coveralls
 script:
-- tox
+  tox
+  coverage run --source=yourpackagename setup.py test
 notifications:
-    irc:
-        - "irc.freenode.org#django-wiki"
+  irc:
+    - "irc.freenode.org#django-wiki"
+after_success:
+  coveralls
+
