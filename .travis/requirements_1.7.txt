@@ -1,0 +1,3 @@
+-r requirements.txt
+Django==1.7b1
+sorl-thumbnail==11.12.1b
