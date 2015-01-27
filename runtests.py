@@ -58,7 +58,8 @@ patch_for_test_db_setup()
 from django.core.management import execute_from_command_line
 argv = [sys.argv[0], "test", "--traceback"]
 
-if len(sys.argv) == 1:
+# python setup.py test calls script with just 'test'
+if len(sys.argv) == 1 or sys.argv[1] == 'test':
     # Nothing following 'runtests.py':
     if django.VERSION < (1,6):
         argv.extend(["wiki", "attachments"])

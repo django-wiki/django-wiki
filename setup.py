@@ -97,4 +97,5 @@ setup(
         'Topic :: Software Development :: Libraries :: Application Frameworks',
     ],
     include_package_data=True,
+    test_suite='runtests',
 )
