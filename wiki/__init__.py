@@ -16,5 +16,5 @@ from __future__ import unicode_literals
 # You should have received a copy of the GNU General Public License
 # along with django-wiki. If not, see <http://www.gnu.org/licenses/>.
 
-VERSION = "0.0.24"
+VERSION = "0.1.dev"
 __version__ = VERSION
