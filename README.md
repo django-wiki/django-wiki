@@ -4,19 +4,47 @@ django-wiki
 Important notice
 ----------------
 
-Want to write a pull request? Yay :) Please do it, however, please consider scheduling anything new for the 0.1 release by creating pull requests against `django1.7` branch.
+Version **0.0.24** is now out and is the final release before **0.1** in which
+migrations will be reset.
 
-We are readying the 0.0.24 release in the `master`, and anything else should go to `django1.7` which is currently being given less importance.
+**0.0.24** adds Django 1.7 support, however it's not well-tested.
+
+Please refer to the [Release Notes](http://django-wiki.readthedocs.org/en/latest/release_notes.html#django-wiki-0-0-24)
 
 Changes underway
 ----------------
 
-    - Change to use django-nyt #288
-    - Py3: python_2_unicode_compatible decorator #282
+    - Migrations reset
+    - Django 1.7 support
     - pep8 the whole codebase #287
+    - Transifex
+    - Distribution with Wheels
 
 News
 ----
+
+***News: January 26th, 2015***
+
+After too long, the new release is out.
+
+The wait was mainly due to all the confusing changes by adding support of Python 3
+and readying the migrations for Django 1.7. But there's actually new features, too.
+
+ - Bootstrap 3.3.1 and Font Awesome 4 (Christian Duvholt)
+ - `django_nyt` instead of builtin `django_notify` (Benjamin Bach, Maximilien Cuony)
+ - `tox` for testing (Luke Plant)
+ - Appropriate use of gettext_lazy (Jaakko Luttinen)
+ - Fixed support of custom username fields (Jan De Bleser)
+ - Several fixes to the attachment plugin (Christian Duvholt)
+ - Errors on notifications settings tab (Benjamin Richter)
+ - Chinese translations (Ronald Bai)
+ - Finish translations (Jaakko Luttinen)
+ - Compatibility with custom user model in article settings (Andy Fang)
+ - Fixed bug when `[attachment:XX]` present multiple times on same line (Maximilien Cuony)
+ - Simple mediawiki import management command (Maximilien Cuony)
+ - Python 3 and Django 1.6 compatibility (Russell-Jones, Antonin Lenfant, Luke Plant, Lubimov Igor, Benjamin Bach)
+ - (and more, forgiveness asked if anyone feels left out)
+
 
 ***News: July 19th, 2014***
 
@@ -52,48 +80,6 @@ Better late than never! A new release is out with promising support of django 1.
 A big callout to anyone who feels like getting into documentation.. we need good docs!
 
 Also, the [Changelog](https://github.com/benjaoming/django-wiki/blob/master/CHANGELOG.md) is updated!
-
-***News: June 31st, 2013***
-
-**Bootstrap 3** has landed in the django-wiki master branch! However, a new release is pending the full implementation of Bootstrap 3. If you are running a deployment with template overrides, keep in mind that some Bootstrap stuff has changed, especially fluid grids and names of a lot of classes. For instance, if you have put your own "brand" in the navbar, you need to change `class="brand"` to `class="navbar-brand"`.
-
-Furthermore, we have changed the **icon theme** to use Font Awesome. There are now many more icons to choose from, and most of the UI is likely to benefit from this.
-
-The **plugin API** has been looking very stable lately, and [one](https://github.com/benjaoming/django-wiki/commit/c259b318b1c7bc74568d0c9000c016976b05d171) or [two](https://github.com/benjaoming/django-wiki/commit/384fb62040dbf27805352d83443467ce175c34c8) refactorings made it possible to much easier deal with circular dependencies which were greatly reducing the plugin writing experience.
-
-**Haystack** is now supported through a plugin. But keep in mind that many things are broken in Haystack atm -- the Whoosh backend for instance.
-
-Last, but not least, we have an **IRC channel** - #django-wiki on freenode. Please hangout and share support and tips!
-
-***News: June 7th, 2013***
-
-Yay! New alpha release! [View commit log on Github >](https://github.com/benjaoming/django-wiki/commits/alpha/0.0.20) or [a summary of all the commits](https://groups.google.com/forum/#!topic/django-wiki/ZnnGowlppj4)
-
-Highlights:
-
-- Fix missing translation activation in django-notify's email notifications (manage command) - credits TomLottermann
-- Add Russian on django-wiki and django-notify - credits crazyzubr
-- Support for AUTH_USER_MODEL settings (seriously, don't use it though, unless you really want trouble in most third party django apps). **Please note** this is only going to help you if you are starting new projects. If you are changing the setting and introducing a new model in a running project, you have to do all database migrations manually. Django-wiki and its South migrations will silently ignore your changes.
-- Add settings for logging to files instead of stdout in django-notify daemon mode - credits: crazyzubr
-- Built-in account handling now properly asserts that usernames are not already taken when signing up.
-
-***News: April 23rd, 2013***
-
-Security fix included in 0.0.19. [View commit log >](https://github.com/benjaoming/django-wiki/commits/alpha/0.0.19)
-
-***News: March 26, 2013***
-
-Thanks to TomLottermann for German translation and daltonmatos for Brazilian translations! French is also reported in the works. 0.0.18 is released with that plus Django 1.5 compatibility, and [a bunch of other things and fixes](https://groups.google.com/forum/#!topic/django-wiki/V-bZou8aTaI).
-
-***News: February 21, 2013***
-
-New release adds email notifications to django_notify, improved [toc] tag and bootstrap typography.
-
-***News: February 8, 2013***
-
-New alpha release 0.0.15 is out mainly because static files and templates in the previous two builds were not being properly updated and included. It also includes various tiny cosmetic changes and a new LESS structure.
-
-(old news are deleted)
 
 Demo
 ----
