@@ -1,6 +1,6 @@
+# -*- coding: utf-8 -*-
 from __future__ import absolute_import
 from __future__ import unicode_literals
-# -*- coding: utf-8 -*-
 from south.utils import datetime_utils as datetime
 from south.db import db
 from south.v2 import SchemaMigration
