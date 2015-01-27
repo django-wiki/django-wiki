@@ -212,3 +212,7 @@ Acknowledgements
 <!---Illegal PyPi RST data -->
 <!---Anything that isn't validly translateable to PyPi RST goes after this line -->
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/django-wiki/django-wiki/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
