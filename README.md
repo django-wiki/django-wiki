@@ -16,7 +16,7 @@ Changes underway
 
  - [x] Migrations reset
  - [x] Django 1.7 support
- - [ ] pep8 the whole codebase #287
+ - [x] pep8 the whole codebase #287
  - [ ] Transifex
  - [ ] Distribution with Wheels
 
@@ -212,7 +212,4 @@ Acknowledgements
 <!---Illegal PyPi RST data -->
 <!---Anything that isn't validly translateable to PyPi RST goes after this line -->
 
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/django-wiki/django-wiki/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
