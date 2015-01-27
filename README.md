@@ -200,12 +200,6 @@ Badgers Badgers Badgers
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/django-wiki/django-wiki/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
-Python 2.5
-----------
-
-It's compatible and being run on a server with Python 2.5.
-
-Due to Markdown using elementree, you should check that you have python-celementtree: `apt-get install python-celementtree`
 
 Acknowledgements
 ----------------
