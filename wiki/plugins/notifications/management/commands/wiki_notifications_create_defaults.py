@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from __future__ import print_function
 from optparse import make_option
 from django.core.management.base import BaseCommand
 from django.utils import translation
@@ -29,13 +30,22 @@ class Command(BaseCommand):
             
             return subscribe(settings_map[user], ARTICLE_EDIT, content_type=ContentType.objects.get_for_model(article), object_id=article.id)
             
-        for article in Article.objects.all():
+        subs = 0
+        articles = Article.objects.all()
+        for article in articles:
             if article.owner:
                 subscription = subscribe_to_article(article, article.owner)
                 models.ArticleSubscription.objects.get_or_create(article=article, subscription=subscription)
+                subs += 1
             for revision in article.articlerevision_set.exclude(user=article.owner).exclude(user=None).values('user').distinct():
                 user = get_user_model().objects.get(id=revision['user'])
+                subs += 1
                 subscription = subscribe_to_article(article, user)
                 models.ArticleSubscription.objects.get_or_create(article=article, subscription=subscription)
+        
+        print("Created {subs:d} subscriptions on  {arts:d} articles".format(
+            subs=subs,
+            arts=articles.count(),
+        ))
         
         translation.deactivate()
