@@ -14,11 +14,11 @@ Please refer to the [Release Notes](http://django-wiki.readthedocs.org/en/latest
 Changes underway
 ----------------
 
-    - Migrations reset
-    - Django 1.7 support
-    - pep8 the whole codebase #287
-    - Transifex
-    - Distribution with Wheels
+ - [x] Migrations reset
+ - [x] Django 1.7 support
+ - [ ] pep8 the whole codebase #287
+ - [ ] Transifex
+ - [ ] Distribution with Wheels
 
 News
 ----
