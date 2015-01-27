@@ -26,8 +26,9 @@ the final release.
 
 **Compatibility**
 
- * Django < 1.7 (That means Django 1.7 is **not** supported)
+ * Django 1.5, 1.6 (That means Django 1.7 is **not** yet fully supported)
  * South 1.0+ (if you are on an older South, you **need** to upgrade)
+ * Python 2.6, 2.7, 3.3, 3.4
 
 **Notifications fixed**
 
