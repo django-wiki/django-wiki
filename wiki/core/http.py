@@ -30,7 +30,7 @@ def send_file(request, filepath, last_modified=None, filename=None):
     if settings.USE_SENDFILE:
         response = django_sendfile_response(request, filepath)
     else:
-        response = HttpResponse(open(fullpath, 'rb').read(), mimetype=mimetype)
+        response = HttpResponse(open(fullpath, 'rb').read(), content_type=mimetype)
 
     if not last_modified:
         response["Last-Modified"] = http_date(statobj.st_mtime)
