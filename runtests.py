@@ -9,9 +9,9 @@ settings.configure(
     DEBUG=True,
     AUTH_USER_MODEL='testdata.CustomUser',
     DATABASES={
-         'default': {
-             'ENGINE': 'django.db.backends.sqlite3',
-         }
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+        }
     },
     SITE_ID=1,
     ROOT_URLCONF='wiki.tests.testdata.urls',
@@ -33,7 +33,7 @@ settings.configure(
         'wiki.plugins.images',
         'wiki.plugins.macros',
     ] + (['south'] if django.VERSION < (1, 7) else []),
-    MIDDLEWARE_CLASSES = [
+    MIDDLEWARE_CLASSES=[
         'django.middleware.common.CommonMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.middleware.csrf.CsrfViewMiddleware',
@@ -68,7 +68,7 @@ argv = [sys.argv[0], "test", "--traceback"]
 # python setup.py test calls script with just 'test'
 if len(sys.argv) == 1 or sys.argv[1] == 'test':
     # Nothing following 'runtests.py':
-    if django.VERSION < (1,6):
+    if django.VERSION < (1, 6):
         argv.extend(["wiki", "attachments"])
     else:
         argv.extend(["wiki.tests", "wiki.plugins.attachments.tests"])

@@ -25,7 +25,8 @@ requirements = [
     "django-sekizai>=0.7",
     "Pillow",
     "django-nyt>=0.9.6",
-    "django-mptt==0.6.0", # 0.6.1 broken: https://github.com/django-mptt/django-mptt/issues/316
+    # 0.6.1 broken: https://github.com/django-mptt/django-mptt/issues/316
+    "django-mptt==0.6.0",
     "six"
 ]
 
