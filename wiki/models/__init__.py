@@ -79,7 +79,7 @@ def reverse(*args, **kwargs):
         url_kwargs = kwargs.get('kwargs', {})
         path = url_kwargs.get('path', False)
         # If a path is supplied then discard the article_id
-        if path:
+        if path is not False:
             url_kwargs.pop('article_id', None)
             url_kwargs['path'] = path
             kwargs['kwargs'] = url_kwargs
