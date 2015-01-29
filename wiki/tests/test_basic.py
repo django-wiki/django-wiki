@@ -9,78 +9,7 @@ import pprint
 
 from .base import ArticleTestBase, WebTestBase
 
-from wiki import models
-from wiki.plugins.attachments.models import Attachment
-
-
-class ModelTests(ArticleTestBase):
-
-    """Tests basic model and queryset functionalities"""
-
-    def test_custom_querysets(self):
-        """
-        Tests that the custom queryset methods work, this is important
-        because the pattern of building them is different from Django
-        1.5 to 1.6 to 1.7 so there will be 3 patterns in play at the
-        same time.
-        """
-
-        # Test methods directly on manager
-        self.assertEqual(
-            models.Article.objects.can_read(self.superuser1).count(), 1
-        )
-        self.assertEqual(
-            models.Article.objects.can_write(self.superuser1).count(), 1
-        )
-        self.assertEqual(models.Article.objects.active().count(), 1)
-
-        # Test methods on querysets
-        self.assertEqual(
-            models.Article.objects.all().can_read(self.superuser1).count(), 1
-        )
-        self.assertEqual(
-            models.Article.objects.all().can_write(self.superuser1).count(), 1
-        )
-        self.assertEqual(models.Article.objects.all().active().count(), 1)
-
-        # Test empty query sets
-        # See: https://code.djangoproject.com/ticket/22817
-        self.assertEqual(
-            models.Article.objects.none().can_read(self.superuser1).count(), 0
-        )
-        self.assertEqual(
-            models.Article.objects.none().can_write(self.superuser1).count(), 0
-        )
-        self.assertEqual(models.Article.objects.none().active().count(), 0)
-
-        # Do the same for Attachment which uses ArtickeFkManager
-        # Test methods directly on manager
-        self.assertEqual(
-            Attachment.objects.can_read(self.superuser1).count(), 0
-        )
-        self.assertEqual(
-            Attachment.objects.can_write(self.superuser1).count(), 0
-        )
-        self.assertEqual(Attachment.objects.active().count(), 0)
-
-        # Test methods on querysets
-        self.assertEqual(
-            Attachment.objects.all().can_read(self.superuser1).count(), 0
-        )
-        self.assertEqual(
-            Attachment.objects.all().can_write(self.superuser1).count(), 0
-        )
-        self.assertEqual(Attachment.objects.all().active().count(), 0)
-
-        # Test empty query sets
-        # See: https://code.djangoproject.com/ticket/22817
-        self.assertEqual(
-            Attachment.objects.none().can_read(self.superuser1).count(), 0
-        )
-        self.assertEqual(
-            Attachment.objects.none().can_write(self.superuser1).count(), 0
-        )
-        self.assertEqual(Attachment.objects.none().active().count(), 0)
+from wiki.models import URLPath
 
 
 class RootArticleViewTests(WebTestBase):
@@ -324,8 +253,8 @@ class URLPathTests(TestCase):
 
     def test_manager(self):
 
-        root = models.URLPath.create_root()
-        child = models.URLPath.create_article(root, "child")
+        root = URLPath.create_root()
+        child = URLPath.create_article(root, "child")
 
         self.assertEqual(root.parent, None)
         self.assertEqual(list(root.children.active()), [child])
