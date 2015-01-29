@@ -142,9 +142,7 @@ class ArticleViewTests(ArticleTestBase):
         example2 = self.example_data.copy()
         example2['content'] = 'Something 2'
         response = c.post(reverse('wiki:edit', kwargs={'path': ''}), example2)
-        # TODO
-        message = c.cookies['messages'].value if \
-            'messages' in c.cookies else None
+        message = getattr(c.cookies['messages'], 'value')
 
         self.assertRedirects(response, reverse('wiki:root'))
 
@@ -153,7 +151,7 @@ class ArticleViewTests(ArticleTestBase):
         # Why it doesn't display the latest revison text if other test
         # preceded? It is correctly in the db.
         self.assertContains(response, 'Something 2')
-        self.assertTrue('succesfully added' in message)
+        self.assertIn('succesfully added', message)
 
     def test_redirect_create(self):
         """Test that redirects to create if the slug is unknown."""
@@ -232,18 +230,18 @@ class ArticleViewTests(ArticleTestBase):
             reverse('wiki:delete', kwargs={'path': 'SubArticle1/'}),
             {'confirm': 'on', 'purge': 'on', 'revision': '3'}
         )
-        # TODO
-        message = c.cookies['messages'].value if \
-            'messages' in c.cookies else None
+
+        message = getattr(c.cookies['messages'], 'value')
 
         self.assertRedirects(
             response,
             reverse('wiki:get', kwargs={'path': ''})
         )
-        # TODO
-        self.assertTrue(
-            'This article together with all its contents are now completely gone'
-            in message)
+
+        self.assertIn(
+            'This article together with all '
+            'its contents are now completely gone',
+            message)
         self.assertNotContains(self.get_by_path(''), 'Sub Article 1')
 
     def test_revision_conflict(self):
@@ -269,7 +267,7 @@ class ArticleViewTests(ArticleTestBase):
             response,
             'While you were editing, someone else changed the revision.'
         )
-        #self.dump_db_status('after test_revision_conflict')
+        # self.dump_db_status('after test_revision_conflict')
 
     def test_nested_create(self):
 
@@ -289,7 +287,7 @@ class ArticleViewTests(ArticleTestBase):
         )
         self.assertRedirects(
             response,
-            reverse('wiki:get', kwargs={ 'path': 'level1/test/'})
+            reverse('wiki:get', kwargs={'path': 'level1/test/'})
         )
         response = c.post(
             reverse('wiki:create', kwargs={'path': ''}),
