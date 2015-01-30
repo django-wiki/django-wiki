@@ -16,11 +16,13 @@ class WebTestBase(TestCase):
             User = get_user_model()
         except ImportError:
             from django.contrib.auth.models import User
+
         self.superuser1 = User.objects.create_superuser(
             'admin',
             'nobody@example.com',
             'secret'
         )
+
         self.c = c = Client()
         c.login(username='admin', password='secret')
 
@@ -38,6 +40,7 @@ class ArticleTestBase(WebTestBase):
             {'content': 'root article content', 'title': 'Root Article'},
             follow=True
         )
+
         self.assertEqual(response.status_code, 200)  # sanity check
         self.root_article = URLPath.root().article
         self.example_data = {
