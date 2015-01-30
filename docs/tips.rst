@@ -11,7 +11,7 @@ Other tips
 
        WIKI_MARKDOWN_KWARGS = {'extensions': ['footnotes', 'attr_list', 'headerid', 'extra', 'codehilite', ]}
 
-   to your settings. Currently, django-wiki shippes with a stylesheet
+   to your settings. Currently, django-wiki ships with a stylesheet
    that already has the syntax highlighting CSS rules built-in. Oh, and
    you need to ensure ``pip install pygments`` because Pygments is what
    the codehilite extension is using!

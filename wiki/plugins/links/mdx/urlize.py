@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
 from __future__ import unicode_literals
 """
 Code modified from:
@@ -40,7 +41,6 @@ Negative examples:
 '<p>del.icio.us</p>'
 
 """
-from __future__ import absolute_import
 
 import markdown
 import re
@@ -48,40 +48,46 @@ import re
 # Taken from Django trunk 2f121dfe635b3f497fe1fe03bc8eb97cdf5083b3
 # https://github.com/django/django/blob/master/django/core/validators.py#L47
 URLIZE_RE = (
-    r'((?:(?:http|ftp)s?://|www\.)' # http:// or https://
-    r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|' # domain...
-    r'localhost|' # localhost...
-    r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|' # ...or ipv4
-    r'\[?[A-F0-9]*:[A-F0-9:]+\]?)' # ...or ipv6
-    r'(?::\d+)?' # optional port
+    r'((?:(?:http|ftp)s?://|www\.)'  # http:// or https://
+    # domain...
+    r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'
+    r'localhost|'  # localhost...
+    r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|'  # ...or ipv4
+    r'\[?[A-F0-9]*:[A-F0-9:]+\]?)'  # ...or ipv6
+    r'(?::\d+)?'  # optional port
     r'(?:/[^\s\[\(\]\)]*(?:\s+|$))?)'
 )
+
 
 class UrlizePattern(markdown.inlinepatterns.Pattern):
 
     def __init__(self, pattern, markdown_instance=None):
-        markdown.inlinepatterns.Pattern.__init__(self, pattern, markdown_instance=markdown_instance)
-        self.compiled_re = re.compile("^(.*?)%s(.*?)$" % pattern, 
+        markdown.inlinepatterns.Pattern.__init__(
+            self,
+            pattern,
+            markdown_instance=markdown_instance)
+        self.compiled_re = re.compile("^(.*?)%s(.*?)$" % pattern,
                                       re.DOTALL | re.UNICODE | re.IGNORECASE)
 
     """ Return a link Element given an autolink (`http://example/com`). """
+
     def handleMatch(self, m):
         url = m.group(2)
 
         if url.startswith('<'):
             url = url[1:-1]
-            
+
         text = url
-        
-        if not url.split('://')[0] in ('http','https','ftp'):
+
+        if not url.split('://')[0] in ('http', 'https', 'ftp'):
             if '@' in url and not '/' in url:
                 url = 'mailto:' + url
             else:
                 url = 'http://' + url
-        
+
         icon = markdown.util.etree.Element("span")
-        icon.set('class', 'icon-external-link')
-        
+        icon.set('class', 'fa fa-external-link')
+
         span_text = markdown.util.etree.Element("span")
         span_text.text = markdown.util.AtomicString(" " + text)
         el = markdown.util.etree.Element("a")
@@ -91,14 +97,19 @@ class UrlizePattern(markdown.inlinepatterns.Pattern):
         el.append(span_text)
         return el
 
+
 class UrlizeExtension(markdown.Extension):
+
     """ Urlize Extension for Python-Markdown. """
 
     def extendMarkdown(self, md, md_globals):
         """ Replace autolink with UrlizePattern """
         md.inlinePatterns['autolink'] = UrlizePattern(URLIZE_RE, md)
 
-def makeExtension(configs={}):
+
+def makeExtension(configs=None):
+    if configs is None:
+        configs = {}
     return UrlizeExtension(configs=configs)
 
 if __name__ == "__main__":

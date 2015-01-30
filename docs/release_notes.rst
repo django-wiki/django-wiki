@@ -1,9 +1,6 @@
 Release notes
 =============
 
-.. warning::
-   THIS IS A DRAFT, NONE OF THE BELOW ARE RELEASED YET!!
-
 
 About the versioning
 --------------------
@@ -29,47 +26,51 @@ the final release.
 
 **Compatibility**
 
- * Django < 1.7 (That means Django 1.7 is **not** supported)
- * South 0.8.4+ (if you are un an older South, you **need** to upgrade)
+ * Django 1.5, 1.6 (That means Django 1.7 is **not** yet fully supported)
+ * South 1.0+ (if you are on an older South, you **need** to upgrade)
+ * Python 2.6, 2.7, 3.3, 3.4
 
-**Notifications**
+**Notifications fixed**
 
-Unfortunately, previous releases of django-wiki have had the wrong APP_LABEL
-set for wiki.plugins.notifications and thus all notification subscriptions
-will be reset. The error could not be fixed as it was introduced in 0.0.23
-as a stupid renaming of the notifications plugin tables with a subsequent
-automatic removal of the original notifications tables.
+Through its history, django-wiki has maintained `a very weird migration`_. It
+caused for the notifications plugin's table to be removed, but luckily that
+makes it quite easy to detect and restore, which the new migrations now do.
 
-So it's not actually a missing data migration in 0.0.24 that's the reason
-why django-nyt starts out with zero subscriptions. It was a table renaming
-in 0.0.23 that caused the error.
+.. _ https://github.com/django-wiki/django-wiki/commit/88847096354121c23d8f10463201da5e0ebd7148
 
-If you wish to preserve your subscription data as much as possible, you should
-do a plain text dump of the table ``notifications_articlesubscription`` using
-your database tools. At the end up the upgrade process, you will have to
-manually import this data into the database.
+However, you may want to bootstrap having notifications. You can ensure that
+all owners and editors of articles receive notifications using the following
+management command:
 
-If you are having problems, please consider re-running the migrations
-for notifications like so:
-  
-    python manage.py migrate notifications zero
+    python manage.py wiki_notifications_create_defaults
+
+
+Troubleshooting
+___________________
+
+
+If you have been running from the git master branch, you may experience
+problems and need to re-run the migrations entirely.
+
+::
+
+    python manage.py migrate notifications zero --delete-ghost-migrations
     python manage.py migrate notifications
 
 If you get `DatabaseError: no such table: notifications_articlesubscription`,
 you have been running django-wiki version with differently named tables.
 Don't worry, just fake the backwards migration:
-  
+
+::
+
     python manage.py migrate notifications zero --fake  
 
 If you get ``relation "notifications_articlesubscription" already exists`` you
 may need to do a manual ``DROP TABLE notifications_articlesubscription;`` using
 your DB shell (after backing up this data).
 
-In order to create notifications for all article authors and editors,
-run the following management command:
-  
-    python manage.py default_notifications
-
+After this, you can recreate your notifications with the former section's
+instructions.
 
 django-wiki 0.1
 ---------------
@@ -96,19 +97,11 @@ django-wiki 0.1
    ::
    
       INSTALLED_APPS.append('south')
-      SOUTH_MIGRATION_MODULES = {
-          'django_nyt': 'django_nyt.south_migrations',
-          'wiki': 'wiki.south_migrations',
-          'images': 'wiki.plugins.images.south_migrations',
-          'notifications': 'wiki.plugins.notifications.south_migrations',
-          'attachments': 'wiki.plugins.attachments.south_migrations',
-      }
-   
 
 
 **Supported**
 
- * Python 2.7, 3.3, and 3.4 (3.2 is untested)
+ * Python 2.7, 3.3, and 3.4 (3.2 is not)
  * Django 1.5, 1.6 and 1.7
  * Django < 1.7 still needs south, and migration trees are kept until next major
    release.

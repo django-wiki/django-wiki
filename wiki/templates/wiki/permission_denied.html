@@ -7,12 +7,12 @@
 {% block wiki_contents %}
   <h1 class="page-header">{% trans "Permission Denied" %}</h1>
   <p class="alert denied alert-error">
-    <i class="icon-minus-sign"></i>
+    <i class="fa fa-minus-circle"></i>
     {% trans "Sorry, you don't have permission to access this page." %}
   </p>
   {% if article.current_revision.locked %}
   <p class="alert alert-warning">
-    <i class="icon-lock"></i>
+    <i class="fa fa-lock"></i>
     {% trans "This article is locked for editing." %}
   </p>
   {% endif %}

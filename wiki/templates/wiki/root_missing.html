@@ -18,7 +18,7 @@
       </p>
       {% login_url as wiki_login_url %}
       {% if wiki_login_url %}
-        <a href="{{ wiki_login_url }}" class="btn btn-primary btn-large">{% trans "Click here to login" %}</a>
+        <a href="{{ wiki_login_url }}" class="btn btn-primary btn-lg">{% trans "Click here to login" %}</a>
       {% endif %}
       
     {% else %}
@@ -26,7 +26,7 @@
       <p class="lead">
         {% trans "But since you're logged in as a superuser, we should really get started..." %}
       </p>
-      <a href="{% url 'wiki:root_create' %}" class="btn btn-primary btn-large">{% trans "Yes, I'll go and create the first article" %}</a>
+      <a href="{% url 'wiki:root_create' %}" class="btn btn-primary btn-lg">{% trans "Yes, I'll go and create the first article" %}</a>
       <a href="http://django-wiki.readthedocs.org/" class="btn btn-default">{% trans "No thanks, I'd rather read the documentation" %}</a>
         
       {% endif %}

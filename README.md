@@ -4,19 +4,47 @@ django-wiki
 Important notice
 ----------------
 
-Want to write a pull request? Yay :) Please do it, however, please consider scheduling anything new for the 0.1 release by creating pull requests against `django1.7` branch.
+Version **0.0.24** is now out and is the final release before **0.1** in which
+migrations will be reset.
 
-We are readying the 0.0.24 release in the `master`, and anything else should go to `django1.7` which is currently being given less importance.
+**0.0.24** adds Django 1.7 support, however it's not well-tested.
+
+Please refer to the [Release Notes](http://django-wiki.readthedocs.org/en/latest/release_notes.html#django-wiki-0-0-24)
 
 Changes underway
 ----------------
 
-    - Change to use django-nyt #288
-    - Py3: python_2_unicode_compatible decorator #282
-    - pep8 the whole codebase #287
+ - [x] Migrations reset
+ - [x] Django 1.7 support
+ - [x] pep8 the whole codebase #287
+ - [ ] Transifex
+ - [ ] Distribution with Wheels
 
 News
 ----
+
+***News: January 26th, 2015***
+
+After too long, the new release is out.
+
+The wait was mainly due to all the confusing changes by adding support of Python 3
+and readying the migrations for Django 1.7. But there's actually new features, too.
+
+ - Bootstrap 3.3.1 and Font Awesome 4 (Christian Duvholt)
+ - `django_nyt` instead of builtin `django_notify` (Benjamin Bach, Maximilien Cuony)
+ - `tox` for testing (Luke Plant)
+ - Appropriate use of gettext_lazy (Jaakko Luttinen)
+ - Fixed support of custom username fields (Jan De Bleser)
+ - Several fixes to the attachment plugin (Christian Duvholt)
+ - Errors on notifications settings tab (Benjamin Richter)
+ - Chinese translations (Ronald Bai)
+ - Finish translations (Jaakko Luttinen)
+ - Compatibility with custom user model in article settings (Andy Fang)
+ - Fixed bug when `[attachment:XX]` present multiple times on same line (Maximilien Cuony)
+ - Simple mediawiki import management command (Maximilien Cuony)
+ - Python 3 and Django 1.6 compatibility (Russell-Jones, Antonin Lenfant, Luke Plant, Lubimov Igor, Benjamin Bach)
+ - (and more, forgiveness asked if anyone feels left out)
+
 
 ***News: July 19th, 2014***
 
@@ -53,54 +81,12 @@ A big callout to anyone who feels like getting into documentation.. we need good
 
 Also, the [Changelog](https://github.com/benjaoming/django-wiki/blob/master/CHANGELOG.md) is updated!
 
-***News: June 31st, 2013***
-
-**Bootstrap 3** has landed in the django-wiki master branch! However, a new release is pending the full implementation of Bootstrap 3. If you are running a deployment with template overrides, keep in mind that some Bootstrap stuff has changed, especially fluid grids and names of a lot of classes. For instance, if you have put your own "brand" in the navbar, you need to change `class="brand"` to `class="navbar-brand"`.
-
-Furthermore, we have changed the **icon theme** to use Font Awesome. There are now many more icons to choose from, and most of the UI is likely to benefit from this.
-
-The **plugin API** has been looking very stable lately, and [one](https://github.com/benjaoming/django-wiki/commit/c259b318b1c7bc74568d0c9000c016976b05d171) or [two](https://github.com/benjaoming/django-wiki/commit/384fb62040dbf27805352d83443467ce175c34c8) refactorings made it possible to much easier deal with circular dependencies which were greatly reducing the plugin writing experience.
-
-**Haystack** is now supported through a plugin. But keep in mind that many things are broken in Haystack atm -- the Whoosh backend for instance.
-
-Last, but not least, we have an **IRC channel** - #django-wiki on freenode. Please hangout and share support and tips!
-
-***News: June 7th, 2013***
-
-Yay! New alpha release! [View commit log on Github >](https://github.com/benjaoming/django-wiki/commits/alpha/0.0.20) or [a summary of all the commits](https://groups.google.com/forum/#!topic/django-wiki/ZnnGowlppj4)
-
-Highlights:
-
-- Fix missing translation activation in django-notify's email notifications (manage command) - credits TomLottermann
-- Add Russian on django-wiki and django-notify - credits crazyzubr
-- Support for AUTH_USER_MODEL settings (seriously, don't use it though, unless you really want trouble in most third party django apps). **Please note** this is only going to help you if you are starting new projects. If you are changing the setting and introducing a new model in a running project, you have to do all database migrations manually. Django-wiki and its South migrations will silently ignore your changes.
-- Add settings for logging to files instead of stdout in django-notify daemon mode - credits: crazyzubr
-- Built-in account handling now properly asserts that usernames are not already taken when signing up.
-
-***News: April 23rd, 2013***
-
-Security fix included in 0.0.19. [View commit log >](https://github.com/benjaoming/django-wiki/commits/alpha/0.0.19)
-
-***News: March 26, 2013***
-
-Thanks to TomLottermann for German translation and daltonmatos for Brazilian translations! French is also reported in the works. 0.0.18 is released with that plus Django 1.5 compatibility, and [a bunch of other things and fixes](https://groups.google.com/forum/#!topic/django-wiki/V-bZou8aTaI).
-
-***News: February 21, 2013***
-
-New release adds email notifications to django_notify, improved [toc] tag and bootstrap typography.
-
-***News: February 8, 2013***
-
-New alpha release 0.0.15 is out mainly because static files and templates in the previous two builds were not being properly updated and included. It also includes various tiny cosmetic changes and a new LESS structure.
-
-(old news are deleted)
-
 Demo
 ----
 
 A demo is available here, sign up for an account to see the notification system.
 
-[wiki.overtag.dk](http://wiki.overtag.dk)
+[http://demo.django-wiki.org/](http://demo.django-wiki.org/)
 
 Community
 ---------
@@ -182,37 +168,38 @@ Requirements
 
 So far the dependencies/requirements are:
 
- * [django>=1.4<1.7](http://www.djangoproject.com) - Django 1.7 will be released in version 0.1.
+ * [django>=1.5<1.7](http://www.djangoproject.com) - Django 1.7 will be released in version 0.1, but should run on 0.0.24
  * [django-south](http://south.aeracode.org/)
  * [Markdown>=2.2.0](https://github.com/waylan/Python-Markdown)
- * [django-mptt>=0.5.3](https://github.com/django-mptt/django-mptt)
+ * [django-mptt](https://github.com/django-mptt/django-mptt)
  * [django-sekizai](https://github.com/ojii/django-sekizai/)
  * [sorl-thumbnail](https://github.com/sorl/sorl-thumbnail)
  * Pillow (Python Imaging Library)
- * Python>=2.5<3 (Python 3 not yet supported, will be supported in 0.0.24)
+ * Python>=2.6 or Python>=3.2
 
 Development
 ------------
 
-In your Git fork, run `pip install -r requirements.txt` to install the requirements.
-
 The folder **testproject/** contains a pre-configured django project and an sqlite database. Login for django admin is *admin:admin*. This project should always be maintained, but please do not commit changes to the SQLite database as we only care about its contents in case data models are changed.
 
-**Build status update May 2014** : Builds are currently failing, because we are experimenting with Python 3 support for the upcoming transitional release.
+
+Badgers Badgers Badgers
+-----------------------
 
 [![Build Status](https://travis-ci.org/django-wiki/django-wiki.png?branch=master)](https://travis-ci.org/django-wiki/django-wiki)
+
+[![Coverage Status](https://coveralls.io/repos/django-wiki/django-wiki/badge.svg?branch=master)](https://coveralls.io/r/django-wiki/django-wiki?branch=master)
 
 [![Downloads](https://pypip.in/d/wiki/badge.png)](https://crate.io/package/wiki)
 
 [![Downloads](https://pypip.in/v/wiki/badge.png)](https://crate.io/package/wiki)
 
+[![Documentation Status](https://readthedocs.org/projects/django-wiki/badge/?version=latest)](https://readthedocs.org/projects/django-wiki/?badge=latest)
 
-Python 2.5
-----------
+[![Dependency Status](https://gemnasium.com/django-wiki/django-wiki.svg)](https://gemnasium.com/django-wiki/django-wiki)
 
-It's compatible and being run on a server with Python 2.5.
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/django-wiki/django-wiki/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
-Due to Markdown using elementree, you should check that you have python-celementtree: `apt-get install python-celementtree`
 
 Acknowledgements
 ----------------
@@ -220,8 +207,9 @@ Acknowledgements
  * The people at [edX](http://www.edxonline.org/) & MIT for finding and supporting the project both financially and with ideas.
  * [django-cms](https://github.com/divio/django-cms) for venturing where no django app has gone before in terms of well-planned features and high standards. It's a very big inspiration.
  * [django-mptt](https://github.com/django-mptt/django-mptt), a wonderful utility for inexpensively using tree structures in Django with a relational database backend.
- * [jdcaballero](https://github.com/jdcaballero), [yekibud](https://github.com/yekibud), [bridger](https://github.com/bridger), [TomLottermann](https://github.com/TomLottermann), [crazyzubr](https://github.com/crazyzubr), and [everyone else](https://github.com/benjaoming/django-wiki/contributors) involved!
+ * [spookylukey](https://github.com/spookylukey), [jluttine](https://github.com/jluttine), [cXhristian](https://github.com/cXhristian), [valberg](https://github.com/valberg), [jdcaballero](https://github.com/jdcaballero), [yekibud](https://github.com/yekibud), [bridger](https://github.com/bridger), [TomLottermann](https://github.com/TomLottermann), [crazyzubr](https://github.com/crazyzubr), and [everyone else](https://github.com/benjaoming/django-wiki/contributors) involved!
 
 <!---Illegal PyPi RST data -->
 <!---Anything that isn't validly translateable to PyPi RST goes after this line -->
+
 

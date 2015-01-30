@@ -9,10 +9,10 @@
       <a href="{% url 'wiki:get' article_id=article.id %}">{{ article.current_revision.title }}</a>
     {% endfor %}
     {% if article.current_revision.deleted %}
-      <span class="icon-trash"></span>
+      <span class="fa fa-trash"></span>
     {% endif %}
     {% if article.current_revision.locked %}
-      <span class="icon-lock"></span>
+      <span class="fa fa-lock"></span>
     {% endif %}
     <p class="muted"><small>{{ article.current_revision.content|get_content_snippet:search_query }}</small></p>
   </td>

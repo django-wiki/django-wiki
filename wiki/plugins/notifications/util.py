@@ -2,9 +2,11 @@ from __future__ import unicode_literals
 from __future__ import absolute_import
 from django.utils.translation import ugettext as _
 
+
 def get_title(article):
     """Utility function to format the title of an article..."""
     return truncate_title(article.title)
+
 
 def truncate_title(title):
     """Truncate a title (of an article, file, image etc) to be displayed in notifications messages."""

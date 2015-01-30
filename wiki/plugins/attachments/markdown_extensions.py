@@ -9,18 +9,27 @@ from django.template.loader import render_to_string
 from django.contrib.auth.models import AnonymousUser
 from wiki.core.permissions import can_read
 
-ATTACHMENT_RE = re.compile(r'(?P<before>.*)(\[attachment\:(?P<id>\d+)\])(?P<after>.*)', re.IGNORECASE)
+ATTACHMENT_RE = re.compile(
+    r'(?P<before>.*)(\[attachment\:(?P<id>\d+)\])(?P<after>.*)',
+    re.IGNORECASE)
 
 from wiki.plugins.attachments import models
 
+
 class AttachmentExtension(markdown.Extension):
+
     """ Abbreviation Extension for Python-Markdown. """
 
     def extendMarkdown(self, md, md_globals):
         """ Insert AbbrPreprocessor before ReferencePreprocessor. """
-        md.preprocessors.add('dw-attachments', AttachmentPreprocessor(md), '>html_block')
+        md.preprocessors.add(
+            'dw-attachments',
+            AttachmentPreprocessor(md),
+            '>html_block')
+
 
 class AttachmentPreprocessor(markdown.preprocessors.Preprocessor):
+
     """django-wiki attachment preprocessor - parse text for [attachment:id] references. """
 
     def run(self, lines):
@@ -34,10 +43,15 @@ class AttachmentPreprocessor(markdown.preprocessors.Preprocessor):
                 try:
                     attachment = models.Attachment.objects.get(
                         articles__current_revision__deleted=False,
-                        id=attachment_id, current_revision__deleted=False
+                        id=attachment_id, current_revision__deleted=False,
+                        articles=self.markdown.article
                     )
-                    url = reverse('wiki:attachments_download', kwargs={'article_id': self.markdown.article.id,
-                                                                       'attachment_id':attachment.id,})
+                    url = reverse(
+                        'wiki:attachments_download',
+                        kwargs={
+                            'article_id': self.markdown.article.id,
+                            'attachment_id': attachment.id,
+                        })
 
                     # The readability of the attachment is decided relative
                     # to the owner of the original article.
@@ -59,8 +73,12 @@ class AttachmentPreprocessor(markdown.preprocessors.Preprocessor):
                         }))
                     line = self.markdown.htmlStash.store(html, safe=True)
                 except models.Attachment.DoesNotExist:
-                    line = line.replace(m.group(1), """<span class="attachment attachment-deleted">Attachment with ID #%s is deleted.</span>""" % attachment_id)
+                    html = """<span class="attachment attachment-deleted">Attachment with ID #%s is deleted.</span>""" % attachment_id
+                    line = line.replace(
+                        m.group(2),
+                        self.markdown.htmlStash.store(
+                            html,
+                            safe=True))
                 line = before + line + after
             new_text.append(line)
         return new_text
-

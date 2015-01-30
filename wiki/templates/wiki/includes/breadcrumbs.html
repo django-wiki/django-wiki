@@ -11,7 +11,7 @@
 <div class="pull-left" style="margin-left: 10px;">
   <div class="btn-group">
     <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#" style="padding: 7px;" title="{% trans "Sub-articles for" %} {{ article.current_revision.title }}">
-      <span class="icon-sitemap"></span>
+      <span class="fa fa-sitemap"></span>
       <span class="caret"></span>
     </a>
     <ul class="dropdown-menu">
@@ -37,19 +37,19 @@
 <div class="pull-left" style="margin-left: 10px;">
   <div class="btn-group">
     <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#" style="padding: 7px;" title="{% trans "Sub-articles for" %} {{ article.current_revision.title }}">
-      <span class="icon-file"></span>
+      <span class="fa fa-file"></span>
       <span class="caret"></span>
     </a>    
     <ul class="dropdown-menu">
       <li>
         {% if urlpath.parent %}
         <a href="{% url 'wiki:create' path=urlpath.parent.path %}" style="padding: 7px;">
-          <span class="icon-arrow-right"></span>
+          <span class="fa fa-arrow-right"></span>
           {% trans "New article next to" %} {{ article.current_revision.title }}
         </a>
         {% endif %}
         <a href="{% url 'wiki:create' path=urlpath.path %}" style="padding: 7px;">
-          <span class="icon-arrow-down"></span>
+          <span class="fa fa-arrow-down"></span>
           {% trans "New article below" %} {{ article.current_revision.title }}
         </a>
       </li>

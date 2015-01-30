@@ -26,7 +26,7 @@
         <p>{% trans "You may restore this article and its children by clicking restore." %}</p>
         <p>
           <a href="?restore=1" class="btn btn-default">
-            <span class="icon-repeat"></span>
+            <span class="fa fa-repeat"></span>
             {% trans "Restore" %}
           </a>
         </p>
@@ -43,7 +43,7 @@
           {% csrf_token %}
           {% wiki_form purge_form %}
             <button class="btn btn-default">
-              <span class="icon-remove"></span>
+              <span class="fa fa-remove"></span>
               {% trans "Purge" %}
             </button>
         </form>

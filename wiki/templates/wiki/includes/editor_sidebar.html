@@ -12,20 +12,20 @@
 </script>
 {% endaddtoblock %}
 
-<div class="accordion" id="accordion_{{ plugin.slug }}">
+<div class="panel-group" id="accordion_{{ plugin.slug }}">
 
 {% for plugin, plugin_form in sidebar %}
 
-  <div class="accordion-group">
+  <div class="panel panel-default">
     
-    <div class="accordion-heading">
-      <a class="accordion-toggle" href="#collapse_{{ plugin.slug }}" data-toggle="collapse">
-        <h3>{{ plugin.sidebar.headline }} <span class="icon {{ plugin.sidebar.icon_class }}"></span></h3>
+    <div class="panel-heading">
+      <a class="panel-toggle" href="#collapse_{{ plugin.slug }}" data-toggle="collapse">
+        <h3 class="panel-title">{{ plugin.sidebar.headline }} <span class="fa {{ plugin.sidebar.icon_class }}"></span></h3>
       </a>
     </div>
     
-    <div id="collapse_{{ plugin.slug }}" class="accordion-body collapse{% if plugin_form.errors %} in{% endif %}">
-      <div class="accordion-inner form-vertical">
+    <div id="collapse_{{ plugin.slug }}" class="panel-collapse collapse{% if plugin_form.errors %} in{% endif %}">
+      <div class="panel-body form-vertical">
         {% if plugin.sidebar.template %}
           {% with plugin_form as form and plugin as plugin %}
             <form method="POST" class="form-horizontal sidebar-form" action="?f={{ plugin_form.form_id }}" enctype="multipart/form-data">

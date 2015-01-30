@@ -11,19 +11,23 @@ from wiki.plugins.macros.mdx.macro import MacroExtension
 from wiki.plugins.macros.mdx.toc import WikiTocExtension
 from wiki.plugins.macros.mdx.wikilinks import WikiLinkExtension
 
+
 class MacroPlugin(BasePlugin):
-    
+
     slug = settings.SLUG
-    
+
     sidebar = {'headline': _('Macros'),
-               'icon_class': 'icon-play',
+               'icon_class': 'fa-play',
                'template': 'wiki/plugins/macros/sidebar.html',
                'form_class': None,
                'get_form_kwargs': (lambda a: {})}
-    
-    markdown_extensions = [WikiLinkExtension(), MacroExtension(), WikiTocExtension()]
-    
+
+    markdown_extensions = [
+        WikiLinkExtension(),
+        MacroExtension(),
+        WikiTocExtension()]
+
     def __init__(self):
         pass
-    
+
 registry.register(MacroPlugin)

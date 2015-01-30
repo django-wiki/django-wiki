@@ -2,7 +2,8 @@ from __future__ import unicode_literals
 from __future__ import absolute_import
 from django import forms
 from django.forms.models import modelformset_factory, BaseModelFormSet
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext
+from django.utils.translation import ugettext_lazy as _
 
 from django_nyt.models import Settings, NotificationType, Subscription
 from django_nyt import settings as notify_settings
@@ -14,24 +15,29 @@ from wiki.core.plugins.base import PluginSettingsFormMixin
 
 from wiki.plugins.notifications import models
 
+
 class SettingsModelChoiceField(forms.ModelChoiceField):
+
     def label_from_instance(self, obj):
-        return _("Receive notifications %(interval)s") % {
-                       'interval': obj.get_interval_display()
-                   }
+        return ugettext(
+            "Receive notifications %(interval)s"
+        ) % {
+            'interval': obj.get_interval_display()
+        }
 
 
+class ArticleSubscriptionModelMultipleChoiceField(
+        forms.ModelMultipleChoiceField):
 
-class ArticleSubscriptionModelMultipleChoiceField(forms.ModelMultipleChoiceField):
     def label_from_instance(self, obj):
-        return _("%(title)s - %(url)s" % {
-                       'title': obj.article.current_revision.title,
-                       'url': obj.article.get_absolute_url()
-                   }
-               )
+        return ugettext("%(title)s - %(url)s") % {
+            'title': obj.article.current_revision.title,
+            'url': obj.article.get_absolute_url()
+        }
 
 
 class SettingsModelForm(forms.ModelForm):
+
     def __init__(self, *args, **kwargs):
         super(SettingsModelForm, self).__init__(*args, **kwargs)
         instance = kwargs.get('instance', None)
@@ -39,18 +45,19 @@ class SettingsModelForm(forms.ModelForm):
         if instance:
             self.__editing_instance = True
             self.fields['delete_subscriptions'] = ArticleSubscriptionModelMultipleChoiceField(
-                models.ArticleSubscription.objects.filter(subscription__settings=instance),
-                label=_("Remove subscriptions"),
+                models.ArticleSubscription.objects.filter(
+                    subscription__settings=instance),
+                label=ugettext("Remove subscriptions"),
                 required=False,
-                help_text=_("Select article subscriptions to remove from notifications"),
-                initial = models.ArticleSubscription.objects.none(),
+                help_text=ugettext("Select article subscriptions to remove from notifications"),
+                initial=models.ArticleSubscription.objects.none(),
             )
             self.fields['email'] = forms.TypedChoiceField(
                 label=_("Email digests"),
-                choices = (
-                    (0, _('Unchanged (selected on each article)')),
-                    (1, _('No emails')),
-                    (2, _('Email on any change')),
+                choices=(
+                    (0, ugettext('Unchanged (selected on each article)')),
+                    (1, ugettext('No emails')),
+                    (2, ugettext('Email on any change')),
                 ),
                 coerce=lambda x: int(x) if not x is None else None,
                 widget=forms.RadioSelect(),
@@ -86,7 +93,9 @@ class BaseSettingsFormSet(BaseModelFormSet):
         return Settings.objects.filter(
             user=self.user,
             subscription__articlesubscription__article__current_revision__deleted=False,
-        ).prefetch_related('subscription_set__articlesubscription',)
+        ).prefetch_related(
+            'subscription_set__articlesubscription',
+        ).distinct()
 
 
 SettingsFormSet = modelformset_factory(
@@ -114,12 +123,12 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
         label=_('When this article is edited')
     )
     edit_email = forms.BooleanField(
-        required=False,
-        label=_('Also receive emails about article edits'),
+        required=False, label=_('Also receive emails about article edits'),
         widget=forms.CheckboxInput(
-            attrs={'onclick': mark_safe("$('#id_edit').attr('checked', $(this).is(':checked'));")}
-        )
-    )
+            attrs={
+                'onclick':
+                mark_safe(
+                    "$('#id_edit').attr('checked', $(this).is(':checked'));")}))
 
     def __init__(self, article, request, *args, **kwargs):
 
@@ -140,11 +149,15 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
             interval=notify_settings.INTERVALS_DEFAULT
         )[0]
         if self.edit_notifications:
-            self.default_settings = self.edit_notifications[0].subscription.settings
+            self.default_settings = self.edit_notifications[
+                0].subscription.settings
         if not initial:
             initial = {
-                'edit': bool(self.edit_notifications),
-                'edit_email': bool(self.edit_notifications.filter(subscription__send_emails=True)),
+                'edit': bool(
+                    self.edit_notifications),
+                'edit_email': bool(
+                    self.edit_notifications.filter(
+                        subscription__send_emails=True)),
                 'settings': self.default_settings,
             }
         kwargs['initial'] = initial
@@ -157,7 +170,8 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
         if self.changed_data:
             return _('Your notification settings were updated.')
         else:
-            return _('Your notification settings were unchanged, so nothing saved.')
+            return _(
+                'Your notification settings were unchanged, so nothing saved.')
 
     def save(self, *args, **kwargs):
 

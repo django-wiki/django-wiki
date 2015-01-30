@@ -1,4 +1,3 @@
-# Create your views here.
 from __future__ import unicode_literals
 from __future__ import absolute_import
 from django.contrib import messages
@@ -9,51 +8,58 @@ from django.utils.translation import ugettext as _
 from django.views.generic.edit import FormView
 
 from . import forms
+from . import models
+
 
 class NotificationSettings(FormView):
-    
+
     template_name = 'wiki/plugins/notifications/settings.html'
     form_class = forms.SettingsFormSet
-    
+
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        return super(NotificationSettings, self).dispatch(request, *args, **kwargs)
-    
+        return super(
+            NotificationSettings,
+            self).dispatch(
+            request,
+            *args,
+            **kwargs)
+
     def form_valid(self, formset):
         for form in formset:
             settings = form.save()
-            from . import models
-            article_subscriptions = models.ArticleSubscription.objects.filter(
-                subscription_settings = form.instance,
-                article__current_revision__deleted=False,
-            ).select_related('article', 'article__current_revision')
             messages.info(
-                self.request, 
+                self.request,
                 _("You will receive notifications %(interval)s for "
-                   "%(articles)d articles") % 
-                    {
-                        'interval': settings.get_interval_display(),
-                        'articles': article_subscriptions.count(),
-                    }
+                  "%(articles)d articles") % {
+                    'interval': settings.get_interval_display(),
+                    'articles': self.get_article_subscriptions(form.instance).count(),
+                }
             )
         return redirect('wiki:notification_settings')
-    
+
+    def get_article_subscriptions(self, nyt_settings):
+        return models.ArticleSubscription.objects.filter(
+            subscription__settings=nyt_settings,
+            article__current_revision__deleted=False,
+        ).select_related(
+            'article',
+            'article__current_revision'
+        ).distinct()
+
     def get_form_kwargs(self):
         kwargs = FormView.get_form_kwargs(self)
         kwargs['user'] = self.request.user
         return kwargs
-    
+
     def get_context_data(self, **kwargs):
         context = FormView.get_context_data(self, **kwargs)
         context['formset'] = kwargs['form']
-        from . import models
         for form in context['formset']:
             if form.instance:
-                setattr(form.instance, 'articlesubscriptions', 
-                    models.ArticleSubscription.objects.filter(
-                        subscription__settings = form.instance,
-                        article__current_revision__deleted=False,
-                    ).select_related('article', 'article__current_revision')
+                setattr(
+                    form.instance,
+                    'articlesubscriptions',
+                    self.get_article_subscriptions(form.instance)
                 )
         return context
-    

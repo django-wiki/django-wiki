@@ -48,12 +48,12 @@
     <div class="form-group form-actions">
       <div class="col-lg-2"></div>
       <div class="col-lg-10">
-        <a href="{% url 'wiki:get' path=parent_urlpath.path %}" class="btn btn-default btn-large">
-          <span class="icon-circle-arrow-left"></span>
+        <a href="{% url 'wiki:get' path=parent_urlpath.path %}" class="btn btn-default btn-lg">
+          <span class="fa fa-arrow-left"></span>
           {% trans "Go back" %}
         </a>
-        <button type="submit" name="save_changes" class="btn btn-primary btn-large">
-          <span class="icon-plus"></span>
+        <button type="submit" name="save_changes" class="btn btn-primary btn-lg">
+          <span class="fa fa-plus"></span>
           {% trans "Create article" %}
         </button>
       </div>  

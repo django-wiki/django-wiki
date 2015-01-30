@@ -5,8 +5,10 @@ from testproject.settings.local import *
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os_path.join(PROJECT_PATH, 'db', 'prepopulated-customauthuser.db'),                      # Or path to database file if using sqlite3.
+        # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'django.db.backends.sqlite3',
+        # Or path to database file if using sqlite3.
+        'NAME': os_path.join(PROJECT_PATH, 'db', 'prepopulated-customauthuser.db'),
     }
 }
 
