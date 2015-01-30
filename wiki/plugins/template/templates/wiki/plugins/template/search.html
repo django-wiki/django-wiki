@@ -27,8 +27,8 @@
       {{ search_form.query }}
       <span class="input-group-btn">
         <button class="btn btn-default">
-          <span class="icon-search"></span>
-          {% trans "Search files and articles" %}
+          <span class="fa fa-search"></span>
+          {% trans "Search templates" %}
         </button>
       </span>
     </div>
@@ -48,7 +48,7 @@
   <tr>
     <td>
       <h4>{{ template.template_title }}</h4>
-      {{ template.current_revision.description|default:_("<em>No description</em>")|safe }}
+      {{ template.no_empty_description|default:_("<em>No description</em>")|safe }}
     </td>
     <td>
       <strong>{{ template.article.current_revision.title }}</strong>
@@ -64,7 +64,7 @@
       <form method="POST" action="{% url 'wiki:template_add_to_article' path=urlpath.path article_id=article.id template_id=template.id %}">
         {% csrf_token %}
         <button class="btn btn-primary">
-          <span class="icon-plus"></span>
+          <span class="fa fa-plus"></span>
         {% trans "Add to article" %}
         </button>
       </form>
@@ -81,7 +81,7 @@
 {% endwith %}
 
 <p>
-  <a href="{% url 'wiki:template_index' path=urlpath.path article_id=article.id %}"><span class="icon-arrow-left"></span> {% trans "Go back" %}</a>
+  <a href="{% url 'wiki:template_index' path=urlpath.path article_id=article.id %}"><span class="fa fa-arrow-left"></span> {% trans "Go back" %}</a>
 </p>
 
 {% endblock %}

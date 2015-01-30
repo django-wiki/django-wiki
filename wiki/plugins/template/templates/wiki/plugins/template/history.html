@@ -34,12 +34,12 @@
         {% if revision.template.article|can_write:user %}
             {% if revision != template.current_revision %}
             <button class="btn btn-default">
-              <span class="icon-flag"></span>
+              <span class="fa fa-flag"></span>
             {% trans "Use this!" %}
             </button>
             {% else %}
             <button disabled="disabled" class="btn btn-success">
-              <span class="icon-flag"></span>
+              <span class="fa fa-flag"></span>
             {% trans "Current version" %}
             </button>
             {% endif %}
@@ -49,6 +49,6 @@
   </tr>
 {% endfor %}
 </table>
-<a href="javascript:history.go(-1);"><span class="icon-arrow-left"></span> {% trans "Go back" %}</a>
+<a href="javascript:history.go(-1);"><span class="fa fa-arrow-left"></span> {% trans "Go back" %}</a>
 {% endblock %}
 

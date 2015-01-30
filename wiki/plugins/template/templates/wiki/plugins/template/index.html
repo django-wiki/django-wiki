@@ -66,46 +66,41 @@
 	</div>
 	<div class="col-lg-4" style="min-width: 330px;">
 	{% if article|can_write:user and not article|is_locked %}
-		<div class="accordion">
-
-			<div class="accordion-group">
-				
-				<div class="accordion-heading">
-					<a class="accordion-toggle" href="#collapse_upload" data-toggle="collapse">
-						<h3>{% trans "Create new template" %} <span class="icon icon-upload"></span></h3>
+		<div class="panel-group">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<a class="panel-toggle" href="#collapse_new" data-toggle="collapse">
+						<h4 class="panel-title">{% trans "Create new template" %} <span class="fa fa-plus"></span></h4>
 					</a>
 				</div>
-				
-				<div id="collapse_upload" class="accordion-body collapse in">
-					<div class="accordion-inner">
+				<div id="collapse_new" class="panel-collapse collapse in">
+					<div class="panel-body">
 						{% if anonymous_disallowed %}
 							{% include "wiki/includes/anonymous_blocked.html" %}
 						{% else %}
 						<a class="btn btn-large btn-success" href="{% url 'wiki:template_create' path=urlpath.path article_id=article.id %}">
-							{% trans "Create new template" %} <span class="icon icon-upload"></span>
+							{% trans "Create new template" %} <span class="fa fa-plus"></span>
 						</a>
 						{% endif %}
 					</div>
 				</div>
-			
 			</div>
 			
-			<div class="accordion-group">
-				<div class="accordion-heading">
-					<a class="accordion-toggle" data-toggle="collapse" href="#collapse_add">
-						<h3>{% trans "Search and add template" %} <span class="icon icon-plus-sign"></span></h3>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<a class="panel-toggle" data-toggle="collapse" href="#collapse_import">
+						<h4 class="panel-title">{% trans "Search and add template" %} <span class="fa fa-plus-circle"></span></h4>
 					</a>
 				</div>
-				
-				<div id="collapse_add" class="accordion-body collapse in">
-					<div class="accordion-inner">
+				<div id="collapse_import" class="panel-collapse collapse">
+					<div class="panel-body">
 						<p>{% trans "You can reuse template from other articles. These templates are subject to updates on other articles which may or may not be a good thing." %}</p>
 						<form method="GET" action="{% url 'wiki:template_search' path=urlpath.path article_id=article.id %}" class="wiki-form-block">
 							<div class="input-group">
 								{{ search_form.query }}
 								<span class="input-group-btn">
 									<button class="btn btn-default" type="submit">
-										<span class="icon-search"></span>
+										<span class="fa fa-search"></span>
 									</button>
 								</span>
 							</div>
@@ -115,31 +110,27 @@
 			</div>
 			
 			{% if article|can_write:user %}
-				<div class="accordion-group">
-					<div class="accordion-heading">
-						<a class="accordion-toggle" data-toggle="collapse" href="#collapse_restore">
-							<h3>{% trans "Restore template" %} <span class="icon icon-trash"></span></h3>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<a class="panel-toggle" data-toggle="collapse" href="#collapse_restore">
+							<h4 class="panel-title">{% trans "Restore template" %} <span class="fa fa-trash"></span></h4>
 						</a>
 					</div>
-					<div id="collapse_restore" class="accordion-body collapse in">
-						<div class="accordion-inner">
-						
+					<div id="collapse_restore" class="panel-collapse collapse">
+						<div class="panel-body">
 						{% for template in deleted_template %}
-						<div style="border:1px solid #e5e5e5;border-radius:4px;padding:5px;">
-							<p>{{ template.template_title }}</p>
-							{% if template.current_revision.previous_revision.id %}
-							<form method="POST" action="{% url 'wiki:template_revision_change' path=urlpath.path article_id=article.id template_id=template.id revision_id=template.current_revision.previous_revision.id %}" style="margin:0; padding:0;">
-								{% csrf_token %}
-								<button class="btn btn-default">{% trans "Restore" %}</button>
-							</form>
-							{% endif %}
-						</div>
+							<div style="border:1px solid #e5e5e5;border-radius:4px;padding:5px;">
+								<p>{{ template.template_title }}</p>
+								{% if template.current_revision.previous_revision.id %}
+								<form method="POST" action="{% url 'wiki:template_revision_change' path=urlpath.path article_id=article.id template_id=template.id revision_id=template.current_revision.previous_revision.id %}" style="margin:0; padding:0;">
+									{% csrf_token %}
+									<button class="btn btn-default">{% trans "Restore" %}</button>
+								</form>
+								{% endif %}
+							</div>
 						{% empty %}
-						
-						<p><em>{% trans "Nothing to restore" %}</em></p>
-						
+							<p><em>{% trans "Nothing to restore" %}</em></p>
 						{% endfor %}
-						
 						</div>
 					</div>
 				</div>
@@ -151,7 +142,7 @@
 	
 		{% if article|is_locked %}
 		<p class="muted">
-			<i class="icon-lock"></i>
+			<span class="fa fa-lock"></span>
 			{% trans "The article is currently locked for editing, and therefore no new template can be added." %}
 		</p>
 		{% endif %}
@@ -175,7 +166,7 @@
 			</div>
 			<div class="modal-footer">
 				<a href="#" class="btn btn-default btn-large" data-dismiss="modal">
-					<span class="icon-circle-arrow-left"></span>
+					<span class="fa fa-arrow-circle-left"></span>
 					{% trans "Close" %}
 				</a>
 			</div>

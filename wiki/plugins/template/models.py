@@ -14,7 +14,7 @@ from . import settings
 from wiki import managers
 from wiki.models.pluginbase import ReusablePlugin
 from wiki.models.article import BaseRevisionMixin
-from wiki.core import article_markdown
+from wiki.core.markdown import article_markdown
 
 
 class Template(ReusablePlugin):
@@ -120,6 +120,11 @@ class Template(ReusablePlugin):
             "num_vals": num_vals,
             "named_val": named_val,
         }
+
+    @property
+    def no_empty_description(self):
+        template_desc_qs = self.templaterevision_set.exclude(description='').order_by("-revision_number")
+        return template_desc_qs[0].description if template_desc_qs else ''
 
 
 class TemplateRevision(BaseRevisionMixin, models.Model):

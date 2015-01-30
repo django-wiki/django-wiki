@@ -13,7 +13,7 @@ class TemplateExtension(markdown.Extension):
     def extendMarkdown(self, md, md_globals):
         """ Insert TemplatePreprocessor before ReferencePreprocessor. """
         md.preprocessors.add(
-            'insert-template',
+            'dw-template',
             TemplatePreprocessor(md),
             '>html_block'
         )
@@ -69,6 +69,7 @@ class TemplatePreprocessor(markdown.preprocessors.Preprocessor):
         block_template_lines = []
         block_template_on = False
         for line in lines:
+            matched = False
             if (line.startswith("```") or line.startswith("~~~")
                     and not fenced_code_block):
                 new_text.append(line)
@@ -95,8 +96,11 @@ class TemplatePreprocessor(markdown.preprocessors.Preprocessor):
                     continue
             m = re.match(RE_TEXT, line)
             while m:
+                matched = True
                 template_tag = re.findall(RE_TEXT, line)[0][1]
                 # if "{{" or "}}" in content, replace it!
+                # cause may template content has "{{" or "}}",
+                # should not be transform at next loop
                 content = gen_content(template_tag).replace(
                     "{{", "\u0018-\u0018"
                 ).replace(
@@ -114,5 +118,7 @@ class TemplatePreprocessor(markdown.preprocessors.Preprocessor):
             ).replace(
                 "\u0018+\u0018", "}}"
             )
+            if matched:
+                line = self.markdown.htmlStash.store(line, safe=True)
             new_text.append(line)
         return new_text

@@ -35,3 +35,19 @@ Finally article:
 <a href="https://github.com/django-wiki/django-wiki" target="_blank">django-wiki <i class="icon icon-share"></i></a>
 ```
 
+### Note
+
+If you want use html content in template, you must configure the settings of WIKI_MARKDOWN_KWARGS options. Turn 'safe_mode' off.
+
+Like this:
+
+```
+WIKI_MARKDOWN_KWARGS = {
+    'extensions': [
+        'codehilite',
+        'footnotes',
+        'attr_list',
+        'headerid',
+        'extra',
+    ], "safe_mode": False,}
+```

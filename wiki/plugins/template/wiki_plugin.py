@@ -18,7 +18,7 @@ class TemplatePlugin(BasePlugin):
 
     slug = settings.SLUG
     sidebar = {'headline': _('Template'),
-               'icon_class': 'icon-folder-close',
+               'icon_class': 'fa fa-file-text-o',
                'template': 'wiki/plugins/template/sidebar.html',
                'form_class': None,
                'get_form_kwargs': (lambda a: {})}
@@ -28,7 +28,7 @@ class TemplatePlugin(BasePlugin):
         )
     }
 
-    article_tab = (_('Template'), "icon-folder-close")
+    article_tab = (_('Template'), "fa fa-file-text-o")
     article_view = views.TemplateView().dispatch
 
     # List of notifications to construct signal handlers for. This
