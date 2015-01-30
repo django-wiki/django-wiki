@@ -59,10 +59,6 @@ class TemplateTest(TestCase):
             response,
             '&#123;&#123;color&#125;&#125;'
         )
-        self.assertContains(
-            self.get_by_path(''),
-            'style="color:blue;"'
-        )
 
     def test_embed_template(self):
         c = self.c

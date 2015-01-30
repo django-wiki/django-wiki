@@ -118,7 +118,8 @@ class TemplatePreprocessor(markdown.preprocessors.Preprocessor):
             ).replace(
                 "\u0018+\u0018", "}}"
             )
-            if matched:
+            # Doesn't support mixed markdown and html
+            if matched and ("</" in line or "/>" in line):
                 line = self.markdown.htmlStash.store(line, safe=True)
             new_text.append(line)
         return new_text

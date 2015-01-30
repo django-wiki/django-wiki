@@ -37,9 +37,8 @@ Finally article:
 
 ### Note
 
-If you want use html content in template, you must configure the settings of WIKI_MARKDOWN_KWARGS options. Turn 'safe_mode' off.
-
-Like this:
+1. Template doesn't support mixed markdown and html
+2. If you want use html content in template, you must configure the settings of WIKI_MARKDOWN_KWARGS options. Turn 'safe_mode' off.
 
 ```
 WIKI_MARKDOWN_KWARGS = {
