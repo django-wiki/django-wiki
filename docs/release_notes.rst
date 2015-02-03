@@ -9,9 +9,9 @@ Up until the django-wiki 0.1 release, versions have been 0.0.1-0.0.24 with
 migrations kept in South and without any serious issues of upgrading,
 ``python manage.py migrate`` was enough.
 
-*django-wiki 0.1* is cutting ties in the sense that migrations are being reset.
-This means that you can upgrade directly the upcoming 0.0.24 to 0.1 but upgrades
-from previous versions are not possible.
+*django-wiki 0.1* is cutting ties and migrations are being reset.
+This means that you can upgrade directly from upcoming 0.0.24 to 0.1 but upgrades
+from previous versions bypassing 0.0.24 are not possible.
 
 
 django-wiki 0.0.24
@@ -22,13 +22,53 @@ of django-wiki. The code base has been heavily refactored and this is hopefully
 the final release.
 
 .. warning::
-   0.0.24 is actually mainly a transitional release.
+   0.0.24 is mainly a transitional release, but new features and bug fixes are
+   included, too.
 
 **Compatibility**
 
  * Django 1.5, 1.6 (That means Django 1.7 is **not** yet fully supported)
  * South 1.0+ (if you are on an older South, you **need** to upgrade)
  * Python 2.6, 2.7, 3.3, 3.4
+
+
+Upgrading
+_________
+
+Firstly, upgrade django-wiki through familiar steps with pip
+
+::
+
+    $ pip install wiki --upgrade
+   
+During upgrading, notice that `django-nyt`_ is installed. This replaces the
+previously bundled django_notify and you need to make a few changes in
+your settings and urls.
+
+.. _ https://github.com/benjaoming/django-nyt
+
+In ``settings.INSTALLED_APPS``, replace `"django_notify"` with `"django_nyt"`.
+Then open up your project's urlconf and make sure you have something
+that looks like the following:
+
+::
+
+    from wiki.urls import get_pattern as get_wiki_pattern
+    from django_nyt.urls import get_pattern as get_nyt_pattern
+    urlpatterns += patterns('',
+        (r'^notifications/', get_nyt_pattern()),
+        (r'', get_wiki_pattern())
+    )
+
+Notice that we are importing `from django_nyt.urls` and no longer
+`django_notify` and that the function is renamed to `get_nyt_pattern`.
+
+After making these changes, you should run migrations.
+
+::
+
+    $ python manage.py migrate
+
 
 **Notifications fixed**
 
@@ -46,7 +86,7 @@ management command:
 
 
 Troubleshooting
-___________________
+_______________
 
 
 If you have been running from the git master branch, you may experience
@@ -72,41 +112,44 @@ your DB shell (after backing up this data).
 After this, you can recreate your notifications with the former section's
 instructions.
 
+
 django-wiki 0.1
 ---------------
 
+This release is not yet out but maintained in the `master` git branch.
+
 .. warning::
    If you are upgrading from a previous release, please ensure that you
-   firstly install django-wiki 0.0.24 because it contains the final migrations
+   pass through the 0.0.24 release because it contains the final migrations
    necessary before entering the django-wiki 0.1+ migration tree.
    
    If you are using django 1.7 and have an old installation of django-wiki
-   (which should be impossible since it wouldn't run) please downgrade to 1.6,
+   (which should be impossible since it wouldn't run) please downgrade to 1.6
+   as follows:
    
    ::
    
-       $ pip install django-wiki==0.0.24
-       $ python manage.py migrate
-       $ # EDIT YOUR PROJECT'S SETTINGS
-       $ pip install django-wiki==0.3
-       $ python manage.py migrate
-   
-   *Ammending settings*: If you are running django < 1.7, you need the following
-   in your project's settings:
-   
-   ::
-   
-      INSTALLED_APPS.append('south')
+       $ pip install wiki==0.0.24
+       $ pip install django\<1.7  # Downgrade django if necessary
+       $ python manage.py migrate  # Run 0.0.24 migrations
+       $ pip install wiki\<0.2 --upgrade  # Upgrade to latest 0.1 series
+       $ python manage.py migrate --delete-ghost-migrations  # Run migrations again,
+                                                             # removing the (ghost) 
+                                                             # migrations from previous
+                                                             # release
+       $ # Feel free to upgrade Django again
 
 
 **Supported**
 
- * Python 2.7, 3.3, and 3.4 (3.2 is not)
+ * Python 2.7, 3.3, and 3.4 (3.2 is not supported)
  * Django 1.5, 1.6 and 1.7
- * Django < 1.7 still needs south, and migration trees are kept until next major
+ * Django < 1.7 still needs South, and migration trees are kept until next major
    release.
    
-Release plan:
+
+Release plan
+------------
 
 Until django-wiki 0.2 is released, table names of plugins will defer depending
 on whether you are using South or django.db.migrations. If you want to upgrade
