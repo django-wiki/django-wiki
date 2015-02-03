@@ -90,6 +90,11 @@ deploying our master branch directly):
 
 ``pip install git+git://github.com/benjaoming/django-wiki.git``
 
+Upgrade
+-------
+
+Always read the :doc:`release_notes` for instructions on upgrading.
+
 Configure ``settings.INSTALLED_APPS``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
