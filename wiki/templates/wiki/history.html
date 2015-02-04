@@ -62,7 +62,7 @@
                 <i class="fa fa-plus"></i>
               {% endif %}
               {% include "wiki/includes/revision_info.html" with current_revision=article.current_revision %}
-              <div style="color: #CCC;">
+              <div class="text-muted">
                 <small>
                 {% if revision.user_message %}
                   {{ revision.user_message }}
