@@ -6810,6 +6810,10 @@ textarea.form-vertical .wiki-control textarea {
   color: #444;
   font-size: 75%;
 }
+.wiki-control select[multiple],
+.wiki-control select[size] {
+  height: auto;
+}
 /******************************
  RESPONSIVE STUFF
 *******************************/
