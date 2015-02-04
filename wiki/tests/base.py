@@ -1,6 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client
+from django.template import Context, Template
 
 from wiki.models import URLPath
 
@@ -59,3 +60,13 @@ class ArticleTestBase(WebTestBase):
         """
 
         return self.c.get(reverse('wiki:get', kwargs={'path': path}))
+
+
+class BaseTestCase(TestCase):
+
+    @property
+    def template(self):
+        raise Exception("Not implemented")
+
+    def render(self, template, context):
+        return Template(template).render(Context(context))
