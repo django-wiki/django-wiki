@@ -2,9 +2,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 from __future__ import unicode_literals
+
 import os
-from wiki import VERSION
+
 from setuptools import setup, find_packages
+
+from wiki import VERSION
 
 # Utility function to read the README file.
 # Used for the long_description.  It's nice, because now 1) we have a top level
@@ -27,7 +30,8 @@ requirements = [
     "django-nyt>=0.9.6",
     # 0.6.1 broken: https://github.com/django-mptt/django-mptt/issues/316
     "django-mptt==0.6.0",
-    "six"
+    "six",
+    "mock"
 ]
 
 # Requirements that depend on Django version: South and sorl-thumbnail
