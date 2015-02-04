@@ -175,5 +175,5 @@ class SearchForm(forms.Form):
         label="",
         widget=forms.TextInput(
             attrs={
-                'class': 'search-query'}),
+                'class': 'search-query form-control'}),
     )

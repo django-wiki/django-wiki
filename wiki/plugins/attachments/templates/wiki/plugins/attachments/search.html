@@ -9,11 +9,15 @@
 <h2>{% trans "Add attachment from other article" %}</h2>
 
 <form method="GET" action="{% url 'wiki:attachments_search' path=urlpath.path article_id=article.id %}" class="form-search">
-  {{ search_form.query }}
-  <button class="btn btn-default">
-    <span class="fa fa-search"></span>
-    {% trans "Search files and articles" %}
-  </button>
+  <div class="input-group">
+    {{ search_form.query }}
+    <span class="input-group-btn">
+      <button class="btn btn-default">
+        <span class="fa fa-search"></span>
+        {% trans "Search files and articles" %}
+      </button>
+    </span>
+  </div>
 </form>
 
 {% if attachments %}
