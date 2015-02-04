@@ -37,11 +37,11 @@
   <div class="col-lg-8">
     <div class="col-lg-2"></div>
     <div class="col-lg-10">
-      <a class="btn btn-default btn-lg" onclick="$('#previewModal').modal('show'); document.getElementById('article_edit_form').target='previewWindow'; document.getElementById('article_edit_form').action='{% url 'wiki:preview' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit()" href="#">
+      <a class="btn btn-default" onclick="$('#previewModal').modal('show'); document.getElementById('article_edit_form').target='previewWindow'; document.getElementById('article_edit_form').action='{% url 'wiki:preview' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit()" href="#">
         <span class="fa fa-eye"></span>
         {% trans "Preview" %}
       </a>
-      <a class="btn btn-lg btn-primary" onclick="document.getElementById('article_edit_form').target=''; document.getElementById('article_edit_form').action='{% url 'wiki:edit' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit();" href="#">
+      <a class="btn btn-primary" onclick="document.getElementById('article_edit_form').target=''; document.getElementById('article_edit_form').action='{% url 'wiki:edit' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit();" href="#">
         <span class="fa fa-check"></span>
         {% trans "Save changes" %}
       </a>
