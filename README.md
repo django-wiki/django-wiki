@@ -183,6 +183,17 @@ Development
 The folder **testproject/** contains a pre-configured django project and an sqlite database. Login for django admin is *admin:admin*. This project should always be maintained, but please do not commit changes to the SQLite database as we only care about its contents in case data models are changed.
 
 
+Acknowledgements
+----------------
+
+ * The people at [edX](http://www.edxonline.org/) & MIT for finding and supporting the project both financially and with ideas.
+ * [django-cms](https://github.com/divio/django-cms) for venturing where no django app has gone before in terms of well-planned features and high standards. It's a very big inspiration.
+ * [django-mptt](https://github.com/django-mptt/django-mptt), a wonderful utility for inexpensively using tree structures in Django with a relational database backend.
+ * [spookylukey](https://github.com/spookylukey), [jluttine](https://github.com/jluttine), [cXhristian](https://github.com/cXhristian), [valberg](https://github.com/valberg), [jdcaballero](https://github.com/jdcaballero), [yekibud](https://github.com/yekibud), [bridger](https://github.com/bridger), [TomLottermann](https://github.com/TomLottermann), [crazyzubr](https://github.com/crazyzubr), and [everyone else](https://github.com/benjaoming/django-wiki/contributors) involved!
+
+<!---Illegal PyPi RST data -->
+<!---Anything that isn't validly translateable to PyPi RST goes after this line -->
+
 Badgers Badgers Badgers
 -----------------------
 
@@ -200,15 +211,4 @@ Badgers Badgers Badgers
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/django-wiki/django-wiki/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
-
-Acknowledgements
-----------------
-
- * The people at [edX](http://www.edxonline.org/) & MIT for finding and supporting the project both financially and with ideas.
- * [django-cms](https://github.com/divio/django-cms) for venturing where no django app has gone before in terms of well-planned features and high standards. It's a very big inspiration.
- * [django-mptt](https://github.com/django-mptt/django-mptt), a wonderful utility for inexpensively using tree structures in Django with a relational database backend.
- * [spookylukey](https://github.com/spookylukey), [jluttine](https://github.com/jluttine), [cXhristian](https://github.com/cXhristian), [valberg](https://github.com/valberg), [jdcaballero](https://github.com/jdcaballero), [yekibud](https://github.com/yekibud), [bridger](https://github.com/bridger), [TomLottermann](https://github.com/TomLottermann), [crazyzubr](https://github.com/crazyzubr), and [everyone else](https://github.com/benjaoming/django-wiki/contributors) involved!
-
-<!---Illegal PyPi RST data -->
-<!---Anything that isn't validly translateable to PyPi RST goes after this line -->
 
