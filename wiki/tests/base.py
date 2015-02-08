@@ -1,6 +1,8 @@
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client
+from django.template import Context, Template
+from django.test.utils import override_settings
 
 from wiki.models import URLPath
 
@@ -59,3 +61,23 @@ class ArticleTestBase(WebTestBase):
         """
 
         return self.c.get(reverse('wiki:get', kwargs={'path': path}))
+
+
+class BaseTestCase(TestCase):
+
+    @property
+    def template(self):
+        raise Exception("Not implemented")
+
+    def render(self, template, context):
+        return Template(template).render(Context(context))
+
+
+class wiki_override_settings(override_settings):
+
+    def __enter__(self):
+        super(wiki_override_settings, self).__enter__()
+
+        from imp import reload
+        from wiki.conf import settings
+        reload(settings)
