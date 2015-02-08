@@ -1,13 +1,10 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-try:
-    from unittest import mock
-except ImportError:
-    import mock
-
 from django.contrib.auth import get_user_model
 
+from wiki.models import Article, ArticleRevision
+from wiki.tests.base import wiki_override_settings, BaseTestCase
 from wiki.templatetags.wiki_tags import (
     get_content_snippet,
     can_read,
@@ -17,12 +14,9 @@ from wiki.templatetags.wiki_tags import (
     is_locked
 )
 
-from wiki.models import Article, ArticleRevision
-
-from .base import BaseTestCase
-
 
 class GetContentSnippet(BaseTestCase):
+
     pass
 
 
@@ -33,41 +27,33 @@ class CanRead(BaseTestCase):
         {{ article|can_read:user }}
     """
 
+    @wiki_override_settings(WIKI_CAN_READ=lambda *args: True)
     def test_user_have_permission(self):
 
-        @mock.patch('wiki.conf.settings.CAN_READ', lambda *args: True)
-        def runtest():
+        a = Article.objects.create()
 
-            a = Article.objects.create()
+        User = get_user_model()
+        u = User.objects.create(username='Nobody', password='pass')
 
-            User = get_user_model()
-            u = User.objects.create(username='Nobody', password='pass')
+        output = can_read(a, u)
+        self.assertTrue(output)
 
-            output = can_read(a, u)
-            self.assertTrue(output)
+        output = self.render(self.template, {'article': a, 'user': u})
+        self.assertIn('True', output)
 
-            output = self.render(self.template, {'article': a, 'user': u})
-            self.assertIn('True', output)
-
-        runtest()
-
+    @wiki_override_settings(WIKI_CAN_READ=lambda *args: False)
     def test_user_dont_have_permission(self):
 
-        @mock.patch('wiki.conf.settings.CAN_READ', lambda *args: False)
-        def runtest():
+        User = get_user_model()
 
-            User = get_user_model()
+        a = Article.objects.create()
+        u = User.objects.create(username='Noman', password='pass')
 
-            a = Article.objects.create()
-            u = User.objects.create(username='Noman', password='pass')
+        output = can_read(a, u)
+        self.assertFalse(output)
 
-            output = can_read(a, u)
-            self.assertFalse(output)
-
-            output = self.render(self.template, {'article': a, 'user': u})
-            self.assertIn('False', output)
-
-        runtest()
+        output = self.render(self.template, {'article': a, 'user': u})
+        self.assertIn('False', output)
 
 
 class CanWrite(BaseTestCase):
@@ -77,41 +63,33 @@ class CanWrite(BaseTestCase):
         {{ article|can_write:user }}
     """
 
+    @wiki_override_settings(WIKI_CAN_DELETE=lambda *args: True)
     def test_user_have_permission(self):
 
-        @mock.patch('wiki.conf.settings.CAN_DELETE', lambda *args: True)
-        def runtest():
+        a = Article.objects.create()
 
-            a = Article.objects.create()
+        User = get_user_model()
+        u = User.objects.create(username='Nobody', password='pass')
 
-            User = get_user_model()
-            u = User.objects.create(username='Nobody', password='pass')
+        output = can_write(a, u)
+        self.assertTrue(output)
 
-            output = can_write(a, u)
-            self.assertTrue(output)
+        output = self.render(self.template, {'article': a, 'user': u})
+        self.assertIn('True', output)
 
-            output = self.render(self.template, {'article': a, 'user': u})
-            self.assertIn('True', output)
-
-        runtest()
-
+    @wiki_override_settings(WIKI_CAN_WRITE=lambda *args: False)
     def test_user_dont_have_permission(self):
 
-        @mock.patch('wiki.conf.settings.CAN_WRITE', lambda *args: False)
-        def runtest():
+        User = get_user_model()
 
-            User = get_user_model()
+        a = Article.objects.create()
+        u = User.objects.create(username='Noman', password='pass')
 
-            a = Article.objects.create()
-            u = User.objects.create(username='Noman', password='pass')
+        output = can_write(a, u)
+        self.assertFalse(output)
 
-            output = can_write(a, u)
-            self.assertFalse(output)
-
-            output = self.render(self.template, {'article': a, 'user': u})
-            self.assertIn('False', output)
-
-        runtest()
+        output = self.render(self.template, {'article': a, 'user': u})
+        self.assertIn('False', output)
 
 
 class CanDelete(BaseTestCase):
@@ -121,41 +99,33 @@ class CanDelete(BaseTestCase):
         {{ article|can_delete:user }}
     """
 
+    @wiki_override_settings(WIKI_CAN_DELETE=lambda *args: True)
     def test_user_have_permission(self):
 
-        @mock.patch('wiki.conf.settings.CAN_DELETE', lambda *args: True)
-        def runtest():
+        a = Article.objects.create()
 
-            a = Article.objects.create()
+        User = get_user_model()
+        u = User.objects.create(username='Nobody', password='pass')
 
-            User = get_user_model()
-            u = User.objects.create(username='Nobody', password='pass')
+        output = can_delete(a, u)
+        self.assertTrue(output)
 
-            output = can_delete(a, u)
-            self.assertTrue(output)
+        output = self.render(self.template, {'article': a, 'user': u})
+        self.assertIn('True', output)
 
-            output = self.render(self.template, {'article': a, 'user': u})
-            self.assertIn('True', output)
-
-        runtest()
-
+    @wiki_override_settings(WIKI_CAN_WRITE=lambda *args: False)
     def test_user_dont_have_permission(self):
 
-        @mock.patch('wiki.conf.settings.CAN_WRITE', lambda *args: False)
-        def runtest():
+        User = get_user_model()
 
-            User = get_user_model()
+        a = Article.objects.create()
+        u = User.objects.create(username='Noman', password='pass')
 
-            a = Article.objects.create()
-            u = User.objects.create(username='Noman', password='pass')
+        output = can_delete(a, u)
+        self.assertFalse(output)
 
-            output = can_delete(a, u)
-            self.assertFalse(output)
-
-            output = self.render(self.template, {'article': a, 'user': u})
-            self.assertIn('False', output)
-
-        runtest()
+        output = self.render(self.template, {'article': a, 'user': u})
+        self.assertIn('False', output)
 
 
 class CanModerate(BaseTestCase):
@@ -165,23 +135,19 @@ class CanModerate(BaseTestCase):
         {{ article|can_moderate:user }}
     """
 
+    @wiki_override_settings(WIKI_CAN_MODERATE=lambda *args: True)
     def test_user_have_permission(self):
 
-        @mock.patch('wiki.conf.settings.CAN_MODERATE', lambda *args: True)
-        def runtest():
+        a = Article.objects.create()
 
-            a = Article.objects.create()
+        User = get_user_model()
+        u = User.objects.create(username='Nobody', password='pass')
 
-            User = get_user_model()
-            u = User.objects.create(username='Nobody', password='pass')
+        output = can_moderate(a, u)
+        self.assertTrue(output)
 
-            output = can_moderate(a, u)
-            self.assertTrue(output)
-
-            output = self.render(self.template, {'article': a, 'user': u})
-            self.assertIn('True', output)
-
-        runtest()
+        output = self.render(self.template, {'article': a, 'user': u})
+        self.assertIn('True', output)
 
     def test_user_dont_have_permission(self):
 

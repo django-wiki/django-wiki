@@ -2,6 +2,7 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client
 from django.template import Context, Template
+from django.test.utils import override_settings
 
 from wiki.models import URLPath
 
@@ -70,3 +71,13 @@ class BaseTestCase(TestCase):
 
     def render(self, template, context):
         return Template(template).render(Context(context))
+
+
+class wiki_override_settings(override_settings):
+
+    def __enter__(self):
+        super(wiki_override_settings, self).__enter__()
+
+        from imp import reload
+        from wiki.conf import settings
+        reload(settings)
