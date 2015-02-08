@@ -17,7 +17,165 @@ from wiki.templatetags.wiki_tags import (
 
 class GetContentSnippet(BaseTestCase):
 
-    pass
+    template = """
+        {% load wiki_tags %}
+        {{ some_content|get_content_snippet:"keyword, max_words" }}
+    """
+
+    def test_keyword_at_the_end_of_the_content(self):
+        text = 'lorem ' * 80
+        content = text + ' list'
+        expected = ('lorem lorem lorem lorem lorem lorem lorem lorem lorem '
+        'lorem lorem lorem lorem lorem lorem <strong>list</strong> ')
+
+        output = get_content_snippet(content, 'list')
+
+        self.assertEqual(output, expected)
+
+    def test_keyword_at_the_beginning_of_the_content(self):
+        text = 'lorem ' * 80
+        content = 'list ' + text
+        expected = (' <strong>list</strong> lorem lorem lorem lorem lorem '
+        'lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem '
+        'lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem '
+        'lorem lorem lorem')
+
+        output = get_content_snippet(content, 'list')
+
+        self.assertEqual(output, expected)
+
+    def test_whole_content_is_consist_from_keywords(self):
+        content = 'lorem ' * 80
+        expected = ('<strong>lorem</strong> <strong>lorem</strong> '
+        '<strong>lorem</strong> <strong>lorem</strong> '
+        '<strong>lorem</strong> <strong>lorem</strong> '
+        '<strong>lorem</strong> <strong>lorem</strong> '
+        '<strong>lorem</strong> <strong>lorem</strong> '
+        '<strong>lorem</strong> <strong>lorem</strong> '
+        '<strong>lorem</strong> <strong>lorem</strong> '
+        '<strong>lorem</strong> <strong>lorem</strong> ')
+
+        output = get_content_snippet(content, 'lorem')
+
+        self.assertEqual(output, expected)
+
+    def test_keyword_is_not_in_a_content(self):
+        content = 'lorem ' * 80
+        expected = ('lorem lorem lorem lorem lorem lorem lorem lorem lorem '
+        'lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem '
+        'lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem')
+
+        output = get_content_snippet(content, 'list')
+
+        self.assertEqual(output, expected)
+
+    def test_a_few_keywords_in_content(self):
+        text = 'lorem ' * 80
+        content = 'list ' + text
+
+        text = 'ipsum ' * 80
+        content += text + ' list '
+
+        text = 'dolorum ' * 80
+        content += text + ' list'
+
+        expected = ('dolorum dolorum dolorum dolorum dolorum dolorum dolorum '
+        'dolorum dolorum dolorum dolorum dolorum dolorum dolorum dolorum '
+        '<strong>list</strong> ')
+
+        output = get_content_snippet(content, 'list')
+
+        self.assertEqual(output, expected)
+
+    # XXX bug or feature?
+    def test_keyword_is_in_content_and_max_words_is_zero(self):
+        text = 'spam ' * 800
+        content = text + ' list'
+
+        output = get_content_snippet(content, 'list', 0)
+        expected = 'spam ' * 800 + '<strong>list</strong> '
+
+        self.assertEqual(output, expected)
+
+    # XXX bug or feature?
+    def test_keyword_is_in_content_and_max_words_is_negative(self):
+        text = 'spam ' * 80
+        content = text + ' list'
+
+        output = get_content_snippet(content, 'list', -10)
+        expected = 'spam ' * 75 + '<strong>list</strong> '
+
+        self.assertEqual(output, expected)
+
+    # XXX bug or feature?
+    def test_keyword_is_not_in_content_and_max_words_is_zero(self):
+        content = 'spam ' * 15
+
+        output = get_content_snippet(content, 'list', 0)
+        expected = ''
+
+        self.assertEqual(output, expected)
+
+    # XXX bug or feature?
+    def test_keyword_is_not_in_content_and_max_words_is_negative(self):
+        content = 'spam ' * 15
+
+        output = get_content_snippet(content, 'list', -10)
+        expected = 'spam spam spam spam spam'
+
+        self.assertEqual(output, expected)
+
+    def test_no_content(self):
+        content = ''
+
+        output = get_content_snippet(content, 'list')
+
+        self.assertEqual(output, '')
+
+        content = ' '
+
+        output = get_content_snippet(content, 'list')
+
+        self.assertEqual(output, '')
+
+    def test_strip_tags(self):
+
+        keyword = 'maybe'
+
+        content = """
+        <h1>Some dummy</h1> text. <div>Actually</div> I don't what to write,
+        heh. Don't now, <b>maybe</b> I should citate <>Shakespeare<> or Byron.
+        Or <a>maybe</a> copy paste from <a href="http://python.org">python</a>
+        or django documentation. Maybe.
+        """
+
+        expected = ('I should citate <>Shakespeare<> or Byron. '
+            'Or <strong>maybe</strong> copy paste from python '
+            'or django documentation. <strong>maybe</strong> .')
+
+        output = get_content_snippet(content, keyword, 30)
+
+        self.assertEqual(output, expected)
+
+    def test_max_words_arg(self):
+
+        keyword = 'eggs'
+
+        content = """
+        knight eggs spam ham eggs guido python eggs circus
+        """
+        expected = ('<strong>eggs</strong> guido python '
+                    '<strong>eggs</strong> circus')
+
+        output = get_content_snippet(content, keyword, 5)
+
+        self.assertEqual(output, expected)
+
+        output = get_content_snippet(content, keyword, 0)
+
+        expected = ('knight <strong>eggs</strong> spam ham '
+        '<strong>eggs</strong> guido python <strong>eggs</strong> ')
+        self.assertEqual(output, expected)
 
 
 class CanRead(BaseTestCase):
