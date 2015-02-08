@@ -31,7 +31,6 @@ requirements = [
     # 0.6.1 broken: https://github.com/django-mptt/django-mptt/issues/316
     "django-mptt==0.6.0",
     "six",
-    "mock"
 ]
 
 # Requirements that depend on Django version: South and sorl-thumbnail
