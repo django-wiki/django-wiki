@@ -75,44 +75,54 @@ def wiki_form(context, form_obj):
     return context
 
 
+# XXX html strong tag is hardcoded
 @register.filter
 def get_content_snippet(content, keyword, max_words=30):
+    """
+    Takes some text. Removes html tags and newlines from it.
+    If keyword in this text - returns a short text snippet
+    with keyword wrapped into strong tag and max_words // 2 before and after it.
+    If no keyword - return text[:max_words].
+    """
+
+    def clean_text(content):
+        """
+        Removes tags, newlines and spaces from content.
+        Return array of words.
+        """
+
+        # remove html tags
+        content = striptags(content)
+        # remove newlines
+        content = content.replace("\n", " ").split(" ")
+
+        return list(filter(lambda x: x != "", content))
+
     max_words = int(max_words)
-    p = re.compile(
-        r'(?P<before>.*)%s(?P<after>.*)' %
-        re.escape(keyword),
-        re.MULTILINE | re.IGNORECASE | re.DOTALL)
-    m = p.search(content)
-    html = ""
-    if m:
-        words = list(filter(
-            lambda x: x != "",
-            striptags(
-                m.group("before")).replace(
-                "\n",
-                " ").split(" ")))
+
+    pattern = re.compile(
+        r'(?P<before>.*)%s(?P<after>.*)' % re.escape(keyword),
+        re.MULTILINE | re.IGNORECASE | re.DOTALL
+    )
+
+    match = pattern.search(content)
+
+    if match:
+        words = clean_text(match.group("before"))
         before_words = words[-max_words // 2:]
-        words = list(filter(
-            lambda x: x != "",
-            striptags(
-                m.group("after")).replace(
-                "\n",
-                " ").split(" ")))
+        words = clean_text(match.group("after"))
+
         after = " ".join(words[:max_words - len(before_words)])
         before = " ".join(before_words)
+
         html = "%s %s %s" % (before, striptags(keyword), after)
+
         kw_p = re.compile(r'(%s)' % keyword, re.IGNORECASE)
         html = kw_p.sub(r"<strong>\1</strong>", html)
-        html = mark_safe(html)
-    else:
-        html = " ".join(
-            list(filter(
-                lambda x: x != "",
-                striptags(content).replace(
-                    "\n",
-                    " ").split(" ")))[
-                :max_words])
-    return html
+
+        return mark_safe(html)
+
+    return " ".join(clean_text(content)[:max_words])
 
 
 @register.filter
