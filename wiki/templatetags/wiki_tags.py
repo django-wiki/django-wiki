@@ -127,32 +127,46 @@ def get_content_snippet(content, keyword, max_words=30):
 
 @register.filter
 def can_read(obj, user):
-    """Articles and plugins have a can_read method..."""
+    """
+    Takes article or related to article model.
+    Check if user can read article.
+    """
     return obj.can_read(user)
 
 
 @register.filter
 def can_write(obj, user):
-    """Articles and plugins have a can_write method..."""
+    """
+    Takes article or related to article model.
+    Check if user can write article.
+    """
     return obj.can_write(user)
 
 
 @register.filter
 def can_delete(obj, user):
-    """Articles and plugins have a can_delete method..."""
+    """
+    Takes article or related to article model.
+    Check if user can delete article.
+    """
     return obj.can_delete(user)
 
 
 @register.filter
 def can_moderate(obj, user):
-    """Articles and plugins have a can_moderate method..."""
+    """
+    Takes article or related to article model.
+    Check if user can moderate article.
+    """
     return obj.can_moderate(user)
 
 
 @register.filter
-def is_locked(obj):
-    """Articles and plugins have a can_delete method..."""
-    return (obj.current_revision and obj.current_revision.locked)
+def is_locked(model):
+    """
+    Check if article is locked.
+    """
+    return (model.current_revision and model.current_revision.locked)
 
 
 @register.assignment_tag(takes_context=True)
