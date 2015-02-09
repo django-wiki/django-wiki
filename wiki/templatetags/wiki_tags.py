@@ -75,74 +75,98 @@ def wiki_form(context, form_obj):
     return context
 
 
+# XXX html strong tag is hardcoded
 @register.filter
 def get_content_snippet(content, keyword, max_words=30):
+    """
+    Takes some text. Removes html tags and newlines from it.
+    If keyword in this text - returns a short text snippet
+    with keyword wrapped into strong tag and max_words // 2 before and after it.
+    If no keyword - return text[:max_words].
+    """
+
+    def clean_text(content):
+        """
+        Removes tags, newlines and spaces from content.
+        Return array of words.
+        """
+
+        # remove html tags
+        content = striptags(content)
+        # remove newlines
+        content = content.replace("\n", " ").split(" ")
+
+        return list(filter(lambda x: x != "", content))
+
     max_words = int(max_words)
-    p = re.compile(
-        r'(?P<before>.*)%s(?P<after>.*)' %
-        re.escape(keyword),
-        re.MULTILINE | re.IGNORECASE | re.DOTALL)
-    m = p.search(content)
-    html = ""
-    if m:
-        words = list(filter(
-            lambda x: x != "",
-            striptags(
-                m.group("before")).replace(
-                "\n",
-                " ").split(" ")))
+
+    pattern = re.compile(
+        r'(?P<before>.*)%s(?P<after>.*)' % re.escape(keyword),
+        re.MULTILINE | re.IGNORECASE | re.DOTALL
+    )
+
+    match = pattern.search(content)
+
+    if match:
+        words = clean_text(match.group("before"))
         before_words = words[-max_words // 2:]
-        words = list(filter(
-            lambda x: x != "",
-            striptags(
-                m.group("after")).replace(
-                "\n",
-                " ").split(" ")))
+        words = clean_text(match.group("after"))
+
         after = " ".join(words[:max_words - len(before_words)])
         before = " ".join(before_words)
+
         html = "%s %s %s" % (before, striptags(keyword), after)
+
         kw_p = re.compile(r'(%s)' % keyword, re.IGNORECASE)
         html = kw_p.sub(r"<strong>\1</strong>", html)
-        html = mark_safe(html)
-    else:
-        html = " ".join(
-            list(filter(
-                lambda x: x != "",
-                striptags(content).replace(
-                    "\n",
-                    " ").split(" ")))[
-                :max_words])
-    return html
+
+        return mark_safe(html)
+
+    return " ".join(clean_text(content)[:max_words])
 
 
 @register.filter
 def can_read(obj, user):
-    """Articles and plugins have a can_read method..."""
+    """
+    Takes article or related to article model.
+    Check if user can read article.
+    """
     return obj.can_read(user)
 
 
 @register.filter
 def can_write(obj, user):
-    """Articles and plugins have a can_write method..."""
+    """
+    Takes article or related to article model.
+    Check if user can write article.
+    """
     return obj.can_write(user)
 
 
 @register.filter
 def can_delete(obj, user):
-    """Articles and plugins have a can_delete method..."""
+    """
+    Takes article or related to article model.
+    Check if user can delete article.
+    """
     return obj.can_delete(user)
 
 
 @register.filter
 def can_moderate(obj, user):
-    """Articles and plugins have a can_moderate method..."""
+    """
+    Takes article or related to article model.
+    Check if user can moderate article.
+    """
     return obj.can_moderate(user)
 
 
 @register.filter
-def is_locked(obj):
-    """Articles and plugins have a can_delete method..."""
-    return (obj.current_revision and obj.current_revision.locked)
+def is_locked(model):
+    """
+    Check if article is locked.
+    """
+    return (model.current_revision and model.current_revision.locked)
 
 
 @register.assignment_tag(takes_context=True)
