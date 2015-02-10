@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 from django.contrib.auth import get_user_model
+User = get_user_model()
 
 from wiki.models import Article, ArticleRevision
 from wiki.tests.base import wiki_override_settings, BaseTestCase
@@ -190,7 +191,6 @@ class CanRead(BaseTestCase):
 
         a = Article.objects.create()
 
-        User = get_user_model()
         u = User.objects.create(username='Nobody', password='pass')
 
         output = can_read(a, u)
@@ -202,7 +202,6 @@ class CanRead(BaseTestCase):
     @wiki_override_settings(WIKI_CAN_READ=lambda *args: False)
     def test_user_dont_have_permission(self):
 
-        User = get_user_model()
 
         a = Article.objects.create()
         u = User.objects.create(username='Noman', password='pass')
@@ -226,7 +225,6 @@ class CanWrite(BaseTestCase):
 
         a = Article.objects.create()
 
-        User = get_user_model()
         u = User.objects.create(username='Nobody', password='pass')
 
         output = can_write(a, u)
@@ -238,7 +236,6 @@ class CanWrite(BaseTestCase):
     @wiki_override_settings(WIKI_CAN_WRITE=lambda *args: False)
     def test_user_dont_have_permission(self):
 
-        User = get_user_model()
 
         a = Article.objects.create()
         u = User.objects.create(username='Noman', password='pass')
@@ -262,7 +259,6 @@ class CanDelete(BaseTestCase):
 
         a = Article.objects.create()
 
-        User = get_user_model()
         u = User.objects.create(username='Nobody', password='pass')
 
         output = can_delete(a, u)
@@ -274,7 +270,6 @@ class CanDelete(BaseTestCase):
     @wiki_override_settings(WIKI_CAN_WRITE=lambda *args: False)
     def test_user_dont_have_permission(self):
 
-        User = get_user_model()
 
         a = Article.objects.create()
         u = User.objects.create(username='Noman', password='pass')
@@ -298,7 +293,6 @@ class CanModerate(BaseTestCase):
 
         a = Article.objects.create()
 
-        User = get_user_model()
         u = User.objects.create(username='Nobody', password='pass')
 
         output = can_moderate(a, u)
@@ -309,7 +303,6 @@ class CanModerate(BaseTestCase):
 
     def test_user_dont_have_permission(self):
 
-        User = get_user_model()
 
         a = Article.objects.create()
         u = User.objects.create(username='Noman', password='pass')
