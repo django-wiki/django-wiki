@@ -42,7 +42,7 @@ class ArticleModelTest(TestCase):
     # XXX maybe is redundant test
     def test_model_manager_class(self):
 
-        self.assertTrue(isinstance(Article.objects, ArticleManager))
+        self.assertIsInstance(Article.objects, ArticleManager)
 
     def test_str_method_if_have_current_revision(self):
 
