@@ -29,6 +29,7 @@ __doc__ = """
 Almost all test cases covers both tag calling and template using.
 """
 
+# copypasted from SIX source for tox tests compatebility reason.
 if PY3:
     _assertCountEqual = "assertCountEqual"
 else:
@@ -290,7 +291,7 @@ class WikiFormTest(TemplateTestCase):
         self.assertEqual(context, {'test_key': 'test_value'})
 
         with self.assertRaises(TypeError):
-            self.render({100500})
+            self.render({'test_key': 100500})
 
         self.assertEqual(context, {'test_key': 'test_value'})
 
