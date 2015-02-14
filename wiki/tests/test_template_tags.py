@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import unicode_literals
 from __future__ import absolute_import
 
-import six
-
 from django.conf import settings
 if not settings.configured:
     settings.configure()
@@ -25,11 +23,20 @@ from wiki.conf import settings
 from wiki.forms import CreateRootForm
 from wiki.tests.base import TemplateTestCase
 
+from six import PY3
 
 __doc__ = """
 Almost all test cases covers both tag calling and template using.
 """
 
+if PY3:
+    _assertCountEqual = "assertCountEqual"
+else:
+    _assertCountEqual = "assertItemsEqual"
+
+
+def assertCountEqual(self, *args, **kwargs):
+    return getattr(self, _assertCountEqual)(*args, **kwargs)
 
 # XXX article_for_object accepts context, but not using it
 class ArticleForObjectTemplatetagTest(TemplateTestCase):
@@ -181,7 +188,7 @@ class WikiRenderTest(TemplateTestCase):
 
         output = wiki_render({}, article)
 
-        six.assertCountEqual(self, self.keys, output)
+        assertCountEqual(self, self.keys, output)
 
         self.assertEqual(output['article'], article)
         self.assertEqual(output['content'], None)
@@ -222,7 +229,7 @@ class WikiRenderTest(TemplateTestCase):
 
         output = wiki_render({}, article, preview_content=content)
 
-        six.assertCountEqual(self, self.keys, output)
+        assertCountEqual(self, self.keys, output)
         self.assertEqual(output['article'], article)
         self.assertMultiLineEqual(output['content'], example)
         self.assertEqual(output['preview'], True)
@@ -251,7 +258,7 @@ class WikiRenderTest(TemplateTestCase):
 
         output = wiki_render({}, article, preview_content=content)
 
-        six.assertCountEqual(self, self.keys, output)
+        assertCountEqual(self, self.keys, output)
 
         self.assertEqual(output['article'], article)
 
