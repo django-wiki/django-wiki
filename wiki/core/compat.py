@@ -21,6 +21,8 @@ def get_user_model():
         return gum()
     else:
         from django.contrib.auth.models import User
+        if 'USERNAME_FIELD' not in User.__dict__:
+            User.USERNAME_FIELD = 'username'
         return User
 
 
