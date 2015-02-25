@@ -180,7 +180,7 @@ CACHE_TIMEOUT = getattr(django_settings, 'WIKI_CACHE_TIMEOUT', 600)
 # Maximum allowed revisions per hour for any given user or IP
 REVISIONS_PER_HOUR = getattr(django_settings, 'WIKI_REVISIONS_PER_HOUR', 60)
 
-# Maximum allowed revisions per hour for any given user or IP
+# Maximum allowed revisions per minute for any given user or IP
 REVISIONS_PER_MINUTES = getattr(
     django_settings,
     'WIKI_REVISIONS_PER_MINUTES',
