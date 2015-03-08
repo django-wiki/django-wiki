@@ -10,6 +10,7 @@ from six import string_types
 
 # TODO: Don't use wildcards
 from .article import *
+from .pluginbase import *
 from .urlpath import *
 
 # TODO: Should the below stuff be executed a more logical place?
