@@ -272,7 +272,7 @@ Acknowledgements
  * The people at [edX](http://www.edxonline.org/) & MIT for finding and supporting the project both financially and with ideas.
  * [django-cms](https://github.com/divio/django-cms) for venturing where no django app has gone before in terms of well-planned features and high standards. It's a very big inspiration.
  * [django-mptt](https://github.com/django-mptt/django-mptt), a wonderful utility for inexpensively using tree structures in Django with a relational database backend.
- * [jdcaballero](https://github.com/jdcaballero), [yekibud](https://github.com/yekibud), [bridger](https://github.com/bridger), [TomLottermann](https://github.com/TomLottermann), [crazyzubr](https://github.com/crazyzubr), and [everyone else](https://github.com/benjaoming/django-wiki/contributors) involved!
+ * [jdcaballerov](https://github.com/jdcaballerov), [yekibud](https://github.com/yekibud), [bridger](https://github.com/bridger), [TomLottermann](https://github.com/TomLottermann), [crazyzubr](https://github.com/crazyzubr), and [everyone else](https://github.com/benjaoming/django-wiki/contributors) involved!
 
 <!---Illegal PyPi RST data -->
 <!---Anything that isn't validly translateable to PyPi RST goes after this line -->
