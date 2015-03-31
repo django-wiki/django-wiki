@@ -208,5 +208,3 @@ Badgers Badgers Badgers
 [![Documentation Status](https://readthedocs.org/projects/django-wiki/badge/?version=latest)](https://readthedocs.org/projects/django-wiki/?badge=latest)
 
 [![Dependency Status](https://gemnasium.com/django-wiki/django-wiki.svg)](https://gemnasium.com/django-wiki/django-wiki)
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/django-wiki/django-wiki/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
