@@ -24,12 +24,12 @@ def read(fname):
 
 
 requirements = [
-    "Django>=1.4,<1.8",
+    "Django>=1.4,<1.9",
     "django-sekizai>=0.7",
     "Pillow",
     "django-nyt>=0.9.6",
     # 0.6.1 broken: https://github.com/django-mptt/django-mptt/issues/316
-    "django-mptt==0.6.0",
+    "django-mptt==0.7.1",
     "six",
 ]
 
@@ -100,6 +100,7 @@ setup(
         'Intended Audience :: Developers',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development',
         'Topic :: Software Development :: Libraries :: Application Frameworks',
@@ -107,3 +108,4 @@ setup(
     include_package_data=True,
     test_suite='runtests',
 )
+
