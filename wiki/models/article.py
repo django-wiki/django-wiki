@@ -19,6 +19,12 @@ from wiki import managers
 from mptt.models import MPTTModel
 from django.core.urlresolvers import reverse
 
+# Django 1.9 deprecation of IPAddressField
+try:
+    from django.db.models.fields import GenericIPAddressField as IPAddressField
+except ImportError:
+    from django.db.models.fields import IPAddressField
+
 
 @python_2_unicode_compatible
 class Article(models.Model):
@@ -262,7 +268,7 @@ class BaseRevisionMixin(models.Model):
     user_message = models.TextField(blank=True,)
     automatic_log = models.TextField(blank=True, editable=False,)
 
-    ip_address = models.IPAddressField(
+    ip_address = IPAddressField(
         _('IP address'),
         blank=True,
         null=True,
