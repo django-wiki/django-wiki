@@ -14,7 +14,7 @@ class QuerySetCompatMixin(object):
     def get_queryset_compat(self):
         get_queryset = (self.get_query_set
                         if hasattr(self, 'get_query_set')
-                        else self.get_query_set)
+                        else self.get_queryset)
         return get_queryset()
 
 
@@ -190,7 +190,7 @@ class URLPathQuerySet(QuerySet, ArticleFkQuerySetMixin):
 
 
 class URLPathManager(QuerySetCompatMixin, TreeManager):
-
+    
     def get_empty_query_set(self):
         # Pre 1.6 django, we needed a custom inheritor of EmptyQuerySet
         # to pass custom methods. However, 1.6 introduced that EmptyQuerySet
