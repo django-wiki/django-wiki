@@ -1,9 +1,14 @@
 from __future__ import unicode_literals
 from __future__ import absolute_import
+import logging
+
+
 from django.views.generic.base import TemplateResponseMixin
 
 from wiki.core.plugins import registry
 from wiki.conf import settings
+
+log = logging.getLogger(__name__)
 
 
 class ArticleMixin(TemplateResponseMixin):
@@ -25,9 +30,10 @@ class ArticleMixin(TemplateResponseMixin):
                         user_can_read=request.user):
                     self.children_slice.append(child)
             except AttributeError as e:
-                raise Exception(
+                log.error(
                     "Attribute error most likely caused by wrong MPTT version. Use 0.5.3+.\n\n" +
                     str(e))
+                raise
         return super(ArticleMixin, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
