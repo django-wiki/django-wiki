@@ -49,7 +49,10 @@ class URLPath(MPTTModel):
     INHERIT_PERMISSIONS = True
 
     objects = managers.URLPathManager()
-    _default_manager = objects
+    
+    # Do not use this because of
+    # https://github.com/django-mptt/django-mptt/issues/369
+    # _default_manager = objects
 
     articles = generic.GenericRelation(
         ArticleForObject,
