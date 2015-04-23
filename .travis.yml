@@ -28,7 +28,7 @@ install:
   - pip install tox coveralls
 
 script:
-  - coverage run tox -e $TOXENV
+  - coverage run `which tox` -e $TOXENV
 
 notifications:
   irc:
