@@ -25,12 +25,17 @@ def read(fname):
 
 requirements = [
     "Django>=1.4,<1.9",
-    "django-sekizai<0.8",
+    "django-sekizai>=0.8.1",
     "Pillow",
     "django-nyt>=0.9.6",
     # 0.6.1 broken: https://github.com/django-mptt/django-mptt/issues/316
     "django-mptt==0.7.1",
     "six",
+]
+
+
+dependency_links = [
+    'https://github.com/ojii/django-sekizai/archive/master.zip#egg=django-sekizai-0.8.1',
 ]
 
 # Requirements that depend on Django version: South and sorl-thumbnail
@@ -92,6 +97,7 @@ setup(
     # long_description=long_description,
     zip_safe=False,
     install_requires=requirements,
+    dependency_links=dependency_links,
     classifiers=[
         'Development Status :: 3 - Alpha',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
