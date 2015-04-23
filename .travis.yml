@@ -15,10 +15,10 @@ install:
   - pip install tox coveralls
 script:
   - tox
-  - coverage run --source=wiki setup.py test
 notifications:
   irc:
     - "irc.freenode.org#django-wiki"
 after_success:
+  coverage run --source=wiki setup.py test
   coveralls
 
