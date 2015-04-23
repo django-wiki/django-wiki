@@ -28,7 +28,7 @@ install:
   - pip install tox coveralls
 
 script:
-  - coverage run `which tox` -e $TOXENV --source=wiki
+  - coverage run --source=wiki `which tox` -e $TOXENV
 
 notifications:
   irc:
