@@ -25,7 +25,7 @@ def read(fname):
 
 requirements = [
     "Django>=1.4,<1.9",
-    "django-sekizai>=0.7",
+    "django-sekizai<0.8",
     "Pillow",
     "django-nyt>=0.9.6",
     # 0.6.1 broken: https://github.com/django-mptt/django-mptt/issues/316
