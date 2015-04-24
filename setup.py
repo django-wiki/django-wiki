@@ -26,8 +26,9 @@ requirements = [
     "Pillow",
     "django-nyt>=0.9.4",
     "django-mptt==0.6.0", # 0.6.1 broken: https://github.com/django-mptt/django-mptt/issues/316
-    "six"
-    ]
+    "six",
+    "",
+]
 
 # Requirements that depend on Django version: South and sorl-thumbnail
 try:
@@ -54,7 +55,7 @@ if PYTHON_VERSION < (2, 7):
     # https://github.com/waylan/Python-Markdown/issues/349
     requirements.append("Markdown>2.2.0,<2.5.0")
 else:
-    requirements.append("Markdown>2.2.0")
+    requirements.append("Markdown>2.2.0,<2.6")
 
 packages = find_packages()
 
