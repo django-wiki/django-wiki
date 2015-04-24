@@ -12,9 +12,9 @@ from mptt.managers import TreeManager
 class QuerySetCompatMixin(object):
 
     def get_queryset_compat(self):
-        get_queryset = (self.get_query_set
-                        if hasattr(self, 'get_query_set')
-                        else self.get_queryset)
+        get_queryset = (self.get_queryset
+                        if hasattr(self, 'get_queryset')
+                        else self.get_query_set)
         return get_queryset()
 
 
