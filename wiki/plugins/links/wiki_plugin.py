@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 # -*- coding: utf-8 -*-
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.utils.translation import ugettext as _
 
 from wiki.core.plugins import registry
@@ -16,11 +16,11 @@ from django.core.urlresolvers import reverse_lazy
 class LinkPlugin(BasePlugin):
 
     slug = 'links'
-    urlpatterns = {'article': patterns('',
-                                       url(r'^json/query-urlpath/$',
-                                           views.QueryUrlPath.as_view(),
-                                           name='links_query_urlpath'),
-                                       )}
+    urlpatterns = {'article': [
+        url(r'^json/query-urlpath/$',
+            views.QueryUrlPath.as_view(),
+            name='links_query_urlpath'),
+    ]}
 
     sidebar = {'headline': _('Links'),
                'icon_class': 'fa-bookmark',

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from __future__ import absolute_import
-from django.conf.urls import patterns, url, include
+from django.conf.urls import url, include
 from django.utils.translation import ugettext as _
 
 from wiki.core.plugins import registry
@@ -18,9 +18,7 @@ class AttachmentPlugin(BasePlugin):
 
     slug = settings.SLUG
     urlpatterns = {
-        'article': patterns('',
-                            url('', include('wiki.plugins.attachments.urls')),
-                            )
+        'article': [url('', include('wiki.plugins.attachments.urls'))]
     }
 
     article_tab = (_('Attachments'), "fa fa-file")
