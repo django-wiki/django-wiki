@@ -9,6 +9,8 @@ migrations will be reset.
 
 **0.0.24** adds Django 1.7 support, however it's not well-tested.
 
+**0.1** (available as current master branch) adds Django 1.7 and 1.8 support, working as of now!
+
 Please refer to the [Release Notes](http://django-wiki.readthedocs.org/en/latest/release_notes.html#django-wiki-0-0-24)
 
 Changes underway
@@ -16,6 +18,7 @@ Changes underway
 
  - [x] Migrations reset
  - [x] Django 1.7 support
+ - [x] Django 1.8 support
  - [x] pep8 the whole codebase #287
  - [ ] Transifex
  - [ ] Distribution with Wheels
