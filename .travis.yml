@@ -28,12 +28,13 @@ install:
   - pip install tox coveralls
 
 script:
-  - coverage run --source=wiki `which tox` -e $TOXENV
+  - coverage run -a -p --source=wiki `which tox` -e $TOXENV
 
 notifications:
   irc:
     - "irc.freenode.org#django-wiki"
 
 after_success:
+  - coverage combine
   - coveralls
 
