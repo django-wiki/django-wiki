@@ -15,4 +15,4 @@ class URLPathTests(TestCase):
         child = URLPath.create_article(root, "child")
 
         self.assertEqual(root.parent, None)
-        self.assertEqual(list(root.children.active()), [child])
+        self.assertEqual(list(root.children.all().active()), [child])
