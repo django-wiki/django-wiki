@@ -21,7 +21,7 @@ function insert_image(image_id) {
   #image-list tr:first-child td {border:0;}
 </style>
 <div style="max-height: 300px; overflow: auto;">
-  <table class="table" style="margin-bottom: 0;" id="image-list">
+  <table class="table table-responsive table-bordered" id="image-list">
     {% for image in images %}
       {% with image.current_revision.imagerevision as revision %}
       {% thumbnail revision.image "50x50" crop="center" as thumb %}
@@ -51,13 +51,11 @@ function insert_image(image_id) {
   </table>
 </div>
 
-{% if images %}
 <p>
   <a href="{% url 'wiki:images_index' path=urlpath.path article_id=article.id %}">
     {% trans "Manage images" %} &raquo;
   </a>
 </p>
-{% endif %}
 <hr />
 
 <h4>{% trans "Add new image" %}</h4>
@@ -99,7 +97,7 @@ function insert_image(image_id) {
   {% endfor %}
 
   <p>
-    <button type="submit" name="{{ plugin.slug }}_save" value="1" class="btn btn-default btn-lg">
+    <button type="submit" name="{{ plugin.slug }}_save" value="1" class="btn btn-default btn-md">
       <span class="fa fa-upload"></span>
       {% trans "Add image" %}
     </button>
