@@ -35,6 +35,5 @@ notifications:
     - "irc.freenode.org#django-wiki"
 
 after_success:
-  - coverage combine
   - coveralls
 
