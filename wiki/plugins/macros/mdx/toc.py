@@ -24,8 +24,9 @@ SO WE AN JUST DEPEND ON THAT!
 from __future__ import absolute_import
 from __future__ import unicode_literals
 import markdown
+import unicodedata
+
 from markdown.util import etree
-from markdown.extensions.headerid import slugify, itertext
 
 import re
 
@@ -33,6 +34,28 @@ from wiki.plugins.macros import settings
 from six.moves import range
 
 IDCOUNT_RE = re.compile(r'^(.*)_([0-9]+)$')
+
+
+def slugify(value, separator):
+    """ Slugify a string, to make it URL friendly. """
+    value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore')
+    value = re.sub('[^\w\s-]', '', value.decode('ascii')).strip().lower()
+    return re.sub('[%s\s]+' % separator, separator, value)
+
+
+def itertext(elem):
+    """ Loop through all children and return text only.
+    
+    Reimplements method of same name added to ElementTree in Python 2.7
+    
+    """
+    if elem.text:
+        yield elem.text
+    for e in elem:
+        for s in itertext(e):
+            yield s
+        if e.tail:
+            yield e.tail
 
 
 def unique(elem_id, ids):
@@ -65,7 +88,7 @@ def order_toc_list(toc_list):
             return [], []
 
         current = remaining_list.pop(0)
-        if not 'children' in list(current.keys()):
+        if 'children' not in list(current.keys()):
             current['children'] = []
 
         if not prev_elements:
@@ -193,7 +216,7 @@ class TocTreeprocessor(markdown.treeprocessors.Treeprocessor):
             if header_rgx.match(c.tag):
 
                 # Do not override pre-existing ids
-                if not "id" in c.attrib:
+                if "id" not in c.attrib:
                     elem_id = unique(
                         self.config["slugify"](
                             text,
