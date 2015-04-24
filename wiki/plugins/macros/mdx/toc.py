@@ -33,6 +33,9 @@ import re
 from wiki.plugins.macros import settings
 from six.moves import range
 
+
+HEADER_ID_PREFIX = "wiki-toc-"
+
 IDCOUNT_RE = re.compile(r'^(.*)_([0-9]+)$')
 
 
@@ -67,7 +70,7 @@ def unique(elem_id, ids):
         else:
             elem_id = '%s_%d' % (elem_id, 1)
     ids.add(elem_id)
-    return elem_id
+    return HEADER_ID_PREFIX + elem_id
 
 
 def order_toc_list(toc_list):
@@ -276,7 +279,7 @@ class TocExtension(markdown.Extension):
         # by the header id extension) if both are used. Same goes for
         # attr_list extension. This must come last because we don't want
         # to redefine ids after toc is created. But we do want toc prettified.
-        md.treeprocessors.add("toc", tocext, ">headerid")
+        md.treeprocessors.add("toc", tocext, ">attr_list")
 
 
 def makeExtension(configs={}):
