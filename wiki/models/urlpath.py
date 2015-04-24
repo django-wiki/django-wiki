@@ -141,19 +141,21 @@ class URLPath(MPTTModel):
 
     @atomic
     @transaction_commit_on_success
+    def _delete_subtree(self):
+        for descendant in self.get_descendants(
+                include_self=True).order_by("-level"):
+            descendant.article.delete()
+
     def delete_subtree(self):
         """
         NB! This deletes this urlpath, its children, and ALL of the related
         articles. This is a purged delete and CANNOT be undone.
         """
         try:
-            for descendant in self.get_descendants(
-                    include_self=True).order_by("-level"):
-                descendant.article.delete()
-
-            transaction.commit()
+            self._delete_subtree()
         except:
-            transaction.rollback()
+            # Not sure why any exception is getting caught here? Have we had
+            # unresolved database integrity errors?
             log.exception("Exception deleting article subtree.")
 
     @classmethod
