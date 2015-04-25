@@ -5,43 +5,38 @@ from django.test.testcases import TestCase
 from django.contrib.sites.models import Site
 from django.contrib.auth.models import Group
 from django.contrib.auth import get_user_model
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 User = get_user_model()
 
 from wiki.models import (
     Article,
     ArticleRevision,
-    ArticleForObject,
-    BaseRevisionMixin,
     URLPath
 )
 
-from wiki.tests.base import wiki_override_settings
+from wiki.tests.base import wiki_override_settings, reload_urlconf
 from wiki.managers import ArticleManager
 
 from wiki.urls import WikiURLPatterns
 
 
-class MockWikiPatterns2(WikiURLPatterns):
+class WikiCustomUrlPatterns(WikiURLPatterns):
 
     def get_article_urls(self):
-        urlpatterns = patterns('',
-                               url('^my-wiki/(?P<article_id>\d+)/$',
-                                   self.article_view_class.as_view(),
-                                   name='get'
-                                   ),
-                               )
+        urlpatterns = [
+            url('^my-wiki/(?P<article_id>\d+)/$',
+                self.article_view_class.as_view(),
+                name='get'
+                ),
+        ]
         return urlpatterns
 
-
-class MockWikiPatterns1(WikiURLPatterns):
-
     def get_article_path_urls(self):
-        urlpatterns = patterns('',
-                               url('^my-wiki/(?P<path>.+/|)$',
-                                   self.article_view_class.as_view(),
-                                   name='get'),
-                               )
+        urlpatterns = [
+            url('^my-wiki/(?P<path>.+/|)$',
+                self.article_view_class.as_view(),
+                name='get'),
+        ]
         return urlpatterns
 
 
@@ -142,35 +137,3 @@ class ArticleModelTest(TestCase):
         self.assertEqual(a.group, g)
         self.assertIn(a, g.article_set.all())
 
-    @wiki_override_settings(WIKI_URL_CONFIG_CLASS='wiki.tests.test_models.MockWikiPatterns2')
-    def test_get_absolute_url_if_urlpath_set_is_not_exists__no_root_urlconf(self):
-
-        a = Article.objects.create()
-
-        url = a.get_absolute_url()
-
-        expected = '/my-wiki/1/'
-
-        self.assertEqual(url, expected)
-
-    @wiki_override_settings(WIKI_URL_CONFIG_CLASS='wiki.tests.test_models.MockWikiPatterns1')
-    def test_get_absolute_url_if_urlpath_set_is_exists__no_root_urlconf(self):
-
-        a1 = Article.objects.create()
-        s1 = Site.objects.create()
-        u1 = URLPath.objects.create(article=a1, site=s1)
-
-        a2 = Article.objects.create()
-        s2 = Site.objects.create()
-        URLPath.objects.create(
-            article=a2,
-            site=s2,
-            parent=u1,
-            slug='test_slug'
-        )
-
-        url = a2.get_absolute_url()
-
-        expected = '/my-wiki/test_slug/'
-
-        self.assertEqual(url, expected)
