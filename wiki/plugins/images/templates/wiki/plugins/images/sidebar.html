@@ -75,6 +75,7 @@ function insert_image(image_id) {
     {{ hidden }}
   {% endfor %}
 
+  <p>
   {% for field in form.visible_fields %}
     <fieldset id="div_{{ field.auto_id }}" class="control-group fields {% if field.errors %} error{% endif %}">
       {% if field.label %}
@@ -95,6 +96,7 @@ function insert_image(image_id) {
       <p id="hint_{{ field.auto_id }}" class="help-block">{{ field.help_text|safe }}</p>
     {% endif %}
   {% endfor %}
+  </p>
 
   <p>
     <button type="submit" name="{{ plugin.slug }}_save" value="1" class="btn btn-default btn-md">
