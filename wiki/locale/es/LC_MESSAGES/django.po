@@ -629,6 +629,7 @@ msgstr ""
 "    Es posible que el archivo este referenciado en otros artículos. Al "
 "borrarlo va a perder las referencias a este archivo. Los siguientes "
 "artículos referencian este archivo:\n"
+"    "
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:29
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:53
@@ -660,6 +661,7 @@ msgstr ""
 "\n"
 "    Puede borrar una referencia a un archivo. Esto no afectará las "
 "referencias desde otros artículos.\n"
+"    "
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:57
 msgid "Remove reference"
@@ -822,6 +824,7 @@ msgstr ""
 "nuevo archivo y el archivo será descargado como <strong>%(filename)s</"
 "strong>.  Por favor tenga en cuenta que si el adjunto está en uso en otros "
 "artículos este también va a apuntar a el nuevo adjunto. \n"
+"    "
 
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:17
 #, python-format
@@ -832,6 +835,7 @@ msgid ""
 msgstr ""
 "\n"
 "  Artículos usando %(filename)s\n"
+"    "
 
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:26
 #, python-format
@@ -1486,6 +1490,7 @@ msgstr ""
 "      Explorando <strong><a href=\"%(self_url)s\">/%(path)s</a></strong>. "
 "Hay %(articles_plur_verb)s <strong>%(cnt)s %(articles_plur)s</strong> en "
 "este nivel.\n"
+"    "
 
 #: templates/wiki/dir.html:50 templates/wiki/search.html:25
 msgid "Last modified"
@@ -1703,6 +1708,7 @@ msgstr ""
 "\n"
 "  Es necesario <a href=\"%(login_url)s\">Ingresar</a> o <a href="
 "\"%(signup_url)s\">Inscribirse</a> para usar esta función.\n"
+"    "
 
 #: templates/wiki/includes/anonymous_blocked.html:11
 msgid "You need to log in or sign up to use this function."
