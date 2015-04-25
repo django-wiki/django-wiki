@@ -60,7 +60,7 @@ if 'django_notify' in django_settings.INSTALLED_APPS:
 
 
 if VERSION < (1, 7):
-    if not 'south' in django_settings.INSTALLED_APPS:
+    if 'south' not in django_settings.INSTALLED_APPS:
         warnings.warn(
             "django-wiki: No south in your INSTALLED_APPS. This is highly discouraged.")
 
