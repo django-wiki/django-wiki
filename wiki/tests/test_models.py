@@ -14,7 +14,6 @@ from wiki.models import (
     URLPath
 )
 
-from wiki.tests.base import wiki_override_settings, reload_urlconf
 from wiki.managers import ArticleManager
 
 from wiki.urls import WikiURLPatterns
