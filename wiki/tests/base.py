@@ -63,14 +63,14 @@ class ArticleTestBase(WebTestBase):
         return self.c.get(reverse('wiki:get', kwargs={'path': path}))
 
 
-class BaseTestCase(TestCase):
+class TemplateTestCase(TestCase):
 
     @property
     def template(self):
         raise Exception("Not implemented")
 
-    def render(self, template, context):
-        return Template(template).render(Context(context))
+    def render(self, context):
+        return Template(self.template).render(Context(context))
 
 
 class wiki_override_settings(override_settings):

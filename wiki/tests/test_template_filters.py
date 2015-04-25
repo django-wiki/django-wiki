@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.contrib.auth import get_user_model
 
 from wiki.models import Article, ArticleRevision
-from wiki.tests.base import wiki_override_settings, BaseTestCase
+from wiki.tests.base import wiki_override_settings, TemplateTestCase
 from wiki.templatetags.wiki_tags import (
     get_content_snippet,
     can_read,
@@ -15,7 +15,7 @@ from wiki.templatetags.wiki_tags import (
 )
 
 
-class GetContentSnippet(BaseTestCase):
+class GetContentSnippet(TemplateTestCase):
 
     template = """
         {% load wiki_tags %}
@@ -178,7 +178,7 @@ class GetContentSnippet(BaseTestCase):
         self.assertEqual(output, expected)
 
 
-class CanRead(BaseTestCase):
+class CanRead(TemplateTestCase):
 
     template = """
         {% load wiki_tags %}
@@ -196,7 +196,7 @@ class CanRead(BaseTestCase):
         output = can_read(a, u)
         self.assertTrue(output)
 
-        output = self.render(self.template, {'article': a, 'user': u})
+        output = self.render({'article': a, 'user': u})
         self.assertIn('True', output)
 
     @wiki_override_settings(WIKI_CAN_READ=lambda *args: False)
@@ -210,11 +210,11 @@ class CanRead(BaseTestCase):
         output = can_read(a, u)
         self.assertFalse(output)
 
-        output = self.render(self.template, {'article': a, 'user': u})
+        output = self.render({'article': a, 'user': u})
         self.assertIn('False', output)
 
 
-class CanWrite(BaseTestCase):
+class CanWrite(TemplateTestCase):
 
     template = """
         {% load wiki_tags %}
@@ -232,7 +232,7 @@ class CanWrite(BaseTestCase):
         output = can_write(a, u)
         self.assertTrue(output)
 
-        output = self.render(self.template, {'article': a, 'user': u})
+        output = self.render({'article': a, 'user': u})
         self.assertIn('True', output)
 
     @wiki_override_settings(WIKI_CAN_WRITE=lambda *args: False)
@@ -246,11 +246,11 @@ class CanWrite(BaseTestCase):
         output = can_write(a, u)
         self.assertFalse(output)
 
-        output = self.render(self.template, {'article': a, 'user': u})
+        output = self.render({'article': a, 'user': u})
         self.assertIn('False', output)
 
 
-class CanDelete(BaseTestCase):
+class CanDelete(TemplateTestCase):
 
     template = """
         {% load wiki_tags %}
@@ -268,7 +268,7 @@ class CanDelete(BaseTestCase):
         output = can_delete(a, u)
         self.assertTrue(output)
 
-        output = self.render(self.template, {'article': a, 'user': u})
+        output = self.render({'article': a, 'user': u})
         self.assertIn('True', output)
 
     @wiki_override_settings(WIKI_CAN_WRITE=lambda *args: False)
@@ -282,11 +282,11 @@ class CanDelete(BaseTestCase):
         output = can_delete(a, u)
         self.assertFalse(output)
 
-        output = self.render(self.template, {'article': a, 'user': u})
+        output = self.render({'article': a, 'user': u})
         self.assertIn('False', output)
 
 
-class CanModerate(BaseTestCase):
+class CanModerate(TemplateTestCase):
 
     template = """
         {% load wiki_tags %}
@@ -304,7 +304,7 @@ class CanModerate(BaseTestCase):
         output = can_moderate(a, u)
         self.assertTrue(output)
 
-        output = self.render(self.template, {'article': a, 'user': u})
+        output = self.render({'article': a, 'user': u})
         self.assertIn('True', output)
 
     def test_user_dont_have_permission(self):
@@ -317,11 +317,11 @@ class CanModerate(BaseTestCase):
         output = can_moderate(a, u)
         self.assertFalse(output)
 
-        output = self.render(self.template, {'article': a, 'user': u})
+        output = self.render({'article': a, 'user': u})
         self.assertIn('False', output)
 
 
-class IsLocked(BaseTestCase):
+class IsLocked(TemplateTestCase):
 
     template = """
         {% load wiki_tags %}
@@ -335,7 +335,7 @@ class IsLocked(BaseTestCase):
         output = is_locked(a)
         self.assertFalse(output)
 
-        output = self.render(self.template, {'article': a})
+        output = self.render({'article': a})
         self.assertIn('None', output)
 
     def test_have_current_revision_and_not_locked(self):
@@ -352,7 +352,7 @@ class IsLocked(BaseTestCase):
         output = is_locked(b)
         self.assertFalse(output)
 
-        output = self.render(self.template, {'article': a})
+        output = self.render({'article': a})
         self.assertIn('False', output)
 
     def test_have_current_revision_and_locked(self):
@@ -363,5 +363,5 @@ class IsLocked(BaseTestCase):
         output = is_locked(a)
         self.assertTrue(output)
 
-        output = self.render(self.template, {'article': a})
+        output = self.render({'article': a})
         self.assertIn('True', output)
