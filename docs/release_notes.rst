@@ -14,6 +14,74 @@ This means that you can upgrade directly from upcoming 0.0.24 to 0.1 but upgrade
 from previous versions bypassing 0.0.24 are not possible.
 
 
+Release plan
+------------
+
+Until django-wiki 0.2 is released, table names of plugins will defer depending
+on whether you are using South or django.db.migrations. If you want to upgrade
+your django to 1.7, please rename tables manually.
+
+Django-wiki 0.2 will *not* support South.. but development will remain in the
+0.1 branch for now.
+
+New features are introduced in the 0.1 branch until something seriously has to
+break due to some force majeure.
+
+
+django-wiki 0.1
+---------------
+
+This release is not yet out but maintained in the `master` git branch.
+
+.. warning::
+   If you are upgrading from a previous release, please ensure that you
+   pass through the 0.0.24 release because it contains the final migrations
+   necessary before entering the django-wiki 0.1+ migration tree.
+   
+   If you are using django 1.7+ and have an old installation of django-wiki
+   (which should be impossible since it wouldn't run) please downgrade to 1.6
+   as follows:
+   
+   ::
+   
+       $ pip install wiki==0.0.24
+       $ pip install django\<1.7  # Downgrade django if necessary
+       $ python manage.py migrate  # Run 0.0.24 migrations
+       $ pip install wiki\<0.2 --upgrade  # Upgrade to latest 0.1 series
+       $ python manage.py migrate --delete-ghost-migrations  # Run migrations again,
+                                                             # removing the (ghost) 
+                                                             # migrations from previous
+                                                             # release
+       $ # Feel free to upgrade Django again
+
+
+**Supported**
+
+ * Python 2.7, 3.3, and 3.4 (3.2 is not supported)
+ * Django 1.5, 1.6, 1.7, 1.8
+ * Django < 1.7 still needs South, and migration trees are kept until next major
+   release.
+
+
+Breaking changes
+________________
+
+**Plugin API**
+
+Since Django 1.8 has started making warnings about `patterns` being deprecated, we've decided
+to stop using them by default. Thus, as with the future Django 2.0, we will use lists of `url`
+objects to store the urlconf of plugins. All the bundled plugins have been updated to reflect
+the change.
+
+**Django-mptt**
+
+We now depend on django-mptt 0.7.2 for Django 1.8 compatibility.
+
+**Django-sekizai**
+
+Since it's only the git master branch of django-sekizai that supports Django 1.8, the default
+behaviour of setup.py configuration is to pull this directly from Github.
+
 django-wiki 0.0.24
 ------------------
 
@@ -113,50 +181,3 @@ After this, you can recreate your notifications with the former section's
 instructions.
 
 
-django-wiki 0.1
----------------
-
-This release is not yet out but maintained in the `master` git branch.
-
-.. warning::
-   If you are upgrading from a previous release, please ensure that you
-   pass through the 0.0.24 release because it contains the final migrations
-   necessary before entering the django-wiki 0.1+ migration tree.
-   
-   If you are using django 1.7 and have an old installation of django-wiki
-   (which should be impossible since it wouldn't run) please downgrade to 1.6
-   as follows:
-   
-   ::
-   
-       $ pip install wiki==0.0.24
-       $ pip install django\<1.7  # Downgrade django if necessary
-       $ python manage.py migrate  # Run 0.0.24 migrations
-       $ pip install wiki\<0.2 --upgrade  # Upgrade to latest 0.1 series
-       $ python manage.py migrate --delete-ghost-migrations  # Run migrations again,
-                                                             # removing the (ghost) 
-                                                             # migrations from previous
-                                                             # release
-       $ # Feel free to upgrade Django again
-
-
-**Supported**
-
- * Python 2.7, 3.3, and 3.4 (3.2 is not supported)
- * Django 1.5, 1.6 and 1.7
- * Django < 1.7 still needs South, and migration trees are kept until next major
-   release.
-   
-
-Release plan
-------------
-
-Until django-wiki 0.2 is released, table names of plugins will defer depending
-on whether you are using South or django.db.migrations. If you want to upgrade
-your django to 1.7, please rename tables manually.
-
-Django-wiki 0.2 will *not* support South.. but development will remain in the
-0.1 branch for now.
-
-New features are introduced in the 0.1 branch until something seriously has to
-break due to some force majeure.
