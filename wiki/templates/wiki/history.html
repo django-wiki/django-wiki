@@ -62,7 +62,7 @@
                 <i class="fa fa-plus"></i>
               {% endif %}
               {% include "wiki/includes/revision_info.html" with current_revision=article.current_revision %}
-              <div style="color: #CCC;">
+              <div class="text-muted">
                 <small>
                 {% if revision.user_message %}
                   {{ revision.user_message }}
@@ -124,11 +124,11 @@
 
     <div class="form-group form-actions">
       <div class="pull-right">
-        <button type="submit" name="preview" value="1" class="btn btn-default btn-lg" onclick="$('#mergeModal').modal('show'); this.form.target='mergeWindow'; this.form.action=$('input[type=radio]:checked').attr('merge-button-href'); $('.merge-revision-commit').attr('href', $('input[type=radio]:checked').attr('merge-button-commit-href'))">
+        <button type="submit" name="preview" value="1" class="btn btn-default" onclick="$('#mergeModal').modal('show'); this.form.target='mergeWindow'; this.form.action=$('input[type=radio]:checked').attr('merge-button-href'); $('.merge-revision-commit').attr('href', $('input[type=radio]:checked').attr('merge-button-commit-href'))">
           <span class="fa fa-random"></span>
           {% trans "Merge selected with current..." %}
         </button>
-        <button type="submit" name="save" value="1" class="btn btn-lg btn-primary" onclick="this.form.target='_self'; this.form.action=$('input[type=radio]:checked').attr('switch-button-href')">
+        <button type="submit" name="save" value="1" class="btn btn-primary" onclick="this.form.target='_self'; this.form.action=$('input[type=radio]:checked').attr('switch-button-href')">
           <span class="fa fa-flag"></span>
           {% trans "Switch to selected version" %}
         </button>

@@ -35,28 +35,23 @@
 
 <div class="form-group form-actions">
   <div class="col-lg-8">
-    <div class="col-lg-2"></div>
-    <div class="col-lg-10">
-      <a class="btn btn-default btn-lg" onclick="$('#previewModal').modal('show'); document.getElementById('article_edit_form').target='previewWindow'; document.getElementById('article_edit_form').action='{% url 'wiki:preview' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit()" href="#">
+    <div class="col-lg-offset-2">
+      <a class="btn btn-default" onclick="$('#previewModal').modal('show'); document.getElementById('article_edit_form').target='previewWindow'; document.getElementById('article_edit_form').action='{% url 'wiki:preview' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit()" href="#">
         <span class="fa fa-eye"></span>
         {% trans "Preview" %}
       </a>
-      <a class="btn btn-lg btn-primary" onclick="document.getElementById('article_edit_form').target=''; document.getElementById('article_edit_form').action='{% url 'wiki:edit' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit();" href="#">
+      <a class="btn btn-primary" onclick="document.getElementById('article_edit_form').target=''; document.getElementById('article_edit_form').action='{% url 'wiki:edit' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit();" href="#">
         <span class="fa fa-check"></span>
         {% trans "Save changes" %}
       </a>
+      {% if article|can_delete:user %}
+      <a href="{% url 'wiki:delete' path=urlpath.path article_id=article.id %}" class="btn btn-danger pull-right">
+        <span class="fa fa-trash-o"></span>
+        {% trans "Delete article" %}
+      </a>
+      {% endif %}
     </div>
   </div>
-  {% if article|can_delete:user %}
-  <div class="col-lg-4">
-    <div class="pull-right">
-    <a href="{% url 'wiki:delete' path=urlpath.path article_id=article.id %}" class="btn btn-danger">
-      <span class="fa fa-trash-o"></span>
-      {% trans "Delete article" %}
-    </a>
-    </div>
-  </div>
-  {% endif %}
 </div>
 
 {% include "wiki/includes/modals.html" %}

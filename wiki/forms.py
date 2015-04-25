@@ -564,7 +564,7 @@ class DirFilterForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'placeholder': _('Filter...'),
-                'class': 'search-query'}),
+                'class': 'search-query form-control'}),
         required=False)
 
 
