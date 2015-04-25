@@ -1,3 +1,6 @@
+from __future__ import unicode_literals
+from __future__ import absolute_import
+
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client
@@ -73,6 +76,8 @@ class TemplateTestCase(TestCase):
         return Template(self.template).render(Context(context))
 
 
+# See
+# https://github.com/django-wiki/django-wiki/pull/382
 class wiki_override_settings(override_settings):
 
     def __enter__(self):
