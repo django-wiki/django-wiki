@@ -116,6 +116,20 @@
         {% endblock %}
         {% block wiki_footer_prepend %}
         {% endblock %}
+        {% block wiki_footer_disqus %}
+          {% if WIKI_DISQUS and selected_tab == 'view' %}
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_shortname = '{{WIKI_DISQUS_SORTNAME}}';
+            (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+          {% endif %}
+        {% endblock wiki_footer_disqus %}
         <p>{% blocktrans %}Powered by <a href="http://www.django-wiki.org">django-wiki</a>, an open source application under the <a href="http://www.gnu.org/licenses/quick-guide-gplv3.html">GPLv3</a> license. Let knowledge be the cure.{% endblocktrans %}</p>
         <div style="clear: both"></div>
       </footer>
