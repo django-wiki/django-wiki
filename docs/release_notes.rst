@@ -113,7 +113,7 @@ During the upgrade, notice that `django-nyt`_ is installed. This replaces the
 previously bundled django_notify and you need to make a few changes in
 your settings and urls.
 
-.. _ https://github.com/benjaoming/django-nyt
+.. _django-nyt: https://github.com/benjaoming/django-nyt
 
 In ``settings.INSTALLED_APPS``, replace `"django_notify"` with `"django_nyt"`.
 Then open up your project's urlconf and make sure you have something
