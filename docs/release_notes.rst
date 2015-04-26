@@ -109,7 +109,7 @@ Firstly, upgrade django-wiki through familiar steps with pip
 
     $ pip install wiki --upgrade
    
-During upgrading, notice that `django-nyt`_ is installed. This replaces the
+During the upgrade, notice that `django-nyt`_ is installed. This replaces the
 previously bundled django_notify and you need to make a few changes in
 your settings and urls.
 
@@ -140,15 +140,17 @@ After making these changes, you should run migrations.
 
 **Notifications fixed**
 
-Through its history, django-wiki has maintained `a very weird migration`_. It
-caused for the notifications plugin's table to be removed, but luckily that
-makes it quite easy to detect and restore, which the new migrations now do.
+In past history, django-wiki has shipped with `a very weird migration`_. It
+caused for the notifications plugin's table of article subscriptions to be removed.
+This is fixed in the new migrations and the table should be `safely restored`_ in
+case it was missing.
 
-.. _ https://github.com/django-wiki/django-wiki/commit/88847096354121c23d8f10463201da5e0ebd7148
+.. _a very weird migration: https://github.com/django-wiki/django-wiki/commit/88847096354121c23d8f10463201da5e0ebd7148
+.. _safely restored: https://github.com/django-wiki/django-wiki/blob/releases/0.0.24/wiki/plugins/notifications/south_migrations/0003_conditionally_restore_articlesubscription.py
 
-However, you may want to bootstrap having notifications. You can ensure that
-all owners and editors of articles receive notifications using the following
-management command:
+However, you may want to bootstrap subscription notifications in case you have run
+into this failed migration. You can ensure that all owners and editors of articles
+receive notifications using the following management command:
 
     python manage.py wiki_notifications_create_defaults
 
