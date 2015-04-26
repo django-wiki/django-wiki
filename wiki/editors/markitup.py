@@ -2,12 +2,20 @@
 from __future__ import unicode_literals
 from __future__ import absolute_import
 from django import forms
-from django.forms.util import flatatt
+
+# Due to deprecation of django.forms.util in Django 1.9
+try:
+    from django.forms.utils import flatatt
+except ImportError:
+    from django.forms.util import flatatt
+
+# Historical name of force_text(). Only available under Python 2.
 try:
     from django.utils.encoding import force_unicode
 except ImportError:
     def force_unicode(x):
         return(x)
+
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 
