@@ -1,13 +1,19 @@
 from __future__ import unicode_literals
 from __future__ import absolute_import
+from django import forms
 from django.contrib import admin
-from django.contrib.contenttypes.generic import GenericTabularInline
 from django.utils.translation import ugettext_lazy as _
+
 from mptt.admin import MPTTModelAdmin
 
-from django import forms
 from . import models
 from . import editors
+
+# Django 1.9 deprecation of contenttypes.generic
+try:
+    from django.contrib.contenttypes.admin import GenericTabularInline
+except ImportError:
+    from django.contrib.contenttypes.generic import GenericTabularInline
 
 
 class ArticleObjectAdmin(GenericTabularInline):
@@ -25,7 +31,6 @@ class ArticleRevisionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ArticleRevisionForm, self).__init__(*args, **kwargs)
         # TODO: This pattern is too weird
-        EditorClass = editors.getEditorClass()
         editor = editors.getEditor()
         self.fields['content'].widget = editor.get_admin_widget()
 

@@ -5,13 +5,15 @@ from __future__ import absolute_import
 
 import logging
 
-from django.contrib.contenttypes import generic
+from six.moves import filter  # @UnresolvedImport
+
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models, transaction
-from six.moves import filter
+from django.db.models.signals import post_save, pre_delete
+from django.utils.translation import ugettext_lazy as _, ugettext
 
 # Django 1.6 transaction API, required for 1.8+
 from django.utils.encoding import python_2_unicode_compatible
@@ -19,10 +21,13 @@ from django.utils.encoding import python_2_unicode_compatible
 try:
     notrans = transaction.non_atomic_requests
 except:
-    notrans = transaction.commit_manually
+    notrans = transaction.commit_manually  # @UndefinedVariable
 
-from django.db.models.signals import post_save, pre_delete
-from django.utils.translation import ugettext_lazy as _, ugettext
+# Django 1.9 deprecation of contenttypes.generic
+try:
+    from django.contrib.contenttypes.fields import GenericRelation
+except ImportError:
+    from django.contrib.contenttypes.generic import GenericRelation
 
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
@@ -54,7 +59,7 @@ class URLPath(MPTTModel):
     # https://github.com/django-mptt/django-mptt/issues/369
     # _default_manager = objects
 
-    articles = generic.GenericRelation(
+    articles = GenericRelation(
         ArticleForObject,
         content_type_field='content_type',
         object_id_field='object_id',
@@ -83,7 +88,7 @@ class URLPath(MPTTModel):
     def __init__(self, *args, **kwargs):
         pass
         # Fixed in django-mptt 0.5.3
-        #self._tree_manager = URLPath.objects
+        # self._tree_manager = URLPath.objects
         return super(URLPath, self).__init__(*args, **kwargs)
 
     def __cached_ancestors(self):

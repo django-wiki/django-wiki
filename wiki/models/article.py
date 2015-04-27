@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 from __future__ import absolute_import
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
 from django.contrib.auth.models import Group
 from django.core.cache import cache
 from django.db import models
@@ -24,6 +23,13 @@ try:
     from django.db.models.fields import GenericIPAddressField as IPAddressField
 except ImportError:
     from django.db.models.fields import IPAddressField
+
+
+# Django 1.9 deprecation of contenttypes.generic
+try:
+    from django.contrib.contenttypes.fields import GenericForeignKey
+except ImportError:
+    from django.contrib.contenttypes.generic import GenericForeignKey
 
 
 @python_2_unicode_compatible
@@ -241,7 +247,7 @@ class ArticleForObject(models.Model):
         verbose_name=_('content type'),
         related_name="content_type_set_for_%(class)s")
     object_id = models.PositiveIntegerField(_('object ID'))
-    content_object = generic.GenericForeignKey("content_type", "object_id")
+    content_object = GenericForeignKey("content_type", "object_id")
 
     is_mptt = models.BooleanField(default=False, editable=False)
 
