@@ -18,6 +18,7 @@ Contents:
    tips
    release_notes
    known_issues
+   faq
 
 
 Indices and tables
