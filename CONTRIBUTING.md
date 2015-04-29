@@ -1,9 +1,15 @@
 # Contributing
 
-Contributions are appreciated! The following guide is a rough draft, but
-please feel free to contribute to this contribution doc as well :D
+## Support
+
+**DO NOT USE GITHUB FOR SUPPORT INQUIRIES! USE IRC OR MAILING LIST!**
+
+Django-wiki is community based, please try to be active. If you want help, plan to give help, too. For instance, if you join IRC, then stay around and help others.
 
 ## Issues
+
+Contributions are appreciated! The following guide is a rough draft, but
+please feel free to contribute to this contribution doc as well :D
 
 When submitting an Issue, please provide the following:
 
