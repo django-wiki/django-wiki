@@ -18,3 +18,5 @@ Other tips
 
 3. **Project Templates:** Create new django-wiki projects quickly and easily using django-wiki project templates
    https://github.com/django-wiki/django-wiki-project-template
+
+4. **Disqus comment embed:** See :doc:`this page</tips/disqus>`
