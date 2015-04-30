@@ -6,6 +6,9 @@ README.rst
 testproject/testproject/whoosh_index/
 testproject/testproject/xapian_index/
 
+# Ignore compiled version of source language
+wiki/locale/en/LC_MESSAGES/django.mo
+
 # Ignore this folder which is created by tests
 wiki/attachments
 

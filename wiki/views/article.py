@@ -111,11 +111,9 @@ class Create(FormView, ArticleMixin):
                 self.request,
                 _("New article '%s' created.") %
                 self.newpath.article.current_revision.title)
-            transaction.commit()
         # TODO: Handle individual exceptions better and give good feedback.
         except Exception as e:
             log.exception("Exception creating article.")
-            transaction.rollback()
             if self.request.user.is_superuser:
                 messages.error(
                     self.request,
@@ -684,7 +682,9 @@ class Settings(ArticleMixin, TemplateView):
 
 
 class ChangeRevisionView(RedirectView):
-
+    
+    permanent = False
+    
     @method_decorator(get_article(can_write=True, not_locked=True))
     def dispatch(self, request, article, *args, **kwargs):
         self.article = article

@@ -1,6 +1,6 @@
 {% extends "wiki/article.html" %}
 {% load wiki_tags i18n humanize %}
-{% load url from future %}
+
 
 {% block wiki_pagetitle %}{% trans "Attachments" %}: {{ article.current_revision.title }}{% endblock %}
 
@@ -69,7 +69,7 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <a class="panel-toggle" href="#collapse_upload" data-toggle="collapse">
-            <h4 class="panel-title">{% trans "Upload new file" %} <span class="fa fa-upload"></span></h4>
+            <h4 class="panel-title"><span class="fa fa-fw fa-upload"></span> {% trans "Upload new file" %}</h4>
           </a>
         </div>
         
@@ -92,7 +92,7 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <a class="panel-toggle" data-toggle="collapse" href="#collapse_add">
-            <h4 class="panel-title">{% trans "Search and add file" %} <span class="fa fa-plus-circle"></span></h4>
+            <h4 class="panel-title"><span class="fa fa-fw fa-plus-circle"></span> {% trans "Search and add file" %}</h4>
           </a>
         </div>
         
@@ -117,7 +117,7 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             <a class="panel-toggle" data-toggle="collapse" href="#collapse_restore">
-              <h4 class="panel-title">{% trans "Restore attachments" %} <span class="fa fa-trash"></span></h4>
+              <h4 class="panel-title"><span class="fa fa-fw fa-trash"></span> {% trans "Restore attachments" %}</h4>
             </a>
           </div>
           <div id="collapse_restore" class="panel-collapse collapse">

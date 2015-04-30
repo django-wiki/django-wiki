@@ -24,15 +24,41 @@ SO WE AN JUST DEPEND ON THAT!
 from __future__ import absolute_import
 from __future__ import unicode_literals
 import markdown
+import unicodedata
+
 from markdown.util import etree
-from markdown.extensions.headerid import slugify, itertext
 
 import re
 
 from wiki.plugins.macros import settings
 from six.moves import range
 
+
+HEADER_ID_PREFIX = "wiki-toc-"
+
 IDCOUNT_RE = re.compile(r'^(.*)_([0-9]+)$')
+
+
+def slugify(value, separator):
+    """ Slugify a string, to make it URL friendly. """
+    value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore')
+    value = re.sub('[^\w\s-]', '', value.decode('ascii')).strip().lower()
+    return re.sub('[%s\s]+' % separator, separator, value)
+
+
+def itertext(elem):
+    """ Loop through all children and return text only.
+    
+    Reimplements method of same name added to ElementTree in Python 2.7
+    
+    """
+    if elem.text:
+        yield elem.text
+    for e in elem:
+        for s in itertext(e):
+            yield s
+        if e.tail:
+            yield e.tail
 
 
 def unique(elem_id, ids):
@@ -44,7 +70,7 @@ def unique(elem_id, ids):
         else:
             elem_id = '%s_%d' % (elem_id, 1)
     ids.add(elem_id)
-    return elem_id
+    return HEADER_ID_PREFIX + elem_id
 
 
 def order_toc_list(toc_list):
@@ -65,7 +91,7 @@ def order_toc_list(toc_list):
             return [], []
 
         current = remaining_list.pop(0)
-        if not 'children' in list(current.keys()):
+        if 'children' not in list(current.keys()):
             current['children'] = []
 
         if not prev_elements:
@@ -193,7 +219,7 @@ class TocTreeprocessor(markdown.treeprocessors.Treeprocessor):
             if header_rgx.match(c.tag):
 
                 # Do not override pre-existing ids
-                if not "id" in c.attrib:
+                if "id" not in c.attrib:
                     elem_id = unique(
                         self.config["slugify"](
                             text,
@@ -253,7 +279,7 @@ class TocExtension(markdown.Extension):
         # by the header id extension) if both are used. Same goes for
         # attr_list extension. This must come last because we don't want
         # to redefine ids after toc is created. But we do want toc prettified.
-        md.treeprocessors.add("toc", tocext, ">headerid")
+        md.treeprocessors.add("toc", tocext, ">attr_list")
 
 
 def makeExtension(configs={}):

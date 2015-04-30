@@ -1,6 +1,6 @@
 {% extends "wiki/article.html" %}
 {% load wiki_tags i18n humanize %}
-{% load url from future %}
+
 
 {% block wiki_pagetitle %}{% trans "Delete" %} "{{ attachment.current_revision.get_filename }}"{% endblock %}
 
@@ -28,7 +28,7 @@
         <span class="fa fa-arrow-left"></span>
         {% trans "Go back" %}
       </a>
-      <button class="btn btn-danger btn-lg">
+      <button class="btn btn-danger">
         <span class="fa fa-remove"></span>
         {% trans "Delete it!" %}
       </button>
@@ -52,7 +52,7 @@
         <span class="fa fa-arrow-left"></span>
         {% trans "Go back" %}
       </a>
-      <button class="btn btn-danger btn-lg">
+      <button class="btn btn-danger">
         <span class="fa fa-remove"></span>
         {% trans "Remove reference" %}
       </button>

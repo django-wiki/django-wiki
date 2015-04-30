@@ -2,9 +2,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 from __future__ import unicode_literals
+
 import os
-from wiki import VERSION
+
 from setuptools import setup, find_packages
+
+from wiki import VERSION
 
 # Utility function to read the README file.
 # Used for the long_description.  It's nice, because now 1) we have a top level
@@ -21,13 +24,18 @@ def read(fname):
 
 
 requirements = [
-    "Django>=1.4,<1.8",
-    "django-sekizai>=0.7",
+    "Django>=1.4,<1.9",
+    "django-sekizai>=0.8.1",
     "Pillow",
-    "django-nyt>=0.9.6",
+    "django-nyt>=0.9.7.2",
     # 0.6.1 broken: https://github.com/django-mptt/django-mptt/issues/316
-    "django-mptt==0.6.0",
-    "six"
+    "django-mptt==0.7.1",
+    "six",
+]
+
+
+dependency_links = [
+    'https://github.com/ojii/django-sekizai/archive/master.zip#egg=django-sekizai-0.8.1',
 ]
 
 # Requirements that depend on Django version: South and sorl-thumbnail
@@ -89,6 +97,7 @@ setup(
     # long_description=long_description,
     zip_safe=False,
     install_requires=requirements,
+    dependency_links=dependency_links,
     classifiers=[
         'Development Status :: 3 - Alpha',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
@@ -97,6 +106,10 @@ setup(
         'Intended Audience :: Developers',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 2.6',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development',
         'Topic :: Software Development :: Libraries :: Application Frameworks',
@@ -104,3 +117,4 @@ setup(
     include_package_data=True,
     test_suite='runtests',
 )
+

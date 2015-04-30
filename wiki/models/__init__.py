@@ -10,6 +10,7 @@ from six import string_types
 
 # TODO: Don't use wildcards
 from .article import *
+from .pluginbase import *
 from .urlpath import *
 
 # TODO: Should the below stuff be executed a more logical place?
@@ -37,6 +38,10 @@ if not 'django.contrib.contenttypes' in django_settings.INSTALLED_APPS:
     raise ImproperlyConfigured(
         'django-wiki: needs django.contrib.contenttypes in INSTALLED_APPS')
 
+if not 'django.contrib.sites' in django_settings.INSTALLED_APPS:
+    raise ImproperlyConfigured(
+        'django-wiki: needs django.contrib.sites in INSTALLED_APPS')
+
 if not 'django.contrib.auth.context_processors.auth' in django_settings.TEMPLATE_CONTEXT_PROCESSORS:
     raise ImproperlyConfigured(
         'django-wiki: needs django.contrib.auth.context_processors.auth in TEMPLATE_CONTEXT_PROCESSORS')
@@ -55,7 +60,7 @@ if 'django_notify' in django_settings.INSTALLED_APPS:
 
 
 if VERSION < (1, 7):
-    if not 'south' in django_settings.INSTALLED_APPS:
+    if 'south' not in django_settings.INSTALLED_APPS:
         warnings.warn(
             "django-wiki: No south in your INSTALLED_APPS. This is highly discouraged.")
 

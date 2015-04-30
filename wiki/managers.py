@@ -12,8 +12,8 @@ from mptt.managers import TreeManager
 class QuerySetCompatMixin(object):
 
     def get_queryset_compat(self):
-        get_queryset = (self.get_query_set
-                        if hasattr(self, 'get_query_set')
+        get_queryset = (self.get_queryset
+                        if hasattr(self, 'get_queryset')
                         else self.get_query_set)
         return get_queryset()
 
@@ -179,6 +179,8 @@ class URLPathEmptyQuerySet(EmptyQuerySet, ArticleFkEmptyQuerySetMixin):
     def select_related_common(self):
         return self
 
+    def default_order(self):
+        return self
 
 class URLPathQuerySet(QuerySet, ArticleFkQuerySetMixin):
 
@@ -187,10 +189,14 @@ class URLPathQuerySet(QuerySet, ArticleFkQuerySetMixin):
             "parent",
             "article__current_revision",
             "article__owner")
+    
+    def default_order(self):
+        """Returns elements by there article order"""
+        return self.order_by('article__current_revision__title')
 
 
 class URLPathManager(QuerySetCompatMixin, TreeManager):
-
+    
     def get_empty_query_set(self):
         # Pre 1.6 django, we needed a custom inheritor of EmptyQuerySet
         # to pass custom methods. However, 1.6 introduced that EmptyQuerySet

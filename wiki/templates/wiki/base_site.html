@@ -1,8 +1,8 @@
-{% load sekizai_tags i18n wiki_tags %}{% load url from future %}<!DOCTYPE html>
+{% load sekizai_tags i18n wiki_tags %}<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>{% block wiki_pagetitle %}{% endblock %} - django-\/\/  i K |</title>
+    <title>{% block wiki_pagetitle %}{% endblock %}{% block wiki_site_title %} - django-\/\/  i K |{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
@@ -83,7 +83,7 @@
           {% block wiki_header_navlinks %}
           <ul class="nav navbar-nav">
             <li class="active"><a href="/">{% trans "Home" %}</a></li>
-            <li><a href="https://github.com/benjaoming/django-wiki" target="_blank">{% trans "About" %}</a></li>
+            <li><a href="https://github.com/django-wiki/django-wiki" target="_blank">{% trans "About" %}</a></li>
           </ul>
           {% endblock %}
         </div>
@@ -112,7 +112,7 @@
       <footer id="wiki-footer">
         <hr />
         {% block wiki_footer_logo %}
-        <a href="https://github.com/benjaoming/django-wiki" class="pull-right"><img src="{{ STATIC_URL }}wiki/img/github_icon.png" /></a>
+        <a href="https://github.com/django-wiki/django-wiki" class="pull-right"><img src="{{ STATIC_URL }}wiki/img/github_icon.png" /></a>
         {% endblock %}
         {% block wiki_footer_prepend %}
         {% endblock %}

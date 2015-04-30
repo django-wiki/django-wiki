@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from wiki.core.plugins import registry
 from wiki.core.plugins.base import BasePlugin
 
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 from . import settings, views
 
@@ -11,10 +11,9 @@ from . import settings, views
 class NotifyPlugin(BasePlugin):
 
     slug = settings.SLUG
-    urlpatterns = {
-        'root': patterns(
-            '', url(
-                r'^$', views.NotificationSettings.as_view(), name='notification_settings'), )}
+    urlpatterns = {'root': [
+        url(r'^$', views.NotificationSettings.as_view(), name='notification_settings'),
+    ]}
 
     article_view = views.NotificationSettings().dispatch
 

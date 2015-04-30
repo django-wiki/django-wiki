@@ -1,6 +1,6 @@
 {% extends "wiki/article.html" %}
 {% load wiki_tags i18n %}
-{% load url from future %}
+
 
 {% block wiki_pagetitle %}{% trans "Settings" %}: {{ article.current_revision.title }}{% endblock %}
 
@@ -11,9 +11,8 @@
     <h3 class="page-header">{{ form.settings_form_headline }}</h2>
     {% wiki_form form %}
     <div class="form-group form-actions">
-      <div class="col-lg-2"></div>
-      <div class="col-lg-10">
-        <button type="submit" name="save" value="1" class="btn btn-primary btn-lg">
+      <div class="col-lg-10 col-lg-2-offset">
+        <button type="submit" name="save" value="1" class="btn btn-primary">
           <span class="fa fa-check"></span>
           {% trans "Save changes" %}
         </button>

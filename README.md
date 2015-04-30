@@ -9,6 +9,8 @@ migrations will be reset.
 
 **0.0.24** adds Django 1.7 support, however it's not well-tested.
 
+**0.1** (available as current master branch) adds Django 1.7 and 1.8 support, working as of now!
+
 Please refer to the [Release Notes](http://django-wiki.readthedocs.org/en/latest/release_notes.html#django-wiki-0-0-24)
 
 Changes underway
@@ -16,8 +18,9 @@ Changes underway
 
  - [x] Migrations reset
  - [x] Django 1.7 support
+ - [x] Django 1.8 support
  - [x] pep8 the whole codebase #287
- - [ ] Transifex
+ - [x] Transifex
  - [ ] Distribution with Wheels
 
 News
@@ -46,40 +49,12 @@ and readying the migrations for Django 1.7. But there's actually new features, t
  - (and more, forgiveness asked if anyone feels left out)
 
 
-***News: July 19th, 2014***
+Translations (Transifex)
+------------------------
 
-Python 3 and django 1.7 compatibility is being worked on simultaneously in the `django1.7` branch. The plan is to have Python 2.6.5+, 3.2+ and Django 1.5-1.7 compatibility in the same release.
+Django-wiki has almost fully translated into 7 languages, apart from the default (English). But please help out in adding more languages! It's very easy, you don't even need to be a programmer.
 
-Furthermore, django_notify will leave the distribution and be replaced by a dependency of [django-nyt](https://github.com/benjaoming/django-nyt).
-
-The work is a bit tedious because of refactoring, having cross-compatibility for many Python *and* Django versions simultaneously, and having both South and django.db.migrations compatibility. But we'll get it fixed!! :)
-
-***News: May 18th, 2014***
-
-Django-wiki 0.1 is landing, please see the [Release Notes](http://django-wiki.readthedocs.org/en/latest/release_notes.html).
-
-The overall plan is that we'll be supporting Python 2.7, Python 3.3+, and
-Django 1.5+ simultaneuously. That actually means a lot under the hood.
-Firstly, South is both unnecessary and incompatible with Django 1.7 as the
-new django.db.migrations framework has arrived. Secondly, we still need
-South migrations for Django installations before 1.7 (and those are still plenty).
-
-Another big thing in 0.1 is the plugins API which is now freezing as is. This
-means that proper documentation for writing plugins will arrive soon.
-
-If you want to upgrade a system running django-wiki \< 0.1, please make sure to
-have an installation of 0.0.24 first and do the migrations in that one!
-Otherwise 0.1 will **not** work. Migration trees in 0.1 are reset and most likely,
-the same thing will happen in 0.2, each minor number denoting that migrations
-trees are squashed.
-
-***News: November 18th, 2013***
-
-Better late than never! A new release is out with promising support of django 1.6 and Bootstrap 3. Also, jquery, colorbox, and markitup editor have been bumped to newer releases.
-
-A big callout to anyone who feels like getting into documentation.. we need good docs!
-
-Also, the [Changelog](https://github.com/benjaoming/django-wiki/blob/master/CHANGELOG.md) is updated!
+https://www.transifex.com/projects/p/django-wiki/
 
 Demo
 ----
@@ -183,6 +158,17 @@ Development
 The folder **testproject/** contains a pre-configured django project and an sqlite database. Login for django admin is *admin:admin*. This project should always be maintained, but please do not commit changes to the SQLite database as we only care about its contents in case data models are changed.
 
 
+Acknowledgements
+----------------
+
+ * The people at [edX](http://www.edxonline.org/) & MIT for finding and supporting the project both financially and with ideas.
+ * [django-cms](https://github.com/divio/django-cms) for venturing where no django app has gone before in terms of well-planned features and high standards. It's a very big inspiration.
+ * [django-mptt](https://github.com/django-mptt/django-mptt), a wonderful utility for inexpensively using tree structures in Django with a relational database backend.
+ * [spookylukey](https://github.com/spookylukey), [jluttine](https://github.com/jluttine), [cXhristian](https://github.com/cXhristian), [valberg](https://github.com/valberg), [jdcaballerov](https://github.com/jdcaballerov), [yekibud](https://github.com/yekibud), [bridger](https://github.com/bridger), [TomLottermann](https://github.com/TomLottermann), [crazyzubr](https://github.com/crazyzubr), and [everyone else](https://github.com/benjaoming/django-wiki/contributors) involved!
+
+<!---Illegal PyPi RST data -->
+<!---Anything that isn't validly translateable to PyPi RST goes after this line -->
+
 Badgers Badgers Badgers
 -----------------------
 
@@ -197,19 +183,3 @@ Badgers Badgers Badgers
 [![Documentation Status](https://readthedocs.org/projects/django-wiki/badge/?version=latest)](https://readthedocs.org/projects/django-wiki/?badge=latest)
 
 [![Dependency Status](https://gemnasium.com/django-wiki/django-wiki.svg)](https://gemnasium.com/django-wiki/django-wiki)
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/django-wiki/django-wiki/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
-
-Acknowledgements
-----------------
-
- * The people at [edX](http://www.edxonline.org/) & MIT for finding and supporting the project both financially and with ideas.
- * [django-cms](https://github.com/divio/django-cms) for venturing where no django app has gone before in terms of well-planned features and high standards. It's a very big inspiration.
- * [django-mptt](https://github.com/django-mptt/django-mptt), a wonderful utility for inexpensively using tree structures in Django with a relational database backend.
- * [spookylukey](https://github.com/spookylukey), [jluttine](https://github.com/jluttine), [cXhristian](https://github.com/cXhristian), [valberg](https://github.com/valberg), [jdcaballero](https://github.com/jdcaballero), [yekibud](https://github.com/yekibud), [bridger](https://github.com/bridger), [TomLottermann](https://github.com/TomLottermann), [crazyzubr](https://github.com/crazyzubr), and [everyone else](https://github.com/benjaoming/django-wiki/contributors) involved!
-
-<!---Illegal PyPi RST data -->
-<!---Anything that isn't validly translateable to PyPi RST goes after this line -->
-
-

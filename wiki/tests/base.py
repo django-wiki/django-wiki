@@ -1,6 +1,11 @@
+from __future__ import unicode_literals
+from __future__ import absolute_import
+
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client
+from django.template import Context, Template
+from django.test.utils import override_settings
 
 from wiki.models import URLPath
 
@@ -16,11 +21,13 @@ class WebTestBase(TestCase):
             User = get_user_model()
         except ImportError:
             from django.contrib.auth.models import User
+
         self.superuser1 = User.objects.create_superuser(
             'admin',
             'nobody@example.com',
             'secret'
         )
+
         self.c = c = Client()
         c.login(username='admin', password='secret')
 
@@ -38,6 +45,7 @@ class ArticleTestBase(WebTestBase):
             {'content': 'root article content', 'title': 'Root Article'},
             follow=True
         )
+
         self.assertEqual(response.status_code, 200)  # sanity check
         self.root_article = URLPath.root().article
         self.example_data = {
@@ -56,3 +64,25 @@ class ArticleTestBase(WebTestBase):
         """
 
         return self.c.get(reverse('wiki:get', kwargs={'path': path}))
+
+
+class TemplateTestCase(TestCase):
+
+    @property
+    def template(self):
+        raise Exception("Not implemented")
+
+    def render(self, context):
+        return Template(self.template).render(Context(context))
+
+
+# See
+# https://github.com/django-wiki/django-wiki/pull/382
+class wiki_override_settings(override_settings):
+
+    def __enter__(self):
+        super(wiki_override_settings, self).__enter__()
+
+        from imp import reload
+        from wiki.conf import settings
+        reload(settings)

@@ -1,4 +1,16 @@
+# THANKS!
+# https://travis-ci.org/peterbe/premailer
+
+# This indicates to Travis that we will not use or need sudo
+# so that we can benefit from and use the cache->directories
+# directive.
+
+sudo: no
+
+env: PIP_DOWNLOAD_CACHE="pip_cache"
+
 language: python
+
 # See tox.ini for env list
 env:
 - TOXENV=py26-django15
@@ -6,17 +18,23 @@ env:
 - TOXENV=py27-django15
 - TOXENV=py27-django16
 - TOXENV=py27-django17
-- TOXENV=py33-django15
-- TOXENV=py33-django16
-- TOXENV=py33-django17
+- TOXENV=py27-django18
+- TOXENV=py34-django15
+- TOXENV=py34-django16
+- TOXENV=py34-django17
+- TOXENV=py34-django18
+
 install:
   - pip install tox coveralls
+
 script:
-  - tox
-  - coverage run --source=wiki setup.py test
+  - tox -e $TOXENV
+
 notifications:
   irc:
     - "irc.freenode.org#django-wiki"
+
 after_success:
-  coveralls
+  - coverage combine
+  - coveralls
 
