@@ -172,6 +172,8 @@ Acknowledgements
 Badgers Badgers Badgers
 -----------------------
 
+[![Docs](https://readthedocs.org/projects/django-wiki/badge/?version=latest)](http://django-wiki.readthedocs.org/)
+
 [![Build Status](https://travis-ci.org/django-wiki/django-wiki.png?branch=master)](https://travis-ci.org/django-wiki/django-wiki)
 
 [![Coverage Status](https://coveralls.io/repos/django-wiki/django-wiki/badge.svg?branch=master)](https://coveralls.io/r/django-wiki/django-wiki?branch=master)
