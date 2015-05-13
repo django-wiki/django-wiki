@@ -1,0 +1,8 @@
+{% load i18n %}
+{% if is_paginated %}
+<ul class="pagination">
+    {% for pc in paginator.page_range %}
+    <li class="{% if pc == page_obj.number %} active{% endif %}"><a href="?page={{ pc }}{% if appended_key %}&{{ appended_key }}={{ appended_value }}{% endif %}">{{ pc }}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}

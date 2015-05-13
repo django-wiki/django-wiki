@@ -1,0 +1,27 @@
+{% extends "wiki/base.html" %}
+{% load wiki_tags i18n %}
+
+
+{% block wiki_pagetitle %}Permission Denied{% endblock %}
+
+{% block wiki_contents %}
+  <h1 class="page-header">{% trans "Permission Denied" %}</h1>
+  <p class="alert denied alert-error">
+    <i class="fa fa-minus-circle"></i>
+    {% trans "Sorry, you don't have permission to access this page." %}
+  </p>
+  {% if article.current_revision.locked %}
+  <p class="alert alert-warning">
+    <i class="fa fa-lock"></i>
+    {% trans "This article is locked for editing." %}
+  </p>
+  {% endif %}
+  
+  <p>
+    <a href="{% url 'wiki:get' article_id=article.id path=urlpath.path %}" class="btn btn-default">
+      {% trans "Back to article" %}
+    </a>
+  </p>
+  
+{% endblock %}
+

@@ -1,0 +1,14 @@
+{% load i18n wiki_macro_tags %}
+
+{% if article_children %}
+  <div class="article-list">
+    <ul>
+    <li class="nav-header">{% trans "Article index" %} <i class="fa fa-list"></i></li>
+    {% for child in article_children %}
+      {% article_list child depth %}
+      {% empty %}
+      <i>{% trans "Nothing below this level" %}</i>
+    {% endfor %}
+    <ul>
+  </div>
+{% endif %}

@@ -1,0 +1,55 @@
+{% extends "wiki/base.html" %}
+{% load wiki_tags i18n sekizai_tags %}
+
+{% block wiki_body %}
+
+  {% if revision %}
+    <div class="alert alert-info">
+      <strong>{% trans "Previewing revision" %}:</strong>
+      {% include "wiki/includes/revision_info.html" %}
+    </div>
+  {% endif %}
+
+  {% if merge %}
+    <div class="alert alert-info">
+      <strong>{% trans "Previewing merge between" %}:</strong>
+      {% include "wiki/includes/revision_info.html" with revision=merge1 %}
+      <strong>{% trans "and" %}</strong>
+      {% include "wiki/includes/revision_info.html" with revision=merge2 %}
+    </div>
+    {% if merge1.deleted %}
+    <div class="alert alert-error">
+      <strong>{% trans "You cannot merge with a deleted revision" %}</strong>
+    </div>
+    {% endif %}
+  {% endif %}
+
+  <h1 class="page-header">{{ title }}</h1>
+
+  {% if revision and revision.deleted %}
+    <div class="warning">
+      <strong>{% trans "This revision has been deleted." %}</strong> 
+      <p>{% trans "Restoring to this revision will mark the article as deleted." %}</p>
+    </div>
+  {% else %}
+    
+    {% wiki_render article content %}
+    {% for plugin in plugins %}
+      {% if plugin.RenderMedia.css %}
+        {% addtoblock "css" %}
+          {% for media, url in plugin.RenderMedia.css.items %}
+            <link rel="stylesheet" href="{{ STATIC_URL }}{{ url }}" />
+          {% endfor %}
+        {% endaddtoblock %}
+      {% endif %}
+      {% if plugin.RenderMedia.js %}
+        {% addtoblock "js" %}        
+          {% for url in plugin.RenderMedia.js %}
+            <script type="text/javascript" src="{{ STATIC_URL }}{{ url }}"></script>
+          {% endfor %}
+        {% endaddtoblock %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "wiki/article.html" %}
+{% load wiki_tags i18n humanize %}
+
+
+{% block wiki_pagetitle %}{% trans "Add file to" %} "{{ article.current_revision.title }}"{% endblock %}
+
+{% block wiki_contents_tab %}
+
+<h2>{% trans "Add attachment from other article" %}</h2>
+
+<form method="GET" action="{% url 'wiki:attachments_search' path=urlpath.path article_id=article.id %}" class="form-search">
+  <div class="input-group">
+    {{ search_form.query }}
+    <span class="input-group-btn">
+      <button class="btn btn-default">
+        <span class="fa fa-search"></span>
+        {% trans "Search files and articles" %}
+      </button>
+    </span>
+  </div>
+</form>
+
+{% if attachments %}
+<table class="table table-striped table-bordered">
+  <tr>
+    <th>{% trans "File" %}</th>
+    <th>{% trans "Main article" %}</th>
+    <th>{% trans "Date" %}</th>
+    <th>{% trans "Uploaded by" %}</th>
+    <th>{% trans "Size" %}</th>
+    <th style="text-align: right">{% trans "Action" %}</th>
+  </tr>
+{% for attachment in attachments %}
+  <tr>
+    <td>
+      <h4>{{ attachment.original_filename }}</h4>
+      {{ attachment.current_revision.description|default:_("<em>No description</em>")|safe }}
+    </td>
+    <td>
+      <strong>{{ attachment.article.current_revision.title }}</strong>
+    </td>
+    <td>
+      {{ attachment.current_revision.created }}
+      {% if attachment.current_revision.deleted %}<span class="badge badge-important">{% trans "deleted" %}</span>{% endif %}
+    </td>
+    <td>
+      {% include "wiki/includes/revision_info.html" with revision=attachment.current_revision hidedate=1 hidenumber=1 %}
+    </td>
+    <td>{{ attachment.current_revision.file.size|filesizeformat }}</td>
+    <td style="text-align: right">
+      <form method="POST" action="{% url 'wiki:attachments_add' path=urlpath.path article_id=article.id attachment_id=attachment.id %}">
+        {% csrf_token %}
+        <a href="{% url 'wiki:attachments_download' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-default">
+          <span class="fa fa-download"></span>
+          {% trans "Download" %}
+        </a>
+        <button class="btn btn-primary">
+          <span class="fa fa-plus-circle"></span>
+        {% trans "Add to article" %}
+        </button>
+      </form>
+    </td>
+  </tr>
+{% endfor %}
+</table>
+{% else %}
+  <p><em>{% trans "Your search did not return any results" %}</em></p>
+{% endif %}
+
+{% with query as appended_value and "query" as appended_key %}
+{% include "wiki/includes/pagination.html" %}
+{% endwith %}
+
+<p>
+  <a href="{% url 'wiki:attachments_index' path=urlpath.path article_id=article.id %}"><span class="fa fa-arrow-left"></span> {% trans "Go back" %}</a>
+</p>
+
+{% endblock %}

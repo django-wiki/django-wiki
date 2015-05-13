@@ -1,0 +1,111 @@
+{% extends "wiki/article.html" %}
+{% load wiki_tags i18n humanize wiki_thumbnails %}
+
+
+{% block wiki_pagetitle %}{% trans "Images" %}: {{ article.current_revision.title }}{% endblock %}
+
+{% block wiki_contents_tab %}
+  <p class="lead">{% trans "The following images are available for this article. Copy the markdown tag to directly refer to an image from the article text." %}</p>
+  <p>
+    <a href="{% url 'wiki:edit' path=urlpath.path article_id=article.id %}">
+      <span class="fa fa-arrow-left"></span>
+      {% trans "Back to edit page" %}
+    </a>
+  </p>
+  <table class="table table-bordered table-striped" style="width: 100%;">
+  {% for image in images %}
+    {% with image.current_revision.imagerevision as revision %}
+    <tr>
+      <th>{{ revision.get_filename|default:_("No file") }}</th>
+      <th>{% trans "Markdown tag" %}</th>
+      <th>{% trans "Uploaded by" %}</th>
+      <th>{% trans "Size" %}</th>
+    </tr>
+    <tr>
+      <td rowspan="3">
+        <p class="thumbnail">
+        {% thumbnail revision.image "250x250" as thumb %}
+            <img src="{{ thumb.url }}" alt="{{ revision.get_filename }}" />
+        {% endthumbnail %}
+        </p>
+        {% if image|can_write:user %}
+        <p>
+          {% if revision.deleted %}
+            <a href="{% url 'wiki:images_add_revision' path=urlpath.path article_id=article.id image_id=image.id %}">
+              <span class="fa fa-upload"></span>
+              {% trans "Upload and publish new image" %}
+            </a> <br />
+            <a href="{% url 'wiki:images_restore' path=urlpath.path article_id=article.id image_id=image.id %}">
+              <span class="fa ra-repeat"></span>
+              {% trans "Restore image" %}
+            </a>
+          {% else %}
+            <a href="{% url 'wiki:images_add_revision' path=urlpath.path article_id=article.id image_id=image.id %}">
+              <span class="fa fa-upload"></span>
+              {% trans "Upload replacement" %}
+            </a> <br />
+            <a href="{% url 'wiki:images_delete' path=urlpath.path article_id=article.id image_id=image.id %}">
+              <span class="fa fa-remove"></span>
+              {% trans "Remove image" %}
+            </a>
+          {% endif %}
+          {% if article|can_moderate:user %}
+          <br />
+          <a href="{% url 'wiki:images_purge' path=urlpath.path article_id=article.id image_id=image.id %}">
+            <span class="fa fa-trash"></span>
+            {% trans "Completely delete" %}
+          </a>
+          {% endif %}
+        </p>
+        {% endif %}
+      </td>
+      <td><code>[image:{{ image.id }}]</code></td>
+      <td>
+        <p>{% include "wiki/includes/revision_info.html" %}</p>
+      </td>
+      <td>{{ revision.get_size|filesizeformat }}<br />{{ revision.width }}x{{ revision.height }} pixels
+      </td>
+    </tr>
+    <tr>
+      <th colspan="100">{% trans "History" %}</th>
+    </tr>
+    <tr>
+      <td colspan="100">
+        <table class="table">
+          {% for old_revision in image.revision_set.all %}
+            <tr>
+              <td>
+              {% thumbnail old_revision.imagerevision.image "50x50" crop="center" as thumb %}
+                <img src="{{ thumb.url }}" alt="{{ revision.imagerevision.get_filename }}" />
+              {% endthumbnail %}
+              </td>
+              <td>{% include "wiki/includes/revision_info.html" with current_revision=image.current_revision revision=old_revision %}</td>
+              <td>{{ old_revision.imagerevision.get_size|filesizeformat }}</td>
+              <td>{{ old_revision.imagerevision.width }}x{{ old_revision.imagerevision.height }}</td>
+              <td>
+                {% if image|can_write:user and old_revision != image.current_revision %}
+                  <a href="#">
+                    <span class="fa fa-refresh"></span>
+                    {% trans "Revert to this version" %}
+                  </a>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </table>
+      </td>
+    </tr>
+    {% endwith %}
+  {% empty %}
+    <tr>
+    <td colspan="100">
+      <p style="margin-bottom: 20px;"><em>{% trans "There are no images for this article." %}</em></p>
+    </td>
+  {% endfor %}
+
+  </table>
+  
+  {% include "wiki/includes/pagination.html" %}
+  
+{% endblock %}
+

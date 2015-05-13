@@ -1,0 +1,66 @@
+{% extends "wiki/article.html" %}
+{% load wiki_tags i18n humanize %}
+
+
+{% block wiki_pagetitle %}{% trans "Delete" %} "{{ attachment.current_revision.get_filename }}"{% endblock %}
+
+{% block wiki_contents_tab %}
+
+{% if attachment.article == article %}
+<h2>{% trans "Delete" %} "{{ attachment.current_revision.get_filename }}"?</h2>
+  <p class="lead">
+    {% blocktrans with attachment.original_filename as filename %}
+    The file may be referenced on other articles. Deleting it means that they will loose their references to this file. The following articles reference this file:
+    {% endblocktrans %}
+  </p>
+  <ul>
+    {% for a in attachment.articles.all %}
+      <li style="font-size: 150%;">{{ a.current_revision.title }}</li>
+    {% endfor %}
+  </ul>
+<hr />
+<form method="POST" class="form-horizontal" id="attachment_form" enctype="multipart/form-data">
+  {% wiki_form form %}
+  <div class="form-group form-actions">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-10">
+      <a href="{% url 'wiki:attachments_index' path=urlpath.path article_id=article.id %}" class="btn btn-default">
+        <span class="fa fa-arrow-left"></span>
+        {% trans "Go back" %}
+      </a>
+      <button class="btn btn-danger">
+        <span class="fa fa-remove"></span>
+        {% trans "Delete it!" %}
+      </button>
+    </div>
+  </div>
+</form>
+
+{% else %}
+  <h2>{% trans "Remove" %} "{{ attachment.current_revision.get_filename }}"?</h2>
+  <p class="lead">
+    {% blocktrans with attachment.original_filename as filename %}
+    You can remove a reference to a file, but it will retain its references on other articles.
+    {% endblocktrans %}
+  </p>
+  <form method="POST" class="form-horizontal" id="attachment_form" enctype="multipart/form-data">
+  {% wiki_form form %}
+  <div class="form-group form-actions">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-10">
+      <a href="{% url 'wiki:attachments_index' path=urlpath.path article_id=article.id %}" class="btn btn-default">
+        <span class="fa fa-arrow-left"></span>
+        {% trans "Go back" %}
+      </a>
+      <button class="btn btn-danger">
+        <span class="fa fa-remove"></span>
+        {% trans "Remove reference" %}
+      </button>
+    </div>
+  </div>
+</form>
+
+{% endif %}
+
+{% endblock %}
+

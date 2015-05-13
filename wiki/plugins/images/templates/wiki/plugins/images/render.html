@@ -1,0 +1,20 @@
+{% load wiki_thumbnails i18n %}{% comment %}
+  This template is used for the markdown extension that renders images and captions.
+  
+  NB! Watch out for line breaks, markdown might add <br />s and <p>s.
+{% endcomment %}{% with image.current_revision.imagerevision as revision %}{% spaceless %}
+<div class="thumbnail{% if align %} pull-{{ align }}{% endif %}" style="width: 250px;">
+  {% thumbnail revision.image "250x250" as thumb %}
+    <a href="{{ revision.image.url }}">
+      <img src="{{ thumb.url }}" alt="{{ revision.get_filename }}" />
+    </a>
+    {% empty %}
+    <div class="caption">
+      <em>{% trans "Image not found" %}</em>
+    </div>
+  {% endthumbnail %}
+  <div class="caption">
+    {{ caption|safe }}
+  </div>
+</div>
+{% endspaceless %}{% endwith %}

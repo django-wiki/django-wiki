@@ -1,0 +1,25 @@
+{% load i18n sekizai_tags %}
+
+  <li class="divider notification-before-list"></li>
+  <li class="notifications-empty"><a href="#"><em>{% trans "No notifications" %}</em></a></li>
+  <li class="divider"></li>
+  <li>
+    <a href="#" onclick="notify_mark_read()">
+      <i class="fa fa-check-square-o"></i>
+      {% trans "Clear notifications list" %}
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'wiki:notification_settings' %}">
+      <i class="fa fa-wrench"></i>
+      {% trans "Notification settings" %}
+    </a>
+  </li>
+{% addtoblock "js" %}
+<script type="text/javascript">
+  URL_NOTIFY_GET_NEW = "{% url "nyt:json_get" %}";
+  URL_NOTIFY_MARK_READ = "{% url "nyt:json_mark_read_base" %}";
+  URL_NOTIFY_GOTO = "{% url "nyt:goto_base" %}";
+</script>
+{% endaddtoblock %}
+{% addtoblock "js" %}<script type="text/javascript" src="{{ STATIC_URL }}wiki/plugins/notifications/js/ui.js"></script>{% endaddtoblock %}

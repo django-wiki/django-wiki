@@ -1,0 +1,79 @@
+{% extends "wiki/article.html" %}
+{% load wiki_tags i18n %}
+
+
+{% block wiki_pagetitle %}{% trans "Edit" %}: {{ article.current_revision.title }}{% endblock %}
+
+{% block wiki_contents_tab %}
+
+{% if not user.is_authenticated %}
+<p class="alert alert-warning">
+{% trans "<strong>Warning:</strong> You are not logged in. Your IP address will be logged." %}
+<a href="{% url 'wiki:login' %}?next={% url 'wiki:edit' article_id=article.id path=urlpath.path %}">{% trans "Click here to log in" %} &raquo;</a>
+</p>
+{% endif %}
+
+<div class="row">
+
+  <div class="col-lg-8">
+    <form method="POST" class="form-horizontal" id="article_edit_form">
+      <input type="hidden" name="save" value="1" />
+      <input type="hidden" name="preview" value="1" />
+      {% with edit_form as form %}
+        {% include "wiki/includes/editor.html" %}
+      {% endwith %}
+    </form>
+  </div>
+
+  <div class="col-lg-4" id="wiki-edit-sidebar">
+    {% include "wiki/includes/editor_sidebar.html" %}
+  </div>
+
+</div>
+
+<div style="clear: both"></div>
+
+<div class="form-group form-actions">
+  <div class="col-lg-8">
+    <div class="col-lg-offset-2">
+      <a class="btn btn-default" onclick="$('#previewModal').modal('show'); document.getElementById('article_edit_form').target='previewWindow'; document.getElementById('article_edit_form').action='{% url 'wiki:preview' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit()" href="#">
+        <span class="fa fa-eye"></span>
+        {% trans "Preview" %}
+      </a>
+      <a class="btn btn-primary" onclick="document.getElementById('article_edit_form').target=''; document.getElementById('article_edit_form').action='{% url 'wiki:edit' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit();" href="#">
+        <span class="fa fa-check"></span>
+        {% trans "Save changes" %}
+      </a>
+      {% if article|can_delete:user %}
+      <a href="{% url 'wiki:delete' path=urlpath.path article_id=article.id %}" class="btn btn-danger pull-right">
+        <span class="fa fa-trash-o"></span>
+        {% trans "Delete article" %}
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% include "wiki/includes/modals.html" %}
+
+<div class="modal fade wiki-modal" id="previewModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <iframe name="previewWindow" frameborder="0"></iframe>
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn btn-default btn-lg" data-dismiss="modal">
+          <span class="fa fa-arrow-circle-left"></span>
+          {% trans "Back to editor" %}
+        </a>
+        <a class="btn btn-lg btn-primary" onclick="document.getElementById('article_edit_form').target=''; document.getElementById('article_edit_form').action='{% url 'wiki:edit' path=urlpath.path article_id=article.id %}'; document.getElementById('article_edit_form').submit();" href="#">
+          <span class="fa fa-check"></span>
+          {% trans "Save changes" %}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

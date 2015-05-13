@@ -1,0 +1,24 @@
+{% extends "wiki/article.html" %}
+{% load wiki_tags i18n %}
+
+
+{% block wiki_pagetitle %}{% trans "Settings" %}: {{ article.current_revision.title }}{% endblock %}
+
+{% block wiki_contents_tab %}
+  
+  {% for form in forms %}
+  <form method="POST" class="form-horizontal settings-form" action="?f={{form.action}}">
+    <h3 class="page-header">{{ form.settings_form_headline }}</h2>
+    {% wiki_form form %}
+    <div class="form-group form-actions">
+      <div class="col-lg-10 col-lg-2-offset">
+        <button type="submit" name="save" value="1" class="btn btn-primary">
+          <span class="fa fa-check"></span>
+          {% trans "Save changes" %}
+        </button>
+      </div>
+    </div>
+  </form>
+  {% endfor %}
+
+{% endblock %}

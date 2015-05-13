@@ -1,0 +1,16 @@
+{% load sekizai_tags %}
+{% addtoblock "js" %}
+<script type="text/javascript" src="{{ STATIC_URL }}wiki/js/editor.js"></script>
+{% for js in editor.Media.js %}
+<script type="text/javascript" src="{{ STATIC_URL }}{{ js }}"></script>
+{% endfor %}
+{% endaddtoblock %}
+
+{% addtoblock "css" %}
+{% for media, srcs in editor.Media.css.items %}
+  {% for src in srcs %}
+    <link rel="stylesheet" media="{{ media }}" href="{{ STATIC_URL }}{{ src }}" />
+  {% endfor %}
+{% endfor %}
+{% endaddtoblock %}
+

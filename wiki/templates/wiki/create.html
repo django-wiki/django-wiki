@@ -1,0 +1,64 @@
+{% extends "wiki/base.html" %}
+{% load wiki_tags i18n sekizai_tags %}
+
+
+{% block wiki_pagetitle %}{% trans "Add new article" %}{% endblock %}
+
+{% block wiki_contents %}
+
+  {% addtoblock "js" %}
+  <script type="text/javascript" src="{{ STATIC_URL }}admin/js/urlify.js"></script>
+  <script type="text/javascript">
+  // Replacement of django's URLify that doesn't remove any words.
+  function URLify(s, num_chars) {
+      s = downcode(s);
+      removelist = [];
+      r = new RegExp('\\b(' + removelist.join('|') + ')\\b', 'gi');
+      s = s.replace(r, '');
+      // if downcode doesn't hit, the char will be stripped here
+      s = s.replace(/[^-\w\s]/g, '');  // remove unneeded chars
+      s = s.replace(/^\s+|\s+$/g, ''); // trim leading/trailing spaces
+      s = s.replace(/[-\s]+/g, '_');   // convert spaces and hyphens to underscores
+      s = s.toLowerCase();             // convert to lowercase
+      return s.substring(0, num_chars);// trim to first num_chars chars
+  }
+  {% if not create_form.slug.value %}
+  //<![CDATA[	
+  (function($) {
+	  $(document).ready(function (){
+		  $("#id_title").keyup(function () {
+			  var e = $("#id_slug")[0];
+			  if(!e._changed) {
+			    slug = URLify(this.value, 50);
+				  e.value = slug;
+			  }
+	      });
+	  });
+  })(jQuery);
+  //]]>
+  {% endif %}
+  </script>
+  {% endaddtoblock %}
+
+  {% include "wiki/includes/editormedia.html" %}
+  <h1 class="page-header">{% trans "Add new article" %}</h1>
+  
+  <form method="POST" class="form-horizontal">
+    {% wiki_form create_form %}
+    <div class="form-group form-actions">
+      <div class="col-lg-2"></div>
+      <div class="col-lg-10">
+        <a href="{% url 'wiki:get' path=parent_urlpath.path %}" class="btn btn-default">
+          <span class="fa fa-arrow-left"></span>
+          {% trans "Go back" %}
+        </a>
+        <button type="submit" name="save_changes" class="btn btn-primary">
+          <span class="fa fa-plus"></span>
+          {% trans "Create article" %}
+        </button>
+      </div>  
+    </div>  
+  </form>
+
+{% endblock %}
+

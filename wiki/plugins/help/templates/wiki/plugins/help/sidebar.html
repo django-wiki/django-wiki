@@ -1,0 +1,45 @@
+{% load i18n %}<h4>{% trans "Adding new articles" %}</h4>
+<p>
+  {% trans "To create a new wiki article, create a link to it. Clicking the link gives you the creation page." %}
+</p>
+<pre>[Article Name](wiki:ArticleName)</pre>
+<h4>{% trans "An external link" %}</h4>
+<pre>[Link](http://google.com)</pre>
+
+<h4>{% trans "Headers" %}</h4>
+<p>{% trans "Use these codes for headers and to automatically generate Tables of Contents." %}</p>
+<pre>Hugest header
+===========
+
+Huger header
+------------
+
+# Hugest Header
+## Huger header
+### Huge header
+#### Small header
+
+[TOC]
+</pre>
+
+<h4>{% trans "Typography" %}</h4>
+
+<pre>*emphasis* or _emphasis_</pre>
+<pre>**strong** or __strong__</pre>
+
+<h4>{% trans "Lists" %}</h4>
+
+<pre>- Unordered List
+    - Sub Item 1
+    - Sub Item 2</pre>
+<pre>1. Ordered
+2. List</pre>
+
+<h4>{% trans "Tables" %}</h4>
+
+<pre>
+First Header  | Second Header
+------------- | -------------
+Content Cell  | Content Cell
+Content Cell  | Content Cell
+</pre>

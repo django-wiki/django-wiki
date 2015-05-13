@@ -1,0 +1,18 @@
+{% extends "wiki/article.html" %}
+{% load wiki_tags i18n humanize %}
+
+
+{% block wiki_pagetitle %}{% trans "Source of" %} {{ article.current_revision.title }}{% endblock %}
+
+{% block wiki_contents_tab %}
+
+{% if article.current_revision.locked %}
+<p class="lead">{% trans "This article is currently locked for editing." %}</p>
+{% endif %}
+
+<pre class="pre-scrollable">
+  {{ article.current_revision.content }}
+</pre>
+
+{% endblock %}
+

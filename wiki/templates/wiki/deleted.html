@@ -1,0 +1,57 @@
+{% extends "wiki/base.html" %}
+{% load wiki_tags i18n sekizai_tags %}
+
+
+{% block wiki_pagetitle %}{% trans "Article deleted" %}{% endblock %}
+
+{% block wiki_contents %}
+  <style type="text/css">
+    label[for=id_confirm] {
+      float: left;
+      margin-right: 10px;
+    }
+  </style>
+  <h1 class="page-header">{% trans "Article Deleted" %}</h1>
+  
+  <p class="lead">
+  {% trans "The article you were looking for has been deleted." %}  
+  </p>
+  
+  <div class="row">
+  
+  {% if not article.current_revision.locked or article|can_delete:user %}
+    <div class="col-lg-6">
+      <div class="well">
+        <h2>{% trans "Restore" %}</h2>
+        <p>{% trans "You may restore this article and its children by clicking restore." %}</p>
+        <p>
+          <a href="?restore=1" class="btn btn-default">
+            <span class="fa fa-repeat"></span>
+            {% trans "Restore" %}
+          </a>
+        </p>
+      </div>
+    </div>
+  {% endif %}
+  
+  {% if article|can_moderate:user %}
+    <div class="col-lg-6">
+      <div class="well">
+        <h2>{% trans "Purge deletion" %}</h2>
+        <p>{% trans "You may remove this article and any children permanently and free their slugs by clicking the below button. This action cannot be undone." %}</p>
+        <form method="POST" class="form form-inline">
+          {% csrf_token %}
+          {% wiki_form purge_form %}
+            <button class="btn btn-default">
+              <span class="fa fa-remove"></span>
+              {% trans "Purge" %}
+            </button>
+        </form>
+      </div>
+    </div>
+  {% endif %}
+  
+  </div>
+  
+{% endblock %}
+

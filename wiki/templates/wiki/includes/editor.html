@@ -1,0 +1,11 @@
+{% load wiki_tags i18n sekizai_tags %}
+{% include "wiki/includes/editormedia.html" %}
+
+{% wiki_form form %}
+{% addtoblock "js" %}
+<script language="javascript">
+  $(document).ready(function() {
+    $("#id_revision").val('{{ article.current_revision.id }}');
+  });
+</script>
+{% endaddtoblock %}

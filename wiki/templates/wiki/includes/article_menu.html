@@ -1,0 +1,53 @@
+{% load i18n wiki_tags %}
+
+{% with selected_tab as selected %}
+
+<li class="pull-right{% if selected == "settings" %} active{% endif %}">
+  {% if not user.is_anonymous %}
+  <a href="{% url 'wiki:settings' article_id=article.id path=urlpath.path %}">
+    <span class="fa fa-wrench"></span>
+    <span class="hidden-xs">{% trans "Settings" %}</span>
+  </a>
+  {% endif %}
+</li>
+
+{% for plugin in article_tabs %}
+  <li class="pull-right{% if selected == plugin.slug %} active{% endif %}">
+    <a href="{% url 'wiki:plugin' slug=plugin.slug article_id=article.id path=urlpath.path %}">
+      <span class="{{ plugin.article_tab.1 }}"></span>
+      <span class="hidden-xs">{{ plugin.article_tab.0 }}</span>
+    </a>
+  </li>
+{% endfor %}
+
+<li class="pull-right{% if selected == "history" %} active{% endif %}">
+  <a href="{% url 'wiki:history' article_id=article.id path=urlpath.path %}">
+    <span class="fa fa-clock-o"></span>
+    <span class="hidden-xs">{% trans "Changes" %}</span>
+  </a>
+</li>
+
+{% if article|can_write:user and not article.current_revision.locked %}
+<li class="pull-right{% if selected == "edit" %} active{% endif %}">
+  <a href="{% url 'wiki:edit' article_id=article.id path=urlpath.path %}">
+    <span class="fa fa-edit"></span>
+    <span class="hidden-xs">{% trans "Edit" %}</span>
+  </a>
+</li>
+{% else %}
+<li class="pull-right{% if selected == "source" %} active{% endif %}">
+  <a href="{% url 'wiki:source' article_id=article.id path=urlpath.path %}">
+    <span class="fa fa-lock"></span>
+    <span class="hidden-xs">{% trans "View Source" %}</span>
+  </a>
+</li>
+{% endif %}
+
+<li class="pull-right{% if selected == "view" %} active{% endif %}">
+  <a href="{% url 'wiki:get' article_id=article.id path=urlpath.path %}">
+    <span class="fa fa-home"></span>
+    <span class="hidden-xs">{% trans "View" %}</span>
+  </a>
+</li>
+
+{% endwith %}

@@ -1,0 +1,9 @@
+include COPYING
+include README.md
+include README.rst
+include setup.cfg
+include model_chart_wiki.pdf
+recursive-include wiki *.html *.txt *.png *.js *.css *.gif *.less *.mo *.po *.otf *.svg *.woff *.eot *.ttf
+prune wiki/attachments
+# Exclude compiled version of source language, it's meaningless
+exclude wiki/locale/en/LC_MESSAGES/django.mo

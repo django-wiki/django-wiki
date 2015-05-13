@@ -1,0 +1,17 @@
+{% csrf_token %}{% load sekizai_tags %}
+
+{% include "wiki/includes/formerrors.html" %}
+
+{% addtoblock "js" %}
+{{ form.media.js }}
+{% endaddtoblock %}
+
+{% addtoblock "css" %}
+{{ form.media.css }}
+{% endaddtoblock %}
+
+{% for field in form %}
+
+  {% include "wiki/includes/formfield.html" %}
+
+{% endfor %}

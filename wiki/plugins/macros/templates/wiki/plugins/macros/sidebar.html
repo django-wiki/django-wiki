@@ -1,0 +1,20 @@
+{% load i18n wiki_macro_tags %}
+{% allowed_macros as macros %}
+
+{% for macro in macros %}
+<h4>{{ macro.short_description }}</h4>
+{{ macro.help_text|linebreaks|safe }}
+{% if macro.example_code %}
+<pre>{{ macro.example_code }}</pre>
+{% endif %}
+{% if macro.args %}
+<table class="table table-compact">
+{% for arg,description in macro.args.items %}
+  <tr>
+    <th>{{ arg }}</th>
+    <td>{{ description }}</td>
+  </tr>
+{% endfor %}
+</table>
+{% endif %}
+{% endfor %}
