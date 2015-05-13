@@ -46,9 +46,16 @@ if not 'django.contrib.auth.context_processors.auth' in django_settings.TEMPLATE
     raise ImproperlyConfigured(
         'django-wiki: needs django.contrib.auth.context_processors.auth in TEMPLATE_CONTEXT_PROCESSORS')
 
-if not 'django.core.context_processors.request' in django_settings.TEMPLATE_CONTEXT_PROCESSORS:
-    raise ImproperlyConfigured(
-        'django-wiki: needs django.core.context_processors.request in TEMPLATE_CONTEXT_PROCESSORS')
+if VERSION < (1, 8):
+	if not 'django.core.context_processors.request' in django_settings.TEMPLATES_CONTEXT_PROCESSORS:
+	    raise ImproperlyConfigured(
+	        'django-wiki: needs django.core.context_processors.request in TEMPLATE_CONTEXT_PROCESSORS')
+
+else:
+	if not 'django.template.context_processors.request' in django_settings.TEMPLATES[0]['OPTIONS']['context_processors']:
+	    raise ImproperlyConfigured(
+	        'django-wiki: needs django.template.context_processors.request in TEMPLATE_CONTEXT_PROCESSORS')
+
 
 if 'django_notify' in django_settings.INSTALLED_APPS:
     raise ImproperlyConfigured(
