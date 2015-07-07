@@ -145,12 +145,12 @@ class GetContentSnippet(TemplateTestCase):
 
         content = """
         <h1>Some dummy</h1> text. <div>Actually</div> I don't what to write,
-        heh. Don't now, <b>maybe</b> I should citate <>Shakespeare<> or Byron.
+        heh. Don't now, <b>maybe</b> I should citate Shakespeare or Byron.
         Or <a>maybe</a> copy paste from <a href="http://python.org">python</a>
         or django documentation. Maybe.
         """
 
-        expected = ('I should citate <>Shakespeare<> or Byron. '
+        expected = ('I should citate Shakespeare or Byron. '
             'Or <strong>maybe</strong> copy paste from python '
             'or django documentation. <strong>maybe</strong> .')
 
