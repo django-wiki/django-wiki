@@ -25,7 +25,7 @@ env:
 - TOXENV=py34-django18
 
 install:
-  - pip install tox coveralls
+  - pip install tox>=2.1 coveralls
 
 script:
   - tox -e $TOXENV
