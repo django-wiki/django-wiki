@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+import django
 from django.db import models
 from django.db.models import Q
 from django.db.models.query import QuerySet, EmptyQuerySet
@@ -9,12 +10,26 @@ from django import VERSION as DJANGO_VERSION
 from mptt.managers import TreeManager
 
 
+if django.VERSION >= (1, 6):
+    # TreeManager bug:
+    if 'get_query_set' in TreeManager.__dict__:
+        # TreeManager should not define this, it messes things up.
+        del TreeManager.get_query_set
+
+        # See also:
+        # https://github.com/django-mptt/django-mptt/pull/388
+
+        # Once this has been merged, a new release for django-mptt has been
+        # made, and we can specify the new version in our requirements, this
+        # hack can be removed.
+
+
 class QuerySetCompatMixin(object):
 
     def get_queryset_compat(self):
-        get_queryset = (self.get_queryset
-                        if hasattr(self, 'get_queryset')
-                        else self.get_query_set)
+        get_queryset = (self.get_query_set
+                        if hasattr(self, 'get_query_set')
+                        else self.get_queryset)
         return get_queryset()
 
 
@@ -144,7 +159,8 @@ class ArticleManager(QuerySetCompatMixin, models.Manager):
     def can_write(self, user):
         return self.get_queryset_compat().can_write(user)
 
-    get_query_set = get_queryset  # Django 1.5 compat
+    if django.VERSION < (1, 6):
+        get_query_set = get_queryset
 
 
 class ArticleFkManager(QuerySetCompatMixin, models.Manager):
@@ -162,7 +178,8 @@ class ArticleFkManager(QuerySetCompatMixin, models.Manager):
     def get_queryset(self):
         return ArticleFkQuerySet(self.model, using=self._db)
 
-    get_query_set = get_queryset  # Django 1.5 compat
+    if django.VERSION < (1, 6):
+        get_query_set = get_queryset
 
     def active(self):
         return self.get_queryset_compat().active()
@@ -212,7 +229,8 @@ class URLPathManager(QuerySetCompatMixin, TreeManager):
         return URLPathQuerySet(self.model, using=self._db).order_by(
             self.tree_id_attr, self.left_attr)
 
-    get_query_set = get_queryset  # Django 1.5 compat
+    if django.VERSION < (1, 6):
+        get_query_set = get_queryset
 
     def select_related_common(self):
         return self.get_queryset_compat().common_select_related()
