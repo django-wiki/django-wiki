@@ -53,7 +53,7 @@ class AttachmentTests(ArticleTestBase):
         # Check the object was created.
         attachment = self.article.shared_plugins_set.all()[0].attachment
         self.assertEqual(attachment.original_filename, 'test.txt')
-        self.assertEqual(attachment.current_revision.file.file.read(), data)
+        self.assertEqual(attachment.current_revision.file.file.read(), data.encode('utf-8'))
 
     def test_replace(self):
         """
@@ -86,7 +86,7 @@ class AttachmentTests(ArticleTestBase):
         # Original filenames should not be modified
         self.assertEqual(attachment.original_filename, 'test.txt')
         # Latest revision should equal replacment_data 
-        self.assertEqual(attachment.current_revision.file.file.read(), replacement_data)
+        self.assertEqual(attachment.current_revision.file.file.read(), replacement_data.encode('utf-8'))
         first_replacement = attachment.current_revision 
 
         # Upload another replacement, this time removing most recent revision
@@ -98,6 +98,6 @@ class AttachmentTests(ArticleTestBase):
         # Revision count should still be two 
         self.assertEqual(attachment.attachmentrevision_set.count(), 2)
         # Latest revision should equal replacment_data2
-        self.assertEqual(attachment.current_revision.file.file.read(), replacement_data2)
+        self.assertEqual(attachment.current_revision.file.file.read(), replacement_data2.encode('utf-8'))
         # The first replacement should no longer be in the filehistory
         self.assertNotIn(first_replacement, attachment.attachmentrevision_set.all())
