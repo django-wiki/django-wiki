@@ -42,7 +42,7 @@ class AttachmentTests(ArticleTestBase):
         Uploading should not modify file in any way.
         """
         url = reverse('wiki:attachments_index', kwargs={'path': ''})
-        data = "This is a plain text file".encode('utf-8')
+        data = "This is a plain text file"
         filestream = self._createTxtFilestream(data)
         response = self.c.post(url,
                                {'description': 'My file',
@@ -63,7 +63,7 @@ class AttachmentTests(ArticleTestBase):
         """
         # Upload initial file
         url = reverse('wiki:attachments_index', kwargs={'path': ''})
-        data = "This is a plain text file".encode('utf-8')
+        data = "This is a plain text file"
         filestream = self._createTxtFilestream(data)
         self.c.post(url, {'description': 'My file', 'file': filestream, 'save': '1',})
         attachment = self.article.shared_plugins_set.all()[0].attachment 
@@ -76,7 +76,7 @@ class AttachmentTests(ArticleTestBase):
             kwargs={'attachment_id': attachment.id, 'article_id' : self.article.id}) 
 
         # Upload replacement without removing revisions
-        replacement_data = data + ' And this is my edit'.encode('utf-8')
+        replacement_data = data + ' And this is my edit'
         replacement_filestream = self._createTxtFilestream(replacement_data)
         response = self.c.post(url, {'description' : 'Replacement upload', 
                                         'file' : replacement_filestream,})
@@ -90,7 +90,7 @@ class AttachmentTests(ArticleTestBase):
         first_replacement = attachment.current_revision 
 
         # Upload another replacement, this time removing most recent revision
-        replacement_data2 = data + ' And this is a different edit'.encode('utf-8')
+        replacement_data2 = data + ' And this is a different edit'
         replacement_filestream2 = self._createTxtFilestream(replacement_data2)
         response = self.c.post(url, {'description' : 'Replacement upload', 
                                         'file' : replacement_filestream2, 'replace' : 'on',})
