@@ -186,13 +186,12 @@ class AttachmentReplaceView(ArticleMixin, FormView):
                 path=self.urlpath.path,
                 article_id=self.article.id)
 
-        if self.can_moderate:
-            older_revisions = self.attachment.attachmentrevision_set.exclude(
+        if self.can_moderate and form.cleaned_data['replace']:
+            most_recent_revision = self.attachment.attachmentrevision_set.exclude(
                 id=attachment_revision.id,
                 created__lte=attachment_revision.created,
-            )
-            # Because of signalling, the files are automatically removed...
-            older_revisions.delete()
+            ).latest()
+            most_recent_revision.delete()
 
         return redirect(
             "wiki:attachments_index",
