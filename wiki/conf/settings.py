@@ -25,6 +25,7 @@ MARKDOWN_KWARGS = {
         'attr_list',
         'extra',
         'codehilite',
+        'sane_lists',
     ],
     'safe_mode': 'replace',
     'extension_configs': {
