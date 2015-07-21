@@ -1,6 +1,5 @@
 {% extends "wiki/article.html" %}
 {% load wiki_tags i18n humanize sekizai_tags %}
-{% load url from future %}
 
 {% block wiki_pagetitle %}{% trans "Template" %}: {{ article.current_revision.title }}{% endblock %}
 
@@ -85,7 +84,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<a class="panel-toggle" data-toggle="collapse" href="#collapse_import">
@@ -108,7 +107,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			{% if article|can_write:user %}
 				<div class="panel panel-default">
 					<div class="panel-heading">
@@ -136,20 +135,20 @@
 				</div>
 			{% endif %}
 
-			
+
 		</div>
 	{% else %}
-	
+
 		{% if article|is_locked %}
 		<p class="muted">
 			<span class="fa fa-lock"></span>
 			{% trans "The article is currently locked for editing, and therefore no new template can be added." %}
 		</p>
 		{% endif %}
-	
+
 	{% endif %}
 	</div>
-	
+
 </div>
 
 {% include "wiki/includes/modals.html" %}
@@ -189,4 +188,3 @@
 {% endaddtoblock %}
 
 {% endblock %}
-

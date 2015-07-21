@@ -1,5 +1,4 @@
 {% load i18n sekizai_tags %}
-{% load url from future %}
 <h4>{% trans "Insert a template" %}</h4>
 
 <p>
@@ -8,7 +7,6 @@
 
 <pre>&#123;&#123;Template title&#125;&#125;</pre>
 
-<div class="row">
 <div class="input-group col-sm-12">
   <input type="text" class="template_title_query form-control" id="template_title_query" value="" placeholder="Type to search..." />
   <span class="input-group-btn">
@@ -16,7 +14,6 @@
       {% trans "Insert" %}
     </button>
   </span>
-</div>
 </div>
 
 <p>

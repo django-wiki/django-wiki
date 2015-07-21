@@ -1,6 +1,5 @@
 {% extends "wiki/article.html" %}
 {% load wiki_tags i18n humanize %}
-{% load url from future %}
 
 {% block wiki_pagetitle %}{% trans "History of template" %} "{{ template.template_title }}"{% endblock %}
 
@@ -51,4 +50,3 @@
 </table>
 <a href="javascript:history.go(-1);"><span class="fa fa-arrow-left"></span> {% trans "Go back" %}</a>
 {% endblock %}
-
