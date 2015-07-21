@@ -42,13 +42,23 @@ if not 'django.contrib.sites' in django_settings.INSTALLED_APPS:
     raise ImproperlyConfigured(
         'django-wiki: needs django.contrib.sites in INSTALLED_APPS')
 
+# Need to handle Django 1.8 'TEMPLATES', recognizing that users may still be
+# using 1.7 conventions/settings with 1.8.
+TEMPLATE_CONTEXT_PROCESSORS = getattr(django_settings, 'TEMPLATE_CONTEXT_PROCESSORS', [])
+if hasattr(django_settings, 'TEMPLATES'):
+    # Django 1.8 compat
+    backends = [b for b in django_settings.TEMPLATES if b.get('BACKEND', '') == 'django.template.backends.django.DjangoTemplates']
+    if len(backends) == 1:
+        TEMPLATE_CONTEXT_PROCESSORS = backends[0].get('OPTIONS', {}).get('context_processors', [])
+
 if not 'django.contrib.auth.context_processors.auth' in django_settings.TEMPLATE_CONTEXT_PROCESSORS:
     raise ImproperlyConfigured(
         'django-wiki: needs django.contrib.auth.context_processors.auth in TEMPLATE_CONTEXT_PROCESSORS')
 
-if not 'django.core.context_processors.request' in django_settings.TEMPLATE_CONTEXT_PROCESSORS:
+if not any(s in TEMPLATE_CONTEXT_PROCESSORS for s in ['django.core.context_processors.request',
+                                                      'django.template.context_processors.request']):
     raise ImproperlyConfigured(
-        'django-wiki: needs django.core.context_processors.request in TEMPLATE_CONTEXT_PROCESSORS')
+        'django-wiki: needs django.core.context_processors.request or django.template.context_processors.request in TEMPLATE_CONTEXT_PROCESSORS')
 
 if 'django_notify' in django_settings.INSTALLED_APPS:
     raise ImproperlyConfigured(

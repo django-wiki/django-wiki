@@ -4,7 +4,7 @@ from __future__ import absolute_import
 
 from .base import ArticleTestBase
 
-from wiki.models import Article
+from wiki.models import Article, URLPath
 from wiki.plugins.attachments.models import Attachment
 
 
@@ -83,3 +83,10 @@ class AttachmentManagerTests(ArticleTestBase):
             Attachment.objects.none().can_write(self.superuser1).count(), 0
         )
         self.assertEqual(Attachment.objects.none().active().count(), 0)
+
+
+class URLPathManagerTests(ArticleTestBase):
+
+    def test_related_manager_works_with_filters(self):
+        root = URLPath.root()
+        self.assertNotIn(root.id, [p.id for p in root.children.active()])

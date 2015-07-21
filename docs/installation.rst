@@ -147,7 +147,7 @@ In Django 1.5, it should look like this:
 
 ::
 
-    TEMPLATE_CONTEXT_PROCESSORS = (
+    TEMPLATE_CONTEXT_PROCESSORS = [
         "django.contrib.auth.context_processors.auth",
         "django.core.context_processors.debug",
         "django.core.context_processors.i18n",
@@ -157,10 +157,33 @@ In Django 1.5, it should look like this:
         "django.core.context_processors.tz",
         "django.contrib.messages.context_processors.messages",
         "sekizai.context_processors.sekizai",
-    )
+    ]
+
+In Django 1.8, it should look like this::
+
+    TEMPLATES = [
+        {
+            'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            # ...
+            'OPTIONS': {
+                'context_processors': [
+                    'django.contrib.auth.context_processors.auth',
+                    'django.template.context_processors.debug',
+                    'django.template.context_processors.i18n',
+                    'django.template.context_processors.media',
+                    'django.template.context_processors.request',
+                    'django.template.context_processors.static',
+                    'django.template.context_processors.tz',
+                    'django.contrib.messages.context_processors.messages'
+                    "sekizai.context_processors.sekizai",
+                ],
+            },
+        },
+    ]
+
 
 Set ``SITE_ID``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~
 
 If you're working with fresh Django installation, you need to set the SITE_ID
 

@@ -7,6 +7,7 @@ from datetime import datetime
 from django.http import HttpResponse
 from django.utils.http import http_date
 from django.utils import dateformat
+from django.utils.encoding import filepath_to_uri
 
 from wiki.conf import settings
 
@@ -44,8 +45,8 @@ def send_file(request, filepath, last_modified=None, filename=None):
     if encoding:
         response["Content-Encoding"] = encoding
 
-    # TODO: Escape filename
     if filename:
-        response["Content-Disposition"] = "attachment; filename=%s" % filename
+        filename_escaped = filepath_to_uri(filename)
+        response["Content-Disposition"] = "attachment; filename=%s" % filename_escaped
     
     return response

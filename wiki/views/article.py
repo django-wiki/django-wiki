@@ -75,8 +75,8 @@ class Create(FormView, ArticleMixin):
             attrs={
                 # Make patterns force lowercase if we are case insensitive to bless the user with a
                 # bit of strictness, anyways
-                'pattern': '[a-z0-9_]+' if not settings.URL_CASE_SENSITIVE else '[a-zA-Z0-9_]+',
-                'title': 'Lowercase letters, numbers, and underscores' if not settings.URL_CASE_SENSITIVE else 'Letters, numbers, and underscores',
+                'pattern': '[a-z0-9_-]+' if not settings.URL_CASE_SENSITIVE else '[a-zA-Z0-9_-]+',
+                'title': 'Lowercase letters, numbers, hyphens and underscores' if not settings.URL_CASE_SENSITIVE else 'Letters, numbers, hyphens and underscores',
             }
         )
         return form
