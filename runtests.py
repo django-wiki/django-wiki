@@ -32,6 +32,7 @@ settings.configure(
         'wiki.plugins.notifications',
         'wiki.plugins.images',
         'wiki.plugins.macros',
+        'wiki.plugins.template',
     ] + (['south'] if django.VERSION < (1, 7) else []),
     MIDDLEWARE_CLASSES=[
         'django.middleware.common.CommonMiddleware',
@@ -69,9 +70,9 @@ argv = [sys.argv[0], "test", "--traceback"]
 if len(sys.argv) == 1 or sys.argv[1] == 'test':
     # Nothing following 'runtests.py':
     if django.VERSION < (1, 6):
-        argv.extend(["wiki", "attachments"])
+        argv.extend(["wiki", "attachments", "template"])
     else:
-        argv.extend(["wiki.tests", "wiki.plugins.attachments.tests"])
+        argv.extend(["wiki.tests", "wiki.plugins.attachments.tests", "wiki.plugins.template.tests"])
 else:
     # Allow tests to be specified:
     argv.extend(sys.argv[1:])
