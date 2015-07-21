@@ -67,7 +67,11 @@ class Template(ReusablePlugin):
     def get_by_article(cls, article):
         from django.db.models import Q
         articles = []
-        urlapth = article.urlpath_set.all()[0]
+        urlapth = article.urlpath_set.all()
+        if not urlapth:
+            return cls.objects.none()
+        else:
+            urlapth = urlapth[0]
         while urlapth.parent:
             articles.append(urlapth.parent.article.id)
             urlapth = urlapth.parent
