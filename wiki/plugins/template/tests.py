@@ -3,9 +3,10 @@ from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client
+from wiki.tests.base import ArticleTestBase
 
 
-class TemplateTest(TestCase):
+class TemplateTest(ArticleTestBase):
 
     """Tests by the dummy web client, with manual creating the root article."""
 
@@ -15,7 +16,6 @@ class TemplateTest(TestCase):
             User = get_user_model()
         except ImportError:
             from django.contrib.auth.models import User
-
         User.objects.create_superuser('admin', 'nobody@example.com', 'secret')
         self.c = c = Client()
         c.login(username='admin', password='secret')
@@ -38,31 +38,21 @@ class TemplateTest(TestCase):
         for article in Article.objects.all():
             article.clear_cache()
 
-    def get_by_path(self, path):
-        """Get the article response for the path.
-           Example:  self.get_by_path("Level1/Slug2/").title
-        """
-        return self.c.get(reverse('wiki:get', kwargs={'path': path}))
-
     def test_create_template(self):
-        c = self.c
-        response = c.post(
-            reverse('wiki:template_create', kwargs={'path': ''}),
-            self.example_template_color
-        )
         self.assertRedirects(
-            response,
-            reverse('wiki:template_index', kwargs={'path': ''})
+            self.c.post(
+                reverse('wiki:template_create', kwargs={'path': ''}),
+                self.example_template_color
+            ),
+            reverse('wiki:template_index', kwargs={'path': ''}),
         )
-        response = c.get(reverse('wiki:template_index', kwargs={'path': ''}))
         self.assertContains(
-            response,
-            '&#123;&#123;color&#125;&#125;'
+            self.c.get(reverse('wiki:template_index', kwargs={'path': ''})),
+            '&#123;&#123;color&#125;&#125;',
         )
 
     def test_embed_template(self):
-        c = self.c
-        c.post(
+        self.c.post(
             reverse('wiki:create', kwargs={'path': ''}),
             {
                 'title': 'Test cache',
@@ -70,7 +60,7 @@ class TemplateTest(TestCase):
                 'content': 'Content 1\n{{glogo}}'
             }
         )
-        c.post(
+        self.c.post(
             reverse('wiki:template_create', kwargs={'path': 'testcache/'}),
             {
                 "template_title": "glogo",
@@ -84,17 +74,39 @@ class TemplateTest(TestCase):
             'src="http://www.gstatic.com/translate/intl/zh-CN/logo2.png"'
         )
 
+    def test_embed_named_template(self):
+        example_template_named_color = {
+            "template_title": "named_color",
+            "template_content": "{: style='color:{{{color}}};font-size:{{{fontsize}}};'}",
+            "description": "named color style",
+        }
+        self.c.post(
+            reverse('wiki:create', kwargs={'path': ''}),
+            {
+                'title': 'Test named template',
+                'slug': 'testnamedtemplate',
+                'content': 'Content 1\n{{named_color|color=red|fontsize=12px}}'
+            }
+        )
+        self.c.post(
+            reverse('wiki:template_create', kwargs={'path': 'testnamedtemplate/'}),
+            example_template_named_color
+        )
+        self.assertContains(
+            self.get_by_path('testnamedtemplate/'),
+            'style="color:red;font-size:12px;"'
+        )
+
     def test_change_template(self):
         example_template_color2 = {
             "template_content": "{: style='background-color:{{{0}}};'}",
             "description": "",
         }
-        c = self.c
-        c.post(
+        self.c.post(
             reverse('wiki:template_create', kwargs={'path': ''}),
             self.example_template_color
         )
-        c.post(
+        self.c.post(
             reverse(
                 'wiki:template_add_revision',
                 kwargs={'path': '', 'template_id': '1'}
@@ -107,9 +119,7 @@ class TemplateTest(TestCase):
         )
 
     def test_template_delete(self):
-        # from wiki.models import Article
-        c = self.c
-        c.post(
+        self.c.post(
             reverse('wiki:template_create', kwargs={'path': ''}),
             self.example_template_color
         )
@@ -117,16 +127,15 @@ class TemplateTest(TestCase):
             self.get_by_path(''),
             'style="color:blue;"'
         )
-        response = c.post(
-            reverse(
-                'wiki:template_delete',
-                kwargs={'path': '', 'template_id': '1'}
-            ),
-            {'confirm': 'on', 'purge': 'on', 'revision': '2'}
-        )
         self.assertRedirects(
-            response,
-            reverse('wiki:template_index', kwargs={'path': ''})
+            self.c.post(
+                reverse(
+                    'wiki:template_delete',
+                    kwargs={'path': '', 'template_id': '1'}
+                ),
+                {'confirm': 'on', 'purge': 'on', 'revision': '2'}
+            ),
+            reverse('wiki:template_index', kwargs={'path': ''}),
         )
         self.assertContains(
             self.get_by_path(''),

@@ -75,7 +75,6 @@ class TemplateView(ArticleMixin, DjTemplateView):
         kwargs['selected_tab'] = 'template'
         kwargs['anonymous_disallowed'] = self.request.user.is_anonymous(
         ) and not settings.ANONYMOUS_CREATE
-        print settings.ANONYMOUS_CREATE
         return super(TemplateView, self).get_context_data(**kwargs)
 
 
