@@ -29,6 +29,8 @@ class ImagePreprocessor(markdown.preprocessors.Preprocessor):
 
     def run(self, lines):
         new_text = []
+        previous_line = ""
+        line_index = None
         previous_line_was_image = False
         image = None
         image_id = None
@@ -47,7 +49,9 @@ class ImagePreprocessor(markdown.preprocessors.Preprocessor):
                         current_revision__deleted=False)
                 except models.Image.DoesNotExist:
                     pass
+                line_index = line.find(m.group(1))
                 line = line.replace(m.group(1), "")
+                previous_line = line
                 caption_lines = []
             elif previous_line_was_image:
                 if line.startswith("    "):
@@ -67,9 +71,20 @@ class ImagePreprocessor(markdown.preprocessors.Preprocessor):
                     placeholder_after = self.markdown.htmlStash.store(
                         html_after,
                         safe=True)
-                    line = placeholder_before + "\n".join(
-                        caption_lines) + placeholder_after + "\n" + line
+                    new_line = placeholder_before + "\n".join(
+                        caption_lines) + placeholder_after + "\n"
                     previous_line_was_image = False
-            if not line is None:
+                    if previous_line is not "":
+                        if previous_line[line_index:] is not "":
+                            new_line = new_line[0:-1]
+                        new_text[-1] = (previous_line[0:line_index] +
+                                        new_line +
+                                        previous_line[line_index:] +
+                                        "\n" +
+                                        line)
+                        line = None
+                    else:
+                        line = new_line + line
+            if line is not None:
                 new_text.append(line)
         return new_text
