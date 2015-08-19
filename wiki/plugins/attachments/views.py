@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 from __future__ import absolute_import
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import redirect, get_object_or_404
@@ -10,7 +11,6 @@ from django.utils.translation import ugettext as _
 from django.views.generic.base import TemplateView, View
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
-
 from wiki.core.http import send_file
 from wiki.decorators import get_article, response_forbidden
 from wiki.plugins.attachments import models, settings, forms
@@ -187,12 +187,17 @@ class AttachmentReplaceView(ArticleMixin, FormView):
                 article_id=self.article.id)
 
         if self.can_moderate:
-            older_revisions = self.attachment.attachmentrevision_set.exclude(
-                id=attachment_revision.id,
-                created__lte=attachment_revision.created,
-            )
-            # Because of signalling, the files are automatically removed...
-            older_revisions.delete()
+            if form.cleaned_data['replace']:
+                # form has no cleaned_data field unless self.can_moderate is True
+                try:
+                    most_recent_revision = self.attachment.attachmentrevision_set.exclude(
+                        id=attachment_revision.id,
+                        created__lte=attachment_revision.created).latest()
+                    most_recent_revision.delete()
+                except ObjectDoesNotExist:
+                    msg = "{attachment} does not contain any revisions.".format(\
+                        attachment=str(self.attachment.original_filename))
+                    messages.error(self.request, msg)
 
         return redirect(
             "wiki:attachments_index",
