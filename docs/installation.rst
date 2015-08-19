@@ -174,7 +174,7 @@ In Django 1.8, it should look like this::
                     'django.template.context_processors.request',
                     'django.template.context_processors.static',
                     'django.template.context_processors.tz',
-                    'django.contrib.messages.context_processors.messages'
+                    'django.contrib.messages.context_processors.messages',
                     "sekizai.context_processors.sekizai",
                 ],
             },
@@ -200,6 +200,7 @@ following lines at the end of your project's ``urls.py``.
 
 ::
 
+    from django.conf.urls import patterns
     from wiki.urls import get_pattern as get_wiki_pattern
     from django_nyt.urls import get_pattern as get_nyt_pattern
     urlpatterns += patterns('',
