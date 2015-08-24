@@ -81,14 +81,14 @@ them for django use.
 Install
 -------
 
-To install the latest stable release:
+To install the latest stable release::
 
-``pip install wiki``
+    pip install wiki
 
 Install directly from Github (in case you have no worries about
-deploying our master branch directly):
+deploying our master branch directly)::
 
-``pip install git+git://github.com/benjaoming/django-wiki.git``
+    pip install git+git://github.com/benjaoming/django-wiki.git
 
 Upgrade
 -------
@@ -101,7 +101,7 @@ Configure ``settings.INSTALLED_APPS``
 The following applications should be listed - NB! it's important to
 maintain the order due to database relational constraints:
 
-::
+.. code-block:: python
 
     'django.contrib.sites', # django 1.6.2
     'django.contrib.humanize',
@@ -145,7 +145,7 @@ to see the current default setting for this variable.
 
 In Django 1.5, it should look like this:
 
-::
+.. code-block:: python
 
     TEMPLATE_CONTEXT_PROCESSORS = [
         "django.contrib.auth.context_processors.auth",
@@ -159,7 +159,9 @@ In Django 1.5, it should look like this:
         "sekizai.context_processors.sekizai",
     ]
 
-In Django 1.8, it should look like this::
+In Django 1.8, it should look like this:
+
+.. code-block:: python
 
     TEMPLATES = [
         {
@@ -187,7 +189,7 @@ Set ``SITE_ID``
 
 If you're working with fresh Django installation, you need to set the SITE_ID
 
-::
+.. code-block:: python
 
     SITE_ID = 1
     
@@ -195,10 +197,12 @@ If you're working with fresh Django installation, you need to set the SITE_ID
 Include urlpatterns
 ~~~~~~~~~~~~~~~~~~~
 
-To integrate the wiki to your existing application, you shoud add the
+To integrate the wiki to your existing application, you should add the
 following lines at the end of your project's ``urls.py``.
 
-::
+**Django < 1.7**:
+
+.. code-block:: python
 
     from django.conf.urls import patterns
     from wiki.urls import get_pattern as get_wiki_pattern
@@ -210,6 +214,18 @@ following lines at the end of your project's ``urls.py``.
 
 Please use these function calls rather than writing your own include()
 call - the url namespaces aren't supposed to be customized.
+
+**Django < 1.7+**:
+
+.. code-block:: python
+
+    from wiki.urls import get_pattern as get_wiki_pattern
+    from django_nyt.urls import get_pattern as get_nyt_pattern
+    urlpatterns += [
+        (r'^notifications/', get_nyt_pattern()),
+        (r'', get_wiki_pattern())
+    )
+
 
 The above line puts the wiki in */* so it's important to put it at the
 end of your urlconf. You can also put it in */wiki* by putting
