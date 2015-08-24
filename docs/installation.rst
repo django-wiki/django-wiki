@@ -224,7 +224,7 @@ call - the url namespaces aren't supposed to be customized.
     urlpatterns += [
         (r'^notifications/', get_nyt_pattern()),
         (r'', get_wiki_pattern())
-    )
+    ]
 
 
 The above line puts the wiki in */* so it's important to put it at the
