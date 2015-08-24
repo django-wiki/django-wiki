@@ -147,11 +147,11 @@
                 <i class="fa fa-dashboard"></i> <span>Performance</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                  {% check_manager_tag request.user as status %}
+                  
                   {% if status %}
                       <li><a href="{% url 'status' %}"><i class="fa fa-circle-o"></i> Review</a></li>
                   {% endif %}
-              {% check_hr_tag request.user as status %}
+              
               {% if status %}
                   <li><a href="{% url 'hr-display' %}"><i class="fa fa-circle-o"></i> All Performances</a></li>
                  {% endif %}
