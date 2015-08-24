@@ -230,3 +230,22 @@ call - the url namespaces aren't supposed to be customized.
 The above line puts the wiki in */* so it's important to put it at the
 end of your urlconf. You can also put it in */wiki* by putting
 ``'^wiki/'`` as the pattern.
+
+.. note::
+    
+    If you are running ``manage.py runserver``, you need to have static files
+    and media files from ``STATIC_ROOT`` and ``MEDIA_ROOT`` served by the
+    development server. ``STATIC_ROOT`` is automatically served, but you have
+    to add ``MEDIA_ROOT`` manually::
+    
+        if settings.DEBUG:
+            urlpatterns += staticfiles_urlpatterns()
+            urlpatterns += patterns('',
+                                    url(r'^media/(?P<path>.*)$',
+                                        'django.views.static.serve',
+                                        {'document_root': settings.MEDIA_ROOT,
+                                         }),
+                                    )
+
+    Please refer to
+    `the Django docs <https://docs.djangoproject.com/en/1.8/howto/static-files/#serving-files-uploaded-by-a-user-during-development>`__.
