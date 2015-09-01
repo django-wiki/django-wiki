@@ -99,16 +99,16 @@ class Command(BaseCommand):
         added = 1
 
         while urltitle in self.articles_worked_on:
-            title = only_printable(u"{} {}".format(page.title, added))
+            title = only_printable("{} {}".format(page.title, added))
             urltitle = slugify(
-                u"{} {}".format(only_printable(urllib.unquote(page.urltitle))[:47], added)
+                "{} {}".format(only_printable(urllib.unquote(page.urltitle))[:47], added)
             )
 
             added += 1
 
         self.articles_worked_on.append(urltitle)
 
-        print(u"Working on {} ({})".format(title, urltitle))
+        print("Working on {} ({})".format(title, urltitle))
 
         # Check if the URL path already exists
         try:
@@ -118,10 +118,10 @@ class Command(BaseCommand):
                 page.title] = urlp.article.get_absolute_url()
 
             if not replace_existing:
-                print(u"\tAlready existing, skipping...")
+                print("\tAlready existing, skipping...")
                 return
 
-            print(u"\tDestorying old version of the article")
+            print("\tDestorying old version of the article")
             urlp.article.delete()
 
         except URLPath.DoesNotExist:
@@ -142,7 +142,7 @@ class Command(BaseCommand):
                         username=history_page['user'])
             except get_user_model().DoesNotExist:
                 print(
-                    u"\tCannot found user with username={}. Use --user-matching \"{}:<user_pk>\" to manualy set it".format(
+                    "\tCannot found user with username={}. Use --user-matching \"{}:<user_pk>\" to manualy set it".format(
                         history_page['user'], history_page['user'])
                 )
                 user = None
@@ -195,15 +195,15 @@ class Command(BaseCommand):
 
         # TODO: nsquare is bad
         for (article, article_revision) in self.articles_imported:
-            print(u"Updating links of {}".format(article_revision.title))
+            print("Updating links of {}".format(article_revision.title))
             for id_from, id_to in six.iteritems(
                     self.matching_old_link_new_link):
                 print(
-                    u"Replacing ({} \"wikilink\") with ({})".format(id_from, id_to)
+                    "Replacing ({} \"wikilink\") with ({})".format(id_from, id_to)
                 )
                 article_revision.content = article_revision.content.replace(
-                    u"({} \"wikilink\")".format(id_from),
-                    u"({})".format(id_to)
+                    "({} \"wikilink\")".format(id_from),
+                    "({})".format(id_to)
                 )
 
             article_revision.save()
