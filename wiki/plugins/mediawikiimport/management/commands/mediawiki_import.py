@@ -130,7 +130,7 @@ class Command(BaseCommand):
         # Create article
         article = Article()
 
-        for history_page in page.getHistory()[-2:][::-1]:
+        for history_page in page.getHistory()[::-1]:
 
             try:
                 if history_page['user'] in user_matching:
