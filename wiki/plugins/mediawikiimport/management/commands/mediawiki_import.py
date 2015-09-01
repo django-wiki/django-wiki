@@ -20,7 +20,7 @@ import six
 
 
 def only_printable(s):
-    return ''.join([x for x in s if x in string.printable])
+    return u''.join([x for x in s if x in string.printable])
 
 
 class Command(BaseCommand):
@@ -99,19 +99,16 @@ class Command(BaseCommand):
         added = 1
 
         while urltitle in self.articles_worked_on:
-            title = only_printable(page.title) + " " + str(added)
-            urltitle = only_printable(
-                slugify(
-                    (urllib.unquote(
-                        page.urltitle))[
-                        :47] +
-                    " " +
-                    str(added)))
+            title = only_printable(u"{} {}".format(page.title, added))
+            urltitle = slugify(
+                u"{} {}".format(only_printable(urllib.unquote(page.urltitle))[:47], added)
+            )
+
             added += 1
 
         self.articles_worked_on.append(urltitle)
 
-        print("Working on %s (%s)" % (title, urltitle))
+        print(u"Working on {} ({})".format(title, urltitle))
 
         # Check if the URL path already exists
         try:
@@ -121,10 +118,10 @@ class Command(BaseCommand):
                 page.title] = urlp.article.get_absolute_url()
 
             if not replace_existing:
-                print("\tAlready existing, skipping...")
+                print(u"\tAlready existing, skipping...")
                 return
 
-            print("\tDestorying old version of the article")
+            print(u"\tDestorying old version of the article")
             urlp.article.delete()
 
         except URLPath.DoesNotExist:
@@ -145,8 +142,9 @@ class Command(BaseCommand):
                         username=history_page['user'])
             except get_user_model().DoesNotExist:
                 print(
-                    "\tCannot found user with username=%s. Use --user-matching \"%s:<user_pk>\" to manualy set it" %
-                    (history_page['user'], history_page['user'], ))
+                    u"\tCannot found user with username={}. Use --user-matching \"{}:<user_pk>\" to manualy set it".format(
+                        history_page['user'], history_page['user'])
+                )
                 user = None
 
             article_revision = ArticleRevision()
@@ -197,16 +195,16 @@ class Command(BaseCommand):
 
         # TODO: nsquare is bad
         for (article, article_revision) in self.articles_imported:
-            print("Updating links of %s" % (article_revision.title, ))
+            print(u"Updating links of {}".format(article_revision.title))
             for id_from, id_to in six.iteritems(
                     self.matching_old_link_new_link):
                 print(
-                    "Replacing (%s \"wikilink\") with (%s)" %
-                    (id_from, id_to))
+                    u"Replacing ({} \"wikilink\") with ({})".format(id_from, id_to)
+                )
                 article_revision.content = article_revision.content.replace(
-                    "(%s \"wikilink\")" %
-                    (id_from, ), "(%s)" %
-                    (id_to,))
+                    u"({} \"wikilink\")".format(id_from),
+                    u"({})".format(id_to)
+                )
 
             article_revision.save()
 
