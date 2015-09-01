@@ -20,7 +20,7 @@ import six
 
 
 def only_printable(s):
-    return [x for x in s if x in string.printable]
+    return ''.join([x for x in s if x in string.printable])
 
 
 class Command(BaseCommand):
