@@ -54,7 +54,7 @@ class URLPath(MPTTModel):
     INHERIT_PERMISSIONS = True
 
     objects = managers.URLPathManager()
-    
+
     # Do not use this because of
     # https://github.com/django-mptt/django-mptt/issues/369
     # _default_manager = objects
@@ -303,6 +303,10 @@ class URLPath(MPTTModel):
             article=article)
         article.add_object_relation(newpath)
         return newpath
+
+    def get_ordered_childrens(self):
+        """Return an ordered list of chilrens"""
+        return self.children.order_by('slug')
 
 
 ######################################################

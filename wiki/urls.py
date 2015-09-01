@@ -27,6 +27,7 @@ class WikiURLPatterns(object):
     article_deleted_view_class = article.Deleted
     article_dir_view_class = article.Dir
     article_edit_view_class = article.Edit
+    article_move_view_class = article.Move
     article_preview_view_class = article.Preview
     article_history_view_class = article.History
     article_settings_view_class = article.Settings
@@ -125,6 +126,9 @@ class WikiURLPatterns(object):
             url('^(?P<article_id>\d+)/edit/$',
                 self.article_edit_view_class.as_view(),
                 name='edit'),
+            url('^(?P<article_id>\d+)/move/$',
+                self.article_move_view_class.as_view(),
+                name='move'),
             url('^(?P<article_id>\d+)/preview/$',
                 self.article_preview_view_class.as_view(),
                 name='preview'),
@@ -166,6 +170,9 @@ class WikiURLPatterns(object):
             url('^(?P<path>.+/|)_edit/$',
                 self.article_edit_view_class.as_view(),
                 name='edit'),
+            url('^(?P<path>.+/|)_move/$',
+                self.article_move_view_class.as_view(),
+                name='move'),
             url('^(?P<path>.+/|)_preview/$',
                 self.article_preview_view_class.as_view(),
                 name='preview'),
@@ -231,11 +238,11 @@ def get_pattern(app_name="wiki", namespace="wiki", url_config_class=None):
         else:
             url_config_class = get_class_from_str(url_config_classname)
     urlpatterns = url_config_class().get_urls()
-    
+
     if DJANGO_VERSION < (1, 8):
         from django.conf.urls import patterns
         urlpatterns = patterns('', *urlpatterns)
-    
+
     return urlpatterns, app_name, namespace
 
 

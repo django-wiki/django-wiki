@@ -124,6 +124,11 @@ class CreateRootForm(forms.Form):
         required=False, widget=getEditor().get_widget())  # @UndefinedVariable
 
 
+class MoveForm(forms.Form):
+
+    destination = forms.CharField(label=_('Destination'), initial='', help_text=_('Childrens are also moved. Be carefull, links are NOT updated !'))
+
+
 class EditForm(forms.Form, SpamProtectionMixin):
 
     title = forms.CharField(label=_('Title'),)

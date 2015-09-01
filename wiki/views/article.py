@@ -401,6 +401,71 @@ class Edit(FormView, ArticleMixin):
         return super(Edit, self).get_context_data(**kwargs)
 
 
+class Move(FormView, ArticleMixin):
+
+    form_class = forms.MoveForm
+    template_name= "wiki/move.html"
+
+    @method_decorator(get_article(can_write=True, not_locked=True))
+    def dispatch(self, request, article, *args, **kwargs):
+        return super(Move, self).dispatch(request, article, *args, **kwargs)
+
+    def get_initial(self):
+        initial = FormView.get_initial(self)
+        return initial
+
+    def get_form(self, form_class):
+        """
+        Checks from querystring data that the edit form is actually being saved,
+        otherwise removes the 'data' and 'files' kwargs from form initialisation.
+        """
+        kwargs = self.get_form_kwargs()
+        return form_class(**kwargs)
+
+    def get_context_data(self, **kwargs):
+
+        kwargs['root_path'] = models.URLPath.root()
+
+        return super(Move, self).get_context_data(**kwargs)
+
+    def form_valid(self, form):
+
+        dest_path = get_object_or_404(models.URLPath, pk=form.cleaned_data['destination'])
+
+        if not self.urlpath.parent:
+            messages.error(
+                self.request,
+                _('This article cannot be moved because it is a root article.'))
+            return redirect('wiki:get', article_id=self.article.id)
+
+        dest_is_children = False
+        tmp_path = dest_path
+
+        while tmp_path.parent:
+
+            tmp_path = tmp_path.parent
+
+            if tmp_path == self.urlpath:
+                dest_is_children = True
+
+        if dest_is_children:
+            messages.error(
+                self.request,
+                _('This article cannot be moved to a children of himself.'))
+            return redirect('wiki:move', article_id=self.article.id)
+
+        self.urlpath.parent = dest_path
+        self.urlpath.save()
+
+        # Reload url path form database
+        self.urlpath = get_object_or_404(models.URLPath, pk=self.urlpath.pk)
+
+        messages.success(
+            self.request,
+            _('Article successfully moved !'))
+        return redirect("wiki:get", path=self.urlpath.path)
+
+
 class Deleted(Delete):
 
     """Tell a user that an article has been deleted. If user has permissions,
@@ -682,9 +747,9 @@ class Settings(ArticleMixin, TemplateView):
 
 
 class ChangeRevisionView(RedirectView):
-    
+
     permanent = False
-    
+
     @method_decorator(get_article(can_write=True, not_locked=True))
     def dispatch(self, request, article, *args, **kwargs):
         self.article = article
