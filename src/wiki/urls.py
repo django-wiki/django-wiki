@@ -26,6 +26,7 @@ class WikiURLPatterns(object):
     article_deleted_view_class = article.Deleted
     article_dir_view_class = article.Dir
     article_edit_view_class = article.Edit
+    article_move_view_class = article.Move
     article_preview_view_class = article.Preview
     article_history_view_class = article.History
     article_settings_view_class = article.Settings
@@ -143,6 +144,9 @@ class WikiURLPatterns(object):
             url(r'^(?P<article_id>\d+)/edit/$',
                 self.article_edit_view_class.as_view(),
                 name='edit'),
+            url(r'^(?P<article_id>\d+)/move/$',
+                self.article_move_view_class.as_view(),
+                name='move'),
             url(r'^(?P<article_id>\d+)/preview/$',
                 self.article_preview_view_class.as_view(),
                 name='preview'),
@@ -184,6 +188,9 @@ class WikiURLPatterns(object):
             url(r'^(?P<path>.+/|)_edit/$',
                 self.article_edit_view_class.as_view(),
                 name='edit'),
+            url(r'^(?P<path>.+/|)_move/$',
+                self.article_move_view_class.as_view(),
+                name='move'),
             url(r'^(?P<path>.+/|)_preview/$',
                 self.article_preview_view_class.as_view(),
                 name='preview'),

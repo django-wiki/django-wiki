@@ -303,6 +303,10 @@ class URLPath(MPTTModel):
         article.add_object_relation(newpath)
         return newpath
 
+    def get_ordered_childrens(self):
+        """Return an ordered list of chilrens"""
+        return self.children.order_by('slug')
+
 
 ######################################################
 # SIGNAL HANDLERS

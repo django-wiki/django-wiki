@@ -1,0 +1,128 @@
+{% extends "wiki/article.html" %}
+{% load wiki_tags i18n sekizai_tags %}
+
+{% block wiki_pagetitle %}{% trans "Move" %}: {{ article.current_revision.title }}{% endblock %}
+
+{% block wiki_contents_tab %}
+
+{% if not user.is_authenticated %}
+<p class="alert alert-warning">
+{% trans "<strong>Warning:</strong> You are not logged in. Your IP address will be logged." %}
+<a href="{% url 'wiki:login' %}?next={% url 'wiki:move' article_id=article.id path=urlpath.path %}">{% trans "Click here to log in" %} &raquo;</a>
+</p>
+{% endif %}
+
+
+<style>
+
+  .dropdown-submenu {
+    position: relative;
+  }
+
+  .dropdown-submenu>.dropdown-menu {
+      top: 0;
+      left: 100%;
+      margin-top: -6px;
+      margin-left: -1px;
+      -webkit-border-radius: 0 6px 6px 6px;
+      -moz-border-radius: 0 6px 6px;
+      border-radius: 0 6px 6px 6px;
+  }
+
+  .dropdown-submenu:hover>.dropdown-menu {
+      display: block;
+  }
+
+  .dropdown-submenu>a:after {
+      display: block;
+      content: " ";
+      float: right;
+      width: 0;
+      height: 0;
+      border-color: transparent;
+      border-style: solid;
+      border-width: 5px 0 5px 5px;
+      border-left-color: #ccc;
+      margin-top: 5px;
+      margin-right: -10px;
+  }
+
+  .dropdown-submenu:hover>a:after {
+      border-left-color: #fff;
+  }
+
+  .dropdown-submenu.pull-left {
+      float: none;
+  }
+
+  .dropdown-submenu.pull-left>.dropdown-menu {
+      left: -100%;
+      margin-left: 10px;
+      -webkit-border-radius: 6px 0 6px 6px;
+      -moz-border-radius: 6px 0 6px 6px;
+      border-radius: 6px 0 6px 6px;
+  }
+</style>
+
+
+<div class="row">
+
+  <div class="col-lg-8">
+    <form method="POST" class="form-horizontal" id="article_move_form">
+      <input type="hidden" name="save" value="1" />
+      <input type="hidden" name="preview" value="1" />
+      {% with form as form %}
+        {% include "wiki/includes/editor.html" %}
+      {% endwith %}
+
+      <div class="btn-group" id="dest_selector">
+        <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+          <span class="dest_selector_title">{% trans "Select destination" %}</span>
+          <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            {% with current_path=root_path %}{% include "wiki/includes/move_tree.html" %}{% endwith %}
+        </ul>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="col-lg-4" id="wiki-edit-sidebar">
+  </div>
+
+</div>
+
+<div style="clear: both"></div>
+
+<div class="form-group form-actions">
+  <div class="col-lg-12">
+    <div class="col-lg-12">
+      <div class="pull-right">
+        <a class="btn btn-large btn-primary" onclick="document.getElementById('article_move_form').target=''; document.getElementById('article_move_form').action='{% url 'wiki:move' path=urlpath.path article_id=article.id %}'; $('#article_move_form').submit();" href="#">
+          <span class="icon-ok"></span>
+          {% trans "Move" %}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% addtoblock "js" %}
+
+  <script type="text/javascript">
+
+    $('#id_destination').after($('#dest_selector').remove());
+    $('#id_destination').attr('type', 'hidden');
+
+    function select_path(path, title) {
+      $('#id_destination').val(path);
+      $('#dest_selector .dest_selector_title').html(title);
+    }
+
+  </script>
+
+{% endaddtoblock %}
+
+{% endblock %}
+
