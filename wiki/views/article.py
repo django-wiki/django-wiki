@@ -454,11 +454,20 @@ class Move(FormView, ArticleMixin):
                 _('This article cannot be moved to a children of himself.'))
             return redirect('wiki:move', article_id=self.article.id)
 
+        # Clear cache to update articles lists (Old links)
+        for ancestor in self.article.ancestor_objects():
+            ancestor.article.clear_cache()
+
         self.urlpath.parent = dest_path
         self.urlpath.save()
 
         # Reload url path form database
         self.urlpath = get_object_or_404(models.URLPath, pk=self.urlpath.pk)
+
+        # Use a copy of yourself (to avoid cache) and update articles links
+        # agains
+        for ancestor in models.Article.objects.get(pk=self.article.pk).ancestor_objects():
+            ancestor.article.clear_cache()
 
         messages.success(
             self.request,
