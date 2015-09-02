@@ -9,7 +9,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model
 from django.forms import BaseForm
 from django.utils.safestring import mark_safe
-from django.template.defaultfilters import striptags
+from django.template.defaultfilters import striptags, stringfilter
 from django.utils.http import urlquote
 from six.moves import filter
 
@@ -178,3 +178,13 @@ def login_url(context):
     else:
         qs = ''
     return settings.LOGIN_URL + "?next=" + request.path + qs
+
+
+@register.filter
+@stringfilter
+def template_exists(value):
+    try:
+        template.loader.get_template(value)
+        return True
+    except template.TemplateDoesNotExist:
+        return False

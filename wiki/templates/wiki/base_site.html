@@ -66,6 +66,11 @@
                     </a>
                   </li>
                   {% include "wiki/plugins/notifications/menubaritem.html" %}
+                  {% with tpl_name="wiki/plugins/globalhistory/menubaritem.html" %}
+                    {% if tpl_name|template_exists %}
+                      {% include tpl_name %}
+                    {% endif %}
+                  {% endwith %}
                 </ul>
               </li>
             </ul>
