@@ -8,7 +8,7 @@ from django.conf import settings as django_settings
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model
 from django.forms import BaseForm
-from django.template.defaultfilters import striptags
+from django.template.defaultfilters import striptags, stringfilter
 from django.utils.http import urlquote
 from django.utils.safestring import mark_safe
 from six.moves import filter
@@ -193,3 +193,12 @@ def plugin_enabled(plugin_name):
 @register.filter
 def wiki_settings(name):
     return getattr(settings, name, "")
+
+@register.filter
+@stringfilter
+def template_exists(value):
+    try:
+        template.loader.get_template(value)
+        return True
+    except template.TemplateDoesNotExist:
+        return False
