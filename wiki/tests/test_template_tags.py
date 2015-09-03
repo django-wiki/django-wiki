@@ -1,14 +1,16 @@
+"""
+Almost all test cases covers both tag calling and template using.
+"""
+
 from __future__ import print_function
 from __future__ import unicode_literals
 from __future__ import absolute_import
 
-from django.conf import settings
-if not settings.configured:
-    settings.configure()
-
-from django.db.models import Model
-from django.contrib.contenttypes.models import ContentType
 from django.conf import settings as django_settings
+if not django_settings.configured:
+    django_settings.configure()
+
+from django.contrib.contenttypes.models import ContentType
 from django.http import HttpRequest
 
 from wiki.templatetags.wiki_tags import (
@@ -19,15 +21,11 @@ from wiki.templatetags.wiki_tags import (
 )
 
 from wiki.models import Article, ArticleForObject, ArticleRevision
-from wiki.conf import settings
 from wiki.forms import CreateRootForm
 from wiki.tests.base import TemplateTestCase
+from wiki.conf import settings
 
 from six import PY3
-
-__doc__ = """
-Almost all test cases covers both tag calling and template using.
-"""
 
 # copypasted from SIX source for tox tests compatebility reason.
 if PY3:
@@ -219,10 +217,12 @@ class WikiRenderTest(TemplateTestCase):
         <a>This should be escaped</a>
         '''
 
-        example = """<p>This is a normal paragraph:</p>
-<pre class="codehilite"><code>    This is a code block.
-
-    &lt;a&gt;This should be escaped&lt;/a&gt;</code></pre>"""
+        example = (
+            """<p>This is a normal paragraph:</p>\n"""
+            """<pre class="codehilite"><code>    This is a code block.\n"""
+            """\n"""
+            """    &lt;a&gt;This should be escaped&lt;/a&gt;</code></pre>"""
+        )
 
         # monkey patch
         from wiki.core.plugins import registry
