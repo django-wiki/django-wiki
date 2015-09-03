@@ -223,6 +223,13 @@ class WikiRenderTest(TemplateTestCase):
             """\n"""
             """    &lt;a&gt;This should be escaped&lt;/a&gt;</code></pre>"""
         )
+        example_with_pygments = (
+            """<p>This is a normal paragraph:</p>\n"""
+            """<div class="codehilite"><pre>    This is a code block.\n"""
+            """\n"""
+            """    <span class="nt">&lt;a&gt;</span>This should be escaped<span class="nt">&lt;/a&gt;</span>\n"""
+            """</pre></div>"""
+        )
 
         # monkey patch
         from wiki.core.plugins import registry
@@ -232,14 +239,20 @@ class WikiRenderTest(TemplateTestCase):
 
         assertCountEqual(self, self.keys, output)
         self.assertEqual(output['article'], article)
-        self.assertMultiLineEqual(output['content'], example)
+        try:
+            self.assertMultiLineEqual(output['content'], example)
+        except AssertionError:
+            self.assertMultiLineEqual(output['content'], example_with_pygments)
         self.assertEqual(output['preview'], True)
         self.assertEqual(output['plugins'], {'spam': 'eggs'})
         self.assertEqual(output['STATIC_URL'], django_settings.STATIC_URL)
         self.assertEqual(output['CACHE_TIMEOUT'], settings.CACHE_TIMEOUT)
 
         output = self.render({'article': article, 'pc': content})
-        self.assertIn(example, output)
+        try:
+            self.assertIn(example, output)
+        except AssertionError:
+            self.assertIn(example_with_pygments, output)
 
     def test_called_with_preview_content_and_article_dont_have_current_revision(
             self):
