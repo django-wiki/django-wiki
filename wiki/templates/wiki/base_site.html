@@ -65,7 +65,9 @@
                       {% trans "Log out" %}
                     </a>
                   </li>
-                  {% include "wiki/plugins/notifications/menubaritem.html" %}
+                  {% if "wiki.plugins.notifications"|plugin_enabled %}
+                    {% include "wiki/plugins/notifications/menubaritem.html" %}
+                  {% endif %}
                 </ul>
               </li>
             </ul>

@@ -178,3 +178,14 @@ def login_url(context):
     else:
         qs = ''
     return settings.LOGIN_URL + "?next=" + request.path + qs
+
+
+@register.filter
+def plugin_enabled(plugin_name):
+    """
+    Example: {% if 'wiki.plugins.notifications'|plugin_enabled %}
+
+    :param: plugin_name: String specifying the full name of the plugin, e.g.
+                         'wiki.plugins.attachments'
+    """
+    return plugin_name in django_settings.INSTALLED_APPS
