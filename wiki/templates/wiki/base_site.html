@@ -65,12 +65,14 @@
                       {% trans "Log out" %}
                     </a>
                   </li>
-                  {% include "wiki/plugins/notifications/menubaritem.html" %}
                   {% with tpl_name="wiki/plugins/globalhistory/menubaritem.html" %}
                     {% if tpl_name|template_exists %}
                       {% include tpl_name %}
                     {% endif %}
                   {% endwith %}
+                  {% if "wiki.plugins.notifications"|plugin_enabled %}
+                    {% include "wiki/plugins/notifications/menubaritem.html" %}
+                  {% endif %}
                 </ul>
               </li>
             </ul>

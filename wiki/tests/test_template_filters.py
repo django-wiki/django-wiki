@@ -26,8 +26,10 @@ class GetContentSnippet(TemplateTestCase):
     def test_keyword_at_the_end_of_the_content(self):
         text = 'lorem ' * 80
         content = text + ' list'
-        expected = ('lorem lorem lorem lorem lorem lorem lorem lorem lorem '
-        'lorem lorem lorem lorem lorem lorem <strong>list</strong> ')
+        expected = (
+            'lorem lorem lorem lorem lorem lorem lorem lorem lorem '
+            'lorem lorem lorem lorem lorem lorem <strong>list</strong> '
+        )
 
         output = get_content_snippet(content, 'list')
 
@@ -36,10 +38,12 @@ class GetContentSnippet(TemplateTestCase):
     def test_keyword_at_the_beginning_of_the_content(self):
         text = 'lorem ' * 80
         content = 'list ' + text
-        expected = (' <strong>list</strong> lorem lorem lorem lorem lorem '
-        'lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem '
-        'lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem '
-        'lorem lorem lorem')
+        expected = (
+            ' <strong>list</strong> lorem lorem lorem lorem lorem '
+            'lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem '
+            'lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem '
+            'lorem lorem lorem'
+        )
 
         output = get_content_snippet(content, 'list')
 
@@ -47,14 +51,16 @@ class GetContentSnippet(TemplateTestCase):
 
     def test_whole_content_is_consist_from_keywords(self):
         content = 'lorem ' * 80
-        expected = ('<strong>lorem</strong> <strong>lorem</strong> '
-        '<strong>lorem</strong> <strong>lorem</strong> '
-        '<strong>lorem</strong> <strong>lorem</strong> '
-        '<strong>lorem</strong> <strong>lorem</strong> '
-        '<strong>lorem</strong> <strong>lorem</strong> '
-        '<strong>lorem</strong> <strong>lorem</strong> '
-        '<strong>lorem</strong> <strong>lorem</strong> '
-        '<strong>lorem</strong> <strong>lorem</strong> ')
+        expected = (
+            '<strong>lorem</strong> <strong>lorem</strong> '
+            '<strong>lorem</strong> <strong>lorem</strong> '
+            '<strong>lorem</strong> <strong>lorem</strong> '
+            '<strong>lorem</strong> <strong>lorem</strong> '
+            '<strong>lorem</strong> <strong>lorem</strong> '
+            '<strong>lorem</strong> <strong>lorem</strong> '
+            '<strong>lorem</strong> <strong>lorem</strong> '
+            '<strong>lorem</strong> <strong>lorem</strong> '
+        )
 
         output = get_content_snippet(content, 'lorem')
 
@@ -62,9 +68,11 @@ class GetContentSnippet(TemplateTestCase):
 
     def test_keyword_is_not_in_a_content(self):
         content = 'lorem ' * 80
-        expected = ('lorem lorem lorem lorem lorem lorem lorem lorem lorem '
-        'lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem '
-        'lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem')
+        expected = (
+            'lorem lorem lorem lorem lorem lorem lorem lorem lorem '
+            'lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem '
+            'lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem'
+        )
 
         output = get_content_snippet(content, 'list')
 
@@ -80,9 +88,11 @@ class GetContentSnippet(TemplateTestCase):
         text = 'dolorum ' * 80
         content += text + ' list'
 
-        expected = ('dolorum dolorum dolorum dolorum dolorum dolorum dolorum '
-        'dolorum dolorum dolorum dolorum dolorum dolorum dolorum dolorum '
-        '<strong>list</strong> ')
+        expected = (
+            'dolorum dolorum dolorum dolorum dolorum dolorum dolorum '
+            'dolorum dolorum dolorum dolorum dolorum dolorum dolorum dolorum '
+            '<strong>list</strong> '
+        )
 
         output = get_content_snippet(content, 'list')
 
@@ -150,9 +160,11 @@ class GetContentSnippet(TemplateTestCase):
         or django documentation. Maybe.
         """
 
-        expected = ('I should citate Shakespeare or Byron. '
+        expected = (
+            'I should citate Shakespeare or Byron. '
             'Or <strong>maybe</strong> copy paste from python '
-            'or django documentation. <strong>maybe</strong> .')
+            'or django documentation. <strong>maybe</strong> .'
+        )
 
         output = get_content_snippet(content, keyword, 30)
 
@@ -174,8 +186,10 @@ class GetContentSnippet(TemplateTestCase):
 
         output = get_content_snippet(content, keyword, 0)
 
-        expected = ('knight <strong>eggs</strong> spam ham '
-        '<strong>eggs</strong> guido python <strong>eggs</strong> ')
+        expected = (
+            'knight <strong>eggs</strong> spam ham '
+            '<strong>eggs</strong> guido python <strong>eggs</strong> '
+        )
         self.assertEqual(output, expected)
 
 
@@ -201,7 +215,6 @@ class CanRead(TemplateTestCase):
 
     @wiki_override_settings(WIKI_CAN_READ=lambda *args: False)
     def test_user_dont_have_permission(self):
-
 
         a = Article.objects.create()
         u = User.objects.create(username='Noman', password='pass')
@@ -236,7 +249,6 @@ class CanWrite(TemplateTestCase):
     @wiki_override_settings(WIKI_CAN_WRITE=lambda *args: False)
     def test_user_dont_have_permission(self):
 
-
         a = Article.objects.create()
         u = User.objects.create(username='Noman', password='pass')
 
@@ -270,7 +282,6 @@ class CanDelete(TemplateTestCase):
     @wiki_override_settings(WIKI_CAN_WRITE=lambda *args: False)
     def test_user_dont_have_permission(self):
 
-
         a = Article.objects.create()
         u = User.objects.create(username='Noman', password='pass')
 
@@ -302,7 +313,6 @@ class CanModerate(TemplateTestCase):
         self.assertIn('True', output)
 
     def test_user_dont_have_permission(self):
-
 
         a = Article.objects.create()
         u = User.objects.create(username='Noman', password='pass')
@@ -358,3 +368,15 @@ class IsLocked(TemplateTestCase):
 
         output = self.render({'article': a})
         self.assertIn('True', output)
+
+
+class PluginEnabled(TemplateTestCase):
+
+    template = """
+        {% load wiki_tags %}
+        {% if "wiki.plugins.attachments"|plugin_enabled %}It is enabled{% endif %}
+    """
+
+    def test_true(self):
+        output = self.render({})
+        self.assertIn('It is enabled', output)
