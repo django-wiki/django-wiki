@@ -320,6 +320,8 @@ class ArticleRevision(BaseRevisionMixin, models.Model):
     """This is where main revision data is stored. To make it easier to
     copy, do NEVER create m2m relationships."""
 
+    objects = managers.ArticleFkManager()
+
     article = models.ForeignKey('Article', on_delete=models.CASCADE,
                                 verbose_name=_('article'))
 

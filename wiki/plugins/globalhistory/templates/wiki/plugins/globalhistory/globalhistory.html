@@ -11,8 +11,16 @@
   {% trans "List every changes in the wiki" %}
 </p>
 
+<p>
+  {% with paginator.object_list.count as cnt %}
+    {% blocktrans with urlpath.path as path and cnt|pluralize:_("change,changes") as articles_plur and cnt|pluralize:_("is,are") as articles_plur_verb %}
+      There {{ articles_plur_verb }} <strong>{{ cnt }} {{ articles_plur }}</strong> changes in total.
+    {% endblocktrans %}
+  {% endwith %}
+</p>
+
 <div class="row">
-  {% if list %}
+  {% if revisions %}
     <table class="table table-striped table-condensed table-hover">
       <thead>
         <tr>
@@ -26,7 +34,7 @@
       </thead>
 
       <tbody>
-        {% for article_revision in list %}
+        {% for article_revision in revisions %}
           <tr>
             <td>
               {{article_revision.revision_number}}
@@ -92,23 +100,8 @@
     </div>
   {% endif %}
 
-  <nav>
-    <center>
-      <ul class="pagination">
-        <li {% if not page %}class="disabled"{% endif %}>
-          <a href="{% if page %}?page={{page|add:"-1"}}{% else %}#{% endif %}"  aria-label="{% trans "Previous" %}">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
-        <li><a href="#" onclick="return false;">{% trans "Page" %} {{page|add:"1"}}</a></li>
-        <li {% if not list %}class="disabled"{% endif %}>
-          <a href="{% if list %}?page={{page|add:"1"}}{% else %}#{% endif %}" aria-label="{% trans "Next" %}">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
-      </ul>
-    </center>
-  </nav>
+  {% include "wiki/includes/pagination.html" %}
+
 </div>
 {% endblock %}
 

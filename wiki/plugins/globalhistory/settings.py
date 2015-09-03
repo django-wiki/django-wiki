@@ -6,5 +6,3 @@ from django import VERSION
 APP_LABEL = 'globalhistory' if VERSION < (1, 7) else None
 
 SLUG = 'globalhistory'
-
-RESULTS_PER_PAGE = 25
