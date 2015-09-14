@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.conf import settings as django_settings
 from django.core.urlresolvers import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
+import django
 
 # Should urls be case sensitive?
 URL_CASE_SENSITIVE = getattr(django_settings, 'WIKI_URL_CASE_SENSITIVE', False)
@@ -174,8 +175,11 @@ SEARCH_VIEW = getattr(
 CACHE_TIMEOUT = getattr(django_settings, 'WIKI_CACHE_TIMEOUT', 600)
 
 # Choose the Group model to use. Defaults to django's auth.Group
-# Has no effect in Django 1.6 and below.
-GROUP_MODEL = getattr(django_settings, 'WIKI_GROUP_MODEL', 'auth.Group')
+# This requires `django.apps` which was introduced in Django 1.7.
+if django.VERSION < (1, 7):
+    GROUP_MODEL = 'auth.Group'
+else:
+    GROUP_MODEL = getattr(django_settings, 'WIKI_GROUP_MODEL', 'auth.Group')
 
 ###################
 # SPAM PROTECTION #
