@@ -174,6 +174,7 @@ SEARCH_VIEW = getattr(
 CACHE_TIMEOUT = getattr(django_settings, 'WIKI_CACHE_TIMEOUT', 600)
 
 # Choose the Group model to use. Defaults to django's auth.Group
+# Has no effect in Django 1.6 and below.
 GROUP_MODEL = getattr(django_settings, 'WIKI_GROUP_MODEL', 'auth.Group')
 
 ###################
