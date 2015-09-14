@@ -34,6 +34,14 @@ from wiki.core import permissions
 from wiki.core.compat import get_user_model
 User = get_user_model()
 
+# Backwards compatibility with Django < 1.7
+try:
+    from django.apps import apps
+except ImportError:
+    from django.contrib.auth.models import Group
+else:
+    Group = apps.get_model(settings.GROUP_MODEL)
+
 # Due to deprecation of django.forms.util in Django 1.9
 try:
     from django.forms.utils import flatatt
@@ -408,7 +416,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
         label=_('Owner'),
         help_text=_('Enter the username of the owner.'))
     group = forms.ModelChoiceField(
-        models.Group.objects.all(),
+        Group.objects.all(),
         empty_label=_('(none)'),
         label=_('Group'),
         required=False)
@@ -455,9 +463,9 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
         if permissions.can_assign(article, request.user):
             self.can_assign = True
             self.can_change_groups = True
-            self.fields['group'].queryset = models.Group.objects.all()
+            self.fields['group'].queryset = Group.objects.all()
         elif permissions.can_assign_owner(article, request.user):
-            self.fields['group'].queryset = models.Group.objects.filter(
+            self.fields['group'].queryset = Group.objects.filter(
                 user=request.user)
             self.can_change_groups = True
         else:
@@ -465,9 +473,9 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
             # Set the group dropdown to readonly and with the current
             # group as only selectable option
             self.fields['group'] = forms.ModelChoiceField(
-                queryset=models.Group.objects.filter(
+                queryset=Group.objects.filter(
                     id=self.instance.group.id)
-                if self.instance.group else models.Group.objects.none(),
+                if self.instance.group else Group.objects.none(),
                 empty_label=_('(none)'),
                 required=False, widget=SelectWidgetBootstrap(
                     disabled=True)

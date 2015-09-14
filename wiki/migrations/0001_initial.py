@@ -6,6 +6,8 @@ import mptt.fields
 from django.conf import settings
 import django.db.models.deletion
 
+from wiki.conf.settings import GROUP_MODEL
+
 
 class Migration(migrations.Migration):
 
@@ -186,7 +188,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='article',
             name='group',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, help_text='Like in a UNIX file system, permissions can be given to a user according to group membership. Groups are handled through the Django auth system.', blank=True, to='auth.Group', verbose_name='group'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, help_text='Like in a UNIX file system, permissions can be given to a user according to group membership. Groups are handled through the Django auth system.', blank=True, to=GROUP_MODEL, verbose_name='group'),
             preserve_default=True,
         ),
         migrations.AddField(

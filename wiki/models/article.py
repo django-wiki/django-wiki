@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 from __future__ import absolute_import
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.auth.models import Group
 from django.core.cache import cache
 from django.db import models
 from django.db.models.signals import post_save, pre_delete
@@ -60,7 +59,7 @@ class Article(models.Model):
         on_delete=models.SET_NULL)
 
     group = models.ForeignKey(
-        Group, verbose_name=_('group'),
+        settings.GROUP_MODEL, verbose_name=_('group'),
         blank=True, null=True,
         help_text=_(
             'Like in a UNIX file system, permissions can be given to a user according to group membership. Groups are handled through the Django auth system.'),
