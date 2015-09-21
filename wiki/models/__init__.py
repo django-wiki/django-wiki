@@ -32,13 +32,6 @@ if not 'django.contrib.contenttypes' in django_settings.INSTALLED_APPS:
 if not 'django.contrib.auth.context_processors.auth' in django_settings.TEMPLATE_CONTEXT_PROCESSORS:
     raise ImproperlyConfigured('django-wiki: needs django.contrib.auth.context_processors.auth in TEMPLATE_CONTEXT_PROCESSORS')
 
-######################
-# Warnings
-######################
-
-if not 'south' in django_settings.INSTALLED_APPS:
-    warnings.warn("django-wiki: No south in your INSTALLED_APPS. This is highly discouraged.")
-
 
 ######################
 # PLUGINS

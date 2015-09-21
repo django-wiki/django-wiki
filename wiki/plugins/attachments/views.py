@@ -31,32 +31,27 @@ class AttachmentView(ArticleMixin, FormView):
         # Fixing some weird transaction issue caused by adding commit_manually to form_valid
         return super(AttachmentView, self).dispatch(request, article, *args, **kwargs)
     
-    # WARNING! The below decorator silences other exceptions that may occur!
-    @transaction.commit_manually
     def form_valid(self, form):
         if (self.request.user.is_anonymous() and not settings.ANONYMOUS or 
             not self.article.can_write(self.request.user)):
             return response_forbidden(self.request, self.article, self.urlpath)
-            
         try:
-            attachment_revision = form.save(commit=False)
-            attachment = models.Attachment()
-            attachment.article = self.article
-            attachment.original_filename = attachment_revision.get_filename()
-            attachment.save()
-            attachment.articles.add(self.article)
-            attachment_revision.attachment = attachment
-            attachment_revision.set_from_request(self.request)
-            attachment_revision.save()
-            messages.success(self.request, _(u'%s was successfully added.') % attachment_revision.get_filename())
+            with transaction.atomic():
+                attachment_revision = form.save(commit=False)
+                attachment = models.Attachment()
+                attachment.article = self.article
+                attachment.original_filename = attachment_revision.get_filename()
+                attachment.save()
+                attachment.articles.add(self.article)
+                attachment_revision.attachment = attachment
+                attachment_revision.set_from_request(self.request)
+                attachment_revision.save()
+                messages.success(self.request, _(u'%s was successfully added.') % attachment_revision.get_filename())
         except models.IllegalFileExtension, e:
-            transaction.rollback()
             messages.error(self.request, _(u'Your file could not be saved: %s') % e)
         except Exception:
-            transaction.rollback()
             messages.error(self.request, _(u'Your file could not be saved, probably because of a permission error on the web server.'))
         
-        transaction.commit()
         return redirect("wiki:attachments_index", path=self.urlpath.path, article_id=self.article.id)
     
     def get_context_data(self, **kwargs):

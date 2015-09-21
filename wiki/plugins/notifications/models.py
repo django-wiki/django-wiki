@@ -27,7 +27,7 @@ class ArticleSubscription(ArticlePlugin, Subscription):
 def default_url(article, urlpath=None):
     try:
         if not urlpath:
-            urlpath = wiki_models.URLPath.objects.get(articles=article)
+            urlpath = wiki_models.URLPath.objects.get(article=article)
         url = reverse('wiki:get', kwargs={'path': urlpath.path})
     except wiki_models.URLPath.DoesNotExist:
         url = reverse('wiki:get', kwargs={'article_id': article.id})

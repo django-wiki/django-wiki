@@ -56,7 +56,6 @@ class Create(FormView, ArticleMixin):
         form.fields['slug'].widget = forms.TextInputPrepend(prepend='/'+self.urlpath.path)        
         return form
     
-    @transaction.commit_manually
     def form_valid(self, form):
         user=None
         ip_address = None
@@ -67,36 +66,33 @@ class Create(FormView, ArticleMixin):
         elif settings.LOG_IPS_ANONYMOUS:
             ip_address = self.request.META.get('REMOTE_ADDR', None)
         try:
-            self.newpath = models.URLPath.create_article(
-                self.urlpath,
-                form.cleaned_data['slug'],
-                title=form.cleaned_data['title'],
-                content=form.cleaned_data['content'],
-                user_message=form.cleaned_data['summary'],
-                user=user,
-                ip_address=ip_address,
-                article_kwargs={'owner': user,
-                                'group': self.article.group,
-                                'group_read': self.article.group_read,
-                                'group_write': self.article.group_write,
-                                'other_read': self.article.other_read,
-                                'other_write': self.article.other_write,
-                                })
-            messages.success(self.request, _(u"New article '%s' created.") % self.newpath.article.current_revision.title)
-        
-            transaction.commit()
+            with transaction.atomic():
+                self.newpath = models.URLPath.create_article(
+                    self.urlpath,
+                    form.cleaned_data['slug'],
+                    title=form.cleaned_data['title'],
+                    content=form.cleaned_data['content'],
+                    user_message=form.cleaned_data['summary'],
+                    user=user,
+                    ip_address=ip_address,
+                    article_kwargs={'owner': user,
+                                    'group': self.article.group,
+                                    'group_read': self.article.group_read,
+                                    'group_write': self.article.group_write,
+                                    'other_read': self.article.other_read,
+                                    'other_write': self.article.other_write,
+                                    })
+                messages.success(self.request, _(u"New article '%s' created.") % self.newpath.article.current_revision.title)
+
         # TODO: Handle individual exceptions better and give good feedback.
         except Exception, e:
-            transaction.rollback()
             if self.request.user.is_superuser:
                 messages.error(self.request, _(u"There was an error creating this article: %s") % str(e))
             else:
                 messages.error(self.request, _(u"There was an error creating this article."))
-            transaction.commit()
             return redirect('wiki:get', '')
             
         url = self.get_success_url()
-        transaction.commit()
         return url
     
     def get_success_url(self):

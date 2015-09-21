@@ -94,26 +94,26 @@ class ArticleFkEmptyQuerySet(ArticleFkEmptyQuerySetMixin, EmptyQuerySet):
 class ArticleManager(models.Manager):
     def get_empty_query_set(self):
         return ArticleEmptyQuerySet(model=self.model)
-    def get_query_set(self):
+    def get_queryset(self):
         return ArticleQuerySet(self.model, using=self._db)
     def active(self):
-        return self.get_query_set().active()
+        return self.get_queryset().active()
     def can_read(self, user):
-        return self.get_query_set().can_read(user)
+        return self.get_queryset().can_read(user)
     def can_write(self, user):
-        return self.get_query_set().can_write(user)
+        return self.get_queryset().can_write(user)
 
 class ArticleFkManager(models.Manager):
     def get_empty_query_set(self):
         return ArticleFkEmptyQuerySet(model=self.model)
-    def get_query_set(self):
+    def get_queryset(self):
         return ArticleFkQuerySet(self.model, using=self._db)
     def active(self):
-        return self.get_query_set().active()
+        return self.get_queryset().active()
     def can_read(self, user):
-        return self.get_query_set().can_read(user)
+        return self.get_queryset().can_read(user)
     def can_write(self, user):
-        return self.get_query_set().can_write(user)
+        return self.get_queryset().can_write(user)
 
 
 class URLPathEmptyQuerySet(EmptyQuerySet, ArticleFkEmptyQuerySetMixin):
@@ -127,20 +127,20 @@ class URLPathQuerySet(QuerySet, ArticleFkQuerySetMixin):
         return self.select_related("parent", "article__current_revision", "article__owner")
 
 class URLPathManager(TreeManager):
-    
+
     def get_empty_query_set(self):
         return URLPathEmptyQuerySet(model=self.model)
     
-    def get_query_set(self):
+    def get_queryset(self):
         """Return a QuerySet with the same ordering as the TreeManager."""
         return URLPathQuerySet(self.model, using=self._db).order_by(
             self.tree_id_attr, self.left_attr)
     
     def select_related_common(self):
-        return self.get_query_set().common_select_related()
+        return self.get_queryset().common_select_related()
     def active(self):
-        return self.get_query_set().active()
+        return self.get_queryset().active()
     def can_read(self, user):
-        return self.get_query_set().can_read(user)
+        return self.get_queryset().can_read(user)
     def can_write(self, user):
-        return self.get_query_set().can_write(user)
+        return self.get_queryset().can_write(user)

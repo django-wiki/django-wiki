@@ -1,133 +1,84 @@
 # -*- coding: utf-8 -*-
-import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
+
+from django.db import models, migrations
+import django.db.models.deletion
+from django.conf import settings
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'NotificationType'
-        db.create_table('notify_notificationtype', (
-            ('key', self.gf('django.db.models.fields.CharField')(unique=True, max_length=128, primary_key=True)),
-            ('label', self.gf('django.db.models.fields.CharField')(max_length=128, null=True, blank=True)),
-            ('content_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['contenttypes.ContentType'], null=True, blank=True)),
-        ))
-        db.send_create_signal('django_notify', ['NotificationType'])
+    dependencies = [
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ('contenttypes', '0001_initial'),
+    ]
 
-        # Adding model 'Settings'
-        db.create_table('notify_settings', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('interval', self.gf('django.db.models.fields.SmallIntegerField')(default=0)),
-        ))
-        db.send_create_signal('django_notify', ['Settings'])
-
-        # Adding model 'Subscription'
-        db.create_table('notify_subscription', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('settings', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['django_notify.Settings'])),
-            ('notification_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['django_notify.NotificationType'])),
-            ('object_id', self.gf('django.db.models.fields.CharField')(max_length=64, null=True, blank=True)),
-            ('send_emails', self.gf('django.db.models.fields.BooleanField')(default=True)),
-        ))
-        db.send_create_signal('django_notify', ['Subscription'])
-
-        # Adding model 'Notification'
-        db.create_table('notify_notification', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('subscription', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['django_notify.Subscription'], null=True, on_delete=models.SET_NULL, blank=True)),
-            ('message', self.gf('django.db.models.fields.TextField')()),
-            ('url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
-            ('is_viewed', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('is_emailed', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-        ))
-        db.send_create_signal('django_notify', ['Notification'])
-
-
-    def backwards(self, orm):
-        # Deleting model 'NotificationType'
-        db.delete_table('notify_notificationtype')
-
-        # Deleting model 'Settings'
-        db.delete_table('notify_settings')
-
-        # Deleting model 'Subscription'
-        db.delete_table('notify_subscription')
-
-        # Deleting model 'Notification'
-        db.delete_table('notify_notification')
-
-
-    models = {
-        'auth.group': {
-            'Meta': {'object_name': 'Group'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '80'}),
-            'permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'})
-        },
-        'auth.permission': {
-            'Meta': {'ordering': "('content_type__app_label', 'content_type__model', 'codename')", 'unique_together': "(('content_type', 'codename'),)", 'object_name': 'Permission'},
-            'codename': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['contenttypes.ContentType']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
-        },
-        'auth.user': {
-            'Meta': {'object_name': 'User'},
-            'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
-            'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Group']", 'symmetrical': 'False', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'is_superuser': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
-            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
-            'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
-        },
-        'contenttypes.contenttype': {
-            'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
-            'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
-        },
-        'django_notify.notification': {
-            'Meta': {'object_name': 'Notification', 'db_table': "'notify_notification'"},
-            'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'is_emailed': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'is_viewed': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'message': ('django.db.models.fields.TextField', [], {}),
-            'subscription': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['django_notify.Subscription']", 'null': 'True', 'on_delete': 'models.SET_NULL', 'blank': 'True'}),
-            'url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
-        },
-        'django_notify.notificationtype': {
-            'Meta': {'object_name': 'NotificationType', 'db_table': "'notify_notificationtype'"},
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['contenttypes.ContentType']", 'null': 'True', 'blank': 'True'}),
-            'key': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '128', 'primary_key': 'True'}),
-            'label': ('django.db.models.fields.CharField', [], {'max_length': '128', 'null': 'True', 'blank': 'True'})
-        },
-        'django_notify.settings': {
-            'Meta': {'object_name': 'Settings', 'db_table': "'notify_settings'"},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'interval': ('django.db.models.fields.SmallIntegerField', [], {'default': '0'}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
-        },
-        'django_notify.subscription': {
-            'Meta': {'object_name': 'Subscription', 'db_table': "'notify_subscription'"},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'notification_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['django_notify.NotificationType']"}),
-            'object_id': ('django.db.models.fields.CharField', [], {'max_length': '64', 'null': 'True', 'blank': 'True'}),
-            'send_emails': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'settings': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['django_notify.Settings']"})
-        }
-    }
-
-    complete_apps = ['django_notify']
+    operations = [
+        migrations.CreateModel(
+            name='Notification',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('message', models.TextField()),
+                ('url', models.URLField(null=True, verbose_name='link for notification', blank=True)),
+                ('is_viewed', models.BooleanField(default=False)),
+                ('is_emailed', models.BooleanField(default=False)),
+                ('created', models.DateTimeField(auto_now_add=True)),
+            ],
+            options={
+                'db_table': 'notify_notification',
+                'verbose_name': 'notification',
+                'verbose_name_plural': 'notifications',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='NotificationType',
+            fields=[
+                ('key', models.CharField(max_length=128, unique=True, serialize=False, verbose_name='unique key', primary_key=True)),
+                ('label', models.CharField(max_length=128, null=True, verbose_name='verbose name', blank=True)),
+                ('content_type', models.ForeignKey(blank=True, to='contenttypes.ContentType', null=True)),
+            ],
+            options={
+                'db_table': 'notify_notificationtype',
+                'verbose_name': 'type',
+                'verbose_name_plural': 'types',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Settings',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('interval', models.SmallIntegerField(default=0, verbose_name='interval', choices=[(0, 'instantly'), (23, 'daily'), (167, 'weekly')])),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+            ],
+            options={
+                'db_table': 'notify_settings',
+                'verbose_name': 'settings',
+                'verbose_name_plural': 'settings',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Subscription',
+            fields=[
+                ('subscription_id', models.AutoField(serialize=False, primary_key=True)),
+                ('object_id', models.CharField(help_text='Leave this blank to subscribe to any kind of object', max_length=64, null=True, blank=True)),
+                ('send_emails', models.BooleanField(default=True)),
+                ('notification_type', models.ForeignKey(to='django_notify.NotificationType')),
+                ('settings', models.ForeignKey(to='django_notify.Settings')),
+            ],
+            options={
+                'db_table': 'notify_subscription',
+                'verbose_name': 'subscription',
+                'verbose_name_plural': 'subscriptions',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='notification',
+            name='subscription',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.SET_NULL, blank=True, to='django_notify.Subscription', null=True),
+            preserve_default=True,
+        ),
+    ]

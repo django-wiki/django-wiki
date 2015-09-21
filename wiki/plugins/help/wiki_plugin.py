@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls.defaults import patterns
+from django.conf.urls import patterns
 from django.utils.translation import ugettext_lazy as _
 
 from wiki.core.plugins import registry

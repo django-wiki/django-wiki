@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseNotFound, \
 from django.shortcuts import redirect, get_object_or_404
 from django.template.context import RequestContext
 from django.template.loader import render_to_string
-from django.utils import simplejson as json
+import json
 
 from wiki.core.exceptions import NoRootURL
 
@@ -15,7 +15,7 @@ def json_view(func):
         obj = func(request, *args, **kwargs)
         data = json.dumps(obj, ensure_ascii=False)
         status = kwargs.get('status', 200)
-        response = HttpResponse(mimetype='application/json', status=status)
+        response = HttpResponse(content_type='application/json', status=status)
         response.write(data)
         return response
     return wrap

@@ -42,6 +42,7 @@ class Settings(models.Model):
 
 class Subscription(models.Model):
     
+    subscription_id = models.AutoField(primary_key=True)
     settings = models.ForeignKey(Settings)
     notification_type = models.ForeignKey(NotificationType)
     object_id = models.CharField(max_length=64, null=True, blank=True, 

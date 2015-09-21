@@ -1,254 +1,315 @@
 # -*- coding: utf-8 -*-
-import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
+
+from django.db import models, migrations
+import mptt.fields
+import wiki.plugins.images.models
+import wiki.plugins.attachments.models
+from django.conf import settings
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'Article'
-        db.create_table('wiki_article', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('current_revision', self.gf('django.db.models.fields.related.OneToOneField')(blank=True, related_name='current_set', unique=True, null=True, to=orm['wiki.ArticleRevision'])),
-            ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
-            ('owner', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'], null=True, blank=True)),
-            ('group', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.Group'], null=True, blank=True)),
-            ('group_read', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('group_write', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('other_read', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('other_write', self.gf('django.db.models.fields.BooleanField')(default=True)),
-        ))
-        db.send_create_signal('wiki', ['Article'])
+    dependencies = [
+        ('django_notify', '0001_initial'),
+        ('auth', '0001_initial'),
+        ('sites', '0001_initial'),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ('contenttypes', '0001_initial'),
+    ]
 
-        # Adding model 'ArticleForObject'
-        db.create_table('wiki_articleforobject', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('article', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['wiki.Article'])),
-            ('content_type', self.gf('django.db.models.fields.related.ForeignKey')(related_name='content_type_set_for_articleforobject', to=orm['contenttypes.ContentType'])),
-            ('object_id', self.gf('django.db.models.fields.PositiveIntegerField')()),
-            ('is_mptt', self.gf('django.db.models.fields.BooleanField')(default=False)),
-        ))
-        db.send_create_signal('wiki', ['ArticleForObject'])
-
-        # Adding unique constraint on 'ArticleForObject', fields ['content_type', 'object_id']
-        db.create_unique('wiki_articleforobject', ['content_type_id', 'object_id'])
-
-        # Adding model 'ArticleRevision'
-        db.create_table('wiki_articlerevision', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('revision_number', self.gf('django.db.models.fields.IntegerField')()),
-            ('user_message', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('automatic_log', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('ip_address', self.gf('django.db.models.fields.IPAddressField')(max_length=15, null=True, blank=True)),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'], null=True, blank=True)),
-            ('modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
-            ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('previous_revision', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['wiki.ArticleRevision'], null=True, blank=True)),
-            ('deleted', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('locked', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('article', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['wiki.Article'])),
-            ('content', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=512)),
-            ('redirect', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='redirect_set', null=True, to=orm['wiki.Article'])),
-        ))
-        db.send_create_signal('wiki', ['ArticleRevision'])
-
-        # Adding unique constraint on 'ArticleRevision', fields ['article', 'revision_number']
-        db.create_unique('wiki_articlerevision', ['article_id', 'revision_number'])
-
-        # Adding model 'URLPath'
-        db.create_table('wiki_urlpath', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('slug', self.gf('django.db.models.fields.SlugField')(max_length=50, null=True, blank=True)),
-            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
-            ('parent', self.gf('mptt.fields.TreeForeignKey')(blank=True, related_name='children', null=True, to=orm['wiki.URLPath'])),
-            ('lft', self.gf('django.db.models.fields.PositiveIntegerField')(db_index=True)),
-            ('rght', self.gf('django.db.models.fields.PositiveIntegerField')(db_index=True)),
-            ('tree_id', self.gf('django.db.models.fields.PositiveIntegerField')(db_index=True)),
-            ('level', self.gf('django.db.models.fields.PositiveIntegerField')(db_index=True)),
-        ))
-        db.send_create_signal('wiki', ['URLPath'])
-
-        # Adding unique constraint on 'URLPath', fields ['site', 'parent', 'slug']
-        db.create_unique('wiki_urlpath', ['site_id', 'parent_id', 'slug'])
-
-        # Adding model 'ArticlePlugin'
-        db.create_table('wiki_articleplugin', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('article', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['wiki.Article'])),
-            ('deleted', self.gf('django.db.models.fields.BooleanField')(default=False)),
-        ))
-        db.send_create_signal('wiki', ['ArticlePlugin'])
-
-        # Adding model 'ReusablePlugin'
-        db.create_table('wiki_reusableplugin', (
-            ('articleplugin_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['wiki.ArticlePlugin'], unique=True, primary_key=True)),
-        ))
-        db.send_create_signal('wiki', ['ReusablePlugin'])
-
-        # Adding M2M table for field articles on 'ReusablePlugin'
-        db.create_table('wiki_reusableplugin_articles', (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('reusableplugin', models.ForeignKey(orm['wiki.reusableplugin'], null=False)),
-            ('article', models.ForeignKey(orm['wiki.article'], null=False))
-        ))
-        db.create_unique('wiki_reusableplugin_articles', ['reusableplugin_id', 'article_id'])
-
-        # Adding model 'RevisionPlugin'
-        db.create_table('wiki_revisionplugin', (
-            ('articleplugin_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['wiki.ArticlePlugin'], unique=True, primary_key=True)),
-            ('revision', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['wiki.ArticleRevision'])),
-        ))
-        db.send_create_signal('wiki', ['RevisionPlugin'])
-
-
-    def backwards(self, orm):
-        # Removing unique constraint on 'URLPath', fields ['site', 'parent', 'slug']
-        db.delete_unique('wiki_urlpath', ['site_id', 'parent_id', 'slug'])
-
-        # Removing unique constraint on 'ArticleRevision', fields ['article', 'revision_number']
-        db.delete_unique('wiki_articlerevision', ['article_id', 'revision_number'])
-
-        # Removing unique constraint on 'ArticleForObject', fields ['content_type', 'object_id']
-        db.delete_unique('wiki_articleforobject', ['content_type_id', 'object_id'])
-
-        # Deleting model 'Article'
-        db.delete_table('wiki_article')
-
-        # Deleting model 'ArticleForObject'
-        db.delete_table('wiki_articleforobject')
-
-        # Deleting model 'ArticleRevision'
-        db.delete_table('wiki_articlerevision')
-
-        # Deleting model 'URLPath'
-        db.delete_table('wiki_urlpath')
-
-        # Deleting model 'ArticlePlugin'
-        db.delete_table('wiki_articleplugin')
-
-        # Deleting model 'ReusablePlugin'
-        db.delete_table('wiki_reusableplugin')
-
-        # Removing M2M table for field articles on 'ReusablePlugin'
-        db.delete_table('wiki_reusableplugin_articles')
-
-        # Deleting model 'RevisionPlugin'
-        db.delete_table('wiki_revisionplugin')
-
-
-    models = {
-        'auth.group': {
-            'Meta': {'object_name': 'Group'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '80'}),
-            'permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'})
-        },
-        'auth.permission': {
-            'Meta': {'ordering': "('content_type__app_label', 'content_type__model', 'codename')", 'unique_together': "(('content_type', 'codename'),)", 'object_name': 'Permission'},
-            'codename': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['contenttypes.ContentType']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
-        },
-        'auth.user': {
-            'Meta': {'object_name': 'User'},
-            'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
-            'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Group']", 'symmetrical': 'False', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'is_superuser': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
-            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
-            'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
-        },
-        'contenttypes.contenttype': {
-            'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
-            'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
-        },
-        'sites.site': {
-            'Meta': {'ordering': "('domain',)", 'object_name': 'Site', 'db_table': "'django_site'"},
-            'domain': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
-        },
-        'wiki.article': {
-            'Meta': {'object_name': 'Article'},
-            'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'current_revision': ('django.db.models.fields.related.OneToOneField', [], {'blank': 'True', 'related_name': "'current_set'", 'unique': 'True', 'null': 'True', 'to': "orm['wiki.ArticleRevision']"}),
-            'group': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.Group']", 'null': 'True', 'blank': 'True'}),
-            'group_read': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'group_write': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
-            'other_read': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'other_write': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'owner': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']", 'null': 'True', 'blank': 'True'})
-        },
-        'wiki.articleforobject': {
-            'Meta': {'unique_together': "(('content_type', 'object_id'),)", 'object_name': 'ArticleForObject'},
-            'article': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['wiki.Article']"}),
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'content_type_set_for_articleforobject'", 'to': "orm['contenttypes.ContentType']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'is_mptt': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'object_id': ('django.db.models.fields.PositiveIntegerField', [], {})
-        },
-        'wiki.articleplugin': {
-            'Meta': {'object_name': 'ArticlePlugin'},
-            'article': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['wiki.Article']"}),
-            'deleted': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
-        },
-        'wiki.articlerevision': {
-            'Meta': {'ordering': "('created',)", 'unique_together': "(('article', 'revision_number'),)", 'object_name': 'ArticleRevision'},
-            'article': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['wiki.Article']"}),
-            'automatic_log': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'content': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'deleted': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'ip_address': ('django.db.models.fields.IPAddressField', [], {'max_length': '15', 'null': 'True', 'blank': 'True'}),
-            'locked': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
-            'previous_revision': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['wiki.ArticleRevision']", 'null': 'True', 'blank': 'True'}),
-            'redirect': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'redirect_set'", 'null': 'True', 'to': "orm['wiki.Article']"}),
-            'revision_number': ('django.db.models.fields.IntegerField', [], {}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']", 'null': 'True', 'blank': 'True'}),
-            'user_message': ('django.db.models.fields.TextField', [], {'blank': 'True'})
-        },
-        'wiki.reusableplugin': {
-            'Meta': {'object_name': 'ReusablePlugin', '_ormbases': ['wiki.ArticlePlugin']},
-            'articleplugin_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['wiki.ArticlePlugin']", 'unique': 'True', 'primary_key': 'True'}),
-            'articles': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'shared_plugins_set'", 'symmetrical': 'False', 'to': "orm['wiki.Article']"})
-        },
-        'wiki.revisionplugin': {
-            'Meta': {'object_name': 'RevisionPlugin', '_ormbases': ['wiki.ArticlePlugin']},
-            'articleplugin_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['wiki.ArticlePlugin']", 'unique': 'True', 'primary_key': 'True'}),
-            'revision': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['wiki.ArticleRevision']"})
-        },
-        'wiki.urlpath': {
-            'Meta': {'unique_together': "(('site', 'parent', 'slug'),)", 'object_name': 'URLPath'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'level': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
-            'lft': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
-            'parent': ('mptt.fields.TreeForeignKey', [], {'blank': 'True', 'related_name': "'children'", 'null': 'True', 'to': "orm['wiki.URLPath']"}),
-            'rght': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
-            'site': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['sites.Site']"}),
-            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50', 'null': 'True', 'blank': 'True'}),
-            'tree_id': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'})
-        }
-    }
-
-    complete_apps = ['wiki']
+    operations = [
+        migrations.CreateModel(
+            name='Article',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created', models.DateTimeField(auto_now_add=True, verbose_name='created')),
+                ('modified', models.DateTimeField(help_text='Article properties last modified', verbose_name='modified', auto_now=True)),
+                ('group_read', models.BooleanField(default=True, verbose_name='group read access')),
+                ('group_write', models.BooleanField(default=True, verbose_name='group write access')),
+                ('other_read', models.BooleanField(default=True, verbose_name='others read access')),
+                ('other_write', models.BooleanField(default=True, verbose_name='others write access')),
+            ],
+            options={
+                'permissions': (('moderate', 'Can edit all articles and lock/unlock/restore'), ('assign', 'Can change ownership of any article'), ('grant', 'Can assign permissions to other users')),
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='ArticleForObject',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('object_id', models.PositiveIntegerField(verbose_name='object ID')),
+                ('is_mptt', models.BooleanField(default=False, editable=False)),
+                ('article', models.ForeignKey(to='wiki.Article')),
+                ('content_type', models.ForeignKey(related_name='content_type_set_for_articleforobject', verbose_name='content type', to='contenttypes.ContentType')),
+            ],
+            options={
+                'verbose_name': 'Article for object',
+                'verbose_name_plural': 'Articles for object',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='ArticlePlugin',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('deleted', models.BooleanField(default=False)),
+                ('created', models.DateTimeField(auto_now_add=True)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='ArticleRevision',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('revision_number', models.IntegerField(verbose_name='revision number', editable=False)),
+                ('user_message', models.TextField(blank=True)),
+                ('automatic_log', models.TextField(editable=False, blank=True)),
+                ('ip_address', models.IPAddressField(verbose_name='IP address', null=True, editable=False, blank=True)),
+                ('modified', models.DateTimeField(auto_now=True)),
+                ('created', models.DateTimeField(auto_now_add=True)),
+                ('deleted', models.BooleanField(default=False, verbose_name='deleted')),
+                ('locked', models.BooleanField(default=False, verbose_name='locked')),
+                ('content', models.TextField(verbose_name='article contents', blank=True)),
+                ('title', models.CharField(help_text='Each revision contains a title field that must be filled out, even if the title has not changed', max_length=512, verbose_name='article title')),
+                ('article', models.ForeignKey(verbose_name='article', to='wiki.Article')),
+                ('previous_revision', models.ForeignKey(blank=True, to='wiki.ArticleRevision', null=True)),
+                ('user', models.ForeignKey(verbose_name='user', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+            ],
+            options={
+                'ordering': ('created',),
+                'get_latest_by': 'revision_number',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='ArticleSubscription',
+            fields=[
+                ('subscription_ptr', models.OneToOneField(parent_link=True, auto_created=True, to='django_notify.Subscription')),
+                ('articleplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.ArticlePlugin')),
+            ],
+            options={
+            },
+            bases=('wiki.articleplugin', 'django_notify.subscription'),
+        ),
+        migrations.CreateModel(
+            name='AttachmentRevision',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('revision_number', models.IntegerField(verbose_name='revision number', editable=False)),
+                ('user_message', models.TextField(blank=True)),
+                ('automatic_log', models.TextField(editable=False, blank=True)),
+                ('ip_address', models.IPAddressField(verbose_name='IP address', null=True, editable=False, blank=True)),
+                ('modified', models.DateTimeField(auto_now=True)),
+                ('created', models.DateTimeField(auto_now_add=True)),
+                ('deleted', models.BooleanField(default=False, verbose_name='deleted')),
+                ('locked', models.BooleanField(default=False, verbose_name='locked')),
+                ('file', models.FileField(upload_to=wiki.plugins.attachments.models.upload_path, verbose_name='file')),
+                ('description', models.TextField(blank=True)),
+            ],
+            options={
+                'ordering': ('created',),
+                'get_latest_by': 'revision_number',
+                'verbose_name': 'attachment revision',
+                'verbose_name_plural': 'attachment revisions',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='ReusablePlugin',
+            fields=[
+                ('articleplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.ArticlePlugin')),
+            ],
+            options={
+            },
+            bases=('wiki.articleplugin',),
+        ),
+        migrations.CreateModel(
+            name='Attachment',
+            fields=[
+                ('reusableplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.ReusablePlugin')),
+                ('original_filename', models.CharField(max_length=256, null=True, verbose_name='original filename', blank=True)),
+            ],
+            options={
+                'verbose_name': 'attachment',
+                'verbose_name_plural': 'attachments',
+            },
+            bases=('wiki.reusableplugin',),
+        ),
+        migrations.CreateModel(
+            name='RevisionPlugin',
+            fields=[
+                ('articleplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.ArticlePlugin')),
+            ],
+            options={
+            },
+            bases=('wiki.articleplugin',),
+        ),
+        migrations.CreateModel(
+            name='Image',
+            fields=[
+                ('revisionplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.RevisionPlugin')),
+            ],
+            options={
+                'verbose_name': 'image',
+                'verbose_name_plural': 'images',
+            },
+            bases=('wiki.revisionplugin',),
+        ),
+        migrations.CreateModel(
+            name='RevisionPluginRevision',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('revision_number', models.IntegerField(verbose_name='revision number', editable=False)),
+                ('user_message', models.TextField(blank=True)),
+                ('automatic_log', models.TextField(editable=False, blank=True)),
+                ('ip_address', models.IPAddressField(verbose_name='IP address', null=True, editable=False, blank=True)),
+                ('modified', models.DateTimeField(auto_now=True)),
+                ('created', models.DateTimeField(auto_now_add=True)),
+                ('deleted', models.BooleanField(default=False, verbose_name='deleted')),
+                ('locked', models.BooleanField(default=False, verbose_name='locked')),
+            ],
+            options={
+                'ordering': ('-created',),
+                'get_latest_by': 'revision_number',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='ImageRevision',
+            fields=[
+                ('revisionpluginrevision_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.RevisionPluginRevision')),
+                ('image', models.ImageField(upload_to=wiki.plugins.images.models.upload_path, width_field=b'width', height_field=b'height', max_length=2000, blank=True, null=True)),
+                ('width', models.SmallIntegerField(null=True, blank=True)),
+                ('height', models.SmallIntegerField(null=True, blank=True)),
+            ],
+            options={
+                'ordering': ('-created',),
+                'verbose_name': 'image revision',
+                'verbose_name_plural': 'image revisions',
+            },
+            bases=('wiki.revisionpluginrevision',),
+        ),
+        migrations.CreateModel(
+            name='SimplePlugin',
+            fields=[
+                ('articleplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.ArticlePlugin')),
+                ('article_revision', models.ForeignKey(to='wiki.ArticleRevision')),
+            ],
+            options={
+            },
+            bases=('wiki.articleplugin',),
+        ),
+        migrations.CreateModel(
+            name='URLPath',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('slug', models.SlugField(null=True, verbose_name='slug', blank=True)),
+                ('lft', models.PositiveIntegerField(editable=False, db_index=True)),
+                ('rght', models.PositiveIntegerField(editable=False, db_index=True)),
+                ('tree_id', models.PositiveIntegerField(editable=False, db_index=True)),
+                ('level', models.PositiveIntegerField(editable=False, db_index=True)),
+                ('article', models.ForeignKey(editable=False, to='wiki.Article', verbose_name='Cache lookup value for articles')),
+                ('parent', mptt.fields.TreeForeignKey(related_name='children', blank=True, to='wiki.URLPath', null=True)),
+                ('site', models.ForeignKey(to='sites.Site')),
+            ],
+            options={
+                'verbose_name': 'URL path',
+                'verbose_name_plural': 'URL paths',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.AlterUniqueTogether(
+            name='urlpath',
+            unique_together=set([('site', 'parent', 'slug')]),
+        ),
+        migrations.AddField(
+            model_name='revisionpluginrevision',
+            name='plugin',
+            field=models.ForeignKey(related_name='revision_set', to='wiki.RevisionPlugin'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='revisionpluginrevision',
+            name='previous_revision',
+            field=models.ForeignKey(blank=True, to='wiki.RevisionPluginRevision', null=True),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='revisionpluginrevision',
+            name='user',
+            field=models.ForeignKey(verbose_name='user', blank=True, to=settings.AUTH_USER_MODEL, null=True),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='revisionplugin',
+            name='current_revision',
+            field=models.OneToOneField(related_name='plugin_set', null=True, to='wiki.RevisionPluginRevision', blank=True, help_text='The revision being displayed for this plugin.If you need to do a roll-back, simply change the value of this field.', verbose_name='current revision'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='reusableplugin',
+            name='articles',
+            field=models.ManyToManyField(related_name='shared_plugins_set', to='wiki.Article'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='attachmentrevision',
+            name='attachment',
+            field=models.ForeignKey(to='wiki.Attachment'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='attachmentrevision',
+            name='previous_revision',
+            field=models.ForeignKey(blank=True, to='wiki.AttachmentRevision', null=True),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='attachmentrevision',
+            name='user',
+            field=models.ForeignKey(verbose_name='user', blank=True, to=settings.AUTH_USER_MODEL, null=True),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='attachment',
+            name='current_revision',
+            field=models.OneToOneField(related_name='current_set', null=True, to='wiki.AttachmentRevision', blank=True, help_text='The revision of this attachment currently in use (on all articles using the attachment)', verbose_name='current revision'),
+            preserve_default=True,
+        ),
+        migrations.AlterUniqueTogether(
+            name='articlerevision',
+            unique_together=set([('article', 'revision_number')]),
+        ),
+        migrations.AddField(
+            model_name='articleplugin',
+            name='article',
+            field=models.ForeignKey(verbose_name='article', to='wiki.Article'),
+            preserve_default=True,
+        ),
+        migrations.AlterUniqueTogether(
+            name='articleforobject',
+            unique_together=set([('content_type', 'object_id')]),
+        ),
+        migrations.AddField(
+            model_name='article',
+            name='current_revision',
+            field=models.OneToOneField(related_name='current_set', null=True, to='wiki.ArticleRevision', blank=True, help_text='The revision being displayed for this article. If you need to do a roll-back, simply change the value of this field.', verbose_name='current revision'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='article',
+            name='group',
+            field=models.ForeignKey(blank=True, to='auth.Group', help_text='Like in a UNIX file system, permissions can be given to a user according to group membership. Groups are handled through the Django auth system.', null=True, verbose_name='group'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='article',
+            name='owner',
+            field=models.ForeignKey(related_name='owned_articles', blank=True, to=settings.AUTH_USER_MODEL, help_text='The owner of the article, usually the creator. The owner always has both read and write access.', null=True, verbose_name='owner'),
+            preserve_default=True,
+        ),
+    ]

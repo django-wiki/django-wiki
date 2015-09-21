@@ -85,7 +85,7 @@ class AttachmentRevision(BaseRevisionMixin, models.Model):
         verbose_name = _(u'attachment revision')
         verbose_name_plural = _(u'attachment revisions')
         ordering = ('created',)
-        get_latest_by = ('revision_number',)
+        get_latest_by = 'revision_number'
         app_label = settings.APP_LABEL
         
     def get_filename(self):

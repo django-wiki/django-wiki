@@ -103,7 +103,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    'south',
     'sekizai',
     'django_notify',
     'sorl.thumbnail',

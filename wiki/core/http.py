@@ -16,7 +16,7 @@ def send_file(request, filepath, last_modified=None, filename=None):
         mimetype, encoding = mimetypes.guess_type(fullpath)
         
     mimetype = mimetype or 'application/octet-stream'
-    response = HttpResponse(open(fullpath, 'rb').read(), mimetype=mimetype)
+    response = HttpResponse(open(fullpath, 'rb').read(), content_type=mimetype)
     
     if not last_modified:
         response["Last-Modified"] = http_date(statobj.st_mtime)
