@@ -42,7 +42,6 @@ setup(
         'Django>=1.4',
         'markdown',
         'django-sekizai',
-        'south',
         'django-mptt',
       ],
     classifiers=[
