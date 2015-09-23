@@ -522,7 +522,10 @@ def change_revision(request, article, revision_id=None, urlpath=None):
     revision = get_object_or_404(models.ArticleRevision, article=article, id=revision_id)
     article.current_revision = revision
     article.save()
-    messages.success(request, _(u'The article %s is now set to display revision #%d') % (revision.title, revision.revision_number))
+    messages.success(request, _(u'The article %(title)s is now set to display revision #%(revision_number)d') % {
+        'title': revision.title,
+        'revision_number': revision.revision_number,
+    })
     if urlpath:
         return redirect("wiki:history", path=urlpath.path)
     else:
