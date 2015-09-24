@@ -13,12 +13,14 @@ class Migration(SchemaMigration):
         try:
             orm['notifications.ArticleSubscription'].objects.all().count()
         except:
+            db.rollback_transaction()
+            db.start_transaction()
             db.create_table('notifications_articlesubscription', (
                 ('articleplugin_ptr', self.gf('django.db.models.fields.related.OneToOneField')(primary_key=True, to=orm['wiki.ArticlePlugin'], unique=True)),
                 ('subscription', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['django_nyt.Subscription'], unique=True)),
             ))
             db.send_create_signal('notifications', ['ArticleSubscription'])
-    
+
             # Adding unique constraint on 'ArticleSubscription', fields ['subscription', 'articleplugin_ptr']
             db.create_unique('notifications_articlesubscription', ['subscription_id', 'articleplugin_ptr_id'])
 
