@@ -59,7 +59,7 @@ https://www.transifex.com/projects/p/django-wiki/
 Demo
 ----
 
-A demo is available here, sign up for an account to see the notification system.
+A demo running the latest `master` is available here, sign up for an account to see the notification system.
 
 [http://demo.django-wiki.org/](http://demo.django-wiki.org/)
 
