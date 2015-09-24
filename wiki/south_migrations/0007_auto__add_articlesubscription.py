@@ -9,29 +9,38 @@ from django.db import models
 
 try:
     from django.contrib.auth import get_user_model
-except ImportError: # django < 1.5
+except ImportError:  # django < 1.5
     from django.contrib.auth.models import User
 else:
     User = get_user_model()
 
 user_orm_label = '%s.%s' % (User._meta.app_label, User._meta.object_name)
-user_model_label = '%s.%s' % (User._meta.app_label, User._meta.model_name if hasattr(User._meta, 'model_name') else User._meta.module_name) 
+user_model_label = '%s.%s' % (User._meta.app_label, User._meta.model_name if hasattr(User._meta, 'model_name') else User._meta.module_name)
 
 
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        pass
+        # This migration is commented out because it was replaced by
+        # plugins.notifications later but remained here. It was never necessary.
+
+        # Sorry for the mess, we are just cleaning up 0.0.24 to make it easier
+        # for people doing weird stuff (like @benjaoming) supporting old
+        # releases of django-wiki.
+
         # Adding model 'ArticleSubscription'
-        db.create_table('wiki_articlesubscription', (
-            ('subscription_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['django_notify.Subscription'], unique=True)),
-            ('articleplugin_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['wiki.ArticlePlugin'], unique=True, primary_key=True)),
-        ))
-        db.send_create_signal('wiki', ['ArticleSubscription'])
+        # db.create_table('wiki_articlesubscription', (
+        #    ('subscription_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['django_notify.Subscription'], unique=True)),
+        #    ('articleplugin_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['wiki.ArticlePlugin'], unique=True, primary_key=True)),
+        # ))
+        # db.send_create_signal('wiki', ['ArticleSubscription'])
 
 
     def backwards(self, orm):
+        pass
         # Deleting model 'ArticleSubscription'
-        db.delete_table('wiki_articlesubscription')
+        # db.delete_table('wiki_articlesubscription')
 
 
     models = {
