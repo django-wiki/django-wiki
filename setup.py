@@ -29,7 +29,7 @@ package_data = dict(
 
 setup(
     name = "django-wiki",
-    version = "0.0.1",
+    version = "0.0.2",
     author = "Benjamin Bach",
     author_email = "benjamin@overtag.dk",
     description = ("A wiki system written for the Django framework."),
