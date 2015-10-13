@@ -29,7 +29,7 @@ requirements = [
     "Pillow",
     "django-nyt>=0.9.7.2",
     # 0.6.1 broken: https://github.com/django-mptt/django-mptt/issues/316
-    "django-mptt==0.7.1",
+    "django-mptt>=0.7.1",
     "six",
 ]
 
