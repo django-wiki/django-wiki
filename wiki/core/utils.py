@@ -1,7 +1,12 @@
+# -*- coding: utf-8 -*-
 from __future__ import absolute_import
 from __future__ import unicode_literals
-# -*- coding: utf-8 -*-
-from django.utils.importlib import import_module
+
+try:
+    from importlib import import_module
+except ImportError:
+    # Python 2.6 fallback
+    from django.utils.importlib import import_module
 
 
 def get_class_from_str(class_path):
