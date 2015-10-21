@@ -4,9 +4,9 @@ import markdown
 import re
 
 from django.core.urlresolvers import reverse
-from django.template.context import Context
-from django.template.loader import render_to_string
 from django.contrib.auth.models import AnonymousUser
+
+from wiki.core.compat import render_to_string
 from wiki.core.permissions import can_read
 
 ATTACHMENT_RE = re.compile(
@@ -66,11 +66,11 @@ class AttachmentPreprocessor(markdown.preprocessors.Preprocessor):
                         self.markdown.article, article_owner)
                     html = render_to_string(
                         "wiki/plugins/attachments/render.html",
-                        Context({
+                        context={
                             'url': url,
                             'filename': attachment.original_filename,
                             'attachment_can_read': attachment_can_read,
-                        }))
+                        })
                     line = self.markdown.htmlStash.store(html, safe=True)
                 except models.Attachment.DoesNotExist:
                     html = """<span class="attachment attachment-deleted">Attachment with ID #%s is deleted.</span>""" % attachment_id

@@ -7,12 +7,12 @@ from django.http import HttpResponse, HttpResponseNotFound, \
 
 from django.shortcuts import redirect, get_object_or_404
 from django.template.context import RequestContext
-from django.template.loader import render_to_string
 try:
     import json
 except ImportError:
     from django.utils import simplejson as json
 
+from wiki.core.compat import render_to_string
 from wiki.core.exceptions import NoRootURL
 
 from wiki.conf import settings
@@ -46,12 +46,12 @@ def response_forbidden(request, article, urlpath):
             qs = ''
         return redirect(settings.LOGIN_URL + "?next=" + request.path + qs)
     else:
-        c = RequestContext(request, {'article': article,
-                                     'urlpath': urlpath})
         return HttpResponseForbidden(
             render_to_string(
                 "wiki/permission_denied.html",
-                context_instance=c))
+                context={'article': article,
+                         'urlpath': urlpath},
+                request=request))
 
 
 def get_article(func=None, can_read=True, can_write=False,
@@ -111,13 +111,13 @@ def get_article(func=None, can_read=True, can_write=False,
                             "wiki:create", kwargs={'path': parent.path, }) +
                         "?slug=%s" % pathlist[-1])
                 except models.URLPath.DoesNotExist:
-                    c = RequestContext(
-                        request, {
-                            'error_type': 'ancestors_missing'})
                     return HttpResponseNotFound(
                         render_to_string(
                             "wiki/error.html",
-                            context_instance=c))
+                            context={
+                                'error_type': 'ancestors_missing'
+                            },
+                            request=request))
             if urlpath.article:
                 # urlpath is already smart about prefetching items on article
                 # (like current_revision), so we don't have to

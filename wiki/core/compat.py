@@ -39,3 +39,20 @@ try:
 except AttributeError:
     atomic = nop_decorator
     transaction_commit_on_success = transaction.commit_on_success
+
+
+if DJANGO_VERSION < (1, 8):
+    from django.template.loader import render_to_string as django_render_to_string
+    from django.template import Context, RequestContext
+
+    # Similar to 1.8 signature, but with things we can support
+    # under 1.7 and less.
+    def render_to_string(template_name, context=None, request=None):
+        if request is not None:
+            context_instance = RequestContext(request, context)
+        else:
+            context_instance = Context(context)
+        return django_render_to_string(template_name,
+                                       context_instance=context_instance)
+else:
+    from django.template.loader import render_to_string
