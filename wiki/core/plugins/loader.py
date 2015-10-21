@@ -6,7 +6,7 @@ https://github.com/ojii/django-load.
 Thanks for the technique!
 """
 from django.conf import settings
-from django.utils.importlib import import_module
+from importlib import import_module
 
 def get_module(app, modname, verbose, failfast):
     """

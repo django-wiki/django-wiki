@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes import fields
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
@@ -33,7 +33,7 @@ class URLPath(MPTTModel):
     objects = managers.URLPathManager()
     _default_manager = objects
     
-    articles = generic.GenericRelation(ArticleForObject)
+    articles = fields.GenericRelation(ArticleForObject)
     
     # Do NOT modify this field - it is updated with signals whenever ArticleForObject is changed.
     article = models.ForeignKey(Article, on_delete=models.CASCADE, editable=False,

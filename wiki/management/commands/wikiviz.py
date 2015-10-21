@@ -74,7 +74,7 @@ from django.db.models.fields.related import \
 try:
     from django.db.models.fields.generic import GenericRelation
 except ImportError:
-    from django.contrib.contenttypes.generic import GenericRelation
+    from django.contrib.contenttypes.fields import GenericRelation
 
 def parse_file_or_list(arg):
     if not arg:
