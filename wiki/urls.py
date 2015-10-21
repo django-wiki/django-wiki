@@ -33,10 +33,10 @@ class WikiURLPatterns(object):
     article_source_view_class = article.Source
     article_plugin_view_class = article.Plugin
     revision_change_view = article.ChangeRevisionView
-    revision_merge_view = 'wiki.views.article.merge'
+    revision_merge_view = article.merge
 
     search_view_class = settings.SEARCH_VIEW
-    article_diff_view = 'wiki.views.article.diff'
+    article_diff_view = article.diff
 
     # account views
     signup_view_class = accounts.Signup
