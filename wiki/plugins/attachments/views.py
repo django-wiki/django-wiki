@@ -72,7 +72,7 @@ class AttachmentView(ArticleMixin, FormView):
             article_id=self.article.id)
 
     def get_form_kwargs(self):
-        kwargs = FormView.get_form_kwargs(self)
+        kwargs = super(AttachmentView, self).get_form_kwargs()
         kwargs['article'] = self.article
         kwargs['request'] = self.request
         return kwargs
@@ -204,8 +204,8 @@ class AttachmentReplaceView(ArticleMixin, FormView):
             path=self.urlpath.path,
             article_id=self.article.id)
 
-    def get_form(self, form_class):
-        form = FormView.get_form(self, form_class)
+    def get_form(self, form_class=None):
+        form = super(AttachmentReplaceView, self).get_form(form_class=form_class)
         form.fields['file'].help_text = _(
             'Your new file will automatically be renamed to match the file already present. Files with different extensions are not allowed.')
         return form

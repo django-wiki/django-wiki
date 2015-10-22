@@ -5,7 +5,10 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client
 from django.template import Context, Template
-from django.test.utils import override_settings
+try:
+    from django.test import override_settings
+except ImportError:
+    from django.test.utils import override_settings
 
 from wiki.models import URLPath
 
@@ -80,9 +83,15 @@ class TemplateTestCase(TestCase):
 # https://github.com/django-wiki/django-wiki/pull/382
 class wiki_override_settings(override_settings):
 
-    def __enter__(self):
-        super(wiki_override_settings, self).__enter__()
+    def enable(self):
+        super(wiki_override_settings, self).enable()
+        self.reload_wiki_settings()
 
+    def disable(self):
+        super(wiki_override_settings, self).disable()
+        self.reload_wiki_settings()
+
+    def reload_wiki_settings(self):
         from imp import reload
         from wiki.conf import settings
         reload(settings)

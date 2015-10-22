@@ -1,16 +1,16 @@
+# -*- coding: utf-8 -*-
 from __future__ import absolute_import
 from __future__ import unicode_literals
-# -*- coding: utf-8 -*-
+
 import markdown
 import re
 
-from django.template.loader import render_to_string
-from django.template import Context
 
 IMAGE_RE = re.compile(
     r'.*(\[image\:(?P<id>\d+)(\s+align\:(?P<align>right|left))?\s*\]).*',
     re.IGNORECASE)
 
+from wiki.core.compat import render_to_string
 from wiki.plugins.images import models
 
 
@@ -61,9 +61,11 @@ class ImagePreprocessor(markdown.preprocessors.Preprocessor):
                     caption_placeholder = "{{{IMAGECAPTION}}}"
                     html = render_to_string(
                         "wiki/plugins/images/render.html",
-                        Context(
-                            {'image': image, 'caption': caption_placeholder,
-                             'align': alignment}))
+                        context={
+                            'image': image,
+                            'caption': caption_placeholder,
+                            'align': alignment,
+                        })
                     html_before, html_after = html.split(caption_placeholder)
                     placeholder_before = self.markdown.htmlStash.store(
                         html_before,

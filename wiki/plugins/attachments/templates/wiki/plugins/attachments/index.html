@@ -32,7 +32,7 @@
           {% if attachment|can_write:user %}
             {% if not attachment.current_revision.deleted %}
               <a href="{% url 'wiki:attachments_replace' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-default btn-sm">{% trans "Replace" %}</a>
-              {% if attachment.article = article %}
+              {% if attachment.article == article %}
                 <a href="{% url 'wiki:attachments_delete' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-default btn-sm">{% trans "Delete" %}</a>
               {% else %}
                 <a href="{% url 'wiki:attachments_delete' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-default btn-sm">{% trans "Detach" %}</a>
