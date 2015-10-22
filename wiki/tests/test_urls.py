@@ -47,15 +47,16 @@ urlpatterns = [
 
 if DJANGO_VERSION < (1, 8):
     urlpatterns = patterns('', *urlpatterns)
-    
 
+
+@wiki_override_settings(WIKI_URL_CONFIG_CLASS='wiki.tests.test_models.WikiCustomUrlPatterns',
+                        ROOT_URLCONF='wiki.tests.test_urls')
 class ArticleModelReverseMethodTest(TestCase):
-    
-    urls = 'wiki.tests.test_urls'
-    
-    @wiki_override_settings(WIKI_URL_CONFIG_CLASS='wiki.tests.test_models.WikiCustomUrlPatterns')
+
+    if DJANGO_VERSION < (1, 7):
+        urls = 'wiki.tests.test_urls'
+
     def test_get_absolute_url_if_urlpath_set_is_not_exists__no_root_urlconf(self):
-        
         a = Article.objects.create()
 
         url = a.get_absolute_url()
@@ -64,7 +65,6 @@ class ArticleModelReverseMethodTest(TestCase):
 
         self.assertEqual(url, expected)
 
-    @wiki_override_settings(WIKI_URL_CONFIG_CLASS='wiki.tests.test_models.WikiCustomUrlPatterns')
     def test_get_absolute_url_if_urlpath_set_is_exists__no_root_urlconf(self):
 
         a1 = Article.objects.create()
