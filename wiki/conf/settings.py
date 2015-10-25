@@ -49,6 +49,8 @@ CHECK_SLUG_URL_AVAILABLE = getattr(
     'WIKI_CHECK_SLUG_URL_AVAILABLE',
     True)
 
+WIKI_BASEURL = getattr (django_settings, 'WIKI_BASEURL', None)
+
 # Do we want to log IPs?
 LOG_IPS_ANONYMOUS = getattr(django_settings, 'WIKI_LOG_IPS_ANONYMOUS', True)
 LOG_IPS_USERS = getattr(django_settings, 'WIKI_LOG_IPS_USERS', False)
