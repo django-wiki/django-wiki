@@ -190,8 +190,8 @@ class EditForm(forms.Form, SpamProtectionMixin):
     def clean(self):
         """Validates form data by checking for the following
         No new revisions have been created since user attempted to edit 
-        Revision has a title 
-        A title has 
+        Revision has a title and that the title is not all whitespace characters 
+        Revision title or content has changed
         """
         cd = self.cleaned_data
         if self.no_clean or self.preview:
