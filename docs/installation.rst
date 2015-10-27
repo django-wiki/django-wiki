@@ -215,7 +215,7 @@ following lines at the end of your project's ``urls.py``.
 Please use these function calls rather than writing your own include()
 call - the url namespaces aren't supposed to be customized.
 
-**Django < 1.7+**:
+**Django >= 1.8**:
 
 .. code-block:: python
 
