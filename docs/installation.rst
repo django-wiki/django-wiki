@@ -88,7 +88,7 @@ To install the latest stable release::
 Install directly from Github (in case you have no worries about
 deploying our master branch directly)::
 
-    pip install git+git://github.com/benjaoming/django-wiki.git
+    pip install git+git://github.com/django-wiki/django-wiki.git
 
 Upgrade
 -------

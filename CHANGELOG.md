@@ -267,7 +267,7 @@ Compiled on: Mon Jan 26 2015
     |\ \ \  
     | * | | 4e7031d	Maximilien Cuony	2014-06-19	Also fix in the plugin
     | * | | fdb6ba8	Maximilien Cuony	2014-06-19	Typo, nty->nyt
-    | * | | 8646f11	Maximilien Cuony	2014-06-19	Rename notify to nyt (https://github.com/benjaoming/django-wiki/issues/224#issuecomment-44047813=
+    | * | | 8646f11	Maximilien Cuony	2014-06-19	Rename notify to nyt (https://github.com/django-wiki/django-wiki/issues/224#issuecomment-44047813=
     | |/ /  
     * | |   daf13cf	benjaoming	2014-07-08	Merge pull request #273 from PolyLAN/fix_haystack_confict
     |\ \ \  
