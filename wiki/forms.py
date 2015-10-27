@@ -195,6 +195,9 @@ class EditForm(forms.Form, SpamProtectionMixin):
             raise forms.ValidationError(
                 ugettext(
                     'While you were editing, someone else changed the revision. Your contents have been automatically merged with the new contents. Please review the text below.'))
+        if 'title' not in cd:
+            raise forms.ValidationError(
+                ugettext('Article is missing title'))
         if cd['title'] == self.initial_revision.title and cd[
                 'content'] == self.initial_revision.content:
             raise forms.ValidationError(
