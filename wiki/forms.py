@@ -206,7 +206,7 @@ class EditForm(forms.Form, SpamProtectionMixin):
             raise forms.ValidationError(
                 ugettext(
                     'While you were editing, someone else changed the revision. Your contents have been automatically merged with the new contents. Please review the text below.'))
-        if cd.has_key('title') and cd['title'] == self.initial_revision.title and cd[
+        if ('title' in cd) and cd['title'] == self.initial_revision.title and cd[
                 'content'] == self.initial_revision.content:
             raise forms.ValidationError(
                 ugettext('No changes made. Nothing to save.'))
