@@ -103,7 +103,7 @@ maintain the order due to database relational constraints:
 
 .. code-block:: python
 
-    'django.contrib.sites', # django 1.6.2
+    'django.contrib.sites', # django 1.6.2+
     'django.contrib.humanize',
     'django_nyt',
     'mptt',
