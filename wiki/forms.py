@@ -187,7 +187,18 @@ class EditForm(forms.Form, SpamProtectionMixin):
 
         super(EditForm, self).__init__(*args, **kwargs)
 
+    def clean_title(self):
+        title = self.cleaned_data.get('title', None)
+        title = (title or "").strip()
+        if not title:
+            raise forms.ValidationError(ugettext('Article is missing title or has an invalid title'))
+        return title
+
     def clean(self):
+        """Validates form data by checking for the following
+        No new revisions have been created since user attempted to edit 
+        Revision title or content has changed
+        """
         cd = self.cleaned_data
         if self.no_clean or self.preview:
             return cd
@@ -195,7 +206,7 @@ class EditForm(forms.Form, SpamProtectionMixin):
             raise forms.ValidationError(
                 ugettext(
                     'While you were editing, someone else changed the revision. Your contents have been automatically merged with the new contents. Please review the text below.'))
-        if cd['title'] == self.initial_revision.title and cd[
+        if ('title' in cd) and cd['title'] == self.initial_revision.title and cd[
                 'content'] == self.initial_revision.content:
             raise forms.ValidationError(
                 ugettext('No changes made. Nothing to save.'))
