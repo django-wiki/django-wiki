@@ -9,6 +9,7 @@ from django.conf import settings
 settings_dict = dict(
     DEBUG=True,
     AUTH_USER_MODEL='testdata.CustomUser',
+    WIKI_GROUP_MODEL='testdata.CustomGroup',
     DATABASES={
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',

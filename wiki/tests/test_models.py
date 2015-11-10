@@ -3,7 +3,6 @@ from __future__ import absolute_import
 
 from django.test.testcases import TestCase
 from django.contrib.sites.models import Site
-from django.contrib.auth.models import Group
 from django.contrib.auth import get_user_model
 from django.conf.urls import url
 User = get_user_model()
@@ -17,6 +16,15 @@ from wiki.models import (
 from wiki.managers import ArticleManager
 
 from wiki.urls import WikiURLPatterns
+
+# Backwards compatibility with Django < 1.7
+try:
+    from django.apps import apps
+except ImportError:
+    from django.contrib.auth.models import Group
+else:
+    from wiki.conf import settings
+    Group = apps.get_model(settings.GROUP_MODEL)
 
 
 class WikiCustomUrlPatterns(WikiURLPatterns):
