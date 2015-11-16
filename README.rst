@@ -154,9 +154,9 @@ big and small:
 -  **Be pluggable and light-weight.** Don't integrate optional features
    in the core.
 -  **Be open.** Make an extension API that allows the ecology of the
-   wiki to grow. After all, Wikipedia consists of some `680
-   extensions <http://svn.wikimedia.org/viewvc/mediawiki/trunk/extensions/>`__
-   written for MediaWiki.
+   wiki to grow in a structured way. Wikipedia consists of over `1100
+   extension projects <https://phabricator.wikimedia.org/diffusion/query/all/?after=1100>`__
+   written for MediaWiki. We should learn from this.
 -  **Be smart.** `This
    is <https://upload.wikimedia.org/wikipedia/commons/f/f7/MediaWiki_1.24.1_database_schema.svg>`__
    the map of tables in MediaWiki - we'll understand the choices of
