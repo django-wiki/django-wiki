@@ -1,6 +1,24 @@
 django-wiki
 ===========
 
+|Docs| |Build Status| |Coverage Status| |PyPi| |Documentation Status| |Dependency Status|
+
+.. |Docs| image:: https://readthedocs.org/projects/django-wiki/badge/?version=latest
+   :target: http://django-wiki.readthedocs.org/
+.. |Build Status| image:: https://travis-ci.org/django-wiki/django-wiki.png?branch=master
+   :target: https://travis-ci.org/django-wiki/django-wiki
+.. |Coverage Status| image:: https://coveralls.io/repos/django-wiki/django-wiki/badge.svg?branch=master
+   :target: https://coveralls.io/r/django-wiki/django-wiki?branch=master
+.. |PyPi| image:: https://badge.fury.io/py/wiki.svg
+   :target: https://pypi.python.org/pypi/wiki/0.0.24.3
+.. |Downloads| image:: https://pypip.in/v/wiki/badge.png
+   :target: https://crate.io/package/wiki
+.. |Documentation Status| image:: https://readthedocs.org/projects/django-wiki/badge/?version=latest
+   :target: https://readthedocs.org/projects/django-wiki/?badge=latest
+.. |Dependency Status| image:: https://gemnasium.com/django-wiki/django-wiki.svg
+   :target: https://gemnasium.com/django-wiki/django-wiki
+
+
 Important notice
 ----------------
 
@@ -18,12 +36,12 @@ Notes <http://django-wiki.readthedocs.org/en/latest/release_notes.html#django-wi
 Changes underway
 ----------------
 
--  [x] Migrations reset
--  [x] Django 1.7 support
--  [x] Django 1.8 support
--  [x] pep8 the whole codebase #287
--  [x] Transifex
--  [ ] Distribution with Wheels
+ * [x] Migrations reset
+ * [x] Django 1.7 support
+ * [x] Django 1.8 support
+ * [x] pep8 the whole codebase #287
+ * [x] Transifex
+ * [ ] Distribution with Wheels
 
 News
 ----
@@ -248,39 +266,3 @@ Acknowledgements
    else <https://github.com/django-wiki/django-wiki/contributors>`__
    involved!
 
-.. raw:: html
-
-   <!---Illegal PyPi RST data -->
-   <!---Anything that isn't validly translateable to PyPi RST goes after this line -->
-
-Badgers Badgers Badgers
------------------------
-
-|Docs|
-
-|Build Status|
-
-|Coverage Status|
-
-|Downloads|
-
-|Downloads|
-
-|Documentation Status|
-
-|Dependency Status|
-
-.. |Docs| image:: https://readthedocs.org/projects/django-wiki/badge/?version=latest
-   :target: http://django-wiki.readthedocs.org/
-.. |Build Status| image:: https://travis-ci.org/django-wiki/django-wiki.png?branch=master
-   :target: https://travis-ci.org/django-wiki/django-wiki
-.. |Coverage Status| image:: https://coveralls.io/repos/django-wiki/django-wiki/badge.svg?branch=master
-   :target: https://coveralls.io/r/django-wiki/django-wiki?branch=master
-.. |Downloads| image:: https://pypip.in/d/wiki/badge.png
-   :target: https://crate.io/package/wiki
-.. |Downloads| image:: https://pypip.in/v/wiki/badge.png
-   :target: https://crate.io/package/wiki
-.. |Documentation Status| image:: https://readthedocs.org/projects/django-wiki/badge/?version=latest
-   :target: https://readthedocs.org/projects/django-wiki/?badge=latest
-.. |Dependency Status| image:: https://gemnasium.com/django-wiki/django-wiki.svg
-   :target: https://gemnasium.com/django-wiki/django-wiki
