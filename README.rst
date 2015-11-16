@@ -36,15 +36,19 @@ Notes <http://django-wiki.readthedocs.org/en/latest/release_notes.html#django-wi
 Changes underway
 ----------------
 
- * [x] Migrations reset
- * [x] Django 1.7 support
- * [x] Django 1.8 support
- * [x] pep8 the whole codebase #287
- * [x] Transifex
- * [ ] Distribution with Wheels
+* [x] Migrations reset
+* [x] Django 1.7 support
+* [x] Django 1.8 support
+* [x] pep8 the whole codebase #287
+* [x] Transifex
+* [ ] Distribution with Wheels
 
 News
 ----
+
+***News: November 16th, 2015***
+
+Django 1.8 support is very ready and 0.1 is right on the doorstep now.
 
 ***News: January 26th, 2015***
 
