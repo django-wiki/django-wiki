@@ -20,6 +20,7 @@ Contents:
    known_issues
    faq
 
+.. include:: ../README.rst
 
 Indices and tables
 ==================

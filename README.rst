@@ -33,15 +33,15 @@ support, working as of now!
 Please refer to the `Release
 Notes <http://django-wiki.readthedocs.org/en/latest/release_notes.html#django-wiki-0-0-24>`__
 
-Changes underway
-----------------
+0.1 Roadmap
+-----------
 
-* [x] Migrations reset
-* [x] Django 1.7 support
-* [x] Django 1.8 support
-* [x] pep8 the whole codebase #287
-* [x] Transifex
-* [ ] Distribution with Wheels
+- Migrations reset **DONE**
+- Django 1.7 support **DONE**
+- Django 1.8 support **DONE**
+- pep8 the whole codebase #287 **DONE**
+- Transifex **DONE**
+- Distribution with Wheels
 
 News
 ----
