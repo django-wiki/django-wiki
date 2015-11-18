@@ -7,6 +7,13 @@ import django.db.models.deletion
 import wiki.plugins.attachments.models
 
 
+# Django 1.9 deprecation of IPAddressField
+try:
+    from django.db.models.fields import GenericIPAddressField as IPAddressField
+except ImportError:
+    from django.db.models.fields import IPAddressField
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -34,7 +41,7 @@ class Migration(migrations.Migration):
                 ('revision_number', models.IntegerField(verbose_name='revision number', editable=False)),
                 ('user_message', models.TextField(blank=True)),
                 ('automatic_log', models.TextField(editable=False, blank=True)),
-                ('ip_address', models.IPAddressField(editable=False, verbose_name='IP address', blank=True, null=True)),
+                ('ip_address', IPAddressField(editable=False, verbose_name='IP address', blank=True, null=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('deleted', models.BooleanField(default=False, verbose_name='deleted')),
