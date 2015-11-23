@@ -12,14 +12,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='articlesubscription',
-            name='articleplugin_ptr',
-        ),
-        migrations.RemoveField(
-            model_name='articlesubscription',
-            name='subscription_ptr',
-        ),
         migrations.DeleteModel(
             name='ArticleSubscription',
         ),
