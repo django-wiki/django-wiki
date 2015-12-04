@@ -20,7 +20,7 @@ def get_path(fname):
 
 
 def read(fname):
-    return open(get_path(fname)).read()
+    return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 
 requirements = [
@@ -72,18 +72,6 @@ else:
 packages = find_packages()
 
 
-try:
-    import pypandoc
-    long_description = pypandoc.convert(get_path('README.md'), 'rst')
-    long_description = long_description.split(
-        '<!---Illegal PyPi RST data -->')[0]
-    f = open(get_path('README.rst'), 'w')
-    f.write(long_description)
-    f.close()
-except (IOError, ImportError):
-    # No long description... but nevermind, it's only for PyPi uploads.
-    long_description = ""
-
 setup(
     name="wiki",
     version=VERSION,
@@ -94,7 +82,7 @@ setup(
     license="GPLv3",
     keywords="django wiki markdown",
     packages=find_packages(exclude=["testproject", "testproject.*"]),
-    # long_description=long_description,
+    long_description=read('README'),
     zip_safe=False,
     install_requires=requirements,
     dependency_links=dependency_links,
