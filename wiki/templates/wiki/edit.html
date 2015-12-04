@@ -44,6 +44,14 @@
         <span class="fa fa-check"></span>
         {% trans "Save changes" %}
       </a>
+    </div>
+  </div>
+  <div class="col-lg-8" style="margin-top: 5px;">
+    <div class="col-lg-offset-2">
+      <a href="{% url 'wiki:move' path=urlpath.path article_id=article.id %}" class="btn btn-warning">
+        <span class="fa fa-random"></span>
+        {% trans "Move article" %}
+      </a>
       {% if article|can_delete:user %}
       <a href="{% url 'wiki:delete' path=urlpath.path article_id=article.id %}" class="btn btn-danger pull-right">
         <span class="fa fa-trash-o"></span>
