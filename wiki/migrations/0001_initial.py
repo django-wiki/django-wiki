@@ -9,6 +9,13 @@ import django.db.models.deletion
 from wiki.conf.settings import GROUP_MODEL
 
 
+# Django 1.9 deprecation of IPAddressField
+try:
+    from django.db.models.fields import GenericIPAddressField as IPAddressField
+except ImportError:
+    from django.db.models.fields import IPAddressField
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -68,7 +75,7 @@ class Migration(migrations.Migration):
                 ('revision_number', models.IntegerField(verbose_name='revision number', editable=False)),
                 ('user_message', models.TextField(blank=True)),
                 ('automatic_log', models.TextField(blank=True, editable=False)),
-                ('ip_address', models.IPAddressField(null=True, verbose_name='IP address', blank=True, editable=False)),
+                ('ip_address', IPAddressField(null=True, verbose_name='IP address', blank=True, editable=False)),
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('deleted', models.BooleanField(default=False, verbose_name='deleted')),
@@ -111,7 +118,7 @@ class Migration(migrations.Migration):
                 ('revision_number', models.IntegerField(verbose_name='revision number', editable=False)),
                 ('user_message', models.TextField(blank=True)),
                 ('automatic_log', models.TextField(blank=True, editable=False)),
-                ('ip_address', models.IPAddressField(null=True, verbose_name='IP address', blank=True, editable=False)),
+                ('ip_address', IPAddressField(null=True, verbose_name='IP address', blank=True, editable=False)),
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('deleted', models.BooleanField(default=False, verbose_name='deleted')),
