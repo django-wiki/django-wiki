@@ -5,10 +5,10 @@ from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.urlresolvers import reverse
 
-from wiki.tests.base import ArticleTestBase
+from wiki.tests.base import ArticleWebTestBase
 
 
-class AttachmentTests(ArticleTestBase):
+class AttachmentTests(ArticleWebTestBase):
     def test_upload(self):
         data = "This is a plain text file".encode('utf-8')
         filedata = BytesIO(data)

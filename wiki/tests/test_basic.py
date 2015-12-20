@@ -6,13 +6,13 @@ from django.core.urlresolvers import reverse
 
 import pprint
 
-from .base import ArticleTestBase, WebTestBase
+from .base import ArticleWebTestBase, WebTestBase
 
 from wiki import models
 from wiki.plugins.attachments.models import Attachment
 
 
-class ModelTests(ArticleTestBase):
+class ModelTests(ArticleWebTestBase):
     """Tests basic model and queryset functionalities"""
     
     def test_custom_querysets(self):
@@ -76,7 +76,7 @@ class RootArticleViewTests(WebTestBase):
         self.assertContains(response, 'test heading h1</h1>')
 
 
-class ArticleViewTests(ArticleTestBase):
+class ArticleViewTests(ArticleWebTestBase):
 
     """
     Tests for article views, assuming a root article already created.
