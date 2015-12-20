@@ -21,24 +21,24 @@ from .urlpath import *
 # Configuration stuff
 ######################
 
-if not 'mptt' in django_settings.INSTALLED_APPS:
+if 'mptt' not in django_settings.INSTALLED_APPS:
     raise ImproperlyConfigured('django-wiki: needs mptt in INSTALLED_APPS')
 
-if not 'sekizai' in django_settings.INSTALLED_APPS:
+if 'sekizai' not in django_settings.INSTALLED_APPS:
     raise ImproperlyConfigured('django-wiki: needs sekizai in INSTALLED_APPS')
 
 # if not 'django_nyt' in django_settings.INSTALLED_APPS:
 #    raise ImproperlyConfigured('django-wiki: needs django_nyt in INSTALLED_APPS')
 
-if not 'django.contrib.humanize' in django_settings.INSTALLED_APPS:
+if 'django.contrib.humanize' not in django_settings.INSTALLED_APPS:
     raise ImproperlyConfigured(
         'django-wiki: needs django.contrib.humanize in INSTALLED_APPS')
 
-if not 'django.contrib.contenttypes' in django_settings.INSTALLED_APPS:
+if 'django.contrib.contenttypes' not in django_settings.INSTALLED_APPS:
     raise ImproperlyConfigured(
         'django-wiki: needs django.contrib.contenttypes in INSTALLED_APPS')
 
-if not 'django.contrib.sites' in django_settings.INSTALLED_APPS:
+if 'django.contrib.sites' not in django_settings.INSTALLED_APPS:
     raise ImproperlyConfigured(
         'django-wiki: needs django.contrib.sites in INSTALLED_APPS')
 
@@ -51,7 +51,7 @@ if hasattr(django_settings, 'TEMPLATES'):
     if len(backends) == 1:
         TEMPLATE_CONTEXT_PROCESSORS = backends[0].get('OPTIONS', {}).get('context_processors', [])
 
-if not 'django.contrib.auth.context_processors.auth' in django_settings.TEMPLATE_CONTEXT_PROCESSORS:
+if 'django.contrib.auth.context_processors.auth' not in django_settings.TEMPLATE_CONTEXT_PROCESSORS:
     raise ImproperlyConfigured(
         'django-wiki: needs django.contrib.auth.context_processors.auth in TEMPLATE_CONTEXT_PROCESSORS')
 

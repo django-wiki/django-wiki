@@ -1,23 +1,22 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from __future__ import absolute_import
+
+import json
+
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseNotFound, \
     HttpResponseForbidden, HttpResponseRedirect
-
 from django.shortcuts import redirect, get_object_or_404
-from django.template.context import RequestContext
-try:
-    import json
-except ImportError:
-    from django.utils import simplejson as json
+from django.utils.http import urlquote
+
+from functools import wraps
+
+from six.moves import filter
 
 from wiki.core.compat import render_to_string
 from wiki.core.exceptions import NoRootURL
-
 from wiki.conf import settings
-from django.utils.http import urlquote
-from six.moves import filter
 
 
 def json_view(func):
@@ -193,3 +192,16 @@ def get_article(func=None, can_read=True, can_write=False,
             can_delete=can_delete,
             can_moderate=can_moderate,
             can_create=can_create)
+
+
+def disable_signal_for_loaddata(signal_handler):
+    """
+    Decorator that turns off signal handlers when loading fixture data.
+    """
+
+    @wraps(signal_handler)
+    def wrapper(*args, **kwargs):
+        if kwargs.get('raw', False):
+            return
+        return signal_handler(*args, **kwargs)
+    return wrapper
