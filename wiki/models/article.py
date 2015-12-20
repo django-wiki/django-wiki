@@ -399,11 +399,17 @@ def _clear_ancestor_cache(article):
 
 
 def on_article_save_clear_cache(instance, **kwargs):
+    # This should not fire during loaddata
+    if kwargs.get('raw'):
+        return
     on_article_delete_clear_cache(instance, **kwargs)
 post_save.connect(on_article_save_clear_cache, Article)
 
 
 def on_article_delete_clear_cache(instance, **kwargs):
+    # This should not fire during loaddata
+    if kwargs.get('raw'):
+        return
     _clear_ancestor_cache(instance)
     instance.clear_cache()
 pre_delete.connect(on_article_delete_clear_cache, Article)
