@@ -60,8 +60,12 @@ class Attachment(ReusablePlugin):
             app_label = settings.APP_LABEL
 
     def __str__(self):
-        return "%s: %s" % (
-            self.article.current_revision.title, self.original_filename)
+        from wiki.models import Article
+        try:
+            return "%s: %s" % (
+                self.article.current_revision.title, self.original_filename)
+        except Article.DoesNotExist:
+            return "Attachment for non-existing article"
 
 
 def extension_allowed(filename):

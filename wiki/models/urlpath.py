@@ -314,6 +314,9 @@ urlpath_content_type = None
 
 
 def on_article_relation_save(**kwargs):
+    # This should not fire during loaddata
+    if kwargs.get('raw'):
+        return
     global urlpath_content_type
     instance = kwargs['instance']
     if not urlpath_content_type:
