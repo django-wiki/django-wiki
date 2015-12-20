@@ -11,6 +11,7 @@ from django_nyt.utils import notify
 from django_nyt.models import Subscription
 
 from wiki import models as wiki_models
+from wiki.decorators import disable_signal_for_loaddata
 from wiki.models.pluginbase import ArticlePlugin
 from wiki.core.plugins import registry
 from wiki.plugins.notifications import settings
@@ -43,6 +44,7 @@ def default_url(article, urlpath=None):
     return article.get_absolute_url()
 
 
+@disable_signal_for_loaddata
 def post_article_revision_save(**kwargs):
     instance = kwargs['instance']
     if kwargs.get('created', False):
@@ -90,6 +92,7 @@ for plugin in registry.get_plugins():
 
     notifications = getattr(plugin, 'notifications', [])
     for notification_dict in notifications:
+        @disable_signal_for_loaddata
         def plugin_notification(instance, **kwargs):
             if notification_dict.get('ignore', lambda x: False)(instance):
                 return
