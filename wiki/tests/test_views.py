@@ -4,7 +4,7 @@ from __future__ import absolute_import
 
 import pprint
 
-from .base import ArticleTestBase, WebTestBase
+from .base import ArticleWebTestBase, WebTestBase
 
 from django.core.urlresolvers import reverse
 
@@ -37,7 +37,7 @@ class RootArticleViewViewTests(WebTestBase):
         self.assertContains(response, 'test heading h1</h1>')
 
 
-class ArticleViewViewTests(ArticleTestBase):
+class ArticleViewViewTests(ArticleWebTestBase):
 
     """
     Tests for article views, assuming a root article already created.
@@ -139,7 +139,7 @@ class ArticleViewViewTests(ArticleTestBase):
         self.assertNotContains(self.get_by_path(''), 'Sub Article 1')
 
 
-class CreateViewTest(ArticleTestBase):
+class CreateViewTest(ArticleWebTestBase):
 
     def test_revision_conflict(self):
         """
@@ -208,7 +208,7 @@ class CreateViewTest(ArticleTestBase):
         )  # on level 2')
 
 
-class DeletViewTest(ArticleTestBase):
+class DeletViewTest(ArticleWebTestBase):
 
     def test_articles_cache_is_cleared_after_deleting(self):
 
@@ -248,7 +248,7 @@ class DeletViewTest(ArticleTestBase):
         self.assertContains(self.get_by_path('TestCache/'), 'Content 2')
 
 
-class SearchViewTest(ArticleTestBase):
+class SearchViewTest(ArticleWebTestBase):
 
     def test_query_string(self):
 
