@@ -293,6 +293,9 @@ class RevisionPluginRevision(BaseRevisionMixin, models.Model):
 def update_simple_plugins(**kwargs):
     """Every time a new article revision is created, we update all active
     plugins to match this article revision"""
+    # This should not fire during loaddata
+    if kwargs.get('raw'):
+        return
     instance = kwargs['instance']
     if kwargs.get('created', False):
         p_revisions = SimplePlugin.objects.filter(
@@ -303,17 +306,27 @@ def update_simple_plugins(**kwargs):
 
 
 def on_article_plugin_post_save(**kwargs):
+    # This should not fire during loaddata
+    if kwargs.get('raw'):
+        return
     articleplugin = kwargs['instance']
     articleplugin.article.clear_cache()
 
 
 def on_reusable_plugin_post_save(**kwargs):
+    # This should not fire during loaddata
+    if kwargs.get('raw'):
+        return
     reusableplugin = kwargs['instance']
     for article in reusableplugin.articles.all():
         article.clear_cache()
 
 
+# TODO: Isn't this supposed to be connected?
 def on_revision_plugin_revision_post_save(**kwargs):
+    # This should not fire during loaddata
+    if kwargs.get('raw'):
+        return
     revision = kwargs['instance']
     revision.plugin.article.clear_cache()
 
