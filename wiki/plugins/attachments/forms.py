@@ -120,7 +120,7 @@ class AttachmentArchiveForm(AttachmentForm):
     def save(self, *args, **kwargs):
 
         # This is not having the intended effect
-        if not 'file' in self._meta.fields:
+        if 'file' not in self._meta.fields:
             self._meta.fields.append('file')
 
         if self.cleaned_data['unzip_archive']:

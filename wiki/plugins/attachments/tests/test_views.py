@@ -5,10 +5,10 @@ from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.urlresolvers import reverse
 
-from wiki.tests.base import ArticleTestBase
+from wiki.tests.base import ArticleWebTestBase
 
 
-class AttachmentTests(ArticleTestBase):
+class AttachmentTests(ArticleWebTestBase):
 
     def setUp(self):
         super(AttachmentTests, self).setUp()
@@ -18,22 +18,24 @@ class AttachmentTests(ArticleTestBase):
         """
         Helper function to create filestream for upload.
 
-        Parameters : 
+        Parameters :
         strData : str, test string data
 
-        Optional Arguments : 
+        Optional Arguments :
         filename : str, Defaults to 'test.txt'
         """
         filename = kwargs.get('filename', 'test.txt')
         data = strData.encode('utf-8')
         filedata = BytesIO(data)
-        filestream = InMemoryUploadedFile(filedata,
+        filestream = InMemoryUploadedFile(
+            filedata,
             None,
             filename,
             'text',
             len(data),
-            None)
-        return filestream 
+            None
+        )
+        return filestream
 
     def test_upload(self):
         """
@@ -65,37 +67,50 @@ class AttachmentTests(ArticleTestBase):
         url = reverse('wiki:attachments_index', kwargs={'path': ''})
         data = "This is a plain text file"
         filestream = self._createTxtFilestream(data)
-        self.c.post(url, {'description': 'My file', 'file': filestream, 'save': '1',})
-        attachment = self.article.shared_plugins_set.all()[0].attachment 
+        self.c.post(url, {'description': 'My file', 'file': filestream, 'save': '1', })
+        attachment = self.article.shared_plugins_set.all()[0].attachment
 
         # uploading for the first time should mean that there is only one revision.
         self.assertEqual(attachment.attachmentrevision_set.count(), 1)
 
         # Change url to replacement page.
-        url = reverse('wiki:attachments_replace', 
-            kwargs={'attachment_id': attachment.id, 'article_id' : self.article.id}) 
+        url = reverse(
+            'wiki:attachments_replace',
+            kwargs={'attachment_id': attachment.id, 'article_id': self.article.id}
+        )
 
         # Upload replacement without removing revisions
         replacement_data = data + ' And this is my edit'
         replacement_filestream = self._createTxtFilestream(replacement_data)
-        response = self.c.post(url, {'description' : 'Replacement upload', 
-                                        'file' : replacement_filestream,})
-        attachment = self.article.shared_plugins_set.all()[0].attachment 
-        # Revision count should be two 
+        self.c.post(
+            url,
+            {
+                'description': 'Replacement upload',
+                'file': replacement_filestream,
+            }
+        )
+        attachment = self.article.shared_plugins_set.all()[0].attachment
+        # Revision count should be two
         self.assertEqual(attachment.attachmentrevision_set.count(), 2)
         # Original filenames should not be modified
         self.assertEqual(attachment.original_filename, 'test.txt')
-        # Latest revision should equal replacment_data 
+        # Latest revision should equal replacment_data
         self.assertEqual(attachment.current_revision.file.file.read(), replacement_data.encode('utf-8'))
-        first_replacement = attachment.current_revision 
+        first_replacement = attachment.current_revision
 
         # Upload another replacement, this time removing most recent revision
         replacement_data2 = data + ' And this is a different edit'
         replacement_filestream2 = self._createTxtFilestream(replacement_data2)
-        response = self.c.post(url, {'description' : 'Replacement upload', 
-                                        'file' : replacement_filestream2, 'replace' : 'on',})
-        attachment = self.article.shared_plugins_set.all()[0].attachment 
-        # Revision count should still be two 
+        self.c.post(
+            url,
+            {
+                'description': 'Replacement upload',
+                'file': replacement_filestream2,
+                'replace': 'on',
+            }
+        )
+        attachment = self.article.shared_plugins_set.all()[0].attachment
+        # Revision count should still be two
         self.assertEqual(attachment.attachmentrevision_set.count(), 2)
         # Latest revision should equal replacment_data2
         self.assertEqual(attachment.current_revision.file.file.read(), replacement_data2.encode('utf-8'))

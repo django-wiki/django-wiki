@@ -143,4 +143,3 @@ class ArticleModelTest(TestCase):
 
         self.assertEqual(a.group, g)
         self.assertIn(a, g.article_set.all())
-

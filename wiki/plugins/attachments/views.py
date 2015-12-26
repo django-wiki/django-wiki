@@ -195,8 +195,9 @@ class AttachmentReplaceView(ArticleMixin, FormView):
                         created__lte=attachment_revision.created).latest()
                     most_recent_revision.delete()
                 except ObjectDoesNotExist:
-                    msg = "{attachment} does not contain any revisions.".format(\
-                        attachment=str(self.attachment.original_filename))
+                    msg = "{attachment} does not contain any revisions.".format(
+                        attachment=str(self.attachment.original_filename)
+                    )
                     messages.error(self.request, msg)
 
         return redirect(

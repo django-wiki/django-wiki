@@ -1,22 +1,20 @@
+"""
+Tests that the custom queryset methods work, this is important
+because the pattern of building them is different from Django
+1.5 to 1.6 to 1.7 so there will be 3 patterns in play at the
+same time.
+"""
 from __future__ import print_function
 from __future__ import unicode_literals
 from __future__ import absolute_import
 
-from .base import ArticleTestBase
+from .base import ArticleWebTestBase
 
 from wiki.models import Article, URLPath
 from wiki.plugins.attachments.models import Attachment
 
 
-__doc__ = """
-    Tests that the custom queryset methods work, this is important
-    because the pattern of building them is different from Django
-    1.5 to 1.6 to 1.7 so there will be 3 patterns in play at the
-    same time.
-    """
-
-
-class ArticlManagerTests(ArticleTestBase):
+class ArticlManagerTests(ArticleWebTestBase):
 
     def test_queryset_methods_directly_on_manager(self):
 
@@ -50,7 +48,7 @@ class ArticlManagerTests(ArticleTestBase):
         self.assertEqual(Article.objects.none().active().count(), 0)
 
 
-class AttachmentManagerTests(ArticleTestBase):
+class AttachmentManagerTests(ArticleWebTestBase):
 
     def test_queryset_methods_directly_on_manager(self):
 
@@ -85,7 +83,7 @@ class AttachmentManagerTests(ArticleTestBase):
         self.assertEqual(Attachment.objects.none().active().count(), 0)
 
 
-class URLPathManagerTests(ArticleTestBase):
+class URLPathManagerTests(ArticleWebTestBase):
 
     def test_related_manager_works_with_filters(self):
         root = URLPath.root()
