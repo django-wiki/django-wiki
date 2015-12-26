@@ -748,10 +748,17 @@ class Preview(ArticleMixin, TemplateView):
         self.content = None
         self.preview = False
         if revision_id:
+            try:
+                revision_id = int(revision_id)
+            except ValueError:
+                # ValueError only happens because someone put garbage in the
+                # querystring
+                raise Http404()
             self.revision = get_object_or_404(
                 models.ArticleRevision,
                 article=article,
-                id=revision_id)
+                id=revision_id
+            )
         else:
             self.revision = None
         return super(Preview, self).dispatch(request, article, *args, **kwargs)
