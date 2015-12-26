@@ -80,14 +80,6 @@ class ArticleWebTestBase(WebTestBase):
 
         self.assertEqual(response.status_code, 200)  # sanity check
         self.root_article = URLPath.root().article
-        self.example_data = {
-            'content': 'The modified text',
-            'current_revision': '1',
-            'preview': '1',
-            # 'save': '1',  # probably not too important
-            'summary': 'why edited',
-            'title': 'wiki test'
-        }
 
     def get_by_path(self, path):
         """
