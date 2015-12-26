@@ -24,6 +24,6 @@ if settings.DEBUG:
 from wiki.urls import get_pattern as get_wiki_pattern
 from django_nyt.urls import get_pattern as get_notify_pattern
 urlpatterns += [
-    (r'^notify/', get_notify_pattern()),
-    (r'', get_wiki_pattern())
+    url(r'^notify/', get_notify_pattern()),
+    url(r'', get_wiki_pattern())
 ]
