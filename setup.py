@@ -25,18 +25,11 @@ def read(fname):
 
 requirements = [
     "Django>=1.4,<1.9",
-    "django-sekizai>=0.8.1",
     "Pillow",
     "django-nyt>=0.9.7.2",
-    # 0.6.1 broken: https://github.com/django-mptt/django-mptt/issues/316
-    "django-mptt>=0.7.1,<0.8",
     "six",
 ]
 
-
-dependency_links = [
-    'https://github.com/ojii/django-sekizai/archive/master.zip#egg=django-sekizai-0.8.1',
-]
 
 # Requirements that depend on Django version: South and sorl-thumbnail
 try:
@@ -49,16 +42,29 @@ except ImportError:
     # For Django <= 1.6, we need to ensure a recent South version,
     # so to be safe we include South here.
     requirements.append("South>=1.0.1")
-    requirements.append("sorl-thumbnail>=11.12.1b")
+    requirements.append("sorl-thumbnail>=12")
+    # 0.6.1 broken: https://github.com/django-mptt/django-mptt/issues/316
+    requirements.append("django-mptt>=0.8")
 else:
     if DJANGO_VERSION < (1, 7):
         requirements.append("South>=1.0.1")
+        requirements.append("django-mptt>=0.7.1,<0.8")
+        requirements.append("django-sekizai<0.9")
+    elif DJANGO_VERSION < (1, 8):
+        # Fixes
+        # AttributeError: 'URLPath' object has no attribute 'get_deferred_fields'
+        requirements.append("django-mptt>=0.7.1,<0.8")
+        requirements.append("django-sekizai>=0.9")
+    else:
+        # Latest django-mptt only works for Django 1.8+
+        requirements.append("django-mptt>=0.8")
+        requirements.append("django-sekizai>=0.9")
     if DJANGO_VERSION < (1, 5):
         # For Django 1.4, use sorl-thumbnail<11.12.1:
         # https://github.com/mariocesar/sorl-thumbnail/issues/255
         requirements.append("sorl-thumbnail<11.12.1")
     else:
-        requirements.append("sorl-thumbnail>=11.12.1b")
+        requirements.append("sorl-thumbnail>=12")
 
 # Requirements that depend on Python version: Markdown
 from sys import version_info as PYTHON_VERSION
@@ -85,7 +91,6 @@ setup(
     long_description=read('README'),
     zip_safe=False,
     install_requires=requirements,
-    dependency_links=dependency_links,
     classifiers=[
         'Development Status :: 3 - Alpha',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
@@ -105,4 +110,3 @@ setup(
     include_package_data=True,
     test_suite='runtests',
 )
-
