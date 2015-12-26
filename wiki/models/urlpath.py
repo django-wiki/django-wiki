@@ -71,8 +71,11 @@ class URLPath(MPTTModel):
     article = models.ForeignKey(
         Article,
         on_delete=models.CASCADE,
-        editable=False,
-        verbose_name=_('Cache lookup value for articles'),
+        verbose_name=_('Lookup value'),
+        help_text=_(
+            "This field is automatically updated, but you need to populate "
+            "it when creating a new URL path."
+        )
     )
 
     SLUG_MAX_LENGTH = 50
@@ -84,7 +87,9 @@ class URLPath(MPTTModel):
         'self',
         null=True,
         blank=True,
-        related_name='children')
+        related_name='children',
+        help_text=_("Position of URL path in the tree.")
+    )
 
     def __init__(self, *args, **kwargs):
         pass

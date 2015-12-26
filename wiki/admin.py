@@ -20,6 +20,7 @@ class ArticleObjectAdmin(GenericTabularInline):
     model = models.ArticleForObject
     extra = 1
     max_num = 1
+    raw_id_fields = ('article',)
 
 
 class ArticleRevisionForm(forms.ModelForm):
@@ -77,6 +78,7 @@ class ArticleForm(forms.ModelForm):
 class ArticleAdmin(admin.ModelAdmin):
     inlines = [ArticleRevisionInline]
     form = ArticleForm
+    search_fields = ('current_revision__title', 'current_revision__content')
 
 
 class URLPathAdmin(MPTTModelAdmin):
@@ -85,10 +87,19 @@ class URLPathAdmin(MPTTModelAdmin):
                    'articles__article__created',
                    'articles__article__modified')
     list_display = ('__str__', 'article', 'get_created')
+    raw_id_fields = ('article',)
 
     def get_created(self, instance):
         return instance.article.created
     get_created.short_description = _('created')
+
+    def save_model(self, request, obj, form, change):
+        """
+        Ensure that there is a generic relation from the article to the URLPath
+        """
+        obj.save()
+        obj.article.add_object_relation(obj)
+
 
 admin.site.register(models.URLPath, URLPathAdmin)
 admin.site.register(models.Article, ArticleAdmin)
