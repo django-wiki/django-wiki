@@ -26,7 +26,7 @@ def read(fname):
 requirements = [
     "Django>=1.5",
     "Pillow",
-    "django-nyt>=0.9.7.2",
+    "django-nyt>=0.9.7.2,<1.0",
     "six",
 ]
 
@@ -57,14 +57,14 @@ else:
         requirements.append("django-sekizai>=0.9")
     else:
         # Latest django-mptt only works for Django 1.8+
-        requirements.append("django-mptt>=0.8")
+        requirements.append("django-mptt>=0.8,<0.9")
         requirements.append("django-sekizai>=0.9")
     if DJANGO_VERSION < (1, 5):
         # For Django 1.4, use sorl-thumbnail<11.12.1:
         # https://github.com/mariocesar/sorl-thumbnail/issues/255
         requirements.append("sorl-thumbnail<11.12.1")
     else:
-        requirements.append("sorl-thumbnail>=12")
+        requirements.append("sorl-thumbnail>=12,<13")
 
 # Requirements that depend on Python version: Markdown
 from sys import version_info as PYTHON_VERSION
@@ -73,7 +73,7 @@ if PYTHON_VERSION < (2, 7):
     # https://github.com/waylan/Python-Markdown/issues/349
     requirements.append("Markdown>2.2.0,<2.5.0")
 else:
-    requirements.append("Markdown>2.2.0")
+    requirements.append("Markdown>2.2.0,<2.7")
 
 packages = find_packages()
 
