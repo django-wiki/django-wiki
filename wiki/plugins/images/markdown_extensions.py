@@ -21,11 +21,21 @@ class ImageExtension(markdown.Extension):
     def extendMarkdown(self, md, md_globals):
         """ Insert ImagePreprocessor before ReferencePreprocessor. """
         md.preprocessors.add('dw-images', ImagePreprocessor(md), '>html_block')
+        md.postprocessors.add('dw-images-cleanup', ImagePostprocessor(md), '>raw_html')
 
 
 class ImagePreprocessor(markdown.preprocessors.Preprocessor):
+    """
+    django-wiki image preprocessor
+    Parse text for [image:id align:left|right|center] references.
 
-    """django-wiki image preprocessor - parse text for [image:id align:left|right|center] references. """
+    For instance:
+
+    [image:id align:left|right|center]
+        This is the caption text maybe with [a link](...)
+
+    So: Remember that the caption text is fully valid markdown!
+    """
 
     def run(self, lines):
         new_text = []
@@ -90,3 +100,18 @@ class ImagePreprocessor(markdown.preprocessors.Preprocessor):
             if line is not None:
                 new_text.append(line)
         return new_text
+
+
+class ImagePostprocessor(markdown.postprocessors.Postprocessor):
+
+    def run(self, text):
+        """
+        This cleans up after Markdown's well-intended placing of image tags
+        inside <p> elements. The problem is that Markdown should put
+        <p> tags around images as they are inline elements. However, because
+        we wrap them in <figure>, we don't actually want it and have to
+        remove it again after.
+        """
+        text = text.replace("<p><figure", "<figure")
+        text = text.replace("</figure>\n</p>", "</figure>")
+        return text

@@ -164,7 +164,7 @@ SEARCH_VIEW = getattr(
     django_settings,
     'WIKI_SEARCH_VIEW',
     'wiki.views.article.SearchView'
-    if not 'wiki.plugins.haystack' in django_settings.INSTALLED_APPS
+    if 'wiki.plugins.haystack' not in django_settings.INSTALLED_APPS
     else
     'wiki.plugins.haystack.views.HaystackSearchView'
 )
