@@ -31,6 +31,7 @@ from wiki import managers
 from wiki.conf import settings
 from wiki.core.compat import atomic, transaction_commit_on_success
 from wiki.core.exceptions import NoRootURL, MultipleRootURLs
+from wiki.decorators import disable_signal_for_loaddata
 from wiki.models.article import ArticleRevision, ArticleForObject, Article
 
 log = logging.getLogger(__name__)
@@ -162,10 +163,7 @@ class URLPath(MPTTModel):
     def __str__(self):
         path = self.path
         return path if path else ugettext("(root)")
-    
-    def save(self, *args, **kwargs):
-        super(URLPath, self).save(*args, **kwargs)
-    
+
     def delete(self, *args, **kwargs):
         assert not (self.parent and self.get_children()), "You cannot delete a root article with children."
         super(URLPath, self).delete(*args, **kwargs)
@@ -265,6 +263,7 @@ class URLPath(MPTTModel):
 urlpath_content_type = None
 
 
+@disable_signal_for_loaddata
 def on_article_relation_save(**kwargs):
     global urlpath_content_type
     instance = kwargs['instance']
