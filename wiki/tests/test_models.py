@@ -90,11 +90,11 @@ class ArticleModelTest(TestCase):
     def test_get_absolute_url_if_urlpath_set_is_exists(self):
 
         a1 = Article.objects.create()
-        s1 = Site.objects.create()
+        s1 = Site.objects.create(domain="something.com", name="something.com")
         u1 = URLPath.objects.create(article=a1, site=s1)
 
         a2 = Article.objects.create()
-        s2 = Site.objects.create()
+        s2 = Site.objects.create(domain="somethingelse.com", name="somethingelse.com")
         URLPath.objects.create(
             article=a2,
             site=s2,

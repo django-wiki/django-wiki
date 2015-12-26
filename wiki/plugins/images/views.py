@@ -114,6 +114,10 @@ class PurgeView(ArticleMixin, FormView):
         return redirect('wiki:images_index', article_id=self.article_id)
 
     def get_context_data(self, **kwargs):
+        # Needed since Django 1.9 because get_context_data is no longer called
+        # with the form instance
+        if 'form' not in kwargs:
+            kwargs['form'] = self.get_form()
         kwargs = ArticleMixin.get_context_data(self, **kwargs)
         kwargs.update(FormView.get_context_data(self, **kwargs))
         return kwargs
@@ -175,6 +179,10 @@ class RevisionAddView(ArticleMixin, FormView):
         return kwargs
 
     def get_context_data(self, **kwargs):
+        # Needed since Django 1.9 because get_context_data is no longer called
+        # with the form instance
+        if 'form' not in kwargs:
+            kwargs['form'] = self.get_form()
         kwargs = super(RevisionAddView, self).get_context_data(**kwargs)
         kwargs['image'] = self.image
         return kwargs
