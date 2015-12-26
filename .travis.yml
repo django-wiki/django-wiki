@@ -5,7 +5,7 @@
 # so that we can benefit from and use the cache->directories
 # directive.
 
-sudo: no
+sudo: false
 
 env: PIP_DOWNLOAD_CACHE="pip_cache"
 
