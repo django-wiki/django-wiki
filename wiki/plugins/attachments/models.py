@@ -81,9 +81,14 @@ def extension_allowed(filename):
             lambda x: x.lower(),
             settings.FILE_EXTENSIONS):
         raise IllegalFileExtension(
-            ugettext("The following filename is illegal: %s. Extension has to be one of %s") %
-            (filename, ", ".join(
-                settings.FILE_EXTENSIONS)))
+            ugettext(
+                "The following filename is illegal: {filename:s}. Extension "
+                "has to be one of {extensions:s}"
+            ).format(
+                filename=filename,
+                extensions=", ".join(settings.FILE_EXTENSIONS)
+            )
+        )
 
     return extension
 
