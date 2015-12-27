@@ -1,14 +1,16 @@
 # 
 # Translators:
+# Muhkoenig <j.helmecke@gmail.com>, 2015
+# Thomas Lottermann <TomLottermann@googlemail.com>, 2015
 # THOMAS LOTTERMANN <TomLottermann@googlemail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: django-wiki\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-04-15 19:20+0200\n"
-"PO-Revision-Date: 2015-04-25 11:06+0000\n"
-"Last-Translator: Benjamin Bach <benjaoming@gmail.com>\n"
-"Language-Team: German (http://www.transifex.com/projects/p/django-wiki/language/de/)\n"
+"PO-Revision-Date: 2015-07-11 16:07+0000\n"
+"Last-Translator: Thomas Lottermann <TomLottermann@googlemail.com>\n"
+"Language-Team: German (http://www.transifex.com/django-wiki/django-wiki/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,15 +23,15 @@ msgstr "erstellt"
 
 #: apps.py:9
 msgid "Wiki notifications"
-msgstr ""
+msgstr "Wiki Benachrichtigungen"
 
 #: apps.py:15
 msgid "Wiki images"
-msgstr ""
+msgstr "Wiki Bilder"
 
 #: apps.py:21
 msgid "Wiki attachments"
-msgstr ""
+msgstr "Wiki Anhänge"
 
 #: conf/settings.py:32
 msgid "Table of Contents"
@@ -49,7 +51,7 @@ msgstr "Dem Spam Schutz war es nicht möglich einen angemeldeten Benutzer oder e
 msgid ""
 "Spam protection: You are only allowed to create or edit %(revisions)d "
 "article(s) per %(interval_name)s."
-msgstr ""
+msgstr "Spam Schutz: Du darfst pro %(interval_name)s nur %(revisions)d Artikel erzeugen oder verändern"
 
 #: forms.py:96
 msgid "minute"
@@ -90,12 +92,12 @@ msgstr "Inhalt"
 
 #: forms.py:131 forms.py:312
 msgid "Summary"
-msgstr "Nachricht"
+msgstr "Zusammenfassung"
 
 #: forms.py:133
 msgid ""
 "Give a short reason for your edit, which will be stated in the revision log."
-msgstr "Gebe einen kurzen Grund für deine Änderung an. Er wird bei der Revision genannt werden."
+msgstr "Gib einen kurzen Grund für deine Änderung an. Er wird bei der Revision genannt werden."
 
 #: forms.py:192
 msgid ""
@@ -147,7 +149,7 @@ msgstr "Ein Artikel unter der Adresse \"%s\" existiert bereits."
 
 #: forms.py:352
 msgid "This slug conflicts with an existing URL."
-msgstr ""
+msgstr "Diese Adresse widerspricht einer existierenden URL."
 
 #: forms.py:371
 msgid "Yes, I am sure"
@@ -198,7 +200,7 @@ msgstr "(nichts)"
 
 #: forms.py:409
 msgid "Group"
-msgstr ""
+msgstr "Gruppe"
 
 #: forms.py:415
 msgid "Inherit permissions"
@@ -256,7 +258,7 @@ msgstr "Filtern..."
 
 #: forms.py:576 templates/wiki/base_site.html:44
 msgid "Search..."
-msgstr ""
+msgstr "Suche... "
 
 #: models/article.py:35 models/pluginbase.py:201
 #: plugins/attachments/models.py:35
@@ -425,7 +427,7 @@ msgstr "URL Pfad"
 
 #: models/urlpath.py:197
 msgid "URL paths"
-msgstr "URL Pfäde"
+msgstr "URL Pfade"
 
 #: models/urlpath.py:204
 msgid "Sorry but you cannot have a root article with a slug."
@@ -463,7 +465,7 @@ msgstr "Eine kurze Beschreibung, was die Datei enthält"
 
 #: plugins/attachments/forms.py:70
 msgid "Remove previous"
-msgstr ""
+msgstr "Vorherigen entfernen"
 
 #: plugins/attachments/forms.py:71
 msgid "Remove previous attachment revisions and their files (to save space)?"
@@ -489,7 +491,7 @@ msgstr "Kein zip Archiv"
 
 #: plugins/attachments/forms.py:117
 msgid "User not allowed to moderate this article"
-msgstr ""
+msgstr "Benutzer ist nicht berechtigt diesen Artikel zu moderieren"
 
 #: plugins/attachments/forms.py:163
 msgid "Yes I am sure..."
@@ -515,12 +517,12 @@ msgstr "Anhänge"
 
 #: plugins/attachments/models.py:73
 msgid "No file extension found in filename. That's not okay!"
-msgstr ""
+msgstr "Keine Dateierweiterung im Dateinamen gefunden. Das ist nicht in Ordnung!"
 
 #: plugins/attachments/models.py:78
 #, python-format
 msgid "The following filename is illegal: %s. Extension has to be one of %s"
-msgstr ""
+msgstr "Der folgende Dateiname ist unzulässig: %s. Erweiterung muss eine von %s sein"
 
 #: plugins/attachments/models.py:124
 msgid "file"
@@ -708,7 +710,7 @@ msgstr "Der Artikel ist aktuell für die Bearbeitung gesperrt, weshalb auch kein
 
 #: plugins/attachments/templates/wiki/plugins/attachments/render.html:6
 msgid "This attachment is not permitted on this page."
-msgstr ""
+msgstr "Diese Anlage ist auf dieser Seite nicht erlaubt. "
 
 #: plugins/attachments/templates/wiki/plugins/attachments/render.html:8
 msgid "Click to download"
@@ -728,7 +730,7 @@ msgid ""
 "\n"
 "  Articles using %(filename)s\n"
 "  "
-msgstr ""
+msgstr "\n  Artikel benutzen %(filename)s\n  "
 
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:26
 #, python-format
@@ -807,7 +809,7 @@ msgstr "Es wurde eine Referenz von \"%(art)s\" zu \"%(att)s\" angelegt."
 #: plugins/attachments/views.py:353
 #, python-format
 msgid "\"%(att)s\" is already referenced."
-msgstr ""
+msgstr "\"%(att)s\" ist schon verknüpft."
 
 #: plugins/attachments/views.py:402
 #, python-format
@@ -932,7 +934,7 @@ msgstr "Keine Datei"
 
 #: plugins/images/templates/wiki/plugins/images/index.html:36
 msgid "Upload and publish new image"
-msgstr ""
+msgstr "Neues Bild hochladen und veröffentlichen"
 
 #: plugins/images/templates/wiki/plugins/images/index.html:40
 msgid "Restore image"
@@ -1103,7 +1105,7 @@ msgstr "[TOC]"
 
 #: plugins/macros/mdx/macro.py:102
 msgid "WikiLinks"
-msgstr ""
+msgstr "WikiLinks"
 
 #: plugins/macros/mdx/macro.py:104
 msgid "Insert a link to another wiki page with a short notation."
@@ -1128,7 +1130,7 @@ msgstr "Macros"
 #: plugins/notifications/forms.py:23
 #, python-format
 msgid "Receive notifications %(interval)s"
-msgstr ""
+msgstr "Benachrichtigung erhalten %(interval)s"
 
 #: plugins/notifications/forms.py:33
 #, python-format
@@ -1137,7 +1139,7 @@ msgstr "%(title)s - %(url)s"
 
 #: plugins/notifications/forms.py:50
 msgid "Remove subscriptions"
-msgstr ""
+msgstr "Abonnement entfernen"
 
 #: plugins/notifications/forms.py:52
 msgid "Select article subscriptions to remove from notifications"
@@ -1215,11 +1217,11 @@ msgstr "Leere Benachrichtigungsliste"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/menubaritem.html:15
 msgid "Notification settings"
-msgstr ""
+msgstr "Benachrichtigungseinstellungen"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:9
 msgid "Your notification settings"
-msgstr ""
+msgstr "Deine Benachrichtigungseinstellungen"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:11
 msgid "Manage how often you receive notifications"
@@ -1227,11 +1229,11 @@ msgstr "Wähle aus wie oft du Benachrichtigungen erhalten willst"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:20
 msgid "Settings for"
-msgstr ""
+msgstr "Einstellungen für"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:20
 msgid "articles"
-msgstr ""
+msgstr "Artikel"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:27
 msgid "You are not subscribed to any notifications yet."
@@ -1246,7 +1248,7 @@ msgstr "Speichern"
 #: plugins/notifications/views.py:33
 #, python-format
 msgid "You will receive notifications %(interval)s for %(articles)d articles"
-msgstr ""
+msgstr "Du erhältst Benachrichtigung alle %(interval)s für %(articles)d Artikel"
 
 #: templates/wiki/accounts/login.html:4 templates/wiki/base_site.html:75
 msgid "Log in"
@@ -1294,7 +1296,7 @@ msgid ""
 "Powered by <a href=\"http://www.django-wiki.org\">django-wiki</a>, an open "
 "source application under the <a href=\"http://www.gnu.org/licenses/quick-"
 "guide-gplv3.html\">GPLv3</a> license. Let knowledge be the cure."
-msgstr "Powered by <a href=\"http://www.django-wiki.org\">django-wiki</a>, eine Open-Source-Anwendung unter der <a href=\"http://www.gnu.org/licenses/quick-guide-gplv3.html\">GPLv3</a> Lizens. Let knowledge be the cure."
+msgstr "Powered by <a href=\"http://www.django-wiki.org\">django-wiki</a>, eine Open-Source-Anwendung unter der <a href=\"http://www.gnu.org/licenses/quick-guide-gplv3.html\">GPLv3</a> Lizenz. Let knowledge be the cure."
 
 #: templates/wiki/create.html:5 templates/wiki/create.html.py:44
 msgid "Add new article"
@@ -1316,13 +1318,13 @@ msgstr "Glückwunsch!"
 msgid ""
 "You have django-wiki installed... but there are no articles. So it's time to"
 " create the first one, the root article."
-msgstr ""
+msgstr "Du hast django-wiki installiert... aber es gibt keine Artikel. Es ist also Zeit den Ersten anzulegen, den root-Artikel."
 
 #: templates/wiki/create_root.html:25
 msgid ""
 "In the beginning, it will only be editable by administrators, but you can "
 "define permissions after."
-msgstr ""
+msgstr "Am Anfang ist dieser nur von Administratoren editierbar, später kannst du Berechtigungen festlegen."
 
 #: templates/wiki/create_root.html:28
 msgid "Root article"
@@ -1640,30 +1642,30 @@ msgstr "Wenn diese Revision wiederhergestellt wird, wird der Artikel als gelösc
 msgid ""
 "You have django-wiki installed and it seems to be working. But there are no "
 "articles yet."
-msgstr ""
+msgstr "Du hast django-wiki installiert und es sieht so aus als ob es funktioniert. Es gibt aber noch keine Artikel. "
 
 #: templates/wiki/root_missing.html:17
 msgid ""
 "Not to worry! You simply have to login with a superuser account and create "
 "the first article in the root of the URL hierarchy."
-msgstr ""
+msgstr "Mach dir keine Sorgen! Du musst dich nur mit einem Administrator Konto anmelden und den ersten Artikel in der URL Hierarchie anlegen. "
 
 #: templates/wiki/root_missing.html:21
 msgid "Click here to login"
-msgstr ""
+msgstr "Klicke hier um dich anzumelden"
 
 #: templates/wiki/root_missing.html:27
 msgid ""
 "But since you're logged in as a superuser, we should really get started..."
-msgstr ""
+msgstr "Aber da du mit einem Administrator Konto angemeldet bist, sollten wir jetzt los legen... "
 
 #: templates/wiki/root_missing.html:29
 msgid "Yes, I'll go and create the first article"
-msgstr ""
+msgstr "Ja, jetzt den ersten Artikel anlegen "
 
 #: templates/wiki/root_missing.html:30
 msgid "No thanks, I'd rather read the documentation"
-msgstr ""
+msgstr "Nein danke, ich lese lieber die Dokumentation "
 
 #: templates/wiki/search.html:5 templates/wiki/search.html.py:9
 msgid "Search results for:"

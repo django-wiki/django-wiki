@@ -1,268 +1,267 @@
 # 
 # Translators:
-# Benjamin Bach <benjaoming@gmail.com>, 2015
-# valberg <valberg@orn.li>, 2015
+# israfil kara <inactive+israfilkara@transifex.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: django-wiki\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-04-15 19:20+0200\n"
-"PO-Revision-Date: 2015-04-26 11:28+0000\n"
-"Last-Translator: Benjamin Bach <benjaoming@gmail.com>\n"
-"Language-Team: Danish (http://www.transifex.com/django-wiki/django-wiki/language/da/)\n"
+"PO-Revision-Date: 2015-08-04 14:01+0000\n"
+"Last-Translator: israfil kara <inactive+israfilkara@transifex.com>\n"
+"Language-Team: Turkish (Turkey) (http://www.transifex.com/django-wiki/django-wiki/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: da\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: tr_TR\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: admin.py:86 models/article.py:42
 msgid "created"
-msgstr "oprettet"
+msgstr "Oluşturuldu"
 
 #: apps.py:9
 msgid "Wiki notifications"
-msgstr "Wiki notifikationer"
+msgstr "Wiki bildirimleri"
 
 #: apps.py:15
 msgid "Wiki images"
-msgstr "Wiki billeder"
+msgstr "Wiki resimleri"
 
 #: apps.py:21
 msgid "Wiki attachments"
-msgstr "Wiki vedhæftninger"
+msgstr "Wiki ekleri"
 
 #: conf/settings.py:32
 msgid "Table of Contents"
-msgstr "Indholdsfortegnelse"
+msgstr "Tablo İçerikleri"
 
 #: core/plugins/base.py:64
 msgid "Settings for plugin"
-msgstr "Indstillinger for plugin"
+msgstr "Eklenti ayaları"
 
 #: forms.py:62
 msgid ""
 "Spam protection failed to find both a logged in user and an IP address."
-msgstr "Spam beskyttelse fejlede i at finde både en indlogget bruger og en IP adresse."
+msgstr ""
 
 #: forms.py:77
 #, python-format
 msgid ""
 "Spam protection: You are only allowed to create or edit %(revisions)d "
 "article(s) per %(interval_name)s."
-msgstr "Spam beskyttelse: Du har kun tilladelse til at oprette eller redigere %(revisions)d artikler per %(interval_name)s."
+msgstr ""
 
 #: forms.py:96
 msgid "minute"
-msgstr "minut"
+msgstr "dakika"
 
 #: forms.py:97
 #, python-format
 msgid "%d minutes"
-msgstr "%d minutes"
+msgstr "%d dakika"
 
 #: forms.py:106
 msgid "hour"
-msgstr "time"
+msgstr "saat"
 
 #: forms.py:112 forms.py:124 forms.py:300 templates/wiki/dir.html:48
 #: templates/wiki/search.html:30
 msgid "Title"
-msgstr "Titel"
+msgstr "Başlık"
 
 #: forms.py:114
 msgid "Initial title of the article. May be overridden with revision titles."
-msgstr "Titel til artiklen. Kan overskrives af senere revisioner."
+msgstr ""
 
 #: forms.py:116
 msgid "Type in some contents"
-msgstr "Indtast noget tekst"
+msgstr ""
 
 #: forms.py:118
 msgid ""
 "This is just the initial contents of your article. After creating it, you "
 "can use more complex features like adding plugins, meta data, related "
 "articles etc..."
-msgstr "Dette er blot det indledningsvise indhold af artiklen. Efter oprettelsen kan du indsætte mere komplekse elementer (plugins), metadata, relaterede artikler mm."
+msgstr ""
 
 #: forms.py:126 forms.py:307
 msgid "Contents"
-msgstr "Indhold"
+msgstr "İçerikler"
 
 #: forms.py:131 forms.py:312
 msgid "Summary"
-msgstr "Opsummering"
+msgstr "Özet"
 
 #: forms.py:133
 msgid ""
 "Give a short reason for your edit, which will be stated in the revision log."
-msgstr "Giv en kort begrundelse for redigeringen, som vil stå i revisionsloggen."
+msgstr ""
 
 #: forms.py:192
 msgid ""
 "While you were editing, someone else changed the revision. Your contents "
 "have been automatically merged with the new contents. Please review the text"
 " below."
-msgstr "Mens du redigerede, har nogle andre ændret den revision, du arbejdede på. Dit indhold er automatisk blevet flettet sammen med det ny indhold. Gennemlæs venligst teksten nedenfor."
+msgstr ""
 
 #: forms.py:196
 msgid "No changes made. Nothing to save."
-msgstr "Ingen ændringer, intet at gemme."
+msgstr ""
 
 #: forms.py:237
 msgid "Select an option"
-msgstr "Vælg en mulighed"
+msgstr ""
 
 #: forms.py:302 templates/wiki/dir.html:49
 msgid "Slug"
-msgstr "Slug"
+msgstr ""
 
 #: forms.py:304
 msgid ""
 "This will be the address where your article can be found. Use only "
 "alphanumeric characters and - or _. Note that you cannot change the slug "
 "after creating the article."
-msgstr "Dette vil være adressen, hvor din artikel kan findes. Kun alfanumeriske tegn, - og _ kan bruges. Bemærk at du IKKE kan ændre en 'slug' efter at have oprettet artiklen."
+msgstr ""
 
 #: forms.py:313
 msgid "Write a brief message for the article's history log."
-msgstr "Skriv en kort besked til artiklens historik."
+msgstr ""
 
 #: forms.py:320
 msgid "A slug may not begin with an underscore."
-msgstr "En 'slug' kan ikke begynde med en underscore '_'."
+msgstr ""
 
 #: forms.py:323
 msgid "'admin' is not a permitted slug name."
-msgstr "'admin' er ikke et tilladt slug navn."
+msgstr ""
 
 #: forms.py:339
 #, python-format
 msgid "A deleted article with slug \"%s\" already exists."
-msgstr "En slettet artikel med slug \"%s\" findes allerede."
+msgstr ""
 
 #: forms.py:343
 #, python-format
 msgid "A slug named \"%s\" already exists."
-msgstr "En slug ved navn \"%s\" findes allerede."
+msgstr ""
 
 #: forms.py:352
 msgid "This slug conflicts with an existing URL."
-msgstr "Denne 'slug' er i konflikt med en eksisterende URL."
+msgstr ""
 
 #: forms.py:371
 msgid "Yes, I am sure"
-msgstr "Ja, jeg er sikker"
+msgstr "Evet eminim"
 
 #: forms.py:374 templates/wiki/deleted.html:47
 msgid "Purge"
-msgstr "Slet permanent"
+msgstr ""
 
 #: forms.py:376
 msgid ""
 "Purge the article: Completely remove it (and all its contents) with no undo."
 " Purging is a good idea if you want to free the slug such that users can "
 "create new articles in its place."
-msgstr "Slet permanent: Fjern fuldstændig (med al indhold) og ingen fortrydelsesmulighed. Permanent sletning er en god ide, hvis du vil frigøre en 'slug' således at brugere kan oprette en ny artikel på samme adresse."
+msgstr ""
 
 #: forms.py:383 plugins/attachments/forms.py:168 plugins/images/forms.py:70
 msgid "You are not sure enough!"
-msgstr "Du er ikke sikker nok!"
+msgstr ""
 
 #: forms.py:387
 msgid "While you tried to delete this article, it was modified. TAKE CARE!"
-msgstr "Mens du prøvede at slette denne artikel, blev den ændret. PAS PÅ!"
+msgstr ""
 
 #: forms.py:394
 msgid "Lock article"
-msgstr "Lås artikel"
+msgstr ""
 
 #: forms.py:395
 msgid "Deny all users access to edit this article."
-msgstr "Nægt alle brugere adgang til at redigere denne artikel"
+msgstr ""
 
 #: forms.py:398
 msgid "Permissions"
-msgstr "Rettigheder"
+msgstr ""
 
 #: forms.py:404
 msgid "Owner"
-msgstr "Ejer"
+msgstr ""
 
 #: forms.py:405
 msgid "Enter the username of the owner."
-msgstr "Indtast brugernavn på ejeren"
+msgstr ""
 
 #: forms.py:408 forms.py:467 plugins/notifications/util.py:14
 msgid "(none)"
-msgstr "(ingen)"
+msgstr ""
 
 #: forms.py:409
 msgid "Group"
-msgstr "Gruppe"
+msgstr ""
 
 #: forms.py:415
 msgid "Inherit permissions"
-msgstr "Nedarv rettigheder"
+msgstr ""
 
 #: forms.py:417
 msgid ""
 "Check here to apply the above permissions (excluding group and owner of the "
 "article) recursively to articles below this one."
-msgstr "Marker her for at tildele ovenstående rettigheder (eksklusive gruppe og ejer af artiklen) til alle artikler under denne artikel."
+msgstr ""
 
 #: forms.py:421
 msgid "Inherit owner"
-msgstr "Nedarv ejer"
+msgstr ""
 
 #: forms.py:423
 msgid ""
 "Check here to apply the ownership setting recursively to articles below this"
 " one."
-msgstr "Marker her for at tildele samme ejerskab til alle artikler under denne."
+msgstr ""
 
 #: forms.py:427
 msgid "Inherit group"
-msgstr "Nedarv gruppe"
+msgstr ""
 
 #: forms.py:429
 msgid ""
 "Check here to apply the group setting recursively to articles below this "
 "one."
-msgstr "Marker her for at tildele samme gruppe-ejerskab til alle artikler under denne"
+msgstr ""
 
 #: forms.py:434
 msgid "Permission settings for the article were updated."
-msgstr "Rettigheder for artiklen blev opdateret."
+msgstr ""
 
 #: forms.py:437
 msgid "Your permission settings were unchanged, so nothing saved."
-msgstr "Dine indstillinger for rettigheder var uændrede, så intet er gemt."
+msgstr ""
 
 #: forms.py:497
 msgid "No user with that username"
-msgstr "Ingen bruger med brugernavnet"
+msgstr ""
 
 #: forms.py:532
 msgid "Article locked for editing"
-msgstr "Artiklen er låst for redigering"
+msgstr ""
 
 #: forms.py:539
 msgid "Article unlocked for editing"
-msgstr "Artikel åben for redigering"
+msgstr ""
 
 #: forms.py:566
 msgid "Filter..."
-msgstr "Filtrér..."
+msgstr ""
 
 #: forms.py:576 templates/wiki/base_site.html:44
 msgid "Search..."
-msgstr "Søg..."
+msgstr "Arama..."
 
 #: models/article.py:35 models/pluginbase.py:201
 #: plugins/attachments/models.py:35
 msgid "current revision"
-msgstr "nuværende revision"
+msgstr "Geçerli revizyon"
 
 #: models/article.py:38
 msgid ""
@@ -353,11 +352,11 @@ msgstr ""
 
 #: models/article.py:272
 msgid "IP address"
-msgstr ""
+msgstr "IP adresi"
 
 #: models/article.py:276
 msgid "user"
-msgstr ""
+msgstr "kullanıcı"
 
 #: models/article.py:291
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:23
@@ -365,24 +364,24 @@ msgstr ""
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:44
 #: templates/wiki/includes/revision_info.html:15
 msgid "deleted"
-msgstr ""
+msgstr "silindi"
 
 #: models/article.py:295 templates/wiki/article.html:23
 #: templates/wiki/includes/revision_info.html:21
 msgid "locked"
-msgstr ""
+msgstr "kilitli"
 
 #: models/article.py:318 models/pluginbase.py:41
 msgid "article"
-msgstr ""
+msgstr "makale"
 
 #: models/article.py:321
 msgid "article contents"
-msgstr ""
+msgstr "makale içerikleri"
 
 #: models/article.py:326
 msgid "article title"
-msgstr ""
+msgstr "makale başlığı"
 
 #: models/article.py:329
 msgid ""
@@ -392,7 +391,7 @@ msgstr ""
 
 #: models/pluginbase.py:87
 msgid "original article"
-msgstr ""
+msgstr "orjinal makale"
 
 #: models/pluginbase.py:89
 msgid "Permissions are inherited from this article"
@@ -456,7 +455,7 @@ msgstr ""
 #: plugins/attachments/forms.py:20
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:14
 msgid "Description"
-msgstr ""
+msgstr "Açıklama"
 
 #: plugins/attachments/forms.py:21
 msgid "A short summary of what the file contains"
@@ -472,7 +471,7 @@ msgstr ""
 
 #: plugins/attachments/forms.py:80
 msgid "File or zip archive"
-msgstr ""
+msgstr "Dosya veya sıkıştırılmış arşiv"
 
 #: plugins/attachments/forms.py:85
 msgid "Unzip file"
@@ -494,7 +493,7 @@ msgstr ""
 
 #: plugins/attachments/forms.py:163
 msgid "Yes I am sure..."
-msgstr ""
+msgstr "Evet eminim..."
 
 #: plugins/attachments/models.py:38
 msgid ""
@@ -504,15 +503,15 @@ msgstr ""
 
 #: plugins/attachments/models.py:42
 msgid "original filename"
-msgstr ""
+msgstr "orjinal dosya adı"
 
 #: plugins/attachments/models.py:55
 msgid "attachment"
-msgstr ""
+msgstr "ek"
 
 #: plugins/attachments/models.py:56
 msgid "attachments"
-msgstr ""
+msgstr "dosya ekleri"
 
 #: plugins/attachments/models.py:73
 msgid "No file extension found in filename. That's not okay!"
@@ -525,22 +524,22 @@ msgstr ""
 
 #: plugins/attachments/models.py:124
 msgid "file"
-msgstr ""
+msgstr "dosya"
 
 #: plugins/attachments/models.py:130
 msgid "attachment revision"
-msgstr ""
+msgstr "ek versiyonu"
 
 #: plugins/attachments/models.py:131
 msgid "attachment revisions"
-msgstr ""
+msgstr "ek versiyonları"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:5
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:10
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:36
 #: templates/wiki/delete.html:8
 msgid "Delete"
-msgstr ""
+msgstr "Sil"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:12
 msgid ""
@@ -559,15 +558,15 @@ msgstr ""
 #: templates/wiki/create.html:53 templates/wiki/delete.html:12
 #: templates/wiki/delete.html.py:48
 msgid "Go back"
-msgstr ""
+msgstr "Geri dön"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:33
 msgid "Delete it!"
-msgstr ""
+msgstr "Bunu sil"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:40
 msgid "Remove"
-msgstr ""
+msgstr "Kaldır"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:42
 msgid ""
@@ -588,23 +587,23 @@ msgstr ""
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:12
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:28
 msgid "Date"
-msgstr ""
+msgstr "Tarih"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:13
 msgid "User"
-msgstr ""
+msgstr "Kullanıcı"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:15
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:26
 msgid "File"
-msgstr ""
+msgstr "Dosya"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:16
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:30
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:30
 #: plugins/images/templates/wiki/plugins/images/index.html:22
 msgid "Size"
-msgstr ""
+msgstr "Boyut"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:17
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:31
@@ -619,16 +618,16 @@ msgstr ""
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:36
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:55
 msgid "Download"
-msgstr ""
+msgstr "İndir"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:41
 msgid "Use this!"
-msgstr ""
+msgstr "Bunu kullan!"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:5
 #: plugins/attachments/wiki_plugin.py:24
 msgid "Attachments"
-msgstr ""
+msgstr "Dosya Ekleri"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:10
 msgid ""
@@ -645,14 +644,14 @@ msgstr ""
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:29
 #: plugins/images/templates/wiki/plugins/images/index.html:21
 msgid "Uploaded by"
-msgstr ""
+msgstr "Tarafından yüklendi"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:34
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:5
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:9
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:34
 msgid "Replace"
-msgstr ""
+msgstr "Değiştir"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:38
 msgid "Detach"
@@ -660,11 +659,11 @@ msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:47
 msgid "File history"
-msgstr ""
+msgstr "Dosya tarihçesi"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:47
 msgid "revisions"
-msgstr ""
+msgstr "revizyonlar"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:62
 msgid "There are no attachments for this article."
