@@ -41,10 +41,18 @@ Notes <http://django-wiki.readthedocs.org/en/latest/release_notes.html#django-wi
 - Django 1.8 support **DONE**
 - pep8 the whole codebase #287 **DONE**
 - Transifex **DONE**
-- Distribution with Wheels
+- Distribution with Wheels **Done (0.0.24.4)**
 
 News
 ----
+
+***News: December 26th, 2015***
+
+A new release 0.0.24.4 is out and has fixes for the Django ``loaddata`` management command such that you can create dumps and restore the dump. Notice, though, that ``loaddata`` only works for Django 1.7+.
+
+Django 1.9 support is available in the current master, please help get a 0.1 released by giving feed back in the last remaining issues:
+
+https://github.com/django-wiki/django-wiki/milestones/0.1
 
 ***News: November 16th, 2015***
 
