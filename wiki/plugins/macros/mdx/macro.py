@@ -6,8 +6,6 @@ import re
 from six import string_types
 
 from django.utils.translation import ugettext as _
-from django.template.loader import render_to_string
-from django.template import Context
 
 # See:
 # http://stackoverflow.com/questions/430759/regex-for-managing-escaped-characters-for-items-like-string-literals
@@ -21,6 +19,7 @@ KWARG_RE = re.compile(
     re_sq_short,
     re.IGNORECASE)
 
+from wiki.core.compat import render_to_string
 from wiki.plugins.macros import settings
 
 
@@ -75,10 +74,11 @@ class MacroPreprocessor(markdown.preprocessors.Preprocessor):
     def article_list(self, depth="2"):
         html = render_to_string(
             "wiki/plugins/macros/article_list.html",
-            Context(
-                {'article_children': self.markdown.article.get_children(
+            context={
+                'article_children': self.markdown.article.get_children(
                     article__current_revision__deleted=False),
-                 'depth': int(depth) + 1, }))
+                 'depth': int(depth) + 1,
+            })
         return self.markdown.htmlStash.store(html, safe=True)
     article_list.meta = dict(
         short_description=_('Article list'),

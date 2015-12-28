@@ -7,7 +7,6 @@ import logging
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.db import transaction
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.decorators import method_decorator
@@ -61,10 +60,12 @@ class Create(FormView, ArticleMixin):
 
         return super(Create, self).dispatch(request, article, *args, **kwargs)
 
-    def get_form(self, form_class):
+    def get_form(self, form_class=None):
         """
         Returns an instance of the form to be used in this view.
         """
+        if form_class is None:
+            form_class = self.get_form_class()
         kwargs = self.get_form_kwargs()
         initial = kwargs.get('initial', {})
         initial['slug'] = self.request.GET.get('slug', None)
@@ -133,9 +134,13 @@ class Create(FormView, ArticleMixin):
 
     def get_context_data(self, **kwargs):
         c = ArticleMixin.get_context_data(self, **kwargs)
+        # Needed since Django 1.9 because get_context_data is no longer called
+        # with the form instance
+        if 'form' not in c:
+            c['form'] = self.get_form()
         c['parent_urlpath'] = self.urlpath
         c['parent_article'] = self.article
-        c['create_form'] = kwargs.pop('form', None)
+        c['create_form'] = c.pop('form', None)
         c['editor'] = editors.getEditor()
         return c
 
@@ -183,8 +188,8 @@ class Delete(FormView, ArticleMixin):
     def get_initial(self):
         return {'revision': self.article.current_revision}
 
-    def get_form(self, form_class):
-        form = super(Delete, self).get_form(form_class)
+    def get_form(self, form_class=None):
+        form = super(Delete, self).get_form(form_class=form_class)
         if self.article.can_moderate(self.request.user):
             form.fields['purge'].widget = forms.forms.CheckboxInput()
         return form
@@ -241,6 +246,10 @@ class Delete(FormView, ArticleMixin):
                 self.request.user):
             cannot_delete_children = True
 
+        # Needed since Django 1.9 because get_context_data is no longer called
+        # with the form instance
+        if 'form' not in kwargs:
+            kwargs['form'] = self.get_form()
         kwargs['delete_form'] = kwargs.pop('form', None)
         kwargs['cannot_delete_root'] = self.cannot_delete_root
         kwargs['delete_children'] = self.children_slice[:20]
@@ -249,7 +258,7 @@ class Delete(FormView, ArticleMixin):
         return super(Delete, self).get_context_data(**kwargs)
 
 
-class Edit(FormView, ArticleMixin):
+class Edit(ArticleMixin, FormView):
 
     """Edit an article and process sidebar plugins."""
 
@@ -274,11 +283,13 @@ class Edit(FormView, ArticleMixin):
                 del self.request.session[session_key]
         return initial
 
-    def get_form(self, form_class):
+    def get_form(self, form_class=None):
         """
         Checks from querystring data that the edit form is actually being saved,
         otherwise removes the 'data' and 'files' kwargs from form initialisation.
         """
+        if form_class is None:
+            form_class = self.get_form_class()
         kwargs = self.get_form_kwargs()
         if self.request.POST.get(
                 'save',
@@ -384,7 +395,7 @@ class Edit(FormView, ArticleMixin):
         self.article.add_revision(revision)
         messages.success(
             self.request,
-            _('A new revision of the article was succesfully added.'))
+            _('A new revision of the article was successfully added.'))
         return self.get_success_url()
 
     def get_success_url(self):
@@ -394,7 +405,11 @@ class Edit(FormView, ArticleMixin):
         return redirect('wiki:get', article_id=self.article.id)
 
     def get_context_data(self, **kwargs):
-        kwargs['edit_form'] = kwargs.pop('form', None)
+        # Needed for Django 1.9 because get_context_data is no longer called
+        # with the form instance
+        if 'form' not in kwargs:
+            kwargs['form'] = self.get_form()
+        kwargs['edit_form'] = kwargs['form']
         kwargs['editor'] = editors.getEditor()
         kwargs['selected_tab'] = 'edit'
         kwargs['sidebar'] = self.sidebar
@@ -462,11 +477,11 @@ class Deleted(Delete):
         return {'revision': self.article.current_revision,
                 'purge': True}
 
-    def get_form(self, form_class):
-        form = super(Delete, self).get_form(form_class)
-        return form
-
     def get_context_data(self, **kwargs):
+        # Needed since Django 1.9 because get_context_data is no longer called
+        # with the form instance
+        if 'form' not in kwargs:
+            kwargs['form'] = self.get_form()
         kwargs['purge_form'] = kwargs.pop('form', None)
         return super(Delete, self).get_context_data(**kwargs)
 
@@ -682,9 +697,9 @@ class Settings(ArticleMixin, TemplateView):
 
 
 class ChangeRevisionView(RedirectView):
-    
+
     permanent = False
-    
+
     @method_decorator(get_article(can_write=True, not_locked=True))
     def dispatch(self, request, article, *args, **kwargs):
         self.article = article
@@ -733,10 +748,17 @@ class Preview(ArticleMixin, TemplateView):
         self.content = None
         self.preview = False
         if revision_id:
+            try:
+                revision_id = int(revision_id)
+            except ValueError:
+                # ValueError only happens because someone put garbage in the
+                # querystring
+                raise Http404()
             self.revision = get_object_or_404(
                 models.ArticleRevision,
                 article=article,
-                id=revision_id)
+                id=revision_id
+            )
         else:
             self.revision = None
         return super(Preview, self).dispatch(request, article, *args, **kwargs)
@@ -890,9 +912,13 @@ class CreateRootView(FormView):
         return redirect("wiki:root")
 
     def get_context_data(self, **kwargs):
-        data = super(CreateRootView, self).get_context_data(**kwargs)
-        data['editor'] = editors.getEditor()
-        return data
+        kwargs = super(CreateRootView, self).get_context_data(**kwargs)
+        kwargs['editor'] = editors.getEditor()
+        # Needed since Django 1.9 because get_context_data is no longer called
+        # with the form instance
+        if 'form' not in kwargs:
+            kwargs['form'] = self.get_form()
+        return kwargs
 
 
 class MissingRootView(TemplateView):

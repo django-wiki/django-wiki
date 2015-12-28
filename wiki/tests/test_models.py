@@ -3,7 +3,6 @@ from __future__ import absolute_import
 
 from django.test.testcases import TestCase
 from django.contrib.sites.models import Site
-from django.contrib.auth.models import Group
 from django.contrib.auth import get_user_model
 from django.conf.urls import url
 User = get_user_model()
@@ -17,6 +16,15 @@ from wiki.models import (
 from wiki.managers import ArticleManager
 
 from wiki.urls import WikiURLPatterns
+
+# Backwards compatibility with Django < 1.7
+try:
+    from django.apps import apps
+except ImportError:
+    from django.contrib.auth.models import Group
+else:
+    from wiki.conf import settings
+    Group = apps.get_model(settings.GROUP_MODEL)
 
 
 class WikiCustomUrlPatterns(WikiURLPatterns):
@@ -82,11 +90,11 @@ class ArticleModelTest(TestCase):
     def test_get_absolute_url_if_urlpath_set_is_exists(self):
 
         a1 = Article.objects.create()
-        s1 = Site.objects.create()
+        s1 = Site.objects.create(domain="something.com", name="something.com")
         u1 = URLPath.objects.create(article=a1, site=s1)
 
         a2 = Article.objects.create()
-        s2 = Site.objects.create()
+        s2 = Site.objects.create(domain="somethingelse.com", name="somethingelse.com")
         URLPath.objects.create(
             article=a2,
             site=s2,
@@ -135,4 +143,3 @@ class ArticleModelTest(TestCase):
 
         self.assertEqual(a.group, g)
         self.assertIn(a, g.article_set.all())
-

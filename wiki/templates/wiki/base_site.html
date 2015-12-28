@@ -43,7 +43,7 @@
             <div class="input-group">
               <input type="search" class="form-control search-query" name="q" placeholder="{% trans "Search..." %}" />
               <span class="input-group-btn">
-                <button class="btn btn-default" type="button">
+                <button class="btn btn-default" type="submit">
                   <span class="fa fa-search"></span>
                 </button>
               </span>
@@ -65,7 +65,9 @@
                       {% trans "Log out" %}
                     </a>
                   </li>
-                  {% include "wiki/plugins/notifications/menubaritem.html" %}
+                  {% if "wiki.plugins.notifications"|plugin_enabled %}
+                    {% include "wiki/plugins/notifications/menubaritem.html" %}
+                  {% endif %}
                 </ul>
               </li>
             </ul>

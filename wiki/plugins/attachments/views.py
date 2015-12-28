@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 from __future__ import absolute_import
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import redirect, get_object_or_404
@@ -10,7 +11,6 @@ from django.utils.translation import ugettext as _
 from django.views.generic.base import TemplateView, View
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
-
 from wiki.core.http import send_file
 from wiki.decorators import get_article, response_forbidden
 from wiki.plugins.attachments import models, settings, forms
@@ -72,12 +72,16 @@ class AttachmentView(ArticleMixin, FormView):
             article_id=self.article.id)
 
     def get_form_kwargs(self):
-        kwargs = FormView.get_form_kwargs(self)
+        kwargs = super(AttachmentView, self).get_form_kwargs()
         kwargs['article'] = self.article
         kwargs['request'] = self.request
         return kwargs
 
     def get_context_data(self, **kwargs):
+        # Needed since Django 1.9 because get_context_data is no longer called
+        # with the form instance
+        if 'form' not in kwargs:
+            kwargs['form'] = self.get_form()
         kwargs['attachments'] = self.attachments
         kwargs['deleted_attachments'] = models.Attachment.objects.filter(
             articles=self.article,
@@ -187,20 +191,26 @@ class AttachmentReplaceView(ArticleMixin, FormView):
                 article_id=self.article.id)
 
         if self.can_moderate:
-            older_revisions = self.attachment.attachmentrevision_set.exclude(
-                id=attachment_revision.id,
-                created__lte=attachment_revision.created,
-            )
-            # Because of signalling, the files are automatically removed...
-            older_revisions.delete()
+            if form.cleaned_data['replace']:
+                # form has no cleaned_data field unless self.can_moderate is True
+                try:
+                    most_recent_revision = self.attachment.attachmentrevision_set.exclude(
+                        id=attachment_revision.id,
+                        created__lte=attachment_revision.created).latest()
+                    most_recent_revision.delete()
+                except ObjectDoesNotExist:
+                    msg = "{attachment} does not contain any revisions.".format(
+                        attachment=str(self.attachment.original_filename)
+                    )
+                    messages.error(self.request, msg)
 
         return redirect(
             "wiki:attachments_index",
             path=self.urlpath.path,
             article_id=self.article.id)
 
-    def get_form(self, form_class):
-        form = FormView.get_form(self, form_class)
+    def get_form(self, form_class=None):
+        form = super(AttachmentReplaceView, self).get_form(form_class=form_class)
         form.fields['file'].help_text = _(
             'Your new file will automatically be renamed to match the file already present. Files with different extensions are not allowed.')
         return form
@@ -216,6 +226,8 @@ class AttachmentReplaceView(ArticleMixin, FormView):
         return {'description': self.attachment.current_revision.description}
 
     def get_context_data(self, **kwargs):
+        if 'form' not in kwargs:
+            kwargs['form'] = self.get_form()
         kwargs['attachment'] = self.attachment
         kwargs['selected_tab'] = 'attachments'
         return super(AttachmentReplaceView, self).get_context_data(**kwargs)
@@ -319,6 +331,8 @@ class AttachmentChangeRevisionView(ArticleMixin, View):
 
     def get_context_data(self, **kwargs):
         kwargs['selected_tab'] = 'attachments'
+        if 'form' not in kwargs:
+            kwargs['form'] = self.get_form()
         return ArticleMixin.get_context_data(self, **kwargs)
 
 
@@ -416,6 +430,8 @@ class AttachmentDeleteView(ArticleMixin, FormView):
     def get_context_data(self, **kwargs):
         kwargs['attachment'] = self.attachment
         kwargs['selected_tab'] = 'attachments'
+        if 'form' not in kwargs:
+            kwargs['form'] = self.get_form()
         return super(AttachmentDeleteView, self).get_context_data(**kwargs)
 
 
@@ -457,4 +473,6 @@ class AttachmentSearchView(ArticleMixin, ListView):
         kwargs.update(kwargs_article)
         kwargs.update(kwargs_listview)
         kwargs['selected_tab'] = 'attachments'
+        if 'form' not in kwargs:
+            kwargs['form'] = self.get_form()
         return kwargs

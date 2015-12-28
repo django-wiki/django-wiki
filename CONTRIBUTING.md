@@ -27,7 +27,7 @@ When submitting an Issue, please provide the following:
   * An example of how to reproduce the bug.
   * The expected result.
   * Does the bug happen with a checkout of django-wiki's master branch? To upgrade:
-    `pip install --upgrade git+https://github.com/benjaoming/django-wiki.git`
+    `pip install --upgrade git+https://github.com/django-wiki/django-wiki.git`
 
 ## Pull requests
 

@@ -8,8 +8,14 @@ Thanks for the technique!
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import unicode_literals
+
+try:
+    from importlib import import_module
+except ImportError:
+    # Python 2.6 fallback
+    from django.utils.importlib import import_module
+
 from django.conf import settings
-from django.utils.importlib import import_module
 
 
 def get_module(app, modname, verbose, failfast):

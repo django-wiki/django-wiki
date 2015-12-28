@@ -6,6 +6,15 @@ import mptt.fields
 from django.conf import settings
 import django.db.models.deletion
 
+from wiki.conf.settings import GROUP_MODEL
+
+
+# Django 1.9 deprecation of IPAddressField
+try:
+    from django.db.models.fields import GenericIPAddressField as IPAddressField
+except ImportError:
+    from django.db.models.fields import IPAddressField
+
 
 class Migration(migrations.Migration):
 
@@ -66,7 +75,7 @@ class Migration(migrations.Migration):
                 ('revision_number', models.IntegerField(verbose_name='revision number', editable=False)),
                 ('user_message', models.TextField(blank=True)),
                 ('automatic_log', models.TextField(blank=True, editable=False)),
-                ('ip_address', models.IPAddressField(null=True, verbose_name='IP address', blank=True, editable=False)),
+                ('ip_address', IPAddressField(null=True, verbose_name='IP address', blank=True, editable=False)),
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('deleted', models.BooleanField(default=False, verbose_name='deleted')),
@@ -109,7 +118,7 @@ class Migration(migrations.Migration):
                 ('revision_number', models.IntegerField(verbose_name='revision number', editable=False)),
                 ('user_message', models.TextField(blank=True)),
                 ('automatic_log', models.TextField(blank=True, editable=False)),
-                ('ip_address', models.IPAddressField(null=True, verbose_name='IP address', blank=True, editable=False)),
+                ('ip_address', IPAddressField(null=True, verbose_name='IP address', blank=True, editable=False)),
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('deleted', models.BooleanField(default=False, verbose_name='deleted')),
@@ -186,7 +195,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='article',
             name='group',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, help_text='Like in a UNIX file system, permissions can be given to a user according to group membership. Groups are handled through the Django auth system.', blank=True, to='auth.Group', verbose_name='group'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, help_text='Like in a UNIX file system, permissions can be given to a user according to group membership. Groups are handled through the Django auth system.', blank=True, to=GROUP_MODEL, verbose_name='group'),
             preserve_default=True,
         ),
         migrations.AddField(

@@ -5,7 +5,7 @@
 # so that we can benefit from and use the cache->directories
 # directive.
 
-sudo: no
+sudo: false
 
 env: PIP_DOWNLOAD_CACHE="pip_cache"
 
@@ -19,10 +19,12 @@ env:
 - TOXENV=py27-django16
 - TOXENV=py27-django17
 - TOXENV=py27-django18
+- TOXENV=py27-django19
 - TOXENV=py34-django15
 - TOXENV=py34-django16
 - TOXENV=py34-django17
 - TOXENV=py34-django18
+- TOXENV=py34-django19
 
 install:
   - pip install tox>=2.1 coveralls

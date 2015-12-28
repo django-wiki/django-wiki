@@ -7,6 +7,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext
 
 from . import settings
 
@@ -54,9 +55,10 @@ class Image(RevisionPlugin):
             app_label = settings.APP_LABEL
 
     def __str__(self):
-        title = (_('Image: %s') % self.current_revision.imagerevision.get_filename(
-        )) if self.current_revision else _('Current revision not set!!')
-        return str(title)
+        if self.current_revision:
+            return ugettext('Image: %s') % self.current_revision.imagerevision.get_filename()
+        else:
+            return ugettext('Current revision not set!!')
 
 
 @python_2_unicode_compatible
@@ -114,8 +116,7 @@ class ImageRevision(RevisionPluginRevision):
         ordering = ('-created',)
 
     def __str__(self):
-        title = _('Image Revsion: %d') % self.revision_number
-        return str(title)
+        return ugettext('Image Revsion: %d') % self.revision_number
 
 
 def on_image_revision_delete(instance, *args, **kwargs):
