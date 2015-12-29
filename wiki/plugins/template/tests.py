@@ -3,10 +3,10 @@ from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client
-from wiki.tests.base import ArticleTestBase
+from wiki.tests.base import ArticleWebTestBase
 
 
-class TemplateTest(ArticleTestBase):
+class TemplateTest(ArticleWebTestBase):
 
     """Tests by the dummy web client, with manual creating the root article."""
 
