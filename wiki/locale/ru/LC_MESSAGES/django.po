@@ -1,20 +1,21 @@
 # 
 # Translators:
 # Corrections: Sergey Minozhenko <sergey.minozhenko@stratatech.ru> and Mary Chikitkina<mchikitkina@gmail.com>, 2013
+# Dmitry Borisoglebsky <dmitry.borisoglebsky@gmail.com>, 2015
 # crazyzubr <hjcnbckfd@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: django-wiki\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-04-15 19:20+0200\n"
-"PO-Revision-Date: 2015-04-25 11:06+0000\n"
-"Last-Translator: Benjamin Bach <benjaoming@gmail.com>\n"
-"Language-Team: Russian (http://www.transifex.com/projects/p/django-wiki/language/ru/)\n"
+"PO-Revision-Date: 2015-12-07 20:19+0000\n"
+"Last-Translator: Dmitry Borisoglebsky <dmitry.borisoglebsky@gmail.com>\n"
+"Language-Team: Russian (http://www.transifex.com/django-wiki/django-wiki/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ru\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: admin.py:86 models/article.py:42
 msgid "created"
@@ -22,15 +23,15 @@ msgstr "создан"
 
 #: apps.py:9
 msgid "Wiki notifications"
-msgstr ""
+msgstr "Уведомления вики"
 
 #: apps.py:15
 msgid "Wiki images"
-msgstr ""
+msgstr "Изображения вики"
 
 #: apps.py:21
 msgid "Wiki attachments"
-msgstr ""
+msgstr "Вложения вики"
 
 #: conf/settings.py:32
 msgid "Table of Contents"
@@ -50,7 +51,7 @@ msgstr "Блокировщику спама не удалось найти по�
 msgid ""
 "Spam protection: You are only allowed to create or edit %(revisions)d "
 "article(s) per %(interval_name)s."
-msgstr "Блокировщик спама: На время %(interval_name)s Вы не можете создавать или редактировать %(revisions)d статью."
+msgstr "Блокировщик спама: На время %(interval_name)s Вы не можете создавать или редактировать %(revisions)d статьи."
 
 #: forms.py:96
 msgid "minute"
@@ -148,7 +149,7 @@ msgstr "Статья с таким адресом \"%s\" уже существу
 
 #: forms.py:352
 msgid "This slug conflicts with an existing URL."
-msgstr ""
+msgstr "У этого адреса (URL Path) возникает конфликт с уже существующим адресом (URL Path)."
 
 #: forms.py:371
 msgid "Yes, I am sure"
@@ -167,7 +168,7 @@ msgstr "Очистить статью: полное удаление (со вс�
 
 #: forms.py:383 plugins/attachments/forms.py:168 plugins/images/forms.py:70
 msgid "You are not sure enough!"
-msgstr "Вы, кажется, не уверены!"
+msgstr "Вы не можете быть уверены!"
 
 #: forms.py:387
 msgid "While you tried to delete this article, it was modified. TAKE CARE!"
@@ -175,7 +176,7 @@ msgstr "ВНИМАНИЕ: В то время как вы пытались уда
 
 #: forms.py:394
 msgid "Lock article"
-msgstr "Статья блокирована"
+msgstr "Заблокировать статью"
 
 #: forms.py:395
 msgid "Deny all users access to edit this article."
@@ -209,7 +210,7 @@ msgstr "Унаследовать права"
 msgid ""
 "Check here to apply the above permissions (excluding group and owner of the "
 "article) recursively to articles below this one."
-msgstr "Отметьте здесь, чтобы применить указанные права (за исключением группы и владельца \"статьи\") рекурсивно к статьям ниже уровнем."
+msgstr "Отметьте здесь, чтобы применить указанные права (за исключением группы и владельца \"статьи\"), рекурсивно к статьям ниже уровнем."
 
 #: forms.py:421
 msgid "Inherit owner"
@@ -241,7 +242,7 @@ msgstr "Вы не изменили настройки прав, поэтому �
 
 #: forms.py:497
 msgid "No user with that username"
-msgstr "Нет пользователя на указанное имя (ник)."
+msgstr "Пользователя с таким именем (ником) не существует."
 
 #: forms.py:532
 msgid "Article locked for editing"
@@ -286,7 +287,7 @@ msgstr "владелец"
 msgid ""
 "The owner of the article, usually the creator. The owner always has both "
 "read and write access."
-msgstr "Владелец статьи, как правило создатель. Он всегда имеет права на чтение и изменение."
+msgstr "Владелец статьи, как правило создатель. Владелей всегда имеет права на чтение и изменение."
 
 #: models/article.py:57
 msgid "group"
@@ -333,11 +334,11 @@ msgstr "Может назначать права другим пользоват
 
 #: models/article.py:241
 msgid "content type"
-msgstr ""
+msgstr "тип контента"
 
 #: models/article.py:243
 msgid "object ID"
-msgstr ""
+msgstr "идентификатор объекта"
 
 #: models/article.py:253
 msgid "Article for object"
@@ -396,7 +397,7 @@ msgstr "оригинал статьи"
 
 #: models/pluginbase.py:89
 msgid "Permissions are inherited from this article"
-msgstr "Права для этой статьи наследуются"
+msgstr "Права наследуются из этой статьи"
 
 #: models/pluginbase.py:168
 msgid "A plugin was changed"
@@ -468,7 +469,7 @@ msgstr "Удалить предыдущие"
 
 #: plugins/attachments/forms.py:71
 msgid "Remove previous attachment revisions and their files (to save space)?"
-msgstr "Удалить предыдущие ревизии вложений и их файлы (для освобождения свободного места)"
+msgstr "Удалить предыдущие ревизии вложений и их файлы (для освобождения свободного места)?"
 
 #: plugins/attachments/forms.py:80
 msgid "File or zip archive"
@@ -490,7 +491,7 @@ msgstr "Не zip-архив"
 
 #: plugins/attachments/forms.py:117
 msgid "User not allowed to moderate this article"
-msgstr ""
+msgstr "Пользователю не разрешено радактировать эту статью"
 
 #: plugins/attachments/forms.py:163
 msgid "Yes I am sure..."
@@ -500,7 +501,7 @@ msgstr "Да, я уверен..."
 msgid ""
 "The revision of this attachment currently in use (on all articles using the "
 "attachment)"
-msgstr "Ревизия с этим вложением в данный момент используется (для всех статей, использующих вставки)"
+msgstr "Ревизия с этим вложением в данный момент используется (для всех статей, использующих это вложение)"
 
 #: plugins/attachments/models.py:42
 msgid "original filename"
@@ -516,12 +517,12 @@ msgstr "вложения"
 
 #: plugins/attachments/models.py:73
 msgid "No file extension found in filename. That's not okay!"
-msgstr ""
+msgstr "Разрешение файла не найдено. Плохо!"
 
 #: plugins/attachments/models.py:78
 #, python-format
 msgid "The following filename is illegal: %s. Extension has to be one of %s"
-msgstr ""
+msgstr "Подобные разрешения для файла запрещены: %s. Разрешения перечислены ниже %s"
 
 #: plugins/attachments/models.py:124
 msgid "file"
@@ -547,7 +548,7 @@ msgid ""
 "\n"
 "    The file may be referenced on other articles. Deleting it means that they will loose their references to this file. The following articles reference this file:\n"
 "    "
-msgstr "\n    Файл может  быть связан с другими статьями. Удаление этого параметра означает, что они потеряют ссылки на этот файл. Ссылки на этот файл в следующих статьях:\n    "
+msgstr "\n\nФайл может  быть связан с другими статьями. Удаление этого параметра означает, что они потеряют ссылки на этот файл. Ссылки на этот файл в следующих статьях:"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:29
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:53
@@ -574,7 +575,7 @@ msgid ""
 "\n"
 "    You can remove a reference to a file, but it will retain its references on other articles.\n"
 "    "
-msgstr "\n    Вы можете удалить ссылку на файл, это не затронет ссылки с других статей. \n    "
+msgstr "\nВы можете удалить ссылку на файл, но ссылки в других статьях остануться существовать. "
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:57
 msgid "Remove reference"
@@ -623,7 +624,7 @@ msgstr "Загрузить"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:41
 msgid "Use this!"
-msgstr "Применить"
+msgstr "Используй это!"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:5
 #: plugins/attachments/wiki_plugin.py:24
@@ -686,11 +687,11 @@ msgstr "Найти и добавить файл"
 msgid ""
 "You can reuse files from other articles. These files are subject to updates "
 "on other articles which may or may not be a good thing."
-msgstr "Вы можете использовать файлы других статей. Эти файлы могли быть изменены."
+msgstr "Вы можете использовать файлы других статей. Эти файлы могут быть изменены."
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:120
 msgid "Restore attachments"
-msgstr "Восстановление вложений"
+msgstr "Восстановить вложения"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:133
 #: templates/wiki/deleted.html:25 templates/wiki/deleted.html.py:30
@@ -705,15 +706,15 @@ msgstr "Нечего восстанавливать"
 msgid ""
 "The article is currently locked for editing, and therefore no new "
 "attachments can be added."
-msgstr "Статья в настоящее время недоступна для редактирования, поэтому нельзя добавить вложение."
+msgstr "Статья в настоящее время недоступна для редактирования, что не позволяет добавлять новые вложения."
 
 #: plugins/attachments/templates/wiki/plugins/attachments/render.html:6
 msgid "This attachment is not permitted on this page."
-msgstr "К этой статье больше не привязан файл %s."
+msgstr "Следующее вложение на этой странице запрещено."
 
 #: plugins/attachments/templates/wiki/plugins/attachments/render.html:8
 msgid "Click to download"
-msgstr "Нажать для загрузки"
+msgstr "Нажать для скачивания"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:12
 #, python-format
@@ -721,7 +722,7 @@ msgid ""
 "\n"
 "  Replacing an attachment means adding a new file that will be used in its place. All references to the file will be replaced by the one you upload and the file will be downloaded as <strong>%(filename)s</strong>. Please note that this attachment is in use on other articles, you may distort contents. However, do not hestitate to take advantage of this and make replacements for the listed articles where necessary. This way of working is more efficient....\n"
 "  "
-msgstr "\n  Замена вложений означает, что будет использоваться новый файл вместо существующего. Все ссылки на файлы заменяться на те, что вы загрузите. Имя файла будет <strong>%(filename)s</strong>. Обратите внимание, что этот файл используется в других статьях, что отразится на их содержании. Тем не менее, не стесняйтесь использовать эту функцию и при необходимости замените в статьях, перечисленных ниже. Такой способ работы является более эффективным...\n  "
+msgstr "\nЗамена вложений означает, что будет использоваться новый файл вместо существующего. Все ссылки на файлы заменяться на те, что вы загрузите. Имя файла будет <strong>%(filename)s</strong>. Обратите внимание, что этот файл используется в других статьях, что отразится на их содержании. Тем не менее, не стесняйтесь использовать эту функцию и при необходимости замените в статьях, перечисленных ниже. Такой способ работы является более эффективным...\n  "
 
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:17
 #, python-format
@@ -737,7 +738,7 @@ msgid ""
 "\n"
 "  Replacing an attachment means adding a new file that will be used in its place. All references to the file will be replaced by the one you upload and the file will be downloaded as <strong>%(filename)s</strong>.\n"
 "  "
-msgstr "\n  Замена вложений означает, что будет использоваться новый файл на месте  этого. Все ссылки на файл изменятся с учетом того, что вы загрузите. Имя файла будет <strong>%(filename)s</strong>.\n  "
+msgstr "\nЗамена вложений означает, что будет использоваться новый файл на месте  этого. Все ссылки на файл изменятся с учетом того, что вы загрузите. Имя файла будет <strong>%(filename)s</strong>.\n  "
 
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:43
 #: plugins/images/templates/wiki/plugins/images/index.html:45
@@ -808,7 +809,7 @@ msgstr "Добавлена ссылка \"%(art)s\" для \"%(att)s\"."
 #: plugins/attachments/views.py:353
 #, python-format
 msgid "\"%(att)s\" is already referenced."
-msgstr ""
+msgstr "\"%(att)s\" ссылка уже была добавлена."
 
 #: plugins/attachments/views.py:402
 #, python-format
@@ -832,7 +833,7 @@ msgstr "Файл был удален: %s"
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:1
 msgid "Adding new articles"
-msgstr "Добавить новые статьи"
+msgstr "Добавляю новые статьи"
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:3
 msgid ""
@@ -933,7 +934,7 @@ msgstr "Нет файла"
 
 #: plugins/images/templates/wiki/plugins/images/index.html:36
 msgid "Upload and publish new image"
-msgstr ""
+msgstr "Загрузите и опубликуйте новое изображение."
 
 #: plugins/images/templates/wiki/plugins/images/index.html:40
 msgid "Restore image"
@@ -971,7 +972,7 @@ msgstr "Удаляет изображение навсегда (и все его
 
 #: plugins/images/templates/wiki/plugins/images/purge.html:27
 msgid "Remove it completely!"
-msgstr "Удаление завершено!"
+msgstr "Удалить полностью!"
 
 #: plugins/images/templates/wiki/plugins/images/render.html:13
 msgid "Image not found"
@@ -1016,7 +1017,7 @@ msgstr "У вас нет прав на добавление изображени
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:119
 msgid "How to use images"
-msgstr "Изображение сейчас используется"
+msgstr "Как использовать изображения."
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:122
 msgid ""
@@ -1112,7 +1113,7 @@ msgstr "Вставить ссылку на другую страницу с ко
 
 #: plugins/macros/mdx/macro.py:105
 msgid "[[WikiLink]]"
-msgstr ""
+msgstr "[[WikiLink]]"
 
 #: plugins/macros/templates/wiki/plugins/macros/article_list.html:6
 msgid "Article index"
@@ -1134,7 +1135,7 @@ msgstr "Получать уведомления %(interval)s"
 #: plugins/notifications/forms.py:33
 #, python-format
 msgid "%(title)s - %(url)s"
-msgstr ""
+msgstr "%(title)s - %(url)s"
 
 #: plugins/notifications/forms.py:50
 msgid "Remove subscriptions"
@@ -1247,7 +1248,7 @@ msgstr "Сохранить изменения"
 #: plugins/notifications/views.py:33
 #, python-format
 msgid "You will receive notifications %(interval)s for %(articles)d articles"
-msgstr ""
+msgstr "Вы получите уведомления %(interval)s для %(articles)d статей."
 
 #: templates/wiki/accounts/login.html:4 templates/wiki/base_site.html:75
 msgid "Log in"
@@ -1295,7 +1296,7 @@ msgid ""
 "Powered by <a href=\"http://www.django-wiki.org\">django-wiki</a>, an open "
 "source application under the <a href=\"http://www.gnu.org/licenses/quick-"
 "guide-gplv3.html\">GPLv3</a> license. Let knowledge be the cure."
-msgstr "Создано на <a href=\"http://www.django-wiki.org\">django-wiki</a>, с открытым исходным кодом по лицензии <a href=\"http://www.gnu.org/licenses/quick-guide-gplv3.html\">GPLv3</a>. Пусть знания будут лекарством."
+msgstr "Создано на <a href=\"http://www.django-wiki.org\">django-wiki</a>, с открытым исходным кодом по лицензии <a href=\"http://www.gnu.org/licenses/quick-guide-gplv3.html\">GPLv3</a>. Пусть знания лекарством станут нам."
 
 #: templates/wiki/create.html:5 templates/wiki/create.html.py:44
 msgid "Add new article"
@@ -1346,13 +1347,13 @@ msgstr "Вы не можете удалить основную статью."
 msgid ""
 "You cannot delete this article because you do not have permission to delete "
 "articles with children. Try to remove the children manually one-by-one."
-msgstr "Вы не можете удалять, потому что у вас нет необходимых прав для удаления подпунктов этой статьи. Попробуйте удалить каждый подпункт вручную."
+msgstr "Вы не можете удалять, потому что у вас нет необходимых прав для удаления статьи с детьми. Попробуйте удалить каждую подстатью вручную."
 
 #: templates/wiki/delete.html:23
 msgid ""
 "You are deleting an article. This means that its children will be deleted as"
 " well. If you choose to purge, children will also be purged!"
-msgstr "Вы не можете удалять, потому что у вас нет необходимых прав для удаления подпунктов этой статьи. Попробуйте удалить каждый подпункт вручную."
+msgstr "Вы удаляете эту статью, что узначает и удаление детей статьи. Если вы выберете полное удаление, то и подстатьи будут навсегда удалены!"
 
 #: templates/wiki/delete.html:25
 msgid "Articles that will be deleted"
@@ -1376,11 +1377,11 @@ msgstr "Удаленные статьи"
 
 #: templates/wiki/deleted.html:17
 msgid "The article you were looking for has been deleted."
-msgstr "Статьи, которые вы видите, были удалены."
+msgstr "Статья, которую Вы захотели открыть, была удалена."
 
 #: templates/wiki/deleted.html:26
 msgid "You may restore this article and its children by clicking restore."
-msgstr "Вы можете восстановить эту статью и ее подпункты, нажав на кнопку \"Восстановить\""
+msgstr "Вы можете восстановить эту статью и ее подстатьи, нажав на кнопку \"Восстановить\""
 
 #: templates/wiki/deleted.html:41
 msgid ""
@@ -1410,7 +1411,7 @@ msgstr "статья,статьи"
 
 #: templates/wiki/dir.html:40
 msgid "is,are"
-msgstr "Есть,Есть"
+msgstr "есть,есть"
 
 #: templates/wiki/dir.html:40
 #, python-format
@@ -1641,30 +1642,30 @@ msgstr "Восстановление к этой ревизии отметит �
 msgid ""
 "You have django-wiki installed and it seems to be working. But there are no "
 "articles yet."
-msgstr ""
+msgstr "Django-wiki установлена и похоже работает. Однако статьи пока отсутствуют."
 
 #: templates/wiki/root_missing.html:17
 msgid ""
 "Not to worry! You simply have to login with a superuser account and create "
 "the first article in the root of the URL hierarchy."
-msgstr ""
+msgstr "Поводов для беспокойства нет! Вам просто нежно зайти с акканта суперюзера, и создать первую статью в корневом узле иерархии URL."
 
 #: templates/wiki/root_missing.html:21
 msgid "Click here to login"
-msgstr ""
+msgstr "Нажмите для захода в систему"
 
 #: templates/wiki/root_missing.html:27
 msgid ""
 "But since you're logged in as a superuser, we should really get started..."
-msgstr ""
+msgstr "Так как Вы зашли суперпользователем, Вам пожалуй следует начать..."
 
 #: templates/wiki/root_missing.html:29
 msgid "Yes, I'll go and create the first article"
-msgstr ""
+msgstr "Да, я создам первую статью"
 
 #: templates/wiki/root_missing.html:30
 msgid "No thanks, I'd rather read the documentation"
-msgstr ""
+msgstr "Нет, пожалуй я ознакомлюсь с документацией"
 
 #: templates/wiki/search.html:5 templates/wiki/search.html.py:9
 msgid "Search results for:"
@@ -1673,11 +1674,11 @@ msgstr "Результаты поиска для:"
 #: templates/wiki/search.html:23
 #, python-format
 msgid "Your search returned <strong>%(cnt)s</strong> results."
-msgstr "Поиск вернул <strong>%(cnt)s</strong> результатов."
+msgstr "Результаты Вашего поиска: <strong>%(cnt)s</strong>."
 
 #: templates/wiki/source.html:5
 msgid "Source of"
-msgstr "Источник для"
+msgstr "Источник "
 
 #: templates/wiki/source.html:10
 msgid "This article is currently locked for editing."
@@ -1697,7 +1698,7 @@ msgstr "Вы вышли из системы. Пока!"
 
 #: views/accounts.py:109
 msgid "You are now logged in! Have fun!"
-msgstr "Вы авторизованы! Развлекайтесь!"
+msgstr "Вы авторизованы! Удачи!"
 
 #: views/article.py:112
 #, python-format
@@ -1716,7 +1717,7 @@ msgstr "Возникли ошибки при создании статьи."
 #: views/article.py:212
 msgid ""
 "This article cannot be deleted because it has children or is a root article."
-msgstr "Эта статья не может быть удалена, потому что у нее есть подпункты или она является основной."
+msgstr "Эта статья не может быть удалена, потому что у нее есть подстатьи или она является корневой статьёй."
 
 #: views/article.py:222
 msgid ""
