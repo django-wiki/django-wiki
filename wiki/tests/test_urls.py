@@ -47,15 +47,16 @@ urlpatterns = [
 
 if DJANGO_VERSION < (1, 8):
     urlpatterns = patterns('', *urlpatterns)
-    
 
+
+@wiki_override_settings(WIKI_URL_CONFIG_CLASS='wiki.tests.test_models.WikiCustomUrlPatterns',
+                        ROOT_URLCONF='wiki.tests.test_urls')
 class ArticleModelReverseMethodTest(TestCase):
-    
-    urls = 'wiki.tests.test_urls'
-    
-    @wiki_override_settings(WIKI_URL_CONFIG_CLASS='wiki.tests.test_models.WikiCustomUrlPatterns')
+
+    if DJANGO_VERSION < (1, 7):
+        urls = 'wiki.tests.test_urls'
+
     def test_get_absolute_url_if_urlpath_set_is_not_exists__no_root_urlconf(self):
-        
         a = Article.objects.create()
 
         url = a.get_absolute_url()
@@ -64,15 +65,14 @@ class ArticleModelReverseMethodTest(TestCase):
 
         self.assertEqual(url, expected)
 
-    @wiki_override_settings(WIKI_URL_CONFIG_CLASS='wiki.tests.test_models.WikiCustomUrlPatterns')
     def test_get_absolute_url_if_urlpath_set_is_exists__no_root_urlconf(self):
 
         a1 = Article.objects.create()
-        s1 = Site.objects.create()
+        s1 = Site.objects.create(domain="something.com", name="something.com")
         u1 = URLPath.objects.create(article=a1, site=s1)
 
         a2 = Article.objects.create()
-        s2 = Site.objects.create()
+        s2 = Site.objects.create(domain="somethingelse.com", name="somethingelse.com")
         URLPath.objects.create(
             article=a2,
             site=s2,

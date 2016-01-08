@@ -3,18 +3,20 @@ from __future__ import print_function, unicode_literals
 from __future__ import absolute_import
 import os.path
 
+from django.conf import settings as django_settings
 from django.db import models
+from django.db.models import signals
 from django.utils.translation import ugettext
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import python_2_unicode_compatible
-from django.conf import settings as django_settings
 
 from . import settings
 
 from wiki import managers
+from wiki.decorators import disable_signal_for_loaddata
 from wiki.models.pluginbase import ReusablePlugin
 from wiki.models.article import BaseRevisionMixin
-from django.db.models import signals
+
 from six.moves import map
 from six.moves import zip
 from six.moves import range
@@ -60,8 +62,12 @@ class Attachment(ReusablePlugin):
             app_label = settings.APP_LABEL
 
     def __str__(self):
-        return "%s: %s" % (
-            self.article.current_revision.title, self.original_filename)
+        from wiki.models import Article
+        try:
+            return "%s: %s" % (
+                self.article.current_revision.title, self.original_filename)
+        except Article.DoesNotExist:
+            return "Attachment for non-existing article"
 
 
 def extension_allowed(filename):
@@ -75,9 +81,14 @@ def extension_allowed(filename):
             lambda x: x.lower(),
             settings.FILE_EXTENSIONS):
         raise IllegalFileExtension(
-            ugettext("The following filename is illegal: %s. Extension has to be one of %s") %
-            (filename, ", ".join(
-                settings.FILE_EXTENSIONS)))
+            ugettext(
+                "The following filename is illegal: {filename:s}. Extension "
+                "has to be one of {extensions:s}"
+            ).format(
+                filename=filename,
+                extensions=", ".join(settings.FILE_EXTENSIONS)
+            )
+        )
 
     return extension
 
@@ -155,39 +166,12 @@ class AttachmentRevision(BaseRevisionMixin, models.Model):
         except ValueError:
             return None
 
-    def save(self, *args, **kwargs):
-        if (not self.id and
-                not self.previous_revision and
-                self.attachment and
-                self.attachment.current_revision and
-                self.attachment.current_revision != self):
-
-            self.previous_revision = self.attachment.current_revision
-
-        if not self.revision_number:
-            try:
-                previous_revision = self.attachment.attachmentrevision_set.latest()
-                self.revision_number = previous_revision.revision_number + 1
-            # NB! The above should not raise the below exception, but somehow
-            # it does.
-            except AttachmentRevision.DoesNotExist as noattach:
-                Attachment.DoesNotExist = noattach
-                self.revision_number = 1
-
-        super(AttachmentRevision, self).save(*args, **kwargs)
-
-        if not self.attachment.current_revision:
-            # If I'm saved from Django admin, then article.current_revision is
-            # me!
-            self.attachment.current_revision = self
-            self.attachment.save()
-
     def __str__(self):
         return "%s: %s (r%d)" % (self.attachment.article.current_revision.title,
                                  self.attachment.original_filename,
                                  self.revision_number)
 
-
+@disable_signal_for_loaddata
 def on_revision_delete(instance, *args, **kwargs):
     if not instance.file:
         return
@@ -217,4 +201,41 @@ def on_revision_delete(instance, *args, **kwargs):
             # Raised by os.listdir if directory is missing
             pass
 
+
+@disable_signal_for_loaddata
+def on_attachment_revision_pre_save(**kwargs):
+    instance = kwargs['instance']
+    if kwargs.get('created', False):
+        update_previous_revision = (
+            not instance.previous_revision and
+            instance.attachment and
+            instance.attachment.current_revision and
+            instance.attachment.current_revision != instance
+        )
+        if update_previous_revision:
+            instance.previous_revision = instance.attachment.current_revision
+
+    if not instance.revision_number:
+        try:
+            previous_revision = instance.attachment.attachmentrevision_set.latest()
+            instance.revision_number = previous_revision.revision_number + 1
+        # NB! The above should not raise the below exception, but somehow
+        # it does.
+        except AttachmentRevision.DoesNotExist as noattach:
+            Attachment.DoesNotExist = noattach
+            instance.revision_number = 1
+
+
+@disable_signal_for_loaddata
+def on_attachment_revision_post_save(**kwargs):
+    instance = kwargs['instance']
+    if not instance.attachment.current_revision:
+        # If I'm saved from Django admin, then article.current_revision is
+        # me!
+        instance.attachment.current_revision = instance
+        instance.attachment.save()
+
+
 signals.pre_delete.connect(on_revision_delete, AttachmentRevision)
+signals.pre_save.connect(on_attachment_revision_pre_save, AttachmentRevision)
+signals.post_save.connect(on_attachment_revision_post_save, AttachmentRevision)

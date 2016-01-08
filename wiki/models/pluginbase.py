@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-from __future__ import absolute_import
-from django.db import models
-from django.utils.translation import ugettext_lazy as _
-from django.db.models import signals
-
 """
 There are three kinds of plugin base models:
 
@@ -25,9 +19,15 @@ There are three kinds of plugin base models:
 
 
 """
+from __future__ import unicode_literals
+from __future__ import absolute_import
+from django.db import models
+from django.utils.translation import ugettext_lazy as _
+from django.db.models import signals
 
 from .article import ArticleRevision, BaseRevisionMixin
 from wiki.conf import settings
+from wiki.decorators import disable_signal_for_loaddata
 
 
 class ArticlePlugin(models.Model):
@@ -108,17 +108,6 @@ class ReusablePlugin(ArticlePlugin):
     def can_moderate(self, user):
         return self.article.can_moderate(user) if self.article else False
 
-    def save(self, *args, **kwargs):
-
-        # Automatically make the original article the first one in the added
-        # set
-        if not self.article:
-            articles = self.articles.all()
-            if articles.exists():
-                self.article = articles[0]
-
-        super(ReusablePlugin, self).save(*args, **kwargs)
-
     class Meta:
         # Override this setting with app_label = '' in your extended model
         # if it lives outside the wiki app.
@@ -166,19 +155,6 @@ class SimplePlugin(ArticlePlugin):
 
     def get_logmessage(self):
         return _("A plugin was changed")
-
-    def save(self, *args, **kwargs):
-        if not self.pk:
-            if not self.article.current_revision:
-                raise SimplePluginCreateError(
-                    "Article does not have a current_revision set.")
-            new_revision = ArticleRevision()
-            new_revision.inherit_predecessor(self.article)
-            new_revision.automatic_log = self.get_logmessage()
-            new_revision.save()
-
-            self.article_revision = new_revision
-        super(SimplePlugin, self).save(*args, **kwargs)
 
     class Meta:
         # Override this setting with app_label = '' in your extended model
@@ -249,36 +225,13 @@ class RevisionPluginRevision(BaseRevisionMixin, models.Model):
 
     plugin = models.ForeignKey(RevisionPlugin, related_name='revision_set')
 
-    def save(self, *args, **kwargs):
-        if (not self.id and
-                not self.previous_revision and
-                self.plugin and
-                self.plugin.current_revision and
-                self.plugin.current_revision != self):
-
-            self.previous_revision = self.plugin.current_revision
-
-        if not self.revision_number:
-            try:
-                previous_revision = self.plugin.revision_set.latest()
-                self.revision_number = previous_revision.revision_number + 1
-            except RevisionPluginRevision.DoesNotExist:
-                self.revision_number = 1
-
-        super(RevisionPluginRevision, self).save(*args, **kwargs)
-
-        if not self.plugin.current_revision:
-            # If I'm saved from Django admin, then plugin.current_revision is
-            # me!
-            self.plugin.current_revision = self
-            self.plugin.save()
-
     class Meta:
         # Override this setting with app_label = '' in your extended model
         # if it lives outside the wiki app.
         app_label = settings.APP_LABEL
         get_latest_by = 'revision_number'
         ordering = ('-created',)
+
 
 ######################################################
 # SIGNAL HANDLERS
@@ -290,6 +243,7 @@ class RevisionPluginRevision(BaseRevisionMixin, models.Model):
 # (Shellac, 1993)
 
 
+@disable_signal_for_loaddata
 def update_simple_plugins(**kwargs):
     """Every time a new article revision is created, we update all active
     plugins to match this article revision"""
@@ -302,21 +256,85 @@ def update_simple_plugins(**kwargs):
         p_revisions.update(article_revision=instance)
 
 
+@disable_signal_for_loaddata
+def on_simple_plugins_pre_save(**kwargs):
+    instance = kwargs['instance']
+    if kwargs.get('created', False):
+        if not instance.article.current_revision:
+            raise SimplePluginCreateError(
+                "Article does not have a current_revision set.")
+        new_revision = ArticleRevision()
+        new_revision.inherit_predecessor(instance.article)
+        new_revision.automatic_log = instance.get_logmessage()
+        new_revision.save()
+
+        instance.article_revision = new_revision
+
+
+@disable_signal_for_loaddata
 def on_article_plugin_post_save(**kwargs):
     articleplugin = kwargs['instance']
     articleplugin.article.clear_cache()
 
 
+@disable_signal_for_loaddata
+def on_reusable_plugin_pre_save(**kwargs):
+    # Automatically make the original article the first one in the added
+    # set
+    instance = kwargs['instance']
+    if not instance.article:
+        articles = instance.articles.all()
+        if articles.exists():
+            instance.article = articles[0]
+
+
+@disable_signal_for_loaddata
+def on_revision_plugin_revision_post_save(**kwargs):
+    # Automatically make the original article the first one in the added
+    # set
+    instance = kwargs['instance']
+    if not instance.plugin.current_revision:
+        # If I'm saved from Django admin, then plugin.current_revision is
+        # me!
+        instance.plugin.current_revision = instance
+        instance.plugin.save()
+
+    # Invalidate plugin's article cache
+    instance.plugin.article.clear_cache()
+
+@disable_signal_for_loaddata
+def on_revision_plugin_revision_pre_save(**kwargs):
+    instance = kwargs['instance']
+    if kwargs.get('created', False):
+        update_previous_revision = (
+            not instance.previous_revision and
+            instance.plugin and
+            instance.plugin.current_revision and
+            instance.plugin.current_revision != instance
+        )
+        if update_previous_revision:
+            instance.previous_revision = instance.plugin.current_revision
+
+    if not instance.revision_number:
+        try:
+            previous_revision = instance.plugin.revision_set.latest()
+            instance.revision_number = previous_revision.revision_number + 1
+        except RevisionPluginRevision.DoesNotExist:
+            instance.revision_number = 1
+
+
+@disable_signal_for_loaddata
 def on_reusable_plugin_post_save(**kwargs):
     reusableplugin = kwargs['instance']
     for article in reusableplugin.articles.all():
         article.clear_cache()
 
 
-def on_revision_plugin_revision_post_save(**kwargs):
-    revision = kwargs['instance']
-    revision.plugin.article.clear_cache()
-
 signals.post_save.connect(update_simple_plugins, ArticleRevision)
 signals.post_save.connect(on_article_plugin_post_save, ArticlePlugin)
 signals.post_save.connect(on_reusable_plugin_post_save, ReusablePlugin)
+signals.post_save.connect(on_revision_plugin_revision_post_save, RevisionPluginRevision)
+
+signals.pre_save.connect(on_reusable_plugin_pre_save, ReusablePlugin)
+signals.pre_save.connect(on_revision_plugin_revision_pre_save, RevisionPluginRevision)
+signals.pre_save.connect(on_simple_plugins_pre_save, SimplePlugin)

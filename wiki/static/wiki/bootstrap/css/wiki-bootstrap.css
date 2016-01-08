@@ -6454,6 +6454,7 @@ label {
   padding-bottom: 9px;
   margin: 40px 0 20px;
   border-bottom: 1px solid #eeeeee;
+  clear: both;
 }
 .wiki-article h2 {
   font-size: 24.5px;

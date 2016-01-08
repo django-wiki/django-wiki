@@ -4,7 +4,7 @@ from __future__ import absolute_import
 
 import pprint
 
-from .base import ArticleTestBase, WebTestBase
+from .base import ArticleWebTestBase, WebTestBase
 
 from django.core.urlresolvers import reverse
 
@@ -37,7 +37,7 @@ class RootArticleViewViewTests(WebTestBase):
         self.assertContains(response, 'test heading h1</h1>')
 
 
-class ArticleViewViewTests(ArticleTestBase):
+class ArticleViewViewTests(ArticleWebTestBase):
 
     """
     Tests for article views, assuming a root article already created.
@@ -53,34 +53,6 @@ class ArticleViewViewTests(ArticleTestBase):
         for klass in (Article, ArticleRevision, URLPath):
             print('* {} *'.format(klass.__name__))
             pprint.pprint(list(klass.objects.values()), width=240)
-
-    def test_preview_save(self):
-        """Test edit preview, edit save and messages."""
-
-        c = self.c
-
-        # test preview
-        response = c.post(
-            reverse('wiki:preview', kwargs={'path': ''}),  # url: '/_preview/'
-            self.example_data
-        )
-
-        self.assertContains(response, 'The modified text')
-
-        # test save and messages
-        example2 = self.example_data.copy()
-        example2['content'] = 'Something 2'
-        response = c.post(reverse('wiki:edit', kwargs={'path': ''}), example2)
-        message = getattr(c.cookies['messages'], 'value')
-
-        self.assertRedirects(response, reverse('wiki:root'))
-
-        response = c.get(reverse('wiki:root'))
-        # self.dump_db_status('test_preview_save')
-        # Why it doesn't display the latest revison text if other test
-        # preceded? It is correctly in the db.
-        self.assertContains(response, 'Something 2')
-        self.assertIn('succesfully added', message)
 
     def test_redirects_to_create_if_the_slug_is_unknown(self):
 
@@ -139,32 +111,7 @@ class ArticleViewViewTests(ArticleTestBase):
         self.assertNotContains(self.get_by_path(''), 'Sub Article 1')
 
 
-class CreateViewTest(ArticleTestBase):
-
-    def test_revision_conflict(self):
-        """
-        Test the warning if the same article is being edited concurrently.
-        """
-
-        c = self.c
-
-        response = c.post(
-            reverse('wiki:edit', kwargs={'path': ''}),
-            self.example_data
-        )
-
-        self.assertRedirects(response, reverse('wiki:root'))
-
-        response = c.post(
-            reverse('wiki:edit', kwargs={'path': ''}),
-            self.example_data
-        )
-
-        self.assertContains(
-            response,
-            'While you were editing, someone else changed the revision.'
-        )
-        # self.dump_db_status('after test_revision_conflict')
+class CreateViewTest(ArticleWebTestBase):
 
     def test_create_nested_article_in_article(self):
 
@@ -208,7 +155,7 @@ class CreateViewTest(ArticleTestBase):
         )  # on level 2')
 
 
-class DeletViewTest(ArticleTestBase):
+class DeleteViewTest(ArticleWebTestBase):
 
     def test_articles_cache_is_cleared_after_deleting(self):
 
@@ -248,7 +195,97 @@ class DeletViewTest(ArticleTestBase):
         self.assertContains(self.get_by_path('TestCache/'), 'Content 2')
 
 
-class SearchViewTest(ArticleTestBase):
+class EditViewTest(ArticleWebTestBase):
+
+    def test_preview_save(self):
+        """Test edit preview, edit save and messages."""
+
+        c = self.c
+        example_data = {
+            'content': 'The modified text',
+            'current_revision': '1',
+            'preview': '1',
+            # 'save': '1',  # probably not too important
+            'summary': 'why edited',
+            'title': 'wiki test'
+        }
+
+        # test preview
+        response = c.post(
+            reverse('wiki:preview', kwargs={'path': ''}),  # url: '/_preview/'
+            example_data
+        )
+
+        self.assertContains(response, 'The modified text')
+
+    def test_revision_conflict(self):
+        """
+        Test the warning if the same article is being edited concurrently.
+        """
+
+        c = self.c
+
+        example_data = {
+            'content': 'More modifications',
+            'current_revision': '1',
+            'preview': '0',
+            'save': '1',
+            'summary': 'why edited',
+            'title': 'wiki test'
+        }
+
+        response = c.post(
+            reverse('wiki:edit', kwargs={'path': ''}),
+            example_data
+        )
+
+        self.assertRedirects(response, reverse('wiki:root'))
+
+        response = c.post(
+            reverse('wiki:edit', kwargs={'path': ''}),
+            example_data
+        )
+
+        self.assertContains(
+            response,
+            'While you were editing, someone else changed the revision.'
+        )
+
+    def test_edit_save(self):
+
+        c = self.c
+        example_data = {
+            'content': 'More modifications',
+            'current_revision': '1',
+            'preview': '0',
+            'save': '1',
+            'summary': 'why edited',
+            'title': 'wiki test'
+        }
+
+        # test save and messages
+        example2 = example_data
+        example2['content'] = 'Something 2'
+        response = c.post(reverse('wiki:edit', kwargs={'path': ''}), example2)
+        message = getattr(c.cookies['messages'], 'value')
+
+        self.assertRedirects(response, reverse('wiki:root'))
+
+        response = c.get(reverse('wiki:root'))
+        # self.dump_db_status('test_preview_save')
+        # Why it doesn't display the latest revison text if other test
+        # preceded? It is correctly in the db.
+        self.assertContains(response, 'Something 2')
+        self.assertIn('successfully added', message)
+
+    def test_edit_view(self):
+        """Test that the edit page displays"""
+        c = self.c
+        response = c.get(reverse('wiki:edit', kwargs={'path': ''}))
+        self.assertContains(response, 'Edit')
+
+
+class SearchViewTest(ArticleWebTestBase):
 
     def test_query_string(self):
 

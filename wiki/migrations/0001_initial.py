@@ -6,6 +6,15 @@ import mptt.fields
 from django.conf import settings
 import django.db.models.deletion
 
+from wiki.conf.settings import GROUP_MODEL
+
+
+# Django 1.9 deprecation of IPAddressField
+try:
+    from django.db.models.fields import GenericIPAddressField as IPAddressField
+except ImportError:
+    from django.db.models.fields import IPAddressField
+
 
 class Migration(migrations.Migration):
 
@@ -66,7 +75,7 @@ class Migration(migrations.Migration):
                 ('revision_number', models.IntegerField(verbose_name='revision number', editable=False)),
                 ('user_message', models.TextField(blank=True)),
                 ('automatic_log', models.TextField(blank=True, editable=False)),
-                ('ip_address', models.IPAddressField(null=True, verbose_name='IP address', blank=True, editable=False)),
+                ('ip_address', IPAddressField(null=True, verbose_name='IP address', blank=True, editable=False)),
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('deleted', models.BooleanField(default=False, verbose_name='deleted')),
@@ -109,7 +118,7 @@ class Migration(migrations.Migration):
                 ('revision_number', models.IntegerField(verbose_name='revision number', editable=False)),
                 ('user_message', models.TextField(blank=True)),
                 ('automatic_log', models.TextField(blank=True, editable=False)),
-                ('ip_address', models.IPAddressField(null=True, verbose_name='IP address', blank=True, editable=False)),
+                ('ip_address', IPAddressField(null=True, verbose_name='IP address', blank=True, editable=False)),
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('deleted', models.BooleanField(default=False, verbose_name='deleted')),
@@ -143,9 +152,9 @@ class Migration(migrations.Migration):
                 ('rght', models.PositiveIntegerField(db_index=True, editable=False)),
                 ('tree_id', models.PositiveIntegerField(db_index=True, editable=False)),
                 ('level', models.PositiveIntegerField(db_index=True, editable=False)),
-                ('article', models.ForeignKey(editable=False, to='wiki.Article', verbose_name='Cache lookup value for articles')),
-                ('parent', mptt.fields.TreeForeignKey(related_name='children', null=True, blank=True, to='wiki.URLPath')),
-                ('site', models.ForeignKey(to='sites.Site')),
+                ('article', models.ForeignKey(help_text='This field is automatically updated, but you need to populate it when creating a new URL path.', on_delete=django.db.models.deletion.CASCADE, to='wiki.Article', verbose_name='Lookup value')),
+                ('parent', mptt.fields.TreeForeignKey(blank=True, help_text='Position of URL path in the tree.', null=True, on_delete=django.db.models.deletion.CASCADE, related_name='children', to='wiki.URLPath')),
+                ('site', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='sites.Site')),
             ],
             options={
                 'verbose_name_plural': 'URL paths',
@@ -186,7 +195,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='article',
             name='group',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, help_text='Like in a UNIX file system, permissions can be given to a user according to group membership. Groups are handled through the Django auth system.', blank=True, to='auth.Group', verbose_name='group'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, help_text='Like in a UNIX file system, permissions can be given to a user according to group membership. Groups are handled through the Django auth system.', blank=True, to=GROUP_MODEL, verbose_name='group'),
             preserve_default=True,
         ),
         migrations.AddField(

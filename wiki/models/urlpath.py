@@ -36,6 +36,7 @@ from wiki import managers
 from wiki.conf import settings
 from wiki.core.compat import atomic, transaction_commit_on_success
 from wiki.core.exceptions import NoRootURL, MultipleRootURLs
+from wiki.decorators import disable_signal_for_loaddata
 from wiki.models.article import ArticleRevision, ArticleForObject, Article
 
 log = logging.getLogger(__name__)
@@ -54,7 +55,7 @@ class URLPath(MPTTModel):
     INHERIT_PERMISSIONS = True
 
     objects = managers.URLPathManager()
-    
+
     # Do not use this because of
     # https://github.com/django-mptt/django-mptt/issues/369
     # _default_manager = objects
@@ -70,8 +71,11 @@ class URLPath(MPTTModel):
     article = models.ForeignKey(
         Article,
         on_delete=models.CASCADE,
-        editable=False,
-        verbose_name=_('Cache lookup value for articles'),
+        verbose_name=_('Lookup value'),
+        help_text=_(
+            "This field is automatically updated, but you need to populate "
+            "it when creating a new URL path."
+        )
     )
 
     SLUG_MAX_LENGTH = 50
@@ -83,7 +87,9 @@ class URLPath(MPTTModel):
         'self',
         null=True,
         blank=True,
-        related_name='children')
+        related_name='children',
+        help_text=_("Position of URL path in the tree.")
+    )
 
     def __init__(self, *args, **kwargs):
         pass
@@ -188,9 +194,6 @@ class URLPath(MPTTModel):
     def __str__(self):
         path = self.path
         return path if path else ugettext("(root)")
-
-    def save(self, *args, **kwargs):
-        super(URLPath, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
         assert not (self.parent and self.get_children()
@@ -313,6 +316,7 @@ class URLPath(MPTTModel):
 urlpath_content_type = None
 
 
+@disable_signal_for_loaddata
 def on_article_relation_save(**kwargs):
     global urlpath_content_type
     instance = kwargs['instance']

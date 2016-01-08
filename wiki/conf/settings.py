@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.conf import settings as django_settings
 from django.core.urlresolvers import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
+import django
 
 # Should urls be case sensitive?
 URL_CASE_SENSITIVE = getattr(django_settings, 'WIKI_URL_CASE_SENSITIVE', False)
@@ -163,7 +164,7 @@ SEARCH_VIEW = getattr(
     django_settings,
     'WIKI_SEARCH_VIEW',
     'wiki.views.article.SearchView'
-    if not 'wiki.plugins.haystack' in django_settings.INSTALLED_APPS
+    if 'wiki.plugins.haystack' not in django_settings.INSTALLED_APPS
     else
     'wiki.plugins.haystack.views.HaystackSearchView'
 )
@@ -172,6 +173,13 @@ SEARCH_VIEW = getattr(
 # renewed whenever an edit occurs but article content may be generated from
 # other objects that are changed.
 CACHE_TIMEOUT = getattr(django_settings, 'WIKI_CACHE_TIMEOUT', 600)
+
+# Choose the Group model to use. Defaults to django's auth.Group
+# This requires `django.apps` which was introduced in Django 1.7.
+if django.VERSION < (1, 7):
+    GROUP_MODEL = 'auth.Group'
+else:
+    GROUP_MODEL = getattr(django_settings, 'WIKI_GROUP_MODEL', 'auth.Group')
 
 ###################
 # SPAM PROTECTION #

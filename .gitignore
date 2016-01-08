@@ -2,7 +2,6 @@
 build
 dist
 *.egg-info
-README.rst
 testproject/testproject/whoosh_index/
 testproject/testproject/xapian_index/
 

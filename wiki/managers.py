@@ -89,7 +89,7 @@ class ArticleFkQuerySetMixin():
         if user.is_anonymous():
             q = self.filter(article__other_read=True)
         else:
-            # https://github.com/benjaoming/django-wiki/issues/67
+            # https://github.com/django-wiki/django-wiki/issues/67
             q = self.filter(
                 Q(article__other_read=True) | Q(article__owner=user) |
                 (Q(article__group__user=user) & Q(
@@ -104,7 +104,7 @@ class ArticleFkQuerySetMixin():
         if user.is_anonymous():
             q = self.filter(article__other_write=True)
         else:
-            # https://github.com/benjaoming/django-wiki/issues/67
+            # https://github.com/django-wiki/django-wiki/issues/67
             q = self.filter(
                 Q(article__other_write=True) | Q(article__owner=user) |
                 (Q(article__group__user=user) & Q(

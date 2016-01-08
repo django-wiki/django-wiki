@@ -2,21 +2,22 @@
 from __future__ import unicode_literals
 from __future__ import absolute_import
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.auth.models import Group
 from django.core.cache import cache
+from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models.signals import post_save, pre_delete
+from django.db.models.signals import post_save, pre_delete, pre_save
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
+
+from mptt.models import MPTTModel
 
 from wiki.conf import settings
 from wiki.core import permissions
 from wiki.core import compat
 from wiki.core.markdown import article_markdown
+from wiki.decorators import disable_signal_for_loaddata
 from wiki import managers
-from mptt.models import MPTTModel
-from django.core.urlresolvers import reverse
 
 # Django 1.9 deprecation of IPAddressField
 try:
@@ -60,7 +61,7 @@ class Article(models.Model):
         on_delete=models.SET_NULL)
 
     group = models.ForeignKey(
-        Group, verbose_name=_('group'),
+        settings.GROUP_MODEL, verbose_name=_('group'),
         blank=True, null=True,
         help_text=_(
             'Like in a UNIX file system, permissions can be given to a user according to group membership. Groups are handled through the Django auth system.'),
@@ -357,30 +358,6 @@ class ArticleRevision(BaseRevisionMixin, models.Model):
         self.deleted = predecessor.deleted
         self.locked = predecessor.locked
 
-    def save(self, *args, **kwargs):
-        if (not self.id and
-                not self.previous_revision and
-                self.article and
-                self.article.current_revision and
-                self.article.current_revision != self):
-
-            self.previous_revision = self.article.current_revision
-
-        if not self.revision_number:
-            try:
-                previous_revision = self.article.articlerevision_set.latest()
-                self.revision_number = previous_revision.revision_number + 1
-            except ArticleRevision.DoesNotExist:
-                self.revision_number = 1
-
-        super(ArticleRevision, self).save(*args, **kwargs)
-
-        if not self.article.current_revision:
-            # If I'm saved from Django admin, then article.current_revision is
-            # me!
-            self.article.current_revision = self
-            self.article.save()
-
     class Meta:
         app_label = settings.APP_LABEL
         get_latest_by = 'revision_number'
@@ -398,13 +375,50 @@ def _clear_ancestor_cache(article):
     for ancestor in article.ancestor_objects():
         ancestor.article.clear_cache()
 
-
+@disable_signal_for_loaddata
 def on_article_save_clear_cache(instance, **kwargs):
     on_article_delete_clear_cache(instance, **kwargs)
-post_save.connect(on_article_save_clear_cache, Article)
 
 
+@disable_signal_for_loaddata
 def on_article_delete_clear_cache(instance, **kwargs):
     _clear_ancestor_cache(instance)
     instance.clear_cache()
+
+
+@disable_signal_for_loaddata
+def on_article_revision_pre_save(**kwargs):
+    instance = kwargs['instance']
+    if kwargs.get('created', False):
+        revision_changed = (
+            not instance.previous_revision and
+            instance.article and
+            instance.article.current_revision and
+            instance.article.current_revision != instance
+        )
+        if revision_changed:
+            instance.previous_revision = instance.article.current_revision
+
+    if not instance.revision_number:
+        try:
+            previous_revision = instance.article.articlerevision_set.latest()
+            instance.revision_number = previous_revision.revision_number + 1
+        except ArticleRevision.DoesNotExist:
+            instance.revision_number = 1
+
+
+@disable_signal_for_loaddata
+def on_article_revision_post_save(**kwargs):
+
+    instance = kwargs['instance']
+    if not instance.article.current_revision:
+        # If I'm saved from Django admin, then article.current_revision is
+        # me!
+        instance.article.current_revision = instance
+        instance.article.save()
+
+
+pre_save.connect(on_article_revision_pre_save, ArticleRevision)
+post_save.connect(on_article_revision_post_save, ArticleRevision)
+post_save.connect(on_article_save_clear_cache, Article)
 pre_delete.connect(on_article_delete_clear_cache, Article)

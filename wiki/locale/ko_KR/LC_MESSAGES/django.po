@@ -1,0 +1,1773 @@
+# 
+# Translators:
+# CHAN HEE PARK <heavisidechan@gmail.com>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: django-wiki\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-04-15 19:20+0200\n"
+"PO-Revision-Date: 2015-05-23 11:53+0000\n"
+"Last-Translator: Grace Juyun Kim <gracejuyun@gmail.com>\n"
+"Language-Team: Korean (Korea) (http://www.transifex.com/django-wiki/django-wiki/language/ko_KR/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ko_KR\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: admin.py:86 models/article.py:42
+msgid "created"
+msgstr "생성됨"
+
+#: apps.py:9
+msgid "Wiki notifications"
+msgstr "위키 알림"
+
+#: apps.py:15
+msgid "Wiki images"
+msgstr "위키 이미지"
+
+#: apps.py:21
+msgid "Wiki attachments"
+msgstr "위키 첨부"
+
+#: conf/settings.py:32
+msgid "Table of Contents"
+msgstr "목차"
+
+#: core/plugins/base.py:64
+msgid "Settings for plugin"
+msgstr "플러그인 설정"
+
+#: forms.py:62
+msgid ""
+"Spam protection failed to find both a logged in user and an IP address."
+msgstr "스팸 방어기가 유저 로그인 상태 및 IP 주소 모두 찾지 못하였습니다."
+
+#: forms.py:77
+#, python-format
+msgid ""
+"Spam protection: You are only allowed to create or edit %(revisions)d "
+"article(s) per %(interval_name)s."
+msgstr "스팸 방어: %(revisions)d판 문서(들)은 %(interval_name)s 간격으로 생성 또는 수정할 수 있습니다."
+
+#: forms.py:96
+msgid "minute"
+msgstr "분"
+
+#: forms.py:97
+#, python-format
+msgid "%d minutes"
+msgstr "%d 분"
+
+#: forms.py:106
+msgid "hour"
+msgstr "시"
+
+#: forms.py:112 forms.py:124 forms.py:300 templates/wiki/dir.html:48
+#: templates/wiki/search.html:30
+msgid "Title"
+msgstr "제목"
+
+#: forms.py:114
+msgid "Initial title of the article. May be overridden with revision titles."
+msgstr "문서의 최초 제목. 개정판에서는 제목이 수정 될 수 있습니다."
+
+#: forms.py:116
+msgid "Type in some contents"
+msgstr "내용을 입력하세요"
+
+#: forms.py:118
+msgid ""
+"This is just the initial contents of your article. After creating it, you "
+"can use more complex features like adding plugins, meta data, related "
+"articles etc..."
+msgstr "이것은 단지 문서의 초기 내용에 지나지 않습니다. 생성 후에는 플러그인, 메타데이터, 관련 문서들을 추가하는 등의 복잡한 작업들을 할 수 있습니다."
+
+#: forms.py:126 forms.py:307
+msgid "Contents"
+msgstr "내용"
+
+#: forms.py:131 forms.py:312
+msgid "Summary"
+msgstr "요약"
+
+#: forms.py:133
+msgid ""
+"Give a short reason for your edit, which will be stated in the revision log."
+msgstr "개정판 로그에 남길 편집 이유를 간단히 쓰세요."
+
+#: forms.py:192
+msgid ""
+"While you were editing, someone else changed the revision. Your contents "
+"have been automatically merged with the new contents. Please review the text"
+" below."
+msgstr "편집하는 동안 누군가에 의해 개정판이 바뀌었습니다. 편집한 내용은 자동으로 새로운 내용과 합쳐집니다. 아래 글을 확인해 주세요."
+
+#: forms.py:196
+msgid "No changes made. Nothing to save."
+msgstr "갱신된 내용이 없습니다. 저장될 내용이 없습니다."
+
+#: forms.py:237
+msgid "Select an option"
+msgstr "옵션을 선택하세요"
+
+#: forms.py:302 templates/wiki/dir.html:49
+msgid "Slug"
+msgstr "Slug"
+
+#: forms.py:304
+msgid ""
+"This will be the address where your article can be found. Use only "
+"alphanumeric characters and - or _. Note that you cannot change the slug "
+"after creating the article."
+msgstr "이것은 문서를 찾을 수 있는 주소로 사용될 것입니다. 알파벳/숫자 그리고 - 또는 _만 사용이 가능합니다. 문서 생성 후에는 slug를 바꿀 수 없습니다."
+
+#: forms.py:313
+msgid "Write a brief message for the article's history log."
+msgstr "문서 히스토리 로그에 남길 간략한 메시지를 쓰세요."
+
+#: forms.py:320
+msgid "A slug may not begin with an underscore."
+msgstr "slug는 언더스코어로 시작하면 안 됩니다."
+
+#: forms.py:323
+msgid "'admin' is not a permitted slug name."
+msgstr "'admin'은 slug 이름으로 허용되지 않습니다."
+
+#: forms.py:339
+#, python-format
+msgid "A deleted article with slug \"%s\" already exists."
+msgstr "삭제된 문서 중 slug \"%s\"가 이미 존재합니다."
+
+#: forms.py:343
+#, python-format
+msgid "A slug named \"%s\" already exists."
+msgstr "\"%s\" 라는 이름을 가진 slug 가 이미 존재합니다."
+
+#: forms.py:352
+msgid "This slug conflicts with an existing URL."
+msgstr "이 slug는 기존 URL과 충돌합니다."
+
+#: forms.py:371
+msgid "Yes, I am sure"
+msgstr "네, 확실합니다."
+
+#: forms.py:374 templates/wiki/deleted.html:47
+msgid "Purge"
+msgstr "완전히 삭제"
+
+#: forms.py:376
+msgid ""
+"Purge the article: Completely remove it (and all its contents) with no undo."
+" Purging is a good idea if you want to free the slug such that users can "
+"create new articles in its place."
+msgstr "문서 완전히 삭제: 복원 없이 문서(그리고 모든 내용)를 완전히 삭제합니다. 문서 완전히 삭제는 slug를 없애고 사용자가 그 자리에 새 문서를 생성하고자 할 때 유용합니다."
+
+#: forms.py:383 plugins/attachments/forms.py:168 plugins/images/forms.py:70
+msgid "You are not sure enough!"
+msgstr "확실하지 않으신가봐요!"
+
+#: forms.py:387
+msgid "While you tried to delete this article, it was modified. TAKE CARE!"
+msgstr "이 문서를 삭제하려고 하는 동안 문서가 수정되었습니다. 주의하세요!"
+
+#: forms.py:394
+msgid "Lock article"
+msgstr "문서 잠그기"
+
+#: forms.py:395
+msgid "Deny all users access to edit this article."
+msgstr "모든 사용자들이 이 문서를 편집할 수 없게 합니다."
+
+#: forms.py:398
+msgid "Permissions"
+msgstr "권한"
+
+#: forms.py:404
+msgid "Owner"
+msgstr "소유자"
+
+#: forms.py:405
+msgid "Enter the username of the owner."
+msgstr "소유자의 사용자명을 입력하세요."
+
+#: forms.py:408 forms.py:467 plugins/notifications/util.py:14
+msgid "(none)"
+msgstr "(없음)"
+
+#: forms.py:409
+msgid "Group"
+msgstr "그룹"
+
+#: forms.py:415
+msgid "Inherit permissions"
+msgstr "권한 상속"
+
+#: forms.py:417
+msgid ""
+"Check here to apply the above permissions (excluding group and owner of the "
+"article) recursively to articles below this one."
+msgstr "클릭하면 위의 권한(그룹 과 문서 소유자 제외)이 이 문서 하위의 모든 문서에 적용됩니다."
+
+#: forms.py:421
+msgid "Inherit owner"
+msgstr "소유자 상속"
+
+#: forms.py:423
+msgid ""
+"Check here to apply the ownership setting recursively to articles below this"
+" one."
+msgstr "클릭하면 이 문서 하위의 모든 문서에 소유권이 적용됩니다."
+
+#: forms.py:427
+msgid "Inherit group"
+msgstr "그룹 상속"
+
+#: forms.py:429
+msgid ""
+"Check here to apply the group setting recursively to articles below this "
+"one."
+msgstr "클릭하면 이 문서 하위의 모든 문서에 그룹 설정이 재귀적으로 적용됩니다."
+
+#: forms.py:434
+msgid "Permission settings for the article were updated."
+msgstr "문서의 권한 설정이 갱신되었습니다."
+
+#: forms.py:437
+msgid "Your permission settings were unchanged, so nothing saved."
+msgstr "권한 설정 변경사항이 없어서 저장되지 않았습니다."
+
+#: forms.py:497
+msgid "No user with that username"
+msgstr "그런 사용자 이름을 가진 사용자는 없습니다"
+
+#: forms.py:532
+msgid "Article locked for editing"
+msgstr "문서 편집이 잠겼습니다."
+
+#: forms.py:539
+msgid "Article unlocked for editing"
+msgstr "문서 편집이 잠금해제 되었습니다."
+
+#: forms.py:566
+msgid "Filter..."
+msgstr "필터..."
+
+#: forms.py:576 templates/wiki/base_site.html:44
+msgid "Search..."
+msgstr "검색..."
+
+#: models/article.py:35 models/pluginbase.py:201
+#: plugins/attachments/models.py:35
+msgid "current revision"
+msgstr "현 개정판"
+
+#: models/article.py:38
+msgid ""
+"The revision being displayed for this article. If you need to do a roll-"
+"back, simply change the value of this field."
+msgstr "이 문서에 보여줄 개정판 입니다. 만일 롤백이 필요하면 단순히 이 필드의 값을 변경하시면 됩니다."
+
+#: models/article.py:46
+msgid "modified"
+msgstr "수정됨"
+
+#: models/article.py:47
+msgid "Article properties last modified"
+msgstr "마지막으로 변경된 문서 속성들"
+
+#: models/article.py:50
+msgid "owner"
+msgstr "소유자"
+
+#: models/article.py:53
+msgid ""
+"The owner of the article, usually the creator. The owner always has both "
+"read and write access."
+msgstr "문서의 소유자는 보통 문서를 생성한 사용자 입니다.  소유자는 항상 읽기와 쓰기 권한을 가지고 있습니다."
+
+#: models/article.py:57
+msgid "group"
+msgstr "그룹"
+
+#: models/article.py:60
+msgid ""
+"Like in a UNIX file system, permissions can be given to a user according to "
+"group membership. Groups are handled through the Django auth system."
+msgstr "UNIX 파일 시스템처럼, 사용자에게 그룹 멤버십에 따라 권한을 줄 수 있습니다. 그룹은 Django auth system을 통해 변경합니다."
+
+#: models/article.py:65
+msgid "group read access"
+msgstr "그룹 읽기 허용"
+
+#: models/article.py:68
+msgid "group write access"
+msgstr "그룹 쓰기 허용"
+
+#: models/article.py:71
+msgid "others read access"
+msgstr "외부인 읽기 허용"
+
+#: models/article.py:74
+msgid "others write access"
+msgstr "외부인 쓰기 허용"
+
+#: models/article.py:187
+#, python-format
+msgid "Article without content (%(id)d)"
+msgstr "내용 없는 문서 (%(id)d)"
+
+#: models/article.py:193
+msgid "Can edit all articles and lock/unlock/restore"
+msgstr "모든 문서를 편집/잠금/잠금해제/복원 할 수 있습니다."
+
+#: models/article.py:194
+msgid "Can change ownership of any article"
+msgstr "모든 문서의 소유권을 변경할 수 있습니다"
+
+#: models/article.py:195
+msgid "Can assign permissions to other users"
+msgstr "다른 사용자들의 권한을 지정할 수 있습니다"
+
+#: models/article.py:241
+msgid "content type"
+msgstr "content type"
+
+#: models/article.py:243
+msgid "object ID"
+msgstr "객체 ID"
+
+#: models/article.py:253
+msgid "Article for object"
+msgstr "객체용 문서"
+
+#: models/article.py:254
+msgid "Articles for object"
+msgstr "객체용 문서들"
+
+#: models/article.py:266
+msgid "revision number"
+msgstr "개정판 번호"
+
+#: models/article.py:272
+msgid "IP address"
+msgstr "IP 주소"
+
+#: models/article.py:276
+msgid "user"
+msgstr "사용자"
+
+#: models/article.py:291
+#: plugins/attachments/templates/wiki/plugins/attachments/history.html:23
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:21
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:44
+#: templates/wiki/includes/revision_info.html:15
+msgid "deleted"
+msgstr "삭제됨"
+
+#: models/article.py:295 templates/wiki/article.html:23
+#: templates/wiki/includes/revision_info.html:21
+msgid "locked"
+msgstr "잠김"
+
+#: models/article.py:318 models/pluginbase.py:41
+msgid "article"
+msgstr "문서"
+
+#: models/article.py:321
+msgid "article contents"
+msgstr "문서 내용"
+
+#: models/article.py:326
+msgid "article title"
+msgstr "문서 제목"
+
+#: models/article.py:329
+msgid ""
+"Each revision contains a title field that must be filled out, even if the "
+"title has not changed"
+msgstr "각 개정판은 제목이 변경되지 않았더라도 제목 필드는 반드시 채워져 있어야 합니다."
+
+#: models/pluginbase.py:87
+msgid "original article"
+msgstr "원 문서"
+
+#: models/pluginbase.py:89
+msgid "Permissions are inherited from this article"
+msgstr "권한들은 이 문서로부터 상속되었습니다"
+
+#: models/pluginbase.py:168
+msgid "A plugin was changed"
+msgstr "플러그인이 변경되었습니다"
+
+#: models/pluginbase.py:206
+msgid ""
+"The revision being displayed for this plugin. If you need to do a roll-back,"
+" simply change the value of this field."
+msgstr "이 플러그인에 보여줄 개정판 입니다. 롤백을 하려면 단순히 이 필드의 값을 변경하시면 됩니다."
+
+#: models/urlpath.py:69
+msgid "Cache lookup value for articles"
+msgstr "문서의 cache lookup 값"
+
+#: models/urlpath.py:74
+msgid "slug"
+msgstr "slug"
+
+#: models/urlpath.py:185
+msgid "(root)"
+msgstr "(최상위)"
+
+#: models/urlpath.py:196
+msgid "URL path"
+msgstr "URL 경로"
+
+#: models/urlpath.py:197
+msgid "URL paths"
+msgstr "URL 경로들"
+
+#: models/urlpath.py:204
+msgid "Sorry but you cannot have a root article with a slug."
+msgstr "죄송합니다. 최상위 문서는 slug를 가질 수 없습니다."
+
+#: models/urlpath.py:207
+msgid "A non-root note must always have a slug."
+msgstr "최상위에 있지 않은 문서는 반드시 slug를 가지고 있어야 합니다."
+
+#: models/urlpath.py:213
+#, python-format
+msgid "There is already a root node on %s"
+msgstr "%s는 이미 최상위 노드가 있습니다."
+
+#: models/urlpath.py:358
+msgid ""
+"Articles who lost their parents\n"
+"===============================\n"
+"\n"
+"The children of this article have had their parents deleted. You should probably find a new home for them."
+msgstr "상위 문서를 잃어버린 문서들\n===============================\n\n이 문서의 하위는 상위 문서가 삭제된 채로 있습니다. 하위 문서들의 새로운 집을 찾아주세요."
+
+#: models/urlpath.py:361
+msgid "Lost and found"
+msgstr "분실물 취급소"
+
+#: plugins/attachments/forms.py:20
+#: plugins/attachments/templates/wiki/plugins/attachments/history.html:14
+msgid "Description"
+msgstr "설명"
+
+#: plugins/attachments/forms.py:21
+msgid "A short summary of what the file contains"
+msgstr "어떤 내용의 파일인지 간략히 요약"
+
+#: plugins/attachments/forms.py:70
+msgid "Remove previous"
+msgstr "이전것들 삭제"
+
+#: plugins/attachments/forms.py:71
+msgid "Remove previous attachment revisions and their files (to save space)?"
+msgstr "(공간 확보를 위해)이전 첨부 개정판 및 파일들을 삭제하시겠습니까?"
+
+#: plugins/attachments/forms.py:80
+msgid "File or zip archive"
+msgstr "파일 또는 zip아카이브"
+
+#: plugins/attachments/forms.py:85
+msgid "Unzip file"
+msgstr "파일 압축 풀기"
+
+#: plugins/attachments/forms.py:87
+msgid ""
+"Create individual attachments for files in a .zip file - directories do not "
+"work."
+msgstr ".zip 파일 안에 있는 파일들을 개별 첨부합니다. 디렉토리는 작동하지 않습니다."
+
+#: plugins/attachments/forms.py:109
+msgid "Not a zip file"
+msgstr "zip파일이 아닙니다"
+
+#: plugins/attachments/forms.py:117
+msgid "User not allowed to moderate this article"
+msgstr "이 문서에 대한 중재를 허용하지 않습니다."
+
+#: plugins/attachments/forms.py:163
+msgid "Yes I am sure..."
+msgstr "네 확실합니다..."
+
+#: plugins/attachments/models.py:38
+msgid ""
+"The revision of this attachment currently in use (on all articles using the "
+"attachment)"
+msgstr "이 첨부 개정판은 현재 (첨부를 사용하고 있는 모든 문서에서) 사용중입니다"
+
+#: plugins/attachments/models.py:42
+msgid "original filename"
+msgstr "원 파일 이름"
+
+#: plugins/attachments/models.py:55
+msgid "attachment"
+msgstr "첨부"
+
+#: plugins/attachments/models.py:56
+msgid "attachments"
+msgstr "첨부들"
+
+#: plugins/attachments/models.py:73
+msgid "No file extension found in filename. That's not okay!"
+msgstr "파일 이름에 파일 확장자가 없습니다. 이건 좋지 않습니다!"
+
+#: plugins/attachments/models.py:78
+#, python-format
+msgid "The following filename is illegal: %s. Extension has to be one of %s"
+msgstr "이 파일 이름은 잘못되었습니다: %s. 확장자가 다음 중 하나여야 합니다. %s"
+
+#: plugins/attachments/models.py:124
+msgid "file"
+msgstr "파일"
+
+#: plugins/attachments/models.py:130
+msgid "attachment revision"
+msgstr "첨부 개정판"
+
+#: plugins/attachments/models.py:131
+msgid "attachment revisions"
+msgstr "첨부 개정판들"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/delete.html:5
+#: plugins/attachments/templates/wiki/plugins/attachments/delete.html:10
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:36
+#: templates/wiki/delete.html:8
+msgid "Delete"
+msgstr "삭제"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/delete.html:12
+msgid ""
+"\n"
+"    The file may be referenced on other articles. Deleting it means that they will loose their references to this file. The following articles reference this file:\n"
+"    "
+msgstr "\n파일이 다른 문서에서 참조되고 있을지도 모릅니다. 삭제를 하면 다른 문서들은 이 파일에 대한 참조를 잃어버리게 됩니다. 이 파일을 참조하고 있는 문서들은 다음과 같습니다:"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/delete.html:29
+#: plugins/attachments/templates/wiki/plugins/attachments/delete.html:53
+#: plugins/attachments/templates/wiki/plugins/attachments/history.html:49
+#: plugins/attachments/templates/wiki/plugins/attachments/replace.html:39
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:75
+#: plugins/images/templates/wiki/plugins/images/purge.html:23
+#: plugins/images/templates/wiki/plugins/images/revision_add.html:23
+#: templates/wiki/create.html:53 templates/wiki/delete.html:12
+#: templates/wiki/delete.html.py:48
+msgid "Go back"
+msgstr "뒤로 가기"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/delete.html:33
+msgid "Delete it!"
+msgstr "삭제하세요!"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/delete.html:40
+msgid "Remove"
+msgstr "삭제"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/delete.html:42
+msgid ""
+"\n"
+"    You can remove a reference to a file, but it will retain its references on other articles.\n"
+"    "
+msgstr "\n이 파일의 참조를 제거할 수 있습니다. 하지만 다른 문서에서의 참조는 유지될 것입니다."
+
+#: plugins/attachments/templates/wiki/plugins/attachments/delete.html:57
+msgid "Remove reference"
+msgstr "참조 삭제"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/history.html:5
+#: plugins/attachments/templates/wiki/plugins/attachments/history.html:9
+msgid "History of"
+msgstr "히스토리"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/history.html:12
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:28
+msgid "Date"
+msgstr "날짜"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/history.html:13
+msgid "User"
+msgstr "사용자"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/history.html:15
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:26
+msgid "File"
+msgstr "파일"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/history.html:16
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:30
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:30
+#: plugins/images/templates/wiki/plugins/images/index.html:22
+msgid "Size"
+msgstr "크기"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/history.html:17
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:31
+msgid "Action"
+msgstr "행동"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/history.html:28
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:37
+msgid "<em>No description</em>"
+msgstr "<em>설명 없음</em>"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/history.html:36
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:55
+msgid "Download"
+msgstr "다운로드"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/history.html:41
+msgid "Use this!"
+msgstr "이걸 사용합니다!"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:5
+#: plugins/attachments/wiki_plugin.py:24
+msgid "Attachments"
+msgstr "첨부들"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:10
+msgid ""
+"The following files are available for this article. Copy the markdown tag to"
+" directly refer to a file from the article text."
+msgstr "이 문서에서 아래 파일들이 사용가능합니다. markdown 태그를 복사해서 문서 텍스트에 직접 파일을 참조하세요."
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:28
+#: plugins/images/templates/wiki/plugins/images/index.html:20
+msgid "Markdown tag"
+msgstr "Markdown 태그"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:29
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:29
+#: plugins/images/templates/wiki/plugins/images/index.html:21
+msgid "Uploaded by"
+msgstr "업로드한 사용자"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:34
+#: plugins/attachments/templates/wiki/plugins/attachments/replace.html:5
+#: plugins/attachments/templates/wiki/plugins/attachments/replace.html:9
+#: plugins/images/templates/wiki/plugins/images/sidebar.html:34
+msgid "Replace"
+msgstr "대체"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:38
+msgid "Detach"
+msgstr "삭제"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:47
+msgid "File history"
+msgstr "파일 히스토리"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:47
+msgid "revisions"
+msgstr "개정판들"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:62
+msgid "There are no attachments for this article."
+msgstr "이 문서에는 첨부가 없습니다."
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:72
+msgid "Upload new file"
+msgstr "새 파일 업로드"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:84
+msgid "Upload file"
+msgstr "파일 업로드"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:95
+msgid "Search and add file"
+msgstr "검색 후 파일 추가"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:101
+msgid ""
+"You can reuse files from other articles. These files are subject to updates "
+"on other articles which may or may not be a good thing."
+msgstr "다른 문서로부터 파일을 재사용할 수 있습니다. 이 파일들은 다른 문서에서 갱신되면 파일 내용의 좋고 나쁨과 관계없이 같이 영향을 받습니다."
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:120
+msgid "Restore attachments"
+msgstr "첨부 복원"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:133
+#: templates/wiki/deleted.html:25 templates/wiki/deleted.html.py:30
+msgid "Restore"
+msgstr "복원"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:140
+msgid "Nothing to restore"
+msgstr "복원할 것이 없습니다"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:156
+msgid ""
+"The article is currently locked for editing, and therefore no new "
+"attachments can be added."
+msgstr "현재 이 문서는 편집이 잠겼기 때문에 새 첨부를 할 수 없습니다."
+
+#: plugins/attachments/templates/wiki/plugins/attachments/render.html:6
+msgid "This attachment is not permitted on this page."
+msgstr "이 첨부는 이 페이지에서는 허용되지 않습니다."
+
+#: plugins/attachments/templates/wiki/plugins/attachments/render.html:8
+msgid "Click to download"
+msgstr "다운로드 클릭"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/replace.html:12
+#, python-format
+msgid ""
+"\n"
+"  Replacing an attachment means adding a new file that will be used in its place. All references to the file will be replaced by the one you upload and the file will be downloaded as <strong>%(filename)s</strong>. Please note that this attachment is in use on other articles, you may distort contents. However, do not hestitate to take advantage of this and make replacements for the listed articles where necessary. This way of working is more efficient....\n"
+"  "
+msgstr "\n첨부 대체란 파일이 사용되던 공간에 새 파일을 추가하는것을 의미합니다. 업로드 하면 기존 파일은 새 참조로 대체 되며 파일은 <strong>%(filename)s</strong>로 다운로드 될 것입니다. 이 첨부가 다른 문서에서도 사용되며 내용을 왜곡시킬 수도 있다는것을 명심하십시오. 하지만 이걸 이용해서 문서를 대체 하는것을 주저하지 마세요.  이러한 방식이 더 효율적입니다..."
+
+#: plugins/attachments/templates/wiki/plugins/attachments/replace.html:17
+#, python-format
+msgid ""
+"\n"
+"  Articles using %(filename)s\n"
+"  "
+msgstr "\n%(filename)s 을 사용하는 문서들"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/replace.html:26
+#, python-format
+msgid ""
+"\n"
+"  Replacing an attachment means adding a new file that will be used in its place. All references to the file will be replaced by the one you upload and the file will be downloaded as <strong>%(filename)s</strong>.\n"
+"  "
+msgstr "\n첨부 대체란 파일이 사용되던 공간에 새 파일을 추가하는것을 의미합니다. 업로드 하면 기존 파일은 새 참조로 대체 되며 파일은 <strong>%(filename)s</strong>으로 다운로드 될 것입니다."
+
+#: plugins/attachments/templates/wiki/plugins/attachments/replace.html:43
+#: plugins/images/templates/wiki/plugins/images/index.html:45
+#: plugins/images/templates/wiki/plugins/images/revision_add.html:27
+msgid "Upload replacement"
+msgstr "대체 파일 업로드"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:5
+msgid "Add file to"
+msgstr "파일 첨부"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:9
+msgid "Add attachment from other article"
+msgstr "다른 문서에서 첨부 추가"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:17
+msgid "Search files and articles"
+msgstr "파일 및 문서 검색"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:27
+msgid "Main article"
+msgstr "메인 문서"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:59
+msgid "Add to article"
+msgstr "문서에 추가"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:67
+msgid "Your search did not return any results"
+msgstr "검색 결과가 없습니다"
+
+#: plugins/attachments/views.py:59
+#, python-format
+msgid "Successfully added: %s"
+msgstr "성공적으로 추가되었습니다: %s"
+
+#: plugins/attachments/views.py:65
+#, python-format
+msgid "%s was successfully added."
+msgstr "%s이(가) 성공적으로 추가되었습니다."
+
+#: plugins/attachments/views.py:175
+#, python-format
+msgid "%s uploaded and replaces old attachment."
+msgstr "%s 이 업로드 되었고 이전 첨부를 대체하였습니다."
+
+#: plugins/attachments/views.py:181
+#, python-format
+msgid "Your file could not be saved: %s"
+msgstr "파일을 저장할 수 없습니다: %s"
+
+#: plugins/attachments/views.py:205
+msgid ""
+"Your new file will automatically be renamed to match the file already "
+"present. Files with different extensions are not allowed."
+msgstr "새 파일은 자동으로 이름이 변경되어 기존 파일과 매치 될 것입니다. 확장자가 다른 파일은 자동으로 이름이 변경되지 않습니다."
+
+#: plugins/attachments/views.py:312
+#, python-format
+msgid "Current revision changed for %s."
+msgstr "현 개정판이 %s를 위해 변경되었습니다. "
+
+#: plugins/attachments/views.py:348
+#, python-format
+msgid "Added a reference to \"%(att)s\" from \"%(art)s\"."
+msgstr "\"%(art)s\"에서 \"%(att)s\"로 참조를 추가하였습니다."
+
+#: plugins/attachments/views.py:353
+#, python-format
+msgid "\"%(att)s\" is already referenced."
+msgstr "\"%(att)s\"는 이미 참조 되었습니다."
+
+#: plugins/attachments/views.py:402
+#, python-format
+msgid "The file %s was deleted."
+msgstr "파일 %s는 삭제되었습니다."
+
+#: plugins/attachments/views.py:408
+#, python-format
+msgid "This article is no longer related to the file %s."
+msgstr "이 문서는 더 이상 파일 %s와 연관되어있지 않습니다."
+
+#: plugins/attachments/wiki_plugin.py:32
+#, python-format
+msgid "A file was changed: %s"
+msgstr "파일이 변경되었습니다: %s"
+
+#: plugins/attachments/wiki_plugin.py:35
+#, python-format
+msgid "A file was deleted: %s"
+msgstr "파일이 삭제되었습니다: %s"
+
+#: plugins/help/templates/wiki/plugins/help/sidebar.html:1
+msgid "Adding new articles"
+msgstr "문서 추가"
+
+#: plugins/help/templates/wiki/plugins/help/sidebar.html:3
+msgid ""
+"To create a new wiki article, create a link to it. Clicking the link gives "
+"you the creation page."
+msgstr "새로운 위키 문서를 만들기 위해서는 링크를 생성하세요. 생성한 링크를 클릭하면 새로운 페이지 만들기로 이동합니다. "
+
+#: plugins/help/templates/wiki/plugins/help/sidebar.html:6
+#: plugins/links/templates/wiki/plugins/links/sidebar.html:22
+msgid "An external link"
+msgstr "외부 링크"
+
+#: plugins/help/templates/wiki/plugins/help/sidebar.html:9
+msgid "Headers"
+msgstr "헤더"
+
+#: plugins/help/templates/wiki/plugins/help/sidebar.html:10
+msgid ""
+"Use these codes for headers and to automatically generate Tables of "
+"Contents."
+msgstr "헤더에 이 코드들을 사용하여 목차를 자동으로 생성하세요."
+
+#: plugins/help/templates/wiki/plugins/help/sidebar.html:25
+msgid "Typography"
+msgstr "타이포그래피"
+
+#: plugins/help/templates/wiki/plugins/help/sidebar.html:30
+msgid "Lists"
+msgstr "목록들"
+
+#: plugins/help/templates/wiki/plugins/help/sidebar.html:38
+msgid "Tables"
+msgstr "표"
+
+#: plugins/help/wiki_plugin.py:14
+msgid "Help"
+msgstr "도움말"
+
+#: plugins/images/forms.py:21
+#, python-format
+msgid ""
+"New image %s was successfully uploaded. You can use it by selecting it from "
+"the list of available images."
+msgstr "새로운 이미지 %s가 성공적으로 업로딩 되었습니다. 사용가능한 이미지 리스트에서 선택해 사용할 수 있습니다."
+
+#: plugins/images/forms.py:65
+msgid "Are you sure?"
+msgstr "확실합니까?"
+
+#: plugins/images/models.py:50
+msgid "image"
+msgstr "이미지"
+
+#: plugins/images/models.py:51
+msgid "images"
+msgstr "이미지들"
+
+#: plugins/images/models.py:57
+#, python-format
+msgid "Image: %s"
+msgstr "이미지: %s"
+
+#: plugins/images/models.py:58
+msgid "Current revision not set!!"
+msgstr "현 개정판이 설정되지 않았습니다!!"
+
+#: plugins/images/models.py:108
+msgid "image revision"
+msgstr "이미지 개정판"
+
+#: plugins/images/models.py:109
+msgid "image revisions"
+msgstr "이미지 개정판들"
+
+#: plugins/images/models.py:117
+#, python-format
+msgid "Image Revsion: %d"
+msgstr "이미지 개정판: %d"
+
+#: plugins/images/templates/wiki/plugins/images/index.html:5
+#: plugins/images/wiki_plugin.py:19
+msgid "Images"
+msgstr "이미지들"
+
+#: plugins/images/templates/wiki/plugins/images/index.html:8
+msgid ""
+"The following images are available for this article. Copy the markdown tag "
+"to directly refer to an image from the article text."
+msgstr "이 문서에서 아래 이미지들이 사용가능합니다. markdown 태그를 복사해서 문서 텍스트에 직접 이미지를 참조하세요."
+
+#: plugins/images/templates/wiki/plugins/images/index.html:12
+msgid "Back to edit page"
+msgstr "편집 페이지로 돌아가기"
+
+#: plugins/images/templates/wiki/plugins/images/index.html:19
+msgid "No file"
+msgstr "파일 없음"
+
+#: plugins/images/templates/wiki/plugins/images/index.html:36
+msgid "Upload and publish new image"
+msgstr "업로드 후 새로운 이미지 발행"
+
+#: plugins/images/templates/wiki/plugins/images/index.html:40
+msgid "Restore image"
+msgstr "이미지 복원"
+
+#: plugins/images/templates/wiki/plugins/images/index.html:49
+msgid "Remove image"
+msgstr "이미지 삭제"
+
+#: plugins/images/templates/wiki/plugins/images/index.html:56
+msgid "Completely delete"
+msgstr "완전히 삭제"
+
+#: plugins/images/templates/wiki/plugins/images/index.html:70
+#: templates/wiki/history.html:5
+msgid "History"
+msgstr "히스토리"
+
+#: plugins/images/templates/wiki/plugins/images/index.html:89
+msgid "Revert to this version"
+msgstr "이 버전으로 되돌리기"
+
+#: plugins/images/templates/wiki/plugins/images/index.html:102
+msgid "There are no images for this article."
+msgstr "이 문서에는 이미지가 없습니다."
+
+#: plugins/images/templates/wiki/plugins/images/purge.html:5
+#: templates/wiki/deleted.html:40
+msgid "Purge deletion"
+msgstr "완전히 삭제"
+
+#: plugins/images/templates/wiki/plugins/images/purge.html:14
+msgid "Purge image: Completely remove image file and all revisions."
+msgstr "이미지 완전히 삭제: 이미지 파일 및 모든 이미지 개정판들을 완전히 삭제합니다."
+
+#: plugins/images/templates/wiki/plugins/images/purge.html:27
+msgid "Remove it completely!"
+msgstr "완전히 삭제합니다!"
+
+#: plugins/images/templates/wiki/plugins/images/render.html:13
+msgid "Image not found"
+msgstr "이미지를 찾을 수 없습니다"
+
+#: plugins/images/templates/wiki/plugins/images/revision_add.html:5
+msgid "Replace image"
+msgstr "이미지 대체"
+
+#: plugins/images/templates/wiki/plugins/images/revision_add.html:14
+msgid "Choose an image file to replace current image."
+msgstr "현 이미지를 대체할 이미지 파일을 선택하세요"
+
+#: plugins/images/templates/wiki/plugins/images/sidebar.html:30
+msgid "Image id"
+msgstr "이미지 id"
+
+#: plugins/images/templates/wiki/plugins/images/sidebar.html:32
+#: plugins/links/templates/wiki/plugins/links/sidebar.html:15
+msgid "Insert"
+msgstr "넣기"
+
+#: plugins/images/templates/wiki/plugins/images/sidebar.html:48
+msgid "No images found for this article"
+msgstr "이 문서는 이미지가 없습니다"
+
+#: plugins/images/templates/wiki/plugins/images/sidebar.html:56
+msgid "Manage images"
+msgstr "이미지 관리"
+
+#: plugins/images/templates/wiki/plugins/images/sidebar.html:61
+msgid "Add new image"
+msgstr "새로운 이미지를 추가합니다"
+
+#: plugins/images/templates/wiki/plugins/images/sidebar.html:104
+msgid "Add image"
+msgstr "이미지 추가"
+
+#: plugins/images/templates/wiki/plugins/images/sidebar.html:112
+msgid "You do not have permissions to add images."
+msgstr "이미지를 추가할 권한이 없습니다"
+
+#: plugins/images/templates/wiki/plugins/images/sidebar.html:119
+msgid "How to use images"
+msgstr "이미지 사용법"
+
+#: plugins/images/templates/wiki/plugins/images/sidebar.html:122
+msgid ""
+"After uploading an image, it is attached to this particular artice and can "
+"be used only here. Other users may replace the image, but older versions are"
+" kept. You probably want to show the image with a nice caption. To achieve "
+"this, press the Insert button and fill in the caption fields and possibly "
+"choose to have you image floating right or left of the content. You can use "
+"Markdown in the caption. The markdown code syntax for images looks like "
+"this, possible values for align are left and right:"
+msgstr "이미지 업로드 후 문서의 특정위치에 넣을 수 있고 여기서만 사용할 수 있습니다. 다른 사용자가 이미지를 변경하더라도 이전 버전의 이미지는 남아 있습니다. 멋진 캡션 이미지를 보여주고 싶을 때도 있을 것입니다. 이를 위해서는 '넣기' 버튼을 누르고 캡션 필드에 내용을 채우세요. 이미지 markdown 코드 문법은 아래와 같으며 left와 right 정렬 값을 가집니다:"
+
+#: plugins/images/views.py:75
+#, python-format
+msgid "%s has been restored"
+msgstr "%s이 복원되었습니다"
+
+#: plugins/images/views.py:80
+#, python-format
+msgid "%s has been marked as deleted"
+msgstr "%s는 삭제 표시 되었습니다."
+
+#: plugins/images/views.py:144
+#, python-format
+msgid "%(file)s has been changed to revision #%(revision)d"
+msgstr "%(file)s 는 #%(revision)d판으로 변경되었습니다."
+
+#: plugins/images/views.py:185
+#, python-format
+msgid "%(file)s has been saved."
+msgstr "%(file)s 가 저장되었습니다."
+
+#: plugins/images/wiki_plugin.py:30
+#, python-format
+msgid "An image was added: %s"
+msgstr "이미지가 추가되었습니다: %s"
+
+#: plugins/links/templates/wiki/plugins/links/sidebar.html:3
+msgid "Link to another wiki page"
+msgstr "다른 위키 페이지 링크"
+
+#: plugins/links/templates/wiki/plugins/links/sidebar.html:6
+msgid ""
+"Type in something from another wiki page's title and auto-complete will help"
+" you create a tag for you wiki link. Tags for links look like this:"
+msgstr "다른 위키 페이지 제목을 입력하세요. 자동완성 기능이 위키 링크 태그를 생성하는데 도움을 줄 것입니다. 링크 태그는 다음과 같습니다:"
+
+#: plugins/links/templates/wiki/plugins/links/sidebar.html:25
+msgid ""
+"You can link to another website simply by inserting an address example.com "
+"or http://example.com or by using the markdown syntax:"
+msgstr "단순히 example.com 또는 http://example.com 과 같이 주소를 입력하여 다른 웹사이트를 링크할 수 있습니다. 또는 markdown 문법을 사용할 수 있습니다:"
+
+#: plugins/links/wiki_plugin.py:25
+msgid "Links"
+msgstr "링크들"
+
+#: plugins/macros/mdx/macro.py:84
+msgid "Article list"
+msgstr "문서 목록"
+
+#: plugins/macros/mdx/macro.py:85
+msgid "Insert a list of articles in this level."
+msgstr "이 단계에 문서 목록을 넣습니다."
+
+#: plugins/macros/mdx/macro.py:86
+msgid "[article_list depth:2]"
+msgstr "[article_list depth:2]"
+
+#: plugins/macros/mdx/macro.py:87
+msgid "Maximum depth to show levels for."
+msgstr "단계가 보이는 최고 depth"
+
+#: plugins/macros/mdx/macro.py:93
+msgid "Table of contents"
+msgstr "목차"
+
+#: plugins/macros/mdx/macro.py:94
+msgid "Insert a table of contents matching the headings."
+msgstr "헤딩과 일치하는 목차를 넣습니다."
+
+#: plugins/macros/mdx/macro.py:95
+msgid "[TOC]"
+msgstr "[TOC]"
+
+#: plugins/macros/mdx/macro.py:102
+msgid "WikiLinks"
+msgstr "위키 링크들"
+
+#: plugins/macros/mdx/macro.py:104
+msgid "Insert a link to another wiki page with a short notation."
+msgstr "짧은 표기로 된 다른 위키 페이지 링크를 넣습니다."
+
+#: plugins/macros/mdx/macro.py:105
+msgid "[[WikiLink]]"
+msgstr "[[WikiLink]]"
+
+#: plugins/macros/templates/wiki/plugins/macros/article_list.html:6
+msgid "Article index"
+msgstr "문서 색인"
+
+#: plugins/macros/templates/wiki/plugins/macros/article_list.html:10
+msgid "Nothing below this level"
+msgstr "이 단계 이하는 없습니다"
+
+#: plugins/macros/wiki_plugin.py:19
+msgid "Macros"
+msgstr "매크로"
+
+#: plugins/notifications/forms.py:23
+#, python-format
+msgid "Receive notifications %(interval)s"
+msgstr "%(interval)s 간격으로 알림 받기"
+
+#: plugins/notifications/forms.py:33
+#, python-format
+msgid "%(title)s - %(url)s"
+msgstr "%(title)s - %(url)s"
+
+#: plugins/notifications/forms.py:50
+msgid "Remove subscriptions"
+msgstr "구독 해제"
+
+#: plugins/notifications/forms.py:52
+msgid "Select article subscriptions to remove from notifications"
+msgstr "알림을 받지 않을 문서를 선택하세요"
+
+#: plugins/notifications/forms.py:56
+msgid "Email digests"
+msgstr "이메일 다이제스트"
+
+#: plugins/notifications/forms.py:58
+msgid "Unchanged (selected on each article)"
+msgstr "변경사항 없음 (선택한 글들에 대해)"
+
+#: plugins/notifications/forms.py:59
+msgid "No emails"
+msgstr "이메일 받지 않음"
+
+#: plugins/notifications/forms.py:60
+msgid "Email on any change"
+msgstr "변경사항 있을 때마다 이메일"
+
+#: plugins/notifications/forms.py:112
+#: plugins/notifications/templates/wiki/plugins/notifications/settings.html:5
+msgid "Notifications"
+msgstr "알림"
+
+#: plugins/notifications/forms.py:119
+#: templates/wiki/includes/article_menu.html:9 templates/wiki/settings.html:5
+msgid "Settings"
+msgstr "설정"
+
+#: plugins/notifications/forms.py:123
+msgid "When this article is edited"
+msgstr "이 문서가 수정되었을 때"
+
+#: plugins/notifications/forms.py:126
+msgid "Also receive emails about article edits"
+msgstr "문서 편집에 관한 것을 이메일로 받습니다."
+
+#: plugins/notifications/forms.py:171
+msgid "Your notification settings were updated."
+msgstr "알림 설정이 갱신 되었습니다."
+
+#: plugins/notifications/forms.py:174
+msgid "Your notification settings were unchanged, so nothing saved."
+msgstr "변경된 알림 설정이 없어서 저장되지 않았습니다."
+
+#: plugins/notifications/models.py:26
+#, python-format
+msgid "%(user)s subscribing to %(article)s (%(type)s)"
+msgstr "%(article)s (%(type)s)를 구독하는 %(user)s"
+
+#: plugins/notifications/models.py:53
+#, python-format
+msgid "Article deleted: %s"
+msgstr "문서가 삭제되었습니다: %s"
+
+#: plugins/notifications/models.py:61
+#, python-format
+msgid "Article modified: %s"
+msgstr "문서가 수정되었습니다: %s"
+
+#: plugins/notifications/models.py:69
+#, python-format
+msgid "New article created: %s"
+msgstr "새 문서가 생성되었습니다: %s"
+
+#: plugins/notifications/templates/wiki/plugins/notifications/menubaritem.html:4
+msgid "No notifications"
+msgstr "알림 없음"
+
+#: plugins/notifications/templates/wiki/plugins/notifications/menubaritem.html:9
+msgid "Clear notifications list"
+msgstr "알림 목록을  지웁니다."
+
+#: plugins/notifications/templates/wiki/plugins/notifications/menubaritem.html:15
+msgid "Notification settings"
+msgstr "알림 설정"
+
+#: plugins/notifications/templates/wiki/plugins/notifications/settings.html:9
+msgid "Your notification settings"
+msgstr "알림 설정"
+
+#: plugins/notifications/templates/wiki/plugins/notifications/settings.html:11
+msgid "Manage how often you receive notifications"
+msgstr "알림을 받는 주기를 설정합니다."
+
+#: plugins/notifications/templates/wiki/plugins/notifications/settings.html:20
+msgid "Settings for"
+msgstr "설정"
+
+#: plugins/notifications/templates/wiki/plugins/notifications/settings.html:20
+msgid "articles"
+msgstr "문서들"
+
+#: plugins/notifications/templates/wiki/plugins/notifications/settings.html:27
+msgid "You are not subscribed to any notifications yet."
+msgstr "아직 어떠한 알림도 구독하지 않았습니다."
+
+#: plugins/notifications/templates/wiki/plugins/notifications/settings.html:35
+#: templates/wiki/edit.html:45 templates/wiki/edit.html.py:72
+#: templates/wiki/settings.html:17
+msgid "Save changes"
+msgstr "변경사항 저장"
+
+#: plugins/notifications/views.py:33
+#, python-format
+msgid "You will receive notifications %(interval)s for %(articles)d articles"
+msgstr "%(articles)d 문서에 대해 %(interval)s 간격으로 알림을 받을 것입니다."
+
+#: templates/wiki/accounts/login.html:4 templates/wiki/base_site.html:75
+msgid "Log in"
+msgstr "로그인"
+
+#: templates/wiki/accounts/login.html:10
+msgid "Please log in"
+msgstr "로그인 하세요"
+
+#: templates/wiki/accounts/login.html:18
+msgid "Log me in..."
+msgstr "로그인 하세요..."
+
+#: templates/wiki/accounts/login.html:25
+msgid "Don't have an account?"
+msgstr "계정이 없으신가요?"
+
+#: templates/wiki/accounts/login.html:25 templates/wiki/accounts/signup.html:3
+#: templates/wiki/accounts/signup.html:6 templates/wiki/base_site.html:78
+msgid "Sign up"
+msgstr "등록"
+
+#: templates/wiki/accounts/signup.html:14
+msgid "Sign me up..."
+msgstr "등록"
+
+#: templates/wiki/article.html:39
+msgid "This article was last modified:"
+msgstr " 문서 최종 수정:"
+
+#: templates/wiki/base_site.html:65
+msgid "Log out"
+msgstr "로그아웃"
+
+#: templates/wiki/base_site.html:85
+msgid "Home"
+msgstr "홈"
+
+#: templates/wiki/base_site.html:86
+msgid "About"
+msgstr "이 사이트에 관하여"
+
+#: templates/wiki/base_site.html:119
+msgid ""
+"Powered by <a href=\"http://www.django-wiki.org\">django-wiki</a>, an open "
+"source application under the <a href=\"http://www.gnu.org/licenses/quick-"
+"guide-gplv3.html\">GPLv3</a> license. Let knowledge be the cure."
+msgstr "Powered by <a href=\"http://www.django-wiki.org\">django-wiki</a>, an open source application under the <a href=\"http://www.gnu.org/licenses/quick-guide-gplv3.html\">GPLv3</a> license. Let knowledge be the cure."
+
+#: templates/wiki/create.html:5 templates/wiki/create.html.py:44
+msgid "Add new article"
+msgstr "새 문서 추가"
+
+#: templates/wiki/create.html:57
+msgid "Create article"
+msgstr "새 문서 생성하기"
+
+#: templates/wiki/create_root.html:4
+msgid "Create root article"
+msgstr "최상위 문서를 생성합니다"
+
+#: templates/wiki/create_root.html:22 templates/wiki/root_missing.html:10
+msgid "Congratulations!"
+msgstr "축하합니다!"
+
+#: templates/wiki/create_root.html:24
+msgid ""
+"You have django-wiki installed... but there are no articles. So it's time to"
+" create the first one, the root article."
+msgstr "django-wiki 가 설치 되었지만 아직 문서가 없습니다. 이제 최상위 문서를 생성할 차례입니다."
+
+#: templates/wiki/create_root.html:25
+msgid ""
+"In the beginning, it will only be editable by administrators, but you can "
+"define permissions after."
+msgstr "처음에는 관리자만 편집이 가능하지만 나중에 권한을 설정할 수 있습니다."
+
+#: templates/wiki/create_root.html:28
+msgid "Root article"
+msgstr "최상위 문서"
+
+#: templates/wiki/create_root.html:35
+msgid "Create root"
+msgstr "최상위 문서 생성"
+
+#: templates/wiki/delete.html:5 templates/wiki/delete.html.py:52
+#: templates/wiki/edit.html:50
+msgid "Delete article"
+msgstr "문서 삭제"
+
+#: templates/wiki/delete.html:11
+msgid "You cannot delete a root article."
+msgstr "최상위 문서를 삭제할 수 없습니다."
+
+#: templates/wiki/delete.html:17
+msgid ""
+"You cannot delete this article because you do not have permission to delete "
+"articles with children. Try to remove the children manually one-by-one."
+msgstr "당신은 하위문서가 있는 문서를 삭제할 권한이 없기 때문에 이 문서를 삭제할 수 없습니다. 하위문서들을 하나씩 지워보세요.."
+
+#: templates/wiki/delete.html:23
+msgid ""
+"You are deleting an article. This means that its children will be deleted as"
+" well. If you choose to purge, children will also be purged!"
+msgstr "이 문서를 삭제합니다. 이것은 하위 문서 또한 삭제됨을 의미합니다. 만일 완전히 삭제를 한다면 하위 문서도 완전히 삭제 됩니다!"
+
+#: templates/wiki/delete.html:25
+msgid "Articles that will be deleted"
+msgstr "삭제될 문서"
+
+#: templates/wiki/delete.html:31
+msgid "...and more!"
+msgstr "...그리고 더!"
+
+#: templates/wiki/delete.html:39
+msgid "You are deleting an article. Please confirm."
+msgstr "문서를 삭제하려고 합니다. 확인 바랍니다."
+
+#: templates/wiki/deleted.html:5
+msgid "Article deleted"
+msgstr "문서가 삭제되었습니다."
+
+#: templates/wiki/deleted.html:14
+msgid "Article Deleted"
+msgstr "문서가 삭제되었습니다."
+
+#: templates/wiki/deleted.html:17
+msgid "The article you were looking for has been deleted."
+msgstr "찾고 있는 문서는 삭제 되었습니다."
+
+#: templates/wiki/deleted.html:26
+msgid "You may restore this article and its children by clicking restore."
+msgstr "복원을 클릭하면 이 문서 및 하위문서들을 복원할 수 있습니다."
+
+#: templates/wiki/deleted.html:41
+msgid ""
+"You may remove this article and any children permanently and free their "
+"slugs by clicking the below button. This action cannot be undone."
+msgstr "아래 버튼을 클릭하면 이 문서 및 하위 문서들은 영구 삭제 되고 사용되었던 slug들도 삭제 됩니다. 이 행위는 복구 불가능 합니다."
+
+#: templates/wiki/dir.html:5
+msgid "Listing articles in"
+msgstr "~에 문서들 추가"
+
+#: templates/wiki/dir.html:17
+msgid "Up one level"
+msgstr "한 단계 위"
+
+#: templates/wiki/dir.html:22
+msgid "Add article"
+msgstr "문서 추가"
+
+#: templates/wiki/dir.html:30
+msgid "clear"
+msgstr "지우기"
+
+#: templates/wiki/dir.html:40
+msgid "article,articles"
+msgstr "문서,문서들"
+
+#: templates/wiki/dir.html:40
+msgid "is,are"
+msgstr "는,들은"
+
+#: templates/wiki/dir.html:40
+#, python-format
+msgid ""
+"\n"
+"      Browsing <strong><a href=\"%(self_url)s\">/%(path)s</a></strong>. There %(articles_plur_verb)s <strong>%(cnt)s %(articles_plur)s</strong> in this level.\n"
+"    "
+msgstr "\n<strong><a href=\"%(self_url)s\">/%(path)s</a></strong> 둘러보기. 이 단계에는 %(articles_plur_verb)s <strong>%(cnt)s %(articles_plur)s</strong> 개의 문서가 있습니다.\n    "
+
+#: templates/wiki/dir.html:50 templates/wiki/search.html:31
+msgid "Last modified"
+msgstr "마지막으로 수정됨"
+
+#: templates/wiki/dir.html:74 templates/wiki/search.html:40
+msgid "There are no articles in this level"
+msgstr "이 단계 안에는 문서가 없습니다."
+
+#: templates/wiki/edit.html:5 templates/wiki/includes/article_menu.html:34
+msgid "Edit"
+msgstr "편집"
+
+#: templates/wiki/edit.html:11
+msgid ""
+"<strong>Warning:</strong> You are not logged in. Your IP address will be "
+"logged."
+msgstr "<strong>주의:</strong>로그인 하지 않았습니다. IP 주소가 로그로 남게 됩니다."
+
+#: templates/wiki/edit.html:12
+msgid "Click here to log in"
+msgstr "로그인 하려면 클릭하세요"
+
+#: templates/wiki/edit.html:41
+msgid "Preview"
+msgstr "미리 보기"
+
+#: templates/wiki/edit.html:68
+msgid "Back to editor"
+msgstr "편집 창으로 돌아가기"
+
+#: templates/wiki/error.html:5 templates/wiki/error.html.py:26
+msgid "Error"
+msgstr "오류"
+
+#: templates/wiki/error.html:15
+msgid "Not found"
+msgstr "찾을 수 없습니다"
+
+#: templates/wiki/error.html:18
+msgid "This article was not found, and neither was its parent article."
+msgstr "이 문서 및 상위 문서를 찾을 수 없습니다."
+
+#: templates/wiki/error.html:20
+msgid "Start page"
+msgstr "시작 페이지"
+
+#: templates/wiki/error.html:30
+msgid "There was some sort of error accessing this page. Sorry!"
+msgstr "페이지 접근 시 몇 가지 오류가 발생하였습니다. 죄송합니다!"
+
+#: templates/wiki/error.html:38
+msgid "Back to"
+msgstr "뒤로가기"
+
+#: templates/wiki/history.html:49
+msgid ""
+"Click each revision to see a list of edited lines. Click the Preview button "
+"to see how the article looked at this stage. At the bottom of this page, you"
+" can change to a particular revision or merge an old revision with the "
+"current one."
+msgstr "편집한 라인의 목록을 보려면 각 개정판을 클릭하세요. 미리보기 버튼을 클릭하여 이 단계에서 문서가 어떻게 보이는지 확인하세요. 이 페이지 하단에서, 특정 개정판으로 변경 하거나 현재 문서와 기존 개정판을 합칠 수 있습니다. "
+
+#: templates/wiki/history.html:72
+msgid "no log message"
+msgstr "로그 메시지가 없습니다."
+
+#: templates/wiki/history.html:84 templates/wiki/history.html.py:89
+msgid "Preview this revision"
+msgstr "이 개정판 미리 보기"
+
+#: templates/wiki/history.html:103
+msgid "Auto log:"
+msgstr "자동 로그:"
+
+#: templates/wiki/history.html:111
+msgid "Change"
+msgstr "변경"
+
+#: templates/wiki/history.html:129
+msgid "Merge selected with current..."
+msgstr "선택한 문서와 현재 문서를 합치기"
+
+#: templates/wiki/history.html:133
+msgid "Switch to selected version"
+msgstr "선택한 버전으로 변경"
+
+#: templates/wiki/history.html:152 templates/wiki/history.html.py:183
+msgid "Back to history view"
+msgstr "히스토리 보기로 돌아가기"
+
+#: templates/wiki/history.html:157 templates/wiki/history.html.py:162
+msgid "Switch to this version"
+msgstr "이 버전으로 변경"
+
+#: templates/wiki/history.html:174
+msgid "Merge with current"
+msgstr "현재와 합침"
+
+#: templates/wiki/history.html:175
+msgid ""
+"When you merge a revision with the current, all data will be retained from "
+"both versions and merged at its approximate location from each revision."
+msgstr "현재 버전과 개정판을 합칠 때, 모든 데이터는 양쪽 버전을 유지하며 각 버전에서의 근접한 위치에서 합쳐집니다."
+
+#: templates/wiki/history.html:175
+msgid "After this, it's important to do a manual review."
+msgstr "이 후에 직접 문서를 다시 검토하는것이 중요합니다."
+
+#: templates/wiki/history.html:188 templates/wiki/history.html.py:193
+msgid "Create new merged version"
+msgstr "새 병합 버전을 생성합니다."
+
+#: templates/wiki/includes/anonymous_blocked.html:7
+#, python-format
+msgid ""
+"\n"
+"  You need to <a href=\"%(login_url)s\">log in</a> or <a href=\"%(signup_url)s\">sign up</a> to use this function.\n"
+"  "
+msgstr "\n이 기능을 사용하기 위해서는 <a href=\"%(login_url)s\">로그인</a> 또는 <a href=\"%(signup_url)s\">등록</a>이 필요합니다.\n  "
+
+#: templates/wiki/includes/anonymous_blocked.html:11
+msgid "You need to log in or sign up to use this function."
+msgstr "이 기능을 사용하기 위해서는 로그인 또는 등록이 필요합니다."
+
+#: templates/wiki/includes/article_menu.html:26
+msgid "Changes"
+msgstr "변경사항들"
+
+#: templates/wiki/includes/article_menu.html:41
+msgid "View Source"
+msgstr "소스 보기"
+
+#: templates/wiki/includes/article_menu.html:49
+msgid "View"
+msgstr "보기"
+
+#: templates/wiki/includes/breadcrumbs.html:13
+#: templates/wiki/includes/breadcrumbs.html:39
+msgid "Sub-articles for"
+msgstr "하위 문서들"
+
+#: templates/wiki/includes/breadcrumbs.html:25
+msgid "No sub-articles"
+msgstr "하위 문서 없음"
+
+#: templates/wiki/includes/breadcrumbs.html:28
+msgid "...and more"
+msgstr "...그리고 더"
+
+#: templates/wiki/includes/breadcrumbs.html:32
+msgid "Browse articles in this level"
+msgstr "이 단계의 안쪽 문서 둘러보기"
+
+#: templates/wiki/includes/breadcrumbs.html:48
+msgid "New article next to"
+msgstr "다음 새 문서"
+
+#: templates/wiki/includes/breadcrumbs.html:53
+msgid "New article below"
+msgstr "하위 새 문서"
+
+#: templates/wiki/includes/revision_info.html:10
+msgid "by"
+msgstr "by"
+
+#: templates/wiki/includes/revision_info.html:10
+msgid "anonymous (IP logged)"
+msgstr "익명사용자 (IP logged)"
+
+#: templates/wiki/includes/revision_info.html:18
+msgid "restored"
+msgstr "복원됨"
+
+#: templates/wiki/includes/revision_info.html:24
+msgid "unlocked"
+msgstr "잠금해제"
+
+#: templates/wiki/permission_denied.html:8
+msgid "Permission Denied"
+msgstr "권한이 없습니다"
+
+#: templates/wiki/permission_denied.html:11
+msgid "Sorry, you don't have permission to access this page."
+msgstr "죄송합니다. 이 페이지에 접근할 수 있는 권한이 없습니다."
+
+#: templates/wiki/permission_denied.html:16
+msgid "This article is locked for editing."
+msgstr "이 문서는 편집이 잠겼습니다."
+
+#: templates/wiki/permission_denied.html:22
+msgid "Back to article"
+msgstr "문서로 돌아가기"
+
+#: templates/wiki/preview_inline.html:8
+msgid "Previewing revision"
+msgstr "개정판 미리 보기"
+
+#: templates/wiki/preview_inline.html:15
+msgid "Previewing merge between"
+msgstr "합친 문서 미리 보기"
+
+#: templates/wiki/preview_inline.html:17
+msgid "and"
+msgstr "그리고"
+
+#: templates/wiki/preview_inline.html:22 views/article.py:821
+msgid "You cannot merge with a deleted revision"
+msgstr "삭제된 개정판과 합칠 수 없습니다."
+
+#: templates/wiki/preview_inline.html:31
+msgid "This revision has been deleted."
+msgstr "이 개정판은 삭제되었습니다."
+
+#: templates/wiki/preview_inline.html:32
+msgid "Restoring to this revision will mark the article as deleted."
+msgstr "이 개정판을 복구하면 문서가 삭제된 것으로 표시 될 것입니다."
+
+#: templates/wiki/root_missing.html:12
+msgid ""
+"You have django-wiki installed and it seems to be working. But there are no "
+"articles yet."
+msgstr "django-wiki가 설치되었고 작동합니다. 하지만 아직 문서가 없습니다."
+
+#: templates/wiki/root_missing.html:17
+msgid ""
+"Not to worry! You simply have to login with a superuser account and create "
+"the first article in the root of the URL hierarchy."
+msgstr "걱정하지 마세요! 관리자 권한으로 로그인 후 URL계층의 최상위에 첫 문서를 생성하세요."
+
+#: templates/wiki/root_missing.html:21
+msgid "Click here to login"
+msgstr "로그인 하려면 클릭하세요"
+
+#: templates/wiki/root_missing.html:27
+msgid ""
+"But since you're logged in as a superuser, we should really get started..."
+msgstr "하지만 관리자로 로그인 했기 때문에 시작해야 합니다...."
+
+#: templates/wiki/root_missing.html:29
+msgid "Yes, I'll go and create the first article"
+msgstr "네, 첫 문서를 생성하겠습니다."
+
+#: templates/wiki/root_missing.html:30
+msgid "No thanks, I'd rather read the documentation"
+msgstr "아니오, 그냥 문서를 읽는 쪽이 나을것 같습니다."
+
+#: templates/wiki/search.html:5 templates/wiki/search.html.py:9
+msgid "Search results for:"
+msgstr "검색 결과:"
+
+#: templates/wiki/search.html:23
+#, python-format
+msgid "Your search returned <strong>%(cnt)s</strong> results."
+msgstr "<strong>%(cnt)s</strong>개가 검색되었습니다."
+
+#: templates/wiki/source.html:5
+msgid "Source of"
+msgstr "Source of"
+
+#: templates/wiki/source.html:10
+msgid "This article is currently locked for editing."
+msgstr "현재 이 문서는 편집이 잠겼습니다."
+
+#: views/accounts.py:49
+msgid "Account signup is only allowed for administrators."
+msgstr "계정등록은 관리자만이 할 수 있습니다."
+
+#: views/accounts.py:63
+msgid "You are now signed up... and now you can sign in!"
+msgstr "등록되었습니다. 이제 로그인 할 수 있습니다."
+
+#: views/accounts.py:76
+msgid "You are no longer logged in. Bye bye!"
+msgstr "로그아웃 하였습니다. 안녕히 가세요!"
+
+#: views/accounts.py:109
+msgid "You are now logged in! Have fun!"
+msgstr "로그인 하였습니다! 즐거운 시간 되세요!"
+
+#: views/article.py:112
+#, python-format
+msgid "New article '%s' created."
+msgstr "새 문서 '%s'가 생성되었습니다."
+
+#: views/article.py:120
+#, python-format
+msgid "There was an error creating this article: %s"
+msgstr "문서 생성 중 에러가 발생하였습니다: %s"
+
+#: views/article.py:125
+msgid "There was an error creating this article."
+msgstr "문서 생성 중 에러가 발생하였습니다."
+
+#: views/article.py:212
+msgid ""
+"This article cannot be deleted because it has children or is a root article."
+msgstr "이 글은 하위 문서가 있거나 최상위 문서이기 때문에 삭제할 수 없습니다."
+
+#: views/article.py:222
+msgid ""
+"This article together with all its contents are now completely gone! Thanks!"
+msgstr "이 문서와 내용들이 완전히 삭제되었습니다! 감사합니다!"
+
+#: views/article.py:231
+#, python-format
+msgid ""
+"The article \"%s\" is now marked as deleted! Thanks for keeping the site "
+"free from unwanted material!"
+msgstr "문서 \"%s\" 는 이제 삭제 표시되었습니다. 원치 않는 자료의 염려가 없는 사이트로 유지시켜주셔서 감사드립니다."
+
+#: views/article.py:342
+msgid "Your changes were saved."
+msgstr "변경 사항이 저장되었습니다."
+
+#: views/article.py:356
+msgid "Please note that your article text has not yet been saved!"
+msgstr "문서 내용이 아직 저장되지 않았습니다!"
+
+#: views/article.py:387
+msgid "A new revision of the article was succesfully added."
+msgstr "새 개정판이 성공적으로 추가되었습니다."
+
+#: views/article.py:442
+msgid "Restoring article"
+msgstr "문서 복구"
+
+#: views/article.py:446
+#, python-format
+msgid "The article \"%s\" and its children are now restored."
+msgstr "문서 \"%s\"와 하위 문서들이 복원되었습니다."
+
+#: views/article.py:719
+#, python-format
+msgid ""
+"The article %(title)s is now set to display revision #%(revision_number)d"
+msgstr "문서 %(title)s 는 #%(revision_number)d판으로 표시되게 설정 되었습니다."
+
+#: views/article.py:788
+msgid "New title"
+msgstr "새 제목"
+
+#: views/article.py:832
+#, python-format
+msgid "Merge between revision #%(r1)d and revision #%(r2)d"
+msgstr "#%(r1)d판과 #%(r2)d판을 합침."
+
+#: views/article.py:843
+#, python-format
+msgid ""
+"A new revision was created: Merge between revision #%(r1)d and revision "
+"#%(r2)d"
+msgstr "새 개정판이 생성되었습니다: #%(r1)d판과 #%(r2)d판을 합침."

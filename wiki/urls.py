@@ -32,11 +32,11 @@ class WikiURLPatterns(object):
     article_settings_view_class = article.Settings
     article_source_view_class = article.Source
     article_plugin_view_class = article.Plugin
-    revision_change_view = article.ChangeRevisionView
-    revision_merge_view = 'wiki.views.article.merge'
+    revision_change_view_class = article.ChangeRevisionView
+    revision_merge_view = staticmethod(article.merge)
 
     search_view_class = settings.SEARCH_VIEW
-    article_diff_view = 'wiki.views.article.diff'
+    article_diff_view = staticmethod(article.diff)
 
     # account views
     signup_view_class = accounts.Signup
@@ -96,7 +96,7 @@ class WikiURLPatterns(object):
             # where to redirect after...
             url(
                 '^_revision/change/(?P<article_id>\d+)/(?P<revision_id>\d+)/$',
-                self.revision_change_view.as_view(),
+                self.revision_change_view_class.as_view(),
                 name='change_revision'),
             url('^_revision/preview/(?P<article_id>\d+)/$',
                 self.article_preview_view_class.as_view(),
@@ -139,7 +139,7 @@ class WikiURLPatterns(object):
                 name='source'),
             url(
                 '^(?P<article_id>\d+)/revision/change/(?P<revision_id>\d+)/$',
-                self.revision_change_view.as_view(),
+                self.revision_change_view_class.as_view(),
                 name='change_revision'),
             url(
                 '^(?P<article_id>\d+)/revision/merge/(?P<revision_id>\d+)/$',
@@ -183,7 +183,7 @@ class WikiURLPatterns(object):
                 name='source'),
             url(
                 '^(?P<path>.+/|)_revision/change/(?P<revision_id>\d+)/$',
-                self.revision_change_view.as_view(),
+                self.revision_change_view_class.as_view(),
                 name='change_revision'),
             url(
                 '^(?P<path>.+/|)_revision/merge/(?P<revision_id>\d+)/$',
@@ -199,7 +199,8 @@ class WikiURLPatterns(object):
         ]
         return urlpatterns
 
-    def get_plugin_urls(self):
+    @staticmethod
+    def get_plugin_urls():
         urlpatterns = []
         for plugin in list(registry.get_plugins().values()):
             slug = getattr(plugin, 'slug', None)
@@ -231,11 +232,11 @@ def get_pattern(app_name="wiki", namespace="wiki", url_config_class=None):
         else:
             url_config_class = get_class_from_str(url_config_classname)
     urlpatterns = url_config_class().get_urls()
-    
+
     if DJANGO_VERSION < (1, 8):
         from django.conf.urls import patterns
         urlpatterns = patterns('', *urlpatterns)
-    
+
     return urlpatterns, app_name, namespace
 
 

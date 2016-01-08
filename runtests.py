@@ -5,9 +5,11 @@ import sys
 import django
 from django.conf import settings
 
-settings.configure(
+
+settings_dict = dict(
     DEBUG=True,
     AUTH_USER_MODEL='testdata.CustomUser',
+    WIKI_GROUP_MODEL='testdata.CustomGroup',
     DATABASES={
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -40,21 +42,44 @@ settings.configure(
         'django.contrib.auth.middleware.AuthenticationMiddleware',
         'django.contrib.messages.middleware.MessageMiddleware',
     ],
-    TEMPLATE_CONTEXT_PROCESSORS=(
-        "django.contrib.auth.context_processors.auth",
-        "django.core.context_processors.debug",
-        "django.core.context_processors.i18n",
-        "django.core.context_processors.media",
-        "django.core.context_processors.request",
-        "django.core.context_processors.static",
-        "django.core.context_processors.tz",
-        "django.contrib.messages.context_processors.messages",
-        "sekizai.context_processors.sekizai",
-    ),
     USE_TZ=True,
     SOUTH_TESTS_MIGRATE=True,
-    SECRET_KEY = 'b^fv_)t39h%9p40)fnkfblo##jkr!$0)lkp6bpy!fi*f$4*92!',
+    SECRET_KEY='b^fv_)t39h%9p40)fnkfblo##jkr!$0)lkp6bpy!fi*f$4*92!',
 )
+
+TEMPLATE_CONTEXT_PROCESSORS = [
+    "django.contrib.auth.context_processors.auth",
+    "django.template.context_processors.debug",
+    "django.template.context_processors.i18n",
+    "django.template.context_processors.media",
+    "django.template.context_processors.request",
+    "django.template.context_processors.static",
+    "django.template.context_processors.tz",
+    "django.contrib.messages.context_processors.messages",
+    "sekizai.context_processors.sekizai",
+]
+
+if django.VERSION < (1, 8):
+    settings_dict.update(dict(
+        TEMPLATE_CONTEXT_PROCESSORS=[p.replace('django.template.context_processors',
+                                               'django.core.context_processors')
+                                     for p in TEMPLATE_CONTEXT_PROCESSORS]
+    ))
+else:
+    settings_dict.update(dict(
+        TEMPLATES=[
+            {
+                'BACKEND': 'django.template.backends.django.DjangoTemplates',
+                'APP_DIRS': True,
+                'OPTIONS': {
+                    'context_processors': TEMPLATE_CONTEXT_PROCESSORS
+                },
+            },
+        ]
+    ))
+
+settings.configure(**settings_dict)
+
 
 # If you use South for migrations, uncomment this to monkeypatch
 # syncdb to get migrations to run.
