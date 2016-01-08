@@ -82,7 +82,7 @@
     $("#article_edit_form :input").change(function() {
        $("#article_edit_form").data("changed",true);
     });
-    if ($("#article_edit_form").find(".alert-error").length > 0){
+    if ($("#article_edit_form").find(".alert-error").length > 0 || $("#article_edit_form").find(".has-error").length > 0 ) {
       // Set the forms status as "changed" if there was a submission error
       $("#article_edit_form").data("changed",true);
     }
