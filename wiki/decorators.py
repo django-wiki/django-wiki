@@ -141,8 +141,7 @@ def get_article(func=None, can_read=True, can_write=False,
             article = get_object_or_404(articles, id=article_id)
             try:
                 urlpath = models.URLPath.objects.get(articles__article=article)
-            except models.URLPath.DoesNotExist as noarticle:
-                models.URLPath.MultipleObjectsReturned = noarticle
+            except (models.URLPath.DoesNotExist, models.URLPath.MultipleObjectsReturned):
                 urlpath = None
 
         else:
