@@ -20,6 +20,7 @@ Contents:
    known_issues
    faq
    history
+   todo
 
 .. include:: ../README.rst
 
