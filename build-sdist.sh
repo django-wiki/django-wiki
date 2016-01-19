@@ -5,9 +5,9 @@ set -e
 # Ensure we're in the right directory
 cd "$(dirname "$0")"
 
-CHANGELOG="CHANGELOG.md"
+CHANGELOG="HISTORY.rst"
 
-echo "Creating CHANGELOG.md"
+echo "Creating HISTORY.rst"
 echo "Latest Changes" > $CHANGELOG
 echo "==============" >> $CHANGELOG
 echo "Compiled on: `date`" >> $CHANGELOG
@@ -22,11 +22,6 @@ echo "Compiling LESS files to CSS..."
 #cd docs
 #make html
 #cd ..
-
-echo "Building model chart PDF (needs graphviz)..."
-cd testproject/
-./manage.py wikiviz wiki --inheritance | dot -Tpdf -o ../model_chart_wiki.pdf
-cd ..
 
 echo "Building Python source distribution..."
 rm -Rf *egg-info/

@@ -19,6 +19,7 @@ Contents:
    release_notes
    known_issues
    faq
+   history
 
 .. include:: ../README.rst
 
