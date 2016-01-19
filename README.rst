@@ -1,7 +1,7 @@
 django-wiki
 ===========
 
-|Docs| |Build Status| |Coverage Status| |PyPi| |Documentation Status| |Dependency Status|
+|Docs| |Build Status| |Coverage Status| |PyPi| |Dependency Status|
 
 .. |Docs| image:: https://readthedocs.org/projects/django-wiki/badge/?version=latest
    :target: http://django-wiki.readthedocs.org/
