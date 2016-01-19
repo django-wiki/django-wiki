@@ -13,8 +13,6 @@ django-wiki
    :target: https://pypi.python.org/pypi/wiki/0.0.24.3
 .. |Downloads| image:: https://pypip.in/v/wiki/badge.png
    :target: https://crate.io/package/wiki
-.. |Documentation Status| image:: https://readthedocs.org/projects/django-wiki/badge/?version=latest
-   :target: https://readthedocs.org/projects/django-wiki/?badge=latest
 .. |Dependency Status| image:: https://gemnasium.com/django-wiki/django-wiki.svg
    :target: https://gemnasium.com/django-wiki/django-wiki
 
@@ -27,7 +25,7 @@ which migrations will be reset.
 
 **0.0.24** adds Django 1.7 support, however it's not well-tested.
 
-**0.1** (available as current master branch) adds Django 1.7 and 1.8
+**0.1** (available as current master branch) adds Django 1.7, 1.8 and 1.9
 support, working as of now!
 
 Please refer to the `Release
