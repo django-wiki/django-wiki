@@ -18,7 +18,7 @@
       {% include "wiki/includes/revision_info.html" with revision=merge2 %}
     </div>
     {% if merge1.deleted %}
-    <div class="alert alert-error">
+    <div class="alert alert-danger">
       <strong>{% trans "You cannot merge with a deleted revision" %}</strong>
     </div>
     {% endif %}
