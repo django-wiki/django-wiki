@@ -20,20 +20,19 @@ django-wiki
 Important notice
 ----------------
 
-Version **0.0.24** is now out and is the final release before **0.1** in
-which migrations will be reset.
+First beta - 0.1b0 - is out now. Please note that the only way to upgrade is from 0.0.24.
 
-**0.0.24** adds Django 1.7 support, however it's not well-tested.
+**0.0.24** added Django 1.7 support, however it's not well-tested.
 
-**0.1** (available as current master branch) adds Django 1.7, 1.8 and 1.9
-support, working as of now!
+**0.1** adds Django 1.7, 1.8 and 1.9 support.
 
-Please refer to the `Release
-Notes <http://django-wiki.readthedocs.org/en/latest/release_notes.html#django-wiki-0-0-24>`__
+For upgrade instructions, please refer to the `Release
+Notes <http://django-wiki.readthedocs.org/en/latest/release_notes.html#django-wiki-0-1>`__
 
 0.1 Roadmap
 -----------
 
+- Version 0.1b0 is out (beta). Installation: ``pip install wiki --pre``
 - Migrations reset **DONE**
 - Django 1.7 support **DONE**
 - Django 1.8 support **DONE**
