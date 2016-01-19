@@ -1,0 +1,64 @@
+{% extends "wiki/article.html" %}
+{% load wiki_tags i18n humanize %}
+
+{% block wiki_pagetitle %}{% trans "Delete template" %} "{{ template.template_title }}"{% endblock %}
+
+{% block wiki_contents_tab %}
+
+{% if template.article == article %}
+<h2>{% trans "Delete template" %} "{{ template.template_title }}"?</h2>
+  <p class="lead">
+    {% blocktrans with template.original_filename as filename %}
+    The template may be referenced on other articles. Deleting it means that they will loose their references to this template. The following articles reference this template:
+    {% endblocktrans %}
+  </p>
+  <ul>
+    {% for a in template.articles.all %}
+      <li style="font-size: 150%;">{{ a.current_revision.title }}</li>
+    {% endfor %}
+  </ul>
+<hr />
+<form method="POST" class="form-horizontal" id="attachment_form" enctype="multipart/form-data">
+  {% wiki_form form %}
+  <div class="form-group form-actions">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-10">
+      <a href="{% url 'wiki:template_index' path=urlpath.path article_id=article.id %}" class="btn btn-default">
+        <span class="fa fa-arrow-left"></span>
+        {% trans "Go back" %}
+      </a>
+      <button class="btn btn-danger">
+        <span class="fa fa-trash"></span>
+        {% trans "Delete it!" %}
+      </button>
+    </div>
+  </div>
+</form>
+
+{% else %}
+  <h2>{% trans "Remove" %} "{{ template.template_title }}"?</h2>
+  <p class="lead">
+    {% blocktrans with template.template_title as template_title %}
+    You can remove a reference to a template, but it will retain its references on other articles.
+    {% endblocktrans %}
+  </p>
+  <form method="POST" class="form-horizontal" id="template_form" enctype="multipart/form-data">
+  {% wiki_form form %}
+  <div class="form-group form-actions">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-10">
+      <a href="{% url 'wiki:template_index' path=urlpath.path article_id=article.id %}" class="btn btn-default">
+        <span class="fa fa-arrow-left"></span>
+        {% trans "Go back" %}
+      </a>
+      <button class="btn btn-danger">
+        <span class="fa fa-trash"></span>
+        {% trans "Remove reference" %}
+      </button>
+    </div>
+  </div>
+</form>
+
+{% endif %}
+
+{% endblock %}

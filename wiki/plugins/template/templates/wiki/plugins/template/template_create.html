@@ -1,0 +1,62 @@
+{% extends "wiki/article.html" %}
+{% load wiki_tags i18n humanize sekizai_tags %}
+
+{% block wiki_pagetitle %}{% trans "Update template" %}: {{ template.template_title }}{% endblock %}
+
+{% block wiki_contents_tab %}
+
+{% addtoblock "css" %}
+<style type="text/css" media="screen">
+	#id_template_content{
+		width: 100%;
+	}
+	#id_description{
+		width: 100%;
+	}
+</style>
+{% endaddtoblock %}
+
+	<form id="create_template" method="POST" class="form-horizontal" enctype="multipart/form-data">
+		{% wiki_form form %}
+		<div class="form-group form-actions">
+			<div class="col-lg-12">
+				<a href="{% url 'wiki:template_index' path=urlpath.path article_id=article.id %}" class="btn btn-default">
+					<span class="fa fa-arrow-left"></span>
+					{% trans "Go back" %}
+				</a>
+				<a class="btn btn-success" onclick="$('#previewModal').modal('show'); document.getElementById('create_template').target='previewWindow'; document.getElementById('create_template').action='{% url 'wiki:template_create_preview' path=urlpath.path article_id=article.id %}'; $('#create_template').submit()" href="#">
+					<span class="fa fa-eye"></span>
+					{% trans "Preview" %}
+				</a>
+				<a href="#" onclick="document.getElementById('create_template').target=''; document.getElementById('create_template').action='{% url 'wiki:template_create' path=urlpath.path article_id=article.id %}'; document.getElementById('create_template').submit();" class="btn btn-primary">
+					<span class="fa fa-check"></span>
+					{% trans "Save" %}
+				</a>
+			</div>
+		</div>
+	</form>
+{% include "wiki/includes/editormedia.html" %}
+
+{% include "wiki/includes/modals.html" %}
+
+<div class="modal fade wiki-modal" id="previewModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<iframe name="previewWindow" frameborder="0"></iframe>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-default btn-large" data-dismiss="modal">
+					<span class="fa fa-arrow-circle-left"></span>
+					{% trans "Back to editor" %}
+				</a>
+				<a class="btn btn-large btn-primary" onclick="document.getElementById('create_template').target=''; document.getElementById('create_template').action='{% url 'wiki:template_create' path=urlpath.path article_id=article.id %}'; document.getElementById('create_template').submit();" href="#">
+					<span class="fa fa-check"></span>
+					{% trans "Save changes" %}
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

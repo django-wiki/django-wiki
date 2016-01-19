@@ -1,0 +1,52 @@
+{% extends "wiki/article.html" %}
+{% load wiki_tags i18n humanize %}
+
+{% block wiki_pagetitle %}{% trans "History of template" %} "{{ template.template_title }}"{% endblock %}
+
+{% block wiki_contents_tab %}
+
+<h2>{% trans "History of template" %} "{{ template.template_title }}"</h2>
+<table class="table table-striped table-bordered">
+  <tr>
+    <th>{% trans "Version" %}</th>
+    <th>{% trans "Date" %}</th>
+    <th>{% trans "User" %}</th>
+    <th>{% trans "Description" %}</th>
+    <th>{% trans "Markdown text" %}</th>
+    <th style="text-align: right">{% trans "Action" %}</th>
+  </tr>
+{% for revision in revisions %}
+  <tr>
+    <td># {{ revision.revision_number }}</td>
+    <td>
+      {{ revision.created }}
+      {% if revision.deleted %}<span class="badge badge-important">{% trans "deleted" %}</span>{% endif %}
+    </td>
+    <td>
+      {% include "wiki/includes/revision_info.html" with revision=template.current_revision hidedate=1 hidenumber=1 %}
+    </td>
+    <td>{{ revision.description|default:_("<em>No description</em>")|safe }}</td>
+    <td>{{ revision.template_content|linebreaks }}</td>
+    <td style="text-align: right">
+      <form method="POST" action="{% url 'wiki:template_revision_change' path=urlpath.path article_id=article.id template_id=template.id revision_id=revision.id %}">
+        {% csrf_token %}
+        {% if revision.template.article|can_write:user %}
+            {% if revision != template.current_revision %}
+            <button class="btn btn-default">
+              <span class="fa fa-flag"></span>
+            {% trans "Use this!" %}
+            </button>
+            {% else %}
+            <button disabled="disabled" class="btn btn-success">
+              <span class="fa fa-flag"></span>
+            {% trans "Current version" %}
+            </button>
+            {% endif %}
+        {% endif %}
+      </form>
+    </td>
+  </tr>
+{% endfor %}
+</table>
+<a href="javascript:history.go(-1);"><span class="fa fa-arrow-left"></span> {% trans "Go back" %}</a>
+{% endblock %}

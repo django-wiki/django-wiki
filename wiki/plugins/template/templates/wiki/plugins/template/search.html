@@ -1,0 +1,86 @@
+{% extends "wiki/article.html" %}
+{% load wiki_tags i18n humanize sekizai_tags %}
+
+{% block wiki_pagetitle %}{% trans "Add file to" %} "{{ article.current_revision.title }}"{% endblock %}
+
+{% block wiki_contents_tab %}
+
+{% addtoblock "css" %}
+<style type="text/css" media="screen">
+  .search-query{
+    border-right: 0px !important;
+    border-radius: 4px 0 0 4px !important;
+  }
+  .search{
+    margin-bottom: 5px;
+    width: 41.66666666666667%;
+  }
+</style>
+{% endaddtoblock %}
+
+<h2>{% trans "Add attachment from other article" %}</h2>
+
+<div class="search">
+  <form method="GET" action="{% url 'wiki:template_search' path=urlpath.path article_id=article.id %}" class="wiki-form-block">
+    <div class="input-group">
+      {{ search_form.query }}
+      <span class="input-group-btn">
+        <button class="btn btn-default">
+          <span class="fa fa-search"></span>
+          {% trans "Search templates" %}
+        </button>
+      </span>
+    </div>
+  </form>
+</div>
+
+{% if templates %}
+<table class="table table-striped table-bordered">
+  <tr>
+    <th>{% trans "Template" %}</th>
+    <th>{% trans "Main article" %}</th>
+    <th>{% trans "Date" %}</th>
+    <th>{% trans "Created by" %}</th>
+    <th style="text-align: right">{% trans "Action" %}</th>
+  </tr>
+{% for template in templates %}
+  <tr>
+    <td>
+      <h4>{{ template.template_title }}</h4>
+      {{ template.no_empty_description|default:_("<em>No description</em>")|safe }}
+    </td>
+    <td>
+      <strong>{{ template.article.current_revision.title }}</strong>
+    </td>
+    <td>
+      {{ template.current_revision.created }}
+      {% if template.current_revision.deleted %}<span class="badge badge-important">{% trans "deleted" %}</span>{% endif %}
+    </td>
+    <td>
+      {% include "wiki/includes/revision_info.html" with revision=template.current_revision hidedate=1 hidenumber=1 %}
+    </td>
+    <td style="text-align: right">
+      <form method="POST" action="{% url 'wiki:template_add_to_article' path=urlpath.path article_id=article.id template_id=template.id %}">
+        {% csrf_token %}
+        <button class="btn btn-primary">
+          <span class="fa fa-plus"></span>
+        {% trans "Add to article" %}
+        </button>
+      </form>
+    </td>
+  </tr>
+{% endfor %}
+</table>
+{% else %}
+  <p><em>{% trans "Your search did not return any results" %}</em></p>
+{% endif %}
+
+{% with query as appended_value and "query" as appended_key %}
+{% include "wiki/includes/pagination.html" %}
+{% endwith %}
+
+<p>
+  <a href="{% url 'wiki:template_index' path=urlpath.path article_id=article.id %}"><span class="fa fa-arrow-left"></span> {% trans "Go back" %}</a>
+</p>
+
+{% endblock %}
