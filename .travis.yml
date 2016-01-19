@@ -27,7 +27,7 @@ env:
 - TOXENV=py34-django19
 
 install:
-  - pip install tox>=2.1 coveralls
+  - pip install tox>=2.1 coveralls pytest pytest-django
 
 script:
   - tox -e $TOXENV
