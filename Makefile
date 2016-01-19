@@ -24,7 +24,7 @@ clean-pyc:
 	find . -name '*~' -exec rm -f {} +
 
 lint:
-	pep8 kalite_zim
+	pep8 wiki
 
 test:
 	./runtests.py
@@ -33,30 +33,19 @@ test-all:
 	tox
 
 coverage:
-	coverage run --source ka-lite-zim setup.py test
+	coverage run --source wiki setup.py test
 	coverage report -m
 	coverage html
 	open htmlcov/index.html
 
 docs:
-	rm -f docs/ka-lite-zim.rst
-	# rm -f docs/modules.rst
-	# sphinx-apidoc -o docs/ ka-lite-zim
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 	sphinx-build -b linkcheck ./docs _build/
 	sphinx-build -b html ./docs _build/
 
-release: clean
-	python setup.py sdist upload
-	python setup.py bdist_wheel upload
-
-assets:
-	lessc wiki/static/wiki/bootstrap/less/wiki/wiki-bootstrap.less wiki/static/wiki/bootstrap/css/wiki-bootstrap.css
-	lessc -x wiki/static/wiki/bootstrap/less/wiki/wiki-bootstrap.less wiki/static/wiki/bootstrap/css/wiki-bootstrap.min.css
-
-sdist: clean assets
-	echo "Creating HISTORY.rst"
+release: clean assets
+	echo "Creating HISTORY.rst..."
 	echo "Latest Changes" > HISTORY.rst
 	echo "==============" >> HISTORY.rst
 	echo "" >> HISTORY.rst
@@ -65,7 +54,14 @@ sdist: clean assets
 	echo "Compiled on: `date`::" >> HISTORY.rst
 	echo "" >> HISTORY.rst
 	git log --graph --pretty=format:'%h -%d %s (%cr) <%an>' --abbrev-commit | sed "s/^/    /" >> HISTORY.rst
-	echo "Compiling LESS files to CSS..."
-	./build-less.sh
+	echo "Packing source dist..."
+	python3 setup.py sdist bdist_wheel upload --sign
+	# twine upload -s dist/*
+
+assets:
+	lessc wiki/static/wiki/bootstrap/less/wiki/wiki-bootstrap.less wiki/static/wiki/bootstrap/css/wiki-bootstrap.css
+	lessc -x wiki/static/wiki/bootstrap/less/wiki/wiki-bootstrap.less wiki/static/wiki/bootstrap/css/wiki-bootstrap.min.css
+
+sdist: clean assets
 	python setup.py sdist
 	ls -l dist

@@ -11,8 +11,8 @@ django-wiki
    :target: https://coveralls.io/r/django-wiki/django-wiki?branch=master
 .. |PyPi| image:: https://badge.fury.io/py/wiki.svg
    :target: https://pypi.python.org/pypi/wiki/0.0.24.3
-.. |Downloads| image:: https://pypip.in/v/wiki/badge.png
-   :target: https://crate.io/package/wiki
+.. |Downloads| image:: https://img.shields.io/pypi/dm/wiki.svg
+   :target: https://pypi.python.org/pypi/wiki/
 .. |Dependency Status| image:: https://gemnasium.com/django-wiki/django-wiki.svg
    :target: https://gemnasium.com/django-wiki/django-wiki
 
@@ -20,20 +20,19 @@ django-wiki
 Important notice
 ----------------
 
-Version **0.0.24** is now out and is the final release before **0.1** in
-which migrations will be reset.
+First beta - 0.1b0 - is out now. Please note that the only way to upgrade is from 0.0.24.
 
-**0.0.24** adds Django 1.7 support, however it's not well-tested.
+**0.0.24** added Django 1.7 support, however it's not well-tested.
 
-**0.1** (available as current master branch) adds Django 1.7, 1.8 and 1.9
-support, working as of now!
+**0.1** adds Django 1.7, 1.8 and 1.9 support.
 
-Please refer to the `Release
-Notes <http://django-wiki.readthedocs.org/en/latest/release_notes.html#django-wiki-0-0-24>`__
+For upgrade instructions, please refer to the `Release
+Notes <http://django-wiki.readthedocs.org/en/latest/release_notes.html#django-wiki-0-1>`__
 
 0.1 Roadmap
 -----------
 
+- Version 0.1b0 is out (beta). Installation: ``pip install wiki --pre``
 - Migrations reset **DONE**
 - Django 1.7 support **DONE**
 - Django 1.8 support **DONE**
@@ -133,22 +132,30 @@ classes every time there is an update.
 Contributing
 ------------
 
-`TODO <https://github.com/django-wiki/django-wiki/blob/master/TODO.md>`__
-contains an overview of features planned or under development.
+The best way to contribute is to use our Github issue list to look
+at current wishes. The list is found here:
 
-Consider any moment in life that you could have been writing **unit
-tests** for django-wiki.
+https://github.com/django-wiki/django-wiki/issues/
+
+Generally speaking, we need more **unit tests**, and new
+features will not be accepted without tests. To add more stuff the
+the project without tests wouldn't be fair to the project or
+your hard work. We use coverage metrics to see that each new
+contribution does not significantly impact test coverage.
 
 The easiest way to add features is to write a plugin. Please create an
 issue to discuss whether your plugin idea is a core plugin
 (``wiki.plugins.*``) or external plugin. If there are additions needed
 to the plugin API, we can discuss that as well!
 
-To run the tests, run "python runtests.py" after installing the
-requirements. Better, install "tox" (using "pip install tox") and then
-just run "tox" to run the test suite on multiple environments.
+To run django-wiki's tests, run ``make test`` or ``python setup.py test``
+after installing the requirements.
 
-To run specific tests, call runtests.py with the arguments that you
+If you want to test for more **environments**, install "tox"
+(``pip install tox``) and then just run ``tox`` to run the test
+suite on multiple environments.
+
+To run **specific tests**, call ``runtests.py`` with the arguments that you
 would pass to the normal "manage.py test" command.
 
 Manifesto
@@ -203,12 +210,6 @@ As of now, Django has existed for too long without a proper wiki
 application. The dream of django-wiki is to become a contestant
 alongside Mediawiki, so that Django developers can stick to the Django
 platform even when facing tough challenges such as implementing a wiki.
-
-Contributing
-------------
-
-This project will be very open for enrolling anyone with a good idea. As
-of now, however, it's a bit closed while we get the foundation laid out.
 
 Q&A
 ---

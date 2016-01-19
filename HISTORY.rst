@@ -1,12 +1,26 @@
 Latest Changes
 ==============
 
-This file is auto-generated upon every new release. To review the latest commits in the master branch, please refer to: https://github.com/django-wiki/django-wiki/commits/master
 
-Compiled on: Tue Jan 19 02:58:59 CET 2016::
+Compiled on: Tue Jan 19 17:17:50 CET 2016::
 
-    * fab9d11 - (HEAD, makefile) use HISTORY.rst and include it in docs (4 minutes ago) <Benjamin Bach>
-    * e948c97 - remove the model chart generator, too much bloat (9 minutes ago) <Benjamin Bach>
+    * 0b1c2b6 - (HEAD, origin/prerelease-updates, prerelease-updates) Bump to beta (42 seconds ago) <Benjamin Bach>
+    * 0e56a16 - Backwards-incompatible: Use VERSION tuple like django and auto-add git time stamps (18 minutes ago) <Benjamin Bach>
+    * b17ad16 - Consolidate instructions (41 minutes ago) <Benjamin Bach>
+    * 6a7cbf3 - fix broken badge (75 minutes ago) <Benjamin Bach>
+    * 5a0f57c - remove unref'ed image (13 hours ago) <Benjamin Bach>
+    * c4e858e - Remove unused image and add 1.9 note (13 hours ago) <Benjamin Bach>
+    * 133409b - (origin/makefile, prerelease-udpates, makefile) add TODO to docs [ci-skip] (13 hours ago) <Benjamin Bach>
+    * cc6ab71 - update TODO.rst (13 hours ago) <Benjamin Bach>
+    * 8d6272c - refactor scripts into Makefile (13 hours ago) <Benjamin Bach>
+    * 8f9c1de - remove unused refactor script (14 hours ago) <Benjamin Bach>
+    * 5aa734e - remove pytest from travis conf (14 hours ago) <Benjamin Bach>
+    * 6a7822d - add pytest dep to tox.ini (14 hours ago) <Benjamin Bach>
+    * a8eef92 - Add py.test deps (14 hours ago) <Benjamin Bach>
+    * 0824431 - use py.test (14 hours ago) <Benjamin Bach>
+    * 59e18a4 - modify rst syntax for history file (14 hours ago) <Benjamin Bach>
+    * fab9d11 - use HISTORY.rst and include it in docs (14 hours ago) <Benjamin Bach>
+    * e948c97 - remove the model chart generator, too much bloat (14 hours ago) <Benjamin Bach>
     *   8eea990 - (origin/master, origin/HEAD, master) Merge pull request #517 from benjaoming/fix-dj19-migration (2 weeks ago) <benjaoming>
     |\  
     | * 603cd64 - Add default arguments that Django 1.9 wants explicitly (2 weeks ago) <Benjamin Bach>
@@ -66,10 +80,10 @@ Compiled on: Tue Jan 19 02:58:59 CET 2016::
     | * e9a7445 - also disable signals in notifications plugin when loading fixtures (4 weeks ago) <Benjamin Bach>
     | * 0d84a9c - Refactor all model save() to signals. Add tests. Fixes loaddata issues #501. (4 weeks ago) <Benjamin Bach>
     |/  
-    *   525cf62 - Merge pull request #500 from benjaoming/remove-readmerst-auto-conv (6 weeks ago) <benjaoming>
+    *   525cf62 - Merge pull request #500 from benjaoming/remove-readmerst-auto-conv (7 weeks ago) <benjaoming>
     |\  
-    | * 0421bd7 - remove pypandoc for generating readme.rst, it's already there (6 weeks ago) <Benjamin Bach>
-    * |   aa52d19 - Merge pull request #495 from benjaoming/fix-missing-migrations (6 weeks ago) <benjaoming>
+    | * 0421bd7 - remove pypandoc for generating readme.rst, it's already there (7 weeks ago) <Benjamin Bach>
+    * |   aa52d19 - Merge pull request #495 from benjaoming/fix-missing-migrations (7 weeks ago) <benjaoming>
     |\ \  
     | |/  
     | * c5b1c2a - (origin/fix-missing-migrations) Fix migrations #472 and update test database (9 weeks ago) <Benjamin Bach>
@@ -83,10 +97,10 @@ Compiled on: Tue Jan 19 02:58:59 CET 2016::
     | * ee56d7b - Move badges to the top (9 weeks ago) <Benjamin Bach>
     | * 27d139b - remove README.md and add pandoc-generated README.rst (9 weeks ago) <Benjamin Bach>
     |/  
-    *   93d7cb1 - Merge pull request #473 from django-wiki/wikilink-basepath (10 weeks ago) <benjaoming>
+    *   93d7cb1 - Merge pull request #473 from django-wiki/wikilink-basepath (2 months ago) <benjaoming>
     |\  
     | * 4b1a57a - (origin/wikilink-basepath) Use correct base path for [[ article-link ]] syntax (3 months ago) <benjaoming>
-    * |   012d7e5 - Merge pull request #465 from fritz-k/master (10 weeks ago) <benjaoming>
+    * |   012d7e5 - Merge pull request #465 from fritz-k/master (2 months ago) <benjaoming>
     |\ \  
     | * | 8eab4a6 - Explicitly default to auth.Group on django <= 1.6 (4 months ago) <Simon Kaiser>
     | * | 5595dbc - Add tests for WIKI_GROUP_MODEL setting (4 months ago) <Simon Kaiser>
@@ -355,11 +369,11 @@ Compiled on: Tue Jan 19 02:58:59 CET 2016::
     | | |/  
     | |/|   
     | * | b146c62 - Added better doc's (11 months ago) <Alkalit>
-    | * | c2712e6 - Filters code refactoring. Also added some docs. (11 months ago) <Alkalit>
-    * | |   9b8be37 - Merge pull request #382 from Alkalit/master (11 months ago) <benjaoming>
+    | * | c2712e6 - Filters code refactoring. Also added some docs. (12 months ago) <Alkalit>
+    * | |   9b8be37 - Merge pull request #382 from Alkalit/master (12 months ago) <benjaoming>
     |\ \ \  
     | |/ /  
-    | * | c43c971 - Tests for get_content_snippet filter. (11 months ago) <Alkalit>
+    | * | c43c971 - Tests for get_content_snippet filter. (12 months ago) <Alkalit>
     | * | 211df32 - Mock library removed as requirement. (12 months ago) <Alkalit>
     | * | 03ac42a - mock replaced by custom override decorator. (12 months ago) <Alkalit>
     | * | 43ac168 - Mock library added as requirements (12 months ago) <Alkalit>
@@ -566,18 +580,18 @@ Compiled on: Tue Jan 19 02:58:59 CET 2016::
     * | | | | |   93049a3 - Merge pull request #325 from jluttine/fix-testproject-manage (1 year, 2 months ago) <benjaoming>
     |\ \ \ \ \ \  
     | * | | | | | 3d70212 - Fix testproject/manage.py to be executable (1 year, 3 months ago) <Jaakko Luttinen>
-    * | | | | | |   60bf09e - Merge pull request #327 from jluttine/fix-326-search-title (1 year, 2 months ago) <benjaoming>
+    * | | | | | |   60bf09e - Merge pull request #327 from jluttine/fix-326-search-title (1 year, 3 months ago) <benjaoming>
     |\ \ \ \ \ \ \  
     | |_|/ / / / /  
     |/| | | | | |   
     | * | | | | | f83effc - Fix issue #326 (1 year, 3 months ago) <Jaakko Luttinen>
     | |/ / / / /  
-    * | | | | | f100e69 - Remove Python 3.2 testing because South migrations arent running (1 year, 2 months ago) <benjaoming>
-    * | | | | |   99c8d6b - Merge pull request #330 from spookylukey/reset_notifications_migrations (1 year, 2 months ago) <benjaoming>
+    * | | | | | f100e69 - Remove Python 3.2 testing because South migrations arent running (1 year, 3 months ago) <benjaoming>
+    * | | | | |   99c8d6b - Merge pull request #330 from spookylukey/reset_notifications_migrations (1 year, 3 months ago) <benjaoming>
     |\ \ \ \ \ \  
     | * | | | | | 38c0007 - Migrations reset on the rather messed up notifications app (1 year, 3 months ago) <Luke Plant>
-    * | | | | | | cf96c61 - add note on master branch (1 year, 2 months ago) <benjaoming>
-    * | | | | | |   7087775 - Merge pull request #332 from spookylukey/fix_upload_for_python3_rebased (1 year, 2 months ago) <benjaoming>
+    * | | | | | | cf96c61 - add note on master branch (1 year, 3 months ago) <benjaoming>
+    * | | | | | |   7087775 - Merge pull request #332 from spookylukey/fix_upload_for_python3_rebased (1 year, 3 months ago) <benjaoming>
     |\ \ \ \ \ \ \  
     | * | | | | | | 197bd20 - Fixed uploading of attachments using Python3 (1 year, 3 months ago) <Luke Plant>
     | * | | | | | | 61ffee0 - Removed stray debugging print statement (1 year, 3 months ago) <Luke Plant>
@@ -768,7 +782,7 @@ Compiled on: Tue Jan 19 02:58:59 CET 2016::
     | |\ \ \ \ \  
     | | |/ / / /  
     | |/| | | |   
-    | | * | | | 682a217 - added HTML5 pattern checking of lowercase and underscores (1 year, 8 months ago) <Jason Williams>
+    | | * | | | 682a217 - added HTML5 pattern checking of lowercase and underscores (1 year, 9 months ago) <Jason Williams>
     | | * | | | 3488ef1 - forcing cleanup server side (1 year, 9 months ago) <Jason Williams>
     | | * | | | 5ae09e6 - fixing mistake made from last commit (1 year, 9 months ago) <Jason Williams>
     | | * | | | c84a4b4 - This line should be removed, as it is removing the hyphen (1 year, 9 months ago) <Jason Williams>
@@ -1247,7 +1261,7 @@ Compiled on: Tue Jan 19 02:58:59 CET 2016::
     | * | 6dc14a1 - Fixed RuntimeWarning by replacing naive datetime by utc (2 years, 9 months ago) <Hynek Cernoch>
     * | | d746543 - #140 - Markdown 2.2/2.3 API change - do not rely on markdown.extensions.headerid.unique (2 years, 9 months ago) <benjaoming>
     |/ /  
-    * | f6eb8be - French translation - changed msg id (att. pull #138) (2 years, 9 months ago) <benjaoming>
+    * | f6eb8be - French translation - changed msg id (att. pull #138) (2 years, 10 months ago) <benjaoming>
     * | 8332ab6 - pull #139 - form data from args or kwargs (2 years, 10 months ago) <benjaoming>
     * |   1aa8eb2 - Merge branch 'master' of github.com:benjaoming/django-wiki (2 years, 10 months ago) <benjaoming>
     |\ \  
@@ -1463,15 +1477,15 @@ Compiled on: Tue Jan 19 02:58:59 CET 2016::
     * | abe7282 - unfinished generic markdown extension (2 years, 11 months ago) <benjaoming>
     * | 53205ac - fix setting article fk on reusable plugins for identifying permissions (2 years, 11 months ago) <benjaoming>
     |/  
-    * 7e6da88 - (tag: alpha/0.0.14) Bump to 0.0.14 (2 years, 11 months ago) <benjaoming>
-    * 67d8cf3 - Security fix, do not call eval on input (2 years, 11 months ago) <benjaoming>
-    * d9d19f0 - fix python 2.5 unknown elementree method (2 years, 11 months ago) <benjaoming>
-    * f9a46f1 - (tag: alpha/0.0.13) Note on python 2.5 and improve article list (2 years, 11 months ago) <benjaoming>
-    * c4e855d - Update README.md (2 years, 11 months ago) <benjaoming>
-    * 076ad8e - Python 2.5 support note (2 years, 11 months ago) <benjaoming>
-    * 0106b6f - python 2.5 support (2 years, 11 months ago) <benjaoming>
-    * b86be8c - (tag: alpha/0.0.12) version bump to 0.0.12 (2 years, 11 months ago) <benjaoming>
-    * d5f8352 - Fix #100 add print CSS and remove inline <style> (2 years, 11 months ago) <benjaoming>
+    * 7e6da88 - (tag: alpha/0.0.14) Bump to 0.0.14 (3 years ago) <benjaoming>
+    * 67d8cf3 - Security fix, do not call eval on input (3 years ago) <benjaoming>
+    * d9d19f0 - fix python 2.5 unknown elementree method (3 years ago) <benjaoming>
+    * f9a46f1 - (tag: alpha/0.0.13) Note on python 2.5 and improve article list (3 years ago) <benjaoming>
+    * c4e855d - Update README.md (3 years ago) <benjaoming>
+    * 076ad8e - Python 2.5 support note (3 years ago) <benjaoming>
+    * 0106b6f - python 2.5 support (3 years ago) <benjaoming>
+    * b86be8c - (tag: alpha/0.0.12) version bump to 0.0.12 (3 years ago) <benjaoming>
+    * d5f8352 - Fix #100 add print CSS and remove inline <style> (3 years ago) <benjaoming>
     * 9070358 - Fix error in macros removing unknown tags from stack and prettify styling (3 years ago) <benjaoming>
     * ff9ad26 - add a few more default markdown plugins (3 years ago) <benjaoming>
     * 2ed231a - Apply user info on the creater of the first revision of the root article (3 years ago) <benjaoming>
@@ -1585,9 +1599,9 @@ Compiled on: Tue Jan 19 02:58:59 CET 2016::
     * | c93b318 - Be explicit about application order (#84) (3 years, 2 months ago) <benjaoming>
     * |   ceb705b - Merge branch 'master' of github.com:benjaoming/django-wiki (3 years, 2 months ago) <benjaoming>
     |\ \  
-    | * | 6704790 - Retry: Fix settings.py link (#81) (3 years, 2 months ago) <benjaoming>
-    | * | f84a092 - Fix settings.py link (#81) (3 years, 2 months ago) <benjaoming>
-    | * | d586040 - Fix settings.py link (3 years, 2 months ago) <benjaoming>
+    | * | 6704790 - Retry: Fix settings.py link (#81) (3 years, 3 months ago) <benjaoming>
+    | * | f84a092 - Fix settings.py link (#81) (3 years, 3 months ago) <benjaoming>
+    | * | d586040 - Fix settings.py link (3 years, 3 months ago) <benjaoming>
     * | | 32591c2 - Regression from adding spam protection, missing argument in when view class Preview initialized EditForm (#83) (3 years, 2 months ago) <benjaoming>
     |/ /  
     * | 2cb3950 - Move all javascript to load at the bottom of the page and ensure only to add javascript inside Sekizai addtoblock tag. (#54) (3 years, 3 months ago) <benjaoming>
@@ -1654,14 +1668,14 @@ Compiled on: Tue Jan 19 02:58:59 CET 2016::
     * 8f64202 - Issue #48: Searches should be case insensitive (3 years, 4 months ago) <benjaoming>
     * b68f0b5 - More modifications for pypi, first 0.0.1 released - pip install wiki (3 years, 4 months ago) <benjaoming>
     * 996800c - Adding a MANIFEST for pypi distribution (3 years, 4 months ago) <benjaoming>
-    * da4e421 - Fixing issues with PYPI compatibility (3 years, 4 months ago) <benjaoming>
-    *   8a589bb - Merge branch 'master' of github.com:benjaoming/django-wiki (3 years, 4 months ago) <benjaoming>
+    * da4e421 - Fixing issues with PYPI compatibility (3 years, 5 months ago) <benjaoming>
+    *   8a589bb - Merge branch 'master' of github.com:benjaoming/django-wiki (3 years, 5 months ago) <benjaoming>
     |\  
     | *   c7aa2e1 - Merge pull request #40 from uAnywhere/master (3 years, 5 months ago) <benjaoming>
     | |\  
     | | * 4e6cdda - Minor optimisation to ACLs (use .exists() instead of bool() because it's faster), fix an issue on Django 1.5 where EmptyQuerySet has no method select_related_common() (3 years, 5 months ago) <Michael Farrell>
     | |/  
-    * | 3a31f2c - Do not conditionally include login, logout and signup URLs in urlpatterns. Handle WIKI_ACCOUNT_HANDLING inside views. Issue #43. (3 years, 4 months ago) <benjaoming>
+    * | 3a31f2c - Do not conditionally include login, logout and signup URLs in urlpatterns. Handle WIKI_ACCOUNT_HANDLING inside views. Issue #43. (3 years, 5 months ago) <benjaoming>
     |/  
     *   76b0698 - Merge branch 'edx_release' (3 years, 5 months ago) <benjaoming>
     |\  
