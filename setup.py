@@ -7,7 +7,7 @@ import os
 
 from setuptools import setup, find_packages
 
-from wiki import VERSION
+from wiki import __version__
 
 # Utility function to read the README file.
 # Used for the long_description.  It's nice, because now 1) we have a top level
@@ -80,7 +80,7 @@ packages = find_packages()
 
 setup(
     name="wiki",
-    version=VERSION,
+    version=__version__,
     author="Benjamin Bach",
     author_email="benjamin@overtag.dk",
     url="http://www.django-wiki.org",
