@@ -1,8 +1,12 @@
 Latest Changes
 ==============
-Compiled on: Tue Jan 19 02:53:20 CET 2016
 
-    * e948c97 - (HEAD, makefile) remove the model chart generator, too much bloat (3 minutes ago) <Benjamin Bach>
+This file is auto-generated upon every new release. To review the latest commits in the master branch, please refer to: https://github.com/django-wiki/django-wiki/commits/master
+
+Compiled on: Tue Jan 19 02:58:59 CET 2016::
+
+    * fab9d11 - (HEAD, makefile) use HISTORY.rst and include it in docs (4 minutes ago) <Benjamin Bach>
+    * e948c97 - remove the model chart generator, too much bloat (9 minutes ago) <Benjamin Bach>
     *   8eea990 - (origin/master, origin/HEAD, master) Merge pull request #517 from benjaoming/fix-dj19-migration (2 weeks ago) <benjaoming>
     |\  
     | * 603cd64 - Add default arguments that Django 1.9 wants explicitly (2 weeks ago) <Benjamin Bach>
