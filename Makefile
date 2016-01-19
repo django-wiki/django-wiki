@@ -55,8 +55,8 @@ release: clean assets
 	echo "" >> HISTORY.rst
 	git log --graph --pretty=format:'%h -%d %s (%cr) <%an>' --abbrev-commit | sed "s/^/    /" >> HISTORY.rst
 	echo "Packing source dist..."
-	python setup.py sdist bdist_wheel
-	twine upload -s dist/*
+	python3 setup.py sdist bdist_wheel upload --sign
+	# twine upload -s dist/*
 
 assets:
 	lessc wiki/static/wiki/bootstrap/less/wiki/wiki-bootstrap.less wiki/static/wiki/bootstrap/css/wiki-bootstrap.css
