@@ -2,20 +2,21 @@ Latest Changes
 ==============
 
 
-Compiled on: Tue Jan 19 17:06:28 CET 2016::
+Compiled on: Tue Jan 19 17:17:50 CET 2016::
 
-    * 0e56a16 - (HEAD, origin/prerelease-updates, prerelease-updates) Backwards-incompatible: Use VERSION tuple like django and auto-add git time stamps (7 minutes ago) <Benjamin Bach>
-    * b17ad16 - Consolidate instructions (29 minutes ago) <Benjamin Bach>
-    * 6a7cbf3 - fix broken badge (64 minutes ago) <Benjamin Bach>
+    * 0b1c2b6 - (HEAD, origin/prerelease-updates, prerelease-updates) Bump to beta (42 seconds ago) <Benjamin Bach>
+    * 0e56a16 - Backwards-incompatible: Use VERSION tuple like django and auto-add git time stamps (18 minutes ago) <Benjamin Bach>
+    * b17ad16 - Consolidate instructions (41 minutes ago) <Benjamin Bach>
+    * 6a7cbf3 - fix broken badge (75 minutes ago) <Benjamin Bach>
     * 5a0f57c - remove unref'ed image (13 hours ago) <Benjamin Bach>
     * c4e858e - Remove unused image and add 1.9 note (13 hours ago) <Benjamin Bach>
     * 133409b - (origin/makefile, prerelease-udpates, makefile) add TODO to docs [ci-skip] (13 hours ago) <Benjamin Bach>
     * cc6ab71 - update TODO.rst (13 hours ago) <Benjamin Bach>
     * 8d6272c - refactor scripts into Makefile (13 hours ago) <Benjamin Bach>
-    * 8f9c1de - remove unused refactor script (13 hours ago) <Benjamin Bach>
-    * 5aa734e - remove pytest from travis conf (13 hours ago) <Benjamin Bach>
-    * 6a7822d - add pytest dep to tox.ini (13 hours ago) <Benjamin Bach>
-    * a8eef92 - Add py.test deps (13 hours ago) <Benjamin Bach>
+    * 8f9c1de - remove unused refactor script (14 hours ago) <Benjamin Bach>
+    * 5aa734e - remove pytest from travis conf (14 hours ago) <Benjamin Bach>
+    * 6a7822d - add pytest dep to tox.ini (14 hours ago) <Benjamin Bach>
+    * a8eef92 - Add py.test deps (14 hours ago) <Benjamin Bach>
     * 0824431 - use py.test (14 hours ago) <Benjamin Bach>
     * 59e18a4 - modify rst syntax for history file (14 hours ago) <Benjamin Bach>
     * fab9d11 - use HISTORY.rst and include it in docs (14 hours ago) <Benjamin Bach>
