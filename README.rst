@@ -11,8 +11,8 @@ django-wiki
    :target: https://coveralls.io/r/django-wiki/django-wiki?branch=master
 .. |PyPi| image:: https://badge.fury.io/py/wiki.svg
    :target: https://pypi.python.org/pypi/wiki/0.0.24.3
-.. |Downloads| image:: https://pypip.in/v/wiki/badge.png
-   :target: https://crate.io/package/wiki
+.. |Downloads| image:: https://img.shields.io/pypi/dm/wiki.svg
+   :target: https://pypi.python.org/pypi/wiki/
 .. |Dependency Status| image:: https://gemnasium.com/django-wiki/django-wiki.svg
    :target: https://gemnasium.com/django-wiki/django-wiki
 
