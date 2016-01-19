@@ -233,5 +233,7 @@ USE_SENDFILE = getattr(django_settings, 'WIKI_ATTACHMENTS_USE_SENDFILE', False)
 MAX_REVISIONS = getattr(django_settings, 'WIKI_MAX_REVISIONS', 100)
 
 # Maximum age of revisions in days, 0=unlimited
-MAX_REVISION_AGE = getattr(django_settings, 'WIKI_MAX_REVISION_AGE', 
-                           getattr(django_settings, 'MAX_REVISION_AGE', 365)
+MAX_REVISION_AGE = getattr(
+    django_settings, 'WIKI_MAX_REVISION_AGE', 
+    getattr(django_settings, 'MAX_REVISION_AGE', 365)
+)
