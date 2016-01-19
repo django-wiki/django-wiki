@@ -80,11 +80,6 @@ the change.
 
 We now depend on django-mptt 0.7.2+ for Django 1.8 compatibility.
 
-**Django-sekizai**
-
-Since it's only the git master branch of django-sekizai that supports Django 1.8, the default
-behaviour of setup.py configuration is to pull this directly from Github.
-
 
 django-wiki 0.0.24
 ------------------
