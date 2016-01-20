@@ -15,11 +15,11 @@ class AdminPanelView(TemplateView):
         return super(AdminPanelView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        articleList = models.Article.objects.all()
-        deletedArticles = []
-        for article in articleList:
+        article_list = models.Article.objects.all()
+        deleted_articles = []
+        for article in article_list:
             if(article.current_revision.deleted):
-                deletedArticles.append(article)
-        kwargs['deleted_articles'] = deletedArticles
+                deleted_articles.append(article)
+        kwargs['deleted_articles'] = deleted_articles
         context = super(AdminPanelView, self).get_context_data(**kwargs)
         return context

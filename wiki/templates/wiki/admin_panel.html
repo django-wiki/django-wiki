@@ -10,9 +10,9 @@
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>Page Title</th>
-        <th>Date Deleted</th>
-        <th>Restore Article</th>
+        <th>{% trans "Page Title" %}</th>
+        <th>{% trans "Date Deleted" %}</th>
+        <th>{% trans "Restore Article" %}</th>
       </tr>
     </thead>
     <tbody>
@@ -21,13 +21,13 @@
         <td><a href="{{article.get_absolute_url}}">{{ article }}</a></td>
         <td> {{article.modified}} </td>
         <td><a href="{{article.get_absolute_url}}_deleted/?restore=1" class="btn btn-default"><span class="fa fa-repeat"></span>
-            Restore</a></td>
+            {% trans "Restore" %}</a></td>
       </tr>
     {% endfor %}
     </tbody>
   </table>
 {% else %}
-  <b> No deleted articles to display </b>
+  <b> {% trans "No deleted articles to display" %} </b>
 {% endif %}
 
 {% endblock %}
