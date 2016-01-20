@@ -221,8 +221,7 @@ def on_attachment_revision_pre_save(**kwargs):
             instance.revision_number = previous_revision.revision_number + 1
         # NB! The above should not raise the below exception, but somehow
         # it does.
-        except AttachmentRevision.DoesNotExist as noattach:
-            Attachment.DoesNotExist = noattach
+        except (AttachmentRevision.DoesNotExist, Attachment.DoesNotExist):
             instance.revision_number = 1
 
 

@@ -31,8 +31,6 @@ break due to some force majeure.
 django-wiki 0.1
 ---------------
 
-This release is not yet out but maintained in the `master` git branch.
-
 .. warning::
    If you are upgrading from a previous release, please ensure that you
    pass through the 0.0.24 release because it contains the final migrations
@@ -44,7 +42,7 @@ This release is not yet out but maintained in the `master` git branch.
    
    ::
    
-       $ pip install wiki==0.0.24
+       $ pip install wiki\<0.1 --upgrade  # Latest 0.0.24 release
        $ pip install django\<1.7  # Downgrade django if necessary
        $ python manage.py migrate  # Run 0.0.24 migrations
        $ pip install wiki\<0.2 --upgrade  # Upgrade to latest 0.1 series
@@ -57,14 +55,19 @@ This release is not yet out but maintained in the `master` git branch.
 
 **Supported**
 
- * Python 2.7, 3.3, and 3.4 (3.2 is not supported)
- * Django 1.5, 1.6, 1.7, 1.8
+ * Python 2.7, 3.3, 3.4, 3.5 (3.2 is not supported)
+ * Django 1.5, 1.6, 1.7, 1.8, 1.9
  * Django < 1.7 still needs South, and migration trees are kept until next major
    release.
 
 
 Breaking changes
 ________________
+
+**wiki.VERSION as tuple**
+
+We want to follow Django's way of enumerating versions. If you want the old
+string version, use ``wiki.__version__``.
 
 **Plugin API**
 
@@ -75,12 +78,8 @@ the change.
 
 **Django-mptt**
 
-We now depend on django-mptt 0.7.2 for Django 1.8 compatibility.
+We now depend on django-mptt 0.7.2+ for Django 1.8 compatibility.
 
-**Django-sekizai**
-
-Since it's only the git master branch of django-sekizai that supports Django 1.8, the default
-behaviour of setup.py configuration is to pull this directly from Github.
 
 django-wiki 0.0.24
 ------------------

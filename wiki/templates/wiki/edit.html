@@ -1,5 +1,5 @@
 {% extends "wiki/article.html" %}
-{% load wiki_tags i18n %}
+{% load wiki_tags i18n sekizai_tags %}
 
 
 {% block wiki_pagetitle %}{% trans "Edit" %}: {{ article.current_revision.title }}{% endblock %}
@@ -40,7 +40,7 @@
         <span class="fa fa-eye"></span>
         {% trans "Preview" %}
       </a>
-      <a class="btn btn-primary" onclick="document.getElementById('article_edit_form').target=''; document.getElementById('article_edit_form').action='{% url 'wiki:edit' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit();" href="#">
+      <a class="btn btn-primary" onclick="window.onbeforeunload = null; document.getElementById('article_edit_form').target=''; document.getElementById('article_edit_form').action='{% url 'wiki:edit' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit();" href="#">
         <span class="fa fa-check"></span>
         {% trans "Save changes" %}
       </a>
@@ -67,7 +67,7 @@
           <span class="fa fa-arrow-circle-left"></span>
           {% trans "Back to editor" %}
         </a>
-        <a class="btn btn-lg btn-primary" onclick="document.getElementById('article_edit_form').target=''; document.getElementById('article_edit_form').action='{% url 'wiki:edit' path=urlpath.path article_id=article.id %}'; document.getElementById('article_edit_form').submit();" href="#">
+        <a class="btn btn-lg btn-primary" onclick="window.onbeforeunload = null; document.getElementById('article_edit_form').target=''; document.getElementById('article_edit_form').action='{% url 'wiki:edit' path=urlpath.path article_id=article.id %}'; document.getElementById('article_edit_form').submit();" href="#">
           <span class="fa fa-check"></span>
           {% trans "Save changes" %}
         </a>
@@ -75,5 +75,37 @@
     </div>
   </div>
 </div>
+
+{% addtoblock "js" %}
+<script language="javascript">
+  $(document).ready(function() {
+    $("#article_edit_form :input").change(function() {
+       $("#article_edit_form").data("changed",true);
+    });
+    if ($("#article_edit_form").find(".alert-danger").length > 0 || $("#article_edit_form").find(".has-error").length > 0 ) {
+      // Set the forms status as "changed" if there was a submission error
+      $("#article_edit_form").data("changed",true);
+    }
+    window.onbeforeunload = confirmOnPageExit;
+  });
+
+var confirmOnPageExit = function (e) {
+  if ($("#article_edit_form").data("changed")) {
+    e = e || window.event;
+    var message = "You have unsaved changes!";
+    // For IE6-8 and Firefox prior to version 4
+    if (e) {
+        e.returnValue = message;
+    }
+    // For Chrome, Safari, IE8+ and Opera 12+
+    return message;
+  } else {
+    // If the form hasn't been changed, don't display the pop-up
+    return;
+  }
+};
+</script>
+{% endaddtoblock %}
+
 {% endblock %}
 

@@ -101,4 +101,14 @@ else:
     # Allow tests to be specified:
     argv.extend(sys.argv[1:])
 
-execute_from_command_line(argv)
+
+## Run py.tests
+# Compatibility testing patches on the py-moneyed
+import pytest
+failures = pytest.main()
+
+if failures:
+    sys.exit(failures)
+
+
+
