@@ -6,7 +6,7 @@ from django.conf.urls import url, include
 
 from wiki.conf import settings
 from wiki.core.plugins import registry
-from wiki.views import article, accounts
+from wiki.views import article, accounts, admin_panel
 from wiki.core.utils import get_class_from_str
 
 
@@ -43,9 +43,13 @@ class WikiURLPatterns(object):
     login_view_class = accounts.Login
     logout_view_class = accounts.Logout
 
+    # admin panel views
+    admin_panel_view_class = admin_panel.AdminPanelView
+
     def get_urls(self):
         urlpatterns = self.get_root_urls()
         urlpatterns += self.get_accounts_urls()
+        urlpatterns += self.get_admin_panel_urls()
         urlpatterns += self.get_revision_urls()
         urlpatterns += self.get_article_urls()
         urlpatterns += self.get_plugin_urls()
@@ -73,6 +77,14 @@ class WikiURLPatterns(object):
             url('^_revision/diff/(?P<revision_id>\d+)/$',
                 self.article_diff_view,
                 name='diff'),
+        ]
+        return urlpatterns
+
+    def get_admin_panel_urls(self):
+        urlpatterns = [
+            url('^_admin/$',
+                self.admin_panel_view_class.as_view(),
+                name="admin_panel"),
         ]
         return urlpatterns
 
