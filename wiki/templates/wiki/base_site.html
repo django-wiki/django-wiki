@@ -67,7 +67,7 @@
                   </li>
                   {% if user.is_superuser %}
                   <li>
-                    <a href="{% url 'wiki:admin_panel' %}">
+                    <a href="{% url 'wiki:deleted_list' %}">
                       <i class="fa fa-trash-o"></i>
                       {% trans "Deleted articles" %}
                     </a>
