@@ -10,9 +10,9 @@
 
     <!-- Le styles -->
     <link href="{{ STATIC_URL }}wiki/bootstrap/css/wiki-bootstrap.min.css" rel="stylesheet">
-        
+
     {% render_block "css" %}
-    
+
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -23,7 +23,7 @@
   <body>
 
     {% block wiki_body %}
-    
+
     {% block wiki_navbar %}
     <div class="navbar navbar-fixed-top navbar-inverse">
       <div class="container">
@@ -65,6 +65,14 @@
                       {% trans "Log out" %}
                     </a>
                   </li>
+                  {% if user.is_superuser %}
+                  <li>
+                    <a href="{% url 'wiki:deleted_list' %}">
+                      <i class="fa fa-trash-o"></i>
+                      {% trans "Deleted articles" %}
+                    </a>
+                  </li>
+                  {% endif %}
                   {% if "wiki.plugins.notifications"|plugin_enabled %}
                     {% include "wiki/plugins/notifications/menubaritem.html" %}
                   {% endif %}
@@ -107,10 +115,10 @@
 
       <!-- Reserved for breadcrumbs -->
       {% block wiki_breadcrumbs %}{% endblock %}
-      
+
       <!-- Main page contents go here -->
       {% block wiki_contents %}{% endblock %}
-      
+
       <footer id="wiki-footer">
         <hr />
         {% block wiki_footer_logo %}
@@ -133,7 +141,6 @@
     <!-- Optionally enable responsive features in IE8 -->
     <script src="{{ STATIC_URL }}wiki/js/respond.min.js"></script>
     {% render_block "js" %}
-  
+
   </body>
 </html>
-

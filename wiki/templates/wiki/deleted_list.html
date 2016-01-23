@@ -1,0 +1,33 @@
+{% extends "wiki/base.html" %}
+{% load i18n wiki_tags sekizai_tags %}
+
+{% block wiki_pagetitle %}{% trans "Admin Panel" %}{% endblock %}
+
+{% block wiki_contents %}
+
+<h1 class="page-header">{% trans "Deleted Articles" %}</h1>
+{% if deleted_articles %}
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>{% trans "Page Title" %}</th>
+        <th>{% trans "Date Deleted" %}</th>
+        <th>{% trans "Restore Article" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for article in deleted_articles %}
+      <tr>
+        <td><a href="{{article.get_absolute_url}}">{{ article }}</a></td>
+        <td> {{article.modified}} </td>
+        <td><a href="{% url 'wiki:deleted' article_id=article.id %}?restore=1" class="btn btn-default"><span class="fa fa-repeat"></span>
+            {% trans "Restore" %}</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <b> {% trans "No deleted articles to display" %} </b>
+{% endif %}
+
+{% endblock %}

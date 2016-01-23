@@ -300,3 +300,31 @@ class SearchViewTest(ArticleWebTestBase):
 
         response = c.get(reverse('wiki:search'), {'q': ''})
         self.assertFalse(response.context['articles'])
+
+class DeletedListViewTest(ArticleWebTestBase):
+
+    def test_deleted_articles_list(self):
+        c = self.c
+
+        response = c.post(
+            reverse('wiki:create', kwargs={'path': ''}),
+            {'title': 'Delete Me', 'slug': 'deleteme', 'content': 'delete me please!'}
+        )
+
+        self.assertRedirects(
+            response,
+            reverse('wiki:get', kwargs={'path': 'deleteme/'})
+        )
+
+        response = c.post(
+            reverse('wiki:delete', kwargs={'path': 'deleteme/'}),
+            {'confirm': 'on', 'revision': '2'}
+        )
+
+        self.assertRedirects(
+            response,
+            reverse('wiki:get', kwargs={'path': ''})
+        )
+
+        response = c.get(reverse('wiki:deleted_list'))
+        self.assertContains(response, 'Delete Me')
