@@ -13,6 +13,8 @@ class AttachmentTests(ArticleWebTestBase):
     def setUp(self):
         super(AttachmentTests, self).setUp()
         self.article = self.root_article
+        self.test_data = "This is a plain text file"
+        self.test_description = 'My file'
 
     def _createTxtFilestream(self, strData, **kwargs):
         """
@@ -37,25 +39,27 @@ class AttachmentTests(ArticleWebTestBase):
         )
         return filestream
 
+    def _create_test_attachment(self):
+        url = reverse('wiki:attachments_index', kwargs={'path': ''})
+        filestream = self._createTxtFilestream(self.test_data)
+        response = self.c.post(url,
+                               {'description': self.test_description,
+                                'file': filestream,
+                                'save': '1',
+                                })
+        self.assertRedirects(response, url)
+
     def test_upload(self):
         """
         Tests that simple file upload uploads correctly
         Uploading a file should preserve the original filename.
         Uploading should not modify file in any way.
         """
-        url = reverse('wiki:attachments_index', kwargs={'path': ''})
-        data = "This is a plain text file"
-        filestream = self._createTxtFilestream(data)
-        response = self.c.post(url,
-                               {'description': 'My file',
-                                'file': filestream,
-                                'save': '1',
-                                })
-        self.assertRedirects(response, url)
+        self._create_test_attachment()
         # Check the object was created.
         attachment = self.article.shared_plugins_set.all()[0].attachment
         self.assertEqual(attachment.original_filename, 'test.txt')
-        self.assertEqual(attachment.current_revision.file.file.read(), data.encode('utf-8'))
+        self.assertEqual(attachment.current_revision.file.file.read(), self.test_data.encode('utf-8'))
 
     def test_replace(self):
         """
@@ -116,3 +120,12 @@ class AttachmentTests(ArticleWebTestBase):
         self.assertEqual(attachment.current_revision.file.file.read(), replacement_data2.encode('utf-8'))
         # The first replacement should no longer be in the filehistory
         self.assertNotIn(first_replacement, attachment.attachmentrevision_set.all())
+
+    def test_search(self):
+        """
+        Call the search view
+        """
+        self._create_test_attachment()
+        url = reverse('wiki:attachments_search', kwargs={'path': ''})
+        response = self.c.get(url, {'query': self.test_description})
+        self.assertContains(response, self.test_description)

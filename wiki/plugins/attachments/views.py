@@ -444,13 +444,12 @@ class AttachmentSearchView(ArticleMixin, ListView):
 
     @method_decorator(get_article(can_write=True))
     def dispatch(self, request, article, *args, **kwargs):
-        return super(
-            AttachmentSearchView,
-            self).dispatch(
+        return super(AttachmentSearchView, self).dispatch(
             request,
             article,
             *args,
-            **kwargs)
+            **kwargs
+        )
 
     def get_queryset(self):
         self.query = self.request.GET.get('query', None)
