@@ -473,6 +473,4 @@ class AttachmentSearchView(ArticleMixin, ListView):
         kwargs.update(kwargs_article)
         kwargs.update(kwargs_listview)
         kwargs['selected_tab'] = 'attachments'
-        if 'form' not in kwargs:
-            kwargs['form'] = self.get_form()
         return kwargs
