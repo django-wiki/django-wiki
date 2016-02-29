@@ -35,8 +35,6 @@ test-all:
 coverage:
 	coverage run --source wiki setup.py test
 	coverage report -m
-	coverage html
-	open htmlcov/index.html
 
 docs:
 	$(MAKE) -C docs clean
@@ -55,8 +53,7 @@ release: clean assets
 	echo "" >> HISTORY.rst
 	git log --graph --pretty=format:'%h -%d %s (%cr) <%an>' --abbrev-commit | sed "s/^/    /" >> HISTORY.rst
 	echo "Packing source dist..."
-	python3 setup.py sdist bdist_wheel upload --sign
-	# twine upload -s dist/*
+	twine upload -s dist/*
 
 assets:
 	lessc wiki/static/wiki/bootstrap/less/wiki/wiki-bootstrap.less wiki/static/wiki/bootstrap/css/wiki-bootstrap.css
@@ -64,4 +61,5 @@ assets:
 
 sdist: clean assets
 	python setup.py sdist
+	python setup.py bdist_wheel
 	ls -l dist
