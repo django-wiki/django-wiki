@@ -4,6 +4,7 @@ import logging
 from django.contrib.contenttypes import fields
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
+from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models, transaction
@@ -14,6 +15,7 @@ from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
 
 from wiki import managers
+from wiki import get_current_request
 from wiki.conf import settings
 from wiki.core.exceptions import NoRootURL, MultipleRootURLs
 from wiki.models.article import ArticleRevision, ArticleForObject, Article
@@ -110,7 +112,7 @@ class URLPath(MPTTModel):
     
     @classmethod
     def root(cls):
-        site = Site.objects.get_current()
+        site = get_current_site(get_current_request())
         root_nodes = list(
             cls.objects.root_nodes().filter(site=site).select_related_common()
         ) 
@@ -192,7 +194,7 @@ class URLPath(MPTTModel):
     
     @classmethod
     def create_root(cls, site=None, title="Root", **kwargs):
-        if not site: site = Site.objects.get_current()
+        if not site: site = get_current_site(get_current_request())
         root_nodes = cls.objects.root_nodes().filter(site=site)
         if not root_nodes:
             # (get_or_create does not work for MPTT models??)
@@ -210,7 +212,7 @@ class URLPath(MPTTModel):
     def create_article(cls, parent, slug, site=None, title="Root", article_kwargs={}, **kwargs):
         """Utility function:
         Create a new urlpath with an article and a new revision for the article"""
-        if not site: site = Site.objects.get_current()
+        if not site: site = get_current_site(get_current_request())
         article = Article(**article_kwargs)
         article.add_revision(ArticleRevision(title=title, **kwargs),
                              save=True)
@@ -241,8 +243,8 @@ post_save.connect(on_article_relation_save, ArticleForObject)
 def on_article_delete(instance, *args, **kwargs):
     # If an article is deleted, then throw out its URLPaths
     # But move all descendants to a lost-and-found node.
-    site = Site.objects.get_current()
-    
+    site = get_current_site(get_current_request())
+
     # Get the Lost-and-found path or create a new one
     try:
         lost_and_found = URLPath.objects.get(slug=settings.LOST_AND_FOUND_SLUG,
