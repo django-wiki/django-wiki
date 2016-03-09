@@ -204,7 +204,7 @@ class EditForm(forms.Form, SpamProtectionMixin):
 
     def clean(self):
         """Validates form data by checking for the following
-        No new revisions have been created since user attempted to edit 
+        No new revisions have been created since user attempted to edit
         Revision title or content has changed
         """
         cd = self.cleaned_data
@@ -633,3 +633,20 @@ class UserCreationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ("username", "email")
+
+class UserUpdateForm(forms.ModelForm):
+    password1 = forms.CharField(label="New password", widget=forms.PasswordInput(), required=False)
+    password2 = forms.CharField(label="Confirm password", widget=forms.PasswordInput(), required=False)
+
+    def clean(self):
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
+
+        if password1 and password1 != password2:
+            raise forms.ValidationError(_("Passwords don't match"))
+
+        return self.cleaned_data
+
+    class Meta:
+        model = User
+        fields = ['email']

@@ -42,6 +42,7 @@ class WikiURLPatterns(object):
     signup_view_class = accounts.Signup
     login_view_class = accounts.Login
     logout_view_class = accounts.Logout
+    settings_view_class = accounts.Update
 
     # deleted list view
     deleted_list_view_class = deleted_list.DeletedListView
@@ -99,6 +100,9 @@ class WikiURLPatterns(object):
             url('^_accounts/login/$',
                 self.login_view_class.as_view(),
                 name='login'),
+            url('^_accounts/settings/$',
+                self.settings_view_class.as_view(),
+                name='update'),
         ]
         return urlpatterns
 

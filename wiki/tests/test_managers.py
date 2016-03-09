@@ -14,7 +14,7 @@ from wiki.models import Article, URLPath
 from wiki.plugins.attachments.models import Attachment
 
 
-class ArticlManagerTests(ArticleWebTestBase):
+class ArticleManagerTests(ArticleWebTestBase):
 
     def test_queryset_methods_directly_on_manager(self):
 
