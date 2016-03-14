@@ -3,9 +3,16 @@ import importlib
 
 from django.conf import settings
 
-if getattr(settings, "WIKI_REQUEST_CACHE_MIDDLEWARE_CLASS", None):
-    class_name = settings.WIKI_REQUEST_CACHE_MIDDLEWARE_CLASS.split(".")[-1]
-    module = ".".join(settings.WIKI_REQUEST_CACHE_MIDDLEWARE_CLASS.split('.')[:-1])
+# Take WIKI_REQUEST_CACHE_MIDDLEWARE_CLASS from django settings, if settings is not configured or of
+# WIKI_REQUEST_CACHE_MIDDLEWARE_CLASS setting is not defined then use custom middleware from django-wiki
+if hasattr(settings, "WIKI_REQUEST_CACHE_MIDDLEWARE_CLASS"):
+    WIKI_REQUEST_CACHE_MIDDLEWARE_CLASS = settings.WIKI_REQUEST_CACHE_MIDDLEWARE_CLASS
+else:
+    WIKI_REQUEST_CACHE_MIDDLEWARE_CLASS = None
+
+if WIKI_REQUEST_CACHE_MIDDLEWARE_CLASS:
+    class_name = WIKI_REQUEST_CACHE_MIDDLEWARE_CLASS.split(".")[-1]
+    module = ".".join(WIKI_REQUEST_CACHE_MIDDLEWARE_CLASS.split('.')[:-1])
     RequestCache = getattr(importlib.import_module(module), class_name)
 else:
     class _RequestCache(threading.local):
