@@ -65,12 +65,14 @@
                       {% trans "Log out" %}
                     </a>
                   </li>
+                  {% if "ACCOUNT_HANDLING"|wiki_settings %}
                   <li>
-                    <a href="{% url 'wiki:update' %}">
+                    <a href="{% url 'wiki:profile_update' %}">
                       <i class="fa fa-gear"></i>
                       {% trans "Account Settings" %}
                     </a>
                   </li>
+                  {% endif %}
                   {% if user.is_superuser %}
                   <li>
                     <a href="{% url 'wiki:deleted_list' %}">

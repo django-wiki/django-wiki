@@ -4,6 +4,10 @@ from __future__ import absolute_import
 
 import pprint
 
+from django.contrib.auth import authenticate
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
 from .base import ArticleWebTestBase, WebTestBase
 
 from django.core.urlresolvers import reverse
@@ -301,6 +305,7 @@ class SearchViewTest(ArticleWebTestBase):
         response = c.get(reverse('wiki:search'), {'q': ''})
         self.assertFalse(response.context['articles'])
 
+
 class DeletedListViewTest(ArticleWebTestBase):
 
     def test_deleted_articles_list(self):
@@ -328,3 +333,17 @@ class DeletedListViewTest(ArticleWebTestBase):
 
         response = c.get(reverse('wiki:deleted_list'))
         self.assertContains(response, 'Delete Me')
+
+
+class UpdateProfileViewTest(ArticleWebTestBase):
+
+    def test_update_profile(self):
+        c = self.c
+
+        response = c.post(reverse('wiki:profile_update'),
+        {"email":"test@test.com", "password1":"newPass", "password2":"newPass"}, follow=True)
+
+        test_auth = authenticate(username='admin', password='newPass')
+
+        self.assertNotEqual(test_auth, None)
+        self.assertEqual(test_auth.email, 'test@test.com')

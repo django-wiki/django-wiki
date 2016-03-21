@@ -380,3 +380,16 @@ class PluginEnabled(TemplateTestCase):
     def test_true(self):
         output = self.render({})
         self.assertIn('It is enabled', output)
+
+
+class WikiSettings(TemplateTestCase):
+
+    template = """
+        {% load wiki_tags %}
+        {% if "ACCOUNT_HANDLING"|wiki_settings %}It is enabled{% endif %}
+    """
+
+    @wiki_override_settings(WIKI_ACCOUNT_HANDLING=lambda *args: True)
+    def test_setting(self):
+        output = self.render({})
+        self.assertIn('It is enabled', output)
