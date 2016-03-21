@@ -5,8 +5,6 @@ from __future__ import absolute_import
 import pprint
 
 from django.contrib.auth import authenticate
-from django.contrib.auth import get_user_model
-User = get_user_model()
 
 from .base import ArticleWebTestBase, WebTestBase
 
