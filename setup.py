@@ -37,14 +37,11 @@ try:
 except ImportError:
     # No Django so assuming that one will get installed, but we don't know which
     # one.
-    # For Django 1.7, we don't need South at all, but installing it
-    # doesn't harm anything (as long as it's not added to INSTALLED_APPS).
-    # For Django <= 1.6, we need to ensure a recent South version,
-    # so to be safe we include South here.
-    requirements.append("South>=1.0.1")
+    # We will assume it's a very recent one and base the requirements on that...
     requirements.append("sorl-thumbnail>=12")
     # 0.6.1 broken: https://github.com/django-mptt/django-mptt/issues/316
     requirements.append("django-mptt>=0.8")
+    requirements.append("django-sekizai>=0.9")
 else:
     if DJANGO_VERSION < (1, 7):
         requirements.append("South>=1.0.1")
