@@ -20,11 +20,11 @@ django-wiki
 Important notice
 ----------------
 
-First beta - 0.1b0 - is out now. Please note that the only way to upgrade is from 0.0.24.
-
-**0.0.24** added Django 1.7 support, however it's not well-tested.
+Final release 0.1 is out now. Please note that the only way to upgrade is from 0.0.24.
 
 **0.1** adds Django 1.7, 1.8 and 1.9 support.
+
+**0.0.24** added experimental Django 1.7 support.
 
 For upgrade instructions, please refer to the `Release
 Notes <http://django-wiki.readthedocs.org/en/latest/release_notes.html#django-wiki-0-1>`__
