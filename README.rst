@@ -96,7 +96,7 @@ Demo
 A demo running the latest ``master`` is available here, sign up for an
 account to see the notification system.
 
-http://demo.django-wiki.org/
+http://demo.django.wiki
 
 Community
 ---------
