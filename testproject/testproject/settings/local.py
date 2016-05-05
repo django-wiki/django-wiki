@@ -2,3 +2,5 @@
 # After changing the file, from root of repository execute:
 
 # git update-index --assume-unchanged testproject/testproject/settings/local.py
+
+from .dev import *  # noqa @UnusedWildImport
