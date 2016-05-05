@@ -29,19 +29,19 @@ Final release 0.1 is out now. Please note that the only way to upgrade is from 0
 For upgrade instructions, please refer to the `Release
 Notes <http://django-wiki.readthedocs.org/en/latest/release_notes.html#django-wiki-0-1>`__
 
-0.1 Roadmap
------------
-
-- Version 0.1b0 is out (beta). Installation: ``pip install wiki --pre``
-- Migrations reset **DONE**
-- Django 1.7 support **DONE**
-- Django 1.8 support **DONE**
-- pep8 the whole codebase #287 **DONE**
-- Transifex **DONE**
-- Distribution with Wheels **Done (0.0.24.4)**
 
 News
 ----
+
+***News: May 6, 2016***
+
+0.1.1 released: `Release notes <http://django-wiki.readthedocs.org/en/latest/release_notes.html#django-wiki-0-1-1>`__
+
+
+***News: January 25, 2016***
+
+0.1 final released
+
 
 ***News: December 26th, 2015***
 
