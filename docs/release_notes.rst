@@ -33,6 +33,9 @@ django-wiki 0.1.1
 
 New features:
 
+ * Several languages updated from Transifex
+   * Slovak added [Thanks M Hozza]
+   * Portuguese also added, but as copy of PT-BR (make changes as desired in Transifex)
  * Brand new Account Settings page (email / password) - Thanks: inflrscns
  * Testproject turned into Django 1.9 layout
  * Do not depend on STATIC_URL anymore, use {% static %}
