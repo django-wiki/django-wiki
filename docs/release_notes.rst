@@ -28,6 +28,20 @@ New features are introduced in the 0.1 branch until something seriously has to
 break due to some force majeure.
 
 
+django-wiki 0.1.1
+-----------------
+
+New features:
+
+ * Brand new Account Settings page (email / password) - Thanks: inflrscns
+ * Testproject turned into Django 1.9 layout
+ * Do not depend on STATIC_URL anymore, use {% static %}
+ * Bugfix for ``pip install wiki`` in an empty (no Django installed) virtualenv
+ * Precommit hooks added in repository
+ * Import statements sorted and codebase re-pep8'thed
+ * Log in page is now called "Log in" in ``<title>`` tag - Thanks: Eugene Obukhov
+
+
 django-wiki 0.1
 ---------------
 
