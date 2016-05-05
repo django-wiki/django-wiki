@@ -33,17 +33,20 @@ Notes <http://django-wiki.readthedocs.org/en/latest/release_notes.html#django-wi
 News
 ----
 
-***News: May 6, 2016***
+May 6, 2016
+~~~~~~~~~~~
 
 0.1.1 released: `Release notes <http://django-wiki.readthedocs.org/en/latest/release_notes.html#django-wiki-0-1-1>`__
 
 
-***News: January 25, 2016***
+January 25, 2016
+~~~~~~~~~~~~~~~~
 
 0.1 final released
 
 
-***News: December 26th, 2015***
+December 26th, 2015
+~~~~~~~~~~~~~~~~~~~
 
 A new release 0.0.24.4 is out and has fixes for the Django ``loaddata`` management command such that you can create dumps and restore the dump. Notice, though, that ``loaddata`` only works for Django 1.7+.
 
@@ -51,11 +54,15 @@ Django 1.9 support is available in the current master, please help get a 0.1 rel
 
 https://github.com/django-wiki/django-wiki/milestones/0.1
 
-***News: November 16th, 2015***
+
+November 16th, 2015
+~~~~~~~~~~~~~~~~~~~
 
 Django 1.8 support is very ready and 0.1 is right on the doorstep now.
 
-***News: January 26th, 2015***
+
+January 26th, 2015
+~~~~~~~~~~~~~~~~~~
 
 After too long, the new release is out.
 
@@ -80,6 +87,7 @@ actually new features, too.
 -  Python 3 and Django 1.6 compatibility (Russell-Jones, Antonin
    Lenfant, Luke Plant, Lubimov Igor, Benjamin Bach)
 -  (and more, forgiveness asked if anyone feels left out)
+
 
 Translations (Transifex)
 ------------------------
