@@ -27,3 +27,6 @@ urlpatterns += [
     url(r'^notify/', get_notify_pattern()),
     url(r'', get_wiki_pattern())
 ]
+
+handler500 = 'testproject.views.server_error'
+handler404 = 'testproject.views.page_not_found'
