@@ -1,22 +1,17 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
+from __future__ import absolute_import, print_function, unicode_literals
 
-from django.core.management.base import BaseCommand, CommandError
 import getpass
-
-
-from wiki.models.article import ArticleRevision, ArticleForObject, Article
-from wiki.models.urlpath import URLPath
-from django.contrib.sites.models import Site
-from django.contrib.auth import get_user_model
-
-from optparse import make_option
 import string
-from django.template.defaultfilters import slugify
-from django.template.defaultfilters import striptags
 import urllib
+from optparse import make_option
+
 import six
+from django.contrib.auth import get_user_model
+from django.contrib.sites.models import Site
+from django.core.management.base import BaseCommand, CommandError
+from django.template.defaultfilters import slugify, striptags
+from wiki.models.article import Article, ArticleRevision
+from wiki.models.urlpath import URLPath
 
 
 def only_printable(s):
@@ -217,7 +212,7 @@ class Command(BaseCommand):
                 'You need to install wikitools to use this command !')
 
         try:
-            import pypandoc
+            import pypandoc  # noqa @UnusedImport
         except ImportError:
             raise CommandError('You need to install pypandoc')
 

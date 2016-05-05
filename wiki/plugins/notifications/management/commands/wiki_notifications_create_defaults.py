@@ -1,6 +1,5 @@
-from __future__ import absolute_import
-from __future__ import print_function
-from optparse import make_option
+from __future__ import absolute_import, print_function
+
 from django.core.management.base import BaseCommand
 from django.utils import translation
 

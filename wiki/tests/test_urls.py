@@ -1,24 +1,20 @@
-from __future__ import unicode_literals
-from __future__ import absolute_import
-
-from django.test.testcases import TestCase
-from django.contrib.sites.models import Site
-from django.contrib.auth import get_user_model
-from django.conf.urls import url
-User = get_user_model()
-
-from wiki.models import (
-    Article,
-    URLPath
-)
-from wiki.tests.base import wiki_override_settings
-from wiki.urls import WikiURLPatterns
+from __future__ import absolute_import, unicode_literals
 
 from django import VERSION as DJANGO_VERSION
-from django.conf.urls import patterns
-
-from wiki.urls import get_pattern as get_wiki_pattern
+from django.conf.urls import patterns, url
+from django.contrib.auth import get_user_model
+from django.contrib.sites.models import Site
+from django.test.testcases import TestCase
 from django_nyt.urls import get_pattern as get_notify_pattern
+from wiki.models import Article, URLPath
+from wiki.tests.base import wiki_override_settings
+from wiki.urls import get_pattern as get_wiki_pattern
+from wiki.urls import WikiURLPatterns
+
+User = get_user_model()
+
+
+
 
 
 class WikiCustomUrlPatterns(WikiURLPatterns):

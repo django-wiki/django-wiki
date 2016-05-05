@@ -1,14 +1,11 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-from __future__ import absolute_import
-from django.conf.urls import url, include
-from django.utils.translation import ugettext as _
+from __future__ import absolute_import, unicode_literals
 
+from django.conf.urls import include, url
+from django.utils.translation import ugettext as _
 from wiki.core.plugins import registry
 from wiki.core.plugins.base import BasePlugin
-from wiki.plugins.attachments import views
-from wiki.plugins.attachments import models
-from wiki.plugins.attachments import settings
+from wiki.plugins.attachments import models, settings, views
 from wiki.plugins.attachments.markdown_extensions import AttachmentExtension
 from wiki.plugins.notifications.settings import ARTICLE_EDIT
 from wiki.plugins.notifications.util import truncate_title

@@ -21,18 +21,15 @@ SO WE AN JUST DEPEND ON THAT!
 
 
 """
-from __future__ import absolute_import
-from __future__ import unicode_literals
-import markdown
-import unicodedata
-
-from markdown.util import etree
+from __future__ import absolute_import, unicode_literals
 
 import re
+import unicodedata
 
-from wiki.plugins.macros import settings
+import markdown
+from markdown.util import etree
 from six.moves import range
-
+from wiki.plugins.macros import settings
 
 HEADER_ID_PREFIX = "wiki-toc-"
 
@@ -48,9 +45,9 @@ def slugify(value, separator):
 
 def itertext(elem):
     """ Loop through all children and return text only.
-    
+
     Reimplements method of same name added to ElementTree in Python 2.7
-    
+
     """
     if elem.text:
         yield elem.text
@@ -176,7 +173,7 @@ class TocTreeprocessor(markdown.treeprocessors.Treeprocessor):
 
         return build_etree_ul(toc_list, div)
 
-    def run(self, doc):
+    def run(self, doc):  # noqa
 
         div = etree.Element("div")
         div.attrib["class"] = "toc"

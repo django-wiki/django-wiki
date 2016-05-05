@@ -10,23 +10,23 @@ SETTINGS.LOGIN_URL
 SETTINGS.LOGOUT_URL
 """
 
-from __future__ import unicode_literals
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
+
 from django.conf import settings as django_settings
 from django.contrib import messages
-from django.contrib.auth import logout as auth_logout, login as auth_login
+from django.contrib.auth import login as auth_login
+from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.urlresolvers import reverse
-from django.shortcuts import redirect, render_to_response, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.views.generic.base import View
 from django.views.generic.edit import CreateView, FormView, UpdateView
-
 from wiki import forms
 from wiki.conf import settings
-
 from wiki.core.compat import get_user_model
+
 User = get_user_model()
 
 

@@ -5,7 +5,7 @@
 {% block wiki_pagetitle %}{% trans "Settings" %}: {{ article.current_revision.title }}{% endblock %}
 
 {% block wiki_contents_tab %}
-  
+
   {% for form in forms %}
   <form method="POST" class="form-horizontal settings-form" action="?f={{form.action}}">
     <h3 class="page-header">{{ form.settings_form_headline }}</h2>

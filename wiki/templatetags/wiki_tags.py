@@ -1,24 +1,23 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 
 import re
 
-from django.conf import settings as django_settings
 from django import template
+from django.conf import settings as django_settings
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model
 from django.forms import BaseForm
-from django.utils.safestring import mark_safe
 from django.template.defaultfilters import striptags
 from django.utils.http import urlquote
+from django.utils.safestring import mark_safe
 from six.moves import filter
+from wiki import models
+from wiki.conf import settings
+from wiki.core.plugins import registry as plugin_registry
 
 register = template.Library()
 
-from wiki.conf import settings
-from wiki import models
-from wiki.core.plugins import registry as plugin_registry
 
 # Cache for looking up objects for articles... article_for_object is
 # called more than once per page in multiple template blocks.
@@ -37,7 +36,7 @@ def article_for_object(context, obj):
 
     # TODO: This is disabled for now, as it should only fire once per request
     # Maybe store cache in the request object?
-    if True or not obj in list(_cache.keys()):
+    if True or obj not in list(_cache.keys()):
         try:
             article = models.ArticleForObject.objects.get(
                 content_type=content_type,
@@ -58,7 +57,7 @@ def wiki_render(context, article, preview_content=None):
     context.update({
         'article': article,
         'content': content,
-        'preview': not preview_content is None,
+        'preview': preview_content is not None,
         'plugins': plugin_registry.get_plugins(),
         'STATIC_URL': django_settings.STATIC_URL,
         'CACHE_TIMEOUT': settings.CACHE_TIMEOUT,

@@ -1,16 +1,14 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
+
 # -*- coding: utf-8 -*-
 from django.conf.urls import url
+from django.core.urlresolvers import reverse_lazy
 from django.utils.translation import ugettext as _
-
 from wiki.core.plugins import registry
 from wiki.core.plugins.base import BasePlugin
-from wiki.plugins.links import views
-from wiki.plugins.links import settings
-from wiki.plugins.links.mdx.urlize import makeExtension as urlize_makeExtension
+from wiki.plugins.links import settings, views
 from wiki.plugins.links.mdx.djangowikilinks import WikiPathExtension
-from django.core.urlresolvers import reverse_lazy
+from wiki.plugins.links.mdx.urlize import makeExtension as urlize_makeExtension
 
 
 class LinkPlugin(BasePlugin):

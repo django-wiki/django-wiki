@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-from __future__ import absolute_import
-import markdown
-import re
-from six import string_types
+from __future__ import absolute_import, unicode_literals
 
+import re
+
+import markdown
 from django.utils.translation import ugettext as _
+from six import string_types
+from wiki.core.compat import render_to_string
+from wiki.plugins.macros import settings
 
 # See:
 # http://stackoverflow.com/questions/430759/regex-for-managing-escaped-characters-for-items-like-string-literals
@@ -19,8 +21,6 @@ KWARG_RE = re.compile(
     re_sq_short,
     re.IGNORECASE)
 
-from wiki.core.compat import render_to_string
-from wiki.plugins.macros import settings
 
 
 class MacroExtension(markdown.Extension):
@@ -67,7 +67,7 @@ class MacroPreprocessor(markdown.preprocessors.Preprocessor):
                         line = getattr(self, macro)(**kwargs_dict)
                     else:
                         line = getattr(self, macro)()
-            if not line is None:
+            if line is not None:
                 new_text.append(line)
         return new_text
 
@@ -77,7 +77,7 @@ class MacroPreprocessor(markdown.preprocessors.Preprocessor):
             context={
                 'article_children': self.markdown.article.get_children(
                     article__current_revision__deleted=False),
-                 'depth': int(depth) + 1,
+                'depth': int(depth) + 1,
             })
         return self.markdown.htmlStash.store(html, safe=True)
     article_list.meta = dict(

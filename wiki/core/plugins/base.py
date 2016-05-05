@@ -1,6 +1,8 @@
-from __future__ import unicode_literals
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
+
+from django import forms
 from django.utils.translation import ugettext as _
+
 
 """Base classes for different plugin objects.
 
@@ -11,7 +13,6 @@ from django.utils.translation import ugettext as _
 Please have a look in wiki.models.pluginbase to see where to inherit your
 plugin's models.
 """
-from django import forms
 
 
 class BasePlugin(object):

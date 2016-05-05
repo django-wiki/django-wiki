@@ -1,8 +1,7 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
+
 from django import VERSION as DJANGO_VERSION
 from django.conf.urls import patterns, url
-
 from wiki.plugins.attachments import views
 
 urlpatterns = [

@@ -2,30 +2,25 @@
 Almost all test cases covers both tag calling and template using.
 """
 
-from __future__ import print_function
-from __future__ import unicode_literals
-from __future__ import absolute_import
+from __future__ import absolute_import, print_function, unicode_literals
 
 from django.conf import settings as django_settings
+from django.contrib.contenttypes.models import ContentType
+from django.http import HttpRequest
+from six import PY3
+from wiki.conf import settings
+from wiki.forms import CreateRootForm
+from wiki.models import Article, ArticleForObject, ArticleRevision
+from wiki.templatetags.wiki_tags import (article_for_object, login_url,
+                                         wiki_form, wiki_render)
+from wiki.tests.base import TemplateTestCase
+
 if not django_settings.configured:
     django_settings.configure()
 
-from django.contrib.contenttypes.models import ContentType
-from django.http import HttpRequest
 
-from wiki.templatetags.wiki_tags import (
-    article_for_object,
-    wiki_render,
-    wiki_form,
-    login_url
-)
 
-from wiki.models import Article, ArticleForObject, ArticleRevision
-from wiki.forms import CreateRootForm
-from wiki.tests.base import TemplateTestCase
-from wiki.conf import settings
 
-from six import PY3
 
 # copypasted from SIX source for tox tests compatebility reason.
 if PY3:

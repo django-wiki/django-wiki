@@ -1,22 +1,18 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
 
 import json
-
-from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseNotFound, \
-    HttpResponseForbidden, HttpResponseRedirect
-from django.shortcuts import redirect, get_object_or_404
-from django.utils.http import urlquote
-
 from functools import wraps
 
+from django.core.urlresolvers import reverse
+from django.http import (HttpResponse, HttpResponseForbidden,
+                         HttpResponseNotFound, HttpResponseRedirect)
+from django.shortcuts import get_object_or_404, redirect
+from django.utils.http import urlquote
 from six.moves import filter
-
+from wiki.conf import settings
 from wiki.core.compat import render_to_string
 from wiki.core.exceptions import NoRootURL
-from wiki.conf import settings
 
 
 def json_view(func):
@@ -53,7 +49,8 @@ def response_forbidden(request, article, urlpath):
                 request=request))
 
 
-def get_article(func=None, can_read=True, can_write=False,
+# TODO: This decorator is too complex (C901)
+def get_article(func=None, can_read=True, can_write=False,  # noqa
                 deleted_contents=False, not_locked=False,
                 can_delete=False, can_moderate=False,
                 can_create=False):
@@ -91,7 +88,7 @@ def get_article(func=None, can_read=True, can_write=False,
         urlpath = None
 
         # fetch by urlpath.path
-        if not path is None:
+        if path is not None:
             try:
                 urlpath = models.URLPath.get_by_path(path, select_related=True)
             except NoRootURL:

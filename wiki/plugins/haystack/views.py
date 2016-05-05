@@ -1,11 +1,11 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
+
 from haystack.backends import SQ
-from wiki.views.article import SearchView
-from haystack.query import SearchQuerySet
 from haystack.inputs import AutoQuery
-from wiki.core import permissions
+from haystack.query import SearchQuerySet
 from wiki import models
+from wiki.core import permissions
+from wiki.views.article import SearchView
 
 
 class HaystackSearchView(SearchView):
@@ -21,8 +21,8 @@ class HaystackSearchView(SearchView):
                 qs = qs.filter(
                     SQ(owner_id=self.request.user.id) |
                     (
-                        SQ(group_id__in=self.request.user.groups.values_list('id', flat=True))
-                        & SQ(group_read=True)
+                        SQ(group_id__in=self.request.user.groups.values_list('id', flat=True)) &
+                        SQ(group_read=True)
                     ) |
                     SQ(other_read=True)
                 )

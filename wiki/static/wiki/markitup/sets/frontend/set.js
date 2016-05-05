@@ -20,7 +20,7 @@ mySettings = {
 		{name:'Heading 4', key:'4', openWith:'#### ', placeHolder:'Your title here...' },
 		{name:'Heading 5', key:'5', openWith:'##### ', placeHolder:'Your title here...' },
 		{name:'Heading 6', key:'6', openWith:'###### ', placeHolder:'Your title here...' },
-		{separator:'---------------' },		
+		{separator:'---------------' },
 		{name:'Bold', key:'B', openWith:'**', closeWith:'**'},
 		{name:'Italic', key:'I', openWith:'_', closeWith:'_'},
 		{separator:'---------------' },
@@ -28,7 +28,7 @@ mySettings = {
 		{name:'Numeric List', openWith:function(markItUp) {
 			return markItUp.line+'. ';
 		}},
-		{separator:'---------------'},	
+		{separator:'---------------'},
 		{name:'Quotes', openWith:'> '},
 		{name:'Code Block / Code', openWith:'(!(    |!|`)!)', closeWith:'(!(`)!)'},
 	]

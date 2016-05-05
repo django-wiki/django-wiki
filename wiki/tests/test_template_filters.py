@@ -1,19 +1,14 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 
 from django.contrib.auth import get_user_model
+from wiki.models import Article, ArticleRevision
+from wiki.templatetags.wiki_tags import (can_delete, can_moderate, can_read,
+                                         can_write, get_content_snippet,
+                                         is_locked)
+from wiki.tests.base import TemplateTestCase, wiki_override_settings
+
 User = get_user_model()
 
-from wiki.models import Article, ArticleRevision
-from wiki.tests.base import wiki_override_settings, TemplateTestCase
-from wiki.templatetags.wiki_tags import (
-    get_content_snippet,
-    can_read,
-    can_write,
-    can_delete,
-    can_moderate,
-    is_locked
-)
 
 
 class GetContentSnippet(TemplateTestCase):

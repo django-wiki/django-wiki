@@ -1,11 +1,7 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import absolute_import
+from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
-
-from six.moves import filter  # @UnresolvedImport
 
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
@@ -13,10 +9,19 @@ from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models, transaction
 from django.db.models.signals import post_save, pre_delete
-from django.utils.translation import ugettext_lazy as _, ugettext
-
 # Django 1.6 transaction API, required for 1.8+
 from django.utils.encoding import python_2_unicode_compatible
+from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext
+from mptt.fields import TreeForeignKey
+from mptt.models import MPTTModel
+from six.moves import filter  # @UnresolvedImport
+from wiki import managers
+from wiki.conf import settings
+from wiki.core.compat import atomic, transaction_commit_on_success
+from wiki.core.exceptions import MultipleRootURLs, NoRootURL
+from wiki.decorators import disable_signal_for_loaddata
+from wiki.models.article import Article, ArticleForObject, ArticleRevision
 
 try:
     notrans = transaction.non_atomic_requests
@@ -29,15 +34,7 @@ try:
 except ImportError:
     from django.contrib.contenttypes.generic import GenericRelation
 
-from mptt.fields import TreeForeignKey
-from mptt.models import MPTTModel
 
-from wiki import managers
-from wiki.conf import settings
-from wiki.core.compat import atomic, transaction_commit_on_success
-from wiki.core.exceptions import NoRootURL, MultipleRootURLs
-from wiki.decorators import disable_signal_for_loaddata
-from wiki.models.article import ArticleRevision, ArticleForObject, Article
 
 log = logging.getLogger(__name__)
 

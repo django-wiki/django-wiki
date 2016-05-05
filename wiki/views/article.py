@@ -1,32 +1,30 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
+
 import difflib
 import logging
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 from django.db.models import Q
-from django.shortcuts import render_to_response, redirect, get_object_or_404
+from django.http import Http404
+from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.template.context import RequestContext
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
-from django.views.generic.base import TemplateView, View, RedirectView
+from django.views.generic.base import RedirectView, TemplateView, View
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
-
-from wiki.views.mixins import ArticleMixin
+from six.moves import range
 from wiki import editors, forms, models
 from wiki.conf import settings
-from wiki.core.plugins import registry as plugin_registry
-from wiki.core.diff import simple_merge
-from wiki.decorators import get_article, json_view
-from django.core.urlresolvers import reverse
-
-from wiki.core.exceptions import NoRootURL
 from wiki.core import permissions
-from django.http import Http404
-from six.moves import range
+from wiki.core.diff import simple_merge
+from wiki.core.exceptions import NoRootURL
+from wiki.core.plugins import registry as plugin_registry
+from wiki.decorators import get_article, json_view
+from wiki.views.mixins import ArticleMixin
 
 log = logging.getLogger(__name__)
 

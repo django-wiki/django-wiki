@@ -12,13 +12,13 @@
     }
   </style>
   <h1 class="page-header">{% trans "Article deleted" %}</h1>
-  
+
   <p class="lead">
-  {% trans "The article you were looking for has been deleted." %}  
+  {% trans "The article you were looking for has been deleted." %}
   </p>
-  
+
   <div class="row">
-  
+
   {% if not article.current_revision.locked or article|can_delete:user %}
     <div class="col-lg-6">
       <div class="well">
@@ -33,7 +33,7 @@
       </div>
     </div>
   {% endif %}
-  
+
   {% if article|can_moderate:user %}
     <div class="col-lg-6">
       <div class="well">
@@ -50,8 +50,7 @@
       </div>
     </div>
   {% endif %}
-  
-  </div>
-  
-{% endblock %}
 
+  </div>
+
+{% endblock %}

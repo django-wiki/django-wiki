@@ -1,19 +1,16 @@
-from __future__ import unicode_literals
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
+
 from django import forms
-from django.forms.models import modelformset_factory, BaseModelFormSet
-from django.utils.translation import ugettext
-from django.utils.translation import ugettext_lazy as _
-
-from django_nyt.models import Settings, NotificationType, Subscription
-from django_nyt import settings as notify_settings
 from django.contrib.contenttypes.models import ContentType
+from django.forms.models import BaseModelFormSet, modelformset_factory
 from django.utils.safestring import mark_safe
-
-from wiki.plugins.notifications.settings import ARTICLE_EDIT
+from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext
+from django_nyt import settings as notify_settings
+from django_nyt.models import NotificationType, Settings, Subscription
 from wiki.core.plugins.base import PluginSettingsFormMixin
-
 from wiki.plugins.notifications import models
+from wiki.plugins.notifications.settings import ARTICLE_EDIT
 
 
 class SettingsModelChoiceField(forms.ModelChoiceField):
@@ -59,7 +56,7 @@ class SettingsModelForm(forms.ModelForm):
                     (1, ugettext('No emails')),
                     (2, ugettext('Email on any change')),
                 ),
-                coerce=lambda x: int(x) if not x is None else None,
+                coerce=lambda x: int(x) if x is not None else None,
                 widget=forms.RadioSelect(),
                 required=False,
                 initial=0,

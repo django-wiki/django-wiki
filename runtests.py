@@ -1,10 +1,14 @@
 #!/usr/bin/env python
-from __future__ import absolute_import
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
+
 import sys
+
 import django
+import pytest
 from django.conf import settings
 
+# Run py.tests
+# Compatibility testing patches on the py-moneyed
 
 settings_dict = dict(
     DEBUG=True,
@@ -87,7 +91,6 @@ if django.VERSION < (1, 7):
     from south.management.commands import patch_for_test_db_setup
     patch_for_test_db_setup()
 
-from django.core.management import execute_from_command_line
 argv = [sys.argv[0], "test", "--traceback"]
 
 # python setup.py test calls script with just 'test'
@@ -102,13 +105,7 @@ else:
     argv.extend(sys.argv[1:])
 
 
-## Run py.tests
-# Compatibility testing patches on the py-moneyed
-import pytest
 failures = pytest.main()
 
 if failures:
     sys.exit(failures)
-
-
-

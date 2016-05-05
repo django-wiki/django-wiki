@@ -1,7 +1,10 @@
 # -*- coding: utf-8
-from __future__ import unicode_literals
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
+
 from django import forms
+from django.utils.html import conditional_escape
+from django.utils.safestring import mark_safe
+from wiki.editors.base import BaseEditor
 
 # Due to deprecation of django.forms.util in Django 1.9
 try:
@@ -16,10 +19,7 @@ except ImportError:
     def force_unicode(x):
         return(x)
 
-from django.utils.html import conditional_escape
-from django.utils.safestring import mark_safe
 
-from wiki.editors.base import BaseEditor
 
 
 class MarkItUpAdminWidget(forms.Widget):
