@@ -1,13 +1,11 @@
-from __future__ import unicode_literals
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
+
 from django import forms
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
-
 from mptt.admin import MPTTModelAdmin
 
-from . import models
-from . import editors
+from . import editors, models
 
 # Django 1.9 deprecation of contenttypes.generic
 try:

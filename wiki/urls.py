@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-from __future__ import absolute_import
-from django import VERSION as DJANGO_VERSION
-from django.conf.urls import url, include
+from __future__ import absolute_import, unicode_literals
 
+from django import VERSION as DJANGO_VERSION
+from django.conf.urls import include, url
 from wiki.conf import settings
 from wiki.core.plugins import registry
-from wiki.views import article, accounts, deleted_list
+from wiki.core.plugins.loader import load_wiki_plugins
 from wiki.core.utils import get_class_from_str
+from wiki.views import accounts, article, deleted_list
 
 
 class WikiURLPatterns(object):
@@ -263,6 +263,5 @@ def get_pattern(app_name="wiki", namespace="wiki", url_config_class=None):
 # PLUGINS
 ######################
 
-from wiki.core.plugins.loader import load_wiki_plugins
 
 load_wiki_plugins()

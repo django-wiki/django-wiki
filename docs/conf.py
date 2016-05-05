@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
-from __future__ import print_function, unicode_literals
-from __future__ import absolute_import
+from __future__ import absolute_import, print_function, unicode_literals
+
+import os
+import sys
+
+import wiki
+
 #
 # django-wiki documentation build configuration file, created by
 # sphinx-quickstart on Mon Jul 23 16:13:51 2012.
@@ -13,7 +18,6 @@ from __future__ import absolute_import
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys, os
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -43,7 +47,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'django-wiki'
-copyright = '2013, Benjamin Bach'
+copyright = '2013, Benjamin Bach'  # noqa
 
 
 path = os.path.join(
@@ -57,7 +61,6 @@ path = os.path.join(
 sys.path = [path] + sys.path
 sys.path = [os.path.join(path, 'wiki')] + sys.path
 
-import wiki
 
 print(wiki.__file__)
 
@@ -190,21 +193,23 @@ htmlhelp_basename = 'django-wikidoc'
 # -- Options for LaTeX output --------------------------------------------------
 
 latex_elements = {
-# The paper size ('letterpaper' or 'a4paper').
-# 'papersize': 'letterpaper',
+    # The paper size ('letterpaper' or 'a4paper').
+    # 'papersize': 'letterpaper',
 
-# The font size ('10pt', '11pt' or '12pt').
-# 'pointsize': '10pt',
+    # The font size ('10pt', '11pt' or '12pt').
+    # 'pointsize': '10pt',
 
-# Additional stuff for the LaTeX preamble.
-# 'preamble': '',
+    # Additional stuff for the LaTeX preamble.
+    # 'preamble': '',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'django-wiki.tex', 'django-wiki Documentation',
-   'Benjamin Bach', 'manual'),
+    (
+        'index', 'django-wiki.tex', 'django-wiki Documentation',
+        'Benjamin Bach', 'manual'
+    ),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -247,9 +252,11 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'django-wiki', 'django-wiki Documentation',
-   'Benjamin Bach', 'django-wiki', 'One line description of project.',
-   'Miscellaneous'),
+    (
+        'index', 'django-wiki', 'django-wiki Documentation',
+        'Benjamin Bach', 'django-wiki', 'Wiki engine for Django - with real data models!',
+        'Miscellaneous'
+    ),
 ]
 
 # Documents to append as an appendix to all manuals.

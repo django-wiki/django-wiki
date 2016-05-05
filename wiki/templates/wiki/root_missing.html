@@ -11,7 +11,7 @@
     <p class="lead">
       {% trans "You have django-wiki installed and it seems to be working. But there are no articles yet." %}
     </p>
-    
+
     {% if not user.is_superuser %}
       <p class="lead">
         {% trans "Not to worry! You simply have to login with a superuser account and create the first article in the root of the URL hierarchy." %}
@@ -20,7 +20,7 @@
       {% if wiki_login_url %}
         <a href="{{ wiki_login_url }}" class="btn btn-primary btn-lg">{% trans "Click here to login" %}</a>
       {% endif %}
-      
+
     {% else %}
 
       <p class="lead">
@@ -28,7 +28,7 @@
       </p>
       <a href="{% url 'wiki:root_create' %}" class="btn btn-primary btn-lg">{% trans "Yes, I'll go and create the first article" %}</a>
       <a href="http://django-wiki.readthedocs.org/" class="btn btn-default">{% trans "No thanks, I'd rather read the documentation" %}</a>
-        
+
       {% endif %}
   </div>
   <div class="col-lg-2"></div>

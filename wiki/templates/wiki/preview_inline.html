@@ -28,11 +28,11 @@
 
   {% if revision and revision.deleted %}
     <div class="warning">
-      <strong>{% trans "This revision has been deleted." %}</strong> 
+      <strong>{% trans "This revision has been deleted." %}</strong>
       <p>{% trans "Restoring to this revision will mark the article as deleted." %}</p>
     </div>
   {% else %}
-    
+
     {% wiki_render article content %}
     {% for plugin in plugins %}
       {% if plugin.RenderMedia.css %}
@@ -43,7 +43,7 @@
         {% endaddtoblock %}
       {% endif %}
       {% if plugin.RenderMedia.js %}
-        {% addtoblock "js" %}        
+        {% addtoblock "js" %}
           {% for url in plugin.RenderMedia.js %}
             <script type="text/javascript" src="{{ STATIC_URL }}{{ url }}"></script>
           {% endfor %}

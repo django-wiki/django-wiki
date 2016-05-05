@@ -14,10 +14,10 @@
 .markItUp  {
 	width:700px;
 	margin:5px 0 5px 0;
-	border:5px solid #F5F5F5;	
+	border:5px solid #F5F5F5;
 }
 .markItUpContainer  {
-	border:1px solid #3C769D;	
+	border:1px solid #3C769D;
 	background:#FFF url(images/bg-container.png) repeat-x top left;
 	padding:5px 5px 2px 5px;
 	font:11px Verdana, Arial, Helvetica, sans-serif;
@@ -88,7 +88,7 @@
 .markItUpHeader ul ul {
 	display:none;
 	position:absolute;
-	top:18px; left:0px;	
+	top:18px; left:0px;
 	background:#F5F5F5;
 	border:1px solid #3C769D;
 	height:inherit;
@@ -120,7 +120,7 @@
 	display:block;
 	padding-left:0px;
 	text-indent:0;
-	width:120px; 
+	width:120px;
 	padding:5px 5px 5px 25px;
 	background-position:2px 50%;
 }

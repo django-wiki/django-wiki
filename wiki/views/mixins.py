@@ -1,12 +1,10 @@
-from __future__ import unicode_literals
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
+
 import logging
 
-
 from django.views.generic.base import TemplateResponseMixin
-
-from wiki.core.plugins import registry
 from wiki.conf import settings
+from wiki.core.plugins import registry
 
 log = logging.getLogger(__name__)
 

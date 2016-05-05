@@ -39,4 +39,3 @@ notifications:
 after_success:
   - coverage combine
   - coveralls
-

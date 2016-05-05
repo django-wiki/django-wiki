@@ -55,4 +55,3 @@ $(document).ready(function () {
 
 // Don't check immediately... some users just click through pages very quickly.
 setTimeout("notify_update()", 2000);
-

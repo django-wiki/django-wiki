@@ -12,7 +12,7 @@ function get_diff_json(url, put_in_element) {
             $(put_in_element).find('dl').append($('<dt>'+data.other_changes[i][0]+'</dt>' +
                                                   '<dd>'+data.other_changes[i][1]+'</dd>'  ));
           }
-        }        
+        }
         put_in_element.find('.diff-container').show('fast', function() {put_in_element.collapse('show');});
         $(put_in_element).parentsUntil('.panel-group').find('.progress').detach();
       });

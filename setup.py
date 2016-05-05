@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 
 import os
+from sys import version_info as PYTHON_VERSION
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 from wiki import __version__
+
 
 # Utility function to read the README file.
 # Used for the long_description.  It's nice, because now 1) we have a top level
@@ -63,8 +64,6 @@ else:
     else:
         requirements.append("sorl-thumbnail>=12,<13")
 
-# Requirements that depend on Python version: Markdown
-from sys import version_info as PYTHON_VERSION
 if PYTHON_VERSION < (2, 7):
     # For Python 2.6, use Markdown<2.5.0, see
     # https://github.com/waylan/Python-Markdown/issues/349

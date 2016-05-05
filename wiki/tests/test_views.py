@@ -1,14 +1,11 @@
-from __future__ import print_function
-from __future__ import unicode_literals
-from __future__ import absolute_import
+from __future__ import absolute_import, print_function, unicode_literals
 
 import pprint
 
 from django.contrib.auth import authenticate
+from django.core.urlresolvers import reverse
 
 from .base import ArticleWebTestBase, WebTestBase
-
-from django.core.urlresolvers import reverse
 
 
 class RootArticleViewViewTests(WebTestBase):
@@ -338,8 +335,11 @@ class UpdateProfileViewTest(ArticleWebTestBase):
     def test_update_profile(self):
         c = self.c
 
-        response = c.post(reverse('wiki:profile_update'),
-        {"email":"test@test.com", "password1":"newPass", "password2":"newPass"}, follow=True)
+        c.post(
+            reverse('wiki:profile_update'),
+            {"email": "test@test.com", "password1": "newPass", "password2": "newPass"},
+            follow=True
+        )
 
         test_auth = authenticate(username='admin', password='newPass')
 

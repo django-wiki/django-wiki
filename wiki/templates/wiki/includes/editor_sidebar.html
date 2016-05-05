@@ -17,13 +17,13 @@
 {% for plugin, plugin_form in sidebar %}
 
   <div class="panel panel-default">
-    
+
     <div class="panel-heading">
       <a class="panel-toggle" href="#collapse_{{ plugin.slug }}" data-toggle="collapse">
         <h3 class="panel-title"><span class="fa fa-fw {{ plugin.sidebar.icon_class }}"></span> {{ plugin.sidebar.headline }}</h3>
       </a>
     </div>
-    
+
     <div id="collapse_{{ plugin.slug }}" class="panel-collapse collapse{% if plugin_form.errors %} in{% endif %}">
       <div class="panel-body form-vertical">
         {% if plugin.sidebar.template %}
@@ -36,9 +36,7 @@
         {% endif %}
       </div>
     </div>
-  
+
   </div>
 {% endfor %}
 </div>
-
-

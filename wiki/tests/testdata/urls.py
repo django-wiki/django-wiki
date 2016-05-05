@@ -1,11 +1,13 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
-from django import VERSION as DJANGO_VERSION
-from django.conf.urls import patterns, include, url
-from django.conf import settings
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from __future__ import absolute_import, unicode_literals
 
+from django import VERSION as DJANGO_VERSION
+from django.conf import settings
+from django.conf.urls import include, patterns, url
 from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django_nyt.urls import get_pattern as get_notify_pattern
+from wiki.urls import get_pattern as get_wiki_pattern
+
 admin.autodiscover()
 
 urlpatterns = [
@@ -22,8 +24,6 @@ if settings.DEBUG:
              }),
     ]
 
-from wiki.urls import get_pattern as get_wiki_pattern
-from django_nyt.urls import get_pattern as get_notify_pattern
 urlpatterns += [
     url(r'^notify/', get_notify_pattern()),
     url(r'', get_wiki_pattern())

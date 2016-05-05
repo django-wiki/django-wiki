@@ -1,11 +1,10 @@
 """Abstraction layer to deal with Django related changes in order to keep
 compatibility with several Django versions simultaneously."""
-from __future__ import absolute_import
-from __future__ import unicode_literals
-from django import VERSION as DJANGO_VERSION
-from django.db import transaction
-from django.conf import settings as django_settings
+from __future__ import absolute_import, unicode_literals
 
+from django import VERSION as DJANGO_VERSION
+from django.conf import settings as django_settings
+from django.db import transaction
 
 # Django 1.5+
 if DJANGO_VERSION >= (1, 5):
@@ -55,4 +54,4 @@ if DJANGO_VERSION < (1, 8):
         return django_render_to_string(template_name,
                                        context_instance=context_instance)
 else:
-    from django.template.loader import render_to_string
+    from django.template.loader import render_to_string  # noqa @UnusedImport

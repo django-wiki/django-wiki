@@ -1,10 +1,9 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
-from wiki.decorators import json_view, get_article
-from django.views.generic.base import View
-from django.utils.decorators import method_decorator
+from __future__ import absolute_import, unicode_literals
 
+from django.utils.decorators import method_decorator
+from django.views.generic.base import View
 from wiki import models
+from wiki.decorators import get_article, json_view
 
 
 class QueryUrlPath(View):

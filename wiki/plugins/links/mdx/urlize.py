@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
+
+import re
+
+import markdown
+
 """
 Code modified from:
 https://github.com/r0wb0t/markdown-urlize
@@ -42,8 +46,6 @@ Negative examples:
 
 """
 
-import markdown
-import re
 
 # Taken from Django trunk 2f121dfe635b3f497fe1fe03bc8eb97cdf5083b3
 # https://github.com/django/django/blob/master/django/core/validators.py#L47
@@ -80,7 +82,7 @@ class UrlizePattern(markdown.inlinepatterns.Pattern):
         text = url
 
         if not url.split('://')[0] in ('http', 'https', 'ftp'):
-            if '@' in url and not '/' in url:
+            if '@' in url and '/' not in url:
                 url = 'mailto:' + url
             else:
                 url = 'http://' + url

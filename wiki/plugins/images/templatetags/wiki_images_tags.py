@@ -1,9 +1,7 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
-from django import template
+from __future__ import absolute_import, unicode_literals
 
-from wiki.plugins.images import models
-from wiki.plugins.images import settings
+from django import template
+from wiki.plugins.images import models, settings
 
 register = template.Library()
 

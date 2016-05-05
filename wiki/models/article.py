@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
+
 from django.contrib.contenttypes.models import ContentType
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
@@ -9,15 +9,12 @@ from django.db.models.signals import post_save, pre_delete, pre_save
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
-
 from mptt.models import MPTTModel
-
+from wiki import managers
 from wiki.conf import settings
-from wiki.core import permissions
-from wiki.core import compat
+from wiki.core import compat, permissions
 from wiki.core.markdown import article_markdown
 from wiki.decorators import disable_signal_for_loaddata
-from wiki import managers
 
 # Django 1.9 deprecation of IPAddressField
 try:

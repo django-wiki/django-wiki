@@ -1,14 +1,13 @@
-from __future__ import unicode_literals
-from __future__ import absolute_import
-import os
+from __future__ import absolute_import, unicode_literals
+
 import mimetypes
+import os
 from datetime import datetime
 
 from django.http import HttpResponse
-from django.utils.http import http_date
 from django.utils import dateformat
 from django.utils.encoding import filepath_to_uri
-
+from django.utils.http import http_date
 from wiki.conf import settings
 
 
@@ -48,5 +47,5 @@ def send_file(request, filepath, last_modified=None, filename=None):
     if filename:
         filename_escaped = filepath_to_uri(filename)
         response["Content-Disposition"] = "attachment; filename=%s" % filename_escaped
-    
+
     return response

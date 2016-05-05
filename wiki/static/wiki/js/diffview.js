@@ -9,15 +9,15 @@ pydifferviewer = {
     var differ_output = params.differ_output;
 
     tbody = document.createElement('tbody');
-    
+
     function get_row(beforeline, afterline, data, classname) {
       tr = document.createElement('tr');
       $(tr).prop('class', classname)
-      
+
       td1 = document.createElement('td');
       $(td1).prop('class', 'linenumber before');
       $(td1).append(document.createTextNode(beforeline))
-      
+
       td2 = document.createElement('td');
       $(td2).prop('class', 'linenumber after');
       $(td2).append(document.createTextNode(afterline))
@@ -80,12 +80,12 @@ pydifferviewer = {
       }
       if (last_operation != "equal") diff_found = true;
     }
-    
+
     if (!diff_found) {
       $(tbody).append(get_row("-", "-", "(all data equal)", "equal"));
     }
-    
+
     return tbody;
-    
+
   }
 }

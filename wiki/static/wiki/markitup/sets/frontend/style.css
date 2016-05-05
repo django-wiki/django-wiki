@@ -12,22 +12,22 @@ textarea.markItUp {font-size: 16px; padding: 10px; float: none; display: block; 
 .markItUpContainer {margin-right: 20px; width: -20px;}
 
 .markItUp .markItUpButton1 a {
-	background-image:url(images/h1.png); 
+	background-image:url(images/h1.png);
 }
 .markItUp .markItUpButton2 a {
-	background-image:url(images/h2.png); 
+	background-image:url(images/h2.png);
 }
 .markItUp .markItUpButton3 a {
-	background-image:url(images/h3.png); 
+	background-image:url(images/h3.png);
 }
 .markItUp .markItUpButton4 a {
-	background-image:url(images/h4.png); 
+	background-image:url(images/h4.png);
 }
 .markItUp .markItUpButton5 a {
-	background-image:url(images/h5.png); 
+	background-image:url(images/h5.png);
 }
 .markItUp .markItUpButton6 a {
-	background-image:url(images/h6.png); 
+	background-image:url(images/h6.png);
 }
 
 .markItUp .markItUpButton7 a {
@@ -45,7 +45,7 @@ textarea.markItUp {font-size: 16px; padding: 10px; float: none; display: block; 
 }
 
 /*.markItUp .markItUpButton11 a {
-	background-image:url(images/picture.png); 
+	background-image:url(images/picture.png);
 }
 .markItUp .markItUpButton12 a {
 	background-image:url(images/link.png);

@@ -26,21 +26,21 @@
   tr.equal td {
     background-color: #F2F2F2;
   }
-  
+
   .diff-container td {
     white-space: pre; font-family: monospace;
   }
   .diff-container td,
   .diff-container th {
     padding: 2px 7px;
-    border-right: 1px solid #DDD;    
+    border-right: 1px solid #DDD;
   }
   .diff-container td:last-child,
   .diff-container th:last-child {
     border-right: none;
   }
   .diff-container table {
-    border-top: 1px solid #DDD;    
+    border-top: 1px solid #DDD;
   }
 </style>
 {% endaddtoblock %}
@@ -89,11 +89,11 @@
                 {% trans "Preview this revision" %}
               </button>
               {% endif %}
-              
+
               {% if article|can_write:user and not article.current_revision.locked %}
               <input type="radio"{% if revision == article.current_revision %} disabled="true"{% endif %} style="margin: 0 10px;" value="{{ revision.id }}" name="revision_id" switch-button-href="{% url 'wiki:change_revision' path=urlpath.path revision_id=revision.id %}" merge-button-href="{% url 'wiki:merge_revision_preview' article_id=article.id revision_id=revision.id %}" merge-button-commit-href="{% url 'wiki:merge_revision' path=urlpath.path article_id=article.id revision_id=revision.id %}" />
               {% endif %}
-              
+
             </div>
             <div style="clear: both"></div>
           </div>
@@ -117,9 +117,9 @@
         </div>
       </div>
     {% endfor %}
-    
+
     {% include "wiki/includes/pagination.html" %}
-    
+
     {% if revisions.count > 1 and article|can_write:user and not article.current_revision.locked %}
 
     <div class="form-group form-actions">
@@ -135,9 +135,9 @@
       </div>
       <div style="clear:both"></div>
     </div>
-    
+
     {% endif %}
-    
+
   </div>
   <input type="hidden" name="r" value="" />
   <div class="modal fade wiki-modal" id="previewModal">
@@ -160,7 +160,7 @@
             <a href="#" class="btn btn-lg btn-primary disabled">
               <span class="fa fa-lock"></span>
               {% trans "Switch to this version" %}
-            </a>                    
+            </a>
           {% endif %}
         </div>
       </div>
@@ -186,7 +186,7 @@
           <a href="#" class="btn btn-lg btn-primary merge-revision-commit">
             <span class="fa fa-file"></span>
             {% trans "Create new merged version" %}
-          </a>                    
+          </a>
           {% else %}
             <a href="#" class="btn btn-lg btn-primary disabled">
               <span class="fa fa-lock"></span>
@@ -198,6 +198,5 @@
     </div>
   </div>
 </form>
-  
-{% endblock %}
 
+{% endblock %}

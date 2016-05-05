@@ -72,7 +72,7 @@
             <h4 class="panel-title"><span class="fa fa-fw fa-upload"></span> {% trans "Upload new file" %}</h4>
           </a>
         </div>
-        
+
         <div id="collapse_upload" class="panel-collapse collapse{% if form.errors %} in{% endif %}">
           <div class="panel-body">
             {% if anonymous_disallowed %}
@@ -95,7 +95,7 @@
             <h4 class="panel-title"><span class="fa fa-fw fa-plus-circle"></span> {% trans "Search and add file" %}</h4>
           </a>
         </div>
-        
+
         <div id="collapse_add" class="panel-collapse collapse">
           <div class="panel-body">
             <p>{% trans "You can reuse files from other articles. These files are subject to updates on other articles which may or may not be a good thing." %}</p>
@@ -112,7 +112,7 @@
           </div>
         </div>
       </div>
-      
+
       {% if article|can_write:user %}
         <div class="panel panel-default">
           <div class="panel-heading">
@@ -122,7 +122,7 @@
           </div>
           <div id="collapse_restore" class="panel-collapse collapse">
             <div class="panel-body">
-            
+
             {% for attachment in deleted_attachments %}
             <p>
               {{ attachment.current_revision.get_filename }}
@@ -134,33 +134,32 @@
                 </button>
               </form>
               {% endif %}
-            </p>  
+            </p>
             {% empty %}
-            
+
             <p><em>{% trans "Nothing to restore" %}</em></p>
-            
+
             {% endfor %}
-            
+
             </div>
           </div>
-        </div>        
+        </div>
       {% endif %}
 
-      
+
     </div>
   {% else %}
-  
+
     {% if article|is_locked %}
     <p class="muted">
       <i class="fa fa-lock"></i>
       {% trans "The article is currently locked for editing, and therefore no new attachments can be added." %}
     </p>
     {% endif %}
-  
+
   {% endif %}
   </div>
-  
-</div>
-  
-{% endblock %}
 
+</div>
+
+{% endblock %}

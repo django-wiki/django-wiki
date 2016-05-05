@@ -1,7 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 
-from markdown.treeprocessors import Treeprocessor
 import markdown
+from markdown.treeprocessors import Treeprocessor
 
 
 class PreviewLinksExtension(markdown.Extension):

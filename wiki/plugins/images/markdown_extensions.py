@@ -1,17 +1,16 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 
-import markdown
 import re
 
+import markdown
+from wiki.core.compat import render_to_string
+from wiki.plugins.images import models
 
 IMAGE_RE = re.compile(
     r'.*(\[image\:(?P<id>\d+)(\s+align\:(?P<align>right|left))?\s*\]).*',
     re.IGNORECASE)
 
-from wiki.core.compat import render_to_string
-from wiki.plugins.images import models
 
 
 class ImageExtension(markdown.Extension):

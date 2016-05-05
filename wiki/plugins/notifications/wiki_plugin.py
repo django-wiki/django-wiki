@@ -1,9 +1,8 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
-from wiki.core.plugins import registry
-from wiki.core.plugins.base import BasePlugin
+from __future__ import absolute_import, unicode_literals
 
 from django.conf.urls import url
+from wiki.core.plugins import registry
+from wiki.core.plugins.base import BasePlugin
 
 from . import settings, views
 

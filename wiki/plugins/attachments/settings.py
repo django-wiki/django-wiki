@@ -1,9 +1,9 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
+
 from django import VERSION
 from django.conf import settings as django_settings
-from wiki.conf import settings as wiki_settings
 from django.core.exceptions import ImproperlyConfigured
+from wiki.conf import settings as wiki_settings
 
 # This is not used in django 1.7+
 APP_LABEL = 'attachments' if VERSION < (1, 7) else None

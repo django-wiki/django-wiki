@@ -1,10 +1,10 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
-# -*- coding: utf-8 -*-
+from __future__ import absolute_import, unicode_literals
+
+import django
 from django.conf import settings as django_settings
+from django.core.files.storage import default_storage
 from django.core.urlresolvers import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
-import django
 
 # Should urls be case sensitive?
 URL_CASE_SENSITIVE = getattr(django_settings, 'WIKI_URL_CASE_SENSITIVE', False)
@@ -217,7 +217,6 @@ REVISIONS_MINUTES_LOOKBACK = getattr(
 # STORAGE #
 ###########
 
-from django.core.files.storage import default_storage
 STORAGE_BACKEND = getattr(
     django_settings,
     'WIKI_STORAGE_BACKEND',
@@ -234,6 +233,6 @@ MAX_REVISIONS = getattr(django_settings, 'WIKI_MAX_REVISIONS', 100)
 
 # Maximum age of revisions in days, 0=unlimited
 MAX_REVISION_AGE = getattr(
-    django_settings, 'WIKI_MAX_REVISION_AGE', 
+    django_settings, 'WIKI_MAX_REVISION_AGE',
     getattr(django_settings, 'MAX_REVISION_AGE', 365)
 )

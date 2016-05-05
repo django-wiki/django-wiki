@@ -2,13 +2,13 @@
 """
 Extend the shipped Markdown extension 'wikilinks'
 """
-from __future__ import absolute_import
-from __future__ import unicode_literals
-from markdown.extensions import wikilinks
-import markdown
+from __future__ import absolute_import, unicode_literals
+
 import re
 
+import markdown
 from django.core.urlresolvers import reverse
+from markdown.extensions import wikilinks
 
 
 def build_url(label, base, end, md):

@@ -1,16 +1,16 @@
-from __future__ import unicode_literals
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
 
 from django.core.urlresolvers import reverse
+from django.template import Context, Template
 from django.test import TestCase
 from django.test.client import Client
-from django.template import Context, Template
+from wiki.models import URLPath
+
 try:
     from django.test import override_settings
 except ImportError:
     from django.test.utils import override_settings
 
-from wiki.models import URLPath
 
 
 SUPERUSER1_USERNAME = 'admin'

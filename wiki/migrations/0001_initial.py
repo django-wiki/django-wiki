@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import models, migrations
+import django.db.models.deletion
 import mptt.fields
 from django.conf import settings
-import django.db.models.deletion
-
+from django.db import migrations, models
 from wiki.conf.settings import GROUP_MODEL
-
 
 # Django 1.9 deprecation of IPAddressField
 try:

@@ -1,21 +1,17 @@
-from __future__ import unicode_literals
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
 
-from django.test.testcases import TestCase
-from django.contrib.sites.models import Site
-from django.contrib.auth import get_user_model
 from django.conf.urls import url
+from django.contrib.auth import get_user_model
+from django.contrib.sites.models import Site
+from django.test.testcases import TestCase
+from wiki.managers import ArticleManager
+from wiki.models import Article, ArticleRevision, URLPath
+from wiki.urls import WikiURLPatterns
+
 User = get_user_model()
 
-from wiki.models import (
-    Article,
-    ArticleRevision,
-    URLPath
-)
 
-from wiki.managers import ArticleManager
 
-from wiki.urls import WikiURLPatterns
 
 # Backwards compatibility with Django < 1.7
 try:

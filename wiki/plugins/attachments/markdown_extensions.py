@@ -1,19 +1,17 @@
-from __future__ import unicode_literals
-from __future__ import absolute_import
-import markdown
+from __future__ import absolute_import, unicode_literals
+
 import re
 
-from django.core.urlresolvers import reverse
+import markdown
 from django.contrib.auth.models import AnonymousUser
-
+from django.core.urlresolvers import reverse
 from wiki.core.compat import render_to_string
 from wiki.core.permissions import can_read
+from wiki.plugins.attachments import models
 
 ATTACHMENT_RE = re.compile(
     r'(?P<before>.*)(\[attachment\:(?P<id>\d+)\])(?P<after>.*)',
     re.IGNORECASE)
-
-from wiki.plugins.attachments import models
 
 
 class AttachmentExtension(markdown.Extension):
