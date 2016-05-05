@@ -1,13 +1,11 @@
 from __future__ import absolute_import, unicode_literals
 
-import os
+from .base import *  # noqa @UnusedWildImport
 
-from testproject.settings import *
-from testproject.settings.local import *
 
 # Django Haystack
 
-HAYSTACK_WHOOSH_PATH = os.path.join(PROJECT_PATH, 'index_woosh')
+HAYSTACK_WHOOSH_PATH = os.path.join(PROJECT_DIR, 'index_woosh')
 
 INSTALLED_APPS += ['haystack', 'wiki.plugins.haystack']
 
@@ -21,7 +19,7 @@ HAYSTACK_CONNECTIONS = {
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'xapian_backend.XapianEngine',
-        'PATH': os.path.join(PROJECT_PATH, 'xapian_index'),
+        'PATH': os.path.join(PROJECT_DIR, 'xapian_index'),
     },
 }
 
@@ -34,4 +32,4 @@ HAYSTACK_CONNECTIONS = {
 #        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
 #        'PATH': os.path.join(PROJECT_PATH, 'whoosh_index'),
 #    },
-#}
+# }
