@@ -22,6 +22,7 @@ if settings.DEBUG:
         url(r'^media/(?P<path>.*)$', static_serve, {'document_root': settings.MEDIA_ROOT}),
     ]
 
+
 urlpatterns += [
     url(r'^notify/', get_notify_pattern()),
     url(r'', get_wiki_pattern())
