@@ -42,7 +42,14 @@ docs:
 	sphinx-build -b linkcheck ./docs _build/
 	sphinx-build -b html ./docs _build/
 
-release: clean assets
+release: sdist
+	twine upload -s dist/*
+
+assets:
+	lessc wiki/static/wiki/bootstrap/less/wiki/wiki-bootstrap.less wiki/static/wiki/bootstrap/css/wiki-bootstrap.css
+	lessc -x wiki/static/wiki/bootstrap/less/wiki/wiki-bootstrap.less wiki/static/wiki/bootstrap/css/wiki-bootstrap.min.css
+
+sdist: clean assets
 	echo "Creating HISTORY.rst..."
 	echo "Latest Changes" > HISTORY.rst
 	echo "==============" >> HISTORY.rst
@@ -52,14 +59,6 @@ release: clean assets
 	echo "Compiled on: `date`::" >> HISTORY.rst
 	echo "" >> HISTORY.rst
 	git log --graph --pretty=format:'%h -%d %s (%cr) <%an>' --abbrev-commit | sed "s/^/    /" >> HISTORY.rst
-	echo "Packing source dist..."
-	twine upload -s dist/*
-
-assets:
-	lessc wiki/static/wiki/bootstrap/less/wiki/wiki-bootstrap.less wiki/static/wiki/bootstrap/css/wiki-bootstrap.css
-	lessc -x wiki/static/wiki/bootstrap/less/wiki/wiki-bootstrap.less wiki/static/wiki/bootstrap/css/wiki-bootstrap.min.css
-
-sdist: clean assets
 	python setup.py sdist
 	python setup.py bdist_wheel
 	ls -l dist
