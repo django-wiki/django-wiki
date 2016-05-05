@@ -1,6 +1,5 @@
 # 
 # Translators:
-# JAAKKO LUTTINEN <jaakko.luttinen@iki.fi>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: django-wiki\n"
@@ -8,94 +7,94 @@ msgstr ""
 "POT-Creation-Date: 2016-05-05 22:53+0200\n"
 "PO-Revision-Date: 2016-05-05 20:55+0000\n"
 "Last-Translator: Benjamin Bach <benjaoming@gmail.com>\n"
-"Language-Team: Finnish (http://www.transifex.com/django-wiki/django-wiki/language/fi/)\n"
+"Language-Team: Catalan (http://www.transifex.com/django-wiki/django-wiki/language/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fi\n"
+"Language: ca\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: admin.py:92 models/article.py:46
 msgid "created"
-msgstr "luotu"
+msgstr ""
 
 #: apps.py:9
 msgid "Wiki notifications"
-msgstr "Wiki-ilmoitukset"
+msgstr ""
 
 #: apps.py:15
 msgid "Wiki images"
-msgstr "Wikikuvat"
+msgstr ""
 
 #: apps.py:21
 msgid "Wiki attachments"
-msgstr "Wikiliitteet"
+msgstr ""
 
 #: conf/settings.py:34
 msgid "Table of Contents"
-msgstr "Sisällysluettelo"
+msgstr ""
 
 #: core/plugins/base.py:65
 msgid "Settings for plugin"
-msgstr "Lisäosan asetukset"
+msgstr ""
 
 #: forms.py:75
 msgid ""
 "Spam protection failed to find both a logged in user and an IP address."
-msgstr "Roskapostisuojaus ei tunnistanut kirjautunutta käyttäjää tai IP-osoitetta."
+msgstr ""
 
 #: forms.py:90
 #, python-format
 msgid ""
 "Spam protection: You are only allowed to create or edit %(revisions)d "
 "article(s) per %(interval_name)s."
-msgstr "Roskapostisuoja: Voit luoda tai muokata vain %(revisions)d artikkelia per %(interval_name)s."
+msgstr ""
 
 #: forms.py:108
 msgid "minute"
-msgstr "minuutti"
+msgstr ""
 
 #: forms.py:109
 #, python-format
 msgid "%d minutes"
-msgstr "%d minuuttia"
+msgstr ""
 
 #: forms.py:118
 msgid "hour"
-msgstr "tunti"
+msgstr ""
 
 #: forms.py:124 forms.py:136 forms.py:323 templates/wiki/dir.html.py:48
 #: templates/wiki/search.html:30
 msgid "Title"
-msgstr "Otsikko"
+msgstr ""
 
 #: forms.py:126
 msgid "Initial title of the article. May be overridden with revision titles."
-msgstr "Artikkelin otsikko aluksi. Voidaan muuttaa artikkelin muokkauksen yhteydessä."
+msgstr ""
 
 #: forms.py:128
 msgid "Type in some contents"
-msgstr "Kirjoita jotain sisältöä"
+msgstr ""
 
 #: forms.py:130
 msgid ""
 "This is just the initial contents of your article. After creating it, you "
 "can use more complex features like adding plugins, meta data, related "
 "articles etc..."
-msgstr "Tämä on vain jotain alustavaa sisältöä artikkeliin. Artikkelin luotuasi, voit käyttää kehittyneempiä ominaisuuksia kuten lisätä lisäosia, metatietoja, liittyviä artikkeleita yms..."
+msgstr ""
 
 #: forms.py:138 forms.py:330
 msgid "Contents"
-msgstr "Sisältö"
+msgstr ""
 
 #: forms.py:143 forms.py:335
 msgid "Summary"
-msgstr "Yhteenveto"
+msgstr ""
 
 #: forms.py:145
 msgid ""
 "Give a short reason for your edit, which will be stated in the revision log."
-msgstr "Anna muokkauksestasi lyhyt kuvaus, joka näytetään muokkaushistoriassa."
+msgstr ""
 
 #: forms.py:201
 msgid "Article is missing title or has an invalid title"
@@ -106,161 +105,161 @@ msgid ""
 "While you were editing, someone else changed the revision. Your contents "
 "have been automatically merged with the new contents. Please review the text"
 " below."
-msgstr "Sillä välin kun teit muokkausta, joku muu muokkasi artikkelia. Sisältösi on automaattisesti yhdistetty uuteen sisältöön. Tarkista alla oleva teksti."
+msgstr ""
 
 #: forms.py:219
 msgid "No changes made. Nothing to save."
-msgstr "Ei muutoksia. Ei tallennettavaa."
+msgstr ""
 
 #: forms.py:260
 msgid "Select an option"
-msgstr "Valitse vaihtoehto"
+msgstr ""
 
 #: forms.py:325 templates/wiki/dir.html.py:49
 msgid "Slug"
-msgstr "Osoite"
+msgstr ""
 
 #: forms.py:327
 msgid ""
 "This will be the address where your article can be found. Use only "
 "alphanumeric characters and - or _. Note that you cannot change the slug "
 "after creating the article."
-msgstr "Tämä on artikkelin osoite. Käytä ainoastaan aakkosnumeerisia merkkejä sekä - ja _. Huomioithan ettei osoitetta voi muuttaa artikkelin luomisen jälkeen."
+msgstr ""
 
 #: forms.py:336
 msgid "Write a brief message for the article's history log."
-msgstr "Kirjoita lyhyt viesti artikkelin muokkaushistoriaan."
+msgstr ""
 
 #: forms.py:343
 msgid "A slug may not begin with an underscore."
-msgstr "Osoite ei voi alkaa alaviivalla."
+msgstr ""
 
 #: forms.py:346
 msgid "'admin' is not a permitted slug name."
-msgstr "'admin' ei ole hyväksyttävä osoite."
+msgstr ""
 
 #: forms.py:361
 #, python-format
 msgid "A deleted article with slug \"%s\" already exists."
-msgstr "Poistettu artikkeli osoitteella \"%s\" on jo olemassa."
+msgstr ""
 
 #: forms.py:365
 #, python-format
 msgid "A slug named \"%s\" already exists."
-msgstr "Artikkeli nimellä \"%s\" on jo olemassa."
+msgstr ""
 
 #: forms.py:374
 msgid "This slug conflicts with an existing URL."
-msgstr "Tämä osoite on ristiriidassa olemassaolevan URL:n kanssa."
+msgstr ""
 
 #: forms.py:393
 msgid "Yes, I am sure"
-msgstr "Kyllä, olen varma"
+msgstr ""
 
 #: forms.py:396 templates/wiki/deleted.html.py:47
 msgid "Purge"
-msgstr "Tuhoa"
+msgstr ""
 
 #: forms.py:398
 msgid ""
 "Purge the article: Completely remove it (and all its contents) with no undo."
 " Purging is a good idea if you want to free the slug such that users can "
 "create new articles in its place."
-msgstr "Tuhoa artikkeli: Poista artikkeli (ja kaikki sen sisältö) lopullisesti ilman mahdollisuutta perua toimenpidettä. Tuhoaminen on hyvä vaihtoehto, jos haluat vapauttaa osoitteen, jotta käyttäjät voivat luoda osoitteeseen uuden artikkelin."
+msgstr ""
 
 #: forms.py:405 plugins/attachments/forms.py:167 plugins/images/forms.py:69
 msgid "You are not sure enough!"
-msgstr "Et ole tarpeeksi varma!"
+msgstr ""
 
 #: forms.py:409
 msgid "While you tried to delete this article, it was modified. TAKE CARE!"
-msgstr "Artikkelia muokattiin sillä välin kun yritit poistaa sen. OLE HUOLELLINEN!"
+msgstr ""
 
 #: forms.py:416
 msgid "Lock article"
-msgstr "Lukitse artikkeli"
+msgstr ""
 
 #: forms.py:417
 msgid "Deny all users access to edit this article."
-msgstr "Estä kaikkia käyttäjiä muokkaamasta artikkelia."
+msgstr ""
 
 #: forms.py:420
 msgid "Permissions"
-msgstr "Käyttöoikeudet"
+msgstr ""
 
 #: forms.py:426
 msgid "Owner"
-msgstr "Omistaja"
+msgstr ""
 
 #: forms.py:427
 msgid "Enter the username of the owner."
-msgstr "Syötä omistajan käyttäjätunnus."
+msgstr ""
 
 #: forms.py:430 forms.py:489 plugins/notifications/util.py:14
 msgid "(none)"
-msgstr "(tyhjä)"
+msgstr ""
 
 #: forms.py:431
 msgid "Group"
-msgstr "Ryhmä"
+msgstr ""
 
 #: forms.py:437
 msgid "Inherit permissions"
-msgstr "Peri käyttöoikeudet"
+msgstr ""
 
 #: forms.py:439
 msgid ""
 "Check here to apply the above permissions (excluding group and owner of the "
 "article) recursively to articles below this one."
-msgstr "Valitse tämä soveltaaksesi ylläolevia käyttöoikeuksia (poislukien artikkelin ryhmä ja omistaja) rekursiivisesti kaikille tämän artikkelin alla oleville artikkeleille."
+msgstr ""
 
 #: forms.py:443
 msgid "Inherit owner"
-msgstr "Peri omistaja"
+msgstr ""
 
 #: forms.py:445
 msgid ""
 "Check here to apply the ownership setting recursively to articles below this"
 " one."
-msgstr "Valitse tämä asettaaksesi omistajan rekursiivisesti kaikille tämän artikkelin alla oleville artikkeleille."
+msgstr ""
 
 #: forms.py:449
 msgid "Inherit group"
-msgstr "Peri ryhmä"
+msgstr ""
 
 #: forms.py:451
 msgid ""
 "Check here to apply the group setting recursively to articles below this "
 "one."
-msgstr "Valitse tämä asettaaksesi ryhmän rekursiivisesti kaikille tämän artikkelin alla oleville artikkeleille."
+msgstr ""
 
 #: forms.py:456
 msgid "Permission settings for the article were updated."
-msgstr "Artikkelin käyttöoikeusasetukset päivitettiin."
+msgstr ""
 
 #: forms.py:459
 msgid "Your permission settings were unchanged, so nothing saved."
-msgstr "Käyttöoikeusasetuksia ei muutettu, joten mitään ei tallennettu."
+msgstr ""
 
 #: forms.py:519
 msgid "No user with that username"
-msgstr "Ei käyttäjää annetulla käyttäjätunnuksella"
+msgstr ""
 
 #: forms.py:554
 msgid "Article locked for editing"
-msgstr "Artikkeli lukittu muokkauksilta"
+msgstr ""
 
 #: forms.py:561
 msgid "Article unlocked for editing"
-msgstr "Artikkeli avattu muokkauksille"
+msgstr ""
 
 #: forms.py:588
 msgid "Filter..."
-msgstr "Suodata..."
+msgstr ""
 
 #: forms.py:598 templates/wiki/base_site.html.py:44
 msgid "Search..."
-msgstr "Etsi..."
+msgstr ""
 
 #: forms.py:645
 msgid "Passwords don't match"
@@ -269,102 +268,102 @@ msgstr ""
 #: models/article.py:39 models/pluginbase.py:177
 #: plugins/attachments/models.py:33
 msgid "current revision"
-msgstr "nykyinen versio"
+msgstr ""
 
 #: models/article.py:42
 msgid ""
 "The revision being displayed for this article. If you need to do a roll-"
 "back, simply change the value of this field."
-msgstr "Artikkelin käytössä oleva versio. Jos haluat palauttaa käyttöön toisen version, muuta tätä kenttää."
+msgstr ""
 
 #: models/article.py:50
 msgid "modified"
-msgstr "muokattu"
+msgstr ""
 
 #: models/article.py:51
 msgid "Article properties last modified"
-msgstr "Artikkelin ominaisuuksia viimeksi muokattu"
+msgstr ""
 
 #: models/article.py:54
 msgid "owner"
-msgstr "omistaja"
+msgstr ""
 
 #: models/article.py:57
 msgid ""
 "The owner of the article, usually the creator. The owner always has both "
 "read and write access."
-msgstr "Artikkelin omistaja, yleensä artikkelin luoja. Omistajalla on aina sekä kirjoitus- että lukuoikeus."
+msgstr ""
 
 #: models/article.py:61
 msgid "group"
-msgstr "ryhmä"
+msgstr ""
 
 #: models/article.py:64
 msgid ""
 "Like in a UNIX file system, permissions can be given to a user according to "
 "group membership. Groups are handled through the Django auth system."
-msgstr "Kuten UNIX-tiedostojärjestelmissä, käyttöoikeuksia voidaan myöntää käyttäjille ryhmäjäsenyyksien perusteella. Ryhmiä hallitaan Djangon autentikoitumisjärjestelmän avulla."
+msgstr ""
 
 #: models/article.py:69
 msgid "group read access"
-msgstr "ryhmän lukuoikeus"
+msgstr ""
 
 #: models/article.py:72
 msgid "group write access"
-msgstr "ryhmän kirjoitusoikeus"
+msgstr ""
 
 #: models/article.py:75
 msgid "others read access"
-msgstr "muiden lukuoikeus"
+msgstr ""
 
 #: models/article.py:78
 msgid "others write access"
-msgstr "muiden kirjoitusoikeus"
+msgstr ""
 
 #: models/article.py:191
 #, python-format
 msgid "Article without content (%(id)d)"
-msgstr "Artikkeli ilman sisältöä (%(id)d)"
+msgstr ""
 
 #: models/article.py:197
 msgid "Can edit all articles and lock/unlock/restore"
-msgstr "Voi muokata kaikkia artikkeleita ja lukita/avata/palauttaa"
+msgstr ""
 
 #: models/article.py:198
 msgid "Can change ownership of any article"
-msgstr "Voi muuttaa minkä tahansa artikkelin omistajaa"
+msgstr ""
 
 #: models/article.py:199
 msgid "Can assign permissions to other users"
-msgstr "Voi myöntää käyttöoikeuksia toisille käyttäjille"
+msgstr ""
 
 #: models/article.py:245
 msgid "content type"
-msgstr "sisällön tyyppi"
+msgstr ""
 
 #: models/article.py:247
 msgid "object ID"
-msgstr "objektin ID"
+msgstr ""
 
 #: models/article.py:257
 msgid "Article for object"
-msgstr "Artikkeli objektille"
+msgstr ""
 
 #: models/article.py:258
 msgid "Articles for object"
-msgstr "Artikkelit objektille"
+msgstr ""
 
 #: models/article.py:270
 msgid "revision number"
-msgstr "version numero"
+msgstr ""
 
 #: models/article.py:276
 msgid "IP address"
-msgstr "IP-osoite"
+msgstr ""
 
 #: models/article.py:280
 msgid "user"
-msgstr "käyttäjä"
+msgstr ""
 
 #: models/article.py:295
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:23
@@ -372,48 +371,48 @@ msgstr "käyttäjä"
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:44
 #: templates/wiki/includes/revision_info.html:15
 msgid "deleted"
-msgstr "poistettu"
+msgstr ""
 
 #: models/article.py:299 templates/wiki/article.html.py:23
 #: templates/wiki/includes/revision_info.html:21
 msgid "locked"
-msgstr "lukittu"
+msgstr ""
 
 #: models/article.py:322 models/pluginbase.py:41
 msgid "article"
-msgstr "artikkeli"
+msgstr ""
 
 #: models/article.py:325
 msgid "article contents"
-msgstr "artikkelin sisältö"
+msgstr ""
 
 #: models/article.py:330
 msgid "article title"
-msgstr "artikkelin otsikko"
+msgstr ""
 
 #: models/article.py:333
 msgid ""
 "Each revision contains a title field that must be filled out, even if the "
 "title has not changed"
-msgstr "Jokaisen version tulee sisältää artikkelin otsikko, vaikka otsikko ei muuttuisikaan"
+msgstr ""
 
 #: models/pluginbase.py:87
 msgid "original article"
-msgstr "alkuperäinen artikkeli"
+msgstr ""
 
 #: models/pluginbase.py:89
 msgid "Permissions are inherited from this article"
-msgstr "Käyttöoikeudet peritään tältä artikkelilta"
+msgstr ""
 
 #: models/pluginbase.py:157
 msgid "A plugin was changed"
-msgstr "Lisäosaa muutettiin"
+msgstr ""
 
 #: models/pluginbase.py:182
 msgid ""
 "The revision being displayed for this plugin. If you need to do a roll-back,"
 " simply change the value of this field."
-msgstr "Lisäosan käytössä oleva versio. Palauttaaksesi käyttöön toisen version, muuta tämän kentän arvoa."
+msgstr ""
 
 #: models/urlpath.py:71
 msgid "Lookup value"
@@ -427,7 +426,7 @@ msgstr ""
 
 #: models/urlpath.py:80
 msgid "slug"
-msgstr "osoite"
+msgstr ""
 
 #: models/urlpath.py:88
 msgid "Position of URL path in the tree."
@@ -439,24 +438,24 @@ msgstr ""
 
 #: models/urlpath.py:201
 msgid "URL path"
-msgstr "URL-polku"
+msgstr ""
 
 #: models/urlpath.py:202
 msgid "URL paths"
-msgstr "URL-polut"
+msgstr ""
 
 #: models/urlpath.py:209
 msgid "Sorry but you cannot have a root article with a slug."
-msgstr "Valitettavasti etusivulla ei voi olla osoitetta."
+msgstr ""
 
 #: models/urlpath.py:212
 msgid "A non-root note must always have a slug."
-msgstr "Sivulla on oltava osoite (paitsi etusivulla)."
+msgstr ""
 
 #: models/urlpath.py:218
 #, python-format
 msgid "There is already a root node on %s"
-msgstr "Etusivu on jo olemassa kohteelle %s"
+msgstr ""
 
 #: models/urlpath.py:364
 msgid ""
@@ -464,46 +463,46 @@ msgid ""
 "===============================\n"
 "\n"
 "The children of this article have had their parents deleted. You should probably find a new home for them."
-msgstr "Artikkelit jotka menettivät vanhempansa\n=======================================\n\nTämän artikkelin ala-artikkeleiden yläartikkeli on poistettu. Ala-artikkelit tarvitsevat uuden yläartikkelin."
+msgstr ""
 
 #: models/urlpath.py:367
 msgid "Lost and found"
-msgstr "Kadonnut ja löydetty"
+msgstr ""
 
 #: plugins/attachments/forms.py:19
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:14
 msgid "Description"
-msgstr "Kuvaus"
+msgstr ""
 
 #: plugins/attachments/forms.py:20
 msgid "A short summary of what the file contains"
-msgstr "Lyhyt kuvaus tiedoston sisällöstä"
+msgstr ""
 
 #: plugins/attachments/forms.py:69
 msgid "Remove previous"
-msgstr "Poista edellinen"
+msgstr ""
 
 #: plugins/attachments/forms.py:70
 msgid "Remove previous attachment revisions and their files (to save space)?"
-msgstr "Poista aiemmat liitetiedostorevisiot ja niiden tiedostot (säästäksesi tilaa)?"
+msgstr ""
 
 #: plugins/attachments/forms.py:79
 msgid "File or zip archive"
-msgstr "Tiedosto tai zip-paketti"
+msgstr ""
 
 #: plugins/attachments/forms.py:84
 msgid "Unzip file"
-msgstr "Pura zip-paketti"
+msgstr ""
 
 #: plugins/attachments/forms.py:86
 msgid ""
 "Create individual attachments for files in a .zip file - directories do not "
 "work."
-msgstr "Luo erilliset liitetiedostot kullekin tiedostolle .zip-paketissa (kansiot eivät toimi)."
+msgstr ""
 
 #: plugins/attachments/forms.py:108
 msgid "Not a zip file"
-msgstr "Ei zip-paketti"
+msgstr ""
 
 #: plugins/attachments/forms.py:116
 msgid "User not allowed to moderate this article"
@@ -511,25 +510,25 @@ msgstr ""
 
 #: plugins/attachments/forms.py:162
 msgid "Yes I am sure..."
-msgstr "Kyllä, olen varma..."
+msgstr ""
 
 #: plugins/attachments/models.py:36
 msgid ""
 "The revision of this attachment currently in use (on all articles using the "
 "attachment)"
-msgstr "Tämän liitetiedoston käytössä oleva versio (kaikissa artikkeleissa, jotka käyttävät tätä liitetiedostoa)"
+msgstr ""
 
 #: plugins/attachments/models.py:40
 msgid "original filename"
-msgstr "alkuperäinen tiedostonimi"
+msgstr ""
 
 #: plugins/attachments/models.py:53
 msgid "attachment"
-msgstr "liitetiedosto"
+msgstr ""
 
 #: plugins/attachments/models.py:54
 msgid "attachments"
-msgstr "liitetiedostot"
+msgstr ""
 
 #: plugins/attachments/models.py:75
 msgid "No file extension found in filename. That's not okay!"
@@ -544,29 +543,29 @@ msgstr ""
 
 #: plugins/attachments/models.py:131
 msgid "file"
-msgstr "tiedosto"
+msgstr ""
 
 #: plugins/attachments/models.py:137
 msgid "attachment revision"
-msgstr "liitetiedoston versio"
+msgstr ""
 
 #: plugins/attachments/models.py:138
 msgid "attachment revisions"
-msgstr "liitetiedoston versiot"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:5
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:10
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:36
 #: templates/wiki/delete.html:8
 msgid "Delete"
-msgstr "Poista"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:12
 msgid ""
 "\n"
 "    The file may be referenced on other articles. Deleting it means that they will loose their references to this file. The following articles reference this file:\n"
 "    "
-msgstr "\n    Tiedostoon saatetaan viitata muissa artikkeleissa. Tiedoston poistaminen tarkoittaa että nämä viittaukset menetetään. Seuraavat artikkelit viittaavat tähän tiedostoon:\n    "
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:29
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:53
@@ -578,162 +577,162 @@ msgstr "\n    Tiedostoon saatetaan viitata muissa artikkeleissa. Tiedoston poist
 #: templates/wiki/create.html:53 templates/wiki/delete.html.py:12
 #: templates/wiki/delete.html:48
 msgid "Go back"
-msgstr "Palaa"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:33
 msgid "Delete it!"
-msgstr "Poista!"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:40
 msgid "Remove"
-msgstr "Poista"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:42
 msgid ""
 "\n"
 "    You can remove a reference to a file, but it will retain its references on other articles.\n"
 "    "
-msgstr "\n    Voit poistaa viittauksen tiedostoon mutta viittaukset muista artikkeleista säilyvät.\n    "
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:57
 msgid "Remove reference"
-msgstr "Poista viittaus"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:5
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:9
 msgid "History of"
-msgstr "Historia kohteelle"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:12
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:28
 msgid "Date"
-msgstr "Päiväys"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:13
 msgid "User"
-msgstr "Käyttäjä"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:15
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:26
 msgid "File"
-msgstr "Tiedosto"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:16
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:30
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:30
 #: plugins/images/templates/wiki/plugins/images/index.html:22
 msgid "Size"
-msgstr "Koko"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:17
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:31
 msgid "Action"
-msgstr "Toiminto"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:28
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:37
 msgid "<em>No description</em>"
-msgstr "<em>Ei kuvausta</em>"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:36
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:55
 msgid "Download"
-msgstr "Lataa"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:41
 msgid "Use this!"
-msgstr "Käytä tätä!"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:5
 #: plugins/attachments/wiki_plugin.py:21
 msgid "Attachments"
-msgstr "Liitetiedostot"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:10
 msgid ""
 "The following files are available for this article. Copy the markdown tag to"
 " directly refer to a file from the article text."
-msgstr "Seuraavat tiedostot ovat käytettävissä tällä artikkelilla. Kopioi Markdown-elementti suoraan viitataksesi tiedostoon artikkelin tekstissä."
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:28
 #: plugins/images/templates/wiki/plugins/images/index.html:20
 msgid "Markdown tag"
-msgstr "Markdown-elementti"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:29
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:29
 #: plugins/images/templates/wiki/plugins/images/index.html:21
 msgid "Uploaded by"
-msgstr "Ladannut"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:34
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:5
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:9
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:34
 msgid "Replace"
-msgstr "Korvaa"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:38
 msgid "Detach"
-msgstr "Irrota"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:47
 msgid "File history"
-msgstr "Tiedoston historia"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:47
 msgid "revisions"
-msgstr "versiot"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:62
 msgid "There are no attachments for this article."
-msgstr "Artikkelilla ei ole liitetiedostoja"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:72
 msgid "Upload new file"
-msgstr "Lataa uusi tiedosto"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:84
 msgid "Upload file"
-msgstr "Lataa tiedosto"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:95
 msgid "Search and add file"
-msgstr "Etsi ja lisää tiedosto"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:101
 msgid ""
 "You can reuse files from other articles. These files are subject to updates "
 "on other articles which may or may not be a good thing."
-msgstr "Voit uudelleenkäyttää muiden artikkelien tiedostoja. Päivitykset muissa artikkeleissa vaikuttavat näihin tiedostoihin, mikä voi olla hyvä tai huono asia."
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:120
 msgid "Restore attachments"
-msgstr "Palauta liitetiedostoja"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:133
 #: templates/wiki/deleted.html:25 templates/wiki/deleted.html.py:30
 #: templates/wiki/deleted_list.html:24
 msgid "Restore"
-msgstr "Palauta"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:140
 msgid "Nothing to restore"
-msgstr "Ei mitään palautettavaa"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:156
 msgid ""
 "The article is currently locked for editing, and therefore no new "
 "attachments can be added."
-msgstr "Artikkeli on lukittu muutoksilta, joten uusia liitetiedostoja ei voi lisätä."
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/render.html:6
 msgid "This attachment is not permitted on this page."
-msgstr "Tämä liitetiedosto ei ole sallittu tällä sivulla."
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/render.html:8
 msgid "Click to download"
-msgstr "Lataa tästä"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:12
 #, python-format
@@ -741,7 +740,7 @@ msgid ""
 "\n"
 "  Replacing an attachment means adding a new file that will be used in its place. All references to the file will be replaced by the one you upload and the file will be downloaded as <strong>%(filename)s</strong>. Please note that this attachment is in use on other articles, you may distort contents. However, do not hestitate to take advantage of this and make replacements for the listed articles where necessary. This way of working is more efficient....\n"
 "  "
-msgstr "\n  Liitetiedoston korvaaminen tarkoittaa, että sen tilalle lisätään uusi tiedosto. Kaikki viittaukset liitetiedostoon korvataan viitauksilla uuteen tiedostoon ja tiedosto ladataan nimellä <strong>%(filename)s</strong>. Huomioithan, että tämä liitetiedosto on käytössä muissa artikkeleissa, joten saatat sotkea niiden sisältöä. Mutta älä epäröi käyttää tätä ominaisuutta hyväksesi ja tehdä korjauksia alla listatuille artikkeleille tarpeen mukaan. Se on tehokkaampaa....\n  "
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:17
 #, python-format
@@ -749,7 +748,7 @@ msgid ""
 "\n"
 "  Articles using %(filename)s\n"
 "  "
-msgstr "\n  Artikkelit, jotka käyttävät tiedostoa %(filename)s\n  "
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:26
 #, python-format
@@ -757,73 +756,73 @@ msgid ""
 "\n"
 "  Replacing an attachment means adding a new file that will be used in its place. All references to the file will be replaced by the one you upload and the file will be downloaded as <strong>%(filename)s</strong>.\n"
 "  "
-msgstr "\n  Liitetiedoston korvaaminen tarkoittaa, että sen tilalle lisätään uusi tiedosto. Kaikki viittaukset liitetiedostoon korvataan viittauksilla uuteen tiedostoon ja tiedosto ladataan nimellä <strong>%(filename)s</strong>.\n  "
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:43
 #: plugins/images/templates/wiki/plugins/images/index.html:45
 #: plugins/images/templates/wiki/plugins/images/revision_add.html:27
 msgid "Upload replacement"
-msgstr "Lataa korvaava liitetiedosto"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:5
 msgid "Add file to"
-msgstr "Lisää tiedosto kohteeseen"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:9
 msgid "Add attachment from other article"
-msgstr "Lisää liitetiedosto toisesta artikkelista"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:17
 msgid "Search files and articles"
-msgstr "Etsi tiedostoja ja artikkeleita"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:27
 msgid "Main article"
-msgstr "Pääartikkeli"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:59
 msgid "Add to article"
-msgstr "Lisää artikkeliin"
+msgstr ""
 
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:67
 msgid "Your search did not return any results"
-msgstr "Hakusi ei tuottanut tuloksia"
+msgstr ""
 
 #: plugins/attachments/views.py:59
 #, python-format
 msgid "Successfully added: %s"
-msgstr "Lisätty onnistuneesti: %s"
+msgstr ""
 
 #: plugins/attachments/views.py:65
 #, python-format
 msgid "%s was successfully added."
-msgstr "%s lisättiin onnistuneesti."
+msgstr ""
 
 #: plugins/attachments/views.py:179
 #, python-format
 msgid "%s uploaded and replaces old attachment."
-msgstr "%s ladattu ja korvaa vanhan liitetiedoston."
+msgstr ""
 
 #: plugins/attachments/views.py:185
 #, python-format
 msgid "Your file could not be saved: %s"
-msgstr "Tiedostoa ei voit tallentaa: %s"
+msgstr ""
 
 #: plugins/attachments/views.py:215
 msgid ""
 "Your new file will automatically be renamed to match the file already "
 "present. Files with different extensions are not allowed."
-msgstr "Uuden tiedoston nimi muutetaan automaattisesti samaksi kuin jo olemassaolevan tiedoston nimi. Tiedostolla ei saa olla eri päätettä."
+msgstr ""
 
 #: plugins/attachments/views.py:324
 #, python-format
 msgid "Current revision changed for %s."
-msgstr "Nykyinen versio muutettu kohteelle %s"
+msgstr ""
 
 #: plugins/attachments/views.py:362
 #, python-format
 msgid "Added a reference to \"%(att)s\" from \"%(art)s\"."
-msgstr "Lisättiin viittaus kohteesta \"%(art)s\" kohteeseen \"%(att)s\"."
+msgstr ""
 
 #: plugins/attachments/views.py:367
 #, python-format
@@ -833,123 +832,123 @@ msgstr ""
 #: plugins/attachments/views.py:416
 #, python-format
 msgid "The file %s was deleted."
-msgstr "Tiedosto %s poistettiin."
+msgstr ""
 
 #: plugins/attachments/views.py:422
 #, python-format
 msgid "This article is no longer related to the file %s."
-msgstr "Tämä artikkeli ei enää liity tiedostoon %s."
+msgstr ""
 
 #: plugins/attachments/wiki_plugin.py:29
 #, python-format
 msgid "A file was changed: %s"
-msgstr "Tiedostoa muutettiin: %s"
+msgstr ""
 
 #: plugins/attachments/wiki_plugin.py:32
 #, python-format
 msgid "A file was deleted: %s"
-msgstr "Tiedosto poistettiin: %s"
+msgstr ""
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:1
 msgid "Adding new articles"
-msgstr "Lisätään uusia artikkeleita"
+msgstr ""
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:3
 msgid ""
 "To create a new wiki article, create a link to it. Clicking the link gives "
 "you the creation page."
-msgstr "Luodaksesi uuden artikkelin, luo siihen linkki. Linkki vie sivulle, jolla artikkeli voidaan luoda."
+msgstr ""
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:6
 #: plugins/links/templates/wiki/plugins/links/sidebar.html:22
 msgid "An external link"
-msgstr "Ulkopuolinen linkki"
+msgstr ""
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:9
 msgid "Headers"
-msgstr "Otsikot"
+msgstr ""
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:10
 msgid ""
 "Use these codes for headers and to automatically generate Tables of "
 "Contents."
-msgstr "Käytä näitä koodeja otsikoille ja luodaksesi automaattisesti sisällysluettelon."
+msgstr ""
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:25
 msgid "Typography"
-msgstr "Painoasu"
+msgstr ""
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:30
 msgid "Lists"
-msgstr "Listat"
+msgstr ""
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:38
 msgid "Tables"
-msgstr "Taulukot"
+msgstr ""
 
 #: plugins/help/wiki_plugin.py:12
 msgid "Help"
-msgstr "Apua"
+msgstr ""
 
 #: plugins/images/forms.py:20
 #, python-format
 msgid ""
 "New image %s was successfully uploaded. You can use it by selecting it from "
 "the list of available images."
-msgstr "Uusi kuva %s ladattiin onnistuneesti. Voit käyttää sitä valitsemalla sen käytettävissä olevien kuvien listalta."
+msgstr ""
 
 #: plugins/images/forms.py:64
 msgid "Are you sure?"
-msgstr "Oletko varma"
+msgstr ""
 
 #: plugins/images/models.py:49
 msgid "image"
-msgstr "kuva"
+msgstr ""
 
 #: plugins/images/models.py:50
 msgid "images"
-msgstr "kuvat"
+msgstr ""
 
 #: plugins/images/models.py:57
 #, python-format
 msgid "Image: %s"
-msgstr "Kuva: %s"
+msgstr ""
 
 #: plugins/images/models.py:59
 msgid "Current revision not set!!"
-msgstr "Nykyistä versiota ei määritetty!!"
+msgstr ""
 
 #: plugins/images/models.py:108
 msgid "image revision"
-msgstr "kuvan versio"
+msgstr ""
 
 #: plugins/images/models.py:109
 msgid "image revisions"
-msgstr "kuvan versiot"
+msgstr ""
 
 #: plugins/images/models.py:117
 #, python-format
 msgid "Image Revsion: %d"
-msgstr "Kuvan versio: %d"
+msgstr ""
 
 #: plugins/images/templates/wiki/plugins/images/index.html:5
 #: plugins/images/wiki_plugin.py:18
 msgid "Images"
-msgstr "Kuvat"
+msgstr ""
 
 #: plugins/images/templates/wiki/plugins/images/index.html:8
 msgid ""
 "The following images are available for this article. Copy the markdown tag "
 "to directly refer to an image from the article text."
-msgstr "Seuraavat kuvat ovat käytettävissä tälle artikkelille. Kopioi Markdown-elementti viitataksesi kuvaan suoraan artikkelista."
+msgstr ""
 
 #: plugins/images/templates/wiki/plugins/images/index.html:12
 msgid "Back to edit page"
-msgstr "Takaisin muokkaussivulle"
+msgstr ""
 
 #: plugins/images/templates/wiki/plugins/images/index.html:19
 msgid "No file"
-msgstr "Ei tiedostoa"
+msgstr ""
 
 #: plugins/images/templates/wiki/plugins/images/index.html:36
 msgid "Upload and publish new image"
@@ -957,86 +956,86 @@ msgstr ""
 
 #: plugins/images/templates/wiki/plugins/images/index.html:40
 msgid "Restore image"
-msgstr "Palauta kuva"
+msgstr ""
 
 #: plugins/images/templates/wiki/plugins/images/index.html:49
 msgid "Remove image"
-msgstr "Poista kuva"
+msgstr ""
 
 #: plugins/images/templates/wiki/plugins/images/index.html:56
 msgid "Completely delete"
-msgstr "Poista lopullisesti"
+msgstr ""
 
 #: plugins/images/templates/wiki/plugins/images/index.html:70
 #: templates/wiki/history.html:5
 msgid "History"
-msgstr "Historia"
+msgstr ""
 
 #: plugins/images/templates/wiki/plugins/images/index.html:89
 msgid "Revert to this version"
-msgstr "Palaa tähän versioon"
+msgstr ""
 
 #: plugins/images/templates/wiki/plugins/images/index.html:102
 msgid "There are no images for this article."
-msgstr "Artikkelilla ei ole kuvia."
+msgstr ""
 
 #: plugins/images/templates/wiki/plugins/images/purge.html:5
 #: templates/wiki/deleted.html:40
 msgid "Purge deletion"
-msgstr "Tuhoaminen"
+msgstr ""
 
 #: plugins/images/templates/wiki/plugins/images/purge.html:14
 msgid "Purge image: Completely remove image file and all revisions."
-msgstr "Tuhoa kuva: Poista kuva ja kaikki sen versiot lopullisesti."
+msgstr ""
 
 #: plugins/images/templates/wiki/plugins/images/purge.html:27
 msgid "Remove it completely!"
-msgstr "Poista lopullisesti!"
+msgstr ""
 
 #: plugins/images/templates/wiki/plugins/images/render.html:13
 msgid "Image not found"
-msgstr "Kuvaa ei löydy"
+msgstr ""
 
 #: plugins/images/templates/wiki/plugins/images/revision_add.html:5
 msgid "Replace image"
-msgstr "Korvaa kuva"
+msgstr ""
 
 #: plugins/images/templates/wiki/plugins/images/revision_add.html:14
 msgid "Choose an image file to replace current image."
-msgstr "Valitse kuvatiedosto korvaamaan nykyinen kuva."
+msgstr ""
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:30
 msgid "Image id"
-msgstr "Kuvan tunniste"
+msgstr ""
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:32
 #: plugins/links/templates/wiki/plugins/links/sidebar.html:15
 msgid "Insert"
-msgstr "Lisää"
+msgstr ""
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:48
 msgid "No images found for this article"
-msgstr "Artikkelilla ei ole kuvia"
+msgstr ""
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:56
 msgid "Manage images"
-msgstr "Hallitse kuvia"
+msgstr ""
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:61
 msgid "Add new image"
-msgstr "Lisää uusi kuva"
+msgstr ""
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:104
 msgid "Add image"
-msgstr "Lisää kuva"
+msgstr ""
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:112
 msgid "You do not have permissions to add images."
-msgstr "Sinulla ei ole oikeutta lisätä kuvia."
+msgstr ""
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:119
 msgid "How to use images"
-msgstr "Miten käyttää kuvia"
+msgstr ""
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:122
 msgid ""
@@ -1047,60 +1046,60 @@ msgid ""
 "choose to have you image floating right or left of the content. You can use "
 "Markdown in the caption. The markdown code syntax for images looks like "
 "this, possible values for align are left and right:"
-msgstr "Kun kuva on ladattu, se liitetään tähän artikkeliin ja sitä voi käyttää ainoastaan siinä. Muut käyttäjät voivat korvata kuvan, mutta vanhemmat versiot säilytetään. Kuva kannattaa näyttää kuvatekstin kanssa. Kuvatekstin voi asettaa painamalla Lisää-nappia, täyttämällä kuvatekstikentän ja mahdollisesti valitsemalla kuvan sijoitus sisällön vasemmalle tai oikealle puolelle. Voit käyttää Markdown-kieltä kuvatekstissä. Markdown-syntaksi kuville näyttää seuraavalta, mahdollisia arvoja sijoittelulle (align) ovat vasen (left) ja oikea (right):"
+msgstr ""
 
 #: plugins/images/views.py:73
 #, python-format
 msgid "%s has been restored"
-msgstr "%s on palautettu"
+msgstr ""
 
 #: plugins/images/views.py:78
 #, python-format
 msgid "%s has been marked as deleted"
-msgstr "%s on merkitty poistettavaksi"
+msgstr ""
 
 #: plugins/images/views.py:146
 #, python-format
 msgid "%(file)s has been changed to revision #%(revision)d"
-msgstr "%(file)s on vaihdettu versioon #%(revision)d"
+msgstr ""
 
 #: plugins/images/views.py:191
 #, python-format
 msgid "%(file)s has been saved."
-msgstr "%(file)s on tallennettu."
+msgstr ""
 
 #: plugins/images/wiki_plugin.py:29
 #, python-format
 msgid "An image was added: %s"
-msgstr "Kuva lisättiin: %s"
+msgstr ""
 
 #: plugins/links/templates/wiki/plugins/links/sidebar.html:3
 msgid "Link to another wiki page"
-msgstr "Linkki toiselle wiki-sivulle"
+msgstr ""
 
 #: plugins/links/templates/wiki/plugins/links/sidebar.html:6
 msgid ""
 "Type in something from another wiki page's title and auto-complete will help"
 " you create a tag for you wiki link. Tags for links look like this:"
-msgstr "Aloita kirjoittamaan toisen artikkelin otsikkoa ja automaattinen täydennys auttaa luomaan elementin wikilinkille. Elementit linkeille näyttävät seuraavalta:"
+msgstr ""
 
 #: plugins/links/templates/wiki/plugins/links/sidebar.html:25
 msgid ""
 "You can link to another website simply by inserting an address example.com "
 "or http://example.com or by using the markdown syntax:"
-msgstr "Voit lisätä linkin toiselle sivustolle kirjoittamalla sen osoiteen example.com tai http://example.com, tai käyttämällä Markdown-syntaksia:"
+msgstr ""
 
 #: plugins/links/wiki_plugin.py:23
 msgid "Links"
-msgstr "Linkit"
+msgstr ""
 
 #: plugins/macros/mdx/macro.py:84
 msgid "Article list"
-msgstr "Artikkelilista"
+msgstr ""
 
 #: plugins/macros/mdx/macro.py:85
 msgid "Insert a list of articles in this level."
-msgstr "Lisää lista artikkeleista tällä tasolla"
+msgstr ""
 
 #: plugins/macros/mdx/macro.py:86
 msgid "[article_list depth:2]"
@@ -1108,15 +1107,15 @@ msgstr ""
 
 #: plugins/macros/mdx/macro.py:87
 msgid "Maximum depth to show levels for."
-msgstr "Suurin syvyys, jolle näytetään tasoja"
+msgstr ""
 
 #: plugins/macros/mdx/macro.py:93
 msgid "Table of contents"
-msgstr "Sisällysluettelo"
+msgstr ""
 
 #: plugins/macros/mdx/macro.py:94
 msgid "Insert a table of contents matching the headings."
-msgstr "Lisää sisällysluettelo otsikoiden perusteella."
+msgstr ""
 
 #: plugins/macros/mdx/macro.py:95
 msgid "[TOC]"
@@ -1128,7 +1127,7 @@ msgstr ""
 
 #: plugins/macros/mdx/macro.py:104
 msgid "Insert a link to another wiki page with a short notation."
-msgstr "Lisää linkki toiseen artikkeliin lyhyen kuvauksen kanssa."
+msgstr ""
 
 #: plugins/macros/mdx/macro.py:105
 msgid "[[WikiLink]]"
@@ -1136,20 +1135,20 @@ msgstr ""
 
 #: plugins/macros/templates/wiki/plugins/macros/article_list.html:6
 msgid "Article index"
-msgstr "Artikkelihakemisto"
+msgstr ""
 
 #: plugins/macros/templates/wiki/plugins/macros/article_list.html:10
 msgid "Nothing below this level"
-msgstr "Ei artikkeleita tämän tason alla"
+msgstr ""
 
 #: plugins/macros/wiki_plugin.py:16
 msgid "Macros"
-msgstr "Makrot"
+msgstr ""
 
 #: plugins/notifications/forms.py:20
 #, python-format
 msgid "Receive notifications %(interval)s"
-msgstr "Vastaanota ilmoituksia %(interval)s"
+msgstr ""
 
 #: plugins/notifications/forms.py:30
 #, python-format
@@ -1158,116 +1157,116 @@ msgstr ""
 
 #: plugins/notifications/forms.py:47
 msgid "Remove subscriptions"
-msgstr "Poista tilaus"
+msgstr ""
 
 #: plugins/notifications/forms.py:49
 msgid "Select article subscriptions to remove from notifications"
-msgstr "Valitse artikkeleiden tilaukset, jotka poistetaan ilmoituksista"
+msgstr ""
 
 #: plugins/notifications/forms.py:53
 msgid "Email digests"
-msgstr "Sähköpostilukemisto"
+msgstr ""
 
 #: plugins/notifications/forms.py:55
 msgid "Unchanged (selected on each article)"
-msgstr "Muuttamaton (valitaan kullekin artikkelille)"
+msgstr ""
 
 #: plugins/notifications/forms.py:56
 msgid "No emails"
-msgstr "Ei sähköposteja"
+msgstr ""
 
 #: plugins/notifications/forms.py:57
 msgid "Email on any change"
-msgstr "Sähköposti kaikista muutoksista"
+msgstr ""
 
 #: plugins/notifications/forms.py:109
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:5
 msgid "Notifications"
-msgstr "Ilmoitukset"
+msgstr ""
 
 #: plugins/notifications/forms.py:116
 #: templates/wiki/includes/article_menu.html:9 templates/wiki/settings.html:5
 msgid "Settings"
-msgstr "Asetukset"
+msgstr ""
 
 #: plugins/notifications/forms.py:120
 msgid "When this article is edited"
-msgstr "Kun tätä artikkelia muokataan"
+msgstr ""
 
 #: plugins/notifications/forms.py:123
 msgid "Also receive emails about article edits"
-msgstr "Lisäksi vastaanota sähköposteja artikkelin muutoksista"
+msgstr ""
 
 #: plugins/notifications/forms.py:168
 msgid "Your notification settings were updated."
-msgstr "Ilmoitusten asetukset päivitettiin."
+msgstr ""
 
 #: plugins/notifications/forms.py:171
 msgid "Your notification settings were unchanged, so nothing saved."
-msgstr "Ilmoitusten asetukset eivät muuttuneet, joten mitään ei tallennettu."
+msgstr ""
 
 #: plugins/notifications/models.py:25
 #, python-format
 msgid "%(user)s subscribing to %(article)s (%(type)s)"
-msgstr "%(user)s tilaa artikkelin %(article)s (%(type)s)"
+msgstr ""
 
 #: plugins/notifications/models.py:53
 #, python-format
 msgid "Article deleted: %s"
-msgstr "Artikkeli poistettu: %s"
+msgstr ""
 
 #: plugins/notifications/models.py:61
 #, python-format
 msgid "Article modified: %s"
-msgstr "Artikkelia muokattu: %s"
+msgstr ""
 
 #: plugins/notifications/models.py:69
 #, python-format
 msgid "New article created: %s"
-msgstr "Uusi artikkeli luotu: %s"
+msgstr ""
 
 #: plugins/notifications/templates/wiki/plugins/notifications/menubaritem.html:4
 msgid "No notifications"
-msgstr "Ei ilmoituksia"
+msgstr ""
 
 #: plugins/notifications/templates/wiki/plugins/notifications/menubaritem.html:9
 msgid "Clear notifications list"
-msgstr "Tyhjennä lista ilmoituksista"
+msgstr ""
 
 #: plugins/notifications/templates/wiki/plugins/notifications/menubaritem.html:15
 msgid "Notification settings"
-msgstr "Ilmoitusten asetukset"
+msgstr ""
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:9
 msgid "Your notification settings"
-msgstr "Ilmoitusten asetuksesi"
+msgstr ""
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:11
 msgid "Manage how often you receive notifications"
-msgstr "Hallitse kuinka usein vastaanotat ilmoituksia"
+msgstr ""
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:20
 msgid "Settings for"
-msgstr "Asetukset"
+msgstr ""
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:20
 msgid "articles"
-msgstr "artikkelille"
+msgstr ""
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:27
 msgid "You are not subscribed to any notifications yet."
-msgstr "Et ole tilannut mitään ilmoituksia vielä."
+msgstr ""
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:35
 #: templates/wiki/edit.html:45 templates/wiki/edit.html.py:72
 #: templates/wiki/settings.html:17
 msgid "Save changes"
-msgstr "Tallenna muutokset"
+msgstr ""
 
 #: plugins/notifications/views.py:32
 #, python-format
 msgid "You will receive notifications %(interval)s for %(articles)d articles"
-msgstr "Vastaanotat ilmoituksia %(interval)s artikkeleista %(articles)d"
+msgstr ""
 
 #: templates/wiki/accounts/account_settings.html:4
 #: templates/wiki/accounts/account_settings.html:7
@@ -1281,36 +1280,36 @@ msgstr ""
 
 #: templates/wiki/accounts/login.html:4 templates/wiki/base_site.html.py:93
 msgid "Log in"
-msgstr "Kirjaudu sisään"
+msgstr ""
 
 #: templates/wiki/accounts/login.html:10
 msgid "Please log in"
-msgstr "Kirjaudu sisään"
+msgstr ""
 
 #: templates/wiki/accounts/login.html:18
 msgid "Log me in..."
-msgstr "Kirjaudu sisään..."
+msgstr ""
 
 #: templates/wiki/accounts/login.html:25
 msgid "Don't have an account?"
-msgstr "Eikö sinulla ole käyttäjätunnusta?"
+msgstr ""
 
 #: templates/wiki/accounts/login.html:25 templates/wiki/accounts/signup.html:3
 #: templates/wiki/accounts/signup.html:6 templates/wiki/base_site.html:96
 msgid "Sign up"
-msgstr "Rekisteröidy"
+msgstr ""
 
 #: templates/wiki/accounts/signup.html:14
 msgid "Sign me up..."
-msgstr "Rekisteröidy..."
+msgstr ""
 
 #: templates/wiki/article.html:39
 msgid "This article was last modified:"
-msgstr "Artikkelia on viimeksi muutettu:"
+msgstr ""
 
 #: templates/wiki/base_site.html:65
 msgid "Log out"
-msgstr "Kirjaudu ulos"
+msgstr ""
 
 #: templates/wiki/base_site.html:80
 msgid "Deleted articles"
@@ -1318,105 +1317,105 @@ msgstr ""
 
 #: templates/wiki/base_site.html:103
 msgid "Home"
-msgstr "Etusivu"
+msgstr ""
 
 #: templates/wiki/base_site.html:104
 msgid "About"
-msgstr "Tietoja"
+msgstr ""
 
 #: templates/wiki/base_site.html:137
 msgid ""
 "Powered by <a href=\"http://www.django-wiki.org\">django-wiki</a>, an open "
 "source application under the <a href=\"http://www.gnu.org/licenses/quick-"
 "guide-gplv3.html\">GPLv3</a> license. Let knowledge be the cure."
-msgstr "Moottorina <a href=\"http://www.django-wiki.org\">django-wiki</a>, avoimen lähdekoodin ohjelmisto <a href=\"http://www.gnu.org/licenses/quick-guide-gplv3.html\">GPLv3</a> lisenssillä. Tieto olkoon parannukseksi."
+msgstr ""
 
 #: templates/wiki/create.html:5 templates/wiki/create.html.py:44
 msgid "Add new article"
-msgstr "Lisää uusi artikkeli"
+msgstr ""
 
 #: templates/wiki/create.html:57
 msgid "Create article"
-msgstr "Luo artikkeli"
+msgstr ""
 
 #: templates/wiki/create_root.html:4
 msgid "Create root article"
-msgstr "Luo etusivu"
+msgstr ""
 
 #: templates/wiki/create_root.html:22 templates/wiki/root_missing.html:10
 msgid "Congratulations!"
-msgstr "Onneksi olkoon!"
+msgstr ""
 
 #: templates/wiki/create_root.html:24
 msgid ""
 "You have django-wiki installed... but there are no articles. So it's time to"
 " create the first one, the root article."
-msgstr "Olet asentanut django-wikin.... mutta siellä ei ole yhtään artikkelia. On siis aika luoda ensimmäinen artikkeli eli etusivu."
+msgstr ""
 
 #: templates/wiki/create_root.html:25
 msgid ""
 "In the beginning, it will only be editable by administrators, but you can "
 "define permissions after."
-msgstr "Aluksi se on vain ylläpitäjien muokattavissa, mutta voit muuttaa käyttöoikeuksia jälkeenpäin."
+msgstr ""
 
 #: templates/wiki/create_root.html:28
 msgid "Root article"
-msgstr "Etusivu"
+msgstr ""
 
 #: templates/wiki/create_root.html:35
 msgid "Create root"
-msgstr "Luo etusivu"
+msgstr ""
 
 #: templates/wiki/delete.html:5 templates/wiki/delete.html.py:52
 #: templates/wiki/edit.html:50
 msgid "Delete article"
-msgstr "Poista artikkeli"
+msgstr ""
 
 #: templates/wiki/delete.html:11
 msgid "You cannot delete a root article."
-msgstr "Et voi poistaa etusivun artikkelia"
+msgstr ""
 
 #: templates/wiki/delete.html:17
 msgid ""
 "You cannot delete this article because you do not have permission to delete "
 "articles with children. Try to remove the children manually one-by-one."
-msgstr "Et voi poistaa tätä artikkelia, koska sinulla ei ole oikeutta poistaa artikkelia ala-artikkelien kanssa. Yritä poistaa ala-artikkelit yksitellen."
+msgstr ""
 
 #: templates/wiki/delete.html:23
 msgid ""
 "You are deleting an article. This means that its children will be deleted as"
 " well. If you choose to purge, children will also be purged!"
-msgstr "Olet poistamassa artikkelia. Tämä tarkoittaa että myös sen ala-artikkelit poistetaan. Jos tuhoat artikkelin lopullisesti, myös ala-artikkelit tuhotaan lopullisesti!"
+msgstr ""
 
 #: templates/wiki/delete.html:25
 msgid "Articles that will be deleted"
-msgstr "Artikkelit jotka poistetaan"
+msgstr ""
 
 #: templates/wiki/delete.html:31
 msgid "...and more!"
-msgstr "...ja lisää!"
+msgstr ""
 
 #: templates/wiki/delete.html:39
 msgid "You are deleting an article. Please confirm."
-msgstr "Olet poistamassa artikkelia. Vahvista poistaminen."
+msgstr ""
 
 #: templates/wiki/deleted.html:5 templates/wiki/deleted.html.py:14
 msgid "Article deleted"
-msgstr "Artikkeli poistettu"
+msgstr ""
 
 #: templates/wiki/deleted.html:17
 msgid "The article you were looking for has been deleted."
-msgstr "Etsimäsi artikkeli on poistettu"
+msgstr ""
 
 #: templates/wiki/deleted.html:26
 msgid "You may restore this article and its children by clicking restore."
-msgstr "Voit palauttaa artikkelin ja sen ala-artikkelit painamalla palautusnappia."
+msgstr ""
 
 #: templates/wiki/deleted.html:41
 msgid ""
 "You may remove this article and any children permanently and free their "
 "slugs by clicking the below button. This action cannot be undone."
-msgstr "Voit tuhota artikkelin ja sen ala-artikkelit lopullisesti ja vapauttaa niiden osoitteet painamalla alla olevaa nappia. Tätä toimintoa ei voi peruuttaa."
+msgstr ""
 
 #: templates/wiki/deleted_list.html:4
 msgid "Admin Panel"
@@ -1444,27 +1443,27 @@ msgstr ""
 
 #: templates/wiki/dir.html:5
 msgid "Listing articles in"
-msgstr "Lista artikkeleista sivulla"
+msgstr ""
 
 #: templates/wiki/dir.html:17
 msgid "Up one level"
-msgstr "Ylöspäin"
+msgstr ""
 
 #: templates/wiki/dir.html:22
 msgid "Add article"
-msgstr "Lisää artikkeli"
+msgstr ""
 
 #: templates/wiki/dir.html:30
 msgid "clear"
-msgstr "tyhjennä"
+msgstr ""
 
 #: templates/wiki/dir.html:40
 msgid "article,articles"
-msgstr "artikkeli,artikkelia"
+msgstr ""
 
 #: templates/wiki/dir.html:40
 msgid "is,are"
-msgstr "löytyy,löytyy"
+msgstr ""
 
 #: templates/wiki/dir.html:40
 #, python-format
@@ -1472,61 +1471,61 @@ msgid ""
 "\n"
 "      Browsing <strong><a href=\"%(self_url)s\">/%(path)s</a></strong>. There %(articles_plur_verb)s <strong>%(cnt)s %(articles_plur)s</strong> in this level.\n"
 "    "
-msgstr "\n      Selataan <strong><a href=\"%(self_url)s\">/%(path)s</a></strong>. Tältä tasolta %(articles_plur_verb)s <strong>%(cnt)s %(articles_plur)s</strong>.\n    "
+msgstr ""
 
 #: templates/wiki/dir.html:50 templates/wiki/search.html.py:31
 msgid "Last modified"
-msgstr "Viimeksi muokattu"
+msgstr ""
 
 #: templates/wiki/dir.html:74 templates/wiki/search.html.py:40
 msgid "There are no articles in this level"
-msgstr "Tällä tasolla ei ole artikkeleita"
+msgstr ""
 
 #: templates/wiki/edit.html:5 templates/wiki/includes/article_menu.html:34
 msgid "Edit"
-msgstr "Muokkaa"
+msgstr ""
 
 #: templates/wiki/edit.html:11
 msgid ""
 "<strong>Warning:</strong> You are not logged in. Your IP address will be "
 "logged."
-msgstr "<strong>Varoitus:</strong> Et ole kirjautunut sisään. IP-osoiteesi kirjataan ylös."
+msgstr ""
 
 #: templates/wiki/edit.html:12
 msgid "Click here to log in"
-msgstr "Kirjaudu sisään"
+msgstr ""
 
 #: templates/wiki/edit.html:41
 msgid "Preview"
-msgstr "Esikatsele"
+msgstr ""
 
 #: templates/wiki/edit.html:68
 msgid "Back to editor"
-msgstr "Takaisin muokkaustilaan"
+msgstr ""
 
 #: templates/wiki/error.html:5 templates/wiki/error.html.py:26
 msgid "Error"
-msgstr "Virhe"
+msgstr ""
 
 #: templates/wiki/error.html:15
 msgid "Not found"
-msgstr "Ei löydy"
+msgstr ""
 
 #: templates/wiki/error.html:18
 msgid "This article was not found, and neither was its parent article."
-msgstr "Tätä artikkelia ei löydy eikä sen yläartikkelia."
+msgstr ""
 
 #: templates/wiki/error.html:20
 msgid "Start page"
-msgstr "Aloitussivu"
+msgstr ""
 
 #: templates/wiki/error.html:30
 msgid "There was some sort of error accessing this page. Sorry!"
-msgstr "Sivulle pyrkiessä tapahtui virhe. Pahoittelut!"
+msgstr ""
 
 #: templates/wiki/error.html:38
 msgid "Back to"
-msgstr "Takaisin sivulle"
+msgstr ""
 
 #: templates/wiki/history.html:49
 msgid ""
@@ -1534,57 +1533,57 @@ msgid ""
 "to see how the article looked at this stage. At the bottom of this page, you"
 " can change to a particular revision or merge an old revision with the "
 "current one."
-msgstr "Version valitsemalla voit katsoa muokattuja rivejä. Esikatselulla voit katsoa, miltä artikkeli näytti tässä vaiheessa. Sivun alaosassa voit vaihtaa tiettyyn versioon tai yhdistää vanhan version nykyiseen."
+msgstr ""
 
 #: templates/wiki/history.html:72
 msgid "no log message"
-msgstr "ei viestiä"
+msgstr ""
 
 #: templates/wiki/history.html:84 templates/wiki/history.html.py:89
 msgid "Preview this revision"
-msgstr "Esikatsele tätä versiota"
+msgstr ""
 
 #: templates/wiki/history.html:103
 msgid "Auto log:"
-msgstr "Automaattinen viesti"
+msgstr ""
 
 #: templates/wiki/history.html:111
 msgid "Change"
-msgstr "Muutos"
+msgstr ""
 
 #: templates/wiki/history.html:129
 msgid "Merge selected with current..."
-msgstr "Yhdistä valittu nykyisen kanssa..."
+msgstr ""
 
 #: templates/wiki/history.html:133
 msgid "Switch to selected version"
-msgstr "Vaihda valittuun versioon"
+msgstr ""
 
 #: templates/wiki/history.html:152 templates/wiki/history.html.py:183
 msgid "Back to history view"
-msgstr "Takaisin historianäkymään"
+msgstr ""
 
 #: templates/wiki/history.html:157 templates/wiki/history.html.py:162
 msgid "Switch to this version"
-msgstr "Vaihda tähän versioon"
+msgstr ""
 
 #: templates/wiki/history.html:174
 msgid "Merge with current"
-msgstr "Yhdistä nykyisen kanssa"
+msgstr ""
 
 #: templates/wiki/history.html:175
 msgid ""
 "When you merge a revision with the current, all data will be retained from "
 "both versions and merged at its approximate location from each revision."
-msgstr "Kun yhdistät version nykyisen kanssa, molempien sisällöt yhdistetään niiden arvioiduille paikoille."
+msgstr ""
 
 #: templates/wiki/history.html:175
 msgid "After this, it's important to do a manual review."
-msgstr "Tämän jälkeen on tärkeää tarkistaa automaattisen yhdistämisen tulos huolellisesti."
+msgstr ""
 
 #: templates/wiki/history.html:188 templates/wiki/history.html.py:193
 msgid "Create new merged version"
-msgstr "Luo uusi yhdistetty versio"
+msgstr ""
 
 #: templates/wiki/includes/anonymous_blocked.html:7
 #, python-format
@@ -1592,166 +1591,166 @@ msgid ""
 "\n"
 "  You need to <a href=\"%(login_url)s\">log in</a> or <a href=\"%(signup_url)s\">sign up</a> to use this function.\n"
 "  "
-msgstr "\n  Sinun täytyy <a href=\"%(login_url)s\">kirjautua sisään</a> tai <a href=\"%(signup_url)s\">rekisteröityä</a> käyttääksesi tätä toimintoa.\n  "
+msgstr ""
 
 #: templates/wiki/includes/anonymous_blocked.html:11
 msgid "You need to log in or sign up to use this function."
-msgstr "Sinun täytyy kirjautua sisään tai rekisteröityä käyttääksesi tätä toimintoa."
+msgstr ""
 
 #: templates/wiki/includes/article_menu.html:26
 msgid "Changes"
-msgstr "Muutoshistoria"
+msgstr ""
 
 #: templates/wiki/includes/article_menu.html:41
 msgid "View Source"
-msgstr "Näytä lähdekoodi"
+msgstr ""
 
 #: templates/wiki/includes/article_menu.html:49
 msgid "View"
-msgstr "Lue"
+msgstr ""
 
 #: templates/wiki/includes/breadcrumbs.html:13
 #: templates/wiki/includes/breadcrumbs.html:39
 msgid "Sub-articles for"
-msgstr "Ala-artikkelit sivulle"
+msgstr ""
 
 #: templates/wiki/includes/breadcrumbs.html:25
 msgid "No sub-articles"
-msgstr "Ei ala-artikkeleita"
+msgstr ""
 
 #: templates/wiki/includes/breadcrumbs.html:28
 msgid "...and more"
-msgstr "...ja lisää"
+msgstr ""
 
 #: templates/wiki/includes/breadcrumbs.html:32
 msgid "Browse articles in this level"
-msgstr "Selaa artikkeleita tällä tasolla"
+msgstr ""
 
 #: templates/wiki/includes/breadcrumbs.html:48
 msgid "New article next to"
-msgstr "Lisää artikkeli samalle tasolle kuin"
+msgstr ""
 
 #: templates/wiki/includes/breadcrumbs.html:53
 msgid "New article below"
-msgstr "Lisää ala-artikkeli artikkelille"
+msgstr ""
 
 #: templates/wiki/includes/revision_info.html:10
 msgid "by"
-msgstr " "
+msgstr ""
 
 #: templates/wiki/includes/revision_info.html:10
 msgid "anonymous (IP logged)"
-msgstr "tuntematon (IP kirjattu)"
+msgstr ""
 
 #: templates/wiki/includes/revision_info.html:18
 msgid "restored"
-msgstr "palautettu"
+msgstr ""
 
 #: templates/wiki/includes/revision_info.html:24
 msgid "unlocked"
-msgstr "avattu"
+msgstr ""
 
 #: templates/wiki/permission_denied.html:8
 msgid "Permission Denied"
-msgstr "Pääsy kielletty"
+msgstr ""
 
 #: templates/wiki/permission_denied.html:11
 msgid "Sorry, you don't have permission to access this page."
-msgstr "Pahoittelut, sinulla ei ole pääsyoikeutta tälle sivulle."
+msgstr ""
 
 #: templates/wiki/permission_denied.html:16
 msgid "This article is locked for editing."
-msgstr "Tämä artikkeli on lukittu muokkaamiselta."
+msgstr ""
 
 #: templates/wiki/permission_denied.html:22
 msgid "Back to article"
-msgstr "Takaisin artikkeliin"
+msgstr ""
 
 #: templates/wiki/preview_inline.html:8
 msgid "Previewing revision"
-msgstr "Version esikatselu"
+msgstr ""
 
 #: templates/wiki/preview_inline.html:15
 msgid "Previewing merge between"
-msgstr "Yhdistämisen esikatselu"
+msgstr ""
 
 #: templates/wiki/preview_inline.html:17
 msgid "and"
-msgstr "ja"
+msgstr ""
 
 #: templates/wiki/preview_inline.html:22 views/article.py:841
 msgid "You cannot merge with a deleted revision"
-msgstr "Et voi yhdistää poistetun version kanssa"
+msgstr ""
 
 #: templates/wiki/preview_inline.html:31
 msgid "This revision has been deleted."
-msgstr "Tämä versio on poistettu."
+msgstr ""
 
 #: templates/wiki/preview_inline.html:32
 msgid "Restoring to this revision will mark the article as deleted."
-msgstr "Tähän versioon palauttaminen merkitsee artikkelin poistetuksi."
+msgstr ""
 
 #: templates/wiki/root_missing.html:12
 msgid ""
 "You have django-wiki installed and it seems to be working. But there are no "
 "articles yet."
-msgstr "Sinulla on django-wiki asennettuna ja se vaikuttaa toimivan. Siellä ei kuitenkaan ole vielä yhtään artikkelia."
+msgstr ""
 
 #: templates/wiki/root_missing.html:17
 msgid ""
 "Not to worry! You simply have to login with a superuser account and create "
 "the first article in the root of the URL hierarchy."
-msgstr "Ei huolta! Sinun täytyy vain kirjautua sisään pääkäyttäjänä ja luoda ensimmäinen artikkeli URL-hierarkian juureen."
+msgstr ""
 
 #: templates/wiki/root_missing.html:21
 msgid "Click here to login"
-msgstr "Kirjaudu sisään"
+msgstr ""
 
 #: templates/wiki/root_missing.html:27
 msgid ""
 "But since you're logged in as a superuser, we should really get started..."
-msgstr "Koska olet kirjautunut pääkäyttäjänä, voimme aloittaa..."
+msgstr ""
 
 #: templates/wiki/root_missing.html:29
 msgid "Yes, I'll go and create the first article"
-msgstr "Kyllä, luon ensimmäisen artikkelin"
+msgstr ""
 
 #: templates/wiki/root_missing.html:30
 msgid "No thanks, I'd rather read the documentation"
-msgstr "Ei kiitos, luen mieluummin dokumentaation"
+msgstr ""
 
 #: templates/wiki/search.html:5 templates/wiki/search.html.py:9
 msgid "Search results for:"
-msgstr "Tulokset haulle:"
+msgstr ""
 
 #: templates/wiki/search.html:23
 #, python-format
 msgid "Your search returned <strong>%(cnt)s</strong> results."
-msgstr "Hakusi tuotti <strong>%(cnt)s</strong> tulosta."
+msgstr ""
 
 #: templates/wiki/source.html:5
 msgid "Source of"
-msgstr "Lähdekoodi artikkelille"
+msgstr ""
 
 #: templates/wiki/source.html:10
 msgid "This article is currently locked for editing."
-msgstr "Tämä artikkeli on lukittu muokkaamiselta."
+msgstr ""
 
 #: views/accounts.py:49
 msgid "Account signup is only allowed for administrators."
-msgstr "Rekisteröinti on sallittu vain ylläpitäjille."
+msgstr ""
 
 #: views/accounts.py:63
 msgid "You are now signed up... and now you can sign in!"
-msgstr "Olet rekisteröitynyt... ja voit nyt kirjautua sisään!"
+msgstr ""
 
 #: views/accounts.py:76
 msgid "You are no longer logged in. Bye bye!"
-msgstr "Et ole enää kirjautuneena sisään. Hei hei!"
+msgstr ""
 
 #: views/accounts.py:109
 msgid "You are now logged in! Have fun!"
-msgstr "Olet nyt kirjautunut sisään! Pidä hauskaa!"
+msgstr ""
 
 #: views/accounts.py:133
 msgid "Account info saved!"
@@ -1760,41 +1759,41 @@ msgstr ""
 #: views/article.py:111
 #, python-format
 msgid "New article '%s' created."
-msgstr "Uusi artikkeli '%s' luotu."
+msgstr ""
 
 #: views/article.py:119
 #, python-format
 msgid "There was an error creating this article: %s"
-msgstr "Tämän artikkelin luomisessa tapahtui virhe: %s"
+msgstr ""
 
 #: views/article.py:124
 msgid "There was an error creating this article."
-msgstr "Tämän artikkelin luomisessa tapahtui virhe."
+msgstr ""
 
 #: views/article.py:215
 msgid ""
 "This article cannot be deleted because it has children or is a root article."
-msgstr "Tätä artikkelia ei voi poistaa koska sillä on ala-artikkeleita tai se on etusivu."
+msgstr ""
 
 #: views/article.py:225
 msgid ""
 "This article together with all its contents are now completely gone! Thanks!"
-msgstr "Tämä artikkeli ja kaikki sen sisältö on lopullisesti poistettu! Kiitos!"
+msgstr ""
 
 #: views/article.py:234
 #, python-format
 msgid ""
 "The article \"%s\" is now marked as deleted! Thanks for keeping the site "
 "free from unwanted material!"
-msgstr "Artikkeli \"%s\" on nyt merkitty poistetuksi! Kiitos kun pidät sivuston siistinä!"
+msgstr ""
 
 #: views/article.py:351
 msgid "Your changes were saved."
-msgstr "Muutoksesi tallennettiin."
+msgstr ""
 
 #: views/article.py:365
 msgid "Please note that your article text has not yet been saved!"
-msgstr "Huomaa, että artikkelia ei ole vielä tallennettu!"
+msgstr ""
 
 #: views/article.py:396
 msgid "A new revision of the article was successfully added."
@@ -1802,31 +1801,31 @@ msgstr ""
 
 #: views/article.py:455
 msgid "Restoring article"
-msgstr "Palautetaan artikkeli"
+msgstr ""
 
 #: views/article.py:459
 #, python-format
 msgid "The article \"%s\" and its children are now restored."
-msgstr "Artikkeli \"%s\" ja sen ala-artikkelit on onnistuneesti palautettu."
+msgstr ""
 
 #: views/article.py:732
 #, python-format
 msgid ""
 "The article %(title)s is now set to display revision #%(revision_number)d"
-msgstr "Artikkeli %(title)s on asetettu näyttämään versiota #%(revision_number)d"
+msgstr ""
 
 #: views/article.py:808
 msgid "New title"
-msgstr "Uusi otsikko"
+msgstr ""
 
 #: views/article.py:852
 #, python-format
 msgid "Merge between revision #%(r1)d and revision #%(r2)d"
-msgstr "Yhdistä versiot #%(r1)d ja #%(r2)d"
+msgstr ""
 
 #: views/article.py:863
 #, python-format
 msgid ""
 "A new revision was created: Merge between revision #%(r1)d and revision "
 "#%(r2)d"
-msgstr "Uusi versio luotiin: Yhdistä versiot #%(r1)d ja #%(r2)d"
+msgstr ""

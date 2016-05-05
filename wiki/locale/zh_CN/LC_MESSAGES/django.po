@@ -1,13 +1,14 @@
 # 
 # Translators:
-# ouyanghongyu <ouyanghongyu@gmail.com>, 2015
+# Ronald White <ouyanghongyu@gmail.com>, 2015
+# Ronald White <ouyanghongyu@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: django-wiki\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-15 19:20+0200\n"
-"PO-Revision-Date: 2015-04-26 10:37+0000\n"
-"Last-Translator: ouyanghongyu <ouyanghongyu@gmail.com>\n"
+"POT-Creation-Date: 2016-05-05 22:53+0200\n"
+"PO-Revision-Date: 2016-05-05 20:55+0000\n"
+"Last-Translator: Benjamin Bach <benjaoming@gmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/django-wiki/django-wiki/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -15,9 +16,9 @@ msgstr ""
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: admin.py:86 models/article.py:42
+#: admin.py:92 models/article.py:46
 msgid "created"
-msgstr "创建"
+msgstr "创建时间"
 
 #: apps.py:9
 msgid "Wiki notifications"
@@ -31,334 +32,342 @@ msgstr "Wiki图片"
 msgid "Wiki attachments"
 msgstr "Wiki附件"
 
-#: conf/settings.py:32
+#: conf/settings.py:34
 msgid "Table of Contents"
 msgstr "内容列表"
 
-#: core/plugins/base.py:64
+#: core/plugins/base.py:65
 msgid "Settings for plugin"
 msgstr "插件设置"
 
-#: forms.py:62
+#: forms.py:75
 msgid ""
 "Spam protection failed to find both a logged in user and an IP address."
-msgstr "捣乱者拦截器找不到一个登录的用户或IP地址."
+msgstr "垃圾信息拦截器找不到一个登录的用户或IP地址."
 
-#: forms.py:77
+#: forms.py:90
 #, python-format
 msgid ""
 "Spam protection: You are only allowed to create or edit %(revisions)d "
 "article(s) per %(interval_name)s."
 msgstr "捣乱者拦截器: 对于每个 %(interval_name)s 你仅可以创建或编辑 %(revisions)d 文章."
 
-#: forms.py:96
+#: forms.py:108
 msgid "minute"
 msgstr "分钟"
 
-#: forms.py:97
+#: forms.py:109
 #, python-format
 msgid "%d minutes"
 msgstr "%d 分钟"
 
-#: forms.py:106
+#: forms.py:118
 msgid "hour"
 msgstr "小时"
 
-#: forms.py:112 forms.py:124 forms.py:300 templates/wiki/dir.html:48
+#: forms.py:124 forms.py:136 forms.py:323 templates/wiki/dir.html.py:48
 #: templates/wiki/search.html:30
 msgid "Title"
 msgstr "标题"
 
-#: forms.py:114
+#: forms.py:126
 msgid "Initial title of the article. May be overridden with revision titles."
 msgstr "文章最初的标题. 可以修改并覆盖标题."
 
-#: forms.py:116
+#: forms.py:128
 msgid "Type in some contents"
 msgstr "输入一些内容"
 
-#: forms.py:118
+#: forms.py:130
 msgid ""
 "This is just the initial contents of your article. After creating it, you "
 "can use more complex features like adding plugins, meta data, related "
 "articles etc..."
 msgstr "这只是文章的初始内容.在创建后你可以使用更丰富的功能, 如添加插件, 元数据, 相关文章等等."
 
-#: forms.py:126 forms.py:307
+#: forms.py:138 forms.py:330
 msgid "Contents"
 msgstr "内容"
 
-#: forms.py:131 forms.py:312
+#: forms.py:143 forms.py:335
 msgid "Summary"
 msgstr "摘要"
 
-#: forms.py:133
+#: forms.py:145
 msgid ""
 "Give a short reason for your edit, which will be stated in the revision log."
 msgstr "请给出一个简短的编辑缘由, 会在版本日志中注明."
 
-#: forms.py:192
+#: forms.py:201
+msgid "Article is missing title or has an invalid title"
+msgstr "文章缺少标题或标题无效"
+
+#: forms.py:215
 msgid ""
 "While you were editing, someone else changed the revision. Your contents "
 "have been automatically merged with the new contents. Please review the text"
 " below."
 msgstr "在你编辑的同时, 其他人变更了此文章. 你的内容会自动合并为新的内容.请再次审查此文, 以便确认改动正确."
 
-#: forms.py:196
+#: forms.py:219
 msgid "No changes made. Nothing to save."
 msgstr "没有任何变动, 没有需要保存的内容."
 
-#: forms.py:237
+#: forms.py:260
 msgid "Select an option"
 msgstr "选择一个选项"
 
-#: forms.py:302 templates/wiki/dir.html:49
+#: forms.py:325 templates/wiki/dir.html.py:49
 msgid "Slug"
 msgstr "标识"
 
-#: forms.py:304
+#: forms.py:327
 msgid ""
 "This will be the address where your article can be found. Use only "
 "alphanumeric characters and - or _. Note that you cannot change the slug "
 "after creating the article."
-msgstr "它会表现在URL地址上. 仅可使用字母数字以及短横线和下划线.在创建文章后, 标识便不能更改."
+msgstr "通过这个地址可以找到您的文章。 仅可使用字母数字以及短横线和下划线。注意在创建文章后标识便不能更改。"
 
-#: forms.py:313
+#: forms.py:336
 msgid "Write a brief message for the article's history log."
 msgstr "为文章的历史记录写一条简短的信息."
 
-#: forms.py:320
+#: forms.py:343
 msgid "A slug may not begin with an underscore."
 msgstr "标识不能以下划线开头."
 
-#: forms.py:323
+#: forms.py:346
 msgid "'admin' is not a permitted slug name."
 msgstr "'admin' 不是一个合法的标识"
 
-#: forms.py:339
+#: forms.py:361
 #, python-format
 msgid "A deleted article with slug \"%s\" already exists."
 msgstr "一个被删除的 \"%s\" 标识的文章已经存在了."
 
-#: forms.py:343
+#: forms.py:365
 #, python-format
 msgid "A slug named \"%s\" already exists."
 msgstr "标识名 \"%s\" 已经存在了."
 
-#: forms.py:352
+#: forms.py:374
 msgid "This slug conflicts with an existing URL."
 msgstr "此标识与已有的URL冲突。"
 
-#: forms.py:371
+#: forms.py:393
 msgid "Yes, I am sure"
 msgstr "是的, 我确定"
 
-#: forms.py:374 templates/wiki/deleted.html:47
+#: forms.py:396 templates/wiki/deleted.html.py:47
 msgid "Purge"
 msgstr "清除"
 
-#: forms.py:376
+#: forms.py:398
 msgid ""
 "Purge the article: Completely remove it (and all its contents) with no undo."
 " Purging is a good idea if you want to free the slug such that users can "
 "create new articles in its place."
 msgstr "清除此文章: 没有撤销方法, 将删除它和相关的内容.清除使被此文章占用的标识可以再次被使用."
 
-#: forms.py:383 plugins/attachments/forms.py:168 plugins/images/forms.py:70
+#: forms.py:405 plugins/attachments/forms.py:167 plugins/images/forms.py:69
 msgid "You are not sure enough!"
 msgstr "你还不确定!"
 
-#: forms.py:387
+#: forms.py:409
 msgid "While you tried to delete this article, it was modified. TAKE CARE!"
 msgstr "当你尝试删除此文章时, 它已经被修改. 请小心!"
 
-#: forms.py:394
+#: forms.py:416
 msgid "Lock article"
 msgstr "锁定文章"
 
-#: forms.py:395
+#: forms.py:417
 msgid "Deny all users access to edit this article."
 msgstr "禁止所有用户编辑此文章."
 
-#: forms.py:398
+#: forms.py:420
 msgid "Permissions"
 msgstr "权限"
 
-#: forms.py:404
+#: forms.py:426
 msgid "Owner"
 msgstr "所有者"
 
-#: forms.py:405
+#: forms.py:427
 msgid "Enter the username of the owner."
 msgstr "输入所有者的用户名."
 
-#: forms.py:408 forms.py:467 plugins/notifications/util.py:14
+#: forms.py:430 forms.py:489 plugins/notifications/util.py:14
 msgid "(none)"
 msgstr "(无)"
 
-#: forms.py:409
+#: forms.py:431
 msgid "Group"
 msgstr "组"
 
-#: forms.py:415
+#: forms.py:437
 msgid "Inherit permissions"
 msgstr "继承权限"
 
-#: forms.py:417
+#: forms.py:439
 msgid ""
 "Check here to apply the above permissions (excluding group and owner of the "
 "article) recursively to articles below this one."
 msgstr "点击这里申请上述权限(不包括组和文章的所有者), 会递归的应用到下面这篇文章."
 
-#: forms.py:421
+#: forms.py:443
 msgid "Inherit owner"
 msgstr "继承所有者"
 
-#: forms.py:423
+#: forms.py:445
 msgid ""
 "Check here to apply the ownership setting recursively to articles below this"
 " one."
 msgstr "点击这里申请所有权限, 会递归的应用到下面这篇文章."
 
-#: forms.py:427
+#: forms.py:449
 msgid "Inherit group"
 msgstr "继承组"
 
-#: forms.py:429
+#: forms.py:451
 msgid ""
 "Check here to apply the group setting recursively to articles below this "
 "one."
-msgstr "点击这里应用组的设置, 会递归的应用到下面这篇文章."
+msgstr "选择此项把组的设置递归的应用到次级的文章。"
 
-#: forms.py:434
+#: forms.py:456
 msgid "Permission settings for the article were updated."
 msgstr "对于文章的权限设置已经进行了更新."
 
-#: forms.py:437
+#: forms.py:459
 msgid "Your permission settings were unchanged, so nothing saved."
 msgstr "你的权限设置没有改变, 没有需要保存的内容."
 
-#: forms.py:497
+#: forms.py:519
 msgid "No user with that username"
 msgstr "没有具有此用户名的用户"
 
-#: forms.py:532
+#: forms.py:554
 msgid "Article locked for editing"
 msgstr "文章编辑被锁定"
 
-#: forms.py:539
+#: forms.py:561
 msgid "Article unlocked for editing"
 msgstr "文章编辑已解锁"
 
-#: forms.py:566
+#: forms.py:588
 msgid "Filter..."
 msgstr "过滤..."
 
-#: forms.py:576 templates/wiki/base_site.html:44
+#: forms.py:598 templates/wiki/base_site.html.py:44
 msgid "Search..."
 msgstr "搜索..."
 
-#: models/article.py:35 models/pluginbase.py:201
-#: plugins/attachments/models.py:35
+#: forms.py:645
+msgid "Passwords don't match"
+msgstr ""
+
+#: models/article.py:39 models/pluginbase.py:177
+#: plugins/attachments/models.py:33
 msgid "current revision"
 msgstr "当前版本"
 
-#: models/article.py:38
+#: models/article.py:42
 msgid ""
 "The revision being displayed for this article. If you need to do a roll-"
 "back, simply change the value of this field."
 msgstr "显示这篇文章的修改. 如果需要回滚, 改变这个字段的值即可."
 
-#: models/article.py:46
+#: models/article.py:50
 msgid "modified"
-msgstr "修改"
+msgstr "修改时间"
 
-#: models/article.py:47
+#: models/article.py:51
 msgid "Article properties last modified"
 msgstr "文章属性的最后一次修改"
 
-#: models/article.py:50
+#: models/article.py:54
 msgid "owner"
 msgstr "所有者"
 
-#: models/article.py:53
+#: models/article.py:57
 msgid ""
 "The owner of the article, usually the creator. The owner always has both "
 "read and write access."
 msgstr "文章的所有者, 通常是创建者. 所有者总是有读取和写入权限."
 
-#: models/article.py:57
+#: models/article.py:61
 msgid "group"
 msgstr "组"
 
-#: models/article.py:60
+#: models/article.py:64
 msgid ""
 "Like in a UNIX file system, permissions can be given to a user according to "
 "group membership. Groups are handled through the Django auth system."
 msgstr "就像一个UNIX文件系统一样, 权限可以根据组成员给予用户. 通过Django的权限系统来管理组."
 
-#: models/article.py:65
+#: models/article.py:69
 msgid "group read access"
 msgstr "允许组读取"
 
-#: models/article.py:68
+#: models/article.py:72
 msgid "group write access"
 msgstr "允许组写入"
 
-#: models/article.py:71
+#: models/article.py:75
 msgid "others read access"
 msgstr "允许其他人读取"
 
-#: models/article.py:74
+#: models/article.py:78
 msgid "others write access"
 msgstr "允许其他人写入"
 
-#: models/article.py:187
+#: models/article.py:191
 #, python-format
 msgid "Article without content (%(id)d)"
 msgstr "文章 (%(id)d) 没有内容"
 
-#: models/article.py:193
+#: models/article.py:197
 msgid "Can edit all articles and lock/unlock/restore"
 msgstr "可以编辑所有文章和锁定/解锁/恢复文章"
 
-#: models/article.py:194
+#: models/article.py:198
 msgid "Can change ownership of any article"
 msgstr "可以改变任何文章的所有者"
 
-#: models/article.py:195
+#: models/article.py:199
 msgid "Can assign permissions to other users"
 msgstr "可以授予权限给其他用户"
 
-#: models/article.py:241
+#: models/article.py:245
 msgid "content type"
 msgstr "内容类型"
 
-#: models/article.py:243
+#: models/article.py:247
 msgid "object ID"
 msgstr "对象ID"
 
-#: models/article.py:253
+#: models/article.py:257
 msgid "Article for object"
 msgstr "文章对象"
 
-#: models/article.py:254
+#: models/article.py:258
 msgid "Articles for object"
 msgstr "文章对象"
 
-#: models/article.py:266
+#: models/article.py:270
 msgid "revision number"
 msgstr "修订编号"
 
-#: models/article.py:272
+#: models/article.py:276
 msgid "IP address"
 msgstr "IP地址"
 
-#: models/article.py:276
+#: models/article.py:280
 msgid "user"
 msgstr "用户"
 
-#: models/article.py:291
+#: models/article.py:295
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:23
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:21
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:44
@@ -366,24 +375,24 @@ msgstr "用户"
 msgid "deleted"
 msgstr "已删除"
 
-#: models/article.py:295 templates/wiki/article.html:23
+#: models/article.py:299 templates/wiki/article.html.py:23
 #: templates/wiki/includes/revision_info.html:21
 msgid "locked"
 msgstr "已锁定"
 
-#: models/article.py:318 models/pluginbase.py:41
+#: models/article.py:322 models/pluginbase.py:41
 msgid "article"
 msgstr "文章"
 
-#: models/article.py:321
+#: models/article.py:325
 msgid "article contents"
 msgstr "文章内容"
 
-#: models/article.py:326
+#: models/article.py:330
 msgid "article title"
 msgstr "文章标题"
 
-#: models/article.py:329
+#: models/article.py:333
 msgid ""
 "Each revision contains a title field that must be filled out, even if the "
 "title has not changed"
@@ -397,50 +406,60 @@ msgstr "原文"
 msgid "Permissions are inherited from this article"
 msgstr "从此文章继承了权限"
 
-#: models/pluginbase.py:168
+#: models/pluginbase.py:157
 msgid "A plugin was changed"
 msgstr "一个插件被修改"
 
-#: models/pluginbase.py:206
+#: models/pluginbase.py:182
 msgid ""
 "The revision being displayed for this plugin. If you need to do a roll-back,"
 " simply change the value of this field."
 msgstr "显示此插件的版本, 如果需要回滚, 改变这个字段的值即可."
 
-#: models/urlpath.py:69
-msgid "Cache lookup value for articles"
-msgstr "为文章缓存索引值"
+#: models/urlpath.py:71
+msgid "Lookup value"
+msgstr "文章"
 
-#: models/urlpath.py:74
+#: models/urlpath.py:73
+msgid ""
+"This field is automatically updated, but you need to populate it when "
+"creating a new URL path."
+msgstr "此字段会自动更新，但你需要在创建一个新的URL路径时填充它。"
+
+#: models/urlpath.py:80
 msgid "slug"
 msgstr "标识"
 
-#: models/urlpath.py:185
+#: models/urlpath.py:88
+msgid "Position of URL path in the tree."
+msgstr "URL路径的位置。"
+
+#: models/urlpath.py:193
 msgid "(root)"
 msgstr "(root)"
 
-#: models/urlpath.py:196
+#: models/urlpath.py:201
 msgid "URL path"
 msgstr "URL 路径"
 
-#: models/urlpath.py:197
+#: models/urlpath.py:202
 msgid "URL paths"
 msgstr "URL 路径"
 
-#: models/urlpath.py:204
+#: models/urlpath.py:209
 msgid "Sorry but you cannot have a root article with a slug."
 msgstr "抱歉, 你不能让根文章有一个标记"
 
-#: models/urlpath.py:207
+#: models/urlpath.py:212
 msgid "A non-root note must always have a slug."
 msgstr "一个非根文章必须要有一个标识."
 
-#: models/urlpath.py:213
+#: models/urlpath.py:218
 #, python-format
 msgid "There is already a root node on %s"
 msgstr "已经有了一个根文章在 %s"
 
-#: models/urlpath.py:358
+#: models/urlpath.py:364
 msgid ""
 "Articles who lost their parents\n"
 "===============================\n"
@@ -448,89 +467,91 @@ msgid ""
 "The children of this article have had their parents deleted. You should probably find a new home for them."
 msgstr "文章们丢失了他们的父文章\n===============================\n\n此文章的孩子们的父母被删除了. 你需要为它们找一个新家."
 
-#: models/urlpath.py:361
+#: models/urlpath.py:367
 msgid "Lost and found"
 msgstr "失物认领"
 
-#: plugins/attachments/forms.py:20
+#: plugins/attachments/forms.py:19
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:14
 msgid "Description"
 msgstr "描述"
 
-#: plugins/attachments/forms.py:21
+#: plugins/attachments/forms.py:20
 msgid "A short summary of what the file contains"
 msgstr "简要描述此文件内容"
 
-#: plugins/attachments/forms.py:70
+#: plugins/attachments/forms.py:69
 msgid "Remove previous"
 msgstr "删除前面的"
 
-#: plugins/attachments/forms.py:71
+#: plugins/attachments/forms.py:70
 msgid "Remove previous attachment revisions and their files (to save space)?"
 msgstr "删除以前的附件的修订和他们的文件(以节省空间)?"
 
-#: plugins/attachments/forms.py:80
+#: plugins/attachments/forms.py:79
 msgid "File or zip archive"
 msgstr "文件或zip压缩包"
 
-#: plugins/attachments/forms.py:85
+#: plugins/attachments/forms.py:84
 msgid "Unzip file"
 msgstr "解压文件"
 
-#: plugins/attachments/forms.py:87
+#: plugins/attachments/forms.py:86
 msgid ""
 "Create individual attachments for files in a .zip file - directories do not "
 "work."
 msgstr "为文件创建一个.zip压缩包 -- 目录是不行的."
 
-#: plugins/attachments/forms.py:109
+#: plugins/attachments/forms.py:108
 msgid "Not a zip file"
 msgstr "不是一个zip文件"
 
-#: plugins/attachments/forms.py:117
+#: plugins/attachments/forms.py:116
 msgid "User not allowed to moderate this article"
 msgstr "用户不得变更这篇文章"
 
-#: plugins/attachments/forms.py:163
+#: plugins/attachments/forms.py:162
 msgid "Yes I am sure..."
 msgstr "是的, 我确定..."
 
-#: plugins/attachments/models.py:38
+#: plugins/attachments/models.py:36
 msgid ""
 "The revision of this attachment currently in use (on all articles using the "
 "attachment)"
 msgstr "使用此附件的所有版本(使用附件的所有文章)"
 
-#: plugins/attachments/models.py:42
+#: plugins/attachments/models.py:40
 msgid "original filename"
 msgstr "原来的文件名"
 
-#: plugins/attachments/models.py:55
+#: plugins/attachments/models.py:53
 msgid "attachment"
 msgstr "附件"
 
-#: plugins/attachments/models.py:56
+#: plugins/attachments/models.py:54
 msgid "attachments"
 msgstr "附件"
 
-#: plugins/attachments/models.py:73
+#: plugins/attachments/models.py:75
 msgid "No file extension found in filename. That's not okay!"
 msgstr "没有在文件名中找到扩展名。文件名后缀有问题！"
 
-#: plugins/attachments/models.py:78
-#, python-format
-msgid "The following filename is illegal: %s. Extension has to be one of %s"
-msgstr "下面的文件名是非法的： %s 。扩展名必须是 %s"
+#: plugins/attachments/models.py:81
+#, python-brace-format
+msgid ""
+"The following filename is illegal: {filename:s}. Extension has to be one of "
+"{extensions:s}"
+msgstr "文件名是非法的：{filename:s} 。扩展名必须是 {extensions:s}"
 
-#: plugins/attachments/models.py:124
+#: plugins/attachments/models.py:131
 msgid "file"
 msgstr "文件"
 
-#: plugins/attachments/models.py:130
+#: plugins/attachments/models.py:137
 msgid "attachment revision"
 msgstr "附件版本"
 
-#: plugins/attachments/models.py:131
+#: plugins/attachments/models.py:138
 msgid "attachment revisions"
 msgstr "附件版本"
 
@@ -546,7 +567,7 @@ msgid ""
 "\n"
 "    The file may be referenced on other articles. Deleting it means that they will loose their references to this file. The following articles reference this file:\n"
 "    "
-msgstr "\n    该文件可能被其他文章引用. 删除它意味着它们将失去它们引用的这个文件. 以下文章引用了这个文件:\n    "
+msgstr "\n    该文件可能被其他文章引用。删除它意味着它们将失去对这个文件的引用。以下文章引用了这个文件：\n    "
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:29
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:53
@@ -555,8 +576,8 @@ msgstr "\n    该文件可能被其他文章引用. 删除它意味着它们将�
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:75
 #: plugins/images/templates/wiki/plugins/images/purge.html:23
 #: plugins/images/templates/wiki/plugins/images/revision_add.html:23
-#: templates/wiki/create.html:53 templates/wiki/delete.html:12
-#: templates/wiki/delete.html.py:48
+#: templates/wiki/create.html:53 templates/wiki/delete.html.py:12
+#: templates/wiki/delete.html:48
 msgid "Go back"
 msgstr "返回"
 
@@ -613,7 +634,7 @@ msgstr "动作"
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:28
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:37
 msgid "<em>No description</em>"
-msgstr "<em>没有订阅</em>"
+msgstr "<em>没有描述</em>"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:36
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:55
@@ -625,7 +646,7 @@ msgid "Use this!"
 msgstr "用这个!"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:5
-#: plugins/attachments/wiki_plugin.py:24
+#: plugins/attachments/wiki_plugin.py:21
 msgid "Attachments"
 msgstr "附件"
 
@@ -693,6 +714,7 @@ msgstr "恢复附件"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:133
 #: templates/wiki/deleted.html:25 templates/wiki/deleted.html.py:30
+#: templates/wiki/deleted_list.html:24
 msgid "Restore"
 msgstr "恢复"
 
@@ -778,53 +800,53 @@ msgstr "成功添加: %s"
 msgid "%s was successfully added."
 msgstr "%s 添加成功."
 
-#: plugins/attachments/views.py:175
+#: plugins/attachments/views.py:179
 #, python-format
 msgid "%s uploaded and replaces old attachment."
 msgstr "%s 上传并替换了老的附件."
 
-#: plugins/attachments/views.py:181
+#: plugins/attachments/views.py:185
 #, python-format
 msgid "Your file could not be saved: %s"
 msgstr "你的文件为保存: %s"
 
-#: plugins/attachments/views.py:205
+#: plugins/attachments/views.py:215
 msgid ""
 "Your new file will automatically be renamed to match the file already "
 "present. Files with different extensions are not allowed."
 msgstr "你的新文件因为重名已被自动重命名. 相同文件名不同文件扩展名是不允许的."
 
-#: plugins/attachments/views.py:312
+#: plugins/attachments/views.py:324
 #, python-format
 msgid "Current revision changed for %s."
 msgstr "当前版本变更为 %s."
 
-#: plugins/attachments/views.py:348
+#: plugins/attachments/views.py:362
 #, python-format
 msgid "Added a reference to \"%(att)s\" from \"%(art)s\"."
 msgstr "添加关联, 到 \"%(att)s\" 从 \"%(art)s\"."
 
-#: plugins/attachments/views.py:353
+#: plugins/attachments/views.py:367
 #, python-format
 msgid "\"%(att)s\" is already referenced."
 msgstr "\"%(att)s\" 已经被引用。"
 
-#: plugins/attachments/views.py:402
+#: plugins/attachments/views.py:416
 #, python-format
 msgid "The file %s was deleted."
 msgstr "文件 %s 已被删除."
 
-#: plugins/attachments/views.py:408
+#: plugins/attachments/views.py:422
 #, python-format
 msgid "This article is no longer related to the file %s."
 msgstr "这篇文章不再关联文件 %s."
 
-#: plugins/attachments/wiki_plugin.py:32
+#: plugins/attachments/wiki_plugin.py:29
 #, python-format
 msgid "A file was changed: %s"
 msgstr "一个文件被修改了: %s"
 
-#: plugins/attachments/wiki_plugin.py:35
+#: plugins/attachments/wiki_plugin.py:32
 #, python-format
 msgid "A file was deleted: %s"
 msgstr "一个文件被删除了: %s"
@@ -866,26 +888,26 @@ msgstr "列表"
 msgid "Tables"
 msgstr "列表"
 
-#: plugins/help/wiki_plugin.py:14
+#: plugins/help/wiki_plugin.py:12
 msgid "Help"
 msgstr "帮助"
 
-#: plugins/images/forms.py:21
+#: plugins/images/forms.py:20
 #, python-format
 msgid ""
 "New image %s was successfully uploaded. You can use it by selecting it from "
 "the list of available images."
 msgstr "新图片 %s 已经成功上传. 你可以通过从可用图片列表中选择来使用它."
 
-#: plugins/images/forms.py:65
+#: plugins/images/forms.py:64
 msgid "Are you sure?"
 msgstr "你确定么?"
 
-#: plugins/images/models.py:50
+#: plugins/images/models.py:49
 msgid "image"
 msgstr "图片"
 
-#: plugins/images/models.py:51
+#: plugins/images/models.py:50
 msgid "images"
 msgstr "图片"
 
@@ -894,7 +916,7 @@ msgstr "图片"
 msgid "Image: %s"
 msgstr "图片: %s"
 
-#: plugins/images/models.py:58
+#: plugins/images/models.py:59
 msgid "Current revision not set!!"
 msgstr "当前版本未设置!"
 
@@ -912,7 +934,7 @@ msgid "Image Revsion: %d"
 msgstr "图片版本: %d"
 
 #: plugins/images/templates/wiki/plugins/images/index.html:5
-#: plugins/images/wiki_plugin.py:19
+#: plugins/images/wiki_plugin.py:18
 msgid "Images"
 msgstr "图片"
 
@@ -1028,27 +1050,27 @@ msgid ""
 "this, possible values for align are left and right:"
 msgstr "上传图片之后, 它被连接到这个特定的页面, 可以只在这里使用. 其他用户可以更换图片, 但是旧的版本将被保留. 你可能想要显示的图片有个好的标题. 为了达到这个目的, 按Insert键, 填写标题栏，并且可以选择让您的图片浮动在内容的左边或右边. 你可以在标题上使用Markdown. 对于Markdown代码语法在图片上看起来像这样, align可用的值是left和right:"
 
-#: plugins/images/views.py:75
+#: plugins/images/views.py:73
 #, python-format
 msgid "%s has been restored"
 msgstr "%s 已被标记为恢复"
 
-#: plugins/images/views.py:80
+#: plugins/images/views.py:78
 #, python-format
 msgid "%s has been marked as deleted"
 msgstr "%s 已被标记为删除"
 
-#: plugins/images/views.py:144
+#: plugins/images/views.py:146
 #, python-format
 msgid "%(file)s has been changed to revision #%(revision)d"
 msgstr "%(file)s 被替换为为版本 #%(revision)d"
 
-#: plugins/images/views.py:185
+#: plugins/images/views.py:191
 #, python-format
 msgid "%(file)s has been saved."
 msgstr "%(file)s 已被保存."
 
-#: plugins/images/wiki_plugin.py:30
+#: plugins/images/wiki_plugin.py:29
 #, python-format
 msgid "An image was added: %s"
 msgstr "一个图片被添加: %s"
@@ -1069,7 +1091,7 @@ msgid ""
 "or http://example.com or by using the markdown syntax:"
 msgstr "你可以简单地插入一个地址 example.com 或 http://example.com 或使用markdown语法链接到另一个网站:"
 
-#: plugins/links/wiki_plugin.py:25
+#: plugins/links/wiki_plugin.py:23
 msgid "Links"
 msgstr "链接"
 
@@ -1121,71 +1143,71 @@ msgstr "文章索引"
 msgid "Nothing below this level"
 msgstr "此级别一下没有内容"
 
-#: plugins/macros/wiki_plugin.py:19
+#: plugins/macros/wiki_plugin.py:16
 msgid "Macros"
 msgstr "宏"
 
-#: plugins/notifications/forms.py:23
+#: plugins/notifications/forms.py:20
 #, python-format
 msgid "Receive notifications %(interval)s"
 msgstr "收到 %(interval)s 个通知"
 
-#: plugins/notifications/forms.py:33
+#: plugins/notifications/forms.py:30
 #, python-format
 msgid "%(title)s - %(url)s"
 msgstr "%(title)s - %(url)s"
 
-#: plugins/notifications/forms.py:50
+#: plugins/notifications/forms.py:47
 msgid "Remove subscriptions"
 msgstr "删除订阅"
 
-#: plugins/notifications/forms.py:52
+#: plugins/notifications/forms.py:49
 msgid "Select article subscriptions to remove from notifications"
 msgstr "选择订阅的文章, 从通知中移除"
 
-#: plugins/notifications/forms.py:56
+#: plugins/notifications/forms.py:53
 msgid "Email digests"
 msgstr "邮件摘要"
 
-#: plugins/notifications/forms.py:58
+#: plugins/notifications/forms.py:55
 msgid "Unchanged (selected on each article)"
 msgstr "未变更(在每个选中的文章)"
 
-#: plugins/notifications/forms.py:59
+#: plugins/notifications/forms.py:56
 msgid "No emails"
 msgstr "没有email"
 
-#: plugins/notifications/forms.py:60
+#: plugins/notifications/forms.py:57
 msgid "Email on any change"
 msgstr "邮件上的任何变化"
 
-#: plugins/notifications/forms.py:112
+#: plugins/notifications/forms.py:109
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:5
 msgid "Notifications"
 msgstr "通知"
 
-#: plugins/notifications/forms.py:119
+#: plugins/notifications/forms.py:116
 #: templates/wiki/includes/article_menu.html:9 templates/wiki/settings.html:5
 msgid "Settings"
 msgstr "设置"
 
-#: plugins/notifications/forms.py:123
+#: plugins/notifications/forms.py:120
 msgid "When this article is edited"
 msgstr "当此文章被编辑"
 
-#: plugins/notifications/forms.py:126
+#: plugins/notifications/forms.py:123
 msgid "Also receive emails about article edits"
 msgstr "同时接收关于文章被编辑的邮件"
 
-#: plugins/notifications/forms.py:171
+#: plugins/notifications/forms.py:168
 msgid "Your notification settings were updated."
 msgstr "你的通知设置已被更新."
 
-#: plugins/notifications/forms.py:174
+#: plugins/notifications/forms.py:171
 msgid "Your notification settings were unchanged, so nothing saved."
 msgstr "你的通知设置没有变更, 所以没什么要保存的."
 
-#: plugins/notifications/models.py:26
+#: plugins/notifications/models.py:25
 #, python-format
 msgid "%(user)s subscribing to %(article)s (%(type)s)"
 msgstr "%(user)s 订阅了 %(article)s (%(type)s)"
@@ -1243,12 +1265,22 @@ msgstr "你还为订阅任何通知."
 msgid "Save changes"
 msgstr "保存更改"
 
-#: plugins/notifications/views.py:33
+#: plugins/notifications/views.py:32
 #, python-format
 msgid "You will receive notifications %(interval)s for %(articles)d articles"
 msgstr "你将订阅通知 %(interval)s 为 %(articles)d 文章"
 
-#: templates/wiki/accounts/login.html:4 templates/wiki/base_site.html:75
+#: templates/wiki/accounts/account_settings.html:4
+#: templates/wiki/accounts/account_settings.html:7
+#: templates/wiki/base_site.html:72
+msgid "Account Settings"
+msgstr ""
+
+#: templates/wiki/accounts/account_settings.html:11
+msgid "Update"
+msgstr ""
+
+#: templates/wiki/accounts/login.html:4 templates/wiki/base_site.html.py:93
 msgid "Log in"
 msgstr "登录"
 
@@ -1265,7 +1297,7 @@ msgid "Don't have an account?"
 msgstr "还没有账户?"
 
 #: templates/wiki/accounts/login.html:25 templates/wiki/accounts/signup.html:3
-#: templates/wiki/accounts/signup.html:6 templates/wiki/base_site.html:78
+#: templates/wiki/accounts/signup.html:6 templates/wiki/base_site.html:96
 msgid "Sign up"
 msgstr "注册"
 
@@ -1281,15 +1313,19 @@ msgstr "此文章的最后一次编辑时间:"
 msgid "Log out"
 msgstr "登出"
 
-#: templates/wiki/base_site.html:85
+#: templates/wiki/base_site.html:80
+msgid "Deleted articles"
+msgstr ""
+
+#: templates/wiki/base_site.html:103
 msgid "Home"
 msgstr "主页"
 
-#: templates/wiki/base_site.html:86
+#: templates/wiki/base_site.html:104
 msgid "About"
 msgstr "关于"
 
-#: templates/wiki/base_site.html:119
+#: templates/wiki/base_site.html:137
 msgid ""
 "Powered by <a href=\"http://www.django-wiki.org\">django-wiki</a>, an open "
 "source application under the <a href=\"http://www.gnu.org/licenses/quick-"
@@ -1365,12 +1401,8 @@ msgstr "更多..."
 msgid "You are deleting an article. Please confirm."
 msgstr "你删除了一篇文章. 请确认."
 
-#: templates/wiki/deleted.html:5
+#: templates/wiki/deleted.html:5 templates/wiki/deleted.html.py:14
 msgid "Article deleted"
-msgstr "文章已删除"
-
-#: templates/wiki/deleted.html:14
-msgid "Article Deleted"
 msgstr "文章已删除"
 
 #: templates/wiki/deleted.html:17
@@ -1386,6 +1418,30 @@ msgid ""
 "You may remove this article and any children permanently and free their "
 "slugs by clicking the below button. This action cannot be undone."
 msgstr "你可以点击下面的按钮删永久的除此文章和它所有的子文章, 并释放此文章的标识. 此操作是不可逆的."
+
+#: templates/wiki/deleted_list.html:4
+msgid "Admin Panel"
+msgstr ""
+
+#: templates/wiki/deleted_list.html:8
+msgid "Deleted Articles"
+msgstr ""
+
+#: templates/wiki/deleted_list.html:13
+msgid "Page Title"
+msgstr ""
+
+#: templates/wiki/deleted_list.html:14
+msgid "Date Deleted"
+msgstr ""
+
+#: templates/wiki/deleted_list.html:15
+msgid "Restore Article"
+msgstr ""
+
+#: templates/wiki/deleted_list.html:30
+msgid "No deleted articles to display"
+msgstr ""
 
 #: templates/wiki/dir.html:5
 msgid "Listing articles in"
@@ -1419,11 +1475,11 @@ msgid ""
 "    "
 msgstr "\n      浏览 <strong><a href=\"%(self_url)s\">/%(path)s</a></strong>. 这些 %(articles_plur_verb)s <strong>%(cnt)s %(articles_plur)s</strong> 在此级别.\n    "
 
-#: templates/wiki/dir.html:50 templates/wiki/search.html:31
+#: templates/wiki/dir.html:50 templates/wiki/search.html.py:31
 msgid "Last modified"
 msgstr "最后一次修改"
 
-#: templates/wiki/dir.html:74 templates/wiki/search.html:40
+#: templates/wiki/dir.html:74 templates/wiki/search.html.py:40
 msgid "There are no articles in this level"
 msgstr "没有在此级别的文章"
 
@@ -1624,7 +1680,7 @@ msgstr "合并预览:"
 msgid "and"
 msgstr "和"
 
-#: templates/wiki/preview_inline.html:22 views/article.py:821
+#: templates/wiki/preview_inline.html:22 views/article.py:841
 msgid "You cannot merge with a deleted revision"
 msgstr "您不能合并一个删除的版本"
 
@@ -1698,74 +1754,78 @@ msgstr "现在你已经登出了, Bye bye!"
 msgid "You are now logged in! Have fun!"
 msgstr "现在你已经登录了, 玩得开心!"
 
-#: views/article.py:112
+#: views/accounts.py:133
+msgid "Account info saved!"
+msgstr ""
+
+#: views/article.py:111
 #, python-format
 msgid "New article '%s' created."
 msgstr "新文章 '%s' 被创建"
 
-#: views/article.py:120
+#: views/article.py:119
 #, python-format
 msgid "There was an error creating this article: %s"
 msgstr "在建立这篇文章时发生的错误: %s"
 
-#: views/article.py:125
+#: views/article.py:124
 msgid "There was an error creating this article."
 msgstr "在建立这篇文章时发生的错误."
 
-#: views/article.py:212
+#: views/article.py:215
 msgid ""
 "This article cannot be deleted because it has children or is a root article."
 msgstr "因为此文章有后续版本或此文章是基本文章, 所以不能删除."
 
-#: views/article.py:222
+#: views/article.py:225
 msgid ""
 "This article together with all its contents are now completely gone! Thanks!"
 msgstr "这篇文章和它所有的内容全都消失了! 谢谢!"
 
-#: views/article.py:231
+#: views/article.py:234
 #, python-format
 msgid ""
 "The article \"%s\" is now marked as deleted! Thanks for keeping the site "
 "free from unwanted material!"
 msgstr "文章 \"%s\" 被标识为删除! 感谢你为保持此站点没有不需要的内容而努力!"
 
-#: views/article.py:342
+#: views/article.py:351
 msgid "Your changes were saved."
 msgstr "你的更改已保存."
 
-#: views/article.py:356
+#: views/article.py:365
 msgid "Please note that your article text has not yet been saved!"
 msgstr "请注意, 你的文章尚未保存!"
 
-#: views/article.py:387
-msgid "A new revision of the article was succesfully added."
-msgstr "一个新的文章版本被成功添加."
+#: views/article.py:396
+msgid "A new revision of the article was successfully added."
+msgstr "已成功创建了文章的一个新版本。"
 
-#: views/article.py:442
+#: views/article.py:455
 msgid "Restoring article"
 msgstr "恢复文章"
 
-#: views/article.py:446
+#: views/article.py:459
 #, python-format
 msgid "The article \"%s\" and its children are now restored."
 msgstr "文章 \"%s\" 和它的后续版本被恢复."
 
-#: views/article.py:719
+#: views/article.py:732
 #, python-format
 msgid ""
 "The article %(title)s is now set to display revision #%(revision_number)d"
 msgstr "文章标题 %(title)s 被设置显示为 #%(revision_number)d 版本"
 
-#: views/article.py:788
+#: views/article.py:808
 msgid "New title"
 msgstr "新标题"
 
-#: views/article.py:832
+#: views/article.py:852
 #, python-format
 msgid "Merge between revision #%(r1)d and revision #%(r2)d"
 msgstr "合并版本 #%(r1)d 和 #%(r2)d"
 
-#: views/article.py:843
+#: views/article.py:863
 #, python-format
 msgid ""
 "A new revision was created: Merge between revision #%(r1)d and revision "
