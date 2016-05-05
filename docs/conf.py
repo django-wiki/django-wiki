@@ -4,8 +4,6 @@ from __future__ import absolute_import, print_function, unicode_literals
 import os
 import sys
 
-import wiki
-
 #
 # django-wiki documentation build configuration file, created by
 # sphinx-quickstart on Mon Jul 23 16:13:51 2012.
@@ -62,7 +60,8 @@ sys.path = [path] + sys.path
 sys.path = [os.path.join(path, 'wiki')] + sys.path
 
 
-print(wiki.__file__)
+import wiki  # noqa
+
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
