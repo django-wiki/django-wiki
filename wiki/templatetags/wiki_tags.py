@@ -190,3 +190,7 @@ def plugin_enabled(plugin_name):
                          'wiki.plugins.attachments'
     """
     return plugin_name in django_settings.INSTALLED_APPS
+
+@register.filter
+def wiki_settings(name):
+    return getattr(settings, name, "")

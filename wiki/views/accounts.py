@@ -17,11 +17,11 @@ from django.contrib import messages
 from django.contrib.auth import logout as auth_logout, login as auth_login
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.urlresolvers import reverse
-from django.shortcuts import redirect, render_to_response
+from django.shortcuts import redirect, render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.views.generic.base import View
-from django.views.generic.edit import CreateView, FormView
+from django.views.generic.edit import CreateView, FormView, UpdateView
 
 from wiki import forms
 from wiki.conf import settings
@@ -115,3 +115,20 @@ class Login(FormView):
             if not self.referer:
                 return redirect("wiki:root")
             return redirect(self.referer)
+
+class Update(UpdateView):
+    model = User
+    form_class = forms.UserUpdateForm
+    template_name = "wiki/accounts/account_settings.html"
+    success_url = "/_accounts/settings/"
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(self.model, pk=self.request.user.pk)
+
+    def form_valid(self, form):
+        pw = form.cleaned_data["password1"]
+        if pw is not "":
+            self.object.set_password(pw)
+            self.object.save()
+        messages.info(self.request, _("Account info saved!"))
+        return super(Update, self).form_valid(form)

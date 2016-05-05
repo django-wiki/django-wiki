@@ -42,6 +42,7 @@ class WikiURLPatterns(object):
     signup_view_class = accounts.Signup
     login_view_class = accounts.Login
     logout_view_class = accounts.Logout
+    profile_update_view_class = accounts.Update
 
     # deleted list view
     deleted_list_view_class = deleted_list.DeletedListView
@@ -89,17 +90,23 @@ class WikiURLPatterns(object):
         return urlpatterns
 
     def get_accounts_urls(self):
-        urlpatterns = [
-            url('^_accounts/sign-up/$',
-                self.signup_view_class.as_view(),
-                name='signup'),
-            url('^_accounts/logout/$',
-                self.logout_view_class.as_view(),
-                name='logout'),
-            url('^_accounts/login/$',
-                self.login_view_class.as_view(),
-                name='login'),
-        ]
+        if settings.ACCOUNT_HANDLING:
+            urlpatterns = [
+                url('^_accounts/sign-up/$',
+                    self.signup_view_class.as_view(),
+                    name='signup'),
+                url('^_accounts/logout/$',
+                    self.logout_view_class.as_view(),
+                    name='logout'),
+                url('^_accounts/login/$',
+                    self.login_view_class.as_view(),
+                    name='login'),
+                url('^_accounts/settings/$',
+                    self.profile_update_view_class.as_view(),
+                    name='profile_update'),
+            ]
+        else:
+            urlpatterns = []
         return urlpatterns
 
     def get_revision_urls(self):
