@@ -1,4 +1,4 @@
-{% load i18n sekizai_tags %}
+{% load i18n sekizai_tags static %}
 
 <h4>{% trans "Link to another wiki page" %}</h4>
 
@@ -26,7 +26,7 @@
 </p>
 <pre>[Clickable text](http://example.com)</pre>
 
-{% addtoblock "js" %}<script type="text/javascript" src="{{ STATIC_URL }}wiki/js/typeahead.min.js"></script>{% endaddtoblock %}
+{% addtoblock "js" %}<script type="text/javascript" src="{% static "wiki/js/typeahead.min.js" %}"></script>{% endaddtoblock %}
 {% addtoblock "js" %}
 <script type="text/javascript">
   $(document).ready(function() {

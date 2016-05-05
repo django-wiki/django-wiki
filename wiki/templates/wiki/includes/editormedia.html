@@ -1,15 +1,15 @@
-{% load sekizai_tags %}
+{% load sekizai_tags static %}
 {% addtoblock "js" %}
-<script type="text/javascript" src="{{ STATIC_URL }}wiki/js/editor.js"></script>
+<script type="text/javascript" src="{% static "wiki/js/editor.js" %}"></script>
 {% for js in editor.Media.js %}
-<script type="text/javascript" src="{{ STATIC_URL }}{{ js }}"></script>
+<script type="text/javascript" src="{% static js %}"></script>
 {% endfor %}
 {% endaddtoblock %}
 
 {% addtoblock "css" %}
 {% for media, srcs in editor.Media.css.items %}
   {% for src in srcs %}
-    <link rel="stylesheet" media="{{ media }}" href="{{ STATIC_URL }}{{ src }}" />
+    <link rel="stylesheet" media="{{ media }}" href="{% static src %}" />
   {% endfor %}
 {% endfor %}
 {% endaddtoblock %}
