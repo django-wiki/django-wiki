@@ -1,5 +1,5 @@
 {% extends "wiki/base.html" %}
-{% load wiki_tags i18n sekizai_tags %}
+{% load wiki_tags i18n sekizai_tags static %}
 
 {% block wiki_pagetitle %}{% trans "Create root article" %}{% endblock %}
 
@@ -7,14 +7,14 @@
 
   {% addtoblock "js" %}
   {% for js in editor.Media.js %}
-  <script type="text/javascript" src="{{ STATIC_URL }}{{ js }}"></script>
+  <script type="text/javascript" src="{% static js %}"></script>
   {% endfor %}
   {% endaddtoblock %}
 
   {% addtoblock "css" %}
   {% for media, srcs in editor.Media.css.items %}
     {% for src in srcs %}
-      <link rel="stylesheet" media="{{ media }}" href="{{ STATIC_URL }}{{ src }}" />
+      <link rel="stylesheet" media="{{ media }}" href="{% static src %}" />
     {% endfor %}
   {% endfor %}
   {% endaddtoblock %}

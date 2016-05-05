@@ -1,5 +1,5 @@
 {% extends "wiki/base.html" %}
-{% load wiki_tags i18n sekizai_tags %}
+{% load wiki_tags i18n sekizai_tags static %}
 
 {% block wiki_body %}
 
@@ -38,14 +38,14 @@
       {% if plugin.RenderMedia.css %}
         {% addtoblock "css" %}
           {% for media, url in plugin.RenderMedia.css.items %}
-            <link rel="stylesheet" href="{{ STATIC_URL }}{{ url }}" />
+            <link rel="stylesheet" href="{% static url %}" />
           {% endfor %}
         {% endaddtoblock %}
       {% endif %}
       {% if plugin.RenderMedia.js %}
         {% addtoblock "js" %}
           {% for url in plugin.RenderMedia.js %}
-            <script type="text/javascript" src="{{ STATIC_URL }}{{ url }}"></script>
+            <script type="text/javascript" src="{% static url %}"></script>
           {% endfor %}
         {% endaddtoblock %}
       {% endif %}
