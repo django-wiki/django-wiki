@@ -241,15 +241,13 @@ Q&A
 Requirements
 ------------
 
-So far the dependencies/requirements are:
-
 -  `django>=1.5<1.7 <http://www.djangoproject.com>`__ - Django 1.7 will
    be released in version 0.1, but should run on 0.0.24
 -  `django-south <http://south.aeracode.org/>`__
 -  `Markdown>=2.2.0 <https://github.com/waylan/Python-Markdown>`__
 -  `django-mptt <https://github.com/django-mptt/django-mptt>`__
 -  `django-sekizai <https://github.com/ojii/django-sekizai/>`__
--  `sorl-thumbnail <https://github.com/sorl/sorl-thumbnail>`__
+-  `sorl-thumbnail <https://github.com/mariocesar/sorl-thumbnail>`__
 -  Pillow (Python Imaging Library)
 -  Python>=2.6 or Python>=3.2
 

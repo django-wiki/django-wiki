@@ -5,7 +5,7 @@ Pre-requisites
 --------------
 
 For image processing, django-wiki uses the `Pillow
-library <https://github.com/python-imaging/Pillow>`_ (a fork of PIL).
+library <https://github.com/python-pillow/Pillow>`_ (a fork of PIL).
 The preferred method should be to get a system-wide, pre-compiled
 version of Pillow, for instance by getting the binaries from your Linux
 distribution repos.
@@ -140,7 +140,7 @@ Configure ``TEMPLATE_CONTEXT_PROCESSORS``
 Add ``'sekizai.context_processors.sekizai'`` and
 ``'django.core.context_processors.debug'`` to
 ``settings.TEMPLATE_CONTEXT_PROCESSORS``. Please refer to the `Django
-docs <https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors>`_
+settings docs <https://docs.djangoproject.com/en/dev/ref/settings/>`_
 to see the current default setting for this variable.
 
 In Django 1.5, it should look like this:

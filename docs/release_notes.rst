@@ -31,18 +31,18 @@ break due to some force majeure.
 django-wiki 0.1.1
 -----------------
 
-New features:
-
  * Several languages updated from Transifex
-   * Slovak added [Thanks M Hozza]
+
+   * Slovak added **Thanks M Hozza**
    * Portuguese also added, but as copy of PT-BR (make changes as desired in Transifex)
- * Brand new Account Settings page (email / password) - Thanks: inflrscns
+
+ * Brand new Account Settings page (email / password) **Thanks inflrscns**
  * Testproject turned into Django 1.9 layout
- * Do not depend on STATIC_URL anymore, use {% static %}
+ * Replace context-processor dependent use of ``{{ STATIC_URL }}`` with ``{% static %}``
  * Bugfix for ``pip install wiki`` in an empty (no Django installed) virtualenv
  * Precommit hooks added in repository
  * Import statements sorted and codebase re-pep8'thed
- * Log in page is now called "Log in" in ``<title>`` tag - Thanks: Eugene Obukhov
+ * Log in page is now called "Log in" in ``<title>`` tag - **Thanks Eugene Obukhov**
 
 
 django-wiki 0.1

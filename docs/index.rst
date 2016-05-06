@@ -6,18 +6,17 @@
 A wiki for Django!
 ==================
 
-Contents:
-
 .. toctree::
+   :caption: Contents
+   :name: mastertoc
    :maxdepth: 2
 
    installation
    plugins
    customization
    settings
-   tips
+   tips/index
    release_notes
-   known_issues
    faq
    history
    todo
