@@ -28,6 +28,12 @@ New features are introduced in the 0.1 branch until something seriously has to
 break due to some force majeure.
 
 
+django-wiki 0.1.2 (unreleased)
+------------------------------
+
+ * Remove unwanted items from default menu when ``WIKI_ACCOUNT_HANDLING = False``. #545
+
+
 django-wiki 0.1.1
 -----------------
 
