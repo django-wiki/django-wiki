@@ -27,7 +27,7 @@ function insert_image(image_id) {
       {% thumbnail revision.image "50x50" crop="center" as thumb %}
         <tr>
           <td style="white-space: nowrap;">
-            <p>{% trans "Image id" %}: {{ image.id }}</code></p>
+            <p>{% trans "Image id" %}: {{ image.id }}</p>
             <p>
               <a href="javascript:void(insert_image({{ image.id }}))"><span class="fa fa-edit"></span> {% trans "Insert" %}</a><br />
               {% if image|can_write:user %}
