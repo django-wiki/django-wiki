@@ -36,7 +36,7 @@
               {% trans "Upload and publish new image" %}
             </a> <br />
             <a href="{% url 'wiki:images_restore' path=urlpath.path article_id=article.id image_id=image.id %}">
-              <span class="fa ra-repeat"></span>
+              <span class="fa fa-refresh"></span>
               {% trans "Restore image" %}
             </a>
           {% else %}
@@ -84,7 +84,7 @@
               <td>{{ old_revision.imagerevision.width }}x{{ old_revision.imagerevision.height }}</td>
               <td>
                 {% if image|can_write:user and old_revision != image.current_revision %}
-                  <a href="#">
+                  <a href="{% url 'wiki:images_set_revision' path=urlpath.path article_id=article.id image_id=image.id rev_id=old_revision.id %}">
                     <span class="fa fa-refresh"></span>
                     {% trans "Revert to this version" %}
                   </a>

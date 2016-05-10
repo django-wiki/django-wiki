@@ -60,7 +60,7 @@ class ImagePlugin(BasePlugin):
             name='images_purge'),
         url('^(?P<image_id>\d+)/revision/change/(?P<rev_id>\d+)/$',
             views.RevisionChangeView.as_view(),
-            name='images_restore'),
+            name='images_set_revision'),
         url('^(?P<image_id>\d+)/revision/add/$',
             views.RevisionAddView.as_view(),
             name='images_add_revision'),

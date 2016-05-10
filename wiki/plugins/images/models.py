@@ -91,8 +91,13 @@ class ImageRevision(RevisionPluginRevision):
         """
         Inherit certain properties from predecessor because it's very
         convenient. Remember to always call this method before
-        setting properties :)"""
+        setting properties :)
+
+        A revision may not have a predecessor if the property is unset, it may
+        be unset if it's the initial history entry.
+        """
         predecessor = image.current_revision.imagerevision
+        super(ImageRevision, self).inherit_predecessor(image)
         self.plugin = predecessor.plugin
         self.deleted = predecessor.deleted
         self.locked = predecessor.locked

@@ -12,7 +12,6 @@ IMAGE_RE = re.compile(
     re.IGNORECASE)
 
 
-
 class ImageExtension(markdown.Extension):
 
     """ Images plugin markdown extension for django-wiki. """
