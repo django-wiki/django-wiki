@@ -59,17 +59,17 @@
                   <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                  <li>
-                    <a href="{% url 'wiki:logout' %}">
-                      <i class="fa fa-power-off"></i>
-                      {% trans "Log out" %}
-                    </a>
-                  </li>
                   {% if "ACCOUNT_HANDLING"|wiki_settings %}
                   <li>
                     <a href="{% url 'wiki:profile_update' %}">
                       <i class="fa fa-gear"></i>
                       {% trans "Account Settings" %}
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{% url 'wiki:logout' %}">
+                      <i class="fa fa-power-off"></i>
+                      {% trans "Log out" %}
                     </a>
                   </li>
                   {% endif %}
@@ -92,9 +92,11 @@
               <li>
                 <a href="{% login_url as wiki_login_url %}{{ wiki_login_url }}">{% trans "Log in" %}</a>
               </li>
+              {% if "ACCOUNT_HANDLING"|wiki_settings %}
               <li>
                 <a href="{% url 'wiki:signup' %}">{% trans "Sign up" %}</a>
               </li>
+              {% endif %}
             </ul>
             {% endif %}
           </div>
