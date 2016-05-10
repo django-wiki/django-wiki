@@ -1,5 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 
+import logging
+
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
@@ -10,8 +12,11 @@ from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 from wiki.conf import settings as wiki_settings
 from wiki.decorators import get_article
+from wiki.models.pluginbase import RevisionPluginRevision
 from wiki.plugins.images import forms, models
 from wiki.views.mixins import ArticleMixin
+
+logger = logging.getLogger(__name__)
 
 
 class ImageView(ArticleMixin, ListView):
@@ -60,9 +65,17 @@ class DeleteView(ArticleMixin, RedirectView):
 
     def get_redirect_url(self, **kwargs):
 
+        if not self.image.current_revision:
+            logger.critical('Encountered an image without current revision set, ID: {}'.format(self.image.id))
+            latest_revision = RevisionPluginRevision.objects.filter(
+                plugin=self.image
+            ).latest('pk')
+            self.image.current_revision = latest_revision
+
         new_revision = models.ImageRevision()
         new_revision.inherit_predecessor(self.image)
         new_revision.set_from_request(self.request)
+        new_revision.revision_number = RevisionPluginRevision.objects.filter(plugin=self.image).count()
         new_revision.deleted = not self.restore
         new_revision.save()
         self.image.current_revision = new_revision

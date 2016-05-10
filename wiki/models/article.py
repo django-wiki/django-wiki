@@ -308,6 +308,22 @@ class BaseRevisionMixin(models.Model):
         elif settings.LOG_IPS_ANONYMOUS:
             self.ip_address = request.META.get('REMOTE_ADDR', None)
 
+    def inherit_predecessor(self, predecessor):
+        """
+        This is a naive way of inheriting, assuming that ``predecessor`` is in
+        fact the predecessor and there hasn't been any intermediate changes!
+
+        :param: predecessor is an instance of whatever object for which
+        object.current_revision implements BaseRevisionMixin.
+        """
+        predecessor = predecessor.current_revision
+        self.previous_revision = predecessor
+        self.deleted = predecessor.deleted
+        self.locked = predecessor.locked
+        self.deleted = predecessor.deleted
+        self.locked = predecessor.locked
+        self.revision_number = predecessor.revision_number + 1
+
     class Meta:
         abstract = True
 
