@@ -127,7 +127,7 @@ South is used so no database changes will cause data loss. In order to
 customize the wiki, best idea is to override templates and create your
 own template tags. Do not make your own hard copy of this repository in
 order to fiddle with internal parts of the wiki -- this strategy will
-lead you to loose out on future updates with highly improved features
+lead you to lose out on future updates with highly improved features
 and plugins. Possibly security updates as well!
 
 The release cycle has already begun, so you can administer django-wiki
