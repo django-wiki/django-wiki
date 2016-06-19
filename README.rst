@@ -222,8 +222,9 @@ platform even when facing tough challenges such as implementing a wiki.
 Q&A
 ---
 
--  **Why is the module named just "wiki"?** Because "pip install wiki"
-   returns "No distributions at all found for wiki"! :)
+-  **Why is the module named just** ``wiki`` **?** Because when we tried
+   ``pip install wiki``, it returned "No distributions at all found
+   for wiki", so we had to make up for that!
 -  **What markup language will you use?**
    `Markdown <http://pypi.python.org/pypi/Markdown>`__. The markup
    renderer is not a pluggable part but has been internalized into core
