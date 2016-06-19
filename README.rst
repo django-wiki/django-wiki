@@ -33,6 +33,11 @@ Notes <http://django-wiki.readthedocs.org/en/latest/release_notes.html#django-wi
 News
 ----
 
+June 19, 2016
+~~~~~~~~~~~~~
+
+0.1.2 released: `Release notes <http://django-wiki.readthedocs.org/en/latest/release_notes.html#django-wiki-0-1-2>`__
+
 May 6, 2016
 ~~~~~~~~~~~
 
