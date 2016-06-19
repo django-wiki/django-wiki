@@ -2,6 +2,7 @@ from __future__ import absolute_import, unicode_literals
 
 from wiki.conf import settings
 from wiki.core.markdown.mdx.previewlinks import PreviewLinksExtension
+from wiki.core.markdown.mdx.responsivetable import ResponsiveTableExtension
 from wiki.core.plugins import registry as plugin_registry
 import markdown
 
@@ -17,7 +18,7 @@ class ArticleMarkdown(markdown.Markdown):
 
     def core_extensions(self):
         """List of core extensions found in the mdx folder"""
-        return [PreviewLinksExtension()]
+        return [PreviewLinksExtension(), ResponsiveTableExtension()]
 
     def get_markdown_extensions(self):
         kwargs = settings.MARKDOWN_KWARGS
