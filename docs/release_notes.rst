@@ -28,11 +28,13 @@ New features are introduced in the 0.1 branch until something seriously has to
 break due to some force majeure.
 
 
-django-wiki 0.1.2 (unreleased)
-------------------------------
+django-wiki 0.1.2
+-----------------
 
  * Remove unwanted items from default menu when ``WIKI_ACCOUNT_HANDLING = False``. #545
  * Fix broken soft-deletion and restoring of images, and "set revision" functionality #533
+ * Added responsiveness to tables by use of Bootstrap table-responsive class #552
+
 
 django-wiki 0.1.1
 -----------------
