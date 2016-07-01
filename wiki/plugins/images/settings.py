@@ -11,6 +11,14 @@ APP_LABEL = None
 # Where to store images
 IMAGE_PATH = getattr(django_settings, 'WIKI_IMAGES_PATH', "wiki/images/%aid/")
 
+# Sizes for image thumbnails
+THUMBNAIL_SIZES = getattr(django_settings, 'WIKI_IMAGES_THUMBNAIL_SIZES', {
+    'default': '250x250',
+    'small': '150x150',
+    'medium': '300x300',
+    'large': '500x500'
+})
+
 # Storage backend to use, default is to use the same as the rest of the
 # wiki, which is set in WIKI_STORAGE_BACKEND, but you can override it
 # with WIKI_IMAGES_STORAGE_BACKEND
