@@ -16,8 +16,8 @@ def build_media_pattern(base_folder, file_extension):
 template_patterns = ( build_media_pattern("templates", "html") +
                       build_media_pattern("static", "js") +
                       build_media_pattern("static", "css") +
-                      build_media_pattern("static", "png") + 
-                      build_media_pattern("static", "jpeg") + 
+                      build_media_pattern("static", "png") +
+                      build_media_pattern("static", "jpeg") +
                       build_media_pattern("static", "gif"))
 
 packages = find_packages()
