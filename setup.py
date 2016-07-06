@@ -16,8 +16,8 @@ def build_media_pattern(base_folder, file_extension):
 template_patterns = ( build_media_pattern("templates", "html") +
                       build_media_pattern("static", "js") +
                       build_media_pattern("static", "css") +
-                      build_media_pattern("static", "png") + 
-                      build_media_pattern("static", "jpeg") + 
+                      build_media_pattern("static", "png") +
+                      build_media_pattern("static", "jpeg") +
                       build_media_pattern("static", "gif"))
 
 packages = find_packages()
@@ -29,7 +29,7 @@ package_data = dict(
 
 setup(
     name = "django-wiki",
-    version = "0.0.6",
+    version = "0.0.8",
     author = "Benjamin Bach",
     author_email = "benjamin@overtag.dk",
     description = ("A wiki system written for the Django framework."),
