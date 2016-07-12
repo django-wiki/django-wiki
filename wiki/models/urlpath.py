@@ -41,7 +41,9 @@ class URLPath(MPTTModel):
     article = models.ForeignKey(Article, on_delete=models.CASCADE, editable=False,
                                 verbose_name=_(u'Cache lookup value for articles'))
     
-    SLUG_MAX_LENGTH = 50
+    # The slug is constructed from course key and will in practice be much shorter then 255 characters
+    # since course keys are capped at 65 characters in the Studio (https://openedx.atlassian.net/browse/TNL-889).
+    SLUG_MAX_LENGTH = 255
     
     slug = models.SlugField(verbose_name=_(u'slug'), null=True, blank=True,
                             max_length=SLUG_MAX_LENGTH)
