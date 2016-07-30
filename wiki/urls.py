@@ -132,7 +132,7 @@ class WikiURLPatterns(object):
     def get_article_urls(self):
         urlpatterns = [
             # Paths decided by article_ids
-            url('^(?P<article_id>\d+)/$',
+            url('^(?P<article_id>\d+)/get/$',
                 self.article_view_class.as_view(),
                 name='get'),
             url('^(?P<article_id>\d+)/delete/$',
