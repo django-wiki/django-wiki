@@ -55,7 +55,7 @@ else:
         requirements.append("django-sekizai>=0.9")
     else:
         # Latest django-mptt only works for Django 1.8+
-        requirements.append("django-mptt>=0.8,<0.9")
+        requirements.append("django-mptt>=0.8.6,<0.9")
         requirements.append("django-sekizai>=0.9")
     if DJANGO_VERSION < (1, 5):
         # For Django 1.4, use sorl-thumbnail<11.12.1:
