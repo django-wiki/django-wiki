@@ -11,22 +11,27 @@ env: PIP_DOWNLOAD_CACHE="pip_cache"
 
 language: python
 
+addons:
+  apt:
+    sources:
+      - deadsnakes
+    packages:
+      - python3.5
+      - python3-dev
+      - libjpeg9
+      - libjpeg9-dev
+
 # See tox.ini for env list
 env:
-- TOXENV=py26-django15
-- TOXENV=py26-django16
-- TOXENV=py27-django15
-- TOXENV=py27-django16
-- TOXENV=py27-django17
 - TOXENV=py27-django18
 - TOXENV=py27-django19
 - TOXENV=py27-django110
-- TOXENV=py34-django15
-- TOXENV=py34-django16
-- TOXENV=py34-django17
 - TOXENV=py34-django18
 - TOXENV=py34-django19
 - TOXENV=py34-django110
+- TOXENV=py35-django18
+- TOXENV=py35-django19
+- TOXENV=py35-django110
 
 install:
   - pip install tox>=2.1 coveralls
