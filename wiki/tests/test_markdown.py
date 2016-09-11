@@ -4,11 +4,11 @@ from django.test import TestCase
 import markdown
 from wiki.core.markdown import ArticleMarkdown
 from wiki.core.markdown.mdx.responsivetable import ResponsiveTableExtension
-from unittest.mock import patch
+from mock import patch
 
 class ArticleMarkdownTests(TestCase):
     @patch('wiki.core.markdown.settings')
-    def test_do_not_modify_django_settings(self, settings):
+    def test_do_not_modify_extensions(self, settings):
         extensions = ['footnotes', 'attr_list', 'sane_lists']
         settings.MARKDOWN_KWARGS = {'extensions': extensions}
         number_of_extensions = len(extensions)
