@@ -22,7 +22,7 @@ class ArticleMarkdown(markdown.Markdown):
 
     def get_markdown_extensions(self):
         kwargs = settings.MARKDOWN_KWARGS
-        extensions = kwargs.get('extensions', [])
+        extensions = list(kwargs.get('extensions', []))
         extensions += self.core_extensions()
         extensions += plugin_registry.get_markdown_extensions()
         return extensions
