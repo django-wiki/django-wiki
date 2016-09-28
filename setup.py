@@ -82,7 +82,7 @@ setup(
     url="http://www.django-wiki.org",
     description="A wiki system written for the Django framework.",
     license="GPLv3",
-    keywords="django wiki markdown",
+    keywords=["django", "wiki", "markdown"],
     packages=find_packages(exclude=["testproject", "testproject.*"]),
     long_description=read('README'),
     zip_safe=False,
