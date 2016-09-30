@@ -1,5 +1,5 @@
 {% load sekizai_tags i18n wiki_tags static %}<!DOCTYPE html>
-<html lang="en">
+<html{% if request.LANGUAGE_CODE %} lang="{{ request.LANGUAGE_CODE }}"{% endif %}>
   <head>
     <meta charset="utf-8">
     <title>{% block wiki_pagetitle %}{% endblock %}{% block wiki_site_title %} - django-\/\/  i K |{% endblock %}</title>
