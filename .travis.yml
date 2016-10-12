@@ -18,9 +18,9 @@ addons:
       - deadsnakes
     packages:
       - python3.5
-      - python3-dev
-      - libjpeg9
-      - libjpeg9-dev
+      - python3.5-dev
+      - libjpeg8
+      - libjpeg8-dev
 
 # See tox.ini for env list
 env:
