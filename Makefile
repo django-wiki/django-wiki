@@ -27,7 +27,7 @@ lint:
 	pep8 wiki
 
 test:
-	./runtests.py
+	pytest
 
 test-all:
 	tox
