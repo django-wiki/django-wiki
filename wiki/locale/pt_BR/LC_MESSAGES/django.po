@@ -1,14 +1,15 @@
 # 
 # Translators:
 # Gustavo Santana <gustavo.sdo@gmail.com>, 2016
+# Hugo Tácito <hugotacito@gmail.com>, 2016
 # vinidmpereira <viniciusdmpereira@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: django-wiki\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-05 22:53+0200\n"
-"PO-Revision-Date: 2016-05-05 20:55+0000\n"
-"Last-Translator: Benjamin Bach <benjaoming@gmail.com>\n"
+"PO-Revision-Date: 2016-06-15 17:44+0000\n"
+"Last-Translator: Hugo Tácito <hugotacito@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/django-wiki/django-wiki/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -265,7 +266,7 @@ msgstr "Busca..."
 
 #: forms.py:645
 msgid "Passwords don't match"
-msgstr ""
+msgstr "As senhas não conferem"
 
 #: models/article.py:39 models/pluginbase.py:177
 #: plugins/attachments/models.py:33
@@ -541,7 +542,7 @@ msgstr "Não foi encontrada nenhuma extensão de arquivo no nome de arquivo.Isso
 msgid ""
 "The following filename is illegal: {filename:s}. Extension has to be one of "
 "{extensions:s}"
-msgstr ""
+msgstr "O nome de arquivo a seguir é inválido: {filename:s}. A extensão precisa ser entre {extensions:s}"
 
 #: plugins/attachments/models.py:131
 msgid "file"
@@ -1133,7 +1134,7 @@ msgstr "Insira um link para outra pagina do wiki com uma notação curta."
 
 #: plugins/macros/mdx/macro.py:105
 msgid "[[WikiLink]]"
-msgstr ""
+msgstr "[[WikiLink]]"
 
 #: plugins/macros/templates/wiki/plugins/macros/article_list.html:6
 msgid "Article index"
@@ -1150,36 +1151,36 @@ msgstr "Macros"
 #: plugins/notifications/forms.py:20
 #, python-format
 msgid "Receive notifications %(interval)s"
-msgstr ""
+msgstr "Receber notificações em %(interval)s"
 
 #: plugins/notifications/forms.py:30
 #, python-format
 msgid "%(title)s - %(url)s"
-msgstr ""
+msgstr "%(title)s - %(url)s"
 
 #: plugins/notifications/forms.py:47
 msgid "Remove subscriptions"
-msgstr ""
+msgstr "Cancelar assinaturas"
 
 #: plugins/notifications/forms.py:49
 msgid "Select article subscriptions to remove from notifications"
-msgstr ""
+msgstr "Selecione as assinaturas de artigos para remover das notificações"
 
 #: plugins/notifications/forms.py:53
 msgid "Email digests"
-msgstr ""
+msgstr "Email resumido"
 
 #: plugins/notifications/forms.py:55
 msgid "Unchanged (selected on each article)"
-msgstr ""
+msgstr "Inalterado (selecionado em cada artigo)"
 
 #: plugins/notifications/forms.py:56
 msgid "No emails"
-msgstr ""
+msgstr "Sem emails"
 
 #: plugins/notifications/forms.py:57
 msgid "Email on any change"
-msgstr ""
+msgstr "Enviar email à cada alteração"
 
 #: plugins/notifications/forms.py:109
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:5
@@ -1237,27 +1238,27 @@ msgstr "Limpar notificações"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/menubaritem.html:15
 msgid "Notification settings"
-msgstr ""
+msgstr "Configurações de notificação"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:9
 msgid "Your notification settings"
-msgstr ""
+msgstr "Suas configurações de notificação"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:11
 msgid "Manage how often you receive notifications"
-msgstr ""
+msgstr "Definir quantas notificações você receberá"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:20
 msgid "Settings for"
-msgstr ""
+msgstr "Configurações para"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:20
 msgid "articles"
-msgstr ""
+msgstr "artigos"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:27
 msgid "You are not subscribed to any notifications yet."
-msgstr ""
+msgstr "Você ainda não está inscrito em nenhuma notificação."
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:35
 #: templates/wiki/edit.html:45 templates/wiki/edit.html.py:72
@@ -1268,17 +1269,17 @@ msgstr "Salvar"
 #: plugins/notifications/views.py:32
 #, python-format
 msgid "You will receive notifications %(interval)s for %(articles)d articles"
-msgstr ""
+msgstr "Você receberá notificações %(interval)s para %(articles)d artigos"
 
 #: templates/wiki/accounts/account_settings.html:4
 #: templates/wiki/accounts/account_settings.html:7
 #: templates/wiki/base_site.html:72
 msgid "Account Settings"
-msgstr ""
+msgstr "Configurações da Conta"
 
 #: templates/wiki/accounts/account_settings.html:11
 msgid "Update"
-msgstr ""
+msgstr "Atualizar"
 
 #: templates/wiki/accounts/login.html:4 templates/wiki/base_site.html.py:93
 msgid "Log in"
@@ -1315,22 +1316,22 @@ msgstr "Sair"
 
 #: templates/wiki/base_site.html:80
 msgid "Deleted articles"
-msgstr ""
+msgstr "Artigos apagados"
 
 #: templates/wiki/base_site.html:103
 msgid "Home"
-msgstr ""
+msgstr "Início"
 
 #: templates/wiki/base_site.html:104
 msgid "About"
-msgstr ""
+msgstr "Sobre"
 
 #: templates/wiki/base_site.html:137
 msgid ""
 "Powered by <a href=\"http://www.django-wiki.org\">django-wiki</a>, an open "
 "source application under the <a href=\"http://www.gnu.org/licenses/quick-"
 "guide-gplv3.html\">GPLv3</a> license. Let knowledge be the cure."
-msgstr ""
+msgstr "Plataforma construída em <a href=\"http://www.django-wiki.org\">django-wiki</a>, uma aplicação open source sob a licença <a href=\"http://www.gnu.org/licenses/quick-guide-gplv3.html\">GPLv3</a>. Que o conhecimento seja a cura."
 
 #: templates/wiki/create.html:5 templates/wiki/create.html.py:44
 msgid "Add new article"
@@ -1352,13 +1353,13 @@ msgstr "Parabéns!"
 msgid ""
 "You have django-wiki installed... but there are no articles. So it's time to"
 " create the first one, the root article."
-msgstr ""
+msgstr "Você instalou o django-wiki... mas ainda não existe nenhum artigo. Agora é hora de criar o primeiro, o artigo raíz."
 
 #: templates/wiki/create_root.html:25
 msgid ""
 "In the beginning, it will only be editable by administrators, but you can "
 "define permissions after."
-msgstr ""
+msgstr "No começo, apenas administradores poderão editar, mas você poderá definir as permissões depois."
 
 #: templates/wiki/create_root.html:28
 msgid "Root article"
@@ -1421,27 +1422,27 @@ msgstr "Você pode remover esse artigo e todos os seus artigos filhos (para libe
 
 #: templates/wiki/deleted_list.html:4
 msgid "Admin Panel"
-msgstr ""
+msgstr "Painel de Administração"
 
 #: templates/wiki/deleted_list.html:8
 msgid "Deleted Articles"
-msgstr ""
+msgstr "Artigos Apagados"
 
 #: templates/wiki/deleted_list.html:13
 msgid "Page Title"
-msgstr ""
+msgstr "Título da Página"
 
 #: templates/wiki/deleted_list.html:14
 msgid "Date Deleted"
-msgstr ""
+msgstr "Data Apagada"
 
 #: templates/wiki/deleted_list.html:15
 msgid "Restore Article"
-msgstr ""
+msgstr "Restaurar Artigo"
 
 #: templates/wiki/deleted_list.html:30
 msgid "No deleted articles to display"
-msgstr ""
+msgstr "Nenhum artigo apagado para exibir"
 
 #: templates/wiki/dir.html:5
 msgid "Listing articles in"
@@ -1696,30 +1697,30 @@ msgstr "Restaurando para esta revisão, marcará o artigo como removido."
 msgid ""
 "You have django-wiki installed and it seems to be working. But there are no "
 "articles yet."
-msgstr ""
+msgstr "Você instalou django-wiki e tudo parece estar funcionando. Mas ainda não existe nenhum artigo."
 
 #: templates/wiki/root_missing.html:17
 msgid ""
 "Not to worry! You simply have to login with a superuser account and create "
 "the first article in the root of the URL hierarchy."
-msgstr ""
+msgstr "Não se preocupe! Você só precisa efetuar login com uma conta de super-usuário e criar seu primeiro artigo na raíz da hierarquia de URLs."
 
 #: templates/wiki/root_missing.html:21
 msgid "Click here to login"
-msgstr ""
+msgstr "Clique aqui para efetuar login"
 
 #: templates/wiki/root_missing.html:27
 msgid ""
 "But since you're logged in as a superuser, we should really get started..."
-msgstr ""
+msgstr "Como você entrou como super-usuário, nós podemos começar..."
 
 #: templates/wiki/root_missing.html:29
 msgid "Yes, I'll go and create the first article"
-msgstr ""
+msgstr "Sim, Eu vou criar o primeiro artigo"
 
 #: templates/wiki/root_missing.html:30
 msgid "No thanks, I'd rather read the documentation"
-msgstr ""
+msgstr "Não obrigado, eu prefiro ler a documentação"
 
 #: templates/wiki/search.html:5 templates/wiki/search.html.py:9
 msgid "Search results for:"
@@ -1740,7 +1741,7 @@ msgstr "Esse artigo está atualmente travado para edição"
 
 #: views/accounts.py:49
 msgid "Account signup is only allowed for administrators."
-msgstr ""
+msgstr "O cadastro de novas contas só é permitidos para administradores."
 
 #: views/accounts.py:63
 msgid "You are now signed up... and now you can sign in!"
@@ -1756,7 +1757,7 @@ msgstr "Você agora está logado! Divirta-se"
 
 #: views/accounts.py:133
 msgid "Account info saved!"
-msgstr ""
+msgstr "Informações da conta salvas!"
 
 #: views/article.py:111
 #, python-format
