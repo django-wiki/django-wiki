@@ -31,8 +31,14 @@ break due to some force majeure.
 django-wiki 0.2 (dev)
 ---------------------
 
+ * Added Django 1.10 support #563
  * Fix memory leak in markdown extensions setting #564
 
+Support removed for:
+
+ * Python 2.6
+ * Django < 1.8
+ * South
 
 django-wiki 0.1.2
 -----------------
