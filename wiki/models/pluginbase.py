@@ -24,7 +24,6 @@ from __future__ import absolute_import, unicode_literals
 from django.db import models
 from django.db.models import signals
 from django.utils.translation import ugettext_lazy as _
-from wiki.conf import settings
 from wiki.decorators import disable_signal_for_loaddata
 
 from .article import ArticleRevision, BaseRevisionMixin
@@ -61,11 +60,6 @@ class ArticlePlugin(models.Model):
     def purge(self):
         """Remove related contents completely, ie. media files."""
         pass
-
-    class Meta:
-        # Override this setting with app_label = '' in your extended model
-        # if it lives outside the wiki app.
-        app_label = settings.APP_LABEL
 
 
 class ReusablePlugin(ArticlePlugin):
@@ -107,11 +101,6 @@ class ReusablePlugin(ArticlePlugin):
 
     def can_moderate(self, user):
         return self.article.can_moderate(user) if self.article else False
-
-    class Meta:
-        # Override this setting with app_label = '' in your extended model
-        # if it lives outside the wiki app.
-        app_label = settings.APP_LABEL
 
 
 class SimplePluginCreateError(Exception):
@@ -155,11 +144,6 @@ class SimplePlugin(ArticlePlugin):
 
     def get_logmessage(self):
         return _("A plugin was changed")
-
-    class Meta:
-        # Override this setting with app_label = '' in your extended model
-        # if it lives outside the wiki app.
-        app_label = settings.APP_LABEL
 
 
 class RevisionPlugin(ArticlePlugin):
@@ -208,11 +192,6 @@ class RevisionPlugin(ArticlePlugin):
         if save:
             self.save()
 
-    class Meta:
-        # Override this setting with app_label = '' in your extended model
-        # if it lives outside the wiki app.
-        app_label = settings.APP_LABEL
-
 
 class RevisionPluginRevision(BaseRevisionMixin, models.Model):
 
@@ -228,7 +207,6 @@ class RevisionPluginRevision(BaseRevisionMixin, models.Model):
     class Meta:
         # Override this setting with app_label = '' in your extended model
         # if it lives outside the wiki app.
-        app_label = settings.APP_LABEL
         get_latest_by = 'revision_number'
         ordering = ('-created',)
 

@@ -54,8 +54,6 @@ class Attachment(ReusablePlugin):
         verbose_name_plural = _('attachments')
         # Matches label of upcoming 0.1 release
         db_table = 'wiki_attachments_attachment'
-        if settings.APP_LABEL:
-            app_label = settings.APP_LABEL
 
     def __str__(self):
         from wiki.models import Article
@@ -140,8 +138,6 @@ class AttachmentRevision(BaseRevisionMixin, models.Model):
         get_latest_by = 'revision_number'
         # Matches label of upcoming 0.1 release
         db_table = 'wiki_attachments_attachmentrevision'
-        if settings.APP_LABEL:
-            app_label = settings.APP_LABEL
 
     def get_filename(self):
         """Used to retrieve the filename of a revision.

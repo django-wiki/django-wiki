@@ -7,6 +7,7 @@ from datetime import timedelta
 from itertools import chain
 
 from django import forms
+from django.apps import apps
 from django.contrib.auth.forms import UserCreationForm
 from django.core.urlresolvers import Resolver404, resolve
 from django.forms.widgets import HiddenInput
@@ -32,14 +33,7 @@ except ImportError:
 
 
 User = get_user_model()
-
-# Backwards compatibility with Django < 1.7
-try:
-    from django.apps import apps
-except ImportError:
-    from django.contrib.auth.models import Group
-else:
-    Group = apps.get_model(settings.GROUP_MODEL)
+Group = apps.get_model(settings.GROUP_MODEL)
 
 # Due to deprecation of django.forms.util in Django 1.9
 try:

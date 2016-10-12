@@ -192,7 +192,6 @@ class Article(models.Model):
         return str(obj_name)
 
     class Meta:
-        app_label = settings.APP_LABEL
         permissions = (
             ("moderate", _("Can edit all articles and lock/unlock/restore")),
             ("assign", _("Can change ownership of any article")),
@@ -253,7 +252,6 @@ class ArticleForObject(models.Model):
         return "{}".format(self.article)
 
     class Meta:
-        app_label = settings.APP_LABEL
         verbose_name = _('Article for object')
         verbose_name_plural = _('Articles for object')
         # Do not allow several objects
@@ -372,7 +370,6 @@ class ArticleRevision(BaseRevisionMixin, models.Model):
         self.locked = predecessor.locked
 
     class Meta:
-        app_label = settings.APP_LABEL
         get_latest_by = 'revision_number'
         ordering = ('created',)
         unique_together = ('article', 'revision_number')

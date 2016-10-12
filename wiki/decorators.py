@@ -8,10 +8,10 @@ from django.core.urlresolvers import reverse
 from django.http import (HttpResponse, HttpResponseForbidden,
                          HttpResponseNotFound, HttpResponseRedirect)
 from django.shortcuts import get_object_or_404, redirect
+from django.template.loader import render_to_string
 from django.utils.http import urlquote
 from six.moves import filter
 from wiki.conf import settings
-from wiki.core.compat import render_to_string
 from wiki.core.exceptions import NoRootURL
 
 

@@ -201,7 +201,6 @@ class URLPath(MPTTModel):
         verbose_name = _('URL path')
         verbose_name_plural = _('URL paths')
         unique_together = ('site', 'parent', 'slug')
-        app_label = settings.APP_LABEL
 
     def clean(self, *args, **kwargs):
         if self.slug and not self.parent:
