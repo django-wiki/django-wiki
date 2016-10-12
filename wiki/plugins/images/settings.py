@@ -1,13 +1,12 @@
 from __future__ import absolute_import, unicode_literals
 
-from django import VERSION
 from django.conf import settings as django_settings
 from wiki.conf import settings as wiki_settings
 
 SLUG = 'images'
 
-# This is deprecated in django 1.7+
-APP_LABEL = 'images' if VERSION < (1, 7) else None
+# Deprecated
+APP_LABEL = None
 
 # Where to store images
 IMAGE_PATH = getattr(django_settings, 'WIKI_IMAGES_PATH', "wiki/images/%aid/")

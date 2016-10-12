@@ -4,9 +4,9 @@ from __future__ import absolute_import, unicode_literals
 import re
 
 import markdown
+from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 from six import string_types
-from wiki.core.compat import render_to_string
 from wiki.plugins.macros import settings
 
 # See:

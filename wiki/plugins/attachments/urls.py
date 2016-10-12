@@ -1,7 +1,6 @@
 from __future__ import absolute_import, unicode_literals
 
-from django import VERSION as DJANGO_VERSION
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from wiki.plugins.attachments import views
 
 urlpatterns = [
@@ -33,6 +32,3 @@ urlpatterns = [
         views.AttachmentChangeRevisionView.as_view(),
         name='attachments_revision_change'),
 ]
-
-if DJANGO_VERSION < (1, 8):
-    urlpatterns = patterns('', *urlpatterns)

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-from django import VERSION as DJANGO_VERSION
 from django.conf.urls import include, url
 from wiki.conf import settings
 from wiki.core.plugins import registry
@@ -62,20 +61,20 @@ class WikiURLPatterns(object):
 
     def get_root_urls(self):
         urlpatterns = [
-            url('^$',
+            url(r'^$',
                 self.article_view_class.as_view(),
                 name='root',
                 kwargs={'path': ''}),
-            url('^create-root/$',
+            url(r'^create-root/$',
                 article.CreateRootView.as_view(),
                 name='root_create'),
-            url('^missing-root/$',
+            url(r'^missing-root/$',
                 article.MissingRootView.as_view(),
                 name='root_missing'),
-            url('^_search/$',
+            url(r'^_search/$',
                 get_class_from_str(self.search_view_class).as_view(),
                 name='search'),
-            url('^_revision/diff/(?P<revision_id>\d+)/$',
+            url(r'^_revision/diff/(?P<revision_id>\d+)/$',
                 self.article_diff_view,
                 name='diff'),
         ]
@@ -92,16 +91,16 @@ class WikiURLPatterns(object):
     def get_accounts_urls(self):
         if settings.ACCOUNT_HANDLING:
             urlpatterns = [
-                url('^_accounts/sign-up/$',
+                url(r'^_accounts/sign-up/$',
                     self.signup_view_class.as_view(),
                     name='signup'),
-                url('^_accounts/logout/$',
+                url(r'^_accounts/logout/$',
                     self.logout_view_class.as_view(),
                     name='logout'),
-                url('^_accounts/login/$',
+                url(r'^_accounts/login/$',
                     self.login_view_class.as_view(),
                     name='login'),
-                url('^_accounts/settings/$',
+                url(r'^_accounts/settings/$',
                     self.profile_update_view_class.as_view(),
                     name='profile_update'),
             ]
@@ -114,14 +113,14 @@ class WikiURLPatterns(object):
             # This one doesn't work because it don't know
             # where to redirect after...
             url(
-                '^_revision/change/(?P<article_id>\d+)/(?P<revision_id>\d+)/$',
+                r'^_revision/change/(?P<article_id>\d+)/(?P<revision_id>\d+)/$',
                 self.revision_change_view_class.as_view(),
                 name='change_revision'),
-            url('^_revision/preview/(?P<article_id>\d+)/$',
+            url(r'^_revision/preview/(?P<article_id>\d+)/$',
                 self.article_preview_view_class.as_view(),
                 name='preview_revision'),
             url(
-                '^_revision/merge/(?P<article_id>\d+)/(?P<revision_id>\d+)/preview/$',
+                r'^_revision/merge/(?P<article_id>\d+)/(?P<revision_id>\d+)/preview/$',
                 self.revision_merge_view,
                 name='merge_revision_preview',
                 kwargs={
@@ -132,39 +131,39 @@ class WikiURLPatterns(object):
     def get_article_urls(self):
         urlpatterns = [
             # Paths decided by article_ids
-            url('^(?P<article_id>\d+)/$',
+            url(r'^(?P<article_id>\d+)/$',
                 self.article_view_class.as_view(),
                 name='get'),
-            url('^(?P<article_id>\d+)/delete/$',
+            url(r'^(?P<article_id>\d+)/delete/$',
                 self.article_delete_view_class.as_view(),
                 name='delete'),
-            url('^(?P<article_id>\d+)/deleted/$',
+            url(r'^(?P<article_id>\d+)/deleted/$',
                 self.article_deleted_view_class.as_view(),
                 name='deleted'),
-            url('^(?P<article_id>\d+)/edit/$',
+            url(r'^(?P<article_id>\d+)/edit/$',
                 self.article_edit_view_class.as_view(),
                 name='edit'),
-            url('^(?P<article_id>\d+)/preview/$',
+            url(r'^(?P<article_id>\d+)/preview/$',
                 self.article_preview_view_class.as_view(),
                 name='preview'),
-            url('^(?P<article_id>\d+)/history/$',
+            url(r'^(?P<article_id>\d+)/history/$',
                 self.article_history_view_class.as_view(),
                 name='history'),
-            url('^(?P<article_id>\d+)/settings/$',
+            url(r'^(?P<article_id>\d+)/settings/$',
                 self.article_settings_view_class.as_view(),
                 name='settings'),
-            url('^(?P<article_id>\d+)/source/$',
+            url(r'^(?P<article_id>\d+)/source/$',
                 self.article_source_view_class.as_view(),
                 name='source'),
             url(
-                '^(?P<article_id>\d+)/revision/change/(?P<revision_id>\d+)/$',
+                r'^(?P<article_id>\d+)/revision/change/(?P<revision_id>\d+)/$',
                 self.revision_change_view_class.as_view(),
                 name='change_revision'),
             url(
-                '^(?P<article_id>\d+)/revision/merge/(?P<revision_id>\d+)/$',
+                r'^(?P<article_id>\d+)/revision/merge/(?P<revision_id>\d+)/$',
                 self.revision_merge_view,
                 name='merge_revision'),
-            url('^(?P<article_id>\d+)/plugin/(?P<slug>\w+)/$',
+            url(r'^(?P<article_id>\d+)/plugin/(?P<slug>\w+)/$',
                 self.article_plugin_view_class.as_view(),
                 name='plugin'),
         ]
@@ -173,46 +172,46 @@ class WikiURLPatterns(object):
     def get_article_path_urls(self):
         urlpatterns = [
             # Paths decided by URLs
-            url('^(?P<path>.+/|)_create/$',
+            url(r'^(?P<path>.+/|)_create/$',
                 self.article_create_view_class.as_view(),
                 name='create'),
-            url('^(?P<path>.+/|)_delete/$',
+            url(r'^(?P<path>.+/|)_delete/$',
                 self.article_delete_view_class.as_view(),
                 name='delete'),
-            url('^(?P<path>.+/|)_deleted/$',
+            url(r'^(?P<path>.+/|)_deleted/$',
                 self.article_deleted_view_class.as_view(),
                 name='deleted'),
-            url('^(?P<path>.+/|)_edit/$',
+            url(r'^(?P<path>.+/|)_edit/$',
                 self.article_edit_view_class.as_view(),
                 name='edit'),
-            url('^(?P<path>.+/|)_preview/$',
+            url(r'^(?P<path>.+/|)_preview/$',
                 self.article_preview_view_class.as_view(),
                 name='preview'),
-            url('^(?P<path>.+/|)_history/$',
+            url(r'^(?P<path>.+/|)_history/$',
                 self.article_history_view_class.as_view(),
                 name='history'),
-            url('^(?P<path>.+/|)_dir/$',
+            url(r'^(?P<path>.+/|)_dir/$',
                 self.article_dir_view_class.as_view(),
                 name='dir'),
-            url('^(?P<path>.+/|)_settings/$',
+            url(r'^(?P<path>.+/|)_settings/$',
                 self.article_settings_view_class.as_view(),
                 name='settings'),
-            url('^(?P<path>.+/|)_source/$',
+            url(r'^(?P<path>.+/|)_source/$',
                 self.article_source_view_class.as_view(),
                 name='source'),
             url(
-                '^(?P<path>.+/|)_revision/change/(?P<revision_id>\d+)/$',
+                r'^(?P<path>.+/|)_revision/change/(?P<revision_id>\d+)/$',
                 self.revision_change_view_class.as_view(),
                 name='change_revision'),
             url(
-                '^(?P<path>.+/|)_revision/merge/(?P<revision_id>\d+)/$',
+                r'^(?P<path>.+/|)_revision/merge/(?P<revision_id>\d+)/$',
                 self.revision_merge_view,
                 name='merge_revision'),
-            url('^(?P<path>.+/|)_plugin/(?P<slug>\w+)/$',
+            url(r'^(?P<path>.+/|)_plugin/(?P<slug>\w+)/$',
                 self.article_plugin_view_class.as_view(),
                 name='plugin'),
             # This should always go last!
-            url('^(?P<path>.+/|)$',
+            url(r'^(?P<path>.+/|)$',
                 self.article_view_class.as_view(),
                 name='get'),
         ]
@@ -226,14 +225,14 @@ class WikiURLPatterns(object):
             if slug:
                 article_urlpatterns = plugin.urlpatterns.get('article', [])
                 urlpatterns += [
-                    url('^(?P<article_id>\d+)/plugin/' + slug + '/',
+                    url(r'^(?P<article_id>\d+)/plugin/' + slug + '/',
                         include(article_urlpatterns)),
-                    url('^(?P<path>.+/|)_plugin/' + slug + '/',
+                    url(r'^(?P<path>.+/|)_plugin/' + slug + '/',
                         include(article_urlpatterns)),
                 ]
                 root_urlpatterns = plugin.urlpatterns.get('root', [])
                 urlpatterns += [
-                    url('^_plugin/' + slug + '/', include(root_urlpatterns)),
+                    url(r'^_plugin/' + slug + '/', include(root_urlpatterns)),
                 ]
         return urlpatterns
 
@@ -251,10 +250,6 @@ def get_pattern(app_name="wiki", namespace="wiki", url_config_class=None):
         else:
             url_config_class = get_class_from_str(url_config_classname)
     urlpatterns = url_config_class().get_urls()
-
-    if DJANGO_VERSION < (1, 8):
-        from django.conf.urls import patterns
-        urlpatterns = patterns('', *urlpatterns)
 
     return urlpatterns, app_name, namespace
 

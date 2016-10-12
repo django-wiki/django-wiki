@@ -4,7 +4,7 @@ from __future__ import absolute_import, unicode_literals
 import re
 
 import markdown
-from wiki.core.compat import render_to_string
+from django.template.loader import render_to_string
 from wiki.plugins.images import models
 
 IMAGE_RE = re.compile(

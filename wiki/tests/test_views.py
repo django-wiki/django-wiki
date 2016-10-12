@@ -3,7 +3,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import pprint
 
 from django.contrib.auth import authenticate
-from django.core.urlresolvers import reverse
+from wiki.models import reverse
 
 from .base import ArticleWebTestBase, WebTestBase
 

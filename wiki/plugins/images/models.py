@@ -49,8 +49,6 @@ class Image(RevisionPlugin):
         verbose_name = _('image')
         verbose_name_plural = _('images')
         db_table = 'wiki_images_image'  # Matches label of upcoming 0.1 release
-        if settings.APP_LABEL:
-            app_label = settings.APP_LABEL
 
     def __str__(self):
         if self.current_revision:
@@ -114,8 +112,6 @@ class ImageRevision(RevisionPluginRevision):
         verbose_name_plural = _('image revisions')
         # Matches label of upcoming 0.1 release
         db_table = 'wiki_images_imagerevision'
-        if settings.APP_LABEL:
-            app_label = settings.APP_LABEL
         ordering = ('-created',)
 
     def __str__(self):

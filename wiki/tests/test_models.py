@@ -1,26 +1,19 @@
 from __future__ import absolute_import, unicode_literals
 
+from django.apps import apps
 from django.conf.urls import url
 from django.contrib.auth import get_user_model
 from django.contrib.sites.models import Site
 from django.test.testcases import TestCase
+
+from wiki.conf import settings
 from wiki.managers import ArticleManager
 from wiki.models import Article, ArticleRevision, URLPath
 from wiki.urls import WikiURLPatterns
 
+
 User = get_user_model()
-
-
-
-
-# Backwards compatibility with Django < 1.7
-try:
-    from django.apps import apps
-except ImportError:
-    from django.contrib.auth.models import Group
-else:
-    from wiki.conf import settings
-    Group = apps.get_model(settings.GROUP_MODEL)
+Group = apps.get_model(settings.GROUP_MODEL)
 
 
 class WikiCustomUrlPatterns(WikiURLPatterns):

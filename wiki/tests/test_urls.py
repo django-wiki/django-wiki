@@ -1,7 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 
 from django import VERSION as DJANGO_VERSION
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.contrib.auth import get_user_model
 from django.contrib.sites.models import Site
 from django.test.testcases import TestCase
@@ -12,9 +12,6 @@ from wiki.urls import get_pattern as get_wiki_pattern
 from wiki.urls import WikiURLPatterns
 
 User = get_user_model()
-
-
-
 
 
 class WikiCustomUrlPatterns(WikiURLPatterns):
@@ -40,9 +37,6 @@ urlpatterns = [
     url(r'^notify/', get_notify_pattern()),
     url(r'', get_wiki_pattern(url_config_class=WikiCustomUrlPatterns))
 ]
-
-if DJANGO_VERSION < (1, 8):
-    urlpatterns = patterns('', *urlpatterns)
 
 
 @wiki_override_settings(WIKI_URL_CONFIG_CLASS='wiki.tests.test_models.WikiCustomUrlPatterns',

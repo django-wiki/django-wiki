@@ -13,7 +13,6 @@ from __future__ import unicode_literals
 
 import os
 
-from django import VERSION
 from django.core.urlresolvers import reverse_lazy
 
 
@@ -30,9 +29,6 @@ SECRET_KEY = 'b^fv_)t39h%9p40)fnkfblo##jkr!$0)lkp6bpy!fi*f$4*92!'
 DEBUG = False
 
 ALLOWED_HOSTS = []
-
-
-# Application definition
 
 
 INSTALLED_APPS = [
@@ -57,10 +53,8 @@ INSTALLED_APPS = [
     'wiki.plugins.notifications',
     'mptt',
 ]
-if VERSION < (1, 7):
-    INSTALLED_APPS.append('south')
-else:
-    TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 
 MIDDLEWARE_CLASSES = [
