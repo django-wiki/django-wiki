@@ -7,8 +7,8 @@ django-wiki
    :target: http://django-wiki.readthedocs.org/
 .. |Build Status| image:: https://travis-ci.org/django-wiki/django-wiki.png?branch=master
    :target: https://travis-ci.org/django-wiki/django-wiki
-.. |Coverage Status| image:: https://coveralls.io/repos/django-wiki/django-wiki/badge.svg?branch=master
-   :target: https://coveralls.io/r/django-wiki/django-wiki?branch=master
+.. |Coverage Status| image:: http://codecov.io/github/django-wiki/django-wiki/coverage.svg?branch=master
+   :target: http://codecov.io/github/django-wiki/django-wiki?branch=master
 .. |PyPi| image:: https://badge.fury.io/py/wiki.svg
    :target: https://pypi.python.org/pypi/wiki/
 .. |Downloads| image:: https://img.shields.io/pypi/dm/wiki.svg

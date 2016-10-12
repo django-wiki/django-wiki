@@ -45,5 +45,4 @@ notifications:
     - "irc.freenode.org#django-wiki"
 
 after_success:
-  - coverage combine
-  - coveralls
+  - bash <(curl -s https://codecov.io/bash)
