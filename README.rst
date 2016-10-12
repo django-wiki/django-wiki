@@ -20,18 +20,26 @@ django-wiki
 Important notice
 ----------------
 
-Final release 0.1 is out now. Please note that the only way to upgrade is from 0.0.24.
+Dev release of 0.2 is out. Please note that the only way to upgrade is from 0.1.
 
-**0.1** adds Django 1.7, 1.8 and 1.9 support.
+ - **0.2** supports Django 1.8, 1.9, and 1.10.
 
-**0.0.24** added experimental Django 1.7 support.
+Final release 0.1 is out. Please note that the only way to upgrade is from 0.0.24.
+
+ - **0.1** adds Django 1.7, 1.8 and 1.9 support.
+ - **0.0.24** added experimental Django 1.7 support.
 
 For upgrade instructions, please refer to the `Release
-Notes <http://django-wiki.readthedocs.org/en/latest/release_notes.html#django-wiki-0-1>`__
+Notes <http://django-wiki.readthedocs.org/en/latest/release_notes.html>`__
 
 
 News
 ----
+
+October 13, 2016
+~~~~~~~~~~~~~~~~
+
+0.2b1 released: `Release notes <http://django-wiki.readthedocs.org/en/latest/release_notes.html#django-wiki-0-2>`__
 
 June 19, 2016
 ~~~~~~~~~~~~~
