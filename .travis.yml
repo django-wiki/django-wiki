@@ -6,6 +6,7 @@
 # directive.
 
 sudo: false
+dist: trusty
 
 env: PIP_DOWNLOAD_CACHE="pip_cache"
 
