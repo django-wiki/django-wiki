@@ -1,13 +1,14 @@
 # 
 # Translators:
-# CHAN HEE PARK <heavisidechan@gmail.com>, 2015
+# Chan Hee Park <heavisidechan@gmail.com>, 2015
+# yeonjeong <makalu171@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: django-wiki\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-05 22:53+0200\n"
-"PO-Revision-Date: 2016-05-05 20:55+0000\n"
-"Last-Translator: Benjamin Bach <benjaoming@gmail.com>\n"
+"PO-Revision-Date: 2016-08-01 05:31+0000\n"
+"Last-Translator: Chan Hee Park <heavisidechan@gmail.com>\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/django-wiki/django-wiki/language/ko_KR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -99,7 +100,7 @@ msgstr "개정판 로그에 남길 편집 이유를 간단히 쓰세요."
 
 #: forms.py:201
 msgid "Article is missing title or has an invalid title"
-msgstr ""
+msgstr "문서가 제목이 없거나 유효하지 않는 제목을 가지고 있습니다."
 
 #: forms.py:215
 msgid ""
@@ -264,7 +265,7 @@ msgstr "검색..."
 
 #: forms.py:645
 msgid "Passwords don't match"
-msgstr ""
+msgstr "입력한 비밀번호가 잘못되었습니다."
 
 #: models/article.py:39 models/pluginbase.py:177
 #: plugins/attachments/models.py:33
@@ -1273,7 +1274,7 @@ msgstr "%(articles)d 문서에 대해 %(interval)s 간격으로 알림을 받을
 #: templates/wiki/accounts/account_settings.html:7
 #: templates/wiki/base_site.html:72
 msgid "Account Settings"
-msgstr ""
+msgstr "계정 설정"
 
 #: templates/wiki/accounts/account_settings.html:11
 msgid "Update"
@@ -1314,7 +1315,7 @@ msgstr "로그아웃"
 
 #: templates/wiki/base_site.html:80
 msgid "Deleted articles"
-msgstr ""
+msgstr "삭제된 문서들"
 
 #: templates/wiki/base_site.html:103
 msgid "Home"
@@ -1420,15 +1421,15 @@ msgstr "아래 버튼을 클릭하면 이 문서 및 하위 문서들은 영구 
 
 #: templates/wiki/deleted_list.html:4
 msgid "Admin Panel"
-msgstr ""
+msgstr "관리자 패널"
 
 #: templates/wiki/deleted_list.html:8
 msgid "Deleted Articles"
-msgstr ""
+msgstr "삭제된 문서들"
 
 #: templates/wiki/deleted_list.html:13
 msgid "Page Title"
-msgstr ""
+msgstr "페이지 제목"
 
 #: templates/wiki/deleted_list.html:14
 msgid "Date Deleted"
@@ -1436,11 +1437,11 @@ msgstr ""
 
 #: templates/wiki/deleted_list.html:15
 msgid "Restore Article"
-msgstr ""
+msgstr "문서 복구하기"
 
 #: templates/wiki/deleted_list.html:30
 msgid "No deleted articles to display"
-msgstr ""
+msgstr "표시할 삭제된 문서들이 없습니다. "
 
 #: templates/wiki/dir.html:5
 msgid "Listing articles in"
@@ -1755,7 +1756,7 @@ msgstr "로그인 하였습니다! 즐거운 시간 되세요!"
 
 #: views/accounts.py:133
 msgid "Account info saved!"
-msgstr ""
+msgstr "계정 정보가 저장되었습니다!"
 
 #: views/article.py:111
 #, python-format
@@ -1798,7 +1799,7 @@ msgstr "문서 내용이 아직 저장되지 않았습니다!"
 
 #: views/article.py:396
 msgid "A new revision of the article was successfully added."
-msgstr ""
+msgstr "새 개정판이 성공적으로 추가되었습니다."
 
 #: views/article.py:455
 msgid "Restoring article"

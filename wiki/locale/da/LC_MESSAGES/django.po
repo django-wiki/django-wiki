@@ -1,6 +1,6 @@
 # 
 # Translators:
-# Benjamin Bach <benjaoming@gmail.com>, 2015
+# Benjamin Bach <benjaoming@gmail.com>, 2015-2016
 # valberg <valberg@orn.li>, 2015
 # valberg <valberg@orn.li>, 2015
 msgid ""
@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: django-wiki\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-05 22:53+0200\n"
-"PO-Revision-Date: 2016-05-05 20:55+0000\n"
+"PO-Revision-Date: 2016-06-23 20:42+0000\n"
 "Last-Translator: Benjamin Bach <benjaoming@gmail.com>\n"
 "Language-Team: Danish (http://www.transifex.com/django-wiki/django-wiki/language/da/)\n"
 "MIME-Version: 1.0\n"
@@ -1264,7 +1264,7 @@ msgstr ""
 #: templates/wiki/edit.html:45 templates/wiki/edit.html.py:72
 #: templates/wiki/settings.html:17
 msgid "Save changes"
-msgstr ""
+msgstr "Gem ændringer"
 
 #: plugins/notifications/views.py:32
 #, python-format
