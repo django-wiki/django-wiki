@@ -23,7 +23,7 @@ def read(fname):
 requirements = [
     "Django>=1.8",
     "Pillow",
-    "django-nyt>=0.9.7.2,<1.0",
+    "django-nyt>=1.0b1",
     "six",
     "django-mptt>=0.8.6,<0.9",
     "django-sekizai>=0.10",
