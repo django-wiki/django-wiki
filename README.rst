@@ -169,15 +169,15 @@ issue to discuss whether your plugin idea is a core plugin
 (``wiki.plugins.*``) or external plugin. If there are additions needed
 to the plugin API, we can discuss that as well!
 
-To run django-wiki's tests, run ``make test`` or ``python setup.py test``
+To run django-wiki's tests, run ``make test``
 after installing the requirements.
 
 If you want to test for more **environments**, install "tox"
 (``pip install tox``) and then just run ``tox`` to run the test
 suite on multiple environments.
 
-To run **specific tests**, call ``runtests.py`` with the arguments that you
-would pass to the normal "manage.py test" command.
+To run **specific tests**, call ``pytest`` with a path to the file with
+the tests you wish to run, for instance ``pytest wiki/tests/test_views.py``.
 
 Manifesto
 ---------
