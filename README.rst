@@ -252,18 +252,22 @@ Q&A
    hierarchies and full control of their permissions. See this
    discussion: https://github.com/django-wiki/django-wiki/issues/63
 
+
 Requirements
 ------------
 
--  `django>=1.5<1.7 <http://www.djangoproject.com>`__ - Django 1.7 will
-   be released in version 0.1, but should run on 0.0.24
--  `django-south <http://south.aeracode.org/>`__
--  `Markdown>=2.2.0 <https://github.com/waylan/Python-Markdown>`__
+Please refer to current release to see exact version dependencies. And
+make note that Pillow needs to have certain build dependencies satisfied
+on your host system.
+
+-  `Django <http://www.djangoproject.com>`__
+-  `Markdown <https://github.com/waylan/Python-Markdown>`__
 -  `django-mptt <https://github.com/django-mptt/django-mptt>`__
 -  `django-sekizai <https://github.com/ojii/django-sekizai/>`__
 -  `sorl-thumbnail <https://github.com/mariocesar/sorl-thumbnail>`__
--  Pillow (Python Imaging Library)
--  Python>=2.6 or Python>=3.2
+-  `Pillow (Python Imaging Library) <https://pillow.readthedocs.io/en/latest/installation.html>`__
+-  Python>=2.7 or Python>=3.2
+
 
 Development
 -----------
@@ -273,6 +277,7 @@ an sqlite database. Login for django admin is *admin:admin*. This
 project should always be maintained, but please do not commit changes to
 the SQLite database as we only care about its contents in case data
 models are changed.
+
 
 Acknowledgements
 ----------------
