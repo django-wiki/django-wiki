@@ -3,6 +3,7 @@
 from __future__ import absolute_import, unicode_literals
 
 import os
+import sys
 from setuptools import find_packages, setup
 
 from wiki import __version__
@@ -16,8 +17,13 @@ def get_path(fname):
     return os.path.join(os.path.dirname(__file__), fname)
 
 
-def read(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+def read_file(fname):
+    """
+    Read file and decode in py2k
+    """
+    if sys.version_info < (3,):
+        return open(fname).read().decode("utf-8")
+    return open(fname).read()
 
 
 requirements = [
@@ -44,7 +50,7 @@ setup(
     license="GPLv3",
     keywords=["django", "wiki", "markdown"],
     packages=find_packages(exclude=["testproject", "testproject.*"]),
-    long_description=read('README'),
+    long_description=read_file('README.rst'),
     zip_safe=False,
     install_requires=requirements,
     classifiers=[
