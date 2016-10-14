@@ -253,9 +253,7 @@ class SelectWidgetBootstrap(forms.Select):
              'options': self.render_options(choices, [value]),
              'label': _('Select an option'),
              'name': name, 'disabled': ' disabled' if self.disabled else '',
-             'noscript': self.noscript_widget.render(
-                 name, value, {},
-                 choices)}]
+             'noscript': self.noscript_widget.render(name, value, {})}]
         return mark_safe('\n'.join(output))
 
     def render_option(self, selected_choices, option_value, option_label):
