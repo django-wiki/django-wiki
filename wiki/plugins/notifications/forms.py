@@ -6,7 +6,6 @@ from django.forms.models import BaseModelFormSet, modelformset_factory
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
-from django_nyt import settings as notify_settings
 from django_nyt.models import NotificationType, Settings, Subscription
 from wiki.core.plugins.base import PluginSettingsFormMixin
 from wiki.plugins.notifications import models
@@ -141,10 +140,7 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
             subscription__notification_type=self.notification_type,
             subscription__settings__user=self.user,
         )
-        self.default_settings = Settings.objects.get_or_create(
-            user=request.user,
-            interval=notify_settings.INTERVALS_DEFAULT
-        )[0]
+        self.default_settings = Settings.get_default_setting(request.user)
         if self.edit_notifications:
             self.default_settings = self.edit_notifications[
                 0].subscription.settings
