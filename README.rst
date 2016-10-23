@@ -4,11 +4,11 @@ django-wiki
 |Docs| |Build Status| |Coverage Status| |PyPi| |Dependency Status|
 
 .. |Docs| image:: https://readthedocs.org/projects/django-wiki/badge/?version=latest
-   :target: http://django-wiki.readthedocs.org/
+   :target: http://django-wiki.readthedocs.io/
 .. |Build Status| image:: https://travis-ci.org/django-wiki/django-wiki.png?branch=master
    :target: https://travis-ci.org/django-wiki/django-wiki
-.. |Coverage Status| image:: http://codecov.io/github/django-wiki/django-wiki/coverage.svg?branch=master
-   :target: http://codecov.io/github/django-wiki/django-wiki?branch=master
+.. |Coverage Status| image:: https://codecov.io/github/django-wiki/django-wiki/coverage.svg?branch=master
+   :target: https://codecov.io/github/django-wiki/django-wiki?branch=master
 .. |PyPi| image:: https://badge.fury.io/py/wiki.svg
    :target: https://pypi.python.org/pypi/wiki/
 .. |Downloads| image:: https://img.shields.io/pypi/dm/wiki.svg
@@ -30,7 +30,7 @@ Final release 0.1 is out. Please note that the only way to upgrade is from 0.0.2
 - **0.0.24** added experimental Django 1.7 support.
 
 For upgrade instructions, please refer to the `Release
-Notes <http://django-wiki.readthedocs.org/en/latest/release_notes.html>`__
+Notes <http://django-wiki.readthedocs.io/en/latest/release_notes.html>`__
 
 
 News
@@ -39,17 +39,17 @@ News
 October 13, 2016
 ~~~~~~~~~~~~~~~~
 
-0.2b1 released: `Release notes <http://django-wiki.readthedocs.org/en/latest/release_notes.html#django-wiki-0-2>`__
+0.2b1 released: `Release notes <http://django-wiki.readthedocs.io/en/latest/release_notes.html#django-wiki-0-2-dev>`__
 
 June 19, 2016
 ~~~~~~~~~~~~~
 
-0.1.2 released: `Release notes <http://django-wiki.readthedocs.org/en/latest/release_notes.html#django-wiki-0-1-2>`__
+0.1.2 released: `Release notes <http://django-wiki.readthedocs.io/en/latest/release_notes.html#django-wiki-0-1-2>`__
 
 May 6, 2016
 ~~~~~~~~~~~
 
-0.1.1 released: `Release notes <http://django-wiki.readthedocs.org/en/latest/release_notes.html#django-wiki-0-1-1>`__
+0.1.1 released: `Release notes <http://django-wiki.readthedocs.io/en/latest/release_notes.html#django-wiki-0-1-1>`__
 
 
 January 25, 2016
@@ -109,7 +109,7 @@ Django-wiki has almost fully translated into 7 languages, apart from the
 default (English). But please help out in adding more languages! It's
 very easy, you don't even need to be a programmer.
 
-https://www.transifex.com/projects/p/django-wiki/
+https://www.transifex.com/django-wiki/django-wiki/
 
 Demo
 ----
@@ -117,7 +117,7 @@ Demo
 A demo running the latest ``master`` is available here, sign up for an
 account to see the notification system.
 
-http://demo.django.wiki
+https://demo.django.wiki
 
 Community
 ---------
@@ -126,9 +126,9 @@ Please use our IRC or mailing list (google group) for getting in touch
 on development and support. Please do not email developers asking for
 personal support.
 
--  #django-wiki on irc.freenode.net
--  `django-wiki@googlegroups.com <https://groups.google.com/d/forum/django-wiki>`__
--  `twitter:djangowiki <https://twitter.com/djangowiki>`__
+- #django-wiki on irc.freenode.net
+- `django-wiki@googlegroups.com <https://groups.google.com/forum/#!forum/django-wiki>`__
+- `twitter:djangowiki <https://twitter.com/djangowiki>`__
 
 *THIS IS A WORK IN PROGRE...*
 -----------------------------
@@ -211,7 +211,7 @@ Docs
 
 See the docs/ folder, or read them at:
 
-http://django-wiki.readthedocs.org/en/latest/
+http://django-wiki.readthedocs.io/en/latest/
 
 If you wish to add something, please ask in the google group or raise an
 issue if you're in doubt about whether something might change.
@@ -220,7 +220,7 @@ Background
 ----------
 
 Django-wiki is a rewrite of
-`django-simplewiki <http://code.google.com/p/django-simple-wiki/>`__, a
+`django-simplewiki <https://code.google.com/p/django-simple-wiki/>`__, a
 project from 2009 that aimed to be a base system for a wiki. It proposed
 that the user should customize the wiki by overwriting templates, but
 soon learned that the only customization that really took place was that
@@ -239,7 +239,7 @@ Q&A
    ``pip install wiki``, it returned "No distributions at all found
    for wiki", so we had to make up for that!
 -  **What markup language will you use?**
-   `Markdown <http://pypi.python.org/pypi/Markdown>`__. The markup
+   `Markdown <https://pypi.python.org/pypi/Markdown>`__. The markup
    renderer is not a pluggable part but has been internalized into core
    parts. Discussion should go here:
    https://github.com/django-wiki/django-wiki/issues/76
@@ -260,7 +260,7 @@ Please refer to current release to see exact version dependencies. And
 make note that Pillow needs to have certain build dependencies satisfied
 on your host system.
 
--  `Django <http://www.djangoproject.com>`__
+-  `Django <https://www.djangoproject.com>`__
 -  `Markdown <https://github.com/waylan/Python-Markdown>`__
 -  `django-mptt <https://github.com/django-mptt/django-mptt>`__
 -  `django-sekizai <https://github.com/ojii/django-sekizai/>`__
@@ -282,7 +282,7 @@ models are changed.
 Acknowledgements
 ----------------
 
--  The people at `edX <http://www.edxonline.org/>`__ & MIT for finding
+-  The people at `edX <https://www.edx.org/>`__ & MIT for finding
    and supporting the project both financially and with ideas.
 -  `django-cms <https://github.com/divio/django-cms>`__ for venturing
    where no django app has gone before in terms of well-planned features
@@ -299,6 +299,6 @@ Acknowledgements
    `bridger <https://github.com/bridger>`__,
    `TomLottermann <https://github.com/TomLottermann>`__,
    `crazyzubr <https://github.com/crazyzubr>`__, and `everyone
-   else <https://github.com/django-wiki/django-wiki/contributors>`__
+   else <https://github.com/django-wiki/django-wiki/graphs/contributors>`__
    involved!
 

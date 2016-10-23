@@ -1,5 +1,5 @@
-Tips
-====
+Tips & FAQ
+==========
 
 .. toctree::
    :caption: Tips index

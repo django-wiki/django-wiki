@@ -12,13 +12,11 @@ A wiki for Django!
    :maxdepth: 2
 
    installation
+   release_notes
    plugins
    customization
    settings
    tips/index
-   release_notes
-   faq
-   history
 
 .. include:: ../README.rst
 
