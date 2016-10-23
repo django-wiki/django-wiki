@@ -19,7 +19,6 @@ A wiki for Django!
    release_notes
    faq
    history
-   todo
 
 .. include:: ../README.rst
 
