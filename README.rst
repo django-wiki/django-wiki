@@ -292,7 +292,7 @@ Acknowledgements
    with a relational database backend.
 -  `spookylukey <https://github.com/spookylukey>`__,
    `jluttine <https://github.com/jluttine>`__,
-   `cXhristian <https://github.com/cXhristian>`__,
+   `duvholt <https://github.com/duvholt>`__,
    `valberg <https://github.com/valberg>`__,
    `jdcaballerov <https://github.com/jdcaballerov>`__,
    `yekibud <https://github.com/yekibud>`__,
