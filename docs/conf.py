@@ -48,13 +48,7 @@ project = 'django-wiki'
 copyright = '2013, Benjamin Bach'  # noqa
 
 
-path = os.path.join(
-    os.path.split(
-        os.path.abspath(
-            os.path.dirname(__file__)
-        )
-    )[:-1]
-)[0]
+path = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 sys.path = [path] + sys.path
 sys.path = [os.path.join(path, 'wiki')] + sys.path
