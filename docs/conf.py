@@ -129,6 +129,8 @@ linkcheck_ignore = [
 
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 if on_rtd:
+    os.system("sphinx-apidoc --doc-project='Python Reference' -f -o . ../wiki")
+if on_rtd:
     html_theme = 'default'
 else:
     html_theme = 'sphinx_rtd_theme'
