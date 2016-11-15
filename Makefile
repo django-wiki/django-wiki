@@ -1,64 +1,82 @@
-.PHONY: help clean clean-pyc clean-build list test test-all coverage docs release sdist
+.PHONY: clean clean-test clean-pyc clean-build docs help
+.DEFAULT_GOAL := help
+define BROWSER_PYSCRIPT
+import os, webbrowser, sys
+try:
+	from urllib import pathname2url
+except:
+	from urllib.request import pathname2url
+
+webbrowser.open("file://" + pathname2url(os.path.abspath(sys.argv[1])))
+endef
+export BROWSER_PYSCRIPT
+
+define PRINT_HELP_PYSCRIPT
+import re, sys
+
+for line in sys.stdin:
+	match = re.match(r'^([a-zA-Z_-]+):.*?## (.*)$$', line)
+	if match:
+		target, help = match.groups()
+		print("%-20s %s" % (target, help))
+endef
+export PRINT_HELP_PYSCRIPT
+BROWSER := python -c "$$BROWSER_PYSCRIPT"
 
 help:
-	@echo "clean-build - remove build artifacts"
-	@echo "clean-pyc - remove Python file artifacts"
-	@echo "lint - check style with flake8"
-	@echo "test - run tests quickly with the default Python"
-	@echo "testall - run tests on every Python version with tox"
-	@echo "coverage - check code coverage quickly with the default Python"
-	@echo "docs - generate Sphinx HTML documentation, including API docs"
-	@echo "release - package and upload a release"
-	@echo "sdist - package"
+	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
-clean: clean-build clean-pyc
+clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
 
-clean-build:
+
+clean-build: ## remove build artifacts
 	rm -fr build/
 	rm -fr dist/
-	rm -fr *.egg-info
+	rm -fr .eggs/
+	find . -name '*.egg-info' -exec rm -fr {} +
+	find . -name '*.egg' -exec rm -f {} +
 
-clean-pyc:
+clean-pyc: ## remove Python file artifacts
 	find . -name '*.pyc' -exec rm -f {} +
 	find . -name '*.pyo' -exec rm -f {} +
 	find . -name '*~' -exec rm -f {} +
+	find . -name '__pycache__' -exec rm -fr {} +
 
-lint:
+clean-test: ## remove test and coverage artifacts
+	rm -fr .tox/
+	rm -f .coverage
+	rm -fr htmlcov/
+
+lint:  ## Check python code conventions
 	pep8 wiki
 
-test:
+test:  ## Run automated test suite
 	pytest
 
-test-all:
+test-all:  ## Run tests on all supported Python environments
 	tox
 
-coverage:
+coverage:  ## Generate test coverage report
 	coverage run --source wiki setup.py test
 	coverage report -m
 
-docs:
+docs: ## generate Sphinx HTML documentation, including API docs
 	$(MAKE) -C docs clean
+	rm -f docs/wiki*.rst
+	rm -f docs/modules.rst
+	sphinx-build -b linkcheck ./docs ./docs/_build
+	sphinx-apidoc -o docs/ wiki
 	$(MAKE) -C docs html
-	sphinx-build -b linkcheck ./docs _build/
-	sphinx-build -b html ./docs _build/
+	$(BROWSER) docs/_build/html/index.html
 
-release: sdist
+release: sdist  ## Generate and upload release to PyPi
 	twine upload -s dist/*
 
-assets:
+assets:  ## Build CSS files
 	lessc wiki/static/wiki/bootstrap/less/wiki/wiki-bootstrap.less wiki/static/wiki/bootstrap/css/wiki-bootstrap.css
 	lessc -x wiki/static/wiki/bootstrap/less/wiki/wiki-bootstrap.less wiki/static/wiki/bootstrap/css/wiki-bootstrap.min.css
 
-sdist: clean assets
-	# echo "Creating HISTORY.rst..."
-	# echo "Latest Changes" > HISTORY.rst
-	# echo "==============" >> HISTORY.rst
-	# echo "" >> HISTORY.rst
-	# echo "This file is auto-generated upon every new release."
-	# echo "" >> HISTORY.rst
-	# echo "Compiled on: `date`::" >> HISTORY.rst
-	# echo "" >> HISTORY.rst
-	# git log --graph --pretty=format:'%h -%d %s (%cr) <%an>' --abbrev-commit | sed "s/^/    /" >> HISTORY.rst
+sdist: clean assets  ## Generate source dist and wheels
 	python setup.py sdist
 	python setup.py bdist_wheel
 	ls -l dist

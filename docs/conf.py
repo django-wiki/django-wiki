@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
+from datetime import datetime
 import os
 import sys
 
@@ -27,9 +28,28 @@ import sys
 # If your documentation needs a minimal Sphinx version, state it here.
 # needs_sphinx = '1.0'
 
+import django
+
+# If extensions (or modules to document with autodoc) are in another directory,
+# add these directories to sys.path here. If the directory is relative to the
+# documentation root, use os.path.abspath to make it absolute, like shown here.
+
+sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath('../testproject'))
+
+# -- General configuration ------------------------------------------------
+
+# If your documentation needs a minimal Sphinx version, state it here.
+# needs_sphinx = '1.0'
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "testproject.settings.dev")
+
+django.setup()
+
+
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = []
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -45,7 +65,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'django-wiki'
-copyright = '2013, Benjamin Bach'  # noqa
+copyright = '{}, Benjamin Bach'.format(datetime.now().year)  # noqa
 
 
 path = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
@@ -62,7 +82,7 @@ import wiki  # noqa
 # built documents.
 #
 # The short X.Y version.
-version = ".".join(wiki.__version__.split(".")[:-1])
+version = ".".join(wiki.__version__.split(".")[0:100])
 # The full version, including alpha/beta/rc tags.
 release = wiki.__version__
 
@@ -99,6 +119,10 @@ pygments_style = 'sphinx'
 
 # A list of ignored prefixes for module index sorting.
 # modindex_common_prefix = []
+
+linkcheck_ignore = [
+    r'wiki.+',
+]
 
 
 # -- Options for HTML output ---------------------------------------------------

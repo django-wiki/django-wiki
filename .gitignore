@@ -18,6 +18,8 @@ wiki/attachments
 #Docs
 docs/_build
 docs/_build/*
+docs/wiki.*
+docs/modules.rst
 
 # Test project
 testproject/testproject/settings/local.py
