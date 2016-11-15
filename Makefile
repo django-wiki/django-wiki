@@ -50,15 +50,15 @@ assets:
 	lessc -x wiki/static/wiki/bootstrap/less/wiki/wiki-bootstrap.less wiki/static/wiki/bootstrap/css/wiki-bootstrap.min.css
 
 sdist: clean assets
-	echo "Creating HISTORY.rst..."
-	echo "Latest Changes" > HISTORY.rst
-	echo "==============" >> HISTORY.rst
-	echo "" >> HISTORY.rst
-	echo "This file is auto-generated upon every new release."
-	echo "" >> HISTORY.rst
-	echo "Compiled on: `date`::" >> HISTORY.rst
-	echo "" >> HISTORY.rst
-	git log --graph --pretty=format:'%h -%d %s (%cr) <%an>' --abbrev-commit | sed "s/^/    /" >> HISTORY.rst
+	# echo "Creating HISTORY.rst..."
+	# echo "Latest Changes" > HISTORY.rst
+	# echo "==============" >> HISTORY.rst
+	# echo "" >> HISTORY.rst
+	# echo "This file is auto-generated upon every new release."
+	# echo "" >> HISTORY.rst
+	# echo "Compiled on: `date`::" >> HISTORY.rst
+	# echo "" >> HISTORY.rst
+	# git log --graph --pretty=format:'%h -%d %s (%cr) <%an>' --abbrev-commit | sed "s/^/    /" >> HISTORY.rst
 	python setup.py sdist
 	python setup.py bdist_wheel
 	ls -l dist
