@@ -10,12 +10,15 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        db.rename_table("attachments_attachment", "wiki_attachments_attachment")
-        db.rename_table("attachments_attachmentrevision", "wiki_attachments_attachmentrevision")
+        db.rename_table("wiki_attachment", "wiki_attachments_attachment")
+        db.rename_table("wiki_attachmentrevision", "wiki_attachments_attachmentrevision")
+        # These tables should never contain any data
+        db.delete_table("attachments_attachment")
+        db.delete_table("attachments_attachmentrevision")
 
     def backwards(self, orm):
-        db.rename_table("wiki_attachments_attachment", "attachments_attachment")
-        db.rename_table("wiki_attachments_attachmentrevision", "attachments_attachmentrevision")
+        db.rename_table("wiki_attachments_attachment", "wiki_attachment")
+        db.rename_table("wiki_attachments_attachmentrevision", "wiki_attachmentrevision")
 
     models = {
         'attachments.attachment': {

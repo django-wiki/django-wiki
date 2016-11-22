@@ -10,12 +10,15 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        db.rename_table("images_image", "wiki_images_image")
-        db.rename_table("images_imagerevision", "wiki_images_imagerevision")
+        db.rename_table("wiki_image", "wiki_images_image")
+        db.rename_table("wiki_imagerevision", "wiki_images_imagerevision")
+        # These tables should never contain any data
+        db.delete_table("images_image")
+        db.delete_table("images_imagerevision")
 
     def backwards(self, orm):
-        db.rename_table("wiki_images_image", "images_image")
-        db.rename_table("wiki_images_imagerevision", "images_imagerevision")
+        db.rename_table("wiki_images_image", "wiki_image")
+        db.rename_table("wiki_images_imagerevision", "wiki_imagerevision")
 
     models = {
         'auth.group': {

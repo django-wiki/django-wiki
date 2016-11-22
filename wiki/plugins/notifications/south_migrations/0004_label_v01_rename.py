@@ -10,10 +10,12 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        db.rename_table("notifications_articlesubscription", "wiki_notifications_articlesubscription")
+        db.rename_table("wiki_articlesubscription", "wiki_notifications_articlesubscription")
+        # This table should never contain any data
+        db.delete_table("notifications_articlesubscription")
 
     def backwards(self, orm):
-        db.rename_table("wiki_notifications_articlesubscription", "notifications_articlesubscription")
+        db.rename_table("wiki_notifications_articlesubscription", "wiki_articlesubscription")
 
     models = {
         'auth.group': {
