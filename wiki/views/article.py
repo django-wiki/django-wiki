@@ -595,7 +595,7 @@ class SearchView(ListView):
         if not permissions.can_moderate(
                 models.URLPath.root().article,
                 self.request.user):
-            articles = articles.active().can_read(self.request.user)
+            articles = articles.active().can_read(self.request.user).distinct()
         return articles
 
     def get_context_data(self, **kwargs):
