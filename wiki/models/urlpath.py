@@ -68,7 +68,7 @@ class URLPath(MPTTModel):
     article = models.ForeignKey(
         Article,
         on_delete=models.CASCADE,
-        verbose_name=_('Lookup value'),
+        verbose_name=_('article'),
         help_text=_(
             "This field is automatically updated, but you need to populate "
             "it when creating a new URL path."

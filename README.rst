@@ -17,17 +17,21 @@ django-wiki
    :target: https://gemnasium.com/django-wiki/django-wiki
 
 
-Important notice
-----------------
+Django support
+--------------
 
-Dev release of 0.2 is out. Please note that the only way to upgrade is from 0.1.
+The below table explains which Django versions are supported.
 
-- **0.2** supports Django 1.8, 1.9, and 1.10.
-
-Final release 0.1 is out. Please note that the only way to upgrade is from 0.0.24.
-
-- **0.1** adds Django 1.7, 1.8 and 1.9 support.
-- **0.0.24** added experimental Django 1.7 support.
++------------+----------------+--------------+
+| Release    | Django         | Upgrade from |
++============+================+==============+
+| 0.2        | 1.8, 1.9, 1.10 | 0.1          |
++------------+----------------+--------------+
+| 0.1        | 1.5, 1.6, 1.7  | 0.24         |
++------------+----------------+--------------+
+| 0.24       | 1.4, 1.5, 1.6  | -            |
+|            | 1.7 (unstable) |              |
++------------+----------------+--------------+
 
 For upgrade instructions, please refer to the `Release
 Notes <http://django-wiki.readthedocs.io/en/latest/release_notes.html>`__
