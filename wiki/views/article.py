@@ -875,7 +875,7 @@ def merge(
                                  'merge2': article.current_revision,
                                  'merge': True,
                                  'content': content})
-    return render_to_response(template_file, context_instance=c)
+    return render_to_response(template_file, context=c)
 
 
 class CreateRootView(FormView):

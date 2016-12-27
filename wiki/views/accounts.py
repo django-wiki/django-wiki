@@ -47,7 +47,7 @@ class Signup(CreateView):
             c = RequestContext(
                 request, {
                     'error_msg': _('Account signup is only allowed for administrators.'), })
-            return render_to_response("wiki/error.html", context_instance=c)
+            return render_to_response("wiki/error.html", context=c)
 
         return super(Signup, self).dispatch(request, *args, **kwargs)
 
