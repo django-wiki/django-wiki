@@ -38,6 +38,7 @@ django-wiki 0.2 (dev)
 
  * Added Django 1.10 support #563
  * Fix duplicate search results when logged in #582 (duvholt)
+ * Do not allow slugs only consisting of numbers #558
  * Fix memory leak in markdown extensions setting #564
  * Updated translations - Languages > 90% completed: Chinese (China), Portuguese (Brazil), Korean (Korea), French, Slovak, Spanish, Dutch, German, Russian, Finnish.
  * Taiwanese Chinese added (39% completed)
