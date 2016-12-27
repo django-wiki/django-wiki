@@ -43,7 +43,7 @@ class ArticleQuerySet(QuerySet):
             q = self.filter(Q(other_read=True) |
                             Q(owner=user) |
                             (Q(group__user=user) & Q(group_read=True))
-                            )
+                            ).distinct()
         return q
 
     def can_write(self, user):
