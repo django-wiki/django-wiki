@@ -14,6 +14,9 @@ wiki/attachments
 #PyCharm
 .idea
 
+# Test artifacts
+cache
+wiki/images
 
 #Docs
 docs/_build
