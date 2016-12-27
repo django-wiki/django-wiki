@@ -3,6 +3,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import pprint
 
 from django.contrib.auth import authenticate
+from wiki import models
 from wiki.models import reverse
 
 from .base import ArticleWebTestBase, WebTestBase
@@ -345,3 +346,51 @@ class UpdateProfileViewTest(ArticleWebTestBase):
 
         self.assertNotEqual(test_auth, None)
         self.assertEqual(test_auth.email, 'test@test.com')
+
+
+class MergeViewTest(ArticleWebTestBase):
+
+    def test_merge_preview(self):
+        """Test merge preview"""
+
+        c = self.c
+        example_data = {
+            'content': 'More modifications\n\nMerge new line',
+            'current_revision': '1',
+            'preview': '0',
+            'save': '1',
+            'summary': 'testing merge',
+            'title': 'wiki test'
+        }
+
+        previous_revision = self.root_article.current_revision.id
+
+        # save a new revision
+        c.post(
+            reverse('wiki:edit', kwargs={'path': ''}),
+            example_data
+        )
+
+        response = c.get(
+            reverse(
+                'wiki:merge_revision_preview',
+                kwargs={'article_id': self.root_article.id, 'revision_id': previous_revision}
+            ),
+        )
+
+        new_revision = models.Article.objects.get(
+            id=self.root_article.id
+        ).current_revision.id
+
+        self.assertContains(
+            response,
+            'Previewing merge between:'
+        )
+        self.assertContains(
+            response,
+            '#{rev_id}'.format(rev_id=previous_revision)
+        )
+        self.assertContains(
+            response,
+            '#{rev_id}'.format(rev_id=new_revision)
+        )
