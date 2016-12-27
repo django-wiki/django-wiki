@@ -4,13 +4,14 @@
 # martinsam <martin.sam@gmail.com>, 2015
 # Maximilien Cuony <theglu@theglu.org>, 2016
 # Thomas Durey <tominardi@gmail.com>, 2015
+# Yann Beaud, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: django-wiki\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-05 22:53+0200\n"
-"PO-Revision-Date: 2016-05-05 20:55+0000\n"
-"Last-Translator: Benjamin Bach <benjaoming@gmail.com>\n"
+"PO-Revision-Date: 2016-11-21 23:35+0000\n"
+"Last-Translator: Yann Beaud\n"
 "Language-Team: French (http://www.transifex.com/django-wiki/django-wiki/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -267,7 +268,7 @@ msgstr "Rechercher..."
 
 #: forms.py:645
 msgid "Passwords don't match"
-msgstr ""
+msgstr "Les mots de passe ne correspondent pas"
 
 #: models/article.py:39 models/pluginbase.py:177
 #: plugins/attachments/models.py:33
@@ -1276,11 +1277,11 @@ msgstr "Vous allez recevoir des notifications %(interval)s pour %(articles)d art
 #: templates/wiki/accounts/account_settings.html:7
 #: templates/wiki/base_site.html:72
 msgid "Account Settings"
-msgstr ""
+msgstr "Paramètres du compte"
 
 #: templates/wiki/accounts/account_settings.html:11
 msgid "Update"
-msgstr ""
+msgstr "Mettre à jour"
 
 #: templates/wiki/accounts/login.html:4 templates/wiki/base_site.html.py:93
 msgid "Log in"
@@ -1317,7 +1318,7 @@ msgstr "Déconnexion"
 
 #: templates/wiki/base_site.html:80
 msgid "Deleted articles"
-msgstr ""
+msgstr "Articles supprimés"
 
 #: templates/wiki/base_site.html:103
 msgid "Home"
@@ -1423,27 +1424,27 @@ msgstr "Vous pouvez définitivement supprimer cet article (ainsi que tous ses so
 
 #: templates/wiki/deleted_list.html:4
 msgid "Admin Panel"
-msgstr ""
+msgstr "Interface d'administration"
 
 #: templates/wiki/deleted_list.html:8
 msgid "Deleted Articles"
-msgstr ""
+msgstr "Articles supprimés"
 
 #: templates/wiki/deleted_list.html:13
 msgid "Page Title"
-msgstr ""
+msgstr "Titre de la page"
 
 #: templates/wiki/deleted_list.html:14
 msgid "Date Deleted"
-msgstr ""
+msgstr "Date de suppression"
 
 #: templates/wiki/deleted_list.html:15
 msgid "Restore Article"
-msgstr ""
+msgstr "Restaurer l'article"
 
 #: templates/wiki/deleted_list.html:30
 msgid "No deleted articles to display"
-msgstr ""
+msgstr "Aucun article supprimé à afficher"
 
 #: templates/wiki/dir.html:5
 msgid "Listing articles in"
@@ -1758,7 +1759,7 @@ msgstr "Vous êtes maintenant connecté! Amusez-vous!"
 
 #: views/accounts.py:133
 msgid "Account info saved!"
-msgstr ""
+msgstr "Informations du compte sauvegardées!"
 
 #: views/article.py:111
 #, python-format

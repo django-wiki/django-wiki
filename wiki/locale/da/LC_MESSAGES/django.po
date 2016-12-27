@@ -1,6 +1,7 @@
 # 
 # Translators:
 # Benjamin Bach <benjaoming@gmail.com>, 2015-2016
+# Bo Holm-Rasmussen <bo.holm.rasmussen@gmail.com>, 2016
 # valberg <valberg@orn.li>, 2015
 # valberg <valberg@orn.li>, 2015
 msgid ""
@@ -8,7 +9,7 @@ msgstr ""
 "Project-Id-Version: django-wiki\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-05 22:53+0200\n"
-"PO-Revision-Date: 2016-06-23 20:42+0000\n"
+"PO-Revision-Date: 2016-12-27 20:37+0000\n"
 "Last-Translator: Benjamin Bach <benjaoming@gmail.com>\n"
 "Language-Team: Danish (http://www.transifex.com/django-wiki/django-wiki/language/da/)\n"
 "MIME-Version: 1.0\n"
@@ -44,14 +45,14 @@ msgstr "Indstillinger for plugin"
 #: forms.py:75
 msgid ""
 "Spam protection failed to find both a logged in user and an IP address."
-msgstr "Spam beskyttelse fejlede i at finde både en indlogget bruger og en IP adresse."
+msgstr "Spam-beskyttelse fejlede i at finde både en indlogget bruger og en IP-adresse."
 
 #: forms.py:90
 #, python-format
 msgid ""
 "Spam protection: You are only allowed to create or edit %(revisions)d "
 "article(s) per %(interval_name)s."
-msgstr "Spam beskyttelse: Du har kun tilladelse til at oprette eller redigere %(revisions)d artikler per %(interval_name)s."
+msgstr "Spam-beskyttelse: Du har kun tilladelse til at oprette eller redigere %(revisions)d artikler per %(interval_name)s."
 
 #: forms.py:108
 msgid "minute"
@@ -60,7 +61,7 @@ msgstr "minut"
 #: forms.py:109
 #, python-format
 msgid "%d minutes"
-msgstr "%d minutes"
+msgstr "%d minutter"
 
 #: forms.py:118
 msgid "hour"
@@ -246,7 +247,7 @@ msgstr "Dine indstillinger for rettigheder var uændrede, så intet er gemt."
 
 #: forms.py:519
 msgid "No user with that username"
-msgstr "Ingen bruger med brugernavnet"
+msgstr "Ingen bruger med dette brugernavn"
 
 #: forms.py:554
 msgid "Article locked for editing"
@@ -266,7 +267,7 @@ msgstr "Søg..."
 
 #: forms.py:645
 msgid "Passwords don't match"
-msgstr ""
+msgstr "Adgangskoder matcher ikke"
 
 #: models/article.py:39 models/pluginbase.py:177
 #: plugins/attachments/models.py:33
@@ -470,7 +471,7 @@ msgstr "Artikler, som har mistet forældrene\n===============================\n\
 
 #: models/urlpath.py:367
 msgid "Lost and found"
-msgstr "Glemt og fundet"
+msgstr "Glemte sager"
 
 #: plugins/attachments/forms.py:19
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:14
@@ -568,7 +569,7 @@ msgid ""
 "\n"
 "    The file may be referenced on other articles. Deleting it means that they will loose their references to this file. The following articles reference this file:\n"
 "    "
-msgstr ""
+msgstr "\n    Denne fil kan være refereret i andre artikler. Sletning betyder at de vil miste deres referencer til filen. Følgende artikler refererer denne fil:\n    "
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:29
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:53
@@ -580,7 +581,7 @@ msgstr ""
 #: templates/wiki/create.html:53 templates/wiki/delete.html.py:12
 #: templates/wiki/delete.html:48
 msgid "Go back"
-msgstr "Go tilbage"
+msgstr "Tilbage"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:33
 msgid "Delete it!"
@@ -595,7 +596,7 @@ msgid ""
 "\n"
 "    You can remove a reference to a file, but it will retain its references on other articles.\n"
 "    "
-msgstr ""
+msgstr "\n    Du kan fjerne en reference til en fil, men andre artiklers reference til samme fil er uændret.\n    "
 
 #: plugins/attachments/templates/wiki/plugins/attachments/delete.html:57
 msgid "Remove reference"
@@ -681,7 +682,7 @@ msgstr "Fjern"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:47
 msgid "File history"
-msgstr "Filhistorie"
+msgstr "Filhistorik"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:47
 msgid "revisions"
@@ -743,7 +744,7 @@ msgid ""
 "\n"
 "  Replacing an attachment means adding a new file that will be used in its place. All references to the file will be replaced by the one you upload and the file will be downloaded as <strong>%(filename)s</strong>. Please note that this attachment is in use on other articles, you may distort contents. However, do not hestitate to take advantage of this and make replacements for the listed articles where necessary. This way of working is more efficient....\n"
 "  "
-msgstr ""
+msgstr "\nNår man erstatter en vedhæftning, tilføjer man en fil, som bliver anvendt i stedet for tidligere fil. Alle referencer til denne fil vil blive erstattet med den nye fil, som vil hentes ned som <strong>%(filename)s</strong>. Bemærk at denne vedhæftning også benyttes i andre artikler og konteksten kan variere. Det kan dog også være en stor fordel at kunne erstatte de følgende artikler, når det er nødvendigt. Det er effektivt..."
 
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:17
 #, python-format
@@ -759,7 +760,7 @@ msgid ""
 "\n"
 "  Replacing an attachment means adding a new file that will be used in its place. All references to the file will be replaced by the one you upload and the file will be downloaded as <strong>%(filename)s</strong>.\n"
 "  "
-msgstr ""
+msgstr "\n  At erstatte en vedhæftning betyder at tilføje en ny fil, som vil blive brugt i stedet. Alle referencer til filen vil blive erstattet med den nye fil og når den downloades vil den hedde <strong>%(filename)s</strong>.\n  "
 
 #: plugins/attachments/templates/wiki/plugins/attachments/replace.html:43
 #: plugins/images/templates/wiki/plugins/images/index.html:45
@@ -815,230 +816,230 @@ msgstr "Din fil kunne ikke gemmes: %s"
 msgid ""
 "Your new file will automatically be renamed to match the file already "
 "present. Files with different extensions are not allowed."
-msgstr ""
+msgstr "Din nye fil vil automatisk blive navngivet så den passer til den fil der allerede er. Forskellige filtyper med samme navn er ikke tilladt."
 
 #: plugins/attachments/views.py:324
 #, python-format
 msgid "Current revision changed for %s."
-msgstr ""
+msgstr "Nuværende revision ændret for %s."
 
 #: plugins/attachments/views.py:362
 #, python-format
 msgid "Added a reference to \"%(att)s\" from \"%(art)s\"."
-msgstr ""
+msgstr "Tilføjet en reference til \"%(att)s\" fra \"%(art)s\"."
 
 #: plugins/attachments/views.py:367
 #, python-format
 msgid "\"%(att)s\" is already referenced."
-msgstr ""
+msgstr "\"%(att)s\" er allerede refereret."
 
 #: plugins/attachments/views.py:416
 #, python-format
 msgid "The file %s was deleted."
-msgstr ""
+msgstr "Filen %s blev slettet."
 
 #: plugins/attachments/views.py:422
 #, python-format
 msgid "This article is no longer related to the file %s."
-msgstr ""
+msgstr "Artiklen er ikke længere tilknyttet filen %s."
 
 #: plugins/attachments/wiki_plugin.py:29
 #, python-format
 msgid "A file was changed: %s"
-msgstr ""
+msgstr "En fil blev ændret: %s"
 
 #: plugins/attachments/wiki_plugin.py:32
 #, python-format
 msgid "A file was deleted: %s"
-msgstr ""
+msgstr "En fil blev slettet: %s"
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:1
 msgid "Adding new articles"
-msgstr ""
+msgstr "Tilføj nye artikler"
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:3
 msgid ""
 "To create a new wiki article, create a link to it. Clicking the link gives "
 "you the creation page."
-msgstr ""
+msgstr "For at oprette en ny wiki-artikel, kan du lave et link til den. Ved at klikke på linket, kommer du ind på oprettelsessiden."
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:6
 #: plugins/links/templates/wiki/plugins/links/sidebar.html:22
 msgid "An external link"
-msgstr ""
+msgstr "Et eksternt link"
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:9
 msgid "Headers"
-msgstr ""
+msgstr "Overskrifter"
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:10
 msgid ""
 "Use these codes for headers and to automatically generate Tables of "
 "Contents."
-msgstr ""
+msgstr "Brug disse koder til overskrifter og for automatisk genererede Indholdsfortegnelse."
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:25
 msgid "Typography"
-msgstr ""
+msgstr "Typografi"
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:30
 msgid "Lists"
-msgstr ""
+msgstr "Lister"
 
 #: plugins/help/templates/wiki/plugins/help/sidebar.html:38
 msgid "Tables"
-msgstr ""
+msgstr "Tabeller"
 
 #: plugins/help/wiki_plugin.py:12
 msgid "Help"
-msgstr ""
+msgstr "Hjælp"
 
 #: plugins/images/forms.py:20
 #, python-format
 msgid ""
 "New image %s was successfully uploaded. You can use it by selecting it from "
 "the list of available images."
-msgstr ""
+msgstr "Nyt billede %s blev korrekt uploadet. Du kan indsætte det ved at vælge det fra listen over tilgængelige billeder."
 
 #: plugins/images/forms.py:64
 msgid "Are you sure?"
-msgstr ""
+msgstr "Er du sikker?"
 
 #: plugins/images/models.py:49
 msgid "image"
-msgstr ""
+msgstr "billede"
 
 #: plugins/images/models.py:50
 msgid "images"
-msgstr ""
+msgstr "billeder"
 
 #: plugins/images/models.py:57
 #, python-format
 msgid "Image: %s"
-msgstr ""
+msgstr "Billede: %s"
 
 #: plugins/images/models.py:59
 msgid "Current revision not set!!"
-msgstr ""
+msgstr "Nuværende revision ej sat!!"
 
 #: plugins/images/models.py:108
 msgid "image revision"
-msgstr ""
+msgstr "billedrevision"
 
 #: plugins/images/models.py:109
 msgid "image revisions"
-msgstr ""
+msgstr "billedrevisioner"
 
 #: plugins/images/models.py:117
 #, python-format
 msgid "Image Revsion: %d"
-msgstr ""
+msgstr "Billedrevision: %d"
 
 #: plugins/images/templates/wiki/plugins/images/index.html:5
 #: plugins/images/wiki_plugin.py:18
 msgid "Images"
-msgstr ""
+msgstr "Billeder"
 
 #: plugins/images/templates/wiki/plugins/images/index.html:8
 msgid ""
 "The following images are available for this article. Copy the markdown tag "
 "to directly refer to an image from the article text."
-msgstr ""
+msgstr "Følgende billeder er tilgængelige for artiklen. Kopier markdown-tagget for at referere til et billede i artikelteksten."
 
 #: plugins/images/templates/wiki/plugins/images/index.html:12
 msgid "Back to edit page"
-msgstr ""
+msgstr "Tilbage til Ret"
 
 #: plugins/images/templates/wiki/plugins/images/index.html:19
 msgid "No file"
-msgstr ""
+msgstr "Ingen fil"
 
 #: plugins/images/templates/wiki/plugins/images/index.html:36
 msgid "Upload and publish new image"
-msgstr ""
+msgstr "Upload og publicér nyt billede"
 
 #: plugins/images/templates/wiki/plugins/images/index.html:40
 msgid "Restore image"
-msgstr ""
+msgstr "Gendan billede"
 
 #: plugins/images/templates/wiki/plugins/images/index.html:49
 msgid "Remove image"
-msgstr ""
+msgstr "Fjern billede"
 
 #: plugins/images/templates/wiki/plugins/images/index.html:56
 msgid "Completely delete"
-msgstr ""
+msgstr "Permanent sletning"
 
 #: plugins/images/templates/wiki/plugins/images/index.html:70
 #: templates/wiki/history.html:5
 msgid "History"
-msgstr ""
+msgstr "Historik"
 
 #: plugins/images/templates/wiki/plugins/images/index.html:89
 msgid "Revert to this version"
-msgstr ""
+msgstr "Genskab denne version"
 
 #: plugins/images/templates/wiki/plugins/images/index.html:102
 msgid "There are no images for this article."
-msgstr ""
+msgstr "Der er ingen billeder på denne artikel."
 
 #: plugins/images/templates/wiki/plugins/images/purge.html:5
 #: templates/wiki/deleted.html:40
 msgid "Purge deletion"
-msgstr ""
+msgstr "Permanent sletning"
 
 #: plugins/images/templates/wiki/plugins/images/purge.html:14
 msgid "Purge image: Completely remove image file and all revisions."
-msgstr ""
+msgstr "Permanent sletning: Fjern billedfilen og al historik."
 
 #: plugins/images/templates/wiki/plugins/images/purge.html:27
 msgid "Remove it completely!"
-msgstr ""
+msgstr "Fjern det permanent!"
 
 #: plugins/images/templates/wiki/plugins/images/render.html:13
 msgid "Image not found"
-msgstr ""
+msgstr "Billede ikke fundet"
 
 #: plugins/images/templates/wiki/plugins/images/revision_add.html:5
 msgid "Replace image"
-msgstr ""
+msgstr "Overskriv billede"
 
 #: plugins/images/templates/wiki/plugins/images/revision_add.html:14
 msgid "Choose an image file to replace current image."
-msgstr ""
+msgstr "Vælg et billede til at erstatte eksisterende billede."
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:30
 msgid "Image id"
-msgstr ""
+msgstr "Billede ID"
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:32
 #: plugins/links/templates/wiki/plugins/links/sidebar.html:15
 msgid "Insert"
-msgstr ""
+msgstr "Indsæt"
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:48
 msgid "No images found for this article"
-msgstr ""
+msgstr "Ingen billeder fundet for denne artikel"
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:56
 msgid "Manage images"
-msgstr ""
+msgstr "Administrér billeder"
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:61
 msgid "Add new image"
-msgstr ""
+msgstr "Tilføj nyt billede"
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:104
 msgid "Add image"
-msgstr ""
+msgstr "Tilføj billede"
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:112
 msgid "You do not have permissions to add images."
-msgstr ""
+msgstr "Du har ikke rettigheder til at tilføje billeder."
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:119
 msgid "How to use images"
-msgstr ""
+msgstr "Hvordan billeder anvendes"
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:122
 msgid ""
@@ -1049,216 +1050,216 @@ msgid ""
 "choose to have you image floating right or left of the content. You can use "
 "Markdown in the caption. The markdown code syntax for images looks like "
 "this, possible values for align are left and right:"
-msgstr ""
+msgstr "Efter uploading af billede er billedet vedhæftet ekslusivt til denne artikel og kan kun benyttes her. Andre brugere kan uploade nye versioner af billedet, men de ældre versioner bliver gemt. Husk en beskrivende billedtekst. For indsætte billedtekst tryk Indsæt knappen og udfyld billedtekst feltet og eventuelt om billedet skal højre- eller venstrejusteret. Du kan benytte Markdown kommandoer i billedteksten. Markdown syntaks for billeder ser således ud:"
 
 #: plugins/images/views.py:73
 #, python-format
 msgid "%s has been restored"
-msgstr ""
+msgstr "%s er blevet genskabt"
 
 #: plugins/images/views.py:78
 #, python-format
 msgid "%s has been marked as deleted"
-msgstr ""
+msgstr "%s er blevet markeret som slettet"
 
 #: plugins/images/views.py:146
 #, python-format
 msgid "%(file)s has been changed to revision #%(revision)d"
-msgstr ""
+msgstr "%(file)s er blevet ændret til revision #%(revision)d"
 
 #: plugins/images/views.py:191
 #, python-format
 msgid "%(file)s has been saved."
-msgstr ""
+msgstr "%(file)s er blevet gemt."
 
 #: plugins/images/wiki_plugin.py:29
 #, python-format
 msgid "An image was added: %s"
-msgstr ""
+msgstr "Et billede er blevet tilføjet: %s"
 
 #: plugins/links/templates/wiki/plugins/links/sidebar.html:3
 msgid "Link to another wiki page"
-msgstr ""
+msgstr "Link til en anden wiki side"
 
 #: plugins/links/templates/wiki/plugins/links/sidebar.html:6
 msgid ""
 "Type in something from another wiki page's title and auto-complete will help"
 " you create a tag for you wiki link. Tags for links look like this:"
-msgstr ""
+msgstr "Skriv noget fra en anden wiki artikels titel. 'Auto-complete' vil hjælpe dig med at oprette et 'tag' til dit wiki link. 'Tags' til links ser således ud:"
 
 #: plugins/links/templates/wiki/plugins/links/sidebar.html:25
 msgid ""
 "You can link to another website simply by inserting an address example.com "
 "or http://example.com or by using the markdown syntax:"
-msgstr ""
+msgstr "Du kan linke til en anden side ved at indsætte en adresse, for eksempel example.com eller http://example.com, eller ved at benytte følgende syntaks:"
 
 #: plugins/links/wiki_plugin.py:23
 msgid "Links"
-msgstr ""
+msgstr "Links"
 
 #: plugins/macros/mdx/macro.py:84
 msgid "Article list"
-msgstr ""
+msgstr "Artikel liste"
 
 #: plugins/macros/mdx/macro.py:85
 msgid "Insert a list of articles in this level."
-msgstr ""
+msgstr "Insæt en liste artikler på dette niveau."
 
 #: plugins/macros/mdx/macro.py:86
 msgid "[article_list depth:2]"
-msgstr ""
+msgstr "[article_list depth:2]"
 
 #: plugins/macros/mdx/macro.py:87
 msgid "Maximum depth to show levels for."
-msgstr ""
+msgstr "Maksimal dybde at vise niveauer."
 
 #: plugins/macros/mdx/macro.py:93
 msgid "Table of contents"
-msgstr ""
+msgstr "Indholdsfortegnelse"
 
 #: plugins/macros/mdx/macro.py:94
 msgid "Insert a table of contents matching the headings."
-msgstr ""
+msgstr "Indsæt en indholdsfortegnelse der passer til overskrifterne."
 
 #: plugins/macros/mdx/macro.py:95
 msgid "[TOC]"
-msgstr ""
+msgstr "[TOC]"
 
 #: plugins/macros/mdx/macro.py:102
 msgid "WikiLinks"
-msgstr ""
+msgstr "WikiLinks"
 
 #: plugins/macros/mdx/macro.py:104
 msgid "Insert a link to another wiki page with a short notation."
-msgstr ""
+msgstr "Indsæt et link til en anden wiki side med en kort beskrivelse."
 
 #: plugins/macros/mdx/macro.py:105
 msgid "[[WikiLink]]"
-msgstr ""
+msgstr "[[WikiLink]]"
 
 #: plugins/macros/templates/wiki/plugins/macros/article_list.html:6
 msgid "Article index"
-msgstr ""
+msgstr "Artikel indeks"
 
 #: plugins/macros/templates/wiki/plugins/macros/article_list.html:10
 msgid "Nothing below this level"
-msgstr ""
+msgstr "Intet under dette niveau"
 
 #: plugins/macros/wiki_plugin.py:16
 msgid "Macros"
-msgstr ""
+msgstr "Makroer"
 
 #: plugins/notifications/forms.py:20
 #, python-format
 msgid "Receive notifications %(interval)s"
-msgstr ""
+msgstr "Modtag notifikationer %(interval)s"
 
 #: plugins/notifications/forms.py:30
 #, python-format
 msgid "%(title)s - %(url)s"
-msgstr ""
+msgstr "%(title)s - %(url)s"
 
 #: plugins/notifications/forms.py:47
 msgid "Remove subscriptions"
-msgstr ""
+msgstr "Fjern abonnementer"
 
 #: plugins/notifications/forms.py:49
 msgid "Select article subscriptions to remove from notifications"
-msgstr ""
+msgstr "Vælg artikel abonnementer der skal fjernes fra notifikationer"
 
 #: plugins/notifications/forms.py:53
 msgid "Email digests"
-msgstr ""
+msgstr "E-mail opsummeringer"
 
 #: plugins/notifications/forms.py:55
 msgid "Unchanged (selected on each article)"
-msgstr ""
+msgstr "Uændret (valgt for hver enkelt artikel)"
 
 #: plugins/notifications/forms.py:56
 msgid "No emails"
-msgstr ""
+msgstr "Ingen emails"
 
 #: plugins/notifications/forms.py:57
 msgid "Email on any change"
-msgstr ""
+msgstr "Email ved enhver form for ændringer"
 
 #: plugins/notifications/forms.py:109
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:5
 msgid "Notifications"
-msgstr ""
+msgstr "Notifikationer"
 
 #: plugins/notifications/forms.py:116
 #: templates/wiki/includes/article_menu.html:9 templates/wiki/settings.html:5
 msgid "Settings"
-msgstr ""
+msgstr "Indstillinger"
 
 #: plugins/notifications/forms.py:120
 msgid "When this article is edited"
-msgstr ""
+msgstr "Når denne artikel bliver redigeret"
 
 #: plugins/notifications/forms.py:123
 msgid "Also receive emails about article edits"
-msgstr ""
+msgstr "Modtag også emails om artikel ændringer."
 
 #: plugins/notifications/forms.py:168
 msgid "Your notification settings were updated."
-msgstr ""
+msgstr "Dine notifikations indstillinger blev opdateret."
 
 #: plugins/notifications/forms.py:171
 msgid "Your notification settings were unchanged, so nothing saved."
-msgstr ""
+msgstr "Dine notifikations indstillinger blev ikke ændret, derfor heller ikke gemt."
 
 #: plugins/notifications/models.py:25
 #, python-format
 msgid "%(user)s subscribing to %(article)s (%(type)s)"
-msgstr ""
+msgstr "%(user)s abonnerer på %(article)s (%(type)s)"
 
 #: plugins/notifications/models.py:53
 #, python-format
 msgid "Article deleted: %s"
-msgstr ""
+msgstr "Artikel slettet: %s"
 
 #: plugins/notifications/models.py:61
 #, python-format
 msgid "Article modified: %s"
-msgstr ""
+msgstr "Artikel ændret: %s"
 
 #: plugins/notifications/models.py:69
 #, python-format
 msgid "New article created: %s"
-msgstr ""
+msgstr "Ny artikel oprettet: %s"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/menubaritem.html:4
 msgid "No notifications"
-msgstr ""
+msgstr "Ingen notifikationer"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/menubaritem.html:9
 msgid "Clear notifications list"
-msgstr ""
+msgstr "Ryd notifikations liste"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/menubaritem.html:15
 msgid "Notification settings"
-msgstr ""
+msgstr "Notifikations indstillinger"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:9
 msgid "Your notification settings"
-msgstr ""
+msgstr "Dine notifikations indstillinger"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:11
 msgid "Manage how often you receive notifications"
-msgstr ""
+msgstr "Administrer hvor ofte du modtager notifikationer"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:20
 msgid "Settings for"
-msgstr ""
+msgstr "Indstillinger til"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:20
 msgid "articles"
-msgstr ""
+msgstr "artikler"
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:27
 msgid "You are not subscribed to any notifications yet."
-msgstr ""
+msgstr "Du abonnerer ikke på nogen notifikationer endnu."
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:35
 #: templates/wiki/edit.html:45 templates/wiki/edit.html.py:72
@@ -1269,204 +1270,204 @@ msgstr "Gem ændringer"
 #: plugins/notifications/views.py:32
 #, python-format
 msgid "You will receive notifications %(interval)s for %(articles)d articles"
-msgstr ""
+msgstr "Du vil modtage notifikationer %(interval)s for %(articles)d artikler"
 
 #: templates/wiki/accounts/account_settings.html:4
 #: templates/wiki/accounts/account_settings.html:7
 #: templates/wiki/base_site.html:72
 msgid "Account Settings"
-msgstr ""
+msgstr "Konto Indstillinger"
 
 #: templates/wiki/accounts/account_settings.html:11
 msgid "Update"
-msgstr ""
+msgstr "Opdater"
 
 #: templates/wiki/accounts/login.html:4 templates/wiki/base_site.html.py:93
 msgid "Log in"
-msgstr ""
+msgstr "Log ind"
 
 #: templates/wiki/accounts/login.html:10
 msgid "Please log in"
-msgstr ""
+msgstr "Log ind"
 
 #: templates/wiki/accounts/login.html:18
 msgid "Log me in..."
-msgstr ""
+msgstr "Log ind..."
 
 #: templates/wiki/accounts/login.html:25
 msgid "Don't have an account?"
-msgstr ""
+msgstr "Har du en konto?"
 
 #: templates/wiki/accounts/login.html:25 templates/wiki/accounts/signup.html:3
 #: templates/wiki/accounts/signup.html:6 templates/wiki/base_site.html:96
 msgid "Sign up"
-msgstr ""
+msgstr "Opret konto"
 
 #: templates/wiki/accounts/signup.html:14
 msgid "Sign me up..."
-msgstr ""
+msgstr "Opret konto..."
 
 #: templates/wiki/article.html:39
 msgid "This article was last modified:"
-msgstr ""
+msgstr "Denne artikel blev sidst redigeret:"
 
 #: templates/wiki/base_site.html:65
 msgid "Log out"
-msgstr ""
+msgstr "Log ud"
 
 #: templates/wiki/base_site.html:80
 msgid "Deleted articles"
-msgstr ""
+msgstr "Slettede artikler"
 
 #: templates/wiki/base_site.html:103
 msgid "Home"
-msgstr ""
+msgstr "Hjem"
 
 #: templates/wiki/base_site.html:104
 msgid "About"
-msgstr ""
+msgstr "Om"
 
 #: templates/wiki/base_site.html:137
 msgid ""
 "Powered by <a href=\"http://www.django-wiki.org\">django-wiki</a>, an open "
 "source application under the <a href=\"http://www.gnu.org/licenses/quick-"
 "guide-gplv3.html\">GPLv3</a> license. Let knowledge be the cure."
-msgstr ""
+msgstr "Lavet med <a href=\"http://www.django-wiki.org\">django-wiki</a>, et open source program på <a href=\"http://www.gnu.org/licenses/quick-guide-gplv3.html\">GPLv3</a> licens. Let knowledge be the cure."
 
 #: templates/wiki/create.html:5 templates/wiki/create.html.py:44
 msgid "Add new article"
-msgstr ""
+msgstr "Tilføj ny artikel"
 
 #: templates/wiki/create.html:57
 msgid "Create article"
-msgstr ""
+msgstr "Opret artikel"
 
 #: templates/wiki/create_root.html:4
 msgid "Create root article"
-msgstr ""
+msgstr "Opret 'root' artikel"
 
 #: templates/wiki/create_root.html:22 templates/wiki/root_missing.html:10
 msgid "Congratulations!"
-msgstr ""
+msgstr "Tillykke!"
 
 #: templates/wiki/create_root.html:24
 msgid ""
 "You have django-wiki installed... but there are no articles. So it's time to"
 " create the first one, the root article."
-msgstr ""
+msgstr "Du har installeret django-wiki... men der er ingen artikler. Så nu er det tid til at oprette den første 'rod' artikel."
 
 #: templates/wiki/create_root.html:25
 msgid ""
 "In the beginning, it will only be editable by administrators, but you can "
 "define permissions after."
-msgstr ""
+msgstr "Til at begynde med er det kun muligt for administratorer at redigere, men du kan definere hvem der skal have hvilke tilladelser efterfølgende."
 
 #: templates/wiki/create_root.html:28
 msgid "Root article"
-msgstr ""
+msgstr "'Rod' artikel"
 
 #: templates/wiki/create_root.html:35
 msgid "Create root"
-msgstr ""
+msgstr "Opret 'rod'"
 
 #: templates/wiki/delete.html:5 templates/wiki/delete.html.py:52
 #: templates/wiki/edit.html:50
 msgid "Delete article"
-msgstr ""
+msgstr "Slet artikel"
 
 #: templates/wiki/delete.html:11
 msgid "You cannot delete a root article."
-msgstr ""
+msgstr "Du kan ikke slette en 'rod' artikel."
 
 #: templates/wiki/delete.html:17
 msgid ""
 "You cannot delete this article because you do not have permission to delete "
 "articles with children. Try to remove the children manually one-by-one."
-msgstr ""
+msgstr "Du kan ikke slette denne artikel fordi du ikke har tilladelse til at slette artikler der har underartikler. Forsøg at slette underartiklerne manuelt en af gangen."
 
 #: templates/wiki/delete.html:23
 msgid ""
 "You are deleting an article. This means that its children will be deleted as"
 " well. If you choose to purge, children will also be purged!"
-msgstr ""
+msgstr "Du er ved at markere en artikel som slettet. Dette betyder at underartikler også vil blive markeret som slettet. Hvis du vælger at slette artiklen helt vil underartiklerne ligeledes blive slettet helt."
 
 #: templates/wiki/delete.html:25
 msgid "Articles that will be deleted"
-msgstr ""
+msgstr "Artikler der slettes"
 
 #: templates/wiki/delete.html:31
 msgid "...and more!"
-msgstr ""
+msgstr "...og mere!"
 
 #: templates/wiki/delete.html:39
 msgid "You are deleting an article. Please confirm."
-msgstr ""
+msgstr "Du er ved at slette en artikel. Venligst bekræft."
 
 #: templates/wiki/deleted.html:5 templates/wiki/deleted.html.py:14
 msgid "Article deleted"
-msgstr ""
+msgstr "Artikel slettet"
 
 #: templates/wiki/deleted.html:17
 msgid "The article you were looking for has been deleted."
-msgstr ""
+msgstr "Den artikel du ledte efter er blevet slettet."
 
 #: templates/wiki/deleted.html:26
 msgid "You may restore this article and its children by clicking restore."
-msgstr ""
+msgstr "Du kan gendanne denne artikel og dets underartikler ved at vælge Gendan"
 
 #: templates/wiki/deleted.html:41
 msgid ""
 "You may remove this article and any children permanently and free their "
 "slugs by clicking the below button. This action cannot be undone."
-msgstr ""
+msgstr "Du kan fjerne denne artikel og alle under-artikler permanent og dermed frigøre deres URL-slugs ved at trykke på knappen nedenfor. Handlingen kan ikke fortrydes."
 
 #: templates/wiki/deleted_list.html:4
 msgid "Admin Panel"
-msgstr ""
+msgstr "Administrator Panel"
 
 #: templates/wiki/deleted_list.html:8
 msgid "Deleted Articles"
-msgstr ""
+msgstr "Slettede Artikler"
 
 #: templates/wiki/deleted_list.html:13
 msgid "Page Title"
-msgstr ""
+msgstr "Side Titel"
 
 #: templates/wiki/deleted_list.html:14
 msgid "Date Deleted"
-msgstr ""
+msgstr "Slette Dato"
 
 #: templates/wiki/deleted_list.html:15
 msgid "Restore Article"
-msgstr ""
+msgstr "Gendan Artikel"
 
 #: templates/wiki/deleted_list.html:30
 msgid "No deleted articles to display"
-msgstr ""
+msgstr "Ingen slettede artikler at vise"
 
 #: templates/wiki/dir.html:5
 msgid "Listing articles in"
-msgstr ""
+msgstr "Lister artikler i"
 
 #: templates/wiki/dir.html:17
 msgid "Up one level"
-msgstr ""
+msgstr "Et niveau op"
 
 #: templates/wiki/dir.html:22
 msgid "Add article"
-msgstr ""
+msgstr "Tilføj artikel"
 
 #: templates/wiki/dir.html:30
 msgid "clear"
-msgstr ""
+msgstr "ryd"
 
 #: templates/wiki/dir.html:40
 msgid "article,articles"
-msgstr ""
+msgstr "artikel,artikler"
 
 #: templates/wiki/dir.html:40
 msgid "is,are"
-msgstr ""
+msgstr "er"
 
 #: templates/wiki/dir.html:40
 #, python-format
@@ -1474,61 +1475,61 @@ msgid ""
 "\n"
 "      Browsing <strong><a href=\"%(self_url)s\">/%(path)s</a></strong>. There %(articles_plur_verb)s <strong>%(cnt)s %(articles_plur)s</strong> in this level.\n"
 "    "
-msgstr ""
+msgstr "\n      At gennemse <strong><a href=\"%(self_url)s\">/%(path)s</a></strong>. Der %(articles_plur_verb)s <strong>%(cnt)s %(articles_plur)s</strong> på dette niveau.\n    "
 
 #: templates/wiki/dir.html:50 templates/wiki/search.html.py:31
 msgid "Last modified"
-msgstr ""
+msgstr "Sidst ændret"
 
 #: templates/wiki/dir.html:74 templates/wiki/search.html.py:40
 msgid "There are no articles in this level"
-msgstr ""
+msgstr "Der er ingen artikler på dette niveau"
 
 #: templates/wiki/edit.html:5 templates/wiki/includes/article_menu.html:34
 msgid "Edit"
-msgstr ""
+msgstr "Rediger"
 
 #: templates/wiki/edit.html:11
 msgid ""
 "<strong>Warning:</strong> You are not logged in. Your IP address will be "
 "logged."
-msgstr ""
+msgstr "<strong>Advarsel:</strong> Du er ikke logget ind. Din IP adresse vil blive logget."
 
 #: templates/wiki/edit.html:12
 msgid "Click here to log in"
-msgstr ""
+msgstr "Klik her for at logge ind"
 
 #: templates/wiki/edit.html:41
 msgid "Preview"
-msgstr ""
+msgstr "Forhåndsvisning"
 
 #: templates/wiki/edit.html:68
 msgid "Back to editor"
-msgstr ""
+msgstr "Tilbage til redigering"
 
 #: templates/wiki/error.html:5 templates/wiki/error.html.py:26
 msgid "Error"
-msgstr ""
+msgstr "Fejl"
 
 #: templates/wiki/error.html:15
 msgid "Not found"
-msgstr ""
+msgstr "Ikke fundet"
 
 #: templates/wiki/error.html:18
 msgid "This article was not found, and neither was its parent article."
-msgstr ""
+msgstr "Denne artikel blev ikke fundet og det gjorde dens overartikel heller ikke."
 
 #: templates/wiki/error.html:20
 msgid "Start page"
-msgstr ""
+msgstr "Startside"
 
 #: templates/wiki/error.html:30
 msgid "There was some sort of error accessing this page. Sorry!"
-msgstr ""
+msgstr "Der opstod en fejl på denne side. Det må du undskylde!"
 
 #: templates/wiki/error.html:38
 msgid "Back to"
-msgstr ""
+msgstr "Tilbage til"
 
 #: templates/wiki/history.html:49
 msgid ""
@@ -1536,57 +1537,57 @@ msgid ""
 "to see how the article looked at this stage. At the bottom of this page, you"
 " can change to a particular revision or merge an old revision with the "
 "current one."
-msgstr ""
+msgstr "Vælg hver enkelt revision for at se en liste med de redigerede linjer. Vælg Forhåndsvisning for at se hvordan artiklen så ud i den valgte udgave. I bunden af denne side kan du ændre artiklen til en bestemt udgave eller sammenflette en gammel version med den nuværende."
 
 #: templates/wiki/history.html:72
 msgid "no log message"
-msgstr ""
+msgstr "ingen logbesked"
 
 #: templates/wiki/history.html:84 templates/wiki/history.html.py:89
 msgid "Preview this revision"
-msgstr ""
+msgstr "Forhåndsvis denne revision"
 
 #: templates/wiki/history.html:103
 msgid "Auto log:"
-msgstr ""
+msgstr "Automatisk log:"
 
 #: templates/wiki/history.html:111
 msgid "Change"
-msgstr ""
+msgstr "Ændring"
 
 #: templates/wiki/history.html:129
 msgid "Merge selected with current..."
-msgstr ""
+msgstr "Sammenflet valgte med nuværende..."
 
 #: templates/wiki/history.html:133
 msgid "Switch to selected version"
-msgstr ""
+msgstr "Benyt til den valgte version"
 
 #: templates/wiki/history.html:152 templates/wiki/history.html.py:183
 msgid "Back to history view"
-msgstr ""
+msgstr "Tilbage til historik"
 
 #: templates/wiki/history.html:157 templates/wiki/history.html.py:162
 msgid "Switch to this version"
-msgstr ""
+msgstr "Benyt denne version"
 
 #: templates/wiki/history.html:174
 msgid "Merge with current"
-msgstr ""
+msgstr "Sammenflet med nuværende"
 
 #: templates/wiki/history.html:175
 msgid ""
 "When you merge a revision with the current, all data will be retained from "
 "both versions and merged at its approximate location from each revision."
-msgstr ""
+msgstr "Når du sammenfletter en udgave med den nuværende vil al data fra begge versioner være bevaret."
 
 #: templates/wiki/history.html:175
 msgid "After this, it's important to do a manual review."
-msgstr ""
+msgstr "Efter dette er det vigtigt med en manuel gennemgang."
 
 #: templates/wiki/history.html:188 templates/wiki/history.html.py:193
 msgid "Create new merged version"
-msgstr ""
+msgstr "Skab ny sammflettet version"
 
 #: templates/wiki/includes/anonymous_blocked.html:7
 #, python-format
@@ -1594,241 +1595,241 @@ msgid ""
 "\n"
 "  You need to <a href=\"%(login_url)s\">log in</a> or <a href=\"%(signup_url)s\">sign up</a> to use this function.\n"
 "  "
-msgstr ""
+msgstr "\n  Du skal være <a href=\"%(login_url)s\">logget ind</a> eller <a href=\"%(signup_url)s\">oprettet som bruger</a> for at benytte denne funktion.\n  "
 
 #: templates/wiki/includes/anonymous_blocked.html:11
 msgid "You need to log in or sign up to use this function."
-msgstr ""
+msgstr "Du skal være oprette som bruger eller være logget ind for at kunne benytte denne funktion."
 
 #: templates/wiki/includes/article_menu.html:26
 msgid "Changes"
-msgstr ""
+msgstr "Ændringer"
 
 #: templates/wiki/includes/article_menu.html:41
 msgid "View Source"
-msgstr ""
+msgstr "Vis Kilde"
 
 #: templates/wiki/includes/article_menu.html:49
 msgid "View"
-msgstr ""
+msgstr "Vis"
 
 #: templates/wiki/includes/breadcrumbs.html:13
 #: templates/wiki/includes/breadcrumbs.html:39
 msgid "Sub-articles for"
-msgstr ""
+msgstr "Underartikler for"
 
 #: templates/wiki/includes/breadcrumbs.html:25
 msgid "No sub-articles"
-msgstr ""
+msgstr "Ingen underartikler"
 
 #: templates/wiki/includes/breadcrumbs.html:28
 msgid "...and more"
-msgstr ""
+msgstr "...og mere"
 
 #: templates/wiki/includes/breadcrumbs.html:32
 msgid "Browse articles in this level"
-msgstr ""
+msgstr "Gennemse artikler på dette niveau"
 
 #: templates/wiki/includes/breadcrumbs.html:48
 msgid "New article next to"
-msgstr ""
+msgstr "Ny artikel ved siden af"
 
 #: templates/wiki/includes/breadcrumbs.html:53
 msgid "New article below"
-msgstr ""
+msgstr "Ny artikel under"
 
 #: templates/wiki/includes/revision_info.html:10
 msgid "by"
-msgstr ""
+msgstr "af"
 
 #: templates/wiki/includes/revision_info.html:10
 msgid "anonymous (IP logged)"
-msgstr ""
+msgstr "anonym (IP bliver logget)"
 
 #: templates/wiki/includes/revision_info.html:18
 msgid "restored"
-msgstr ""
+msgstr "gendannet"
 
 #: templates/wiki/includes/revision_info.html:24
 msgid "unlocked"
-msgstr ""
+msgstr "ikke låst"
 
 #: templates/wiki/permission_denied.html:8
 msgid "Permission Denied"
-msgstr ""
+msgstr "Adgang Nægtet"
 
 #: templates/wiki/permission_denied.html:11
 msgid "Sorry, you don't have permission to access this page."
-msgstr ""
+msgstr "Desværre, du har ikke tilladelse til at tilgå denne side."
 
 #: templates/wiki/permission_denied.html:16
 msgid "This article is locked for editing."
-msgstr ""
+msgstr "Denne artikel er låst og kan derfor ikke redigeres."
 
 #: templates/wiki/permission_denied.html:22
 msgid "Back to article"
-msgstr ""
+msgstr "Tilbage til artikel"
 
 #: templates/wiki/preview_inline.html:8
 msgid "Previewing revision"
-msgstr ""
+msgstr "Forhåndsvisning af denne udgave"
 
 #: templates/wiki/preview_inline.html:15
 msgid "Previewing merge between"
-msgstr ""
+msgstr "Forhåndsvisning af sammenfletning mellem"
 
 #: templates/wiki/preview_inline.html:17
 msgid "and"
-msgstr ""
+msgstr "og"
 
 #: templates/wiki/preview_inline.html:22 views/article.py:841
 msgid "You cannot merge with a deleted revision"
-msgstr ""
+msgstr "Du kan ikke sammenflette med en slettet version"
 
 #: templates/wiki/preview_inline.html:31
 msgid "This revision has been deleted."
-msgstr ""
+msgstr "Denne udgave er blevet slettet."
 
 #: templates/wiki/preview_inline.html:32
 msgid "Restoring to this revision will mark the article as deleted."
-msgstr ""
+msgstr "At gå tilbage til denne udgave vil markere artiklen som slettet."
 
 #: templates/wiki/root_missing.html:12
 msgid ""
 "You have django-wiki installed and it seems to be working. But there are no "
 "articles yet."
-msgstr ""
+msgstr "Du har installeret django-wiki og det lader til at virke. Men der er ingen artikler endnu."
 
 #: templates/wiki/root_missing.html:17
 msgid ""
 "Not to worry! You simply have to login with a superuser account and create "
 "the first article in the root of the URL hierarchy."
-msgstr ""
+msgstr "Slap helt af! Du skal bare logge ind med en superbruger-konto og oprette din første artikel i 'roden' af URL-hierakiet."
 
 #: templates/wiki/root_missing.html:21
 msgid "Click here to login"
-msgstr ""
+msgstr "Klik her for at logge ind"
 
 #: templates/wiki/root_missing.html:27
 msgid ""
 "But since you're logged in as a superuser, we should really get started..."
-msgstr ""
+msgstr "Men da du er logget ind som superbruger er det bare om at komme igang..."
 
 #: templates/wiki/root_missing.html:29
 msgid "Yes, I'll go and create the first article"
-msgstr ""
+msgstr "Ja, jeg vil oprette den første artikel"
 
 #: templates/wiki/root_missing.html:30
 msgid "No thanks, I'd rather read the documentation"
-msgstr ""
+msgstr "Nej tak, jeg vil hellere læse dokumentationen"
 
 #: templates/wiki/search.html:5 templates/wiki/search.html.py:9
 msgid "Search results for:"
-msgstr ""
+msgstr "Søgeresultater for:"
 
 #: templates/wiki/search.html:23
 #, python-format
 msgid "Your search returned <strong>%(cnt)s</strong> results."
-msgstr ""
+msgstr "Din søgning gav <strong>%(cnt)s</strong> resultater."
 
 #: templates/wiki/source.html:5
 msgid "Source of"
-msgstr ""
+msgstr "Kilde af"
 
 #: templates/wiki/source.html:10
 msgid "This article is currently locked for editing."
-msgstr ""
+msgstr "Denne artikel er låst og kan derfor ikke redigeres."
 
 #: views/accounts.py:49
 msgid "Account signup is only allowed for administrators."
-msgstr ""
+msgstr "Oprettelse af konto er kun tilladt for administratorer."
 
 #: views/accounts.py:63
 msgid "You are now signed up... and now you can sign in!"
-msgstr ""
+msgstr "Du har nu oprettet en konto og kan logge ind."
 
 #: views/accounts.py:76
 msgid "You are no longer logged in. Bye bye!"
-msgstr ""
+msgstr "Du er ikke længere logget ind. På gensyn."
 
 #: views/accounts.py:109
 msgid "You are now logged in! Have fun!"
-msgstr ""
+msgstr "Du er nu logget ind! Slå dig løs!"
 
 #: views/accounts.py:133
 msgid "Account info saved!"
-msgstr ""
+msgstr "Konto info gemt!"
 
 #: views/article.py:111
 #, python-format
 msgid "New article '%s' created."
-msgstr ""
+msgstr "Ny artikel '%s' oprettet."
 
 #: views/article.py:119
 #, python-format
 msgid "There was an error creating this article: %s"
-msgstr ""
+msgstr "Der opstod en fejl ved oprettelse af denne artikel: %s"
 
 #: views/article.py:124
 msgid "There was an error creating this article."
-msgstr ""
+msgstr "Der opstod en fejl ved oprettelse af denne artikel."
 
 #: views/article.py:215
 msgid ""
 "This article cannot be deleted because it has children or is a root article."
-msgstr ""
+msgstr "Denne artikel kan ikke slettes fordi den har en underartikel eller er en 'rod' artikel."
 
 #: views/article.py:225
 msgid ""
 "This article together with all its contents are now completely gone! Thanks!"
-msgstr ""
+msgstr "Denne artikel og al dens indhold er nu helt slettet!"
 
 #: views/article.py:234
 #, python-format
 msgid ""
 "The article \"%s\" is now marked as deleted! Thanks for keeping the site "
 "free from unwanted material!"
-msgstr ""
+msgstr "Denne artikel \"%s\" er nu markeret som slettet! Tak fordi du holder siden fri for uønsket materiale!"
 
 #: views/article.py:351
 msgid "Your changes were saved."
-msgstr ""
+msgstr "Dine ændringer blev gemt."
 
 #: views/article.py:365
 msgid "Please note that your article text has not yet been saved!"
-msgstr ""
+msgstr "Vær opmærksom på at din artikeltekst ikke er blevet gemt endnu!"
 
 #: views/article.py:396
 msgid "A new revision of the article was successfully added."
-msgstr ""
+msgstr "En ny udgave af artiklen blev tilføjet."
 
 #: views/article.py:455
 msgid "Restoring article"
-msgstr ""
+msgstr "Gendan artikel"
 
 #: views/article.py:459
 #, python-format
 msgid "The article \"%s\" and its children are now restored."
-msgstr ""
+msgstr "Denne artikel \"%s\" og underartikler er nu gendannet."
 
 #: views/article.py:732
 #, python-format
 msgid ""
 "The article %(title)s is now set to display revision #%(revision_number)d"
-msgstr ""
+msgstr "Denne artikle %(title)s er nu blevet sat til at vise udgave #%(revision_number)d"
 
 #: views/article.py:808
 msgid "New title"
-msgstr ""
+msgstr "Ny titel"
 
 #: views/article.py:852
 #, python-format
 msgid "Merge between revision #%(r1)d and revision #%(r2)d"
-msgstr ""
+msgstr "Sammenflet udgave #%(r1)d og udgave #%(r2)d"
 
 #: views/article.py:863
 #, python-format
 msgid ""
 "A new revision was created: Merge between revision #%(r1)d and revision "
 "#%(r2)d"
-msgstr ""
+msgstr "En ny udgave er blevet oprettet: Sammenflet udgave #%(r1)d og udgave #%(r2)d"

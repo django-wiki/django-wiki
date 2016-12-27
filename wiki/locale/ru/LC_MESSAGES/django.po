@@ -2,14 +2,15 @@
 # Translators:
 # Corrections: Sergey Minozhenko <sergey.minozhenko@stratatech.ru> and Mary Chikitkina<mchikitkina@gmail.com>, 2013
 # Dmitry Borisoglebsky <dmitry.borisoglebsky@gmail.com>, 2015
+# Kostya Charkin <93kostya@gmail.com>, 2016
 # crazyzubr <hjcnbckfd@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: django-wiki\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-05 22:53+0200\n"
-"PO-Revision-Date: 2016-05-05 20:55+0000\n"
-"Last-Translator: Benjamin Bach <benjaoming@gmail.com>\n"
+"PO-Revision-Date: 2016-11-14 16:07+0000\n"
+"Last-Translator: Kostya Charkin <93kostya@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/django-wiki/django-wiki/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -101,7 +102,7 @@ msgstr "Укажите причину изменения, которая буд�
 
 #: forms.py:201
 msgid "Article is missing title or has an invalid title"
-msgstr ""
+msgstr "У статьи отсутствует либо неправильное название"
 
 #: forms.py:215
 msgid ""
@@ -266,7 +267,7 @@ msgstr "Поиск..."
 
 #: forms.py:645
 msgid "Passwords don't match"
-msgstr ""
+msgstr "Пароли не совпадают"
 
 #: models/article.py:39 models/pluginbase.py:177
 #: plugins/attachments/models.py:33
@@ -425,7 +426,7 @@ msgstr ""
 msgid ""
 "This field is automatically updated, but you need to populate it when "
 "creating a new URL path."
-msgstr ""
+msgstr "Это поле обновляется автоматически, но вам необходимо заполнить его при создании нового URL-а."
 
 #: models/urlpath.py:80
 msgid "slug"
@@ -433,7 +434,7 @@ msgstr "URL-путь"
 
 #: models/urlpath.py:88
 msgid "Position of URL path in the tree."
-msgstr ""
+msgstr "Положение URL-а в дереве."
 
 #: models/urlpath.py:193
 msgid "(root)"
@@ -542,7 +543,7 @@ msgstr "Разрешение файла не найдено. Плохо!"
 msgid ""
 "The following filename is illegal: {filename:s}. Extension has to be one of "
 "{extensions:s}"
-msgstr ""
+msgstr "Следующее имя файла является неправильным {filename:s}. Расширение должно быть одним из следующих {extensions:s}"
 
 #: plugins/attachments/models.py:131
 msgid "file"
@@ -1275,11 +1276,11 @@ msgstr "Вы получите уведомления %(interval)s для %(artic
 #: templates/wiki/accounts/account_settings.html:7
 #: templates/wiki/base_site.html:72
 msgid "Account Settings"
-msgstr ""
+msgstr "Настройки аккаунта"
 
 #: templates/wiki/accounts/account_settings.html:11
 msgid "Update"
-msgstr ""
+msgstr "Обновить"
 
 #: templates/wiki/accounts/login.html:4 templates/wiki/base_site.html.py:93
 msgid "Log in"
@@ -1316,7 +1317,7 @@ msgstr "Выход"
 
 #: templates/wiki/base_site.html:80
 msgid "Deleted articles"
-msgstr ""
+msgstr "Удаленные статьи"
 
 #: templates/wiki/base_site.html:103
 msgid "Home"
@@ -1422,15 +1423,15 @@ msgstr "Вы можете удалить эту статью и все ее по
 
 #: templates/wiki/deleted_list.html:4
 msgid "Admin Panel"
-msgstr ""
+msgstr "Панель администратора"
 
 #: templates/wiki/deleted_list.html:8
 msgid "Deleted Articles"
-msgstr ""
+msgstr "Удаленные статьи"
 
 #: templates/wiki/deleted_list.html:13
 msgid "Page Title"
-msgstr ""
+msgstr "Название страницы"
 
 #: templates/wiki/deleted_list.html:14
 msgid "Date Deleted"
@@ -1438,11 +1439,11 @@ msgstr ""
 
 #: templates/wiki/deleted_list.html:15
 msgid "Restore Article"
-msgstr ""
+msgstr "Восстановить статью"
 
 #: templates/wiki/deleted_list.html:30
 msgid "No deleted articles to display"
-msgstr ""
+msgstr "Нет удаленных статей для отображения"
 
 #: templates/wiki/dir.html:5
 msgid "Listing articles in"
@@ -1757,7 +1758,7 @@ msgstr "Вы авторизованы! Удачи!"
 
 #: views/accounts.py:133
 msgid "Account info saved!"
-msgstr ""
+msgstr "Информация об аккаунте сохранена!"
 
 #: views/article.py:111
 #, python-format
@@ -1800,7 +1801,7 @@ msgstr "Обратите внимание, что текст статьи еще
 
 #: views/article.py:396
 msgid "A new revision of the article was successfully added."
-msgstr ""
+msgstr "Новая ревизия статьи успешно добавлена."
 
 #: views/article.py:455
 msgid "Restoring article"

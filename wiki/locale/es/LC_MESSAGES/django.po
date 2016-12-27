@@ -2,13 +2,14 @@
 # Translators:
 # genisvg <genis.gese-valentin@bzh.uni-heidelberg.de>, 2016
 # JUAN DIEGO CABALLERO <jd_caballero@hotmail.com>, 2015
+# teury diaz <teurydc@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: django-wiki\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-05 22:53+0200\n"
-"PO-Revision-Date: 2016-05-18 11:29+0000\n"
-"Last-Translator: genisvg <genis.gese-valentin@bzh.uni-heidelberg.de>\n"
+"PO-Revision-Date: 2016-11-14 03:34+0000\n"
+"Last-Translator: teury diaz <teurydc@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/django-wiki/django-wiki/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1274,11 +1275,11 @@ msgstr "Recibirá notificación %(interval)s para %(articles)d artículos"
 #: templates/wiki/accounts/account_settings.html:7
 #: templates/wiki/base_site.html:72
 msgid "Account Settings"
-msgstr ""
+msgstr "Configuraciones de la cuenta"
 
 #: templates/wiki/accounts/account_settings.html:11
 msgid "Update"
-msgstr ""
+msgstr "Actualizar"
 
 #: templates/wiki/accounts/login.html:4 templates/wiki/base_site.html.py:93
 msgid "Log in"
@@ -1315,7 +1316,7 @@ msgstr "Cerrar la sesión"
 
 #: templates/wiki/base_site.html:80
 msgid "Deleted articles"
-msgstr ""
+msgstr "Eliminar Artículos"
 
 #: templates/wiki/base_site.html:103
 msgid "Home"
@@ -1421,27 +1422,27 @@ msgstr "Puede borrar este artículo y los sub-artículos de manera permanente pa
 
 #: templates/wiki/deleted_list.html:4
 msgid "Admin Panel"
-msgstr ""
+msgstr "Panel de administración"
 
 #: templates/wiki/deleted_list.html:8
 msgid "Deleted Articles"
-msgstr ""
+msgstr "Eliminar Artículo"
 
 #: templates/wiki/deleted_list.html:13
 msgid "Page Title"
-msgstr ""
+msgstr "Título de la página"
 
 #: templates/wiki/deleted_list.html:14
 msgid "Date Deleted"
-msgstr ""
+msgstr "Fecha eliminada"
 
 #: templates/wiki/deleted_list.html:15
 msgid "Restore Article"
-msgstr ""
+msgstr "Restaurar Artículo"
 
 #: templates/wiki/deleted_list.html:30
 msgid "No deleted articles to display"
-msgstr ""
+msgstr "No hay artículos eliminados para mostrar"
 
 #: templates/wiki/dir.html:5
 msgid "Listing articles in"
@@ -1756,7 +1757,7 @@ msgstr "Ha ingresado !"
 
 #: views/accounts.py:133
 msgid "Account info saved!"
-msgstr ""
+msgstr "¡Información de la cuenta guardada!"
 
 #: views/article.py:111
 #, python-format
