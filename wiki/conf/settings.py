@@ -1,5 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 
+import bleach
+
 from django.conf import settings as django_settings
 from django.core.files.storage import default_storage
 from django.core.urlresolvers import reverse_lazy
@@ -26,12 +28,18 @@ MARKDOWN_KWARGS = {
         'codehilite',
         'sane_lists',
     ],
-    'safe_mode': 'replace',
     'extension_configs': {
         'toc': {
             'title': _('Table of Contents')}},
 }
 MARKDOWN_KWARGS.update(getattr(django_settings, 'WIKI_MARKDOWN_KWARGS', {}))
+
+# Allowed tags in Markdown article contents.
+MARKDOWN_HTML_WHITELIST = getattr(
+    django_settings,
+    'WIKI_MARKDOWN_HTML_WHITELIST',
+    bleach.ALLOWED_TAGS
+)
 
 # This slug is used in URLPath if an article has been deleted. The children of the
 # URLPath of that article are moved to lost and found. They keep their permissions

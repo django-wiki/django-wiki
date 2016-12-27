@@ -28,6 +28,7 @@ def read_file(fname):
 
 requirements = [
     "Django>=1.8",
+    "bleach>=1.5,<2",
     "Pillow",
     "django-nyt>=1.0b1",
     "six",
