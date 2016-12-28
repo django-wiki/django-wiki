@@ -2,34 +2,16 @@ Release notes
 =============
 
 
-About the versioning
---------------------
-
-Up until the django-wiki 0.1 release, versions have been 0.0.1-0.0.24 with
-migrations kept in South and without any serious issues of upgrading,
-``python manage.py migrate`` was enough.
-
-*django-wiki 0.1* is cutting ties and migrations are being reset.
-This means that you can upgrade directly from upcoming 0.0.24 to 0.1 but upgrades
-from previous versions bypassing 0.0.24 are not possible.
-
-
 Release plan
 ------------
 
-Until django-wiki 0.2 is released, table names of plugins will defer depending
-on whether you are using South or django.db.migrations. If you want to upgrade
-your django to 1.7, please rename tables manually.
-
-Django-wiki 0.2 will *not* support South.. but development will remain in the
-0.1 branch for now.
-
-New features are introduced in the 0.1 branch until something seriously has to
-break due to some force majeure.
+Currently, the only series in development is the 0.2 series, and all bug fixes
+and new features are referred to this series, keeping in mind that they don't
+introduce any backwards incompatible changes.
 
 
-django-wiki 0.2 (dev)
----------------------
+django-wiki 0.2
+---------------
 
  * Translation updates from Transifex
 
