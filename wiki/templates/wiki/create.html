@@ -9,19 +9,6 @@
   {% addtoblock "js" %}
   <script type="text/javascript" src="{% static "admin/js/urlify.js" %}"></script>
   <script type="text/javascript">
-  // Replacement of django's URLify that doesn't remove any words.
-  function URLify(s, num_chars) {
-      s = downcode(s);
-      removelist = [];
-      r = new RegExp('\\b(' + removelist.join('|') + ')\\b', 'gi');
-      s = s.replace(r, '');
-      // if downcode doesn't hit, the char will be stripped here
-      s = s.replace(/[^-\w\s]/g, '');  // remove unneeded chars
-      s = s.replace(/^\s+|\s+$/g, ''); // trim leading/trailing spaces
-      s = s.replace(/\s+/g, '_');      // convert whitespace to underscores
-      s = s.toLowerCase();             // convert to lowercase
-      return s.substring(0, num_chars);// trim to first num_chars chars
-  }
   {% if not create_form.slug.value %}
   //<![CDATA[
   (function($) {
