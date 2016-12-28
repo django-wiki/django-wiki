@@ -9,7 +9,9 @@ from itertools import chain
 from django import forms
 from django.apps import apps
 from django.contrib.auth.forms import UserCreationForm
+from django.core import validators
 from django.core.urlresolvers import Resolver404, resolve
+from django.core.validators import RegexValidator
 from django.forms.widgets import HiddenInput
 from django.utils import timezone
 from django.utils.html import conditional_escape, escape
@@ -30,6 +32,32 @@ try:
 except ImportError:
     def force_unicode(x):
         return(x)
+
+
+validate_slug_numbers = RegexValidator(
+    r'^\d+$',
+    _("A 'slug' cannot consist solely of numbers."),
+    'invalid',
+    inverse_match=True
+)
+
+
+class WikiSlugField(forms.SlugField):
+    """
+    In future versions of Django, we might be able to define this field as
+    the default field directly on the model. For now, it's used in CreateForm.
+    """
+
+    default_validators = [validators.validate_slug, validate_slug_numbers]
+
+    def __init__(self, *args, **kwargs):
+        self.allow_unicode = kwargs.pop('allow_unicode', False)
+        if self.allow_unicode:
+            self.default_validators = [
+                validators.validate_unicode_slug,
+                validate_slug_numbers
+            ]
+        super(forms.SlugField, self).__init__(*args, **kwargs)
 
 
 User = get_user_model()
@@ -313,7 +341,7 @@ class CreateForm(forms.Form, SpamProtectionMixin):
         self.urlpath_parent = urlpath_parent
 
     title = forms.CharField(label=_('Title'),)
-    slug = forms.SlugField(
+    slug = WikiSlugField(
         label=_('Slug'),
         help_text=_(
             "This will be the address where your article can be found. Use only alphanumeric characters and - or _. Note that you cannot change the slug after creating the article."),

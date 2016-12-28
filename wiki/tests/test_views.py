@@ -3,7 +3,9 @@ from __future__ import absolute_import, print_function, unicode_literals
 import pprint
 
 from django.contrib.auth import authenticate
+from django.utils.html import escape
 from wiki import models
+from wiki.forms import validate_slug_numbers
 from wiki.models import reverse
 
 from .base import ArticleWebTestBase, WebTestBase
@@ -153,6 +155,21 @@ class CreateViewTest(ArticleWebTestBase):
             self.get_by_path('Level1/Test/'),
             'Content'
         )  # on level 2')
+
+    def test_illegal_slug(self):
+
+        c = self.c
+
+        # A slug cannot be '123' because it gets confused with an article ID.
+        response = c.post(
+            reverse('wiki:create', kwargs={'path': ''}),
+            {'title': 'Illegal slug', 'slug': '123', 'content': 'blah'}
+        )
+        self.assertContains(
+            response,
+            escape(validate_slug_numbers.message)
+        )
+
 
 
 class DeleteViewTest(ArticleWebTestBase):
