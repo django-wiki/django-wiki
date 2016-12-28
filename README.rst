@@ -43,7 +43,7 @@ News
 December 27, 2016
 ~~~~~~~~~~~~~~~~~
 
-0.2 final released: `Release notes <http://django-wiki.readthedocs.io/en/0.2/release_notes.html`__
+0.2 final released: `Release notes <http://django-wiki.readthedocs.io/en/0.2/release_notes.html>`_
 
 October 13, 2016
 ~~~~~~~~~~~~~~~~
