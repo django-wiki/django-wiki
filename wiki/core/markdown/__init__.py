@@ -1,10 +1,12 @@
 from __future__ import absolute_import, unicode_literals
 
+import bleach
+import markdown
+
 from wiki.conf import settings
 from wiki.core.markdown.mdx.previewlinks import PreviewLinksExtension
 from wiki.core.markdown.mdx.responsivetable import ResponsiveTableExtension
 from wiki.core.plugins import registry as plugin_registry
-import markdown
 
 
 class ArticleMarkdown(markdown.Markdown):
@@ -26,6 +28,10 @@ class ArticleMarkdown(markdown.Markdown):
         extensions += self.core_extensions()
         extensions += plugin_registry.get_markdown_extensions()
         return extensions
+
+    def convert(self, text, *args, **kwargs):
+        text = bleach.clean(text, tags=settings.MARKDOWN_HTML_WHITELIST)
+        return super(ArticleMarkdown, self).convert(text, *args, **kwargs)
 
 
 def article_markdown(text, article, *args, **kwargs):

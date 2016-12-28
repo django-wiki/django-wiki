@@ -37,12 +37,37 @@ django-wiki 0.2 (dev)
    * Updated languages since 0.1: Chinese, French, German, German, Russian, Spanish
 
  * Added Django 1.10 support #563
+ * Security: Do not depend on markdown ``safe_mode``, instead use ``bleach``.
  * Fix duplicate search results when logged in #582 (duvholt)
  * Fix memory leak in markdown extensions setting #564
  * Updated translations - Languages > 90% completed: Chinese (China), Portuguese (Brazil), Korean (Korea), French, Slovak, Spanish, Dutch, German, Russian, Finnish.
  * Taiwanese Chinese added (39% completed)
  * Cleanup documentation structure #575
-Support removed for:
+
+HTML contents
+~~~~~~~~~~~~~
+
+`Bleach <https://github.com/mozilla/bleach>`_ is now used to sanitize HTML
+before invoking Markdown.
+
+HTML escaping is done before Markdown parsing happens. In future Markdown
+versions, HTML escaping is no longer done, and ``safe_mode`` is removed. We have
+already removed ``safe_mode`` from the default ``WIKI_MARKDOWN_KWARGS`` setting,
+however if you have configured this yourself, you are advised to remove
+``safe_mode``.
+
+Allowed tags are from Bleach's default settings: ``a``, ``abbr``, ``acronym``,
+``b``, ``blockquote``, ``code``, ``em``, ``i``, ``li``, ``ol``, ``strong``,
+``ul``.
+
+Please use new setting ``WIKI_MARKDOWN_HTML_WHITELIST`` and set a list of
+allowed tags to customize behavior.
+
+
+Python and Django support
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Support has been removed for:
 
  * Python 2.6
  * Django < 1.8
