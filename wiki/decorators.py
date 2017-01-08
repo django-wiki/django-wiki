@@ -105,7 +105,7 @@ def get_article(func=None, can_read=True, can_write=False,  # noqa
                     return HttpResponseRedirect(
                         reverse(
                             "wiki:create", kwargs={'path': parent.path, }) +
-                        "?slug=%s" % pathlist[-1])
+                        "?slug=%s" % pathlist[-1].lower())
                 except models.URLPath.DoesNotExist:
                     return HttpResponseNotFound(
                         render_to_string(
