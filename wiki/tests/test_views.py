@@ -58,10 +58,18 @@ class ArticleViewViewTests(ArticleWebTestBase):
 
     def test_redirects_to_create_if_the_slug_is_unknown(self):
 
-        response = self.get_by_path('Unknown/')
+        response = self.get_by_path('unknown/')
         self.assertRedirects(
             response,
-            reverse('wiki:create', kwargs={'path': ''}) + '?slug=Unknown'
+            reverse('wiki:create', kwargs={'path': ''}) + '?slug=unknown'
+        )
+
+    def test_redirects_to_create_with_lowercased_slug(self):
+
+        response = self.get_by_path('Unknown_Linked_Page/')
+        self.assertRedirects(
+            response,
+            reverse('wiki:create', kwargs={'path': ''}) + '?slug=unknown_linked_page'
         )
 
     def test_article_list_update(self):
