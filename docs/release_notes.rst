@@ -9,6 +9,13 @@ Currently, the only series in development is the 0.2 series, and all bug fixes
 and new features are referred to this series, keeping in mind that they don't
 introduce any backwards incompatible changes.
 
+django-wiki 0.2.1 (master branch)
+---------------------------------
+
+Here are the release notes for the next release:
+
+ * Lowercase slugs when creating new pages with ``[[Like This]]`` #595 (Eric Clack)
+
 
 django-wiki 0.2
 ---------------
