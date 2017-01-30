@@ -15,6 +15,7 @@ django-wiki 0.2.1 (master branch)
 Here are the release notes for the next release:
 
  * Lowercase slugs when creating new pages with ``[[Like This]]`` #595 (Eric Clack)
+ * Remove ``wiki.plugins.mediawikiimport`` #597
 
 
 django-wiki 0.2
