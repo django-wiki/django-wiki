@@ -30,8 +30,13 @@ class ArticleMarkdown(markdown.Markdown):
         return extensions
 
     def convert(self, text, *args, **kwargs):
-        text = bleach.clean(text, tags=settings.MARKDOWN_HTML_WHITELIST)
-        return super(ArticleMarkdown, self).convert(text, *args, **kwargs)
+        html = super(ArticleMarkdown, self).convert(text, *args, **kwargs)
+        html = bleach.clean(
+            html,
+            tags=settings.MARKDOWN_HTML_WHITELIST,
+            attributes=settings.MARKDOWN_HTML_ATTRIBUTES,
+        )
+        return html
 
 
 def article_markdown(text, article, *args, **kwargs):

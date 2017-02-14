@@ -38,8 +38,42 @@ MARKDOWN_KWARGS.update(getattr(django_settings, 'WIKI_MARKDOWN_KWARGS', {}))
 MARKDOWN_HTML_WHITELIST = getattr(
     django_settings,
     'WIKI_MARKDOWN_HTML_WHITELIST',
-    bleach.ALLOWED_TAGS
+    bleach.ALLOWED_TAGS + [
+        'figure',
+        'figcaption',
+        'p',
+        'div',
+        'img',
+        'pre',
+        'span',
+        'table',
+        'thead',
+        'tbody',
+        'th',
+        'tr',
+        'td',
+        'dl',
+        'dt',
+        'dd',
+    ] + ['h{}'.format(n) for n in range(8)]
 )
+
+_default_attribute_whitelist = bleach.ALLOWED_ATTRIBUTES
+for tag in MARKDOWN_HTML_WHITELIST:
+    if tag not in _default_attribute_whitelist:
+        _default_attribute_whitelist[tag] = []
+    _default_attribute_whitelist[tag].append('class')
+    _default_attribute_whitelist[tag].append('id')
+
+_default_attribute_whitelist['img'].append('src')
+_default_attribute_whitelist['img'].append('alt')
+
+MARKDOWN_HTML_ATTRIBUTES = getattr(
+    django_settings,
+    'WIKI_MARKDOWN_HTML_ATTRIBUTES',
+    _default_attribute_whitelist
+)
+
 
 # This slug is used in URLPath if an article has been deleted. The children of the
 # URLPath of that article are moved to lost and found. They keep their permissions
