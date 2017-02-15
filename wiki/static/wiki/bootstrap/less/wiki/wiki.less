@@ -80,11 +80,28 @@ label { font-size: 16px; font-weight: normal; color: #777;}
 .wiki-article a.linknotfound {color: #C87;}
 
 .wiki-article pre {
-  max-width: 700px;
-  max-height: 150px;
-  overflow: auto;
-  word-wrap: normal;
-  white-space: pre;
+    max-width: 700px;
+    max-height: 150px;
+    overflow: auto;
+    word-wrap: normal;
+    white-space: pre;
+}
+
+
+.wiki-article .codehilitetable {
+    overflow: scroll;
+    max-width: 700px;
+    max-height: 250px;
+    pre {
+        max-width: none;
+        max-height: none;
+        border: 0;
+        background-color: transparent;
+    }
+    .linenos {
+        width: 1%;
+        white-space: nowrap;
+    }
 }
 
 .wiki-article table
