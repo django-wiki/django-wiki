@@ -33,28 +33,34 @@ MARKDOWN_KWARGS = {
 }
 MARKDOWN_KWARGS.update(getattr(django_settings, 'WIKI_MARKDOWN_KWARGS', {}))
 
+_default_tag_whitelists = bleach.ALLOWED_TAGS + [
+    'figure',
+    'figcaption',
+    'p',
+    'div',
+    'img',
+    'pre',
+    'span',
+    'table',
+    'thead',
+    'tbody',
+    'th',
+    'tr',
+    'td',
+    'dl',
+    'dt',
+    'dd',
+] + ['h{}'.format(n) for n in range(8)]
+
+
 # Allowed tags in Markdown article contents.
-MARKDOWN_HTML_WHITELIST = getattr(
-    django_settings,
-    'WIKI_MARKDOWN_HTML_WHITELIST',
-    bleach.ALLOWED_TAGS + [
-        'figure',
-        'figcaption',
-        'p',
-        'div',
-        'img',
-        'pre',
-        'span',
-        'table',
-        'thead',
-        'tbody',
-        'th',
-        'tr',
-        'td',
-        'dl',
-        'dt',
-        'dd',
-    ] + ['h{}'.format(n) for n in range(8)]
+MARKDOWN_HTML_WHITELIST = _default_tag_whitelists
+MARKDOWN_HTML_WHITELIST += (
+    getattr(
+        django_settings,
+        'WIKI_MARKDOWN_HTML_WHITELIST',
+        []
+    )
 )
 
 _default_attribute_whitelist = bleach.ALLOWED_ATTRIBUTES
@@ -67,10 +73,13 @@ for tag in MARKDOWN_HTML_WHITELIST:
 _default_attribute_whitelist['img'].append('src')
 _default_attribute_whitelist['img'].append('alt')
 
-MARKDOWN_HTML_ATTRIBUTES = getattr(
-    django_settings,
-    'WIKI_MARKDOWN_HTML_ATTRIBUTES',
-    _default_attribute_whitelist
+MARKDOWN_HTML_ATTRIBUTES = _default_attribute_whitelist
+MARKDOWN_HTML_ATTRIBUTES.update(
+    getattr(
+        django_settings,
+        'WIKI_MARKDOWN_HTML_ATTRIBUTE_WHITELIST',
+        {}
+    )
 )
 
 
