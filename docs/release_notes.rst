@@ -16,6 +16,8 @@ Here are the release notes for the next release:
 
  * Lowercase slugs when creating new pages with ``[[Like This]]`` #595 (Eric Clack)
  * Remove ``wiki.plugins.mediawikiimport`` #597
+ * Pretty up the highligted code's line enumeration #598
+ * Customize codehilite in order to wrap highlighted code with scrollbars #598
 
 
 django-wiki 0.2

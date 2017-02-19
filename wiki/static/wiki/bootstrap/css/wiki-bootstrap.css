@@ -6393,21 +6393,6 @@ label {
   word-wrap: normal;
   white-space: pre;
 }
-.wiki-article .codehilitetable {
-  overflow: scroll;
-  max-width: 700px;
-  max-height: 250px;
-}
-.wiki-article .codehilitetable pre {
-  max-width: none;
-  max-height: none;
-  border: 0;
-  background-color: transparent;
-}
-.wiki-article .codehilitetable .linenos {
-  width: 1%;
-  white-space: nowrap;
-}
 .wiki-article table {
   width: 100%;
   max-width: 100%;
@@ -8541,6 +8526,21 @@ textarea.form-vertical .wiki-control textarea {
 /******************************
  CODEHILITE / PYGMENTS
 *******************************/
+.wiki-article .codehilite-wrap {
+  overflow: auto;
+  max-width: auto;
+  max-height: 250px;
+}
+.wiki-article .codehilitetable pre {
+  max-width: none;
+  max-height: none;
+  border: 0;
+  background-color: transparent;
+}
+.wiki-article .codehilitetable .linenos {
+  width: 1%;
+  white-space: nowrap;
+}
 .codehilite .hll {
   background-color: #ffffcc;
 }

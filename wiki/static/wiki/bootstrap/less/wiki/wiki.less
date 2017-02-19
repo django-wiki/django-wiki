@@ -87,23 +87,6 @@ label { font-size: 16px; font-weight: normal; color: #777;}
     white-space: pre;
 }
 
-
-.wiki-article .codehilitetable {
-    overflow: scroll;
-    max-width: 700px;
-    max-height: 250px;
-    pre {
-        max-width: none;
-        max-height: none;
-        border: 0;
-        background-color: transparent;
-    }
-    .linenos {
-        width: 1%;
-        white-space: nowrap;
-    }
-}
-
 .wiki-article table
 {
     .table;
@@ -398,6 +381,25 @@ input[type=file] {float: none; width: auto;}
 /******************************
  CODEHILITE / PYGMENTS
 *******************************/
+
+.wiki-article .codehilite-wrap {
+    overflow: auto;
+    max-width: auto;
+    max-height: 250px;
+}
+
+.wiki-article .codehilitetable {
+    pre {
+        max-width: none;
+        max-height: none;
+        border: 0;
+        background-color: transparent;
+    }
+    .linenos {
+        width: 1%;
+        white-space: nowrap;
+    }
+}
 
 @import "codehilite.less";
 

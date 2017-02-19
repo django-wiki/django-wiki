@@ -25,7 +25,6 @@ MARKDOWN_KWARGS = {
         'footnotes',
         'attr_list',
         'extra',
-        'codehilite',
         'sane_lists',
     ],
     'extension_configs': {
