@@ -8526,6 +8526,21 @@ textarea.form-vertical .wiki-control textarea {
 /******************************
  CODEHILITE / PYGMENTS
 *******************************/
+.wiki-article .codehilite-wrap {
+  overflow: auto;
+  max-width: auto;
+  max-height: 250px;
+}
+.wiki-article .codehilitetable pre {
+  max-width: none;
+  max-height: none;
+  border: 0;
+  background-color: transparent;
+}
+.wiki-article .codehilitetable .linenos {
+  width: 1%;
+  white-space: nowrap;
+}
 .codehilite .hll {
   background-color: #ffffcc;
 }

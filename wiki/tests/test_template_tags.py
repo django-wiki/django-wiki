@@ -214,16 +214,18 @@ class WikiRenderTest(TemplateTestCase):
 
         example = (
             """<p>This is a normal paragraph:</p>\n"""
-            """<pre class="codehilite"><code>    This is a code block.\n"""
+            """<div class="codehilite-wrap"><pre class="codehilite"><code>    This is a code block.\n"""
             """\n"""
-            """    &lt;a&gt;This should be escaped&lt;/a&gt;</code></pre>"""
+            """    &lt;a&gt;This should be escaped&lt;/a&gt;</code></pre>\n"""
+            """</div>"""
         )
         example_with_pygments = (
             """<p>This is a normal paragraph:</p>\n"""
-            """<div class="codehilite"><pre>    This is a code block.\n"""
+            """<div class="codehilite-wrap"><div class="codehilite"><pre><span></span>    This is a code block.\n"""
             """\n"""
             """    <span class="nt">&lt;a&gt;</span>This should be escaped<span class="nt">&lt;/a&gt;</span>\n"""
-            """</pre></div>"""
+            """</pre></div>\n"""
+            """</div>"""
         )
 
         # monkey patch
@@ -236,7 +238,8 @@ class WikiRenderTest(TemplateTestCase):
         self.assertEqual(output['article'], article)
         try:
             self.assertMultiLineEqual(output['content'], example)
-        except AssertionError:
+        except (AssertionError, self.failureException):
+            print(output['content'])
             self.assertMultiLineEqual(output['content'], example_with_pygments)
         self.assertEqual(output['preview'], True)
         self.assertEqual(output['plugins'], {'spam': 'eggs'})
@@ -246,7 +249,7 @@ class WikiRenderTest(TemplateTestCase):
         output = self.render({'article': article, 'pc': content})
         try:
             self.assertIn(example, output)
-        except AssertionError:
+        except self.failureException:
             self.assertIn(example_with_pygments, output)
 
     def test_called_with_preview_content_and_article_dont_have_current_revision(
