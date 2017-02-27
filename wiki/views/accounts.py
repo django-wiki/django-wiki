@@ -36,16 +36,16 @@ class Signup(CreateView):
     template_name = "wiki/accounts/signup.html"
 
     def dispatch(self, request, *args, **kwargs):
-            # Let logged in super users continue
-            if not request.user.is_anonymous() and not request.user.is_superuser:
-                return redirect('wiki:root')
-            # If account handling is disabled, don't go here
-            if not settings.ACCOUNT_HANDLING:
-                return redirect(settings.SIGNUP_URL)
-            # Allow superusers to use signup page...
-            if not request.user.is_superuser and not settings.ACCOUNT_SIGNUP_ALLOWED:
-                c = {'error_msg': _('Account signup is only allowed for administrators.')}
-                return render(request, "wiki/error.html", context=c)
+        # Let logged in super users continue
+        if not request.user.is_anonymous() and not request.user.is_superuser:
+            return redirect('wiki:root')
+        # If account handling is disabled, don't go here
+        if not settings.ACCOUNT_HANDLING:
+            return redirect(settings.SIGNUP_URL)
+        # Allow superusers to use signup page...
+        if not request.user.is_superuser and not settings.ACCOUNT_SIGNUP_ALLOWED:
+            c = {'error_msg': _('Account signup is only allowed for administrators.')}
+            return render(request, "wiki/error.html", context=c)
 
         return super(Signup, self).dispatch(request, *args, **kwargs)
 
