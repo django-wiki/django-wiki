@@ -18,7 +18,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.urlresolvers import reverse
-from django.shortcuts import get_object_or_404, redirect, render_to_response
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.views.generic.base import View
@@ -36,18 +36,16 @@ class Signup(CreateView):
     template_name = "wiki/accounts/signup.html"
 
     def dispatch(self, request, *args, **kwargs):
-        # Let logged in super users continue
-        if not request.user.is_anonymous() and not request.user.is_superuser:
-            return redirect('wiki:root')
-        # If account handling is disabled, don't go here
-        if not settings.ACCOUNT_HANDLING:
-            return redirect(settings.SIGNUP_URL)
-        # Allow superusers to use signup page...
-        if not request.user.is_superuser and not settings.ACCOUNT_SIGNUP_ALLOWED:
-            c = RequestContext(
-                request, {
-                    'error_msg': _('Account signup is only allowed for administrators.'), })
-            return render_to_response("wiki/error.html", context=c)
+            # Let logged in super users continue
+            if not request.user.is_anonymous() and not request.user.is_superuser:
+                return redirect('wiki:root')
+            # If account handling is disabled, don't go here
+            if not settings.ACCOUNT_HANDLING:
+                return redirect(settings.SIGNUP_URL)
+            # Allow superusers to use signup page...
+            if not request.user.is_superuser and not settings.ACCOUNT_SIGNUP_ALLOWED:
+                c = {'error_msg': _('Account signup is only allowed for administrators.')}
+                return render(request, "wiki/error.html", context=c)
 
         return super(Signup, self).dispatch(request, *args, **kwargs)
 
