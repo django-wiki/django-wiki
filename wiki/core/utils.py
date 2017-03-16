@@ -1,14 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
+
 import json
+from importlib import import_module
+
 from django.http.response import HttpResponse
-
-
-try:
-    from importlib import import_module
-except ImportError:
-    # Python 2.6 fallback
-    from django.utils.importlib import import_module
 
 
 def get_class_from_str(class_path):
