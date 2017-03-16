@@ -76,6 +76,6 @@ assets:  ## Build CSS files
 	lessc wiki/static/wiki/bootstrap/less/wiki/wiki-bootstrap.less wiki/static/wiki/bootstrap/css/wiki-bootstrap.css
 	lessc -x wiki/static/wiki/bootstrap/less/wiki/wiki-bootstrap.less wiki/static/wiki/bootstrap/css/wiki-bootstrap.min.css
 
-dist: clean assets  ## Generate source dist and wheels
+dist: clean assets  ## Generate wheels distribution
 	python setup.py bdist_wheel
 	ls -l dist
