@@ -23,7 +23,8 @@ from wiki.core import permissions
 from wiki.core.diff import simple_merge
 from wiki.core.exceptions import NoRootURL
 from wiki.core.plugins import registry as plugin_registry
-from wiki.decorators import get_article, json_view
+from wiki.core.utils import object_to_json_response
+from wiki.decorators import get_article
 from wiki.views.mixins import ArticleMixin
 
 log = logging.getLogger(__name__)
@@ -788,7 +789,6 @@ class Preview(ArticleMixin, TemplateView):
         return ArticleMixin.get_context_data(self, **kwargs)
 
 
-@json_view
 def diff(request, revision_id, other_revision_id=None):
 
     revision = get_object_or_404(models.ArticleRevision, id=revision_id)
@@ -807,7 +807,9 @@ def diff(request, revision_id, other_revision_id=None):
     if not other_revision or other_revision.title != revision.title:
         other_changes.append((_('New title'), revision.title))
 
-    return dict(diff=list(diff), other_changes=other_changes)
+    return object_to_json_response(
+        dict(diff=list(diff), other_changes=other_changes)
+    )
 
 # TODO: Throw in a class-based view
 

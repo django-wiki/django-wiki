@@ -1,35 +1,17 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-import json
 from functools import wraps
 
 from django.core.urlresolvers import reverse
-from django.http import (HttpResponse, HttpResponseForbidden,
-                         HttpResponseNotFound, HttpResponseRedirect)
+from django.http import (HttpResponseForbidden, HttpResponseNotFound,
+                         HttpResponseRedirect)
 from django.shortcuts import get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.utils.http import urlquote
 from six.moves import filter
 from wiki.conf import settings
 from wiki.core.exceptions import NoRootURL
-
-
-def json_view(func):
-    def wrap(request, *args, **kwargs):
-        obj = func(request, *args, **kwargs)
-        if isinstance(obj, HttpResponse):
-            # Special behaviour: If it's a redirect, for instance
-            # because of login protection etc. just return
-            # the redirect
-            if obj.status_code == 301 or obj.status_code == 302:
-                return obj
-        data = json.dumps(obj, ensure_ascii=False)
-        status = kwargs.get('status', 200)
-        response = HttpResponse(content_type='application/json', status=status)
-        response.write(data)
-        return response
-    return wrap
 
 
 def response_forbidden(request, article, urlpath):
@@ -44,9 +26,10 @@ def response_forbidden(request, article, urlpath):
         return HttpResponseForbidden(
             render_to_string(
                 "wiki/permission_denied.html",
-                context={'article': article,
-                         'urlpath': urlpath},
-                request=request))
+                context={'article': article, 'urlpath': urlpath},
+                request=request
+            )
+        )
 
 
 # TODO: This decorator is too complex (C901)
