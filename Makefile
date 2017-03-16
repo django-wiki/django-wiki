@@ -69,14 +69,13 @@ docs: ## generate Sphinx HTML documentation, including API docs
 	$(MAKE) -C docs html
 	$(BROWSER) docs/_build/html/index.html
 
-release: sdist  ## Generate and upload release to PyPi
+release: dist  ## Generate and upload release to PyPi
 	twine upload -s dist/*
 
 assets:  ## Build CSS files
 	lessc wiki/static/wiki/bootstrap/less/wiki/wiki-bootstrap.less wiki/static/wiki/bootstrap/css/wiki-bootstrap.css
 	lessc -x wiki/static/wiki/bootstrap/less/wiki/wiki-bootstrap.less wiki/static/wiki/bootstrap/css/wiki-bootstrap.min.css
 
-sdist: clean assets  ## Generate source dist and wheels
-	python setup.py sdist
+dist: clean assets  ## Generate wheels distribution
 	python setup.py bdist_wheel
 	ls -l dist
