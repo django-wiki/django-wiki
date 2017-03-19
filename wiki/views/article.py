@@ -9,8 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.http import Http404
-from django.shortcuts import get_object_or_404, redirect, render_to_response
-from django.template.context import RequestContext
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.views.generic.base import RedirectView, TemplateView, View
@@ -838,11 +837,12 @@ def merge(
         old_revision = article.current_revision
 
         if revision.deleted:
-            c = RequestContext(
-                request,
-                {'error_msg': _('You cannot merge with a deleted revision'),
-                 'article': article, 'urlpath': urlpath})
-            return render_to_response("wiki/error.html", context_instance=c)
+            c = {
+                'error_msg': _('You cannot merge with a deleted revision'),
+                'article': article,
+                'urlpath': urlpath
+            }
+            return render(request, "wiki/error.html", context=c)
 
         new_revision = models.ArticleRevision()
         new_revision.inherit_predecessor(article)
@@ -870,14 +870,16 @@ def merge(
         else:
             return redirect('wiki:edit', article_id=article.id)
 
-    c = RequestContext(request, {'article': article,
-                                 'title': article.current_revision.title,
-                                 'revision': None,
-                                 'merge1': revision,
-                                 'merge2': article.current_revision,
-                                 'merge': True,
-                                 'content': content})
-    return render_to_response(template_file, context=c)
+    c = {
+        'article': article,
+        'title': article.current_revision.title,
+        'revision': None,
+        'merge1': revision,
+        'merge2': article.current_revision,
+        'merge': True,
+        'content': content
+    }
+    return render(request, template_file, c)
 
 
 class CreateRootView(FormView):
