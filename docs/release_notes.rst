@@ -13,6 +13,7 @@ django-wiki 0.2.2 (unreleased master branch)
 --------------------------------------------
 
  * Remove ``wiki.decorators.json_view``, fixes server errors when resolving 404 links #604
+ * Replace usage of `render_to_response()` with `render()` #606
 
 
 django-wiki 0.2.1
