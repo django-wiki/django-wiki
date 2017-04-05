@@ -13,8 +13,7 @@ from wiki.core.plugins import registry as plugin_registry
 class ArticleMarkdown(markdown.Markdown):
 
     def __init__(self, article, preview=False, *args, **kwargs):
-        kwargs = settings.MARKDOWN_KWARGS
-        kwargs['extensions'] = self.get_markdown_extensions()
+        kwargs = {'extensions': self.get_markdown_extensions()}
         markdown.Markdown.__init__(self, *args, **kwargs)
         self.article = article
         self.preview = preview
