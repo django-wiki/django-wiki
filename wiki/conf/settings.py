@@ -20,6 +20,11 @@ EDITOR = getattr(
     'WIKI_EDITOR',
     'wiki.editors.markitup.MarkItUp')
 
+MARKDOWN_SANITIZE_HTML = getattr(
+    django_settings,
+    'WIKI_MARKDOWN_SANITIZE_HTML',
+    True)
+
 MARKDOWN_KWARGS = {
     'extensions': [
         'footnotes',
