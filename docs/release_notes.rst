@@ -16,6 +16,7 @@ django-wiki 0.2.2 (unreleased master branch)
  * Replace usage of `render_to_response()` with `render()` #606
  * Fix memory leak #609 and #611 (obtroston)
  * Scroll bars and display area fixed for code blocks #601 and #608 (Branko Majic)
+ * Option ``WIKI_MARKDOWN_SANITIZE_HTML`` skips Bleach (warning: Don't use for untrusted code) #610 (Michal Hozza)
 
 
 django-wiki 0.2.1
