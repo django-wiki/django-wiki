@@ -36,11 +36,12 @@ class ArticleMarkdown(markdown.Markdown):
 
     def convert(self, text, *args, **kwargs):
         html = super(ArticleMarkdown, self).convert(text, *args, **kwargs)
-        html = bleach.clean(
-            html,
-            tags=settings.MARKDOWN_HTML_WHITELIST,
-            attributes=settings.MARKDOWN_HTML_ATTRIBUTES,
-        )
+        if settings.MARKDOWN_SANITIZE_HTML:
+            html = bleach.clean(
+                html,
+                tags=settings.MARKDOWN_HTML_WHITELIST,
+                attributes=settings.MARKDOWN_HTML_ATTRIBUTES,
+            )
         return html
 
 
