@@ -8,7 +8,7 @@ from django.template.loader import render_to_string
 from wiki.plugins.images import models, settings
 
 IMAGE_RE = re.compile(
-    r'.*(\[image\:(?P<id>\d+)(\s+align\:(?P<align>right|left))?(\s+size\:(?P<size>default|small|medium|large))?\s*\]).*',
+    r'.*(\[image\:(?P<id>\d+)(\s+align\:(?P<align>right|left))?(\s+size\:(?P<size>default|small|medium|large|orig))?\s*\]).*',
     re.IGNORECASE)
 
 class ImageExtension(markdown.Extension):
@@ -69,6 +69,7 @@ class ImagePreprocessor(markdown.preprocessors.Preprocessor):
                     line = None
                 else:
                     caption_placeholder = "{{{IMAGECAPTION}}}"
+                    width = size.split("x")[0] if size else None
                     html = render_to_string(
                         "wiki/plugins/images/render.html",
                         context={
@@ -76,7 +77,7 @@ class ImagePreprocessor(markdown.preprocessors.Preprocessor):
                             'caption': caption_placeholder,
                             'align': alignment,
                             'size': size,
-                            'width': size.split("x")[0],
+                            'width': width
                         })
                     html_before, html_after = html.split(caption_placeholder)
                     placeholder_before = self.markdown.htmlStash.store(

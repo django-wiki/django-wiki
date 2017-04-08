@@ -16,7 +16,8 @@ THUMBNAIL_SIZES = getattr(django_settings, 'WIKI_IMAGES_THUMBNAIL_SIZES', {
     'default': '250x250',
     'small': '150x150',
     'medium': '300x300',
-    'large': '500x500'
+    'large': '500x500',
+    'orig': None
 })
 
 # Storage backend to use, default is to use the same as the rest of the
