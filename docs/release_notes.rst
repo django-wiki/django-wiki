@@ -9,6 +9,7 @@ Currently, the only series in development is the 0.2 series, and all bug fixes
 and new features are referred to this series, keeping in mind that they don't
 introduce any backwards incompatible changes.
 
+
 django-wiki 0.2.2 (unreleased master branch)
 --------------------------------------------
 
@@ -17,6 +18,7 @@ django-wiki 0.2.2 (unreleased master branch)
  * Fix memory leak #609 and #611 (obtroston)
  * Scroll bars and display area fixed for code blocks #601 and #608 (Branko Majic)
  * Option ``WIKI_MARKDOWN_SANITIZE_HTML`` skips Bleach (warning: Don't use for untrusted code) #610 (Michal Hozza)
+ * Allow the HTML tag <br>. #613 (@floemker)
 
 
 django-wiki 0.2.1

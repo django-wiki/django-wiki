@@ -41,6 +41,7 @@ MARKDOWN_KWARGS.update(getattr(django_settings, 'WIKI_MARKDOWN_KWARGS', {}))
 _default_tag_whitelists = bleach.ALLOWED_TAGS + [
     'figure',
     'figcaption',
+    'br',
     'p',
     'div',
     'img',
