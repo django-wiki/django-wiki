@@ -1,6 +1,7 @@
 from __future__ import print_function, unicode_literals
 
 import base64
+import sys
 from io import BytesIO
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -15,7 +16,7 @@ from ..wiki_plugin import ImagePlugin
 
 class ImageTests(ArticleWebTestBase):
 
-    def assertRegexp(self, a, b):
+    def _assertRegex(self, a, b):
         if sys.version_info >= (3,2):
             return self.assertRegex(a, b)
         else:
@@ -98,7 +99,7 @@ class ImageTests(ArticleWebTestBase):
                                       "html_image",
                                       title="TestImage",
                                       content=cont)
-        if (image):
+        if image:
             self._create_test_image(urlpath.path)
         return urlpath.article.render()
 
@@ -116,7 +117,7 @@ class ImageTests(ArticleWebTestBase):
                      '<a href="' + image_rev.image.name + '">'
                      '<img alt="test\.gif" src="cache/.*\.jpg">'
                      '</a><figcaption class="caption"></figcaption></figure>' )
-        self.assertRegex(output, expected)
+        self._assertRegex(output, expected)
 
     def test_image_large_right(self):
         output = self.get_article("[image:1 align:right size:large]", True)
@@ -125,7 +126,7 @@ class ImageTests(ArticleWebTestBase):
                      '<a href="' + image_rev.image.name + '">'
                      '<img alt="test\.gif" src="cache/.*\.jpg"></a>'
                      '<figcaption class="caption"></figcaption></figure>' )
-        self.assertRegex(output, expected)
+        self._assertRegex(output, expected)
 
     def test_image_orig(self):
         output = self.get_article("[image:1 size:orig]", True)
