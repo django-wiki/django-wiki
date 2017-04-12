@@ -6,6 +6,7 @@ from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.urlresolvers import reverse
 from wiki.core.plugins import registry as plugin_registry
+from wiki.models import URLPath
 from wiki.tests.base import ArticleWebTestBase
 
 from .. import models
@@ -43,7 +44,7 @@ class ImageTests(ArticleWebTestBase):
         )
         return filestream
 
-    def _create_test_image(self):
+    def _create_test_image(self, path):
         # Get the form index
         plugin_index = -1
         for cnt, plugin_instance in enumerate(plugin_registry.get_sidebar()):
@@ -51,7 +52,7 @@ class ImageTests(ArticleWebTestBase):
                 plugin_index = cnt
                 break
         self.assertTrue(plugin_index >= 0, "Image plugin not activated")
-        base_edit_url = reverse('wiki:edit', kwargs={'path': ''})
+        base_edit_url = reverse('wiki:edit', kwargs={'path': path})
         url = base_edit_url + '?f=form{0:d}'.format(plugin_index)
         filestream = self._create_gif_filestream_from_base64(self.test_data)
         response = self.c.post(
@@ -76,7 +77,7 @@ class ImageTests(ArticleWebTestBase):
         Uploading a file should preserve the original filename.
         Uploading should not modify file in any way.
         """
-        self._create_test_image()
+        self._create_test_image('')
         # Check the object was created.
         image = models.Image.objects.get()
         image_revision = image.current_revision.imagerevision
@@ -85,3 +86,46 @@ class ImageTests(ArticleWebTestBase):
             image_revision.image.file.read(),
             base64.b64decode(self.test_data)
         )
+
+    def get_article(self, cont, image):
+        urlpath = URLPath.create_article(URLPath.root(),
+                                      "html_image",
+                                      title="TestImage",
+                                      content=cont)
+        if (image):
+            self._create_test_image(urlpath.path)
+        return urlpath.article.render()
+
+    def test_image_missing(self):
+        output = self.get_article("[image:1]", False)
+        expected = ( '<figure class="thumbnail"><a href="">'
+                     '<div class="caption"><em>Image not found</em></div>'
+                     '</a><figcaption class="caption"></figcaption></figure>' )
+        self.assertEqual(output, expected)
+
+    def test_image_default(self):
+        output = self.get_article("[image:1]", True)
+        image_rev = models.Image.objects.get().current_revision.imagerevision
+        expected = ( '<figure class="thumbnail">'
+                     '<a href="' + image_rev.image.name + '">'
+                     '<img alt="test\.gif" src="cache/.*\.jpg">'
+                     '</a><figcaption class="caption"></figcaption></figure>' )
+        self.assertRegex(output, expected)
+
+    def test_image_large_right(self):
+        output = self.get_article("[image:1 align:right size:large]", True)
+        image_rev = models.Image.objects.get().current_revision.imagerevision
+        expected = ( '<figure class="thumbnail pull-right">'
+                     '<a href="' + image_rev.image.name + '">'
+                     '<img alt="test\.gif" src="cache/.*\.jpg"></a>'
+                     '<figcaption class="caption"></figcaption></figure>' )
+        self.assertRegex(output, expected)
+
+    def test_image_orig(self):
+        output = self.get_article("[image:1 size:orig]", True)
+        image_rev = models.Image.objects.get().current_revision.imagerevision
+        expected = ( '<figure class="thumbnail">'
+                     '<a href="' + image_rev.image.name + '">'
+                     '<img alt="test.gif" src="' + image_rev.image.name + '"></a>'
+                     '<figcaption class="caption"></figcaption></figure>' )
+        self.assertEqual(output, expected)
