@@ -5,12 +5,11 @@ import re
 
 import markdown
 from django.template.loader import render_to_string
-from wiki.plugins.images import models
+from wiki.plugins.images import models, settings
 
 IMAGE_RE = re.compile(
-    r'.*(\[image\:(?P<id>\d+)(\s+align\:(?P<align>right|left))?\s*\]).*',
+    r'.*(\[image\:(?P<id>\d+)(\s+align\:(?P<align>right|left))?(\s+size\:(?P<size>default|small|medium|large|orig))?\s*\]).*',
     re.IGNORECASE)
-
 
 class ImageExtension(markdown.Extension):
 
@@ -43,6 +42,7 @@ class ImagePreprocessor(markdown.preprocessors.Preprocessor):
         image = None
         image_id = None
         alignment = None
+        size = settings.THUMBNAIL_SIZES['default']
         caption_lines = []
         for line in lines:
             m = IMAGE_RE.match(line)
@@ -50,6 +50,8 @@ class ImagePreprocessor(markdown.preprocessors.Preprocessor):
                 previous_line_was_image = True
                 image_id = m.group('id').strip()
                 alignment = m.group('align')
+                if m.group('size'):
+                    size = settings.THUMBNAIL_SIZES[m.group('size')]
                 try:
                     image = models.Image.objects.get(
                         article=self.markdown.article,
@@ -67,12 +69,15 @@ class ImagePreprocessor(markdown.preprocessors.Preprocessor):
                     line = None
                 else:
                     caption_placeholder = "{{{IMAGECAPTION}}}"
+                    width = size.split("x")[0] if size else None
                     html = render_to_string(
                         "wiki/plugins/images/render.html",
                         context={
                             'image': image,
                             'caption': caption_placeholder,
                             'align': alignment,
+                            'size': size,
+                            'width': width
                         })
                     html_before, html_after = html.split(caption_placeholder)
                     placeholder_before = self.markdown.htmlStash.store(

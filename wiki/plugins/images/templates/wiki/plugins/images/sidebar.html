@@ -119,8 +119,8 @@ function insert_image(image_id) {
   {% trans "How to use images" %}
 </h4>
 
-<p>{% trans "After uploading an image, it is attached to this particular artice and can be used only here. Other users may replace the image, but older versions are kept. You probably want to show the image with a nice caption. To achieve this, press the Insert button and fill in the caption fields and possibly choose to have you image floating right or left of the content. You can use Markdown in the caption. The markdown code syntax for images looks like this, possible values for align are left and right:" %}<br />
-<pre>[image:id align:right]
+<p>{% trans "After uploading an image, it is attached to this particular article and can be used only here. Other users may replace the image, but older versions are kept. To show the image press the Insert button and fill in the caption field and possibly choose to have your image floating right or left of the content. You can use markdown in the caption. The markdown code syntax for images looks like this, possible values for align are left | right and for size are small | medium | large | orig | default:" %}<br />
+<pre>[image:id align:right size:orig]
     caption indented by 4 spaces</pre>
 </p>
 
