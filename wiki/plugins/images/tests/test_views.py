@@ -15,6 +15,12 @@ from ..wiki_plugin import ImagePlugin
 
 class ImageTests(ArticleWebTestBase):
 
+    def assertRegexp(self, a, b):
+        if sys.version_info >= (3,2):
+            return self.assertRegex(a, b)
+        else:
+            return self.assertRegexpMatches(a, b)
+
     def setUp(self):
         super(ImageTests, self).setUp()
         self.article = self.root_article
