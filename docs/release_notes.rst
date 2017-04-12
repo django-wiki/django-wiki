@@ -18,7 +18,8 @@ django-wiki 0.2.2 (unreleased master branch)
  * Fix memory leak #609 and #611 (obtroston)
  * Scroll bars and display area fixed for code blocks #601 and #608 (Branko Majic)
  * Option ``WIKI_MARKDOWN_SANITIZE_HTML`` skips Bleach (warning: Don't use for untrusted code) #610 (Michal Hozza)
- * Allow the HTML tag <br>. #613 (@floemker)
+ * Allow the HTML tag <br>. #613 (Frank Loemker)
+ * Add thumbnail size directive (example: ``[image:123 size:large]``). #612 (Frank Loemker and @inflrscns)
 
 
 django-wiki 0.2.1
