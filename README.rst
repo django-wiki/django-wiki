@@ -55,6 +55,9 @@ December 27, 2016
 0.2 final released: `Release notes <http://django-wiki.readthedocs.io/en/0.2/release_notes.html>`_
 
 
+`News archive » <http://django-wiki.readthedocs.io/en/master/release_notes.html#news-archive>`_
+
+
 Translations (Transifex)
 ------------------------
 
