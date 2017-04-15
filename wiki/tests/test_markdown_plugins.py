@@ -3,10 +3,19 @@
 from __future__ import absolute_import, unicode_literals
 
 import markdown
-from django.test import TestCase
 from django.core.urlresolvers import reverse_lazy
-from wiki.plugins.links.mdx.djangowikilinks import WikiPathExtension
+from django.test import TestCase
+from wiki.core.markdown.mdx.codehilite import WikiCodeHiliteExtension
+from wiki.core.markdown.mdx.responsivetable import ResponsiveTableExtension
 from wiki.models import URLPath
+from wiki.plugins.links.mdx.djangowikilinks import WikiPathExtension
+
+
+try:
+    import pygments
+    pygments = True  # NOQA
+except ImportError:
+    pygments = False
 
 
 class WikiPathExtensionTests(TestCase):
@@ -22,4 +31,77 @@ class WikiPathExtensionTests(TestCase):
         self.assertEqual(
             md.convert(text),
             '<p><a class="wikipath linknotfound" href="/fr">Français</a></p>',
+        )
+
+
+class ResponsiveTableExtensionTests(TestCase):
+
+    def setUp(self):
+        self.md = markdown.Markdown(extensions=[
+            'extra',
+            ResponsiveTableExtension()
+        ])
+        self.md_without = markdown.Markdown(extensions=['extra'])
+
+    def test_wrapping(self):
+        text = '|th|th|\n|--|--|\n|td|td|'
+        expected = '<div class="table-responsive">\n' + self.md_without.convert(text) + '\n</div>'
+        self.assertEqual(self.md.convert(text), expected)
+
+
+class CodehiliteTests(TestCase):
+
+    def test_simple_code(self):
+        URLPath.create_root()
+        md = markdown.Markdown(
+            extensions=['extra', WikiCodeHiliteExtension()]
+        )
+        text = (
+            "Code:\n"
+            "\n"
+            "```\n"
+            "echo 'hello æøå'\n"
+            "```\n"
+        )
+        result = (
+            """<p>Code:</p>\n"""
+            """<div class="codehilite"><pre><span></span>echo &#39;hello æøå&#39;\n"""
+            """</pre></div>"""
+        ) if pygments else (
+            """<p>Code:</p>\n"""
+            """<pre class="codehilite"><code>echo 'hello æøå'</code></pre>"""
+        )
+        self.assertEqual(
+            md.convert(text),
+            result
+        )
+
+
+    def test_advanced_code(self):
+        URLPath.create_root()
+        md = markdown.Markdown(
+            extensions=['extra', WikiCodeHiliteExtension()]
+        )
+        text = (
+            "Code:\n"
+            "\n"
+            "```python\n"
+            "echo 'line 1'\n"
+            "echo 'line 2'\n"
+            "```\n"
+        )
+        result = (
+            """<p>Code:</p>\n"""
+            """<div class="codehilite"><pre><span></span><span class="n">echo</span> <span class="s1">&#39;line 1&#39;</span>\n"""
+            """<span class="n">echo</span> <span class="s1">&#39;line 2&#39;</span>\n"""
+            """</pre></div>"""
+        ) if pygments else (
+            """<p>Code:</p>\n"""
+            """<pre class="codehilite"><code class="language-python">echo 'line 1'\n"""
+            """echo 'line 2'</code></pre>"""
+        )
+        print(md.convert(text))
+        self.assertEqual(
+            md.convert(text),
+            result,
         )

@@ -239,7 +239,6 @@ class WikiRenderTest(TemplateTestCase):
         try:
             self.assertMultiLineEqual(output['content'], example)
         except (AssertionError, self.failureException):
-            print(output['content'])
             self.assertMultiLineEqual(output['content'], example_with_pygments)
         self.assertEqual(output['preview'], True)
         self.assertEqual(output['plugins'], {'spam': 'eggs'})
