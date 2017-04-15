@@ -70,6 +70,16 @@ docs: ## generate Sphinx HTML documentation, including API docs
 	$(BROWSER) docs/_build/html/index.html
 
 release: dist  ## Generate and upload release to PyPi
+	@echo ""
+	@echo "Release check list:"
+	@echo ""
+	@echo "1. Release notes?"
+	@echo "2. Pushed source language to transifex?"
+	@echo "3. Pulled new translations from transifex?"
+	@echo "4. Built and committed new assets?"
+	@echo "5. Did you do a signed commit and push to Github?"
+	@echo ""
+	@read -p "CTRL+C or ENTER" dummy
 	twine upload -s dist/*
 
 assets:  ## Build CSS files
