@@ -6,6 +6,7 @@ from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save, pre_delete, pre_save
+from django.utils import translation
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
@@ -209,8 +210,11 @@ class Article(models.Model):
                                           preview=preview_content is not None))
 
     def get_cache_key(self):
-        return "wiki:article:%d" % (
-            self.current_revision.id if self.current_revision else self.id)
+        lang = translation.get_language()
+        return "wiki:article:{id:d}:{lang:s}".format(
+            id=self.current_revision.id if self.current_revision else self.id,
+            lang=lang
+        )
 
     def get_cached_content(self):
         """Returns cached """
