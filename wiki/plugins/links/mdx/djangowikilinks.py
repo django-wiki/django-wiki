@@ -51,7 +51,6 @@ class WikiPathExtension(markdown.Extension):
 
         # Override defaults with user settings
         for key, value in configs:
-            # self.config[key][0] = value
             self.setConfig(key, value)
 
     def extendMarkdown(self, md, md_globals):
@@ -84,7 +83,7 @@ class WikiPath(markdown.inlinepatterns.Pattern):
 
         if absolute:
             base_path = self.config['base_url'][0]
-            path_from_link = os_path.join(base_path, article_title)
+            path_from_link = os_path.join(str(base_path), article_title)
 
             urlpath = None
             path = path_from_link
