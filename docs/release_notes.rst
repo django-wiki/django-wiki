@@ -14,11 +14,11 @@ django-wiki 0.2.2
 -----------------
 
  * Remove ``wiki.decorators.json_view``, fixes server errors when resolving 404 links #604
- * Replace usage of `render_to_response()` with `render()` #606
+ * Replace usage of ``render_to_response()`` with ``render()`` #606
  * Fix memory leak #609 and #611 (obtroston)
  * Scroll bars and display area fixed for code blocks #601 and #608 (Branko Majic)
  * Option ``WIKI_MARKDOWN_SANITIZE_HTML`` skips Bleach (warning: Don't use for untrusted code) #610 (Michal Hozza)
- * Allow the HTML tag <br>. #613 (Frank Loemker)
+ * Allow the HTML tag ``<br>``. #613 (Frank Loemker)
  * Add thumbnail size directive (example: ``[image:123 size:large]``). #612 (Frank Loemker and @inflrscns)
  * Fix error with absolute paths in wiki links (example: ``[Sub-root](wiki:/sub-root)``) #616 (Benoit C. Sirois)
  * Require ``Django<1.11`` #616 (Benoit C. Sirois)
