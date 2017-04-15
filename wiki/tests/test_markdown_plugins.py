@@ -113,6 +113,7 @@ class CodehiliteTests(TestCase):
             "    #!/usr/bin/python\n"
             "    print('line 1')\n"
             "    print('line 2')\n"
+            "    print('æøå')\n"
             "\n"
         )
         result = (
