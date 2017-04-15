@@ -10,6 +10,13 @@ the last series with Python 2 support. Series 0.3 is in development in the
 current master branch.
 
 
+
+django-wiki 0.2.3 (unreleased)
+------------------------------
+
+ * Pulled Transifex translations and pushed source translations.
+
+
 django-wiki 0.2.2
 -----------------
 
