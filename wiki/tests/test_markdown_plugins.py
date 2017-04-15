@@ -65,13 +65,13 @@ class CodehiliteTests(TestCase):
         )
         result = (
             """<p>Code:</p>\n"""
-            """<div class="codehilite-wrap"><div class="codehilite"><pre><span></span>echo &#39;line 1&#39;\n"""
-            """echo &#39;line 2&#39;\n"""
+            """<div class="codehilite-wrap"><div class="codehilite"><pre><span></span><span class="n">echo</span> <span class="s1">&#39;line 1&#39;</span>\n"""
+            """<span class="n">echo</span> <span class="s1">&#39;line 2&#39;</span>\n"""
             """</pre></div>\n"""
             """</div>"""
         ) if pygments else (
             """<p>Code:</p>\n"""
-            """<div class="codehilite-wrap"><pre class="codehilite"><code>echo 'line 1'\n"""
+            """<div class="codehilite-wrap"><pre class="codehilite"><code class="language-python">echo 'line 1'\n"""
             """echo 'line 2'</code></pre>\n"""
             """</div>"""
         )
