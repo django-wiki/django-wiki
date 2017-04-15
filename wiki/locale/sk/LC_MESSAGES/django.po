@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django-wiki\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-05 22:53+0200\n"
-"PO-Revision-Date: 2016-05-05 20:55+0000\n"
+"POT-Creation-Date: 2017-04-15 12:32+0200\n"
+"PO-Revision-Date: 2017-04-15 10:42+0000\n"
 "Last-Translator: Benjamin Bach <benjaoming@gmail.com>\n"
 "Language-Team: Slovak (http://www.transifex.com/django-wiki/django-wiki/language/sk/)\n"
 "MIME-Version: 1.0\n"
@@ -33,7 +33,7 @@ msgstr "Obrázky Wiki"
 msgid "Wiki attachments"
 msgstr "Prílohy Wiki"
 
-#: conf/settings.py:34
+#: conf/settings.py:37
 msgid "Table of Contents"
 msgstr "Obsah"
 
@@ -41,234 +41,238 @@ msgstr "Obsah"
 msgid "Settings for plugin"
 msgstr "Nastavenia rozšírenia"
 
-#: forms.py:75
+#: forms.py:39
+msgid "A 'slug' cannot consist solely of numbers."
+msgstr ""
+
+#: forms.py:97
 msgid ""
 "Spam protection failed to find both a logged in user and an IP address."
 msgstr "Ochrana proti spamu neuspela v hľadaní prihláseného používateľa a IP adresy."
 
-#: forms.py:90
+#: forms.py:112
 #, python-format
 msgid ""
 "Spam protection: You are only allowed to create or edit %(revisions)d "
 "article(s) per %(interval_name)s."
 msgstr "Ochrana proti spamu: Je povolené vytvoriť alebo editovať  iba %(revisions)d za %(interval_name)s."
 
-#: forms.py:108
+#: forms.py:130
 msgid "minute"
 msgstr "minúta"
 
-#: forms.py:109
+#: forms.py:131
 #, python-format
 msgid "%d minutes"
 msgstr "%d minút"
 
-#: forms.py:118
+#: forms.py:140
 msgid "hour"
 msgstr "hodina"
 
-#: forms.py:124 forms.py:136 forms.py:323 templates/wiki/dir.html.py:48
+#: forms.py:146 forms.py:158 forms.py:343 templates/wiki/dir.html:48
 #: templates/wiki/search.html:30
 msgid "Title"
 msgstr "Názov"
 
-#: forms.py:126
+#: forms.py:148
 msgid "Initial title of the article. May be overridden with revision titles."
 msgstr "Prvotný nadpis článku. Môže byť neskôr upravený."
 
-#: forms.py:128
+#: forms.py:150
 msgid "Type in some contents"
 msgstr "Začnite písať sem"
 
-#: forms.py:130
+#: forms.py:152
 msgid ""
 "This is just the initial contents of your article. After creating it, you "
 "can use more complex features like adding plugins, meta data, related "
 "articles etc..."
 msgstr "Toto je iba počiatočný obsah článku. Po jeho vytvorení môžete využiť pokročilejšie prvky ako pridanie rozšírení, meta dáta, súvisiace články, atď."
 
-#: forms.py:138 forms.py:330
+#: forms.py:160 forms.py:350
 msgid "Contents"
 msgstr "Obsah"
 
-#: forms.py:143 forms.py:335
+#: forms.py:165 forms.py:355
 msgid "Summary"
 msgstr "Zhrnutie"
 
-#: forms.py:145
+#: forms.py:167
 msgid ""
 "Give a short reason for your edit, which will be stated in the revision log."
 msgstr "Napíšte krátky dôvod vašej úpravy, ktorý bude zaznamenaný do denníku úprav."
 
-#: forms.py:201
+#: forms.py:223
 msgid "Article is missing title or has an invalid title"
 msgstr "Chýbajúci alebo neplatný názov článku."
 
-#: forms.py:215
+#: forms.py:237
 msgid ""
 "While you were editing, someone else changed the revision. Your contents "
 "have been automatically merged with the new contents. Please review the text"
 " below."
 msgstr "Počas toho ako ste upravovali článok, ho niekto taktiež zmenil. Vaše úpravy boli automaticky spojené s novým obsahom článku. Prosím skontrolujte text nižšie."
 
-#: forms.py:219
+#: forms.py:241
 msgid "No changes made. Nothing to save."
 msgstr "Nenastali žiadne zmeny, nič na uloženie."
 
-#: forms.py:260
+#: forms.py:282
 msgid "Select an option"
 msgstr "Vyberte možnosť"
 
-#: forms.py:325 templates/wiki/dir.html.py:49
+#: forms.py:345 templates/wiki/dir.html:49
 msgid "Slug"
 msgstr "Cesta"
 
-#: forms.py:327
+#: forms.py:347
 msgid ""
 "This will be the address where your article can be found. Use only "
 "alphanumeric characters and - or _. Note that you cannot change the slug "
 "after creating the article."
 msgstr "Toto bude adresa, kde bude možné nájsť Váš článok. Používajte iba alfanumerické znaky a - alebo _. Pamätajte na to, že túto cestu už nie je možné zmeniť po vytvorení článku."
 
-#: forms.py:336
+#: forms.py:356
 msgid "Write a brief message for the article's history log."
 msgstr "Napíšte krátku správu, ktorá sa uloží do denníku úprav článku."
 
-#: forms.py:343
+#: forms.py:363
 msgid "A slug may not begin with an underscore."
 msgstr "Cesta nemôže začínať _."
 
-#: forms.py:346
+#: forms.py:366
 msgid "'admin' is not a permitted slug name."
 msgstr "'admin' nie je povolená cesta."
 
-#: forms.py:361
+#: forms.py:381
 #, python-format
 msgid "A deleted article with slug \"%s\" already exists."
 msgstr "Odstránený článok s cestou \"%s\" už existuje."
 
-#: forms.py:365
+#: forms.py:385
 #, python-format
 msgid "A slug named \"%s\" already exists."
 msgstr "Článok s cestou \"%s\" už existuje."
 
-#: forms.py:374
+#: forms.py:394
 msgid "This slug conflicts with an existing URL."
 msgstr "Táto cesta je v rozpore s už existujúcou URL."
 
-#: forms.py:393
+#: forms.py:413
 msgid "Yes, I am sure"
 msgstr "Áno, som si istý."
 
-#: forms.py:396 templates/wiki/deleted.html.py:47
+#: forms.py:416 templates/wiki/deleted.html:47
 msgid "Purge"
 msgstr "Vymazať natrvalo"
 
-#: forms.py:398
+#: forms.py:418
 msgid ""
 "Purge the article: Completely remove it (and all its contents) with no undo."
 " Purging is a good idea if you want to free the slug such that users can "
 "create new articles in its place."
 msgstr "Vymazať úplne článok (so všetkým jeho obsahom). Pozor tento krok nie je možné vrátiť! Úplne vymazanie je dobrý krok, ak chcete uvoľniť URL cestu aby používatelia mohli vytvárať nové články na jeho mieste."
 
-#: forms.py:405 plugins/attachments/forms.py:167 plugins/images/forms.py:69
+#: forms.py:425 plugins/attachments/forms.py:167 plugins/images/forms.py:69
 msgid "You are not sure enough!"
 msgstr "Nie ste si dostatočne istý!"
 
-#: forms.py:409
+#: forms.py:429
 msgid "While you tried to delete this article, it was modified. TAKE CARE!"
 msgstr "Počas toho ako ste sa pokúsili vymazať tento článok, bol modifikovaný. Dávajte si POZOR!"
 
-#: forms.py:416
+#: forms.py:436
 msgid "Lock article"
 msgstr "Zamknúť článok"
 
-#: forms.py:417
+#: forms.py:437
 msgid "Deny all users access to edit this article."
 msgstr "Zablokovať všetkým používateľom úpravu tohto článku."
 
-#: forms.py:420
+#: forms.py:440
 msgid "Permissions"
 msgstr "Povolenia"
 
-#: forms.py:426
+#: forms.py:446
 msgid "Owner"
 msgstr "Vlastník"
 
-#: forms.py:427
+#: forms.py:447
 msgid "Enter the username of the owner."
 msgstr "Vložte užívateľské meno vlastníka"
 
-#: forms.py:430 forms.py:489 plugins/notifications/util.py:14
+#: forms.py:450 forms.py:509 plugins/notifications/util.py:14
 msgid "(none)"
 msgstr "(nič)"
 
-#: forms.py:431
+#: forms.py:451
 msgid "Group"
 msgstr "Skupina"
 
-#: forms.py:437
+#: forms.py:457
 msgid "Inherit permissions"
 msgstr "Zdediť povolenia"
 
-#: forms.py:439
+#: forms.py:459
 msgid ""
 "Check here to apply the above permissions (excluding group and owner of the "
 "article) recursively to articles below this one."
 msgstr "Zaškrnite tu na aplikovanie hore uvedených povolení (neberúc do úvahu skupinové povolenia a povolenia vlastníka) na všetky články, ktoré sa nachádzajú pod týmto."
 
-#: forms.py:443
+#: forms.py:463
 msgid "Inherit owner"
 msgstr "Zdediť vlastníka"
 
-#: forms.py:445
+#: forms.py:465
 msgid ""
 "Check here to apply the ownership setting recursively to articles below this"
 " one."
 msgstr "Zaškrnite tu na aplikovanie nastavenia vlastníka na všetky články pod týmto."
 
-#: forms.py:449
+#: forms.py:469
 msgid "Inherit group"
 msgstr "Zdediť skupinu"
 
-#: forms.py:451
+#: forms.py:471
 msgid ""
 "Check here to apply the group setting recursively to articles below this "
 "one."
 msgstr "Zaškrnite tu na aplikáciu nastavenia skupiny na všetky články pod týmto."
 
-#: forms.py:456
+#: forms.py:476
 msgid "Permission settings for the article were updated."
 msgstr "Nastavenia povolení tohto článku boli upravené."
 
-#: forms.py:459
+#: forms.py:479
 msgid "Your permission settings were unchanged, so nothing saved."
 msgstr "Nastavenia povolení tohto článku neboli zmenené, nič sa neuložilo."
 
-#: forms.py:519
+#: forms.py:539
 msgid "No user with that username"
 msgstr "Neexistuje žiadny používateľ s daným používateľským menom."
 
-#: forms.py:554
+#: forms.py:574
 msgid "Article locked for editing"
 msgstr "Článok je uzamknutý proti úpravám."
 
-#: forms.py:561
+#: forms.py:581
 msgid "Article unlocked for editing"
 msgstr "Článok je nie je zamknutý voči úpravám"
 
-#: forms.py:588
+#: forms.py:608
 msgid "Filter..."
 msgstr "Filtruj..."
 
-#: forms.py:598 templates/wiki/base_site.html.py:44
+#: forms.py:618 templates/wiki/base_site.html:44
 msgid "Search..."
 msgstr "Hľadaj..."
 
-#: forms.py:645
+#: forms.py:665
 msgid "Passwords don't match"
 msgstr ""
 
-#: models/article.py:39 models/pluginbase.py:177
+#: models/article.py:39 models/pluginbase.py:161
 #: plugins/attachments/models.py:33
 msgid "current revision"
 msgstr "súčasná verzia"
@@ -328,47 +332,47 @@ msgstr "práva na zápis pre ostatných"
 msgid "Article without content (%(id)d)"
 msgstr "Článok bez obsahu (%(id)d)"
 
-#: models/article.py:197
+#: models/article.py:196
 msgid "Can edit all articles and lock/unlock/restore"
 msgstr "Môže editovať všetky články a zamknút/odomknúť ich úpravy či vrátiť zmeny"
 
-#: models/article.py:198
+#: models/article.py:197
 msgid "Can change ownership of any article"
 msgstr "Môže meniť vlastníctvo hocijakého článku"
 
-#: models/article.py:199
+#: models/article.py:198
 msgid "Can assign permissions to other users"
 msgstr "Môže prideľovať práva iným používateľom"
 
-#: models/article.py:245
+#: models/article.py:244
 msgid "content type"
 msgstr "typ obsahu"
 
-#: models/article.py:247
+#: models/article.py:246
 msgid "object ID"
 msgstr "ID objektu"
 
-#: models/article.py:257
+#: models/article.py:255
 msgid "Article for object"
 msgstr "Článok pre objekt"
 
-#: models/article.py:258
+#: models/article.py:256
 msgid "Articles for object"
 msgstr "Články pre objekty"
 
-#: models/article.py:270
+#: models/article.py:268
 msgid "revision number"
 msgstr "číslo verzie"
 
-#: models/article.py:276
+#: models/article.py:274
 msgid "IP address"
 msgstr "IP adresa"
 
-#: models/article.py:280
+#: models/article.py:278
 msgid "user"
 msgstr "používateľ"
 
-#: models/article.py:295
+#: models/article.py:293
 #: plugins/attachments/templates/wiki/plugins/attachments/history.html:23
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:21
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:44
@@ -376,50 +380,46 @@ msgstr "používateľ"
 msgid "deleted"
 msgstr "vymazaný"
 
-#: models/article.py:299 templates/wiki/article.html.py:23
+#: models/article.py:297 templates/wiki/article.html:23
 #: templates/wiki/includes/revision_info.html:21
 msgid "locked"
 msgstr "zamknutý"
 
-#: models/article.py:322 models/pluginbase.py:41
+#: models/article.py:336 models/pluginbase.py:40 models/urlpath.py:71
 msgid "article"
 msgstr "článok"
 
-#: models/article.py:325
+#: models/article.py:339
 msgid "article contents"
 msgstr "obsah článku"
 
-#: models/article.py:330
+#: models/article.py:344
 msgid "article title"
 msgstr "nadpis článku"
 
-#: models/article.py:333
+#: models/article.py:347
 msgid ""
 "Each revision contains a title field that must be filled out, even if the "
 "title has not changed"
 msgstr "Každá verzia obsahuje miesto pre nadpis, ktoré musí byť vyplnené aj v prípade, ak titulok nebol zmenený."
 
-#: models/pluginbase.py:87
+#: models/pluginbase.py:81
 msgid "original article"
 msgstr "pôvodný článok"
 
-#: models/pluginbase.py:89
+#: models/pluginbase.py:83
 msgid "Permissions are inherited from this article"
 msgstr "Povolenia sú dedené z tohoto článku"
 
-#: models/pluginbase.py:157
+#: models/pluginbase.py:146
 msgid "A plugin was changed"
 msgstr "Rozšírenie bolo zmenené"
 
-#: models/pluginbase.py:182
+#: models/pluginbase.py:166
 msgid ""
 "The revision being displayed for this plugin. If you need to do a roll-back,"
 " simply change the value of this field."
 msgstr "Zobrazuje sa verzia tohoto rozšírenia. Ak sa potrebujete dostať k späť, jednoducho zmeňte hodnotu tohoto poľa."
-
-#: models/urlpath.py:71
-msgid "Lookup value"
-msgstr "Vyhľadávaná hodnota"
 
 #: models/urlpath.py:73
 msgid ""
@@ -447,20 +447,20 @@ msgstr "URL cesta"
 msgid "URL paths"
 msgstr "URL cesty"
 
-#: models/urlpath.py:209
+#: models/urlpath.py:208
 msgid "Sorry but you cannot have a root article with a slug."
 msgstr "Koreňový článok nemôže mať nastavenú cestu URL."
 
-#: models/urlpath.py:212
+#: models/urlpath.py:211
 msgid "A non-root note must always have a slug."
 msgstr "Nekoreňový článok musí mať nastavenú cestu URL."
 
-#: models/urlpath.py:218
+#: models/urlpath.py:217
 #, python-format
 msgid "There is already a root node on %s"
 msgstr "Už existuje root článok na %s"
 
-#: models/urlpath.py:364
+#: models/urlpath.py:363
 msgid ""
 "Articles who lost their parents\n"
 "===============================\n"
@@ -468,7 +468,7 @@ msgid ""
 "The children of this article have had their parents deleted. You should probably find a new home for them."
 msgstr "Podčlánky, ktoré stratili svojich rodičov\n==================================\n\nPodčlánkom tohoto článku boli vymazaní rodičia. Mali by ste nájsť pre nich iný domov."
 
-#: models/urlpath.py:367
+#: models/urlpath.py:366
 msgid "Lost and found"
 msgstr "Straty a nálezy"
 
@@ -533,26 +533,25 @@ msgstr "príloha"
 msgid "attachments"
 msgstr "prílohy"
 
-#: plugins/attachments/models.py:75
+#: plugins/attachments/models.py:73
 msgid "No file extension found in filename. That's not okay!"
 msgstr "V názve súboru nebola zistená žiadna prípona."
 
-#: plugins/attachments/models.py:81
-#, python-brace-format
+#: plugins/attachments/models.py:79
 msgid ""
 "The following filename is illegal: {filename:s}. Extension has to be one of "
 "{extensions:s}"
 msgstr "Nasledujúce názvy súborov nie sú povolené: {filename:s}. Prípona musí byť jedna z nasledujúcich {extensions:s}"
 
-#: plugins/attachments/models.py:131
+#: plugins/attachments/models.py:129
 msgid "file"
 msgstr "súbor"
 
-#: plugins/attachments/models.py:137
+#: plugins/attachments/models.py:135
 msgid "attachment revision"
 msgstr "verzia prílohy"
 
-#: plugins/attachments/models.py:138
+#: plugins/attachments/models.py:136
 msgid "attachment revisions"
 msgstr "verzie prílohy"
 
@@ -577,7 +576,7 @@ msgstr "\nNa súbor môže byť odkazované z iných článkov. Vymazanie súbor
 #: plugins/attachments/templates/wiki/plugins/attachments/search.html:75
 #: plugins/images/templates/wiki/plugins/images/purge.html:23
 #: plugins/images/templates/wiki/plugins/images/revision_add.html:23
-#: templates/wiki/create.html:53 templates/wiki/delete.html.py:12
+#: templates/wiki/create.html:40 templates/wiki/delete.html:12
 #: templates/wiki/delete.html:48
 msgid "Go back"
 msgstr "Spať"
@@ -714,7 +713,7 @@ msgid "Restore attachments"
 msgstr "Obnoviť prílohy"
 
 #: plugins/attachments/templates/wiki/plugins/attachments/index.html:133
-#: templates/wiki/deleted.html:25 templates/wiki/deleted.html.py:30
+#: templates/wiki/deleted.html:25 templates/wiki/deleted.html:30
 #: templates/wiki/deleted_list.html:24
 msgid "Restore"
 msgstr "Obnoviť"
@@ -912,24 +911,24 @@ msgstr "obrázok"
 msgid "images"
 msgstr "obrázky"
 
-#: plugins/images/models.py:57
+#: plugins/images/models.py:55
 #, python-format
 msgid "Image: %s"
 msgstr "Obrázok: %s"
 
-#: plugins/images/models.py:59
+#: plugins/images/models.py:57
 msgid "Current revision not set!!"
 msgstr "Súčasná verzia nie je nastavená!!"
 
-#: plugins/images/models.py:108
+#: plugins/images/models.py:111
 msgid "image revision"
 msgstr "verzia obrázku"
 
-#: plugins/images/models.py:109
+#: plugins/images/models.py:112
 msgid "image revisions"
 msgstr "verzie obrázkov"
 
-#: plugins/images/models.py:117
+#: plugins/images/models.py:118
 #, python-format
 msgid "Image Revsion: %d"
 msgstr "Verzia obrázku: %d"
@@ -1042,31 +1041,31 @@ msgstr "Ako používať obrázky"
 
 #: plugins/images/templates/wiki/plugins/images/sidebar.html:122
 msgid ""
-"After uploading an image, it is attached to this particular artice and can "
+"After uploading an image, it is attached to this particular article and can "
 "be used only here. Other users may replace the image, but older versions are"
-" kept. You probably want to show the image with a nice caption. To achieve "
-"this, press the Insert button and fill in the caption fields and possibly "
-"choose to have you image floating right or left of the content. You can use "
-"Markdown in the caption. The markdown code syntax for images looks like "
-"this, possible values for align are left and right:"
-msgstr "Po nahratí obrázku, je obrázok pripojený k príslušnému článku a môže byť použitý iba tam. Ostatní používatelia môžu obrázok nahradiť, ale staršie verzie sa zachovajú. Pravdepodobne chcete zobraziť obrázok s pekným  titulkom. Na to aby ste to dosiahli, kliknite na tlačidlo Vložiť a vyplnte titulok. Môžete taktiež rozhodnúť o zarovnaní obrázka doprava alebo doľava. V titulku môžete používať Markdown značky. Kód markdownu pre obrázky vyzerá takto, možné hodnoty pre zarovnanie sú left alebo right."
+" kept. To show the image press the Insert button and fill in the caption "
+"field and possibly choose to have your image floating right or left of the "
+"content. You can use markdown in the caption. The markdown code syntax for "
+"images looks like this, possible values for align are left | right and for "
+"size are small | medium | large | orig | default:"
+msgstr ""
 
-#: plugins/images/views.py:73
+#: plugins/images/views.py:86
 #, python-format
 msgid "%s has been restored"
 msgstr "%s bol obnovený"
 
-#: plugins/images/views.py:78
+#: plugins/images/views.py:91
 #, python-format
 msgid "%s has been marked as deleted"
 msgstr "%s bol označený ako vymazaný"
 
-#: plugins/images/views.py:146
+#: plugins/images/views.py:159
 #, python-format
 msgid "%(file)s has been changed to revision #%(revision)d"
 msgstr "Súbor %(file)s bol zmenený na verziu #%(revision)d"
 
-#: plugins/images/views.py:191
+#: plugins/images/views.py:204
 #, python-format
 msgid "%(file)s has been saved."
 msgstr "Súbor %(file)s bol uložený."
@@ -1083,8 +1082,8 @@ msgstr "Odkaz na inú wiki stránku"
 #: plugins/links/templates/wiki/plugins/links/sidebar.html:6
 msgid ""
 "Type in something from another wiki page's title and auto-complete will help"
-" you create a tag for you wiki link. Tags for links look like this:"
-msgstr "Začnite písať niečo z nadpisu iného článku a automatické dokončovanie vám pomôže vytvoriť značku markdown tag odkaz na wiki stránku. Markdown tag na odkazy vyzerá takto:"
+" you create a tag for your wiki link. Tags for links look like this:"
+msgstr ""
 
 #: plugins/links/templates/wiki/plugins/links/sidebar.html:25
 msgid ""
@@ -1104,10 +1103,6 @@ msgstr "Zoznam článkov"
 msgid "Insert a list of articles in this level."
 msgstr "Vložiť zoznam článkov v tejto úrovni."
 
-#: plugins/macros/mdx/macro.py:86
-msgid "[article_list depth:2]"
-msgstr "[article_list depth:2]"
-
 #: plugins/macros/mdx/macro.py:87
 msgid "Maximum depth to show levels for."
 msgstr "Maximálna hĺbka, do ktorej zobrazovať úrovne."
@@ -1120,10 +1115,6 @@ msgstr "Obsah"
 msgid "Insert a table of contents matching the headings."
 msgstr "Vložte obsah stránky, ktorý zodpovedá nadpisom"
 
-#: plugins/macros/mdx/macro.py:95
-msgid "[TOC]"
-msgstr "[TOC]"
-
 #: plugins/macros/mdx/macro.py:102
 msgid "WikiLinks"
 msgstr "WikiLinks"
@@ -1131,10 +1122,6 @@ msgstr "WikiLinks"
 #: plugins/macros/mdx/macro.py:104
 msgid "Insert a link to another wiki page with a short notation."
 msgstr "Vložte odkaz na inú wiki stránku s krátkou poznámkou"
-
-#: plugins/macros/mdx/macro.py:105
-msgid "[[WikiLink]]"
-msgstr "[[WikiLink]]"
 
 #: plugins/macros/templates/wiki/plugins/macros/article_list.html:6
 msgid "Article index"
@@ -1148,63 +1135,63 @@ msgstr "Pod touto úrovňou nič nie je"
 msgid "Macros"
 msgstr "Makrá"
 
-#: plugins/notifications/forms.py:20
+#: plugins/notifications/forms.py:19
 #, python-format
 msgid "Receive notifications %(interval)s"
 msgstr "Príjmať notifikácie %(interval)s"
 
-#: plugins/notifications/forms.py:30
+#: plugins/notifications/forms.py:29
 #, python-format
 msgid "%(title)s - %(url)s"
 msgstr "%(title)s - %(url)s"
 
-#: plugins/notifications/forms.py:47
+#: plugins/notifications/forms.py:46
 msgid "Remove subscriptions"
 msgstr "Odstrániť odbery"
 
-#: plugins/notifications/forms.py:49
+#: plugins/notifications/forms.py:48
 msgid "Select article subscriptions to remove from notifications"
 msgstr "Vybrať odbery článkov, ku ktorým nebudete dostávať notifikácie"
 
-#: plugins/notifications/forms.py:53
+#: plugins/notifications/forms.py:52
 msgid "Email digests"
 msgstr "Odbery emailom"
 
-#: plugins/notifications/forms.py:55
+#: plugins/notifications/forms.py:54
 msgid "Unchanged (selected on each article)"
 msgstr "Nezmenené (vybrané pre každý článok)"
 
-#: plugins/notifications/forms.py:56
+#: plugins/notifications/forms.py:55
 msgid "No emails"
 msgstr "Žiadne emaily"
 
-#: plugins/notifications/forms.py:57
+#: plugins/notifications/forms.py:56
 msgid "Email on any change"
 msgstr "Poslať email v prípade akejkoľvek zmeny"
 
-#: plugins/notifications/forms.py:109
+#: plugins/notifications/forms.py:108
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:5
 msgid "Notifications"
 msgstr "Notifikácie"
 
-#: plugins/notifications/forms.py:116
+#: plugins/notifications/forms.py:115
 #: templates/wiki/includes/article_menu.html:9 templates/wiki/settings.html:5
 msgid "Settings"
 msgstr "Nastavenia"
 
-#: plugins/notifications/forms.py:120
+#: plugins/notifications/forms.py:119
 msgid "When this article is edited"
 msgstr "Keď je tento článok upravený"
 
-#: plugins/notifications/forms.py:123
+#: plugins/notifications/forms.py:122
 msgid "Also receive emails about article edits"
 msgstr "Dostávať emaily o úpravách článku"
 
-#: plugins/notifications/forms.py:168
+#: plugins/notifications/forms.py:164
 msgid "Your notification settings were updated."
 msgstr "Vaše nastavenia notifikácií boli upravené."
 
-#: plugins/notifications/forms.py:171
+#: plugins/notifications/forms.py:167
 msgid "Your notification settings were unchanged, so nothing saved."
 msgstr "Vaše nastavenia notifikácií zostali nezmenené, nič nebolo uložené."
 
@@ -1213,17 +1200,17 @@ msgstr "Vaše nastavenia notifikácií zostali nezmenené, nič nebolo uložené
 msgid "%(user)s subscribing to %(article)s (%(type)s)"
 msgstr "%(user)s prihlásený k odberu %(article)s (%(type)s)"
 
-#: plugins/notifications/models.py:53
+#: plugins/notifications/models.py:51
 #, python-format
 msgid "Article deleted: %s"
 msgstr "Článok bol vymazaný: %s"
 
-#: plugins/notifications/models.py:61
+#: plugins/notifications/models.py:59
 #, python-format
 msgid "Article modified: %s"
 msgstr "Článok bol upravený: %s"
 
-#: plugins/notifications/models.py:69
+#: plugins/notifications/models.py:67
 #, python-format
 msgid "New article created: %s"
 msgstr "Nový článok bol vytvorený: %s"
@@ -1261,7 +1248,7 @@ msgid "You are not subscribed to any notifications yet."
 msgstr "Zatiaľ nie ste prihlásený k odberu žiadnych notifikácií."
 
 #: plugins/notifications/templates/wiki/plugins/notifications/settings.html:35
-#: templates/wiki/edit.html:45 templates/wiki/edit.html.py:72
+#: templates/wiki/edit.html:45 templates/wiki/edit.html:72
 #: templates/wiki/settings.html:17
 msgid "Save changes"
 msgstr "Uložiť zmeny"
@@ -1273,7 +1260,7 @@ msgstr "Budete dostávať notifikácie %(interval)s pre %(articles)d článkov"
 
 #: templates/wiki/accounts/account_settings.html:4
 #: templates/wiki/accounts/account_settings.html:7
-#: templates/wiki/base_site.html:72
+#: templates/wiki/base_site.html:66
 msgid "Account Settings"
 msgstr ""
 
@@ -1281,7 +1268,7 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: templates/wiki/accounts/login.html:4 templates/wiki/base_site.html.py:93
+#: templates/wiki/accounts/login.html:4 templates/wiki/base_site.html:93
 msgid "Log in"
 msgstr "Prihlásiť sa"
 
@@ -1298,7 +1285,7 @@ msgid "Don't have an account?"
 msgstr "Nemáte účet?"
 
 #: templates/wiki/accounts/login.html:25 templates/wiki/accounts/signup.html:3
-#: templates/wiki/accounts/signup.html:6 templates/wiki/base_site.html:96
+#: templates/wiki/accounts/signup.html:6 templates/wiki/base_site.html:97
 msgid "Sign up"
 msgstr "Registrovať sa"
 
@@ -1310,7 +1297,7 @@ msgstr "Registrovať ma"
 msgid "This article was last modified:"
 msgstr "Tento článok bol naposledy zmenený:"
 
-#: templates/wiki/base_site.html:65
+#: templates/wiki/base_site.html:72
 msgid "Log out"
 msgstr "Odhlásiť sa"
 
@@ -1318,26 +1305,26 @@ msgstr "Odhlásiť sa"
 msgid "Deleted articles"
 msgstr ""
 
-#: templates/wiki/base_site.html:103
+#: templates/wiki/base_site.html:105
 msgid "Home"
 msgstr "Domov"
 
-#: templates/wiki/base_site.html:104
+#: templates/wiki/base_site.html:106
 msgid "About"
 msgstr "O nás"
 
-#: templates/wiki/base_site.html:137
+#: templates/wiki/base_site.html:139
 msgid ""
 "Powered by <a href=\"http://www.django-wiki.org\">django-wiki</a>, an open "
 "source application under the <a href=\"http://www.gnu.org/licenses/quick-"
 "guide-gplv3.html\">GPLv3</a> license. Let knowledge be the cure."
 msgstr "Beží na <a href=\"http://www.django-wiki.org\">django-wiki</a>, open source aplikácii pod <a href=\"http://www.gnu.org/licenses/quick-guide-gplv3.html\">GPLv3</a> licenciou."
 
-#: templates/wiki/create.html:5 templates/wiki/create.html.py:44
+#: templates/wiki/create.html:5 templates/wiki/create.html:31
 msgid "Add new article"
 msgstr "Pridať nový článok"
 
-#: templates/wiki/create.html:57
+#: templates/wiki/create.html:44
 msgid "Create article"
 msgstr "Vytvoriť článok"
 
@@ -1369,7 +1356,7 @@ msgstr "Koreňový článok"
 msgid "Create root"
 msgstr "Vytvoriť koreňový článok"
 
-#: templates/wiki/delete.html:5 templates/wiki/delete.html.py:52
+#: templates/wiki/delete.html:5 templates/wiki/delete.html:52
 #: templates/wiki/edit.html:50
 msgid "Delete article"
 msgstr "Vymazať článok"
@@ -1402,7 +1389,7 @@ msgstr "...a viac!"
 msgid "You are deleting an article. Please confirm."
 msgstr "Prosím potvrďte vymazanie článku. "
 
-#: templates/wiki/deleted.html:5 templates/wiki/deleted.html.py:14
+#: templates/wiki/deleted.html:5 templates/wiki/deleted.html:14
 msgid "Article deleted"
 msgstr "Článok bol vymazaný"
 
@@ -1476,11 +1463,11 @@ msgid ""
 "    "
 msgstr "\nPrezeráte <strong><a href=\"%(self_url)s\">/%(path)s</a></strong>. Na tejto úrovni %(articles_plur_verb)s <strong>%(cnt)s %(articles_plur)s</strong>."
 
-#: templates/wiki/dir.html:50 templates/wiki/search.html.py:31
+#: templates/wiki/dir.html:50 templates/wiki/search.html:31
 msgid "Last modified"
 msgstr "Naposledy upravené"
 
-#: templates/wiki/dir.html:74 templates/wiki/search.html.py:40
+#: templates/wiki/dir.html:74 templates/wiki/search.html:40
 msgid "There are no articles in this level"
 msgstr "Na tejto úrovni nie sú žiadne články"
 
@@ -1506,7 +1493,7 @@ msgstr "Náhľad"
 msgid "Back to editor"
 msgstr "Späť k úpravám"
 
-#: templates/wiki/error.html:5 templates/wiki/error.html.py:26
+#: templates/wiki/error.html:5 templates/wiki/error.html:26
 msgid "Error"
 msgstr "Chyba"
 
@@ -1542,7 +1529,7 @@ msgstr "Kliknutím na každú verziu uvidíte zoznam zmenených riadkov. Kliknut
 msgid "no log message"
 msgstr "žiadna správa v logu"
 
-#: templates/wiki/history.html:84 templates/wiki/history.html.py:89
+#: templates/wiki/history.html:84 templates/wiki/history.html:89
 msgid "Preview this revision"
 msgstr "Náhľad tejto verzie"
 
@@ -1562,11 +1549,11 @@ msgstr "Spojiť vybranú verziu so súčasnou..."
 msgid "Switch to selected version"
 msgstr "Zmeniť na vybranú verziu"
 
-#: templates/wiki/history.html:152 templates/wiki/history.html.py:183
+#: templates/wiki/history.html:152 templates/wiki/history.html:183
 msgid "Back to history view"
 msgstr "Naspäť k preľadu histórie"
 
-#: templates/wiki/history.html:157 templates/wiki/history.html.py:162
+#: templates/wiki/history.html:157 templates/wiki/history.html:162
 msgid "Switch to this version"
 msgstr "Prepnúť na verziu"
 
@@ -1584,7 +1571,7 @@ msgstr "Ak spojíte verziu so súčastnou, všetky dáta budú zachované z oboc
 msgid "After this, it's important to do a manual review."
 msgstr "Po tomto kroku, je dôležité urobiť manuálnu kontrolu."
 
-#: templates/wiki/history.html:188 templates/wiki/history.html.py:193
+#: templates/wiki/history.html:188 templates/wiki/history.html:193
 msgid "Create new merged version"
 msgstr "Vytvoriť novú spojenú verziu"
 
@@ -1722,7 +1709,7 @@ msgstr "Áno, chcem vytvoriť prvý článok"
 msgid "No thanks, I'd rather read the documentation"
 msgstr "Nie ďakujem, radšej si prečítam dokumentáciu."
 
-#: templates/wiki/search.html:5 templates/wiki/search.html.py:9
+#: templates/wiki/search.html:5 templates/wiki/search.html:9
 msgid "Search results for:"
 msgstr "Výsledky vyhľadávania pre:"
 
@@ -1739,23 +1726,23 @@ msgstr "Zdroj"
 msgid "This article is currently locked for editing."
 msgstr "Tento článok je momentálne zamknutý, a preto ho nemožno upravovať."
 
-#: views/accounts.py:49
+#: views/accounts.py:47
 msgid "Account signup is only allowed for administrators."
 msgstr "Vytváranie používateľov je povolené len pre administrátorov."
 
-#: views/accounts.py:63
+#: views/accounts.py:61
 msgid "You are now signed up... and now you can sign in!"
 msgstr "Úspešne ste sa zaregistrovali. Teraz sa môžete prihlásiť!"
 
-#: views/accounts.py:76
+#: views/accounts.py:74
 msgid "You are no longer logged in. Bye bye!"
 msgstr "Úspešne ste sa odhlásili. Dovidenia!"
 
-#: views/accounts.py:109
+#: views/accounts.py:107
 msgid "You are now logged in! Have fun!"
 msgstr "Odteraz ste prihlásený! Bavte sa!"
 
-#: views/accounts.py:133
+#: views/accounts.py:131
 msgid "Account info saved!"
 msgstr ""
 
@@ -1817,16 +1804,16 @@ msgid ""
 "The article %(title)s is now set to display revision #%(revision_number)d"
 msgstr "Článok %(title)s od teraz zobrazuje jeho verziu #%(revision_number)d"
 
-#: views/article.py:808
+#: views/article.py:807
 msgid "New title"
 msgstr "Nový nadpis"
 
-#: views/article.py:852
+#: views/article.py:854
 #, python-format
 msgid "Merge between revision #%(r1)d and revision #%(r2)d"
 msgstr "Spojenie verzií #%(r1)d a #%(r2)d"
 
-#: views/article.py:863
+#: views/article.py:865
 #, python-format
 msgid ""
 "A new revision was created: Merge between revision #%(r1)d and revision "
