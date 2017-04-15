@@ -29,7 +29,12 @@ MARKDOWN_KWARGS = {
     'extensions': [
         'footnotes',
         'attr_list',
-        'extra',
+        'smart_strong',
+        'footnotes',
+        'attr_list',
+        'def_list',
+        'tables',
+        'abbr',
         'sane_lists',
     ],
     'extension_configs': {
