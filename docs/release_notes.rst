@@ -21,6 +21,7 @@ django-wiki 0.2.3 (unreleased)
  * Upgraded Bootstrap from 3.3.1 to 3.3.7 (Benjamin Bach) #620
  * Upgraded bundled jQuery to 1.12.4 (Benjamin Bach) #620
  * Setting ``WIKI_MARKDOWN_HTML_STYLES`` for allowing ``style='..'`` in user code (Benjamin Bach) #603
+ * Strip Markdown code in search result snippets (Benjamin Bach) #42
 
 
 django-wiki 0.2.2
