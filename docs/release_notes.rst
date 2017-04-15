@@ -20,6 +20,8 @@ django-wiki 0.2.2 (unreleased master branch)
  * Option ``WIKI_MARKDOWN_SANITIZE_HTML`` skips Bleach (warning: Don't use for untrusted code) #610 (Michal Hozza)
  * Allow the HTML tag <br>. #613 (Frank Loemker)
  * Add thumbnail size directive (example: ``[image:123 size:large]``). #612 (Frank Loemker and @inflrscns)
+ * Fix error with absolute paths in wiki links (example: ``[Sub-root](wiki:/sub-root)``) #616 (Benoit C. Sirois)
+ * Require ``Django<1.11`` #616 (Benoit C. Sirois)
 
 
 django-wiki 0.2.1
