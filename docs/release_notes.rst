@@ -5,13 +5,13 @@ Release notes
 Release plan
 ------------
 
-Currently, the only series in development is the 0.2 series, and all bug fixes
-and new features are referred to this series, keeping in mind that they don't
-introduce any backwards incompatible changes.
+The next release series **0.3** will support Django 1.11. Likewise, it will be
+the last series with Python 2 support. Series 0.3 is in development in the
+current master branch.
 
 
-django-wiki 0.2.2 (unreleased master branch)
---------------------------------------------
+django-wiki 0.2.2
+-----------------
 
  * Remove ``wiki.decorators.json_view``, fixes server errors when resolving 404 links #604
  * Replace usage of `render_to_response()` with `render()` #606
@@ -140,7 +140,7 @@ django-wiki 0.1
 
 
 Breaking changes
-________________
+~~~~~~~~~~~~~~~~
 
 **wiki.VERSION as tuple**
 
@@ -178,7 +178,7 @@ the final release.
 
 
 Upgrading
-_________
+~~~~~~~~~
 
 Firstly, upgrade django-wiki through familiar steps with pip
 
@@ -233,7 +233,7 @@ receive notifications using the following management command:
 
 
 Troubleshooting
-_______________
+~~~~~~~~~~~~~~~
 
 
 If you have been running from the git master branch, you may experience
@@ -259,4 +259,69 @@ your DB shell (after backing up this data).
 After this, you can recreate your notifications with the former section's
 instructions.
 
+
+
+News archive
+------------
+
+
+June 19, 2016
+~~~~~~~~~~~~~
+
+0.1.2 released: `Release notes <http://django-wiki.readthedocs.io/en/latest/release_notes.html#django-wiki-0-1-2>`__
+
+May 6, 2016
+~~~~~~~~~~~
+
+0.1.1 released: `Release notes <http://django-wiki.readthedocs.io/en/latest/release_notes.html#django-wiki-0-1-1>`__
+
+
+January 25, 2016
+~~~~~~~~~~~~~~~~
+
+0.1 final released
+
+
+December 26th, 2015
+~~~~~~~~~~~~~~~~~~~
+
+A new release 0.0.24.4 is out and has fixes for the Django ``loaddata`` management command such that you can create dumps and restore the dump. Notice, though, that ``loaddata`` only works for Django 1.7+.
+
+Django 1.9 support is available in the current master, please help get a 0.1 released by giving feed back in the last remaining issues:
+
+https://github.com/django-wiki/django-wiki/milestones/0.1
+
+
+November 16th, 2015
+~~~~~~~~~~~~~~~~~~~
+
+Django 1.8 support is very ready and 0.1 is right on the doorstep now.
+
+
+January 26th, 2015
+~~~~~~~~~~~~~~~~~~
+
+After too long, the new release is out.
+
+The wait was mainly due to all the confusing changes by adding support
+of Python 3 and readying the migrations for Django 1.7. But there's
+actually new features, too.
+
+-  Bootstrap 3.3.1 and Font Awesome 4 (Christian Duvholt)
+-  ``django_nyt`` instead of builtin ``django_notify`` (Benjamin Bach,
+   Maximilien Cuony)
+-  ``tox`` for testing (Luke Plant)
+-  Appropriate use of gettext\_lazy (Jaakko Luttinen)
+-  Fixed support of custom username fields (Jan De Bleser)
+-  Several fixes to the attachment plugin (Christian Duvholt)
+-  Errors on notifications settings tab (Benjamin Richter)
+-  Chinese translations (Ronald Bai)
+-  Finish translations (Jaakko Luttinen)
+-  Compatibility with custom user model in article settings (Andy Fang)
+-  Fixed bug when ``[attachment:XX]`` present multiple times on same
+   line (Maximilien Cuony)
+-  Simple mediawiki import management command (Maximilien Cuony)
+-  Python 3 and Django 1.6 compatibility (Russell-Jones, Antonin
+   Lenfant, Luke Plant, Lubimov Igor, Benjamin Bach)
+-  (and more, forgiveness asked if anyone feels left out)
 

@@ -22,16 +22,18 @@ Django support
 
 The below table explains which Django versions are supported.
 
-+------------+----------------+--------------+
-| Release    | Django         | Upgrade from |
-+============+================+==============+
-| 0.2        | 1.8, 1.9, 1.10 | 0.1          |
-+------------+----------------+--------------+
-| 0.1        | 1.5, 1.6, 1.7  | 0.24         |
-+------------+----------------+--------------+
-| 0.0.24     | 1.4, 1.5, 1.6  | 0.0.?        |
-|            | 1.7 (unstable) |              |
-+------------+----------------+--------------+
++------------------+----------------+--------------+
+| Release          | Django         | Upgrade from |
++==================+================+==============+
+| 0.3 (unreleased) | 1.10, 1.11     | 0.2          |
++------------------+----------------+--------------+
+| 0.2              | 1.8, 1.9, 1.10 | 0.1          |
++------------------+----------------+--------------+
+| 0.1              | 1.5, 1.6, 1.7  | 0.24         |
++------------------+----------------+--------------+
+| 0.0.24           | 1.4, 1.5, 1.6  | 0.0.?        |
+|                  | 1.7 (unstable) |              |
++------------------+----------------+--------------+
 
 For upgrade instructions, please refer to the `Release
 Notes <http://django-wiki.readthedocs.io/en/latest/release_notes.html>`__
@@ -40,75 +42,17 @@ Notes <http://django-wiki.readthedocs.io/en/latest/release_notes.html>`__
 News
 ----
 
+
+February 27, 2017
+~~~~~~~~~~~~~~~~~
+
+0.2.1 final released: `Release notes <http://django-wiki.readthedocs.io/en/0.2.1/release_notes.html>`_
+
+
 December 27, 2016
 ~~~~~~~~~~~~~~~~~
 
 0.2 final released: `Release notes <http://django-wiki.readthedocs.io/en/0.2/release_notes.html>`_
-
-October 13, 2016
-~~~~~~~~~~~~~~~~
-
-0.2b1 released: `Release notes <http://django-wiki.readthedocs.io/en/latest/release_notes.html#django-wiki-0-2-dev>`__
-
-June 19, 2016
-~~~~~~~~~~~~~
-
-0.1.2 released: `Release notes <http://django-wiki.readthedocs.io/en/latest/release_notes.html#django-wiki-0-1-2>`__
-
-May 6, 2016
-~~~~~~~~~~~
-
-0.1.1 released: `Release notes <http://django-wiki.readthedocs.io/en/latest/release_notes.html#django-wiki-0-1-1>`__
-
-
-January 25, 2016
-~~~~~~~~~~~~~~~~
-
-0.1 final released
-
-
-December 26th, 2015
-~~~~~~~~~~~~~~~~~~~
-
-A new release 0.0.24.4 is out and has fixes for the Django ``loaddata`` management command such that you can create dumps and restore the dump. Notice, though, that ``loaddata`` only works for Django 1.7+.
-
-Django 1.9 support is available in the current master, please help get a 0.1 released by giving feed back in the last remaining issues:
-
-https://github.com/django-wiki/django-wiki/milestones/0.1
-
-
-November 16th, 2015
-~~~~~~~~~~~~~~~~~~~
-
-Django 1.8 support is very ready and 0.1 is right on the doorstep now.
-
-
-January 26th, 2015
-~~~~~~~~~~~~~~~~~~
-
-After too long, the new release is out.
-
-The wait was mainly due to all the confusing changes by adding support
-of Python 3 and readying the migrations for Django 1.7. But there's
-actually new features, too.
-
--  Bootstrap 3.3.1 and Font Awesome 4 (Christian Duvholt)
--  ``django_nyt`` instead of builtin ``django_notify`` (Benjamin Bach,
-   Maximilien Cuony)
--  ``tox`` for testing (Luke Plant)
--  Appropriate use of gettext\_lazy (Jaakko Luttinen)
--  Fixed support of custom username fields (Jan De Bleser)
--  Several fixes to the attachment plugin (Christian Duvholt)
--  Errors on notifications settings tab (Benjamin Richter)
--  Chinese translations (Ronald Bai)
--  Finish translations (Jaakko Luttinen)
--  Compatibility with custom user model in article settings (Andy Fang)
--  Fixed bug when ``[attachment:XX]`` present multiple times on same
-   line (Maximilien Cuony)
--  Simple mediawiki import management command (Maximilien Cuony)
--  Python 3 and Django 1.6 compatibility (Russell-Jones, Antonin
-   Lenfant, Luke Plant, Lubimov Igor, Benjamin Bach)
--  (and more, forgiveness asked if anyone feels left out)
 
 
 Translations (Transifex)

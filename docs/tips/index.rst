@@ -4,6 +4,7 @@ Tips & FAQ
 .. toctree::
    :caption: Tips index
 
+   faq
    disqus
 
 Quick tips
