@@ -68,14 +68,6 @@ class WikiFencedBlockPreprocessor(Preprocessor):
                 break
         return text.split("\n")
 
-    def _escape(self, txt):
-        """ basic html escaping """
-        txt = txt.replace('&', '&amp;')
-        txt = txt.replace('<', '&lt;')
-        txt = txt.replace('>', '&gt;')
-        txt = txt.replace('"', '&quot;')
-        return txt
-
 
 class HiliteTreeprocessor(Treeprocessor):
     """ Hilight source code in code blocks. """
