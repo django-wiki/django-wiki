@@ -93,6 +93,25 @@ MARKDOWN_HTML_ATTRIBUTES.update(
     )
 )
 
+# Allowed inline styles, default is no styles (empty list)
+MARKDOWN_HTML_STYLES = (
+    getattr(
+        django_settings,
+        'WIKI_MARKDOWN_HTML_STYLES',
+        []
+    )
+)
+
+_project_defined_attrs = getattr(
+    django_settings,
+    'WIKI_MARKDOWN_HTML_ATTRIBUTE_WHITELIST',
+    False)
+
+# If styles are allowed but no custom attributes are defined, we allow styles
+# for all kinds of tags
+if MARKDOWN_HTML_STYLES and not _project_defined_attrs:
+    MARKDOWN_HTML_ATTRIBUTES['*'] = 'style'
+
 
 # This slug is used in URLPath if an article has been deleted. The children of the
 # URLPath of that article are moved to lost and found. They keep their permissions

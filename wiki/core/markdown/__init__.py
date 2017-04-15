@@ -40,6 +40,7 @@ class ArticleMarkdown(markdown.Markdown):
                 html,
                 tags=settings.MARKDOWN_HTML_WHITELIST,
                 attributes=settings.MARKDOWN_HTML_ATTRIBUTES,
+                styles=settings.MARKDOWN_HTML_STYLES,
             )
         return html
 
