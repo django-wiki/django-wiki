@@ -20,6 +20,7 @@ django-wiki 0.2.3 (unreleased)
  * Cached articles showing up in wrong language (Benjamin Bach) #592
  * Upgraded Bootstrap from 3.3.1 to 3.3.7 (Benjamin Bach) #620
  * Upgraded bundled jQuery to 1.12.4 (Benjamin Bach) #620
+ * Setting ``WIKI_MARKDOWN_HTML_STYLES`` for allowing ``style='..'`` in user code (Benjamin Bach) #603
 
 
 django-wiki 0.2.2
