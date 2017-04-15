@@ -46,6 +46,7 @@ News
 April 15, 2017
 ~~~~~~~~~~~~~~
 
+0.2.3 final released: `Release notes <http://django-wiki.readthedocs.io/en/0.2.3/release_notes.html>`_
 0.2.2 final released: `Release notes <http://django-wiki.readthedocs.io/en/0.2.2/release_notes.html>`_
 
 
