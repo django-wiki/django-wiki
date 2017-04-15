@@ -120,19 +120,21 @@ class CodehiliteTests(TestCase):
             """<p>Code:</p>\n"""
             """<div class="codehilite-wrap"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1\n"""
             """2\n"""
-            """3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="ch">#!/usr/bin/python</span>\n"""
+            """3\n"""
+            """4</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="ch">#!/usr/bin/python</span>\n"""
             """<span class="k">print</span><span class="p">(</span><span class="s1">&#39;line 1&#39;</span><span class="p">)</span>\n"""
             """<span class="k">print</span><span class="p">(</span><span class="s1">&#39;line 2&#39;</span><span class="p">)</span>\n"""
+            """<span class="k">print</span><span class="p">(</span><span class="s1">&#39;æøå&#39;</span><span class="p">)</span>\n"""
             """</pre></div>\n"""
             """</td></tr></table></div>"""
         ) if pygments else (
             """<p>Code:</p>\n"""
             """<div class="codehilite-wrap"><pre class="codehilite"><code class="language-python linenums">#!/usr/bin/python\n"""
             """print('line 1')\n"""
-            """print('line 2')</code></pre>\n"""
+            """print('line 2')\n"""
+            """print('æøå')</code></pre>\n"""
             """</div>"""
         )
-        print(md.convert(text))
         self.assertEqual(
             md.convert(text),
             result,
