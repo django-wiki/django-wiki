@@ -16,6 +16,7 @@ django-wiki 0.2.3 (unreleased)
 
  * Pulled Transifex translations and pushed source translations.
  * Fix support for Py2 unicode in code blocks (Benjamin Bach) #607
+ * Support for Github style fenced codeblocks (Benjamin Bach) #618
 
 
 django-wiki 0.2.2
