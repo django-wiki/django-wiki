@@ -193,12 +193,3 @@ def plugin_enabled(plugin_name):
 @register.filter
 def wiki_settings(name):
     return getattr(settings, name, "")
-
-@register.filter
-@stringfilter
-def template_exists(value):
-    try:
-        template.loader.get_template(value)
-        return True
-    except template.TemplateDoesNotExist:
-        return False
