@@ -1,20 +1,16 @@
 {% extends "wiki/base.html" %}
 {% load wiki_tags i18n humanize %}
 
-
 {% block wiki_pagetitle %}{% trans "Global history" %}{% endblock %}
 
 {% block wiki_contents %}
 
 <h1>{% trans "Global history" %}</h1>
-<p class="lead">
-  {% trans "List every changes in the wiki" %}
-</p>
 
-<p>
+<p class="lead">
   {% with paginator.object_list.count as cnt %}
-    {% blocktrans with urlpath.path as path and cnt|pluralize:_("change,changes") as articles_plur and cnt|pluralize:_("is,are") as articles_plur_verb %}
-      There {{ articles_plur_verb }} <strong>{{ cnt }} {{ articles_plur }}</strong> changes in total.
+    {% blocktrans with cnt|pluralize:_("change,changes") as articles_plur %}
+      List of all <strong>{{ cnt }} {{ articles_plur }}</strong> in the wiki.
     {% endblocktrans %}
   {% endwith %}
 </p>
@@ -104,4 +100,3 @@
 
 </div>
 {% endblock %}
-
