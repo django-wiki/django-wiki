@@ -7,6 +7,7 @@
 
 <h1>{% trans "Global history" %}</h1>
 
+{% spaceless %}
 <p class="lead">
   {% with paginator.object_list.count as cnt %}
     {% blocktrans with cnt|pluralize:_("change,changes") as articles_plur %}
@@ -48,7 +49,6 @@
               {% else %}
                 ({% trans "no log message" %})
               {% endif %}
-
               {% if article_revision.deleted %}
                 <span class="badge badge-important">{% trans "deleted" %}</span>
               {% endif %}
@@ -83,7 +83,6 @@
           </tr>
         {% endfor %}
       </tbody>
-
     </table>
   {% else %}
     <div class="alert alert-info">
@@ -97,6 +96,6 @@
   {% endif %}
 
   {% include "wiki/includes/pagination.html" %}
-
 </div>
+{% endspaceless %}
 {% endblock %}
