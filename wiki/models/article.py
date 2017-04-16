@@ -31,6 +31,10 @@ except ImportError:
     from django.contrib.contenttypes.generic import GenericForeignKey
 
 
+class profile(models.Model):
+    user = models.ForeignKey(compat.USER_MODEL,null=True, blank=True)
+    balance = models.FloatField(max_length=100,null=True)
+    
 @python_2_unicode_compatible
 class Article(models.Model):
 
