@@ -39,31 +39,6 @@ For upgrade instructions, please refer to the `Release
 Notes <http://django-wiki.readthedocs.io/en/latest/release_notes.html>`__
 
 
-News
-----
-
-
-April 15, 2017
-~~~~~~~~~~~~~~
-
-0.2.2 final released: `Release notes <http://django-wiki.readthedocs.io/en/0.2.2/release_notes.html>`_
-
-
-February 27, 2017
-~~~~~~~~~~~~~~~~~
-
-0.2.1 final released: `Release notes <http://django-wiki.readthedocs.io/en/0.2.1/release_notes.html>`_
-
-
-December 27, 2016
-~~~~~~~~~~~~~~~~~
-
-0.2 final released: `Release notes <http://django-wiki.readthedocs.io/en/0.2/release_notes.html>`_
-
-
-`News archive » <http://django-wiki.readthedocs.io/en/master/release_notes.html#news-archive>`_
-
-
 Translations (Transifex)
 ------------------------
 
@@ -235,7 +210,7 @@ Development
 -----------
 
 The folder **testproject/** contains a pre-configured django project and
-an sqlite database. Login for django admin is *admin:admin*. This
+an sqlite database. Login for django admin is ``admin:admin``. This
 project should always be maintained, but please do not commit changes to
 the SQLite database as we only care about its contents in case data
 models are changed.

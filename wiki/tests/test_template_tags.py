@@ -205,27 +205,16 @@ class WikiRenderTest(TemplateTestCase):
             content="Some beauty test text"
         )
 
-        content = '''This is a normal paragraph:
-
-        This is a code block.
-
-        <a>This should be escaped</a>
-        '''
-
-        example = (
-            """<p>This is a normal paragraph:</p>\n"""
-            """<div class="codehilite-wrap"><pre class="codehilite"><code>    This is a code block.\n"""
+        content = (
+            """This is a normal paragraph\n"""
             """\n"""
-            """    &lt;a&gt;This should be escaped&lt;/a&gt;</code></pre>\n"""
-            """</div>"""
+            """Headline\n"""
+            """========\n"""
         )
-        example_with_pygments = (
-            """<p>This is a normal paragraph:</p>\n"""
-            """<div class="codehilite-wrap"><div class="codehilite"><pre><span></span>    This is a code block.\n"""
-            """\n"""
-            """    <span class="nt">&lt;a&gt;</span>This should be escaped<span class="nt">&lt;/a&gt;</span>\n"""
-            """</pre></div>\n"""
-            """</div>"""
+
+        expected_markdown = (
+            """<p>This is a normal paragraph</p>\n"""
+            """<h1 id="wiki-toc-headline">Headline</h1>"""
         )
 
         # monkey patch
@@ -233,36 +222,28 @@ class WikiRenderTest(TemplateTestCase):
         registry._cache = {'spam': 'eggs'}
 
         output = wiki_render({}, article, preview_content=content)
-
         assertCountEqual(self, self.keys, output)
         self.assertEqual(output['article'], article)
-        try:
-            self.assertMultiLineEqual(output['content'], example)
-        except (AssertionError, self.failureException):
-            print(output['content'])
-            self.assertMultiLineEqual(output['content'], example_with_pygments)
+        self.assertMultiLineEqual(output['content'], expected_markdown)
         self.assertEqual(output['preview'], True)
         self.assertEqual(output['plugins'], {'spam': 'eggs'})
         self.assertEqual(output['STATIC_URL'], django_settings.STATIC_URL)
         self.assertEqual(output['CACHE_TIMEOUT'], settings.CACHE_TIMEOUT)
 
         output = self.render({'article': article, 'pc': content})
-        try:
-            self.assertIn(example, output)
-        except self.failureException:
-            self.assertIn(example_with_pygments, output)
+        self.assertIn(expected_markdown, output)
 
     def test_called_with_preview_content_and_article_dont_have_current_revision(
             self):
 
         article = Article.objects.create()
 
-        content = '''This is a normal paragraph:
-
-        This is a code block.
-
-        <a>This should be escaped</a>
-        '''
+        content = (
+            """This is a normal paragraph\n"""
+            """\n"""
+            """Headline\n"""
+            """========\n"""
+        )
 
         # monkey patch
         from wiki.core.plugins import registry

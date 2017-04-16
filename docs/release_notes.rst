@@ -11,10 +11,17 @@ current master branch.
 
 
 
-django-wiki 0.2.3 (unreleased)
-------------------------------
+django-wiki 0.2.3
+-----------------
 
  * Pulled Transifex translations and pushed source translations.
+ * Fix support for Py2 unicode in code blocks (Benjamin Bach) #607
+ * Support for Github style fenced codeblocks (Benjamin Bach) #618
+ * Cached articles showing up in wrong language (Benjamin Bach) #592
+ * Upgraded Bootstrap from 3.3.1 to 3.3.7 (Benjamin Bach) #620
+ * Upgraded bundled jQuery to 1.12.4 (Benjamin Bach) #620
+ * Setting ``WIKI_MARKDOWN_HTML_STYLES`` for allowing ``style='..'`` in user code (Benjamin Bach) #603
+ * Strip Markdown code in search result snippets (Benjamin Bach) #42
 
 
 django-wiki 0.2.2
@@ -270,6 +277,25 @@ instructions.
 
 News archive
 ------------
+
+April 15, 2017
+~~~~~~~~~~~~~~
+
+0.2.3 released: `Release notes <http://django-wiki.readthedocs.io/en/master/release_notes.html#django-wiki-0-2-3>`_
+
+0.2.2 released: `Release notes <http://django-wiki.readthedocs.io/en/master/release_notes.html#django-wiki-0-2-2>`_
+
+
+February 27, 2017
+~~~~~~~~~~~~~~~~~
+
+0.2.1 released: `Release notes <http://django-wiki.readthedocs.io/en/master/release_notes.html#django-wiki-0-2-1>`_
+
+
+December 27, 2016
+~~~~~~~~~~~~~~~~~
+
+0.2 final released: `Release notes <http://django-wiki.readthedocs.io/en/0.2/release_notes.html>`_
 
 
 June 19, 2016

@@ -64,10 +64,13 @@ docs: ## generate Sphinx HTML documentation, including API docs
 	$(MAKE) -C docs clean
 	rm -f docs/wiki*.rst
 	rm -f docs/modules.rst
-	sphinx-build -b linkcheck ./docs ./docs/_build
 	sphinx-apidoc -o docs/ wiki
 	$(MAKE) -C docs html
 	$(BROWSER) docs/_build/html/index.html
+
+docs-linkcheck:
+	sphinx-build -b linkcheck ./docs ./docs/_build
+
 
 release: dist  ## Generate and upload release to PyPi
 	@echo ""
