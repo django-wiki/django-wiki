@@ -10,9 +10,7 @@
 {% spaceless %}
 <p class="lead">
   {% with paginator.object_list.count as cnt %}
-    {% blocktrans with cnt|pluralize:_("change,changes") as articles_plur %}
-      List of all <strong>{{ cnt }} {{ articles_plur }}</strong> in the wiki.
-    {% endblocktrans %}
+      List of all <strong>{{ cnt }} changes</strong> in the wiki.
   {% endwith %}
 </p>
 

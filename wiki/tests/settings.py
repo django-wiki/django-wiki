@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'wiki.plugins.notifications',
     'wiki.plugins.images',
     'wiki.plugins.macros',
+    'wiki.plugins.globalhistory',
 ]
 MIDDLEWARE_CLASSES = [
     'django.middleware.common.CommonMiddleware',
