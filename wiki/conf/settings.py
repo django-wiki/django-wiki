@@ -56,6 +56,7 @@ _default_tag_whitelists = bleach.ALLOWED_TAGS + [
     'figure',
     'figcaption',
     'br',
+    'hr',
     'p',
     'div',
     'img',
