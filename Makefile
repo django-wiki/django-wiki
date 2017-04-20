@@ -91,4 +91,5 @@ assets:  ## Build CSS files
 
 dist: clean assets  ## Generate wheels distribution
 	python setup.py bdist_wheel
+	python setup.py sdist
 	ls -l dist
