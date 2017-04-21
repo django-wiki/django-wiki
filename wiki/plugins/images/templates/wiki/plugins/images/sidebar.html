@@ -6,7 +6,7 @@
 function insert_image(data) {
     if (typeof data == "number") {
         image_id = data;
-        $("#img_title").text(" {% trans "Insert Image" %} " + image_id);
+        $("#img_title").text(" {{ _("Insert Image")|escapejs }} " + image_id);
         $("#img_modal").on('shown.bs.modal', function(){
             $(this).find('#img_caption').focus();
         });
