@@ -1,7 +1,7 @@
 # This is because readthedocs has an old version of pip
 # that somehow doesn't like prerelease versions in the
 # dependency expressions (>=1.0b1 failes to find dist)
-Django>=1.8,<1.11
+Django>=1.8,<1.12
 Pillow
 django-nyt>=1.0b1
 six
