@@ -3,15 +3,35 @@
 
 {% addtoblock "js" %}
 <script type="text/javascript">
-function insert_image(image_id) {
-  align=prompt('Enter an alignment. \'left\' or \'right\':', 'right');
-  caption=prompt('Enter a caption text. You may use markdown. You can edit the text after...');
-  imagetag = '\n[image:'+image_id+' align:'+align+']';
-  if (! caption == '') {
-    $('#id_content').insertAtCaret(imagetag+'\n    '+caption+'\n\n');
-  } else {
-    $('#id_content').insertAtCaret(imagetag+'\n\n');
-  }
+function insert_image(data) {
+    if (typeof data == "number") {
+        image_id = data;
+        $("#img_title").text(" {{ _("Insert Image")|escapejs }} " + image_id);
+        $("#img_modal").on('shown.bs.modal', function(){
+            $(this).find('#img_caption').focus();
+        });
+        $("#img_modal").modal();
+   } else {
+        align = data.img_align.options[data.img_align.selectedIndex].text;
+        size = data.img_size.options[data.img_size.selectedIndex].text;
+        caption = data.img_caption.value;
+
+        data.img_align.selectedIndex = 0;
+        data.img_size.selectedIndex = 0;
+        data.img_caption.value = "";
+
+        tag = '\n[image:'+image_id;
+        if (align != "center") tag = tag + ' align:'+align;
+        if (size != "default") tag = tag + ' size:'+size;
+
+        if (caption == '')
+            $('#id_content').insertAtCaret(tag+']\n\n');
+        else
+            $('#id_content').insertAtCaret(tag+']\n    '+caption+'\n\n');
+    }
+}
+function add_image(form) {
+    $(form).submit();
 }
 </script>
 {% endaddtoblock %}
@@ -99,7 +119,7 @@ function insert_image(image_id) {
   </p>
 
   <p>
-    <button type="submit" name="{{ plugin.slug }}_save" value="1" class="btn btn-default btn-md">
+    <button type="button" onClick="add_image(this.form)" name="{{ plugin.slug }}_save" value="1" class="btn btn-default btn-md">
       <span class="fa fa-upload"></span>
       {% trans "Add image" %}
     </button>
@@ -119,10 +139,50 @@ function insert_image(image_id) {
   {% trans "How to use images" %}
 </h4>
 
-<p>{% trans "After uploading an image, it is attached to this particular article and can be used only here. Other users may replace the image, but older versions are kept. To show the image press the Insert button and fill in the caption field and possibly choose to have your image floating right or left of the content. You can use markdown in the caption. The markdown code syntax for images looks like this, possible values for align are left | right and for size are small | medium | large | orig | default:" %}<br />
+<p>{% trans "After uploading an image, it is attached to this particular article and can be used only here. Other users may replace the image, but older versions are kept. To show the image press the Insert button and select the options you want to use. You can use Markdown in the caption. The Markdown code syntax for images looks like this" %}<br/>
 <pre>[image:id align:right size:orig]
     caption indented by 4 spaces</pre>
+{% trans "Possible values for align are" %} <pre>left | right</pre>
+{% trans "Possible values for size are" %} <pre>small | medium | large | orig | default</pre>
 </p>
-
-
 {% endwith %}
+
+<div class="modal" id="img_modal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content" style="position:relative !important;">
+      <div class="modal-header">
+        <h4 id="img_title"></h4>
+      </div>
+      <div class="modal-body">
+        <form role="form">
+          <div class="form-group" style="margin-left:0; margin-right:0;">
+            <label for="img_align">{% trans "Alignment" %}</label>
+            <select class="form-control" id="img_align">
+              <option>center</option>
+              <option>left</option>
+              <option>right</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-left:0; margin-right:0;">
+            <label for="img_size">{% trans "Size" %}</label>
+            <select class="form-control" id="img_size">
+              <option>default</option>
+              <option>small</option>
+              <option>medium</option>
+              <option>large</option>
+              <option>orig</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-left:0; margin-right:0;">
+            <label for="img_caption">{% trans "Caption" %}</label>
+            <input type="text" class="form-control" id="img_caption" placeholder="{% trans "Enter caption" %}">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success btn-default" data-dismiss="modal" onClick="insert_image(this.form)"> {% trans "Insert image" %} </button>
+        <button class="btn btn-danger" data-dismiss="modal"> {% trans "Cancel" %} </button>
+      </div>
+    </div>
+  </div>
+</div>
