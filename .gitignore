@@ -5,6 +5,8 @@ dist
 testproject/testproject/whoosh_index/
 testproject/testproject/xapian_index/
 
+tests/media
+
 # Ignore compiled version of source language
 wiki/locale/en/LC_MESSAGES/django.mo
 
