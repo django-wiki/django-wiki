@@ -1,0 +1,99 @@
+{% extends "wiki/base.html" %}
+{% load wiki_tags i18n humanize %}
+
+{% block wiki_pagetitle %}{% trans "Global history" %}{% endblock %}
+
+{% block wiki_contents %}
+
+<h1>{% trans "Global history" %}</h1>
+
+{% spaceless %}
+<p class="lead">
+  {% with paginator.object_list.count as cnt %}
+      List of all <strong>{{ cnt }} changes</strong> in the wiki.
+  {% endwith %}
+</p>
+
+<div class="row">
+  {% if revisions %}
+    <table class="table table-striped table-condensed table-hover">
+      <thead>
+        <tr>
+          <th>{% trans "Revision ID" %}</th>
+          <th>{% trans "Article" %}</th>
+          <th>{% trans "Message" %}</th>
+          <th>{% trans "User" %}</th>
+          <th>{% trans "Date" %}</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for article_revision in revisions %}
+          <tr>
+            <td>
+              {{article_revision.revision_number}}
+            </td>
+            <td>
+              <a href="{% url 'wiki:get' article_revision.article.pk %}">
+                {{article_revision.article}}
+              </a>
+            </td>
+            <td>
+              {% if article_revision.user_message %}
+                {{ article_revision.user_message }}
+              {% elif article_revision.automatic_log %}
+                {{ article_revision.automatic_log }}
+              {% else %}
+                ({% trans "no log message" %})
+              {% endif %}
+              {% if article_revision.deleted %}
+                <span class="badge badge-important">{% trans "deleted" %}</span>
+              {% endif %}
+              {% if article_revision.previous_revision.deleted and not article_revision.deleted %}
+                <span class="badge badge-success">{% trans "restored" %}</span>
+              {% endif %}
+              {% if article_revision.locked %}
+                <span class="badge">{% trans "locked" %}</span>
+              {% endif %}
+              {% if article_revision.previous_revision.locked and not revision.locked %}
+                <span class="badge">{% trans "unlocked" %}</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if article_revision.user %}
+                {{ article_revision.user }}
+              {% else %}
+                {% if article_revision.article|can_moderate:user %}
+                  {{ article_revision.ip_address|default:"anonymous (IP not logged)" }}
+                {% else %}
+                  {% trans "anonymous (IP logged)" %}i
+                {% endif %}
+              {% endif %}
+            </td>
+            <td>
+              {{article_revision.modified}}
+            </td>
+            <td>
+              <a href="{% url 'wiki:history' article_revision.article.pk %}" class="btn btn-info btn-xs">{% trans "Go to article history" %}</a>
+              <a href="{% url 'wiki:get' article_revision.article.pk %}" class="btn btn-primary btn-xs">{% trans "Go to article" %}</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="alert alert-info">
+      {% if page %}
+        {% trans "No more changes to display !" %}
+        <a href="?page={{page|add:"-1"}}">{% trans "Go back to previous page" %}</a>
+      {% else %}
+        {% trans "No changes to display !" %}
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {% include "wiki/includes/pagination.html" %}
+</div>
+{% endspaceless %}
+{% endblock %}
