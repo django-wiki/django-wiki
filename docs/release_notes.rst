@@ -10,6 +10,11 @@ the last series with Python 2 support. Series 0.3 is in development in the
 current master branch.
 
 
+django-wiki 0.2.4
+-----------------
+
+ * Hot-fix because of missing woff2 files #625
+
 
 django-wiki 0.2.3
 -----------------
