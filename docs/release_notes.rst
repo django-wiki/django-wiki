@@ -13,6 +13,7 @@ current master branch.
 django-wiki 0.3 (unreleased)
 ----------------------------
 
+ * Repo refactor: Moved ``wiki`` package to ``src/`` folder and test code to ``tests/`` #631
  * New bootstrapped image insert dialog (Frank Loemker) #628
  * Allow the HTML tag ``<hr>`` (Frank Loemker) #629
  * Global History overview of page revisions (Frank Loemker and Maximilien Cuony) #627
