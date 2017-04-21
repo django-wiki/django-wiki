@@ -10,9 +10,14 @@ the last series with Python 2 support. Series 0.3 is in development in the
 current master branch.
 
 
+django-wiki 0.2.4
+-----------------
 
-django-wiki 0.2.3 (unreleased)
-------------------------------
+ * Hot-fix because of missing woff2 files #625
+
+
+django-wiki 0.2.3
+-----------------
 
  * Pulled Transifex translations and pushed source translations.
  * Fix support for Py2 unicode in code blocks (Benjamin Bach) #607
