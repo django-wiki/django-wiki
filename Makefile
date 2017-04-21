@@ -48,7 +48,7 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr htmlcov/
 
 lint:  ## Check python code conventions
-	pep8 wiki
+	pep8 src/wiki
 
 test:  ## Run automated test suite
 	pytest
@@ -64,7 +64,7 @@ docs: ## generate Sphinx HTML documentation, including API docs
 	$(MAKE) -C docs clean
 	rm -f docs/wiki*.rst
 	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ wiki
+	sphinx-apidoc -o docs/ src/wiki
 	$(MAKE) -C docs html
 	$(BROWSER) docs/_build/html/index.html
 
@@ -87,8 +87,8 @@ release: dist  ## Generate and upload release to PyPi
 	twine upload -s dist/*
 
 assets:  ## Build CSS files
-	lessc wiki/static/wiki/bootstrap/less/wiki/wiki-bootstrap.less wiki/static/wiki/bootstrap/css/wiki-bootstrap.css
-	lessc -x wiki/static/wiki/bootstrap/less/wiki/wiki-bootstrap.less wiki/static/wiki/bootstrap/css/wiki-bootstrap.min.css
+	lessc src/wiki/static/wiki/bootstrap/less/wiki/wiki-bootstrap.less src/wiki/static/wiki/bootstrap/css/wiki-bootstrap.css
+	lessc -x src/wiki/static/wiki/bootstrap/less/wiki/wiki-bootstrap.less src/wiki/static/wiki/bootstrap/css/wiki-bootstrap.min.css
 
 dist: clean assets  ## Generate wheels distribution
 	python setup.py bdist_wheel
