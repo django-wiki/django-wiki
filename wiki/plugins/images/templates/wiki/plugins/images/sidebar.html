@@ -139,11 +139,12 @@ function add_image(form) {
   {% trans "How to use images" %}
 </h4>
 
-<p>{% trans "After uploading an image, it is attached to this particular article and can be used only here. Other users may replace the image, but older versions are kept. To show the image press the Insert button and select the options you want to use. You can use Markdown in the caption. The markdown code syntax for images looks like this, possible values for align are left | right and for size are small | medium | large | orig | default:" %}<br />
+<p>{% trans "After uploading an image, it is attached to this particular article and can be used only here. Other users may replace the image, but older versions are kept. To show the image press the Insert button and select the options you want to use. You can use Markdown in the caption. The Markdown code syntax for images looks like this" %}<br/>
 <pre>[image:id align:right size:orig]
     caption indented by 4 spaces</pre>
+{% trans "Possible values for align are" %} <pre>left | right</pre>
+{% trans "Possible values for size are" %} <pre>small | medium | large | orig | default</pre>
 </p>
-
 {% endwith %}
 
 <div class="modal" id="img_modal" role="dialog">
