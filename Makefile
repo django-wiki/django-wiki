@@ -81,6 +81,7 @@ release: dist  ## Generate and upload release to PyPi
 	@echo "3. Pulled new translations from transifex?"
 	@echo "4. Built and committed new assets?"
 	@echo "5. Did you do a signed commit and push to Github?"
+	@echo "6. Check that the .whl and .tar.gz dists work - e.g. that MANIFEST.in is updated."
 	@echo ""
 	@read -p "CTRL+C or ENTER" dummy
 	twine upload -s dist/*
