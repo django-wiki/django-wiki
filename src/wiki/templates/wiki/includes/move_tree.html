@@ -2,7 +2,7 @@
   <a tabindex="-1" href="#" onclick="select_path('{{current_path.pk}}', '{{current_path.article|escapejs}}');">{{current_path.article}}</a>
   {% if current_path.children.count %}
     <ul class="dropdown-menu">
-      {% for current_path in current_path.get_ordered_childrens %}
+      {% for current_path in current_path.get_ordered_children %}
         {% with template_name="wiki/includes/move_tree.html" %}{% include template_name %}{% endwith %}
 
       {% endfor %}

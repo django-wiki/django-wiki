@@ -414,11 +414,12 @@ class Edit(ArticleMixin, FormView):
         return super(Edit, self).get_context_data(**kwargs)
 
 
-class Move(FormView, ArticleMixin):
+class Move(ArticleMixin, FormView):
 
     form_class = forms.MoveForm
     template_name= "wiki/move.html"
 
+    @method_decorator(login_required)
     @method_decorator(get_article(can_write=True, not_locked=True))
     def dispatch(self, request, article, *args, **kwargs):
         return super(Move, self).dispatch(request, article, *args, **kwargs)
@@ -427,47 +428,38 @@ class Move(FormView, ArticleMixin):
         initial = FormView.get_initial(self)
         return initial
 
-    def get_form(self, form_class):
-        """
-        Checks from querystring data that the edit form is actually being saved,
-        otherwise removes the 'data' and 'files' kwargs from form initialisation.
-        """
+    def get_form(self, form_class=None):
+        if form_class is None:
+            form_class = self.get_form_class()
         kwargs = self.get_form_kwargs()
         return form_class(**kwargs)
 
     def get_context_data(self, **kwargs):
-
+        if 'form' not in kwargs:
+            kwargs['form'] = self.get_form()
         kwargs['root_path'] = models.URLPath.root()
 
         return super(Move, self).get_context_data(**kwargs)
 
     def form_valid(self, form):
-
-        dest_path = get_object_or_404(models.URLPath, pk=form.cleaned_data['destination'])
-
         if not self.urlpath.parent:
             messages.error(
                 self.request,
                 _('This article cannot be moved because it is a root article.'))
             return redirect('wiki:get', article_id=self.article.id)
 
-        dest_is_children = False
+        dest_path = get_object_or_404(models.URLPath, pk=form.cleaned_data['destination'])
         tmp_path = dest_path
 
         while tmp_path.parent:
-
+            if tmp_path == self.urlpath:
+                messages.error(
+                    self.request,
+                    _('This article cannot be moved to a child of itself.'))
+                return redirect('wiki:move', article_id=self.article.id)
             tmp_path = tmp_path.parent
 
-            if tmp_path == self.urlpath:
-                dest_is_children = True
-
-        if dest_is_children:
-            messages.error(
-                self.request,
-                _('This article cannot be moved to a children of himself.'))
-            return redirect('wiki:move', article_id=self.article.id)
-
-        # Clear cache to update articles lists (Old links)
+        # Clear cache to update article lists (Old links)
         for ancestor in self.article.ancestor_objects():
             ancestor.article.clear_cache()
 
@@ -477,8 +469,7 @@ class Move(FormView, ArticleMixin):
         # Reload url path form database
         self.urlpath = get_object_or_404(models.URLPath, pk=self.urlpath.pk)
 
-        # Use a copy of yourself (to avoid cache) and update articles links
-        # agains
+        # Use a copy of ourself (to avoid cache) and update article links again
         for ancestor in models.Article.objects.get(pk=self.article.pk).ancestor_objects():
             ancestor.article.clear_cache()
 

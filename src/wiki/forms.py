@@ -155,7 +155,9 @@ class CreateRootForm(forms.Form):
 
 class MoveForm(forms.Form):
 
-    destination = forms.CharField(label=_('Destination'), initial='', help_text=_('Childrens are also moved. Be carefull, links are NOT updated !'))
+    destination = forms.CharField(label=_('Destination'),
+                                  initial='',
+                                  help_text=_('Children are also moved. Be carefull, links are NOT updated!'))
 
 
 class EditForm(forms.Form, SpamProtectionMixin):
