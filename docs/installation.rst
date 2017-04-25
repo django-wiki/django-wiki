@@ -237,15 +237,8 @@ end of your urlconf. You can also put it in */wiki* by putting
     and media files from ``STATIC_ROOT`` and ``MEDIA_ROOT`` served by the
     development server. ``STATIC_ROOT`` is automatically served, but you have
     to add ``MEDIA_ROOT`` manually::
-    
-        if settings.DEBUG:
-            urlpatterns += staticfiles_urlpatterns()
-            urlpatterns += patterns('',
-                                    url(r'^media/(?P<path>.*)$',
-                                        'django.views.static.serve',
-                                        {'document_root': settings.MEDIA_ROOT,
-                                         }),
-                                    )
+    urls.py
+        urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
     Please refer to
     `the Django docs <https://docs.djangoproject.com/en/1.8/howto/static-files/#serving-files-uploaded-by-a-user-during-development>`__.
