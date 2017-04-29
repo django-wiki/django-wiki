@@ -9,10 +9,10 @@ from __future__ import absolute_import, print_function, unicode_literals
 from wiki.models import Article, URLPath
 from wiki.plugins.attachments.models import Attachment
 
-from ..base import ArticleWebTestBase
+from ..base import ArticleTestBase
 
 
-class ArticleManagerTests(ArticleWebTestBase):
+class ArticleManagerTests(ArticleTestBase):
 
     def test_queryset_methods_directly_on_manager(self):
 
@@ -46,7 +46,7 @@ class ArticleManagerTests(ArticleWebTestBase):
         self.assertEqual(Article.objects.none().active().count(), 0)
 
 
-class AttachmentManagerTests(ArticleWebTestBase):
+class AttachmentManagerTests(ArticleTestBase):
 
     def test_queryset_methods_directly_on_manager(self):
 
@@ -81,7 +81,7 @@ class AttachmentManagerTests(ArticleWebTestBase):
         self.assertEqual(Attachment.objects.none().active().count(), 0)
 
 
-class URLPathManagerTests(ArticleWebTestBase):
+class URLPathManagerTests(ArticleTestBase):
 
     def test_related_manager_works_with_filters(self):
         root = URLPath.root()

@@ -51,7 +51,7 @@ class RequireRootArticleMixin(object):
         rev.save()
 
 
-class ArticleTestBase(RequireRootArticleMixin, TestCase):
+class ArticleTestBase(RequireRootArticleMixin, TestBase):
     """
     Sets up basic data for testing with an article and some revisions
     """
