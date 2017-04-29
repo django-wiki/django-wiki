@@ -39,17 +39,23 @@ class TestBase(TestCase):
         )
 
 
-class ArticleTestBase(TestCase):
+class RequireRootArticleMixin(object):
+
+    def setUp(self):
+        super(RequireRootArticleMixin, self).setUp()
+        self.root = URLPath.create_root()
+        self.root_article = URLPath.root().article
+        rev = self.root_article.current_revision
+        rev.title = "Root Article"
+        rev.content = "root article content"
+        rev.save()
+
+
+class ArticleTestBase(RequireRootArticleMixin, TestCase):
     """
     Sets up basic data for testing with an article and some revisions
     """
-
-    def setUp(self):
-
-        super(ArticleTestBase, self).setUp()
-
-        self.root = URLPath.create_root()
-        self.child1 = URLPath.create_article(self.root, 'test-slug', title="Test 1")
+    pass
 
 
 class WebTestBase(TestBase):
@@ -64,22 +70,9 @@ class WebTestBase(TestBase):
         c.login(username=SUPERUSER1_USERNAME, password=SUPERUSER1_PASSWORD)
 
 
-class ArticleWebTestBase(WebTestBase):
+class ArticleWebTestBase(RequireRootArticleMixin, WebTestBase):
 
     """Base class for web client tests, that sets up initial root article."""
-
-    def setUp(self):
-
-        super(ArticleWebTestBase, self).setUp()
-
-        response = self.c.post(
-            reverse('wiki:root_create'),
-            {'content': 'root article content', 'title': 'Root Article'},
-            follow=True
-        )
-
-        self.assertEqual(response.status_code, 200)  # sanity check
-        self.root_article = URLPath.root().article
 
     def get_by_path(self, path):
         """
