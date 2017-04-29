@@ -4,9 +4,9 @@ import sys
 
 from django.core.urlresolvers import reverse
 from wiki.models import URLPath
-from ...base import ArticleWebTestBase
+from ...base import RequireRootArticleMixin, ArticleWebTestUtils, WebTestBase
 
-class GlobalhistoryTests(ArticleWebTestBase):
+class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, WebTestBase):
 
     def _assertRegex(self, a, b):
         if sys.version_info >= (3, 2):

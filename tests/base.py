@@ -70,7 +70,7 @@ class WebTestBase(TestBase):
         c.login(username=SUPERUSER1_USERNAME, password=SUPERUSER1_PASSWORD)
 
 
-class ArticleWebTestBase(RequireRootArticleMixin, WebTestBase):
+class ArticleWebTestUtils(object):
 
     """Base class for web client tests, that sets up initial root article."""
 

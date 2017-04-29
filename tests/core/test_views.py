@@ -8,7 +8,7 @@ from wiki import models
 from wiki.forms import validate_slug_numbers
 from wiki.models import reverse
 
-from ..base import ArticleWebTestBase, WebTestBase
+from ..base import RequireRootArticleMixin, ArticleWebTestUtils, WebTestBase
 
 
 class RootArticleViewViewTests(WebTestBase):
@@ -39,7 +39,7 @@ class RootArticleViewViewTests(WebTestBase):
         self.assertContains(response, 'test heading h1</h1>')
 
 
-class ArticleViewViewTests(ArticleWebTestBase):
+class ArticleViewViewTests(RequireRootArticleMixin, ArticleWebTestUtils, WebTestBase):
 
     """
     Tests for article views, assuming a root article already created.
@@ -121,7 +121,7 @@ class ArticleViewViewTests(ArticleWebTestBase):
         self.assertNotContains(self.get_by_path(''), 'Sub Article 1')
 
 
-class CreateViewTest(ArticleWebTestBase):
+class CreateViewTest(RequireRootArticleMixin, ArticleWebTestUtils, WebTestBase):
 
     def test_create_nested_article_in_article(self):
 
@@ -180,7 +180,7 @@ class CreateViewTest(ArticleWebTestBase):
 
 
 
-class DeleteViewTest(ArticleWebTestBase):
+class DeleteViewTest(RequireRootArticleMixin, ArticleWebTestUtils, WebTestBase):
 
     def test_articles_cache_is_cleared_after_deleting(self):
 
@@ -220,7 +220,7 @@ class DeleteViewTest(ArticleWebTestBase):
         self.assertContains(self.get_by_path('TestCache/'), 'Content 2')
 
 
-class EditViewTest(ArticleWebTestBase):
+class EditViewTest(RequireRootArticleMixin, ArticleWebTestUtils, WebTestBase):
 
     def test_preview_save(self):
         """Test edit preview, edit save and messages."""
@@ -310,7 +310,7 @@ class EditViewTest(ArticleWebTestBase):
         self.assertContains(response, 'Edit')
 
 
-class SearchViewTest(ArticleWebTestBase):
+class SearchViewTest(RequireRootArticleMixin, ArticleWebTestUtils, WebTestBase):
 
     def test_query_string(self):
 
@@ -327,7 +327,7 @@ class SearchViewTest(ArticleWebTestBase):
         self.assertFalse(response.context['articles'])
 
 
-class DeletedListViewTest(ArticleWebTestBase):
+class DeletedListViewTest(RequireRootArticleMixin, ArticleWebTestUtils, WebTestBase):
 
     def test_deleted_articles_list(self):
         c = self.c
@@ -356,7 +356,7 @@ class DeletedListViewTest(ArticleWebTestBase):
         self.assertContains(response, 'Delete Me')
 
 
-class UpdateProfileViewTest(ArticleWebTestBase):
+class UpdateProfileViewTest(RequireRootArticleMixin, ArticleWebTestUtils, WebTestBase):
 
     def test_update_profile(self):
         c = self.c
@@ -373,7 +373,7 @@ class UpdateProfileViewTest(ArticleWebTestBase):
         self.assertEqual(test_auth.email, 'test@test.com')
 
 
-class MergeViewTest(ArticleWebTestBase):
+class MergeViewTest(RequireRootArticleMixin, ArticleWebTestUtils, WebTestBase):
 
     def test_merge_preview(self):
         """Test merge preview"""
