@@ -106,8 +106,22 @@ issue to discuss whether your plugin idea is a core plugin
 (``wiki.plugins.*``) or external plugin. If there are additions needed
 to the plugin API, we can discuss that as well!
 
-To run django-wiki's tests, run ``make test``
-after installing the requirements.
+To run django-wiki's tests:
+
+* Checkout this repo from Github, ``cd`` into it.
+* Create and activate a virtualenv for developing django-wiki.
+  Ensure you are using recent setuptools and pip.
+* Install the requirements::
+
+    $ pip install --upgrade pip setuptools
+    $ ./setup.py develop
+    $ pip install pytest pytest-django pytest-cov mock
+
+* Add the current directory to your virtualenv path so that tests can be found::
+
+    $ pwd >> $VIRTUAL_ENV/lib/python2.7/site-packages/easy-install.pth
+
+* Run ``make test``
 
 If you want to test for more **environments**, install "tox"
 (``pip install tox``) and then just run ``tox`` to run the test
