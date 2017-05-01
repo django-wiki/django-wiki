@@ -24,6 +24,7 @@ if settings.DEBUG:
     ]
 
 urlpatterns += [
+    url(r'^django_functest/', include('django_functest.urls')),
     url(r'^notify/', get_notify_pattern()),
     url(r'', get_wiki_pattern())
 ]

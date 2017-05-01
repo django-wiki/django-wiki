@@ -1,5 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 
+import django_functest
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.core.urlresolvers import reverse
 from django.template import Context, Template
 from django.test import TestCase
@@ -75,6 +77,26 @@ class DjangoClientTestBase(TestBase):
 
         self.c = c = Client()
         c.login(username=SUPERUSER1_USERNAME, password=SUPERUSER1_PASSWORD)
+
+
+
+class WebTestCommonMixin(RequireBasicData, django_functest.ShortcutLoginMixin):
+    """
+    Common setup required for WebTest and Selenium tests
+    """
+    def setUp(self):
+        super(WebTestCommonMixin, self).setUp()
+
+        self.shortcut_login(username=SUPERUSER1_USERNAME,
+                            password=SUPERUSER1_PASSWORD)
+
+
+class WebTestBase(WebTestCommonMixin, django_functest.FuncWebTestMixin, TestCase):
+    pass
+
+
+class SeleniumBase(WebTestCommonMixin, django_functest.FuncSeleniumMixin, StaticLiveServerTestCase):
+    driver_name = "Chrome"
 
 
 class ArticleWebTestUtils(object):

@@ -4,14 +4,15 @@ import pprint
 
 from django.contrib.auth import authenticate
 from django.utils.html import escape
+from django_functest import FuncBaseMixin
 from wiki import models
 from wiki.forms import validate_slug_numbers
-from wiki.models import reverse
+from wiki.models import reverse, URLPath
 
-from ..base import RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase
+from ..base import RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase, SeleniumBase, WebTestBase
 
 
-class RootArticleViewViewTests(DjangoClientTestBase):
+class RootArticleViewTestsBase(FuncBaseMixin):
 
     """Tests for creating/viewing the root article."""
 
@@ -20,23 +21,25 @@ class RootArticleViewViewTests(DjangoClientTestBase):
         Test redirecting to /create-root/,
         creating the root article and a simple markup.
         """
+        self.get_url('wiki:root')
+        self.assertUrlsEqual(reverse('wiki:root_create'))
+        self.fill({
+            '#id_content': 'test heading h1\n====\n',
+            '#id_title': 'Wiki Test',
+        })
+        self.submit('input[name="save_changes"]')
+        self.assertUrlsEqual('/')
+        self.assertTextPresent('test heading h1')
+        article = URLPath.root().article
+        self.assertIn('test heading h1', article.current_revision.content)
 
-        c = self.c
-        response = c.get(reverse('wiki:root'))  # url '/'
 
-        self.assertRedirects(
-            response,
-            reverse('wiki:root_create')  # url '/create-root/'
-        )
+class RootArticleViewTestsWebTest(RootArticleViewTestsBase, WebTestBase):
+    pass
 
-        response = c.post(
-            reverse('wiki:root_create'),
-            {'content': 'test heading h1\n====\n', 'title': 'Wiki Test'}
-        )
 
-        self.assertRedirects(response, reverse('wiki:root'))
-        response = c.get(reverse('wiki:root'))
-        self.assertContains(response, 'test heading h1</h1>')
+class RootArticleViewTestsSelenium(RootArticleViewTestsBase, SeleniumBase):
+    pass
 
 
 class ArticleViewViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):

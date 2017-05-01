@@ -115,7 +115,7 @@ To run django-wiki's tests:
 
     $ pip install --upgrade pip setuptools
     $ ./setup.py develop
-    $ pip install pytest pytest-django pytest-cov mock
+    $ pip install pytest pytest-django pytest-cov mock django-functest
 
 * Add the current directory to your virtualenv path so that tests can be found::
 
