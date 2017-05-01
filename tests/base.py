@@ -101,8 +101,6 @@ class SeleniumBase(WebTestCommonMixin, django_functest.FuncSeleniumMixin, Static
 
 class ArticleWebTestUtils(object):
 
-    """Base class for web client tests, that sets up initial root article."""
-
     def get_by_path(self, path):
         """
         Get the article response for the path.

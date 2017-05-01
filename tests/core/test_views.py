@@ -81,10 +81,9 @@ class ArticleViewViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoC
         """
 
         c = self.c
-
         root_data = {
             'content': '[article_list depth:2]',
-            'current_revision': '1',
+            'current_revision': str(URLPath.root().article.current_revision.id),
             'preview': '1',
             'title': 'Root Article'
         }
@@ -108,7 +107,10 @@ class ArticleViewViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoC
         # verify the deleted article is removed from article_list
         response = c.post(
             reverse('wiki:delete', kwargs={'path': 'SubArticle1/'}),
-            {'confirm': 'on', 'purge': 'on', 'revision': '3'}
+            {'confirm': 'on',
+             'purge': 'on',
+             'revision': str(URLPath.objects.get(slug='subarticle1').article.current_revision.id),
+             }
         )
 
         message = getattr(c.cookies['messages'], 'value')
@@ -203,7 +205,8 @@ class DeleteViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientT
 
         response = c.post(
             reverse('wiki:delete', kwargs={'path': 'testcache/'}),
-            {'confirm': 'on', 'purge': 'on', 'revision': '2'}
+            {'confirm': 'on', 'purge': 'on',
+             'revision': str(URLPath.objects.get(slug='testcache').article.current_revision.id)}
         )
 
         self.assertRedirects(
@@ -231,7 +234,7 @@ class EditViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
         c = self.c
         example_data = {
             'content': 'The modified text',
-            'current_revision': '1',
+            'current_revision': str(URLPath.root().article.current_revision.id),
             'preview': '1',
             # 'save': '1',  # probably not too important
             'summary': 'why edited',
@@ -255,7 +258,7 @@ class EditViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
 
         example_data = {
             'content': 'More modifications',
-            'current_revision': '1',
+            'current_revision': str(URLPath.root().article.current_revision.id),
             'preview': '0',
             'save': '1',
             'summary': 'why edited',
@@ -284,7 +287,7 @@ class EditViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
         c = self.c
         example_data = {
             'content': 'More modifications',
-            'current_revision': '1',
+            'current_revision': str(URLPath.root().article.current_revision.id),
             'preview': '0',
             'save': '1',
             'summary': 'why edited',
@@ -347,7 +350,8 @@ class DeletedListViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCl
 
         response = c.post(
             reverse('wiki:delete', kwargs={'path': 'deleteme/'}),
-            {'confirm': 'on', 'revision': '2'}
+            {'confirm': 'on',
+             'revision': URLPath.objects.get(slug='deleteme').article.current_revision.id}
         )
 
         self.assertRedirects(
@@ -382,16 +386,16 @@ class MergeViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTe
         """Test merge preview"""
 
         c = self.c
+        first_revision = self.root_article.current_revision
         example_data = {
             'content': 'More modifications\n\nMerge new line',
-            'current_revision': '1',
+            'current_revision': str(first_revision.id),
             'preview': '0',
             'save': '1',
             'summary': 'testing merge',
             'title': 'wiki test'
         }
 
-        previous_revision = self.root_article.current_revision.id
 
         # save a new revision
         c.post(
@@ -399,16 +403,16 @@ class MergeViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTe
             example_data
         )
 
+        new_revision = models.Article.objects.get(
+            id=self.root_article.id
+        ).current_revision
+
         response = c.get(
             reverse(
                 'wiki:merge_revision_preview',
-                kwargs={'article_id': self.root_article.id, 'revision_id': previous_revision}
+                kwargs={'article_id': self.root_article.id, 'revision_id': first_revision.id}
             ),
         )
-
-        new_revision = models.Article.objects.get(
-            id=self.root_article.id
-        ).current_revision.id
 
         self.assertContains(
             response,
@@ -416,9 +420,9 @@ class MergeViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTe
         )
         self.assertContains(
             response,
-            '#{rev_id}'.format(rev_id=previous_revision)
+            '#{rev_number}'.format(rev_number=first_revision.revision_number)
         )
         self.assertContains(
             response,
-            '#{rev_id}'.format(rev_id=new_revision)
+            '#{rev_number}'.format(rev_number=new_revision.revision_number)
         )
