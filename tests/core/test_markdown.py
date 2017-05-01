@@ -44,6 +44,7 @@ class ArticleMarkdownTests(ArticleTestBase):
 class ResponsiveTableExtensionTests(TestCase):
 
     def setUp(self):
+        super(ResponsiveTableExtensionTests, self).setUp()
         self.md = markdown.Markdown(extensions=[
             'extra',
             ResponsiveTableExtension()

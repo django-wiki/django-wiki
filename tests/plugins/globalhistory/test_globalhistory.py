@@ -14,9 +14,6 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
         else:
             return self.assertRegexpMatches(a, b)
 
-    def setUp(self):
-        super(GlobalhistoryTests, self).setUp()
-
     def test_history(self):
         url = reverse('wiki:globalhistory')
 

@@ -15,7 +15,7 @@ class TestAttachmentManagementCommands(TestManagementCommands):
     """
 
     def setUp(self):
-        TestManagementCommands.setUp(self)
+        super(TestAttachmentManagementCommands, self).setUp()
 
         self.test_file = tempfile.NamedTemporaryFile('w', delete=False, suffix=".txt")
         self.test_file.write("test")
@@ -33,3 +33,4 @@ class TestAttachmentManagementCommands(TestManagementCommands):
 
     def tearDown(self):
         os.unlink(self.test_file.name)
+        super(TestAttachmentManagementCommands, self).tearDown()
