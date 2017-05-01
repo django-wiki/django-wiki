@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from django.template import Context, Template
 from django.test import TestCase
 from django.test.client import Client
+
 from wiki.models import URLPath
 
 try:
@@ -17,14 +18,10 @@ SUPERUSER1_USERNAME = 'admin'
 SUPERUSER1_PASSWORD = 'secret'
 
 
-class TestBase(TestCase):
-    """
-    Sets up basic data
-    """
+class RequireSuperuserMixin(object):
 
     def setUp(self):
-
-        super(TestCase, self).setUp()
+        super(RequireSuperuserMixin, self).setUp()
 
         try:
             from django.contrib.auth import get_user_model
@@ -37,6 +34,17 @@ class TestBase(TestCase):
             'nobody@example.com',
             SUPERUSER1_PASSWORD
         )
+
+
+class RequireBasicData(RequireSuperuserMixin):
+    """
+    Mixin that creates common data required for all tests.
+    """
+    pass
+
+
+class TestBase(RequireBasicData, TestCase):
+    pass
 
 
 class RequireRootArticleMixin(object):
@@ -58,13 +66,12 @@ class ArticleTestBase(RequireRootArticleMixin, TestBase):
     pass
 
 
-class WebTestBase(TestBase):
+# This is needed only for tests that use the Django test client,
+# which are being phased out.
 
+class DjangoClientTestBase(TestBase):
     def setUp(self):
-        """Login as the superuser created because we shall access restricted
-        views"""
-
-        super(WebTestBase, self).setUp()
+        super(DjangoClientTestBase, self).setUp()
 
         self.c = c = Client()
         c.login(username=SUPERUSER1_USERNAME, password=SUPERUSER1_PASSWORD)

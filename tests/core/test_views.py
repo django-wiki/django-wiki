@@ -8,10 +8,10 @@ from wiki import models
 from wiki.forms import validate_slug_numbers
 from wiki.models import reverse
 
-from ..base import RequireRootArticleMixin, ArticleWebTestUtils, WebTestBase
+from ..base import RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase
 
 
-class RootArticleViewViewTests(WebTestBase):
+class RootArticleViewViewTests(DjangoClientTestBase):
 
     """Tests for creating/viewing the root article."""
 
@@ -39,7 +39,7 @@ class RootArticleViewViewTests(WebTestBase):
         self.assertContains(response, 'test heading h1</h1>')
 
 
-class ArticleViewViewTests(RequireRootArticleMixin, ArticleWebTestUtils, WebTestBase):
+class ArticleViewViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     """
     Tests for article views, assuming a root article already created.
@@ -121,7 +121,7 @@ class ArticleViewViewTests(RequireRootArticleMixin, ArticleWebTestUtils, WebTest
         self.assertNotContains(self.get_by_path(''), 'Sub Article 1')
 
 
-class CreateViewTest(RequireRootArticleMixin, ArticleWebTestUtils, WebTestBase):
+class CreateViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     def test_create_nested_article_in_article(self):
 
@@ -180,7 +180,7 @@ class CreateViewTest(RequireRootArticleMixin, ArticleWebTestUtils, WebTestBase):
 
 
 
-class DeleteViewTest(RequireRootArticleMixin, ArticleWebTestUtils, WebTestBase):
+class DeleteViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     def test_articles_cache_is_cleared_after_deleting(self):
 
@@ -220,7 +220,7 @@ class DeleteViewTest(RequireRootArticleMixin, ArticleWebTestUtils, WebTestBase):
         self.assertContains(self.get_by_path('TestCache/'), 'Content 2')
 
 
-class EditViewTest(RequireRootArticleMixin, ArticleWebTestUtils, WebTestBase):
+class EditViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     def test_preview_save(self):
         """Test edit preview, edit save and messages."""
@@ -310,7 +310,7 @@ class EditViewTest(RequireRootArticleMixin, ArticleWebTestUtils, WebTestBase):
         self.assertContains(response, 'Edit')
 
 
-class SearchViewTest(RequireRootArticleMixin, ArticleWebTestUtils, WebTestBase):
+class SearchViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     def test_query_string(self):
 
@@ -327,7 +327,7 @@ class SearchViewTest(RequireRootArticleMixin, ArticleWebTestUtils, WebTestBase):
         self.assertFalse(response.context['articles'])
 
 
-class DeletedListViewTest(RequireRootArticleMixin, ArticleWebTestUtils, WebTestBase):
+class DeletedListViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     def test_deleted_articles_list(self):
         c = self.c
@@ -356,7 +356,7 @@ class DeletedListViewTest(RequireRootArticleMixin, ArticleWebTestUtils, WebTestB
         self.assertContains(response, 'Delete Me')
 
 
-class UpdateProfileViewTest(RequireRootArticleMixin, ArticleWebTestUtils, WebTestBase):
+class UpdateProfileViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     def test_update_profile(self):
         c = self.c
@@ -373,7 +373,7 @@ class UpdateProfileViewTest(RequireRootArticleMixin, ArticleWebTestUtils, WebTes
         self.assertEqual(test_auth.email, 'test@test.com')
 
 
-class MergeViewTest(RequireRootArticleMixin, ArticleWebTestUtils, WebTestBase):
+class MergeViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     def test_merge_preview(self):
         """Test merge preview"""
