@@ -51,7 +51,7 @@ lint:  ## Check python code conventions
 	pep8 src/wiki
 
 test:  ## Run automated test suite
-	pytest
+	./runtests.py
 
 test-all:  ## Run tests on all supported Python environments
 	tox

@@ -121,14 +121,13 @@ To run django-wiki's tests:
 
     $ pwd >> $VIRTUAL_ENV/lib/python2.7/site-packages/easy-install.pth
 
-* Run ``make test``
+* Run ``make test`` or ``./runtests.py``
 
 If you want to test for more **environments**, install "tox"
 (``pip install tox``) and then just run ``tox`` to run the test
 suite on multiple environments.
 
-To run **specific tests**, call ``pytest`` with a path to the file with
-the tests you wish to run, for instance ``pytest wiki/tests/test_views.py``.
+To run **specific tests**, see ``./runtests.py --help``.
 
 Manifesto
 ---------

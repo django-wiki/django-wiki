@@ -1,5 +1,8 @@
 from __future__ import absolute_import, unicode_literals
 
+import os
+import unittest
+
 import django_functest
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.core.urlresolvers import reverse
@@ -95,6 +98,7 @@ class WebTestBase(WebTestCommonMixin, django_functest.FuncWebTestMixin, TestCase
     pass
 
 
+@unittest.skipIf(os.environ.get('INCLUDE_SELENIUM_TESTS', '0') == '0', "Skipping Selenium tests")
 class SeleniumBase(WebTestCommonMixin, django_functest.FuncSeleniumMixin, StaticLiveServerTestCase):
     driver_name = "Chrome"
 
