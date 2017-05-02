@@ -4,6 +4,7 @@ from __future__ import absolute_import, unicode_literals
 from django import forms
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
+from wiki.core.compat import BuildAttrsCompat
 from wiki.editors.base import BaseEditor
 
 # Due to deprecation of django.forms.util in Django 1.9
@@ -20,9 +21,7 @@ except ImportError:
         return(x)
 
 
-
-
-class MarkItUpAdminWidget(forms.Widget):
+class MarkItUpAdminWidget(BuildAttrsCompat, forms.Widget):
 
     """A simplified more fail-safe widget for the backend"""
 
@@ -37,7 +36,7 @@ class MarkItUpAdminWidget(forms.Widget):
     def render(self, name, value, attrs=None):
         if value is None:
             value = ''
-        final_attrs = self.build_attrs(attrs, name=name)
+        final_attrs = self.build_attrs_compat(attrs, name=name)
         return mark_safe(
             '<textarea%s>%s</textarea>' %
             (flatatt(final_attrs),
@@ -45,7 +44,7 @@ class MarkItUpAdminWidget(forms.Widget):
                 force_unicode(value))))
 
 
-class MarkItUpWidget(forms.Widget):
+class MarkItUpWidget(BuildAttrsCompat, forms.Widget):
 
     def __init__(self, attrs=None):
         # The 'rows' and 'cols' attributes are required for HTML correctness.
@@ -58,7 +57,7 @@ class MarkItUpWidget(forms.Widget):
     def render(self, name, value, attrs=None):
         if value is None:
             value = ''
-        final_attrs = self.build_attrs(attrs, name=name)
+        final_attrs = self.build_attrs_compat(attrs, name=name)
         return mark_safe(
             '<div><textarea%s>%s</textarea></div>' %
             (flatatt(final_attrs),
