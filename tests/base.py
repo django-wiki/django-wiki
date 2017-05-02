@@ -98,10 +98,24 @@ class WebTestBase(WebTestCommonMixin, django_functest.FuncWebTestMixin, TestCase
     pass
 
 
-@unittest.skipIf(os.environ.get('INCLUDE_SELENIUM_TESTS', '0') == '0', "Skipping Selenium tests")
+INCLUDE_SELENIUM_TESTS = os.environ.get('INCLUDE_SELENIUM_TESTS', '0') == '1'
+
+
+@unittest.skipIf(not INCLUDE_SELENIUM_TESTS, "Skipping Selenium tests")
 class SeleniumBase(WebTestCommonMixin, django_functest.FuncSeleniumMixin, StaticLiveServerTestCase):
     driver_name = "Chrome"
     display = os.environ.get('SELENIUM_SHOW_BROWSER', '0') == '1'
+
+    if not INCLUDE_SELENIUM_TESTS:
+        # Don't call super() in setUpClass(), it will attempt to instatiate
+        # a browser instance which is slow and might fail
+        @classmethod
+        def setUpClass(cls):
+            pass
+
+        @classmethod
+        def tearDownClass(cls):
+            pass
 
 
 class ArticleWebTestUtils(object):
