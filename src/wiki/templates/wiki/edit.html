@@ -25,7 +25,10 @@
       <div class="form-group form-actions">
         <div class="col-lg-8">
           <div class="col-lg-offset-2">
-            <button class="btn btn-default" onclick="$('#previewModal').modal('show'); document.getElementById('article_edit_form').target='previewWindow'; document.getElementById('article_edit_form').action='{% url 'wiki:preview' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit()" type="submit">
+            <button class="btn btn-default" type="submit" name="preview" value="1" id="id_preview"
+                    formaction="{% url 'wiki:preview' path=urlpath.path article_id=article.id %}"
+                    formtarget="previewWindow"
+                    >
               <span class="fa fa-eye"></span>
               {% trans "Preview" %}
             </button>
@@ -68,7 +71,7 @@
           <span class="fa fa-arrow-circle-left"></span>
           {% trans "Back to editor" %}
         </a>
-        <a class="btn btn-lg btn-primary" onclick="window.onbeforeunload = null; document.getElementById('article_edit_form').target=''; document.getElementById('article_edit_form').action='{% url 'wiki:edit' path=urlpath.path article_id=article.id %}'; document.getElementById('article_edit_form').submit();" href="#">
+        <a class="btn btn-lg btn-primary" id="id_preview_save_changes" href="#">
           <span class="fa fa-check"></span>
           {% trans "Save changes" %}
         </a>
@@ -91,7 +94,15 @@
     $("#article_edit_form").on("submit", function () {
         window.onbeforeunload = null;
         return true;
-    })
+    });
+    $("#id_preview").on("click", function () {
+        $("#previewModal").modal("show");
+        return true;
+    });
+    $("#id_preview_save_changes").on("click", function (ev) {
+        ev.preventDefault();
+        $("#id_save").trigger("click");
+    });
   });
 
 var confirmOnPageExit = function (e) {

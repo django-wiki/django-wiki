@@ -304,8 +304,19 @@ class EditViewTestsWebTest(EditViewTestsBase, WebTestBase):
 
 
 class EditViewTestsSelenium(EditViewTestsBase, SeleniumBase):
-    pass
 
+    # Javascript only tests:
+    def test_preview_and_save(self):
+        self.get_url('wiki:edit', path='')
+        self.fill({
+            '#id_content': 'Some changed stuff',
+            '#id_summary': 'why edited',
+            '#id_title': 'wiki test'
+        })
+        self.click('#id_preview')
+        self.submit('#id_preview_save_changes')
+        new_revision = URLPath.root().article.current_revision
+        self.assertIn("Some changed stuff", new_revision.content)
 
 
 class SearchViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
