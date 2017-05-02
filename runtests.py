@@ -20,7 +20,7 @@ parser = RuntestsArgumentParser(usage="./runtests.py [args] [tests to run]\n\n"
                                 "Individual tests can be run using pytest syntax e.g.\n\n"
                                 "  ./runtests.py ./tests/core/test_views.py::ArticleViewViewTests::test_article_list_update\n")
 parser.add_argument("--include-selenium", action='store_true',
-                    help="Include Selenium tests, which are skipped by default")
+                    help="Include Selenium tests, which are skipped by default. Requires chromedriver")
 parser.add_argument("--show-browser", action='store_true',
                     help="Show browser window when running Selenium tests")
 

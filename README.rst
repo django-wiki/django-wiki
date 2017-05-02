@@ -129,6 +129,10 @@ suite on multiple environments.
 
 To run **specific tests**, see ``./runtests.py --help``.
 
+To include Selenium tests, you need to install `chromedriver
+<https://sites.google.com/a/chromium.org/chromedriver/>`_ and run
+``./runtests.py --include-selenium``
+
 Manifesto
 ---------
 
