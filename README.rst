@@ -131,7 +131,9 @@ To run **specific tests**, see ``./runtests.py --help``.
 
 To include Selenium tests, you need to install `chromedriver
 <https://sites.google.com/a/chromium.org/chromedriver/>`_ and run
-``./runtests.py --include-selenium``
+``./runtests.py --include-selenium``. For tox, do::
+
+    INCLUDE_SELENIUM_TESTS=1 tox
 
 Manifesto
 ---------
