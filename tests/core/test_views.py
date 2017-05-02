@@ -282,38 +282,30 @@ class EditViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
             'While you were editing, someone else changed the revision.'
         )
 
+class EditViewTestsBase(RequireRootArticleMixin, FuncBaseMixin):
     def test_edit_save(self):
+        old_revision = URLPath.root().article.current_revision
+        self.get_url('wiki:edit', path='')
+        self.fill({
+            '#id_content': 'Something 2',
+            '#id_summary': 'why edited',
+            '#id_title': 'wiki test'
+        })
+        self.submit('#id_save')
+        self.assertTextPresent('Something 2')
+        self.assertTextPresent('successfully added')
+        new_revision = URLPath.root().article.current_revision
+        self.assertIn('Something 2', new_revision.content)
+        self.assertEqual(new_revision.revision_number, old_revision.revision_number + 1)
 
-        c = self.c
-        example_data = {
-            'content': 'More modifications',
-            'current_revision': str(URLPath.root().article.current_revision.id),
-            'preview': '0',
-            'save': '1',
-            'summary': 'why edited',
-            'title': 'wiki test'
-        }
 
-        # test save and messages
-        example2 = example_data
-        example2['content'] = 'Something 2'
-        response = c.post(reverse('wiki:edit', kwargs={'path': ''}), example2)
-        message = getattr(c.cookies['messages'], 'value')
+class EditViewTestsWebTest(EditViewTestsBase, WebTestBase):
+    pass
 
-        self.assertRedirects(response, reverse('wiki:root'))
 
-        response = c.get(reverse('wiki:root'))
-        # self.dump_db_status('test_preview_save')
-        # Why it doesn't display the latest revison text if other test
-        # preceded? It is correctly in the db.
-        self.assertContains(response, 'Something 2')
-        self.assertIn('successfully added', message)
+class EditViewTestsSelenium(EditViewTestsBase, SeleniumBase):
+    pass
 
-    def test_edit_view(self):
-        """Test that the edit page displays"""
-        c = self.c
-        response = c.get(reverse('wiki:edit', kwargs={'path': ''}))
-        self.assertContains(response, 'Edit')
 
 
 class SearchViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):

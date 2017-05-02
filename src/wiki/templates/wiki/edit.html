@@ -17,11 +17,32 @@
 
   <div class="col-lg-8">
     <form method="POST" class="form-horizontal" id="article_edit_form">
-      <input type="hidden" name="save" value="1" />
       <input type="hidden" name="preview" value="1" />
       {% with edit_form as form %}
         {% include "wiki/includes/editor.html" %}
       {% endwith %}
+
+      <div class="form-group form-actions">
+        <div class="col-lg-8">
+          <div class="col-lg-offset-2">
+            <button class="btn btn-default" onclick="$('#previewModal').modal('show'); document.getElementById('article_edit_form').target='previewWindow'; document.getElementById('article_edit_form').action='{% url 'wiki:preview' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit()" type="submit">
+              <span class="fa fa-eye"></span>
+              {% trans "Preview" %}
+            </button>
+            <button class="btn btn-primary" type="submit" name="save" value="1" id="id_save">
+              <span class="fa fa-check"></span>
+              {% trans "Save changes" %}
+            </button>
+            {% if article|can_delete:user %}
+              <a href="{% url 'wiki:delete' path=urlpath.path article_id=article.id %}" class="btn btn-danger pull-right">
+                <span class="fa fa-trash-o"></span>
+                {% trans "Delete article" %}
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
     </form>
   </div>
 
@@ -33,26 +54,6 @@
 
 <div style="clear: both"></div>
 
-<div class="form-group form-actions">
-  <div class="col-lg-8">
-    <div class="col-lg-offset-2">
-      <a class="btn btn-default" onclick="$('#previewModal').modal('show'); document.getElementById('article_edit_form').target='previewWindow'; document.getElementById('article_edit_form').action='{% url 'wiki:preview' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit()" href="#">
-        <span class="fa fa-eye"></span>
-        {% trans "Preview" %}
-      </a>
-      <a class="btn btn-primary" onclick="window.onbeforeunload = null; document.getElementById('article_edit_form').target=''; document.getElementById('article_edit_form').action='{% url 'wiki:edit' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit();" href="#">
-        <span class="fa fa-check"></span>
-        {% trans "Save changes" %}
-      </a>
-      {% if article|can_delete:user %}
-      <a href="{% url 'wiki:delete' path=urlpath.path article_id=article.id %}" class="btn btn-danger pull-right">
-        <span class="fa fa-trash-o"></span>
-        {% trans "Delete article" %}
-      </a>
-      {% endif %}
-    </div>
-  </div>
-</div>
 
 {% include "wiki/includes/modals.html" %}
 
@@ -87,6 +88,10 @@
       $("#article_edit_form").data("changed",true);
     }
     window.onbeforeunload = confirmOnPageExit;
+    $("#article_edit_form").on("submit", function () {
+        window.onbeforeunload = null;
+        return true;
+    })
   });
 
 var confirmOnPageExit = function (e) {
