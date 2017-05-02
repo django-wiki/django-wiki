@@ -101,6 +101,7 @@ class WebTestBase(WebTestCommonMixin, django_functest.FuncWebTestMixin, TestCase
 @unittest.skipIf(os.environ.get('INCLUDE_SELENIUM_TESTS', '0') == '0', "Skipping Selenium tests")
 class SeleniumBase(WebTestCommonMixin, django_functest.FuncSeleniumMixin, StaticLiveServerTestCase):
     driver_name = "Chrome"
+    display = os.environ.get('SELENIUM_SHOW_BROWSER', '0') == '1'
 
 
 class ArticleWebTestUtils(object):
