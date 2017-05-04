@@ -18,6 +18,7 @@ def get_user_model():
 def nop_decorator(func):
     return func
 
+
 # Where these are used in code, both old and new methods for transactions appear
 # to be used, but only one will actually do anything. When only Django 1.8+
 # is supported, transaction_commit_on_success can be deleted.

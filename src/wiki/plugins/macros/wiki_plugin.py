@@ -24,7 +24,5 @@ class MacroPlugin(BasePlugin):
         MacroExtension(),
         WikiTocExtension()]
 
-    def __init__(self):
-        pass
 
 registry.register(MacroPlugin)

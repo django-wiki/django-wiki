@@ -21,4 +21,5 @@ class NotifyPlugin(BasePlugin):
     def __init__(self):
         pass
 
+
 registry.register(NotifyPlugin)

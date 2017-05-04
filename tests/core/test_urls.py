@@ -34,6 +34,7 @@ class WikiCustomUrlPatterns(WikiURLPatterns):
         ]
         return urlpatterns
 
+
 urlpatterns = [
     url(r'^notify/', get_notify_pattern()),
     url(r'', get_wiki_pattern(url_config_class=WikiCustomUrlPatterns))
