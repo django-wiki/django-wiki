@@ -1,5 +1,5 @@
-Test project
-============
+Running the test project
+========================
 
 In order to quickly get setup, there is a project in the git repository.
 
