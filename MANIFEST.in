@@ -1,6 +1,7 @@
 include COPYING
 include README.rst
 include setup.cfg
+include runtests.py
 recursive-include src *.html *.txt *.png *.js *.css *.gif *.less *.mo *.po *.otf *.svg *.woff *.woff2 *.eot *.ttf
 prune src/wiki/attachments
 prune src/wiki/images

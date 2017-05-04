@@ -6,6 +6,7 @@ import tempfile
 from tests.core.test_commands import TestManagementCommands
 
 from wiki.plugins.attachments import models
+from wiki.models import URLPath
 
 
 class TestAttachmentManagementCommands(TestManagementCommands):
@@ -14,10 +15,12 @@ class TestAttachmentManagementCommands(TestManagementCommands):
     """
 
     def setUp(self):
-        TestManagementCommands.setUp(self)
+        super(TestAttachmentManagementCommands, self).setUp()
 
         self.test_file = tempfile.NamedTemporaryFile('w', delete=False, suffix=".txt")
         self.test_file.write("test")
+
+        self.child1 = URLPath.create_article(self.root, 'test-slug', title="Test 1")
 
         self.attachment1 = models.Attachment.objects.create(
             article=self.child1.article
@@ -30,3 +33,4 @@ class TestAttachmentManagementCommands(TestManagementCommands):
 
     def tearDown(self):
         os.unlink(self.test_file.name)
+        super(TestAttachmentManagementCommands, self).tearDown()

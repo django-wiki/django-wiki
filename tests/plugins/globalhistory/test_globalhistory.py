@@ -4,18 +4,15 @@ import sys
 
 from django.core.urlresolvers import reverse
 from wiki.models import URLPath
-from ...base import ArticleWebTestBase
+from ...base import RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase
 
-class GlobalhistoryTests(ArticleWebTestBase):
+class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     def _assertRegex(self, a, b):
         if sys.version_info >= (3, 2):
             return self.assertRegex(a, b)
         else:
             return self.assertRegexpMatches(a, b)
-
-    def setUp(self):
-        super(GlobalhistoryTests, self).setUp()
 
     def test_history(self):
         url = reverse('wiki:globalhistory')

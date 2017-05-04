@@ -101,20 +101,68 @@ the project without tests wouldn't be fair to the project or
 your hard work. We use coverage metrics to see that each new
 contribution does not significantly impact test coverage.
 
+Tests generally fall into a few categories:
+
+* Testing at the model level. These test cases should inherit from
+  ``tests.base.TestBase``.
+
+* Tests for views that return HTML. We normally use `django-functest
+  <http://django-functest.readthedocs.io/en/latest/>`_ for these, especially if
+  the page involves forms and handling of POST data. Test cases should inherit
+  from ``tests.base.WebTestBase`` and ``tests.base.SeleniumBase`` - see
+  ``tests.core.test_views.RootArticleViewTestsBase``,
+  ``RootArticleViewTestsWebTest`` and ``RootArticleViewTestsSelenium`` for an
+  example.
+
+  Views should be written so that as far as possible they work without
+  Javascript, and can be tested using the fast WebTest method, rather than
+  relying on the slow and fragile Selenium method. Selenium tests are not run by
+  default.
+
+  (In the past the Django test Client was used for these, and currently there
+  are still a lot of tests written in this style. These should be gradually
+  phased out where possible, because the test Client does a poor job of
+  replicating what browsers and people actually do.
+
+* Tests for views that return JSON or other non-HTML. These test cases
+  should inherit from ``tests.base.DjangoClientTestBase``.
+
+There are also other mixins in ``tests.base`` that provide commonly used
+fixtures for tests e.g. a root article.
+
 The easiest way to add features is to write a plugin. Please create an
 issue to discuss whether your plugin idea is a core plugin
 (``wiki.plugins.*``) or external plugin. If there are additions needed
 to the plugin API, we can discuss that as well!
 
-To run django-wiki's tests, run ``make test``
-after installing the requirements.
+To run django-wiki's tests:
+
+* Checkout this repo from Github, ``cd`` into it.
+* Create and activate a virtualenv for developing django-wiki.
+  Ensure you are using recent setuptools and pip.
+* Install the requirements::
+
+    $ pip install --upgrade pip setuptools
+    $ ./setup.py develop
+    $ pip install pytest pytest-django pytest-cov mock django-functest
+
+* Add the current directory to your virtualenv path so that tests can be found::
+
+    $ pwd >> $VIRTUAL_ENV/lib/python2.7/site-packages/easy-install.pth
+
+* Run ``make test`` or ``./runtests.py``
 
 If you want to test for more **environments**, install "tox"
 (``pip install tox``) and then just run ``tox`` to run the test
 suite on multiple environments.
 
-To run **specific tests**, call ``pytest`` with a path to the file with
-the tests you wish to run, for instance ``pytest wiki/tests/test_views.py``.
+To run **specific tests**, see ``./runtests.py --help``.
+
+To include Selenium tests, you need to install `chromedriver
+<https://sites.google.com/a/chromium.org/chromedriver/>`_ and run
+``./runtests.py --include-selenium``. For tox, do::
+
+    INCLUDE_SELENIUM_TESTS=1 tox
 
 Manifesto
 ---------

@@ -11,10 +11,10 @@ from wiki.models import URLPath
 from wiki.plugins.images import models
 from wiki.plugins.images.wiki_plugin import ImagePlugin
 
-from ...base import ArticleWebTestBase
+from ...base import RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase
 
 
-class ImageTests(ArticleWebTestBase):
+class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     def _assertRegex(self, a, b):
         if sys.version_info >= (3, 2):

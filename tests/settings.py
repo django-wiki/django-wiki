@@ -43,6 +43,7 @@ MIDDLEWARE_CLASSES = [
 ]
 USE_TZ = True
 SECRET_KEY = 'b^fv_)t39h%9p40)fnkfblo##jkr!$0)lkp6bpy!fi*f$4*92!'
+STATIC_URL = '/static/'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
