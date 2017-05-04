@@ -71,6 +71,7 @@ def post_article_revision_save(**kwargs):
                 url=url,
                 filter_exclude=filter_exclude)
 
+
 # Whenever a new revision is created, we notifý users that an article
 # was edited
 signals.post_save.connect(

@@ -20,4 +20,5 @@ class HelpPlugin(BasePlugin):
     def __init__(self):
         pass
 
+
 registry.register(HelpPlugin)

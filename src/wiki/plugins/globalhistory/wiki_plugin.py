@@ -17,4 +17,5 @@ class GlobalHistoryPlugin(BasePlugin):
     def __init__(self):
         pass
 
+
 registry.register(GlobalHistoryPlugin)

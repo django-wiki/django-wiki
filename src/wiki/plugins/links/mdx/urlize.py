@@ -114,6 +114,7 @@ def makeExtension(configs=None):
         configs = {}
     return UrlizeExtension(configs=configs)
 
+
 if __name__ == "__main__":
     import doctest
     doctest.testmod()

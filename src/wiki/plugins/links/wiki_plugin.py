@@ -35,7 +35,5 @@ class LinkPlugin(BasePlugin):
         urlize_makeExtension(),
         WikiPathExtension(wikipath_config)]
 
-    def __init__(self):
-        pass
 
 registry.register(LinkPlugin)

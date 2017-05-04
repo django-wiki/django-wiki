@@ -68,8 +68,5 @@ class ImagePlugin(BasePlugin):
 
     markdown_extensions = [ImageExtension()]
 
-    def __init__(self):
-        # print "I WAS LOADED!"
-        pass
 
 registry.register(ImagePlugin)
