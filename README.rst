@@ -101,6 +101,35 @@ the project without tests wouldn't be fair to the project or
 your hard work. We use coverage metrics to see that each new
 contribution does not significantly impact test coverage.
 
+Tests generally fall into a few categories:
+
+* Testing at the model level. These test cases should inherit from
+  ``tests.base.TestBase``.
+
+* Tests for views that return HTML. We normally use `django-functest
+  <http://django-functest.readthedocs.io/en/latest/>`_ for these, especially if
+  the page involves forms and handling of POST data. Test cases should inherit
+  from ``tests.base.WebTestBase`` and ``tests.base.SeleniumBase`` - see
+  ``tests.core.test_views.RootArticleViewTestsBase``,
+  ``RootArticleViewTestsWebTest`` and ``RootArticleViewTestsSelenium`` for an
+  example.
+
+  Views should be written so that as far as possible they work without
+  Javascript, and can be tested using the fast WebTest method, rather than
+  relying on the slow and fragile Selenium method. Selenium tests are not run by
+  default.
+
+  (In the past the Django test Client was used for these, and currently there
+  are still a lot of tests written in this style. These should be gradually
+  phased out where possible, because the test Client does a poor job of
+  replicating what browsers and people actually do.
+
+* Tests for views that return JSON or other non-HTML. These test cases
+  should inherit from ``tests.base.DjangoClientTestBase``.
+
+There are also other mixins in ``tests.base`` that provide commonly used
+fixtures for tests e.g. a root article.
+
 The easiest way to add features is to write a plugin. Please create an
 issue to discuss whether your plugin idea is a core plugin
 (``wiki.plugins.*``) or external plugin. If there are additions needed

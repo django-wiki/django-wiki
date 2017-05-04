@@ -71,9 +71,6 @@ class ArticleTestBase(RequireRootArticleMixin, TestBase):
     pass
 
 
-# This is needed only for tests that use the Django test client,
-# which are being phased out.
-
 class DjangoClientTestBase(TestBase):
     def setUp(self):
         super(DjangoClientTestBase, self).setUp()
