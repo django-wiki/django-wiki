@@ -1,10 +1,15 @@
 # Contributing
 
+If you are a developer, please refer to the
+[Developer Guide](http://django-wiki.readthedocs.io/en/latest/development/index.html)
+
 ## Support
 
 **DO NOT USE GITHUB FOR SUPPORT INQUIRIES! USE IRC OR MAILING LIST!**
 
-Django-wiki is community based, please try to be active. If you want help, plan to give help, too. For instance, if you join IRC, then stay around and help others.
+Django-wiki is community based, please try to be active. If you want help, plan
+to give help, too. For instance, if you join IRC, then stay around and help
+others.
 
 ## Issues
 
@@ -28,15 +33,6 @@ When submitting an Issue, please provide the following:
   * The expected result.
   * Does the bug happen with a checkout of django-wiki's master branch? To upgrade:
     `pip install --upgrade git+https://github.com/django-wiki/django-wiki.git`
-
-## Pull requests
-
-When submitting a pull request, please do the following.
-
-* If it contains Python code, please consider adding a test case.
-* If it's a look and feel change, please add a screenshot.
-* If you add support to other versions of dependencies, please add a Travis
-  .yml configuration.
 
 ## Manifesto
 
