@@ -1,8 +1,8 @@
 Installation
 ============
 
-Pre-requisites
---------------
+Pre-requisite: Pillow
+---------------------
 
 For image processing, django-wiki uses the `Pillow
 library <https://github.com/python-pillow/Pillow>`_ (a fork of PIL).
@@ -10,54 +10,13 @@ The preferred method should be to get a system-wide, pre-compiled
 version of Pillow, for instance by getting the binaries from your Linux
 distribution repos.
 
-Debian-based Linux Distros
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Debian/Ubuntu
+~~~~~~~~~~~~~
 
-You may find this a bit annoying: On Ubuntu 12.04 and Debian, PIL is
-satisfied by installing ``python-imaging``, however Pillow is not! On
-later versions of Ubuntu (tested on 13.10), Pillow is satisfied, but PIL
-is not. But since PIL no longer compiles on later releases of Ubuntu, we
-have opted to use Pillow. The alternative would be that django-wiki's
-requirements would be installed and silently fail (i.e. PIL from pip
-compiles on Ubuntu 13+ but finds no system libraries for image
-processing).
-
-If you are on Ubuntu 13+, you may install a system-wide Pillow-adequate
-library like so:
-
-::
-
-    sudo apt-get install python-imaging
-
-After, you can verify that Pillow is satisfied by running
-``pip show Pillow``.
-
-::
-
-    $ pip show Pillow
-    ---
-    Name: Pillow
-    Version: 2.0.0
-    Location: /usr/lib/python2.7/dist-packages
-
-On Ubuntu 12.04, Debian Wheezy, Jessie etc., you should acquire a
-system-wide installation of Pillow, read next section...
-
-Pip installation
-~~~~~~~~~~~~~~~~
-
-Firstly, you need to get development libraries that PIP needs before
-compiling. For instance on Debian/Ubuntu 12.04:
-
-::
-
-    sudo apt-get install libjpeg8 libjpeg-dev libpng libpng-dev
-
-Later versions of Ubuntu:
-
-::
+You need to get development libraries which Pip needs for compiling::
 
     sudo apt-get install libjpeg8 libjpeg-dev libpng12-0 libpng12-dev
+
 
 After that, install with ``sudo pip install Pillow``. You might as well
 install Pillow system-wide, because there are little version-specific
@@ -78,8 +37,8 @@ Once you have the packages installed, you can proceed to the pip
 installation. PIL will automatically pick up these libraries and compile
 them for django use.
 
-Install
--------
+Installing
+----------
 
 To install the latest stable release::
 
@@ -90,10 +49,13 @@ deploying our master branch directly)::
 
     pip install git+git://github.com/django-wiki/django-wiki.git
 
-Upgrade
--------
+Upgrading
+---------
 
 Always read the :doc:`release_notes` for instructions on upgrading.
+
+Configuration
+-------------
 
 Configure ``settings.INSTALLED_APPS``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -123,7 +85,6 @@ To sync and create tables, do:
 
 ::
 
-    python manage.py syncdb
     python manage.py migrate
 
 Configure ``TEMPLATE_CONTEXT_PROCESSORS``
