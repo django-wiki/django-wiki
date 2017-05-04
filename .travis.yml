@@ -36,6 +36,7 @@ env:
 - TOXENV=py35-django19
 - TOXENV=py35-django110
 - TOXENV=py35-django111
+- TOXENV=lint
 
 install:
   - pip install tox>=2.1 coveralls
