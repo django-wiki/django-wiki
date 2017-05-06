@@ -13,6 +13,8 @@ current master branch.
 django-wiki 0.3 (unreleased)
 ----------------------------
 
+ * Test refactor: Use django-functool and separate WebTest from Selenium (Luke Plant) #634
+ * Django 1.11 compatibility (Luke Plant) #634
  * Repo refactor: Moved ``wiki`` package to ``src/`` folder and test code to ``tests/`` #631
  * New bootstrapped image insert dialog (Frank Loemker) #628
  * Allow the HTML tag ``<hr>`` (Frank Loemker) #629

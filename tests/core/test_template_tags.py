@@ -42,7 +42,7 @@ class ArticleForObjectTemplatetagTest(TemplateTestCase):
     """
 
     def setUp(self):
-
+        super(ArticleForObjectTemplatetagTest, self).setUp()
         from wiki.templatetags import wiki_tags
         wiki_tags._cache = {}
 
@@ -163,6 +163,7 @@ class WikiRenderTest(TemplateTestCase):
     def tearDown(self):
         from wiki.core.plugins import registry
         registry._cache = {}
+        super(WikiRenderTest, self).tearDown()
 
     keys = ['article',
             'content',

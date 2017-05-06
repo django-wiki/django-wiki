@@ -4,14 +4,15 @@ import pprint
 
 from django.contrib.auth import authenticate
 from django.utils.html import escape
+from django_functest import FuncBaseMixin
 from wiki import models
 from wiki.forms import validate_slug_numbers
-from wiki.models import reverse
+from wiki.models import reverse, URLPath
 
-from ..base import ArticleWebTestBase, WebTestBase
+from ..base import RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase, SeleniumBase, WebTestBase
 
 
-class RootArticleViewViewTests(WebTestBase):
+class RootArticleViewTestsBase(FuncBaseMixin):
 
     """Tests for creating/viewing the root article."""
 
@@ -20,26 +21,28 @@ class RootArticleViewViewTests(WebTestBase):
         Test redirecting to /create-root/,
         creating the root article and a simple markup.
         """
-
-        c = self.c
-        response = c.get(reverse('wiki:root'))  # url '/'
-
-        self.assertRedirects(
-            response,
-            reverse('wiki:root_create')  # url '/create-root/'
-        )
-
-        response = c.post(
-            reverse('wiki:root_create'),
-            {'content': 'test heading h1\n====\n', 'title': 'Wiki Test'}
-        )
-
-        self.assertRedirects(response, reverse('wiki:root'))
-        response = c.get(reverse('wiki:root'))
-        self.assertContains(response, 'test heading h1</h1>')
+        self.get_url('wiki:root')
+        self.assertUrlsEqual(reverse('wiki:root_create'))
+        self.fill({
+            '#id_content': 'test heading h1\n====\n',
+            '#id_title': 'Wiki Test',
+        })
+        self.submit('input[name="save_changes"]')
+        self.assertUrlsEqual('/')
+        self.assertTextPresent('test heading h1')
+        article = URLPath.root().article
+        self.assertIn('test heading h1', article.current_revision.content)
 
 
-class ArticleViewViewTests(ArticleWebTestBase):
+class RootArticleViewTestsWebTest(RootArticleViewTestsBase, WebTestBase):
+    pass
+
+
+class RootArticleViewTestsSelenium(RootArticleViewTestsBase, SeleniumBase):
+    pass
+
+
+class ArticleViewViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     """
     Tests for article views, assuming a root article already created.
@@ -78,10 +81,9 @@ class ArticleViewViewTests(ArticleWebTestBase):
         """
 
         c = self.c
-
         root_data = {
             'content': '[article_list depth:2]',
-            'current_revision': '1',
+            'current_revision': str(URLPath.root().article.current_revision.id),
             'preview': '1',
             'title': 'Root Article'
         }
@@ -105,7 +107,10 @@ class ArticleViewViewTests(ArticleWebTestBase):
         # verify the deleted article is removed from article_list
         response = c.post(
             reverse('wiki:delete', kwargs={'path': 'SubArticle1/'}),
-            {'confirm': 'on', 'purge': 'on', 'revision': '3'}
+            {'confirm': 'on',
+             'purge': 'on',
+             'revision': str(URLPath.objects.get(slug='subarticle1').article.current_revision.id),
+             }
         )
 
         message = getattr(c.cookies['messages'], 'value')
@@ -121,7 +126,7 @@ class ArticleViewViewTests(ArticleWebTestBase):
         self.assertNotContains(self.get_by_path(''), 'Sub Article 1')
 
 
-class CreateViewTest(ArticleWebTestBase):
+class CreateViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     def test_create_nested_article_in_article(self):
 
@@ -180,7 +185,7 @@ class CreateViewTest(ArticleWebTestBase):
 
 
 
-class DeleteViewTest(ArticleWebTestBase):
+class DeleteViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     def test_articles_cache_is_cleared_after_deleting(self):
 
@@ -200,7 +205,8 @@ class DeleteViewTest(ArticleWebTestBase):
 
         response = c.post(
             reverse('wiki:delete', kwargs={'path': 'testcache/'}),
-            {'confirm': 'on', 'purge': 'on', 'revision': '2'}
+            {'confirm': 'on', 'purge': 'on',
+             'revision': str(URLPath.objects.get(slug='testcache').article.current_revision.id)}
         )
 
         self.assertRedirects(
@@ -220,7 +226,7 @@ class DeleteViewTest(ArticleWebTestBase):
         self.assertContains(self.get_by_path('TestCache/'), 'Content 2')
 
 
-class EditViewTest(ArticleWebTestBase):
+class EditViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     def test_preview_save(self):
         """Test edit preview, edit save and messages."""
@@ -228,7 +234,7 @@ class EditViewTest(ArticleWebTestBase):
         c = self.c
         example_data = {
             'content': 'The modified text',
-            'current_revision': '1',
+            'current_revision': str(URLPath.root().article.current_revision.id),
             'preview': '1',
             # 'save': '1',  # probably not too important
             'summary': 'why edited',
@@ -252,7 +258,7 @@ class EditViewTest(ArticleWebTestBase):
 
         example_data = {
             'content': 'More modifications',
-            'current_revision': '1',
+            'current_revision': str(URLPath.root().article.current_revision.id),
             'preview': '0',
             'save': '1',
             'summary': 'why edited',
@@ -276,41 +282,44 @@ class EditViewTest(ArticleWebTestBase):
             'While you were editing, someone else changed the revision.'
         )
 
+class EditViewTestsBase(RequireRootArticleMixin, FuncBaseMixin):
     def test_edit_save(self):
-
-        c = self.c
-        example_data = {
-            'content': 'More modifications',
-            'current_revision': '1',
-            'preview': '0',
-            'save': '1',
-            'summary': 'why edited',
-            'title': 'wiki test'
-        }
-
-        # test save and messages
-        example2 = example_data
-        example2['content'] = 'Something 2'
-        response = c.post(reverse('wiki:edit', kwargs={'path': ''}), example2)
-        message = getattr(c.cookies['messages'], 'value')
-
-        self.assertRedirects(response, reverse('wiki:root'))
-
-        response = c.get(reverse('wiki:root'))
-        # self.dump_db_status('test_preview_save')
-        # Why it doesn't display the latest revison text if other test
-        # preceded? It is correctly in the db.
-        self.assertContains(response, 'Something 2')
-        self.assertIn('successfully added', message)
-
-    def test_edit_view(self):
-        """Test that the edit page displays"""
-        c = self.c
-        response = c.get(reverse('wiki:edit', kwargs={'path': ''}))
-        self.assertContains(response, 'Edit')
+        old_revision = URLPath.root().article.current_revision
+        self.get_url('wiki:edit', path='')
+        self.fill({
+            '#id_content': 'Something 2',
+            '#id_summary': 'why edited',
+            '#id_title': 'wiki test'
+        })
+        self.submit('#id_save')
+        self.assertTextPresent('Something 2')
+        self.assertTextPresent('successfully added')
+        new_revision = URLPath.root().article.current_revision
+        self.assertIn('Something 2', new_revision.content)
+        self.assertEqual(new_revision.revision_number, old_revision.revision_number + 1)
 
 
-class SearchViewTest(ArticleWebTestBase):
+class EditViewTestsWebTest(EditViewTestsBase, WebTestBase):
+    pass
+
+
+class EditViewTestsSelenium(EditViewTestsBase, SeleniumBase):
+
+    # Javascript only tests:
+    def test_preview_and_save(self):
+        self.get_url('wiki:edit', path='')
+        self.fill({
+            '#id_content': 'Some changed stuff',
+            '#id_summary': 'why edited',
+            '#id_title': 'wiki test'
+        })
+        self.click('#id_preview')
+        self.submit('#id_preview_save_changes')
+        new_revision = URLPath.root().article.current_revision
+        self.assertIn("Some changed stuff", new_revision.content)
+
+
+class SearchViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     def test_query_string(self):
 
@@ -327,7 +336,7 @@ class SearchViewTest(ArticleWebTestBase):
         self.assertFalse(response.context['articles'])
 
 
-class DeletedListViewTest(ArticleWebTestBase):
+class DeletedListViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     def test_deleted_articles_list(self):
         c = self.c
@@ -344,7 +353,8 @@ class DeletedListViewTest(ArticleWebTestBase):
 
         response = c.post(
             reverse('wiki:delete', kwargs={'path': 'deleteme/'}),
-            {'confirm': 'on', 'revision': '2'}
+            {'confirm': 'on',
+             'revision': URLPath.objects.get(slug='deleteme').article.current_revision.id}
         )
 
         self.assertRedirects(
@@ -356,7 +366,7 @@ class DeletedListViewTest(ArticleWebTestBase):
         self.assertContains(response, 'Delete Me')
 
 
-class UpdateProfileViewTest(ArticleWebTestBase):
+class UpdateProfileViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     def test_update_profile(self):
         c = self.c
@@ -373,22 +383,22 @@ class UpdateProfileViewTest(ArticleWebTestBase):
         self.assertEqual(test_auth.email, 'test@test.com')
 
 
-class MergeViewTest(ArticleWebTestBase):
+class MergeViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     def test_merge_preview(self):
         """Test merge preview"""
 
         c = self.c
+        first_revision = self.root_article.current_revision
         example_data = {
             'content': 'More modifications\n\nMerge new line',
-            'current_revision': '1',
+            'current_revision': str(first_revision.id),
             'preview': '0',
             'save': '1',
             'summary': 'testing merge',
             'title': 'wiki test'
         }
 
-        previous_revision = self.root_article.current_revision.id
 
         # save a new revision
         c.post(
@@ -396,16 +406,16 @@ class MergeViewTest(ArticleWebTestBase):
             example_data
         )
 
+        new_revision = models.Article.objects.get(
+            id=self.root_article.id
+        ).current_revision
+
         response = c.get(
             reverse(
                 'wiki:merge_revision_preview',
-                kwargs={'article_id': self.root_article.id, 'revision_id': previous_revision}
+                kwargs={'article_id': self.root_article.id, 'revision_id': first_revision.id}
             ),
         )
-
-        new_revision = models.Article.objects.get(
-            id=self.root_article.id
-        ).current_revision.id
 
         self.assertContains(
             response,
@@ -413,9 +423,9 @@ class MergeViewTest(ArticleWebTestBase):
         )
         self.assertContains(
             response,
-            '#{rev_id}'.format(rev_id=previous_revision)
+            '#{rev_number}'.format(rev_number=first_revision.revision_number)
         )
         self.assertContains(
             response,
-            '#{rev_id}'.format(rev_id=new_revision)
+            '#{rev_number}'.format(rev_number=new_revision.revision_number)
         )

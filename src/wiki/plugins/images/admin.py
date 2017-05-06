@@ -34,4 +34,5 @@ class ImageAdmin(admin.ModelAdmin):
     form = ImageForm
     inlines = (ImageRevisionInline,)
 
+
 admin.site.register(models.Image, ImageAdmin)

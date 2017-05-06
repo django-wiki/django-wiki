@@ -48,10 +48,10 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr htmlcov/
 
 lint:  ## Check python code conventions
-	pep8 src/wiki
+	flake8 src/wiki tests/
 
 test:  ## Run automated test suite
-	pytest
+	./runtests.py
 
 test-all:  ## Run tests on all supported Python environments
 	tox

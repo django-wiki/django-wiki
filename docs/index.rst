@@ -15,6 +15,7 @@ django-wiki documentation
    plugins
    customization
    settings
+   development/index
    tips/index
 
 .. include:: ../README.rst

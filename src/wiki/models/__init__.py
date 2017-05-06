@@ -96,6 +96,7 @@ def reverse(*args, **kwargs):
 
     return url
 
+
 # Now we redefine reverse method
 reverse_lazy = lazy(reverse, text_type)
 urlresolvers.reverse = reverse

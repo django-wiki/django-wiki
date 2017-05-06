@@ -25,7 +25,8 @@ The below table explains which Django versions are supported.
 +------------------+----------------+--------------+
 | Release          | Django         | Upgrade from |
 +==================+================+==============+
-| 0.3 (unreleased) | 1.10, 1.11     | 0.2          |
+| 0.3 (unreleased) | 1.8, 1.9,      | 0.2          |
+|                  | 1.10, 1.11     |              |
 +------------------+----------------+--------------+
 | 0.2              | 1.8, 1.9, 1.10 | 0.1          |
 +------------------+----------------+--------------+
@@ -90,31 +91,8 @@ classes every time there is an update.
 Contributing
 ------------
 
-The best way to contribute is to use our Github issue list to look
-at current wishes. The list is found here:
-
-https://github.com/django-wiki/django-wiki/issues/
-
-Generally speaking, we need more **unit tests**, and new
-features will not be accepted without tests. To add more stuff the
-the project without tests wouldn't be fair to the project or
-your hard work. We use coverage metrics to see that each new
-contribution does not significantly impact test coverage.
-
-The easiest way to add features is to write a plugin. Please create an
-issue to discuss whether your plugin idea is a core plugin
-(``wiki.plugins.*``) or external plugin. If there are additions needed
-to the plugin API, we can discuss that as well!
-
-To run django-wiki's tests, run ``make test``
-after installing the requirements.
-
-If you want to test for more **environments**, install "tox"
-(``pip install tox``) and then just run ``tox`` to run the test
-suite on multiple environments.
-
-To run **specific tests**, call ``pytest`` with a path to the file with
-the tests you wish to run, for instance ``pytest wiki/tests/test_views.py``.
+Please read our
+`Developer Guide <http://django-wiki.readthedocs.io/en/latest/development/index.html>`__
 
 Manifesto
 ---------
@@ -205,15 +183,6 @@ on your host system.
 -  `Pillow (Python Imaging Library) <https://pillow.readthedocs.io/en/latest/installation.html>`__
 -  Python>=2.7 or Python>=3.2
 
-
-Development
------------
-
-The folder **testproject/** contains a pre-configured django project and
-an sqlite database. Login for django admin is ``admin:admin``. This
-project should always be maintained, but please do not commit changes to
-the SQLite database as we only care about its contents in case data
-models are changed.
 
 
 Acknowledgements

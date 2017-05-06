@@ -5,10 +5,10 @@ from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.urlresolvers import reverse
 
-from ...base import ArticleWebTestBase
+from ...base import RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase
 
 
-class AttachmentTests(ArticleWebTestBase):
+class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     def setUp(self):
         super(AttachmentTests, self).setUp()

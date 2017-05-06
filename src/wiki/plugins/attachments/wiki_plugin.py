@@ -38,8 +38,5 @@ class AttachmentPlugin(BasePlugin):
 
     markdown_extensions = [AttachmentExtension()]
 
-    def __init__(self):
-        # print "I WAS LOADED!"
-        pass
 
 registry.register(AttachmentPlugin)

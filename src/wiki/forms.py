@@ -22,7 +22,7 @@ from six.moves import range
 from wiki import models
 from wiki.conf import settings
 from wiki.core import permissions
-from wiki.core.compat import get_user_model
+from wiki.core.compat import get_user_model, BuildAttrsCompat
 from wiki.core.diff import simple_merge
 from wiki.core.plugins.base import PluginSettingsFormMixin
 from wiki.editors import getEditor
@@ -250,8 +250,7 @@ class EditForm(forms.Form, SpamProtectionMixin):
         return cd
 
 
-class SelectWidgetBootstrap(forms.Select):
-
+class SelectWidgetBootstrap(BuildAttrsCompat, forms.Select):
     """
     http://twitter.github.com/bootstrap/components.html#buttonDropdowns
     Needs bootstrap and jquery
@@ -271,7 +270,7 @@ class SelectWidgetBootstrap(forms.Select):
     def render(self, name, value, attrs=None, choices=()):
         if value is None:
             value = ''
-        final_attrs = self.build_attrs(attrs, name=name)
+        final_attrs = self.build_attrs_compat(attrs, name=name)
         output = [
             """<div%(attrs)s>"""
             """    <button class="btn btn-group-label%(disabled)s" type="button">%(label)s</button>"""

@@ -1,8 +1,8 @@
 Installation
 ============
 
-Pre-requisites
---------------
+Pre-requisite: Pillow
+---------------------
 
 For image processing, django-wiki uses the `Pillow
 library <https://github.com/python-pillow/Pillow>`_ (a fork of PIL).
@@ -10,54 +10,13 @@ The preferred method should be to get a system-wide, pre-compiled
 version of Pillow, for instance by getting the binaries from your Linux
 distribution repos.
 
-Debian-based Linux Distros
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Debian/Ubuntu
+~~~~~~~~~~~~~
 
-You may find this a bit annoying: On Ubuntu 12.04 and Debian, PIL is
-satisfied by installing ``python-imaging``, however Pillow is not! On
-later versions of Ubuntu (tested on 13.10), Pillow is satisfied, but PIL
-is not. But since PIL no longer compiles on later releases of Ubuntu, we
-have opted to use Pillow. The alternative would be that django-wiki's
-requirements would be installed and silently fail (i.e. PIL from pip
-compiles on Ubuntu 13+ but finds no system libraries for image
-processing).
-
-If you are on Ubuntu 13+, you may install a system-wide Pillow-adequate
-library like so:
-
-::
-
-    sudo apt-get install python-imaging
-
-After, you can verify that Pillow is satisfied by running
-``pip show Pillow``.
-
-::
-
-    $ pip show Pillow
-    ---
-    Name: Pillow
-    Version: 2.0.0
-    Location: /usr/lib/python2.7/dist-packages
-
-On Ubuntu 12.04, Debian Wheezy, Jessie etc., you should acquire a
-system-wide installation of Pillow, read next section...
-
-Pip installation
-~~~~~~~~~~~~~~~~
-
-Firstly, you need to get development libraries that PIP needs before
-compiling. For instance on Debian/Ubuntu 12.04:
-
-::
-
-    sudo apt-get install libjpeg8 libjpeg-dev libpng libpng-dev
-
-Later versions of Ubuntu:
-
-::
+You need to get development libraries which Pip needs for compiling::
 
     sudo apt-get install libjpeg8 libjpeg-dev libpng12-0 libpng12-dev
+
 
 After that, install with ``sudo pip install Pillow``. You might as well
 install Pillow system-wide, because there are little version-specific
@@ -78,8 +37,8 @@ Once you have the packages installed, you can proceed to the pip
 installation. PIL will automatically pick up these libraries and compile
 them for django use.
 
-Install
--------
+Installing
+----------
 
 To install the latest stable release::
 
@@ -90,10 +49,13 @@ deploying our master branch directly)::
 
     pip install git+git://github.com/django-wiki/django-wiki.git
 
-Upgrade
--------
+Upgrading
+---------
 
 Always read the :doc:`release_notes` for instructions on upgrading.
+
+Configuration
+-------------
 
 Configure ``settings.INSTALLED_APPS``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -103,7 +65,7 @@ maintain the order due to database relational constraints:
 
 .. code-block:: python
 
-    'django.contrib.sites', # django 1.6.2+
+    'django.contrib.sites',
     'django.contrib.humanize',
     'django_nyt',
     'mptt',
@@ -116,14 +78,6 @@ maintain the order due to database relational constraints:
     'wiki.plugins.macros',
 
 
-Django < 1.7
-~~~~~~~~~~~~
-
-If you run older versions of Django, please upgrade South to 1.0 or later so
-that correct migrations files are found. You also need to add ``'south'`` to
-``INSTALLED_APPS``.
-
-
 Database
 ~~~~~~~~
 
@@ -131,7 +85,6 @@ To sync and create tables, do:
 
 ::
 
-    python manage.py syncdb
     python manage.py migrate
 
 Configure ``TEMPLATE_CONTEXT_PROCESSORS``
@@ -142,24 +95,6 @@ Add ``'sekizai.context_processors.sekizai'`` and
 ``settings.TEMPLATE_CONTEXT_PROCESSORS``. Please refer to the `Django
 settings docs <https://docs.djangoproject.com/en/dev/ref/settings/>`_
 to see the current default setting for this variable.
-
-In Django 1.5, it should look like this:
-
-.. code-block:: python
-
-    TEMPLATE_CONTEXT_PROCESSORS = [
-        "django.contrib.auth.context_processors.auth",
-        "django.core.context_processors.debug",
-        "django.core.context_processors.i18n",
-        "django.core.context_processors.media",
-        "django.core.context_processors.request",
-        "django.core.context_processors.static",
-        "django.core.context_processors.tz",
-        "django.contrib.messages.context_processors.messages",
-        "sekizai.context_processors.sekizai",
-    ]
-
-In Django 1.8, it should look like this:
 
 .. code-block:: python
 
@@ -200,23 +135,6 @@ Include urlpatterns
 To integrate the wiki to your existing application, you should add the
 following lines at the end of your project's ``urls.py``.
 
-**Django < 1.7**:
-
-.. code-block:: python
-
-    from django.conf.urls import patterns
-    from wiki.urls import get_pattern as get_wiki_pattern
-    from django_nyt.urls import get_pattern as get_nyt_pattern
-    urlpatterns += patterns('',
-        (r'^notifications/', get_nyt_pattern()),
-        (r'', get_wiki_pattern())
-    )
-
-Please use these function calls rather than writing your own include()
-call - the url namespaces aren't supposed to be customized.
-
-**Django >= 1.8**:
-
 .. code-block:: python
 
     from wiki.urls import get_pattern as get_wiki_pattern
@@ -238,14 +156,7 @@ end of your urlconf. You can also put it in */wiki* by putting
     development server. ``STATIC_ROOT`` is automatically served, but you have
     to add ``MEDIA_ROOT`` manually::
     
-        if settings.DEBUG:
-            urlpatterns += staticfiles_urlpatterns()
-            urlpatterns += patterns('',
-                                    url(r'^media/(?P<path>.*)$',
-                                        'django.views.static.serve',
-                                        {'document_root': settings.MEDIA_ROOT,
-                                         }),
-                                    )
+        urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
     Please refer to
     `the Django docs <https://docs.djangoproject.com/en/1.8/howto/static-files/#serving-files-uploaded-by-a-user-during-development>`__.

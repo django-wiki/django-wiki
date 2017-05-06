@@ -327,6 +327,7 @@ def on_article_relation_save(**kwargs):
             id=instance.object_id).update(
             article=instance.article)
 
+
 post_save.connect(on_article_relation_save, ArticleForObject)
 
 
@@ -383,5 +384,6 @@ def on_article_delete(instance, *args, **kwargs):
         for child in urlpath.get_children():
             child.move_to(get_lost_and_found())
         # ...and finally delete the path itself
+
 
 pre_delete.connect(on_article_delete, Article)
