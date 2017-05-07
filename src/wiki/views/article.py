@@ -443,9 +443,8 @@ class Move(ArticleMixin, FormView):
 
     def form_valid(self, form):
         if not self.urlpath.parent:
-            messages.error(
-                self.request,
-                _('This article cannot be moved because it is a root article.'))
+            messages.error(self.request,
+                           _('This article cannot be moved because it is a root article.'))
             return redirect('wiki:get', article_id=self.article.id)
 
         dest_path = get_object_or_404(models.URLPath, pk=form.cleaned_data['destination'])
@@ -453,9 +452,8 @@ class Move(ArticleMixin, FormView):
 
         while tmp_path.parent:
             if tmp_path == self.urlpath:
-                messages.error(
-                    self.request,
-                    _('This article cannot be moved to a child of itself.'))
+                messages.error(self.request,
+                               _('This article cannot be moved to a child of itself.'))
                 return redirect('wiki:move', article_id=self.article.id)
             tmp_path = tmp_path.parent
 
@@ -464,6 +462,7 @@ class Move(ArticleMixin, FormView):
             ancestor.article.clear_cache()
 
         self.urlpath.parent = dest_path
+        self.urlpath.slug = form.cleaned_data['slug']
         self.urlpath.save()
 
         # Reload url path form database
@@ -473,9 +472,8 @@ class Move(ArticleMixin, FormView):
         for ancestor in models.Article.objects.get(pk=self.article.pk).ancestor_objects():
             ancestor.article.clear_cache()
 
-        messages.success(
-            self.request,
-            _('Article successfully moved !'))
+        messages.success(self.request,
+                         _('Article successfully moved !'))
         return redirect("wiki:get", path=self.urlpath.path)
 
 

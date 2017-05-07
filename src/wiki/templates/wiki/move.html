@@ -6,37 +6,35 @@
 {% block wiki_contents_tab %}
 
 <div class="row">
-  <div class="col-lg-8">
+  <div class="col-lg-10">
     <form method="POST" class="form-horizontal" id="article_move_form">
       {% wiki_form form %}
 
       <div class="btn-group" id="dest_selector">
         <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
-          <span class="dest_selector_title">{% trans "Select destination" %}</span>
+          <span class="dest_selector_title"></span>
           <span class="caret"></span>
         </a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
             {% with current_path=root_path %}{% include "wiki/includes/move_tree.html" %}{% endwith %}
         </ul>
       </div>
+      <p class="col-lg-offset-2">
+        {% trans "Children are also moved. Be carefull, links are NOT updated!" %}
+      </p>
+      <div class="form-group form-actions">
+        <div class="col-lg-12 col-lg-offset-2">
+          <a href="{% url 'wiki:get' path=urlpath.path article_id=article.id %}" class="btn btn-default">
+            <span class="fa fa-arrow-left"></span>
+            {% trans "Go back" %}
+          </a>
+          <button class="btn btn-large btn-primary" type="submit" name="move" id="id_move">
+            <span class="fa fa-random"></span>
+            {% trans "Move article" %}
+          </button>
+        </div>
+      </div>
     </form>
-  </div>
-</div>
-
-<div style="clear: both"></div>
-
-<div class="form-group form-actions">
-  <div class="col-lg-8">
-    <div class="col-lg-offset-2">
-      <a href="{% url 'wiki:get' path=urlpath.path article_id=article.id %}" class="btn btn-default">
-        <span class="fa fa-arrow-left"></span>
-        {% trans "Go back" %}
-      </a>
-      <a class="btn btn-large btn-primary" onclick="document.getElementById('article_move_form').target=''; document.getElementById('article_move_form').action='{% url 'wiki:move' path=urlpath.path article_id=article.id %}'; $('#article_move_form').submit();" href="#">
-        <span class="fa fa-random"></span>
-        {% trans "Move article" %}
-      </a>
-    </div>
   </div>
 </div>
 
@@ -45,10 +43,13 @@
   <script type="text/javascript">
     $('#id_destination').after($('#dest_selector').remove());
     $('#id_destination').attr('type', 'hidden');
+    $('#id_slug').val('{{ urlpath.slug }}');
+    select_path('{{urlpath.parent.pk}}', '{{urlpath.parent}}');
 
     function select_path(path, title) {
       $('#id_destination').val(path);
-      $('#dest_selector .dest_selector_title').html(title);
+      if (title == "(root)") title = "";
+      $('#dest_selector .dest_selector_title').html(title ? title : "&nbsp;&nbsp;/&nbsp;&nbsp;");
     }
   </script>
 

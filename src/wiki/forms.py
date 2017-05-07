@@ -18,6 +18,7 @@ from django.utils.html import conditional_escape, escape
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
+from django.shortcuts import get_object_or_404
 from six.moves import range
 from wiki import models
 from wiki.conf import settings
@@ -41,7 +42,6 @@ validate_slug_numbers = RegexValidator(
     inverse_match=True
 )
 
-
 class WikiSlugField(forms.SlugField):
     """
     In future versions of Django, we might be able to define this field as
@@ -59,6 +59,45 @@ class WikiSlugField(forms.SlugField):
             ]
         super(forms.SlugField, self).__init__(*args, **kwargs)
 
+def _clean_slug(slug, urlpath):
+    if slug.startswith("_"):
+        raise forms.ValidationError(
+            ugettext('A slug may not begin with an underscore.'))
+    if slug == 'admin':
+        raise forms.ValidationError(
+            ugettext("'admin' is not a permitted slug name."))
+
+    if settings.URL_CASE_SENSITIVE:
+        already_existing_slug = models.URLPath.objects.filter(
+            slug=slug,
+            parent=urlpath)
+    else:
+        slug = slug.lower()
+        already_existing_slug = models.URLPath.objects.filter(
+            slug__iexact=slug,
+            parent=urlpath)
+    if already_existing_slug:
+        already_urlpath = already_existing_slug[0]
+        if already_urlpath.article and already_urlpath.article.current_revision.deleted:
+            raise forms.ValidationError(
+                ugettext('A deleted article with slug "%s" already exists.') %
+                already_urlpath.slug)
+        else:
+            raise forms.ValidationError(
+                ugettext('A slug named "%s" already exists.') %
+                already_urlpath.slug)
+
+    if settings.CHECK_SLUG_URL_AVAILABLE:
+        try:
+            # Fail validation if URL resolves to non-wiki app
+            match = resolve(urlpath.path + '/' + slug + '/')
+            if match.app_name != 'wiki':
+                raise forms.ValidationError(
+                    ugettext('This slug conflicts with an existing URL.'))
+        except Resolver404:
+            pass
+
+    return slug
 
 User = get_user_model()
 Group = apps.get_model(settings.GROUP_MODEL)
@@ -152,13 +191,19 @@ class CreateRootForm(forms.Form):
             'This is just the initial contents of your article. After creating it, you can use more complex features like adding plugins, meta data, related articles etc...'),
         required=False, widget=getEditor().get_widget())  # @UndefinedVariable
 
-
 class MoveForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(MoveForm, self).__init__(*args, **kwargs)
 
-    destination = forms.CharField(label=_('Destination'),
-                                  initial='',
-                                  help_text=_('Children are also moved. Be carefull, links are NOT updated!'))
+    destination = forms.CharField(label=_('Destination'))
+    slug = WikiSlugField(max_length=models.URLPath.SLUG_MAX_LENGTH)
 
+    def clean(self):
+        cd = self.cleaned_data
+        if cd.get('slug'):
+            dest_path = get_object_or_404(models.URLPath, pk=self.cleaned_data['destination'])
+            cd['slug'] = _clean_slug(cd['slug'], dest_path)
+        return cd
 
 class EditForm(forms.Form, SpamProtectionMixin):
 
@@ -363,45 +408,7 @@ class CreateForm(forms.Form, SpamProtectionMixin):
         required=False)
 
     def clean_slug(self):
-        slug = self.cleaned_data['slug']
-        if slug.startswith("_"):
-            raise forms.ValidationError(
-                ugettext('A slug may not begin with an underscore.'))
-        if slug == 'admin':
-            raise forms.ValidationError(
-                ugettext("'admin' is not a permitted slug name."))
-
-        if settings.URL_CASE_SENSITIVE:
-            already_existing_slug = models.URLPath.objects.filter(
-                slug=slug,
-                parent=self.urlpath_parent)
-        else:
-            slug = slug.lower()
-            already_existing_slug = models.URLPath.objects.filter(
-                slug__iexact=slug,
-                parent=self.urlpath_parent)
-        if already_existing_slug:
-            already_urlpath = already_existing_slug[0]
-            if already_urlpath.article and already_urlpath.article.current_revision.deleted:
-                raise forms.ValidationError(
-                    ugettext('A deleted article with slug "%s" already exists.') %
-                    already_urlpath.slug)
-            else:
-                raise forms.ValidationError(
-                    ugettext('A slug named "%s" already exists.') %
-                    already_urlpath.slug)
-
-        if settings.CHECK_SLUG_URL_AVAILABLE:
-            try:
-                # Fail validation if URL resolves to non-wiki app
-                match = resolve(self.urlpath_parent.path + '/' + slug + '/')
-                if match.app_name != 'wiki':
-                    raise forms.ValidationError(
-                        ugettext('This slug conflicts with an existing URL.'))
-            except Resolver404:
-                pass
-
-        return slug
+        return _clean_slug(self.cleaned_data['slug'], self.urlpath_parent)
 
     def clean(self):
         self.check_spam()
