@@ -28,6 +28,30 @@ from wiki.views.mixins import ArticleMixin
 
 log = logging.getLogger(__name__)
 
+def _create_article(request, article, urlpath, slug, title, content, summary):
+    user = None
+    ip_address = None
+    if not request.user.is_anonymous():
+        user = request.user
+        if settings.LOG_IPS_USERS:
+            ip_address = request.META.get('REMOTE_ADDR', None)
+    elif settings.LOG_IPS_ANONYMOUS:
+        ip_address = request.META.get('REMOTE_ADDR', None)
+
+    return models.URLPath.create_article(
+        urlpath, slug,
+        title=title,
+        content=content,
+        user_message=summary,
+        user=user,
+        ip_address=ip_address,
+        article_kwargs={'owner': user,
+                        'group': article.group,
+                        'group_read': article.group_read,
+                        'group_write': article.group_write,
+                        'other_read': article.other_read,
+                        'other_write': article.other_write,
+        })
 
 class ArticleView(ArticleMixin, TemplateView):
 
@@ -81,31 +105,13 @@ class Create(FormView, ArticleMixin):
         return form
 
     def form_valid(self, form):
-        user = None
-        ip_address = None
-        if not self.request.user.is_anonymous():
-            user = self.request.user
-            if settings.LOG_IPS_USERS:
-                ip_address = self.request.META.get('REMOTE_ADDR', None)
-        elif settings.LOG_IPS_ANONYMOUS:
-            ip_address = self.request.META.get('REMOTE_ADDR', None)
-
         try:
-            self.newpath = models.URLPath.create_article(
-                self.urlpath,
+            self.newpath = _create_article(
+                self.request, self.article, self.urlpath,
                 form.cleaned_data['slug'],
-                title=form.cleaned_data['title'],
-                content=form.cleaned_data['content'],
-                user_message=form.cleaned_data['summary'],
-                user=user,
-                ip_address=ip_address,
-                article_kwargs={'owner': user,
-                                'group': self.article.group,
-                                'group_read': self.article.group_read,
-                                'group_write': self.article.group_write,
-                                'other_read': self.article.other_read,
-                                'other_write': self.article.other_write,
-                                })
+                form.cleaned_data['title'],
+                form.cleaned_data['content'],
+                form.cleaned_data['summary'])
             messages.success(
                 self.request,
                 _("New article '%s' created.") %
@@ -441,6 +447,28 @@ class Move(ArticleMixin, FormView):
 
         return super(Move, self).get_context_data(**kwargs)
 
+    # Create a redirect page for src+urlpath[rootlen:] with destination urlpath
+    def create_redirect(self, src, root_len, urlpath):
+        dst_path = urlpath.path
+        src_path = src + dst_path[root_len:]
+        src_len = len(src_path)
+        pos = src_path.rfind("/", 0, src_len-1)
+        slug = src_path[pos+1:src_len-1]
+        srcurl = models.URLPath.get_by_path(src_path[0:max(pos,0)])
+
+        try:
+            _create_article(
+                self.request, self.article,
+                srcurl, slug,
+                _("Moved: ") + str(urlpath.article),
+                _("Article moved to %s") %
+                ("[wiki:/" + dst_path + "](wiki:/" + dst_path + ")"),
+                "")
+            return 1
+        except Exception as e:
+            log.exception("Exception creating redirect article.")
+            return 0
+
     def form_valid(self, form):
         if not self.urlpath.parent:
             messages.error(self.request,
@@ -461,6 +489,7 @@ class Move(ArticleMixin, FormView):
         for ancestor in self.article.ancestor_objects():
             ancestor.article.clear_cache()
 
+        src_path = self.urlpath.parent.path
         self.urlpath.parent = dest_path
         self.urlpath.slug = form.cleaned_data['slug']
         self.urlpath.save()
@@ -472,8 +501,24 @@ class Move(ArticleMixin, FormView):
         for ancestor in models.Article.objects.get(pk=self.article.pk).ancestor_objects():
             ancestor.article.clear_cache()
 
-        messages.success(self.request,
-                         _('Article successfully moved !'))
+        # Create a redirect page for every moved article
+        if form.cleaned_data['redirect']:
+            root_len = len(dest_path.path)
+            descendants = list(self.urlpath.get_descendants(
+                include_self=True).order_by("level"))
+            # Evaluate the QuerySet. Otherwise the descendant.path are wrong
+            # after the first created article in create_redirect(). But why?
+            str(descendants)
+            success = 0
+            for descendant in descendants:
+                success += self.create_redirect(src_path, root_len, descendant)
+
+            messages.success(self.request,
+                             _('Article successfully moved! Created %d/%d redirects.')
+                             % (success, len(descendants)))
+        else:
+            messages.success(self.request,
+                             _('Article successfully moved!'))
         return redirect("wiki:get", path=self.urlpath.path)
 
 

@@ -197,6 +197,9 @@ class MoveForm(forms.Form):
 
     destination = forms.CharField(label=_('Destination'))
     slug = WikiSlugField(max_length=models.URLPath.SLUG_MAX_LENGTH)
+    redirect = forms.BooleanField(label=_('Redirect pages'),
+                                  help_text=_('Create a redirect page for every moved article?'),
+                                  required=False)
 
     def clean(self):
         cd = self.cleaned_data
