@@ -184,6 +184,87 @@ class CreateViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientT
         )
 
 
+class MoveViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
+
+    def test_illegal_slug(self):
+        # A slug cannot be '123' because it gets confused with an article ID.
+        response = self.c.post(
+            reverse('wiki:move', kwargs={'path': ''}),
+            {'destination': '', 'slug': '123', 'redirect': ''}
+        )
+        self.assertContains(
+            response,
+            escape(validate_slug_numbers.message)
+        )
+
+    def test_move(self):
+        c = self.c
+        # Create a hierarchy of pages
+        c.post(
+            reverse('wiki:create', kwargs={'path': ''}),
+            {'title': 'Test', 'slug': 'test0', 'content': 'Content .0.'}
+        )
+        c.post(
+            reverse('wiki:create', kwargs={'path': 'test0/'}),
+            {'title': 'Test00', 'slug': 'test00', 'content': 'Content .00.'}
+        )
+        c.post(
+            reverse('wiki:create', kwargs={'path': ''}),
+            {'title': 'Test1', 'slug': 'test1', 'content': 'Content .1.'}
+        )
+        c.post(
+            reverse('wiki:create', kwargs={'path': 'test1/'}),
+            {'title': 'Tes10', 'slug': 'test10', 'content': 'Content .10.'}
+        )
+        c.post(
+            reverse('wiki:create', kwargs={'path': 'test1/test10/'}),
+            {'title': 'Test100', 'slug': 'test100', 'content': 'Content .100.'}
+        )
+
+        # Move with an already existing destination slug
+        response = self.c.post(
+            reverse('wiki:move', kwargs={'path': 'test1/'}),
+            {'destination': str(URLPath.root().article.current_revision.id), 'slug': 'test0', 'redirect': ''}
+        )
+        self.assertContains(response, 'A slug named')
+        self.assertContains(response, 'already exists.')
+
+        # Move with valid arguments, change slug
+        id = URLPath.objects.get(slug='test0').article.current_revision.id
+        response = self.c.post(
+            reverse('wiki:move', kwargs={'path': 'test1/'}),
+            {'destination': str(id), 'slug': 'test2', 'redirect': ''}
+        )
+        self.assertRedirects(response,
+                             reverse('wiki:get', kwargs={'path': 'test0/test2/'}))
+        response = self.get_by_path('test1/')
+        self.assertRedirects(response, '/_create/?slug=test1')
+
+        # Move back, change slug, and create redirect pages
+        response = c.post(
+            reverse('wiki:create', kwargs={'path': 'test0/test2/'}),
+            {'title': 'Test020', 'slug': 'test020', 'content': 'Content .020.'}
+        )
+        response = self.c.post(
+            reverse('wiki:move', kwargs={'path': 'test0/test2/'}),
+            {'destination': str(URLPath.root().article.current_revision.id), 'slug': 'test1new', 'redirect': 'true'}
+        )
+        self.assertRedirects(response,
+                             reverse('wiki:get', kwargs={'path': 'test1new/'}))
+
+        response = self.get_by_path('test1new/')
+        self.assertContains(response, 'Content .1.')
+
+        response = self.get_by_path('test1new/test020/')
+        self.assertContains(response, 'Content .020.')
+
+        response = self.get_by_path('test0/test2/')
+        self.assertContains(response, 'Moved: Test1')
+        self.assertContains(response, 'moved to <a>wiki:/test1new/')
+
+        response = self.get_by_path('test0/test2/test020/')
+        self.assertContains(response, 'Moved: Test020')
+        self.assertContains(response, 'moved to <a>wiki:/test1new/test020')
 
 class DeleteViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
