@@ -448,9 +448,9 @@ class Move(ArticleMixin, FormView):
         return super(Move, self).get_context_data(**kwargs)
 
     # Create a redirect page for src+urlpath[rootlen:] with destination urlpath
-    def create_redirect(self, src, root_len, urlpath):
+    def create_redirect(self, src, src_slug, root_len, urlpath):
         dst_path = urlpath.path
-        src_path = src + dst_path[root_len:]
+        src_path = src + src_slug + dst_path[root_len:]
         src_len = len(src_path)
         pos = src_path.rfind("/", 0, src_len-1)
         slug = src_path[pos+1:src_len-1]
@@ -490,6 +490,7 @@ class Move(ArticleMixin, FormView):
             ancestor.article.clear_cache()
 
         src_path = self.urlpath.parent.path
+        src_slug = self.urlpath.slug + "/"
         self.urlpath.parent = dest_path
         self.urlpath.slug = form.cleaned_data['slug']
         self.urlpath.save()
@@ -503,16 +504,15 @@ class Move(ArticleMixin, FormView):
 
         # Create a redirect page for every moved article
         if form.cleaned_data['redirect']:
-            root_len = len(dest_path.path)
             descendants = list(self.urlpath.get_descendants(
                 include_self=True).order_by("level"))
             # Evaluate the QuerySet. Otherwise the descendant.path are wrong
             # after the first created article in create_redirect(). But why?
             str(descendants)
             success = 0
+            root_len = len(descendants[0].path)
             for descendant in descendants:
-                success += self.create_redirect(src_path, root_len, descendant)
-
+                success += self.create_redirect(src_path, src_slug, root_len, descendant)
             messages.success(self.request,
                              _('Article successfully moved! Created %d/%d redirects.')
                              % (success, len(descendants)))
