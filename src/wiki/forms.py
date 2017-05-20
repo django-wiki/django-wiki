@@ -99,6 +99,7 @@ def _clean_slug(slug, urlpath):
 
     return slug
 
+
 User = get_user_model()
 Group = apps.get_model(settings.GROUP_MODEL)
 

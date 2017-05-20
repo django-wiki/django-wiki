@@ -50,8 +50,8 @@ def _create_article(request, article, urlpath, slug, title, content, summary):
                         'group_read': article.group_read,
                         'group_write': article.group_write,
                         'other_read': article.other_read,
-                        'other_write': article.other_write,
-        })
+                        'other_write': article.other_write}
+    )
 
 class ArticleView(ArticleMixin, TemplateView):
 
@@ -423,7 +423,7 @@ class Edit(ArticleMixin, FormView):
 class Move(ArticleMixin, FormView):
 
     form_class = forms.MoveForm
-    template_name= "wiki/move.html"
+    template_name = "wiki/move.html"
 
     @method_decorator(login_required)
     @method_decorator(get_article(can_write=True, not_locked=True))
@@ -454,7 +454,7 @@ class Move(ArticleMixin, FormView):
         src_len = len(src_path)
         pos = src_path.rfind("/", 0, src_len-1)
         slug = src_path[pos+1:src_len-1]
-        srcurl = models.URLPath.get_by_path(src_path[0:max(pos,0)])
+        srcurl = models.URLPath.get_by_path(src_path[0:max(pos, 0)])
 
         try:
             _create_article(
@@ -466,7 +466,7 @@ class Move(ArticleMixin, FormView):
                 "")
             return 1
         except Exception as e:
-            log.exception("Exception creating redirect article.")
+            log.exception("Exception creating redirect article: %s." % str(e))
             return 0
 
     def form_valid(self, form):
