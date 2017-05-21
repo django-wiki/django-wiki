@@ -20,7 +20,11 @@
         </ul>
       </div>
       <p class="col-lg-offset-2">
-        {% trans "Children are also moved. Be carefull, links are NOT updated!" %}
+        {% blocktrans with cnt=urlpath.get_descendants.count %}
+          {{ cnt }} nested articles will also be moved.<br>
+          Be careful, links to this article and {{ cnt }} articles nested
+          in this hierarchy will not be updated.
+        {% endblocktrans %}
       </p>
       <div class="form-group form-actions">
         <div class="col-lg-12 col-lg-offset-2">
