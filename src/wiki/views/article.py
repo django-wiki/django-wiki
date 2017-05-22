@@ -456,23 +456,20 @@ class Move(ArticleMixin, FormView):
         slug = src_path[pos+1:src_len-1]
         srcurl = models.URLPath.get_by_path(src_path[0:max(pos, 0)])
 
-        try:
-            link = "[wiki:/{path}](wiki:/{path})".format(path=dst_path)
-            article = _create_article(
-                self.request,
-                self.article,
-                srcurl, slug,
-                _("Moved: {title}").format(urlpath.article.title),
-                _("Article moved to {link}").format(link)
-            )
-            article.moved_from = urlpath.moved_from
-            article.save()
-            urlpath.moved_from = article
-            urlpath.save()
-            return 1
-        except Exception as e:
-            log.exception("Exception creating redirect article: %s." % str(e))
-            return 0
+        link = "[wiki:/{path}](wiki:/{path})".format(path=dst_path)
+        article = _create_article(
+            self.request,
+            self.article,
+            srcurl,
+            slug,
+            _("Moved: {title}").format(title=urlpath.article),
+            _("Article moved to {link}").format(link=link),
+            _("Created redirect (auto)"),
+        )
+        article.moved_from = urlpath.moved_from
+        article.save()
+        urlpath.moved_from = article
+        urlpath.save()
 
     def form_valid(self, form):
         if not self.urlpath.parent:
@@ -521,15 +518,14 @@ class Move(ArticleMixin, FormView):
             # Evaluate the QuerySet. Otherwise the descendant.path are wrong
             # after the first created article in create_redirect(). But why?
             str(descendants)
-            success = 0
             root_len = len(descendants[0].path)
             for descendant in descendants:
-                success += self.create_redirect(src_path, src_slug, root_len, descendant)
+                self.create_redirect(src_path, src_slug, root_len, descendant)
             messages.success(
                 self.request,
-                _(
-                    "Article successfully moved! Created {m}/{n} redirects."
-                ).format(m=success, n=len(descendants))
+                _("Article successfully moved! Created {n} redirects.").format(
+                    n=len(descendants)
+                )
             )
         else:
             messages.success(self.request, _('Article successfully moved!'))
