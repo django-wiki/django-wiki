@@ -457,13 +457,14 @@ class Move(ArticleMixin, FormView):
         srcurl = models.URLPath.get_by_path(src_path[0:max(pos, 0)])
 
         try:
+            link = "[wiki:/{path}](wiki:/{path})".format(path=dst_path)
             article = _create_article(
-                self.request, self.article,
+                self.request,
+                self.article,
                 srcurl, slug,
-                _("Moved: ") + str(urlpath.article),
-                _("Article moved to %s") %
-                ("[wiki:/" + dst_path + "](wiki:/" + dst_path + ")"),
-                "")
+                _("Moved: {title}").format(urlpath.article.title),
+                _("Article moved to {link}").format(link)
+            )
             article.moved_from = urlpath.moved_from
             article.save()
             urlpath.moved_from = article
@@ -475,17 +476,24 @@ class Move(ArticleMixin, FormView):
 
     def form_valid(self, form):
         if not self.urlpath.parent:
-            messages.error(self.request,
-                           _('This article cannot be moved because it is a root article.'))
+            messages.error(
+                self.request,
+                _('This article cannot be moved because it is a root article.')
+            )
             return redirect('wiki:get', article_id=self.article.id)
 
-        dest_path = get_object_or_404(models.URLPath, pk=form.cleaned_data['destination'])
+        dest_path = get_object_or_404(
+            models.URLPath,
+            pk=form.cleaned_data['destination']
+        )
         tmp_path = dest_path
 
         while tmp_path.parent:
             if tmp_path == self.urlpath:
-                messages.error(self.request,
-                               _('This article cannot be moved to a child of itself.'))
+                messages.error(
+                    self.request,
+                    _('This article cannot be moved to a child of itself.')
+                )
                 return redirect('wiki:move', article_id=self.article.id)
             tmp_path = tmp_path.parent
 
@@ -517,12 +525,14 @@ class Move(ArticleMixin, FormView):
             root_len = len(descendants[0].path)
             for descendant in descendants:
                 success += self.create_redirect(src_path, src_slug, root_len, descendant)
-            messages.success(self.request,
-                             _('Article successfully moved! Created %d/%d redirects.')
-                             % (success, len(descendants)))
+            messages.success(
+                self.request,
+                _(
+                    "Article successfully moved! Created {m}/{n} redirects."
+                ).format(m=success, n=len(descendants))
+            )
         else:
-            messages.success(self.request,
-                             _('Article successfully moved!'))
+            messages.success(self.request, _('Article successfully moved!'))
         return redirect("wiki:get", path=self.urlpath.path)
 
 
