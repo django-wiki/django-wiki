@@ -19,6 +19,7 @@ from six.moves import range
 from wiki import editors, forms, models
 from wiki.conf import settings
 from wiki.core import permissions
+from wiki.core.compat import atomic, transaction_commit_on_success
 from wiki.core.diff import simple_merge
 from wiki.core.exceptions import NoRootURL
 from wiki.core.plugins import registry as plugin_registry
@@ -447,30 +448,8 @@ class Move(ArticleMixin, FormView):
 
         return super(Move, self).get_context_data(**kwargs)
 
-    # Create a redirect page for src+urlpath[rootlen:] with destination urlpath
-    def create_redirect(self, src, src_slug, root_len, urlpath):
-        dst_path = urlpath.path
-        src_path = src + src_slug + dst_path[root_len:]
-        src_len = len(src_path)
-        pos = src_path.rfind("/", 0, src_len-1)
-        slug = src_path[pos+1:src_len-1]
-        srcurl = models.URLPath.get_by_path(src_path[0:max(pos, 0)])
-
-        link = "[wiki:/{path}](wiki:/{path})".format(path=dst_path)
-        article = _create_article(
-            self.request,
-            self.article,
-            srcurl,
-            slug,
-            _("Moved: {title}").format(title=urlpath.article),
-            _("Article moved to {link}").format(link=link),
-            _("Created redirect (auto)"),
-        )
-        article.moved_from = urlpath.moved_from
-        article.save()
-        urlpath.moved_from = article
-        urlpath.save()
-
+    @atomic
+    @transaction_commit_on_success
     def form_valid(self, form):
         if not self.urlpath.parent:
             messages.error(
@@ -498,35 +477,71 @@ class Move(ArticleMixin, FormView):
         for ancestor in self.article.ancestor_objects():
             ancestor.article.clear_cache()
 
-        src_path = self.urlpath.parent.path
-        src_slug = self.urlpath.slug + "/"
+        old_path = self.urlpath.parent.path
+
+        # TODO: This is not a slug, confusing
+        old_slug = self.urlpath.slug + "/"
+
         self.urlpath.parent = dest_path
         self.urlpath.slug = form.cleaned_data['slug']
         self.urlpath.save()
 
         # Reload url path form database
-        self.urlpath = get_object_or_404(models.URLPath, pk=self.urlpath.pk)
+        self.urlpath = models.URLPath.objects.get(pk=self.urlpath.pk)
 
         # Use a copy of ourself (to avoid cache) and update article links again
         for ancestor in models.Article.objects.get(pk=self.article.pk).ancestor_objects():
             ancestor.article.clear_cache()
 
         # Create a redirect page for every moved article
+        # /old-slug
+        # /old-slug/child
+        # /old-slug/child/grand-child
         if form.cleaned_data['redirect']:
+
+            # NB! Includes self!
             descendants = list(self.urlpath.get_descendants(
                 include_self=True).order_by("level"))
+
             # Evaluate the QuerySet. Otherwise the descendant.path are wrong
-            # after the first created article in create_redirect(). But why?
-            str(descendants)
+            # after the first created article in create_redirect().
+            # But why?
+            # str(descendants)
+            for x in descendants:
+                str(x.path)
+
             root_len = len(descendants[0].path)
+
             for descendant in descendants:
-                self.create_redirect(src_path, src_slug, root_len, descendant)
+                dst_path = descendant.path
+                src_path = old_path + old_slug + dst_path[root_len:]
+                src_len = len(src_path)
+                pos = src_path.rfind("/", 0, src_len-1)
+                slug = src_path[pos+1:src_len-1]
+                urlpath_src = models.URLPath.get_by_path(src_path[0:max(pos, 0)])
+
+                link = "[wiki:/{path}](wiki:/{path})".format(path=dst_path)
+                article = _create_article(
+                    self.request,
+                    self.article,
+                    urlpath_src,
+                    slug,
+                    _("Moved: {title}").format(title=descendant.article),
+                    _("Article moved to {link}").format(link=link),
+                    _("Created redirect (auto)"),
+                )
+                article.moved_from = descendant.moved_from
+                article.save()
+                descendant.moved_from = article
+                descendant.save()
+
             messages.success(
                 self.request,
                 _("Article successfully moved! Created {n} redirects.").format(
                     n=len(descendants)
                 )
             )
+
         else:
             messages.success(self.request, _('Article successfully moved!'))
         return redirect("wiki:get", path=self.urlpath.path)
