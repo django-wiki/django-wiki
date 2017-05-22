@@ -79,6 +79,9 @@ class URLPath(MPTTModel):
 
     slug = models.SlugField(verbose_name=_('slug'), null=True, blank=True,
                             max_length=SLUG_MAX_LENGTH)
+    moved_from = TreeForeignKey('self', null=True, blank=True,
+                                on_delete=models.SET_NULL,
+                                related_name='moved_to')
     site = models.ForeignKey(Site)
     parent = TreeForeignKey(
         'self',

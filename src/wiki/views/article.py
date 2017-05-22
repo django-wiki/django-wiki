@@ -457,13 +457,17 @@ class Move(ArticleMixin, FormView):
         srcurl = models.URLPath.get_by_path(src_path[0:max(pos, 0)])
 
         try:
-            _create_article(
+            article = _create_article(
                 self.request, self.article,
                 srcurl, slug,
                 _("Moved: ") + str(urlpath.article),
                 _("Article moved to %s") %
                 ("[wiki:/" + dst_path + "](wiki:/" + dst_path + ")"),
                 "")
+            article.moved_from = urlpath.moved_from
+            article.save()
+            urlpath.moved_from = article
+            urlpath.save()
             return 1
         except Exception as e:
             log.exception("Exception creating redirect article: %s." % str(e))

@@ -266,6 +266,10 @@ class MoveViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
         self.assertContains(response, 'Moved: Test020')
         self.assertContains(response, 'moved to <a>wiki:/test1new/test020')
 
+        urlsrc = URLPath.get_by_path('/test0/test2/test020/')
+        urldst = URLPath.get_by_path('/test1new/test020/')
+        self.assertEqual(urldst.moved_from, urlsrc)
+
 class DeleteViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     def test_articles_cache_is_cleared_after_deleting(self):
