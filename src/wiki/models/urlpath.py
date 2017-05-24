@@ -130,10 +130,13 @@ class URLPath(MPTTModel):
         if not self.parent:
             return ""
 
+        # All ancestors except roots
         ancestors = list(
             filter(
                 lambda ancestor: ancestor.parent is not None,
-                self.cached_ancestors))
+                self.cached_ancestors
+            )
+        )
         slugs = [obj.slug if obj.slug else "" for obj in ancestors + [self]]
 
         return "/".join(slugs) + "/"
