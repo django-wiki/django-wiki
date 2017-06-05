@@ -16,6 +16,8 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
 
     def test_history(self):
         url = reverse('wiki:globalhistory')
+        url0 = reverse('wiki:globalhistory', kwargs={'only_last': '0'})
+        url1 = reverse('wiki:globalhistory', kwargs={'only_last': '1'})
 
         response = self.c.get(url)
         expected = (
@@ -41,10 +43,9 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
         )
         self._assertRegex(response.rendered_content, expected)
 
-        URLPath.create_article(URLPath.root(), "testhistory2",
-                               title="TestHistory2", content="a page",
-                               user_message="Comment 2")
-        response = self.c.get(url)
+        urlpath = URLPath.create_article(URLPath.root(), "testhistory2",
+                                         title="TestHistory2", content="a page",
+                                         user_message="Comment 2")
         expected = (
             '(?s)<title>Global history.*'
             '>Global history</.*'
@@ -54,4 +55,47 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
             'Root Article.*no log message.*'
             '</table>'
         )
+        response = self.c.get(url)
+        self._assertRegex(response.rendered_content, expected)
+
+        response = self.c.get(url0)
+        self._assertRegex(response.rendered_content, expected)
+
+        response = self.c.get(url1)
+        self._assertRegex(response.rendered_content, expected)
+
+        response = self.c.post(reverse('wiki:edit', kwargs={'path': 'testhistory2/'}),
+            {'content': 'a page modified',
+             'current_revision': str(urlpath.article.current_revision.id),
+             'preview': '0',
+             'save': '1',
+             'summary': 'Testing Revision',
+             'title': 'TestHistory2Mod'})
+
+        expected = (
+            '(?s)<title>Global history.*'
+            '>Global history</.*'
+            'List of all <strong>4 changes</strong>.*'
+            'TestHistory2Mod.*Testing Revision.*'
+            'TestHistory2.*Comment 2.*'
+            'TestHistory1.*Comment 1.*'
+            'Root Article.*no log message.*'
+            '</table>'
+        )
+        response = self.c.get(url)
+        self._assertRegex(response.rendered_content, expected)
+
+        response = self.c.get(url0)
+        self._assertRegex(response.rendered_content, expected)
+
+        expected = (
+            '(?s)<title>Global history.*'
+            '>Global history</.*'
+            'List of all <strong>3 changes</strong>.*'
+            'TestHistory2Mod.*Testing Revision.*'
+            'TestHistory1.*Comment 1.*'
+            'Root Article.*no log message.*'
+            '</table>'
+        )
+        response = self.c.get(url1)
         self._assertRegex(response.rendered_content, expected)
