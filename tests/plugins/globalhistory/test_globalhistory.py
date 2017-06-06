@@ -65,12 +65,12 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
         self._assertRegex(response.rendered_content, expected)
 
         response = self.c.post(reverse('wiki:edit', kwargs={'path': 'testhistory2/'}),
-            {'content': 'a page modified',
-             'current_revision': str(urlpath.article.current_revision.id),
-             'preview': '0',
-             'save': '1',
-             'summary': 'Testing Revision',
-             'title': 'TestHistory2Mod'})
+                               {'content': 'a page modified',
+                                'current_revision': str(urlpath.article.current_revision.id),
+                                'preview': '0',
+                                'save': '1',
+                                'summary': 'Testing Revision',
+                                'title': 'TestHistory2Mod'})
 
         expected = (
             '(?s)<title>Global history.*'
