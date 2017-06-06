@@ -1,5 +1,6 @@
 from __future__ import absolute_import, unicode_literals
 
+from django.db.models import F
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
@@ -15,8 +16,17 @@ class GlobalHistory(ListView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
+        self.only_last = kwargs.get('only_last', 0)
         return super(GlobalHistory, self).dispatch(
             request, *args, **kwargs)
 
     def get_queryset(self):
-        return self.model.objects.can_read(self.request.user).order_by('-modified')
+        if self.only_last == '1':
+            return self.model.objects.can_read(self.request.user) \
+                .filter(article__current_revision=F('id')).order_by('-modified')
+        else:
+            return self.model.objects.can_read(self.request.user).order_by('-modified')
+
+    def get_context_data(self, **kwargs):
+        kwargs['only_last'] = self.only_last
+        return super(GlobalHistory, self).get_context_data(**kwargs)

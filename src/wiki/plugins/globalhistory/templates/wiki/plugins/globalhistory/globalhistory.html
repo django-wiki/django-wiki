@@ -8,11 +8,24 @@
 <h1>{% trans "Global history" %}</h1>
 
 {% spaceless %}
-<p class="lead">
-  {% with paginator.object_list.count as cnt %}
-      List of all <strong>{{ cnt }} changes</strong> in the wiki.
-  {% endwith %}
-</p>
+<div class="row">
+  <div class="lead col-xs-8">
+    {% with paginator.object_list.count as cnt %}
+       {% blocktrans %}List of all <strong>{{ cnt }} changes</strong> in the wiki.{% endblocktrans %}
+    {% endwith %}
+  </div>
+  <div class="pull-right">
+    <a class="btn btn-default"
+       {% if only_last == "1" %}
+         href="{% url 'wiki:globalhistory' only_last=0 %}">
+         {% trans "Show all revisions of all articles" %}
+       {% else %}
+         href="{% url 'wiki:globalhistory' only_last=1 %}">
+         {% trans "Show last revision of every article" %}
+       {% endif %}
+    </a>
+  </div>
+</div>
 
 <div class="row">
   {% if revisions %}
@@ -32,11 +45,11 @@
         {% for article_revision in revisions %}
           <tr>
             <td>
-              {{article_revision.revision_number}}
+              {{ article_revision.revision_number }}
             </td>
             <td>
               <a href="{% url 'wiki:get' article_revision.article.pk %}">
-                {{article_revision.article}}
+                {{ article_revision.article }}
               </a>
             </td>
             <td>
