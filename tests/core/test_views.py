@@ -7,9 +7,10 @@ from django.utils.html import escape
 from django_functest import FuncBaseMixin
 from wiki import models
 from wiki.forms import validate_slug_numbers
-from wiki.models import reverse, URLPath
+from wiki.models import URLPath, reverse
 
-from ..base import RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase, SeleniumBase, WebTestBase
+from ..base import (ArticleWebTestUtils, DjangoClientTestBase,
+                    RequireRootArticleMixin, SeleniumBase, WebTestBase)
 
 
 class RootArticleViewTestsBase(FuncBaseMixin):
@@ -268,7 +269,8 @@ class MoveViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
 
         urlsrc = URLPath.get_by_path('/test0/test2/test020/')
         urldst = URLPath.get_by_path('/test1new/test020/')
-        self.assertEqual(urldst.moved_from, urlsrc)
+        self.assertEqual(urlsrc.moved_to, urldst)
+
 
 class DeleteViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 

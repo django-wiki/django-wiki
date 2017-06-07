@@ -2,6 +2,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
+import warnings
 
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
@@ -319,6 +320,11 @@ class URLPath(MPTTModel):
             article=article)
         article.add_object_relation(newpath)
         return newpath
+
+    @classmethod
+    def create_article(cls, *args, **kwargs):
+        warnings.warn("Pending removal: URLPath.create_article renamed to create_urlpath", DeprecationWarning)
+        return cls.create_urlpath(*args, **kwargs)
 
     def get_ordered_children(self):
         """Return an ordered list of all chilren"""
