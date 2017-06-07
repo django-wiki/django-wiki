@@ -31,7 +31,7 @@ class ArticleMarkdownTests(ArticleTestBase):
 
     def test_html_removal(self):
 
-        urlpath = URLPath.create_article(
+        urlpath = URLPath.create_urlpath(
             self.root,
             'html_removal',
             title="Test 1",

@@ -79,9 +79,6 @@ class URLPath(MPTTModel):
 
     slug = models.SlugField(verbose_name=_('slug'), null=True, blank=True,
                             max_length=SLUG_MAX_LENGTH)
-    moved_from = TreeForeignKey('self', null=True, blank=True,
-                                on_delete=models.SET_NULL,
-                                related_name='moved_to')
     site = models.ForeignKey(Site)
     parent = TreeForeignKey(
         'self',
@@ -89,6 +86,15 @@ class URLPath(MPTTModel):
         blank=True,
         related_name='children',
         help_text=_("Position of URL path in the tree.")
+    )
+    moved_to = TreeForeignKey(
+        'self',
+        verbose_name=_("Moved to"),
+        help_text=_("Article path was moved to this location"),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='moved_from'
     )
 
     def __init__(self, *args, **kwargs):
@@ -285,7 +291,7 @@ class URLPath(MPTTModel):
     @classmethod
     @atomic
     @transaction_commit_on_success
-    def create_article(
+    def create_urlpath(
             cls,
             parent,
             slug,
@@ -293,8 +299,13 @@ class URLPath(MPTTModel):
             title="Root",
             article_kwargs={},
             **kwargs):
-        """Utility function:
-        Create a new urlpath with an article and a new revision for the article"""
+        """
+        Utility function:
+        Creates a new urlpath with an article and a new revision for the
+        article
+
+        :returns: A new URLPath instance
+        """
         if not site:
             site = Site.objects.get_current()
         article = Article(**article_kwargs)

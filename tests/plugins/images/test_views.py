@@ -11,7 +11,8 @@ from wiki.models import URLPath
 from wiki.plugins.images import models
 from wiki.plugins.images.wiki_plugin import ImagePlugin
 
-from ...base import RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase
+from ...base import (ArticleWebTestUtils, DjangoClientTestBase,
+                     RequireRootArticleMixin)
 
 
 class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
@@ -95,7 +96,7 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         )
 
     def get_article(self, cont, image):
-        urlpath = URLPath.create_article(
+        urlpath = URLPath.create_urlpath(
             URLPath.root(),
             "html_image",
             title="TestImage",
