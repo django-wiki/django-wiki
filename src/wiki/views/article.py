@@ -503,16 +503,12 @@ class Move(ArticleMixin, FormView):
             descendants = list(self.urlpath.get_descendants(
                 include_self=True).order_by("level"))
 
-            # Evaluate the QuerySet. Otherwise the descendant.path are wrong
-            # after the first created article in create_redirect().
-            # But why?
-            # str(descendants)
-            for x in descendants:
-                str(x.path)
-
             root_len = len(descendants[0].path)
 
             for descendant in descendants:
+                # Without this descendant.get_ancestors() and as a result descendant.path
+                # is wrong after the first create_article() due to path caching
+                descendant.refresh_from_db()
                 dst_path = descendant.path
                 src_path = old_path + old_slug + dst_path[root_len:]
                 src_len = len(src_path)
