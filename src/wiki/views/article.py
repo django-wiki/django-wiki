@@ -30,36 +30,6 @@ from wiki.views.mixins import ArticleMixin
 log = logging.getLogger(__name__)
 
 
-def _create_urlpath(request, perm_article, parent_urlpath, slug, title, content, summary):
-    """
-    Creates a new URLPath
-    """
-    user = None
-    ip_address = None
-    if not request.user.is_anonymous():
-        user = request.user
-        if settings.LOG_IPS_USERS:
-            ip_address = request.META.get('REMOTE_ADDR', None)
-    elif settings.LOG_IPS_ANONYMOUS:
-        ip_address = request.META.get('REMOTE_ADDR', None)
-
-    return models.URLPath.create_urlpath(
-        parent_urlpath,
-        slug,
-        title=title,
-        content=content,
-        user_message=summary,
-        user=user,
-        ip_address=ip_address,
-        article_kwargs={'owner': user,
-                        'group': perm_article.group,
-                        'group_read': perm_article.group_read,
-                        'group_write': perm_article.group_write,
-                        'other_read': perm_article.other_read,
-                        'other_write': perm_article.other_write}
-    )
-
-
 class ArticleView(ArticleMixin, TemplateView):
 
     template_name = "wiki/view.html"
@@ -113,12 +83,15 @@ class Create(FormView, ArticleMixin):
 
     def form_valid(self, form):
         try:
-            self.newpath = _create_urlpath(
-                self.request, self.article, self.urlpath,
+            self.newpath = models.URLPath._create_urlpath_from_request(
+                self.request,
+                self.article,
+                self.urlpath,
                 form.cleaned_data['slug'],
                 form.cleaned_data['title'],
                 form.cleaned_data['content'],
-                form.cleaned_data['summary'])
+                form.cleaned_data['summary']
+            )
             messages.success(
                 self.request,
                 _("New article '%s' created.") %
@@ -528,7 +501,7 @@ class Move(ArticleMixin, FormView):
                 parent_urlpath = models.URLPath.get_by_path(src_path[0:max(pos, 0)])
 
                 link = "[wiki:/{path}](wiki:/{path})".format(path=dst_path)
-                urlpath_new = _create_urlpath(
+                urlpath_new = models.URLPath._create_urlpath_from_request(
                     self.request,
                     self.article,
                     parent_urlpath,

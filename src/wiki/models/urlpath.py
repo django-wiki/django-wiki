@@ -299,7 +299,9 @@ class URLPath(MPTTModel):
             site=None,
             title="Root",
             article_kwargs={},
-            **kwargs):
+            request=None,
+            article_w_permissions=None,
+            **revision_kwargs):
         """
         Utility function:
         Creates a new urlpath with an article and a new revision for the
@@ -310,7 +312,7 @@ class URLPath(MPTTModel):
         if not site:
             site = Site.objects.get_current()
         article = Article(**article_kwargs)
-        article.add_revision(ArticleRevision(title=title, **kwargs),
+        article.add_revision(ArticleRevision(title=title, **revision_kwargs),
                              save=True)
         article.save()
         newpath = cls.objects.create(
@@ -320,6 +322,47 @@ class URLPath(MPTTModel):
             article=article)
         article.add_object_relation(newpath)
         return newpath
+
+    @classmethod
+    def _create_urlpath_from_request(
+            cls,
+            request,
+            perm_article,
+            parent_urlpath,
+            slug,
+            title,
+            content,
+            summary):
+        """
+        Creates a new URLPath, using meta data from ``request`` and copies in
+        the permissions from ``perm_article``.
+
+        This interface is internal because it's rather sloppy
+        """
+        user = None
+        ip_address = None
+        if not request.user.is_anonymous():
+            user = request.user
+            if settings.LOG_IPS_USERS:
+                ip_address = request.META.get('REMOTE_ADDR', None)
+        elif settings.LOG_IPS_ANONYMOUS:
+            ip_address = request.META.get('REMOTE_ADDR', None)
+
+        return cls.create_urlpath(
+            parent_urlpath,
+            slug,
+            title=title,
+            content=content,
+            user_message=summary,
+            user=user,
+            ip_address=ip_address,
+            article_kwargs={'owner': user,
+                            'group': perm_article.group,
+                            'group_read': perm_article.group_read,
+                            'group_write': perm_article.group_write,
+                            'other_read': perm_article.other_read,
+                            'other_write': perm_article.other_write}
+        )
 
     @classmethod
     def create_article(cls, *args, **kwargs):
