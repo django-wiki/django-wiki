@@ -3,11 +3,12 @@ from __future__ import absolute_import, print_function, unicode_literals
 import pprint
 
 from django.contrib.auth import authenticate
+from django.shortcuts import resolve_url
 from django.utils.html import escape
 from django_functest import FuncBaseMixin
 from wiki import models
 from wiki.forms import validate_slug_numbers
-from wiki.models import URLPath, reverse
+from wiki.models import URLPath
 
 from ..base import (ArticleWebTestUtils, DjangoClientTestBase,
                     RequireRootArticleMixin, SeleniumBase, WebTestBase)
@@ -23,7 +24,7 @@ class RootArticleViewTestsBase(FuncBaseMixin):
         creating the root article and a simple markup.
         """
         self.get_url('wiki:root')
-        self.assertUrlsEqual(reverse('wiki:root_create'))
+        self.assertUrlsEqual(resolve_url('wiki:root_create'))
         self.fill({
             '#id_content': 'test heading h1\n====\n',
             '#id_title': 'Wiki Test',
@@ -54,7 +55,7 @@ class ArticleViewViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoC
 
         print('*** db status *** {}'.format(message))
 
-        from wiki.models import Article, ArticleRevision, URLPath
+        from wiki.models import Article, ArticleRevision
 
         for klass in (Article, ArticleRevision, URLPath):
             print('* {} *'.format(klass.__name__))
@@ -65,7 +66,7 @@ class ArticleViewViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoC
         response = self.get_by_path('unknown/')
         self.assertRedirects(
             response,
-            reverse('wiki:create', kwargs={'path': ''}) + '?slug=unknown'
+            resolve_url('wiki:create', path='') + '?slug=unknown'
         )
 
     def test_redirects_to_create_with_lowercased_slug(self):
@@ -73,7 +74,7 @@ class ArticleViewViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoC
         response = self.get_by_path('Unknown_Linked_Page/')
         self.assertRedirects(
             response,
-            reverse('wiki:create', kwargs={'path': ''}) + '?slug=unknown_linked_page'
+            resolve_url('wiki:create', path='') + '?slug=unknown_linked_page'
         )
 
     def test_article_list_update(self):
@@ -89,25 +90,25 @@ class ArticleViewViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoC
             'title': 'Root Article'
         }
 
-        response = c.post(reverse('wiki:edit', kwargs={'path': ''}), root_data)
-        self.assertRedirects(response, reverse('wiki:root'))
+        response = c.post(resolve_url('wiki:edit', path=''), root_data)
+        self.assertRedirects(response, resolve_url('wiki:root'))
 
         # verify the new article is added to article_list
         response = c.post(
-            reverse('wiki:create', kwargs={'path': ''}),
+            resolve_url('wiki:create', path=''),
             {'title': 'Sub Article 1', 'slug': 'SubArticle1'}
         )
 
         self.assertRedirects(
             response,
-            reverse('wiki:get', kwargs={'path': 'subarticle1/'})
+            resolve_url('wiki:get', path='subarticle1/')
         )
         self.assertContains(self.get_by_path(''), 'Sub Article 1')
         self.assertContains(self.get_by_path(''), 'subarticle1/')
 
         # verify the deleted article is removed from article_list
         response = c.post(
-            reverse('wiki:delete', kwargs={'path': 'SubArticle1/'}),
+            resolve_url('wiki:delete', path='SubArticle1/'),
             {'confirm': 'on',
              'purge': 'on',
              'revision': str(URLPath.objects.get(slug='subarticle1').article.current_revision.id),
@@ -118,7 +119,7 @@ class ArticleViewViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoC
 
         self.assertRedirects(
             response,
-            reverse('wiki:get', kwargs={'path': ''})
+            resolve_url('wiki:get', path='')
         )
         self.assertIn(
             'This article together with all '
@@ -134,23 +135,23 @@ class CreateViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientT
         c = self.c
 
         response = c.post(
-            reverse('wiki:create', kwargs={'path': ''}),
+            resolve_url('wiki:create', path=''),
             {'title': 'Level 1', 'slug': 'Level1', 'content': 'Content level 1'}
         )
         self.assertRedirects(
             response,
-            reverse('wiki:get', kwargs={'path': 'level1/'})
+            resolve_url('wiki:get', path='level1/')
         )
         response = c.post(
-            reverse('wiki:create', kwargs={'path': 'Level1/'}),
+            resolve_url('wiki:create', path='Level1/'),
             {'title': 'test', 'slug': 'Test', 'content': 'Content on level 2'}
         )
         self.assertRedirects(
             response,
-            reverse('wiki:get', kwargs={'path': 'level1/test/'})
+            resolve_url('wiki:get', path='level1/test/')
         )
         response = c.post(
-            reverse('wiki:create', kwargs={'path': ''}),
+            resolve_url('wiki:create', path=''),
             {'title': 'test',
              'slug': 'Test',
              'content': 'Other content on level 1'
@@ -159,7 +160,7 @@ class CreateViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientT
 
         self.assertRedirects(
             response,
-            reverse('wiki:get', kwargs={'path': 'test/'})
+            resolve_url('wiki:get', path='test/')
         )
         self.assertContains(
             self.get_by_path('Test/'),
@@ -176,7 +177,7 @@ class CreateViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientT
 
         # A slug cannot be '123' because it gets confused with an article ID.
         response = c.post(
-            reverse('wiki:create', kwargs={'path': ''}),
+            resolve_url('wiki:create', path=''),
             {'title': 'Illegal slug', 'slug': '123', 'content': 'blah'}
         )
         self.assertContains(
@@ -190,7 +191,7 @@ class MoveViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
     def test_illegal_slug(self):
         # A slug cannot be '123' because it gets confused with an article ID.
         response = self.c.post(
-            reverse('wiki:move', kwargs={'path': ''}),
+            resolve_url('wiki:move', path=''),
             {'destination': '', 'slug': '123', 'redirect': ''}
         )
         self.assertContains(
@@ -202,60 +203,76 @@ class MoveViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
         c = self.c
         # Create a hierarchy of pages
         c.post(
-            reverse('wiki:create', kwargs={'path': ''}),
+            resolve_url('wiki:create', path=''),
             {'title': 'Test', 'slug': 'test0', 'content': 'Content .0.'}
         )
         c.post(
-            reverse('wiki:create', kwargs={'path': 'test0/'}),
+            resolve_url('wiki:create', path='test0/'),
             {'title': 'Test00', 'slug': 'test00', 'content': 'Content .00.'}
         )
         c.post(
-            reverse('wiki:create', kwargs={'path': ''}),
+            resolve_url('wiki:create', path=''),
             {'title': 'Test1', 'slug': 'test1', 'content': 'Content .1.'}
         )
         c.post(
-            reverse('wiki:create', kwargs={'path': 'test1/'}),
+            resolve_url('wiki:create', path='test1/'),
             {'title': 'Tes10', 'slug': 'test10', 'content': 'Content .10.'}
         )
         c.post(
-            reverse('wiki:create', kwargs={'path': 'test1/test10/'}),
+            resolve_url('wiki:create', path='test1/test10/'),
             {'title': 'Test100', 'slug': 'test100', 'content': 'Content .100.'}
         )
 
-        # Move with an already existing destination slug
+        # Move /test1 => /test0 (an already existing destination slug!)
         response = self.c.post(
-            reverse('wiki:move', kwargs={'path': 'test1/'}),
-            {'destination': str(URLPath.root().article.current_revision.id), 'slug': 'test0', 'redirect': ''}
+            resolve_url('wiki:move', path='test1/'),
+            {
+                'destination': str(URLPath.root().article.current_revision.id),
+                'slug': 'test0',
+                'redirect': ''
+            }
         )
         self.assertContains(response, 'A slug named')
         self.assertContains(response, 'already exists.')
 
-        # Move with valid arguments, change slug
-        id = URLPath.objects.get(slug='test0').article.current_revision.id
+        # Move /test1 >= /test2 (valid slug), no redirect
+        test0_id = URLPath.objects.get(slug='test0').article.current_revision.id
         response = self.c.post(
-            reverse('wiki:move', kwargs={'path': 'test1/'}),
-            {'destination': str(id), 'slug': 'test2', 'redirect': ''}
+            resolve_url('wiki:move', path='test1/'),
+            {'destination': str(test0_id), 'slug': 'test2', 'redirect': ''}
         )
-        self.assertRedirects(response,
-                             reverse('wiki:get', kwargs={'path': 'test0/test2/'}))
+        self.assertRedirects(
+            response,
+            resolve_url('wiki:get', path='test0/test2/')
+        )
+
+        # Check that there is no article displayed in this path anymore
         response = self.get_by_path('test1/')
         self.assertRedirects(response, '/_create/?slug=test1')
 
-        # Move back, change slug, and create redirect pages
+        # Create /test0/test2/test020
         response = c.post(
-            reverse('wiki:create', kwargs={'path': 'test0/test2/'}),
+            resolve_url('wiki:create', path='test0/test2/'),
             {'title': 'Test020', 'slug': 'test020', 'content': 'Content .020.'}
         )
+        # Move /test0/test2 => /test1new + create redirect
         response = self.c.post(
-            reverse('wiki:move', kwargs={'path': 'test0/test2/'}),
-            {'destination': str(URLPath.root().article.current_revision.id), 'slug': 'test1new', 'redirect': 'true'}
+            resolve_url('wiki:move', path='test0/test2/'),
+            {
+                'destination': str(URLPath.root().article.current_revision.id),
+                'slug': 'test1new', 'redirect': 'true'
+            }
         )
-        self.assertRedirects(response,
-                             reverse('wiki:get', kwargs={'path': 'test1new/'}))
+        self.assertRedirects(
+            response,
+            resolve_url('wiki:get', path='test1new/')
+        )
 
+        # Check that /test1new is a valid path
         response = self.get_by_path('test1new/')
         self.assertContains(response, 'Content .1.')
 
+        # Check that the child article test0/test2/test020 was also moved
         response = self.get_by_path('test1new/test020/')
         self.assertContains(response, 'Content .020.')
 
@@ -267,6 +284,12 @@ class MoveViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
         self.assertContains(response, 'Moved: Test020')
         self.assertContains(response, 'moved to <a>wiki:/test1new/test020')
 
+        # Check that moved_to was correctly set
+        urlsrc = URLPath.get_by_path('/test0/test2/')
+        urldst = URLPath.get_by_path('/test1new/')
+        self.assertEqual(urlsrc.moved_to, urldst)
+
+        # Check that moved_to was correctly set on the child's previous path
         urlsrc = URLPath.get_by_path('/test0/test2/test020/')
         urldst = URLPath.get_by_path('/test1new/test020/')
         self.assertEqual(urlsrc.moved_to, urldst)
@@ -281,33 +304,33 @@ class DeleteViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientT
         c = self.c
 
         response = c.post(
-            reverse('wiki:create', kwargs={'path': ''}),
+            resolve_url('wiki:create', path=''),
             {'title': 'Test cache', 'slug': 'testcache', 'content': 'Content 1'}
         )
 
         self.assertRedirects(
             response,
-            reverse('wiki:get', kwargs={'path': 'testcache/'})
+            resolve_url('wiki:get', path='testcache/')
         )
 
         response = c.post(
-            reverse('wiki:delete', kwargs={'path': 'testcache/'}),
+            resolve_url('wiki:delete', path='testcache/'),
             {'confirm': 'on', 'purge': 'on',
              'revision': str(URLPath.objects.get(slug='testcache').article.current_revision.id)}
         )
 
         self.assertRedirects(
             response,
-            reverse('wiki:get', kwargs={'path': ''})
+            resolve_url('wiki:get', path='')
         )
         response = c.post(
-            reverse('wiki:create', kwargs={'path': ''}),
+            resolve_url('wiki:create', path=''),
             {'title': 'Test cache', 'slug': 'TestCache', 'content': 'Content 2'}
         )
 
         self.assertRedirects(
             response,
-            reverse('wiki:get', kwargs={'path': 'testcache/'})
+            resolve_url('wiki:get', path='testcache/')
         )
         # test the cache
         self.assertContains(self.get_by_path('TestCache/'), 'Content 2')
@@ -330,7 +353,7 @@ class EditViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
 
         # test preview
         response = c.post(
-            reverse('wiki:preview', kwargs={'path': ''}),  # url: '/_preview/'
+            resolve_url('wiki:preview', path=''),  # url: '/_preview/'
             example_data
         )
 
@@ -353,14 +376,14 @@ class EditViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
         }
 
         response = c.post(
-            reverse('wiki:edit', kwargs={'path': ''}),
+            resolve_url('wiki:edit', path=''),
             example_data
         )
 
-        self.assertRedirects(response, reverse('wiki:root'))
+        self.assertRedirects(response, resolve_url('wiki:root'))
 
         response = c.post(
-            reverse('wiki:edit', kwargs={'path': ''}),
+            resolve_url('wiki:edit', path=''),
             example_data
         )
 
@@ -412,14 +435,14 @@ class SearchViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientT
 
         c = self.c
 
-        response = c.get(reverse('wiki:search'), {'q': 'Article'})
+        response = c.get(resolve_url('wiki:search'), {'q': 'Article'})
         self.assertContains(response, 'Root Article')
 
     def test_empty_query_string(self):
 
         c = self.c
 
-        response = c.get(reverse('wiki:search'), {'q': ''})
+        response = c.get(resolve_url('wiki:search'), {'q': ''})
         self.assertFalse(response.context['articles'])
 
 
@@ -429,27 +452,27 @@ class DeletedListViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCl
         c = self.c
 
         response = c.post(
-            reverse('wiki:create', kwargs={'path': ''}),
+            resolve_url('wiki:create', path=''),
             {'title': 'Delete Me', 'slug': 'deleteme', 'content': 'delete me please!'}
         )
 
         self.assertRedirects(
             response,
-            reverse('wiki:get', kwargs={'path': 'deleteme/'})
+            resolve_url('wiki:get', path='deleteme/')
         )
 
         response = c.post(
-            reverse('wiki:delete', kwargs={'path': 'deleteme/'}),
+            resolve_url('wiki:delete', path='deleteme/'),
             {'confirm': 'on',
              'revision': URLPath.objects.get(slug='deleteme').article.current_revision.id}
         )
 
         self.assertRedirects(
             response,
-            reverse('wiki:get', kwargs={'path': ''})
+            resolve_url('wiki:get', path='')
         )
 
-        response = c.get(reverse('wiki:deleted_list'))
+        response = c.get(resolve_url('wiki:deleted_list'))
         self.assertContains(response, 'Delete Me')
 
 
@@ -459,7 +482,7 @@ class UpdateProfileViewTest(RequireRootArticleMixin, ArticleWebTestUtils, Django
         c = self.c
 
         c.post(
-            reverse('wiki:profile_update'),
+            resolve_url('wiki:profile_update'),
             {"email": "test@test.com", "password1": "newPass", "password2": "newPass"},
             follow=True
         )
@@ -489,7 +512,7 @@ class MergeViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTe
 
         # save a new revision
         c.post(
-            reverse('wiki:edit', kwargs={'path': ''}),
+            resolve_url('wiki:edit', path=''),
             example_data
         )
 
@@ -498,9 +521,9 @@ class MergeViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTe
         ).current_revision
 
         response = c.get(
-            reverse(
+            resolve_url(
                 'wiki:merge_revision_preview',
-                kwargs={'article_id': self.root_article.id, 'revision_id': first_revision.id}
+                article_id=self.root_article.id, revision_id=first_revision.id
             ),
         )
 
