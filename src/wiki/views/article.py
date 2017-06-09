@@ -19,7 +19,7 @@ from six.moves import range
 from wiki import editors, forms, models
 from wiki.conf import settings
 from wiki.core import permissions
-from wiki.core.compat import atomic, transaction_commit_on_success
+from wiki.core.compat import atomic, transaction_commit_on_success, urljoin
 from wiki.core.diff import simple_merge
 from wiki.core.exceptions import NoRootURL
 from wiki.core.plugins import registry as plugin_registry
@@ -27,32 +27,9 @@ from wiki.core.utils import object_to_json_response
 from wiki.decorators import get_article
 from wiki.views.mixins import ArticleMixin
 
+
 log = logging.getLogger(__name__)
 
-def _create_article(request, article, urlpath, slug, title, content, summary):
-    user = None
-    ip_address = None
-    if not request.user.is_anonymous():
-        user = request.user
-        if settings.LOG_IPS_USERS:
-            ip_address = request.META.get('REMOTE_ADDR', None)
-    elif settings.LOG_IPS_ANONYMOUS:
-        ip_address = request.META.get('REMOTE_ADDR', None)
-
-    return models.URLPath.create_article(
-        urlpath, slug,
-        title=title,
-        content=content,
-        user_message=summary,
-        user=user,
-        ip_address=ip_address,
-        article_kwargs={'owner': user,
-                        'group': article.group,
-                        'group_read': article.group_read,
-                        'group_write': article.group_write,
-                        'other_read': article.other_read,
-                        'other_write': article.other_write}
-    )
 
 class ArticleView(ArticleMixin, TemplateView):
 
@@ -107,12 +84,15 @@ class Create(FormView, ArticleMixin):
 
     def form_valid(self, form):
         try:
-            self.newpath = _create_article(
-                self.request, self.article, self.urlpath,
+            self.newpath = models.URLPath._create_urlpath_from_request(
+                self.request,
+                self.article,
+                self.urlpath,
                 form.cleaned_data['slug'],
                 form.cleaned_data['title'],
                 form.cleaned_data['content'],
-                form.cleaned_data['summary'])
+                form.cleaned_data['summary']
+            )
             messages.success(
                 self.request,
                 _("New article '%s' created.") %
@@ -477,10 +457,8 @@ class Move(ArticleMixin, FormView):
         for ancestor in self.article.ancestor_objects():
             ancestor.article.clear_cache()
 
-        old_path = self.urlpath.parent.path
-
-        # TODO: This is not a slug, confusing
-        old_slug = self.urlpath.slug + "/"
+        # Save the old path for later
+        old_path = self.urlpath.path
 
         self.urlpath.parent = dest_path
         self.urlpath.slug = form.cleaned_data['slug']
@@ -506,30 +484,29 @@ class Move(ArticleMixin, FormView):
             root_len = len(descendants[0].path)
 
             for descendant in descendants:
-                # Without this descendant.get_ancestors() and as a result descendant.path
-                # is wrong after the first create_article() due to path caching
+                # Without this descendant.get_ancestors() and as a result
+                # descendant.path is wrong after the first create_article() due
+                # to path caching
                 descendant.refresh_from_db()
                 dst_path = descendant.path
-                src_path = old_path + old_slug + dst_path[root_len:]
+                src_path = urljoin(old_path, dst_path[root_len:])
                 src_len = len(src_path)
                 pos = src_path.rfind("/", 0, src_len-1)
                 slug = src_path[pos+1:src_len-1]
-                urlpath_src = models.URLPath.get_by_path(src_path[0:max(pos, 0)])
+                parent_urlpath = models.URLPath.get_by_path(src_path[0:max(pos, 0)])
 
                 link = "[wiki:/{path}](wiki:/{path})".format(path=dst_path)
-                article = _create_article(
+                urlpath_new = models.URLPath._create_urlpath_from_request(
                     self.request,
                     self.article,
-                    urlpath_src,
+                    parent_urlpath,
                     slug,
                     _("Moved: {title}").format(title=descendant.article),
                     _("Article moved to {link}").format(link=link),
                     _("Created redirect (auto)"),
                 )
-                article.moved_from = descendant.moved_from
-                article.save()
-                descendant.moved_from = article
-                descendant.save()
+                urlpath_new.moved_to = descendant
+                urlpath_new.save()
 
             messages.success(
                 self.request,

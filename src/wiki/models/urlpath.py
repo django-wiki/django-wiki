@@ -2,6 +2,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
+import warnings
 
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
@@ -79,9 +80,6 @@ class URLPath(MPTTModel):
 
     slug = models.SlugField(verbose_name=_('slug'), null=True, blank=True,
                             max_length=SLUG_MAX_LENGTH)
-    moved_from = TreeForeignKey('self', null=True, blank=True,
-                                on_delete=models.SET_NULL,
-                                related_name='moved_to')
     site = models.ForeignKey(Site)
     parent = TreeForeignKey(
         'self',
@@ -89,6 +87,15 @@ class URLPath(MPTTModel):
         blank=True,
         related_name='children',
         help_text=_("Position of URL path in the tree.")
+    )
+    moved_to = TreeForeignKey(
+        'self',
+        verbose_name=_("Moved to"),
+        help_text=_("Article path was moved to this location"),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='moved_from'
     )
 
     def __init__(self, *args, **kwargs):
@@ -285,20 +292,27 @@ class URLPath(MPTTModel):
     @classmethod
     @atomic
     @transaction_commit_on_success
-    def create_article(
+    def create_urlpath(
             cls,
             parent,
             slug,
             site=None,
             title="Root",
             article_kwargs={},
-            **kwargs):
-        """Utility function:
-        Create a new urlpath with an article and a new revision for the article"""
+            request=None,
+            article_w_permissions=None,
+            **revision_kwargs):
+        """
+        Utility function:
+        Creates a new urlpath with an article and a new revision for the
+        article
+
+        :returns: A new URLPath instance
+        """
         if not site:
             site = Site.objects.get_current()
         article = Article(**article_kwargs)
-        article.add_revision(ArticleRevision(title=title, **kwargs),
+        article.add_revision(ArticleRevision(title=title, **revision_kwargs),
                              save=True)
         article.save()
         newpath = cls.objects.create(
@@ -308,6 +322,52 @@ class URLPath(MPTTModel):
             article=article)
         article.add_object_relation(newpath)
         return newpath
+
+    @classmethod
+    def _create_urlpath_from_request(
+            cls,
+            request,
+            perm_article,
+            parent_urlpath,
+            slug,
+            title,
+            content,
+            summary):
+        """
+        Creates a new URLPath, using meta data from ``request`` and copies in
+        the permissions from ``perm_article``.
+
+        This interface is internal because it's rather sloppy
+        """
+        user = None
+        ip_address = None
+        if not request.user.is_anonymous():
+            user = request.user
+            if settings.LOG_IPS_USERS:
+                ip_address = request.META.get('REMOTE_ADDR', None)
+        elif settings.LOG_IPS_ANONYMOUS:
+            ip_address = request.META.get('REMOTE_ADDR', None)
+
+        return cls.create_urlpath(
+            parent_urlpath,
+            slug,
+            title=title,
+            content=content,
+            user_message=summary,
+            user=user,
+            ip_address=ip_address,
+            article_kwargs={'owner': user,
+                            'group': perm_article.group,
+                            'group_read': perm_article.group_read,
+                            'group_write': perm_article.group_write,
+                            'other_read': perm_article.other_read,
+                            'other_write': perm_article.other_write}
+        )
+
+    @classmethod
+    def create_article(cls, *args, **kwargs):
+        warnings.warn("Pending removal: URLPath.create_article renamed to create_urlpath", DeprecationWarning)
+        return cls.create_urlpath(*args, **kwargs)
 
     def get_ordered_children(self):
         """Return an ordered list of all chilren"""

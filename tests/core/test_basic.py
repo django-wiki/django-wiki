@@ -16,7 +16,7 @@ class URLPathTests(TestCase):
     def test_manager(self):
 
         root = URLPath.create_root()
-        child = URLPath.create_article(root, "child")
+        child = URLPath.create_urlpath(root, "child")
 
         self.assertEqual(root.parent, None)
         self.assertEqual(list(root.children.all().active()), [child])
