@@ -1,0 +1,16 @@
+{% load wiki_tags %}
+
+<li class="{% if current_path.path|starts_with:urlpath.path %}disabled{% endif%} {% if current_path.children.count %}dropdown-submenu{% endif %}">
+  <a tabindex="-1" href="#"
+    {% if not current_path.path|starts_with:urlpath.path %}
+        onclick="select_path('{{current_path.pk}}', '{{current_path.path|escapejs}}');" {% endif %}>
+    {{current_path.article}}
+  </a>
+  {% if current_path.children.count %}
+    <ul class="dropdown-menu">
+      {% for current_path in current_path.get_ordered_children %}
+        {% with template_name="wiki/includes/move_tree.html" %}{% include template_name %}{% endwith %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+</li>

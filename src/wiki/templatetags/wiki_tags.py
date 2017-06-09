@@ -193,3 +193,7 @@ def plugin_enabled(plugin_name):
 @register.filter
 def wiki_settings(name):
     return getattr(settings, name, "")
+
+@register.filter
+def starts_with(value, arg):
+    return value.startswith(arg)

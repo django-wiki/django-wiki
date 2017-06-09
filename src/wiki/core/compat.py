@@ -44,3 +44,11 @@ class BuildAttrsCompat(object):
         if kwargs is not None:
             attrs.update(kwargs)
         return attrs
+
+
+try:
+    # Python 3
+    from urllib.parse import urljoin  # noqa
+except ImportError:
+    # Python 2
+    from urlparse import urljoin  # noqa @UnusedImport

@@ -4,7 +4,10 @@ import sys
 
 from django.core.urlresolvers import reverse
 from wiki.models import URLPath
-from ...base import RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase
+
+from ...base import (ArticleWebTestUtils, DjangoClientTestBase,
+                     RequireRootArticleMixin)
+
 
 class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
@@ -29,7 +32,7 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
         )
         self._assertRegex(response.rendered_content, expected)
 
-        URLPath.create_article(URLPath.root(), "testhistory1",
+        URLPath.create_urlpath(URLPath.root(), "testhistory1",
                                title="TestHistory1", content="a page",
                                user_message="Comment 1")
         response = self.c.get(url)
@@ -43,9 +46,13 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
         )
         self._assertRegex(response.rendered_content, expected)
 
-        urlpath = URLPath.create_article(URLPath.root(), "testhistory2",
-                                         title="TestHistory2", content="a page",
-                                         user_message="Comment 2")
+        urlpath = URLPath.create_urlpath(
+            URLPath.root(),
+            "testhistory2",
+            title="TestHistory2",
+            content="a page",
+            user_message="Comment 2"
+        )
         expected = (
             '(?s)<title>Global history.*'
             '>Global history</.*'
@@ -64,13 +71,15 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
         response = self.c.get(url1)
         self._assertRegex(response.rendered_content, expected)
 
-        response = self.c.post(reverse('wiki:edit', kwargs={'path': 'testhistory2/'}),
-                               {'content': 'a page modified',
-                                'current_revision': str(urlpath.article.current_revision.id),
-                                'preview': '0',
-                                'save': '1',
-                                'summary': 'Testing Revision',
-                                'title': 'TestHistory2Mod'})
+        response = self.c.post(
+            reverse('wiki:edit', kwargs={'path': 'testhistory2/'}),
+            {'content': 'a page modified',
+             'current_revision': str(urlpath.article.current_revision.id),
+             'preview': '0',
+             'save': '1',
+             'summary': 'Testing Revision',
+             'title': 'TestHistory2Mod'}
+        )
 
         expected = (
             '(?s)<title>Global history.*'

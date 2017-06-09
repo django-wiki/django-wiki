@@ -19,12 +19,14 @@ from six.moves import range
 from wiki import editors, forms, models
 from wiki.conf import settings
 from wiki.core import permissions
+from wiki.core.compat import atomic, transaction_commit_on_success, urljoin
 from wiki.core.diff import simple_merge
 from wiki.core.exceptions import NoRootURL
 from wiki.core.plugins import registry as plugin_registry
 from wiki.core.utils import object_to_json_response
 from wiki.decorators import get_article
 from wiki.views.mixins import ArticleMixin
+
 
 log = logging.getLogger(__name__)
 
@@ -81,31 +83,16 @@ class Create(FormView, ArticleMixin):
         return form
 
     def form_valid(self, form):
-        user = None
-        ip_address = None
-        if not self.request.user.is_anonymous():
-            user = self.request.user
-            if settings.LOG_IPS_USERS:
-                ip_address = self.request.META.get('REMOTE_ADDR', None)
-        elif settings.LOG_IPS_ANONYMOUS:
-            ip_address = self.request.META.get('REMOTE_ADDR', None)
-
         try:
-            self.newpath = models.URLPath.create_article(
+            self.newpath = models.URLPath._create_urlpath_from_request(
+                self.request,
+                self.article,
                 self.urlpath,
                 form.cleaned_data['slug'],
-                title=form.cleaned_data['title'],
-                content=form.cleaned_data['content'],
-                user_message=form.cleaned_data['summary'],
-                user=user,
-                ip_address=ip_address,
-                article_kwargs={'owner': user,
-                                'group': self.article.group,
-                                'group_read': self.article.group_read,
-                                'group_write': self.article.group_write,
-                                'other_read': self.article.other_read,
-                                'other_write': self.article.other_write,
-                                })
+                form.cleaned_data['title'],
+                form.cleaned_data['content'],
+                form.cleaned_data['summary']
+            )
             messages.success(
                 self.request,
                 _("New article '%s' created.") %
@@ -412,6 +399,125 @@ class Edit(ArticleMixin, FormView):
         kwargs['selected_tab'] = 'edit'
         kwargs['sidebar'] = self.sidebar
         return super(Edit, self).get_context_data(**kwargs)
+
+
+class Move(ArticleMixin, FormView):
+
+    form_class = forms.MoveForm
+    template_name = "wiki/move.html"
+
+    @method_decorator(login_required)
+    @method_decorator(get_article(can_write=True, not_locked=True))
+    def dispatch(self, request, article, *args, **kwargs):
+        return super(Move, self).dispatch(request, article, *args, **kwargs)
+
+    def get_initial(self):
+        initial = FormView.get_initial(self)
+        return initial
+
+    def get_form(self, form_class=None):
+        if form_class is None:
+            form_class = self.get_form_class()
+        kwargs = self.get_form_kwargs()
+        return form_class(**kwargs)
+
+    def get_context_data(self, **kwargs):
+        if 'form' not in kwargs:
+            kwargs['form'] = self.get_form()
+        kwargs['root_path'] = models.URLPath.root()
+
+        return super(Move, self).get_context_data(**kwargs)
+
+    @atomic
+    @transaction_commit_on_success
+    def form_valid(self, form):
+        if not self.urlpath.parent:
+            messages.error(
+                self.request,
+                _('This article cannot be moved because it is a root article.')
+            )
+            return redirect('wiki:get', article_id=self.article.id)
+
+        dest_path = get_object_or_404(
+            models.URLPath,
+            pk=form.cleaned_data['destination']
+        )
+        tmp_path = dest_path
+
+        while tmp_path.parent:
+            if tmp_path == self.urlpath:
+                messages.error(
+                    self.request,
+                    _('This article cannot be moved to a child of itself.')
+                )
+                return redirect('wiki:move', article_id=self.article.id)
+            tmp_path = tmp_path.parent
+
+        # Clear cache to update article lists (Old links)
+        for ancestor in self.article.ancestor_objects():
+            ancestor.article.clear_cache()
+
+        # Save the old path for later
+        old_path = self.urlpath.path
+
+        self.urlpath.parent = dest_path
+        self.urlpath.slug = form.cleaned_data['slug']
+        self.urlpath.save()
+
+        # Reload url path form database
+        self.urlpath = models.URLPath.objects.get(pk=self.urlpath.pk)
+
+        # Use a copy of ourself (to avoid cache) and update article links again
+        for ancestor in models.Article.objects.get(pk=self.article.pk).ancestor_objects():
+            ancestor.article.clear_cache()
+
+        # Create a redirect page for every moved article
+        # /old-slug
+        # /old-slug/child
+        # /old-slug/child/grand-child
+        if form.cleaned_data['redirect']:
+
+            # NB! Includes self!
+            descendants = list(self.urlpath.get_descendants(
+                include_self=True).order_by("level"))
+
+            root_len = len(descendants[0].path)
+
+            for descendant in descendants:
+                # Without this descendant.get_ancestors() and as a result
+                # descendant.path is wrong after the first create_article() due
+                # to path caching
+                descendant.refresh_from_db()
+                dst_path = descendant.path
+                src_path = urljoin(old_path, dst_path[root_len:])
+                src_len = len(src_path)
+                pos = src_path.rfind("/", 0, src_len-1)
+                slug = src_path[pos+1:src_len-1]
+                parent_urlpath = models.URLPath.get_by_path(src_path[0:max(pos, 0)])
+
+                link = "[wiki:/{path}](wiki:/{path})".format(path=dst_path)
+                urlpath_new = models.URLPath._create_urlpath_from_request(
+                    self.request,
+                    self.article,
+                    parent_urlpath,
+                    slug,
+                    _("Moved: {title}").format(title=descendant.article),
+                    _("Article moved to {link}").format(link=link),
+                    _("Created redirect (auto)"),
+                )
+                urlpath_new.moved_to = descendant
+                urlpath_new.save()
+
+            messages.success(
+                self.request,
+                _("Article successfully moved! Created {n} redirects.").format(
+                    n=len(descendants)
+                )
+            )
+
+        else:
+            messages.success(self.request, _('Article successfully moved!'))
+        return redirect("wiki:get", path=self.urlpath.path)
 
 
 class Deleted(Delete):

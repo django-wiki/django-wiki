@@ -1,0 +1,62 @@
+{% extends "wiki/article.html" %}
+{% load wiki_tags i18n sekizai_tags %}
+
+{% block wiki_pagetitle %}{% trans "Move" %}: {{ article.current_revision.title }}{% endblock %}
+
+{% block wiki_contents_tab %}
+
+<div class="row">
+  <div class="col-lg-10">
+    <form method="POST" class="form-horizontal" id="article_move_form">
+      {% wiki_form form %}
+
+      <div class="btn-group" id="dest_selector">
+        <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+          <span class="dest_selector_title"></span>
+          <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            {% with current_path=root_path %}{% include "wiki/includes/move_tree.html" %}{% endwith %}
+        </ul>
+      </div>
+      <p class="col-lg-offset-2">
+        {% blocktrans with cnt=urlpath.get_descendants.count %}
+          {{ cnt }} nested articles will also be moved.<br>
+          Be careful, links to this article and {{ cnt }} articles nested
+          in this hierarchy will not be updated.
+        {% endblocktrans %}
+      </p>
+      <div class="form-group form-actions">
+        <div class="col-lg-12 col-lg-offset-2">
+          <a href="{% url 'wiki:get' path=urlpath.path article_id=article.id %}" class="btn btn-default">
+            <span class="fa fa-arrow-left"></span>
+            {% trans "Go back" %}
+          </a>
+          <button class="btn btn-large btn-primary" type="submit" name="move" id="id_move">
+            <span class="fa fa-random"></span>
+            {% trans "Move article" %}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% addtoblock "js" %}
+
+  <script type="text/javascript">
+    $('#id_destination').after($('#dest_selector').remove());
+    $('#id_destination').attr('type', 'hidden');
+    $('#id_slug').val('{{ urlpath.slug }}');
+    select_path('{{urlpath.parent.pk}}', '{{urlpath.parent}}');
+
+    function select_path(path, title) {
+      $('#id_destination').val(path);
+      if (title == "(root)") title = "";
+      $('#dest_selector .dest_selector_title').html(title ? title : "&nbsp;&nbsp;/&nbsp;&nbsp;");
+    }
+  </script>
+
+{% endaddtoblock %}
+
+{% endblock %}
