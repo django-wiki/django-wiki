@@ -19,13 +19,14 @@ from six.moves import range
 from wiki import editors, forms, models
 from wiki.conf import settings
 from wiki.core import permissions
-from wiki.core.compat import atomic, transaction_commit_on_success
+from wiki.core.compat import atomic, transaction_commit_on_success, urljoin
 from wiki.core.diff import simple_merge
 from wiki.core.exceptions import NoRootURL
 from wiki.core.plugins import registry as plugin_registry
 from wiki.core.utils import object_to_json_response
 from wiki.decorators import get_article
 from wiki.views.mixins import ArticleMixin
+
 
 log = logging.getLogger(__name__)
 
@@ -456,9 +457,8 @@ class Move(ArticleMixin, FormView):
         for ancestor in self.article.ancestor_objects():
             ancestor.article.clear_cache()
 
-        old_path = self.urlpath.parent.path
-
-        old_slug = self.urlpath.slug + "/"
+        # Save the old path for later
+        old_path = self.urlpath.path
 
         self.urlpath.parent = dest_path
         self.urlpath.slug = form.cleaned_data['slug']
@@ -483,18 +483,13 @@ class Move(ArticleMixin, FormView):
 
             root_len = len(descendants[0].path)
 
-            for x in descendants:
-                # Without this descendant.get_ancestors() and as a result descendant.path
-                # is wrong after the first create_article() due to path caching
-                str(x.path)
-
             for descendant in descendants:
-                # Without this descendant.get_ancestors() and as a result descendant.path
-                # is wrong after the first create_article() due to path caching
-                # descendant.refresh_from_db()
+                # Without this descendant.get_ancestors() and as a result
+                # descendant.path is wrong after the first create_article() due
+                # to path caching
+                descendant.refresh_from_db()
                 dst_path = descendant.path
-                # src_path = urljoin(old_path, old_slug, dst_path[root_len:])
-                src_path = old_path + old_slug + dst_path[root_len:]
+                src_path = urljoin(old_path, dst_path[root_len:])
                 src_len = len(src_path)
                 pos = src_path.rfind("/", 0, src_len-1)
                 slug = src_path[pos+1:src_len-1]
