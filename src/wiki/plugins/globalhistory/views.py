@@ -5,11 +5,13 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
 from wiki import models
+from wiki.core.wiki_paginate import WikiPaginator
 
 
 class GlobalHistory(ListView):
 
     template_name = 'wiki/plugins/globalhistory/globalhistory.html'
+    paginator_class = WikiPaginator
     paginate_by = 30
     model = models.ArticleRevision
     context_object_name = 'revisions'
