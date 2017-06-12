@@ -11,13 +11,13 @@ class WikiPaginator(Paginator):
 
     def page(self, number):
         # Save last accessed page number for context-based lookup in page_range
-        self.last_page_number = number
+        self.last_accessed_page_number = number
         return super(WikiPaginator, self).page(number)
 
     @property
     def page_range(self):
-        left = max(self.last_page_number - self.side_pages, 2)
-        right = min(self.last_page_number + self.side_pages+1, self.num_pages)
+        left = max(self.last_accessed_page_number - self.side_pages, 2)
+        right = min(self.last_accessed_page_number + self.side_pages+1, self.num_pages)
         pages = []
         if self.num_pages > 0:
             pages = [1]
