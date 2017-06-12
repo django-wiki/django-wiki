@@ -22,12 +22,11 @@ from wiki.core import permissions
 from wiki.core.compat import atomic, transaction_commit_on_success, urljoin
 from wiki.core.diff import simple_merge
 from wiki.core.exceptions import NoRootURL
+from wiki.core.paginator import WikiPaginator
 from wiki.core.plugins import registry as plugin_registry
 from wiki.core.utils import object_to_json_response
-from wiki.core.wiki_paginate import WikiPaginator
 from wiki.decorators import get_article
 from wiki.views.mixins import ArticleMixin
-
 
 log = logging.getLogger(__name__)
 

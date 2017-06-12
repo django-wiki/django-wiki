@@ -2,11 +2,11 @@ from django.core.paginator import Paginator
 
 class WikiPaginator(Paginator):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, side_pages=4, **kwargs):
         """
         :param side_pages: How many pages should be shown before and after the current page
         """
-        self.side_pages = kwargs.pop('side_pages', 4)
+        self.side_pages = side_pages
         super(WikiPaginator, self).__init__(*args, **kwargs)
 
     def _get_page(self, *args, **kwargs):

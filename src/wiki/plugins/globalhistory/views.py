@@ -1,11 +1,11 @@
 from __future__ import absolute_import, unicode_literals
 
-from django.db.models import F
 from django.contrib.auth.decorators import login_required
+from django.db.models import F
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
 from wiki import models
-from wiki.core.wiki_paginate import WikiPaginator
+from wiki.core.paginator import WikiPaginator
 
 
 class GlobalHistory(ListView):
