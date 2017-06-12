@@ -12,6 +12,7 @@ from django.views.generic.base import TemplateView, View
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 from wiki.core.http import send_file
+from wiki.core.paginator import WikiPaginator
 from wiki.decorators import get_article, response_forbidden
 from wiki.plugins.attachments import forms, models, settings
 from wiki.views.mixins import ArticleMixin
@@ -440,6 +441,7 @@ class AttachmentSearchView(ArticleMixin, ListView):
     template_name = "wiki/plugins/attachments/search.html"
     allow_empty = True
     context_object_name = 'attachments'
+    paginator_class = WikiPaginator
     paginate_by = 10
 
     @method_decorator(get_article(can_write=True))

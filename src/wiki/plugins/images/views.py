@@ -11,6 +11,7 @@ from django.views.generic.base import RedirectView
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 from wiki.conf import settings as wiki_settings
+from wiki.core.paginator import WikiPaginator
 from wiki.decorators import get_article
 from wiki.models.pluginbase import RevisionPluginRevision
 from wiki.plugins.images import forms, models
@@ -24,6 +25,7 @@ class ImageView(ArticleMixin, ListView):
     template_name = 'wiki/plugins/images/index.html'
     allow_empty = True
     context_object_name = 'images'
+    paginator_class = WikiPaginator
     paginate_by = 10
 
     @method_decorator(get_article(can_read=True, not_locked=True))

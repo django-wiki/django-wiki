@@ -22,11 +22,11 @@ from wiki.core import permissions
 from wiki.core.compat import atomic, transaction_commit_on_success, urljoin
 from wiki.core.diff import simple_merge
 from wiki.core.exceptions import NoRootURL
+from wiki.core.paginator import WikiPaginator
 from wiki.core.plugins import registry as plugin_registry
 from wiki.core.utils import object_to_json_response
 from wiki.decorators import get_article
 from wiki.views.mixins import ArticleMixin
-
 
 log = logging.getLogger(__name__)
 
@@ -608,6 +608,7 @@ class History(ListView, ArticleMixin):
     template_name = "wiki/history.html"
     allow_empty = True
     context_object_name = 'revisions'
+    paginator_class = WikiPaginator
     paginate_by = 10
 
     def get_queryset(self):
@@ -634,6 +635,7 @@ class Dir(ListView, ArticleMixin):
     allow_empty = True
     context_object_name = 'directory'
     model = models.URLPath
+    paginator_class = WikiPaginator
     paginate_by = 30
 
     @method_decorator(get_article(can_read=True))
@@ -678,6 +680,7 @@ class Dir(ListView, ArticleMixin):
 class SearchView(ListView):
 
     template_name = "wiki/search.html"
+    paginator_class = WikiPaginator
     paginate_by = 25
     context_object_name = "articles"
 
