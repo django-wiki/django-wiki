@@ -9,14 +9,15 @@ class WikiPaginator(Paginator):
         self.side_pages = kwargs.pop('side_pages', 4)
         super(WikiPaginator, self).__init__(*args, **kwargs)
 
-    def _get_page(self, *args, **kwargs):
-        self.curPage = super(WikiPaginator, self)._get_page(*args, **kwargs)
-        return self.curPage
+    def page(self, number):
+        # Save last accessed page number for context-based lookup in page_range
+        self.last_page_number = number
+        return super(WikiPaginator, self).page(number)
 
     @property
     def page_range(self):
-        left = max(self.curPage.number - self.side_pages, 2)
-        right = min(self.curPage.number + self.side_pages+1, self.num_pages)
+        left = max(self.last_page_number - self.side_pages, 2)
+        right = min(self.last_page_number + self.side_pages+1, self.num_pages)
         pages = []
         if self.num_pages > 0:
             pages = [1]
