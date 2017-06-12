@@ -399,7 +399,7 @@ class CreateForm(forms.Form, SpamProtectionMixin):
     slug = WikiSlugField(
         label=_('Slug'),
         help_text=_(
-            "This will be the address where your article can be found. Use only alphanumeric characters and - or _. Note that you cannot change the slug after creating the article."),
+            "This will be the address where your article can be found. Use only alphanumeric characters and - or _.<br>Note: If you change the slug later on, links pointing to this article are <b>not</b> updated."),
         max_length=models.URLPath.SLUG_MAX_LENGTH)
     content = forms.CharField(
         label=_('Contents'),

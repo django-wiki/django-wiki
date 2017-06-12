@@ -1,5 +1,5 @@
 from django.test import TestCase
-from wiki.core.wiki_paginate import WikiPaginator
+from wiki.core.paginator import WikiPaginator
 
 
 class PaginatorTest(TestCase):
