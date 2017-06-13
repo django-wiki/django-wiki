@@ -19,6 +19,8 @@ django-wiki 0.3 (unreleased)
  * New bootstrapped image insert dialog (Frank Loemker) #628
  * Allow the HTML tag ``<hr>`` (Frank Loemker) #629
  * Global History overview of page revisions (Frank Loemker and Maximilien Cuony) #627
+ * Move article support with redirects (Frank Loemker) #640
+ * Crop paginator window when there are >9 pages in a list (Frank Loemker) #646
 
 
 django-wiki 0.2.4
