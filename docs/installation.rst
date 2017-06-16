@@ -73,9 +73,12 @@ maintain the order due to database relational constraints:
     'sorl.thumbnail',
     'wiki',
     'wiki.plugins.attachments',
-    'wiki.plugins.notifications',
+    'wiki.plugins.globalhistory',
+    'wiki.plugins.help',
     'wiki.plugins.images',
+    'wiki.plugins.links',
     'wiki.plugins.macros',
+    'wiki.plugins.notifications',
 
 
 Database
