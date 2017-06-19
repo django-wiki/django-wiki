@@ -5,31 +5,32 @@
 
 {% block wiki_contents %}
 
-<h1>{% trans "Global history" %}</h1>
+<h1 class="page-header">{% trans "Global history" %}</h1>
 
 {% spaceless %}
 <div class="row">
-  <div class="lead col-xs-8">
+  <div class="lead col-xs-12">
+    <div class="pull-right">
+      <a class="btn btn-default"
+         {% if only_last == "1" %}
+           href="{% url 'wiki:globalhistory' only_last=0 %}">
+           {% trans "Show all revisions of all articles" %}
+         {% else %}
+           href="{% url 'wiki:globalhistory' only_last=1 %}">
+           {% trans "Show last revision of every article" %}
+         {% endif %}
+      </a>
+    </div>
     {% with paginator.object_list.count as cnt %}
        {% blocktrans %}List of all <strong>{{ cnt }} changes</strong> in the wiki.{% endblocktrans %}
     {% endwith %}
   </div>
-  <div class="pull-right">
-    <a class="btn btn-default"
-       {% if only_last == "1" %}
-         href="{% url 'wiki:globalhistory' only_last=0 %}">
-         {% trans "Show all revisions of all articles" %}
-       {% else %}
-         href="{% url 'wiki:globalhistory' only_last=1 %}">
-         {% trans "Show last revision of every article" %}
-       {% endif %}
-    </a>
-  </div>
 </div>
 
 <div class="row">
+  <div class="col-sm-12">
   {% if revisions %}
-    <table class="table table-striped table-condensed table-hover">
+    <table class="table table-bordered table-striped table-condensed table-hover">
       <thead>
         <tr>
           <th>{% trans "Revision ID" %}</th>
@@ -87,7 +88,7 @@
             <td>
               {{article_revision.modified}}
             </td>
-            <td>
+            <td class="text-right">
               <a href="{% url 'wiki:history' article_revision.article.pk %}" class="btn btn-info btn-xs">{% trans "Go to article history" %}</a>
               <a href="{% url 'wiki:get' article_revision.article.pk %}" class="btn btn-primary btn-xs">{% trans "Go to article" %}</a>
             </td>
@@ -107,6 +108,7 @@
   {% endif %}
 
   {% include "wiki/includes/pagination.html" %}
+</div>
 </div>
 {% endspaceless %}
 {% endblock %}
