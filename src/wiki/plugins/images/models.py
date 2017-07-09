@@ -115,7 +115,7 @@ class ImageRevision(RevisionPluginRevision):
         ordering = ('-created',)
 
     def __str__(self):
-        return ugettext('Image Revsion: %d') % self.revision_number
+        return ugettext('Image Revision: %d') % self.revision_number
 
 
 def on_image_revision_delete(instance, *args, **kwargs):
