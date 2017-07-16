@@ -217,12 +217,14 @@ class Article(models.Model):
         )
 
     def get_cached_content(self):
-        """Returns cached """
+        """Returns cached version of rendered article"""
         cache_key = self.get_cache_key()
         cached_content = cache.get(cache_key)
         if cached_content is None:
             cached_content = self.render()
             cache.set(cache_key, cached_content, settings.CACHE_TIMEOUT)
+        else:
+            cached_content = mark_safe(cached_content)
         return cached_content
 
     def clear_cache(self):
