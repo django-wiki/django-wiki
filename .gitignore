@@ -10,6 +10,10 @@ tests/media
 # Ignore compiled version of source language
 wiki/locale/en/LC_MESSAGES/django.mo
 
+# Ignore Transifex managed msgids
+wiki/local/*/LC_NMESSAGES/django.po
+!wiki/locale/en/LC_MESSAGES/django.po
+
 # Ignore this folder which is created by tests
 wiki/attachments
 
