@@ -356,7 +356,7 @@ class ArticleRevision(BaseRevisionMixin, models.Model):
 
     # TODO:
     # Allow a revision to redirect to another *article*. This
-    # way, we can redirects and still maintain old content.
+    # way, we can have redirects and still maintain old content.
     # redirect = models.ForeignKey('Article', null=True, blank=True,
     #                             verbose_name=_('redirect'),
     #                             help_text=_('If set, the article will redirect to the contents of another article.'),
