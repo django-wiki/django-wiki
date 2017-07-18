@@ -3,6 +3,7 @@ from __future__ import absolute_import, unicode_literals
 import bleach
 
 from django.conf import settings as django_settings
+from django.contrib.messages import constants as messages
 from django.core.files.storage import default_storage
 from django.core.urlresolvers import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
@@ -145,6 +146,19 @@ LOG_IPS_ANONYMOUS = getattr(django_settings, 'WIKI_LOG_IPS_ANONYMOUS', True)
 
 #: Do we want to log IPs of logged in users?
 LOG_IPS_USERS = getattr(django_settings, 'WIKI_LOG_IPS_USERS', False)
+
+#: Map from message.tag to bootstrap class name
+MESSAGE_TAG_CSS_CLASS = getattr(
+    django_settings,
+    'WIKI_MESSAGE_TAG_CSS_CLASS',
+    {
+        messages.DEFAULT_TAGS[messages.DEBUG]: "alert alert-info",
+        messages.DEFAULT_TAGS[messages.ERROR]: "alert alert-danger",
+        messages.DEFAULT_TAGS[messages.INFO]: "alert alert-info",
+        messages.DEFAULT_TAGS[messages.SUCCESS]: "alert alert-success",
+        messages.DEFAULT_TAGS[messages.WARNING]: "alert alert-warning",
+    }
+)
 
 ####################################
 # PERMISSIONS AND ACCOUNT HANDLING #

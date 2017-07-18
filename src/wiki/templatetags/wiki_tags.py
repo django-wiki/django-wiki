@@ -75,6 +75,22 @@ def wiki_form(context, form_obj):
     return context
 
 
+@register.inclusion_tag('wiki/includes/messages.html', takes_context=True)
+def wiki_messages(context):
+
+    messages = context.get('messages', [])
+    for message in messages:
+        message.css_class = ""
+        for tag in message.tags.split(" "):
+            # Drop KeyError if MESSAGE_TAG_CSS_CLASS doesn't have the tag,
+            # that seems valuable.
+            message.css_class += " " + settings.MESSAGE_TAG_CSS_CLASS[tag]
+    context.update({
+        'messages': messages
+    })
+    return context
+
+
 # XXX html strong tag is hardcoded
 @register.filter
 def get_content_snippet(content, keyword, max_words=30):
