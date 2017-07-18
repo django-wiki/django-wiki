@@ -21,6 +21,7 @@ django-wiki 0.3 (unreleased)
  * Global History overview of page revisions (Frank Loemker and Maximilien Cuony) #627
  * Move article support with redirects (Frank Loemker) #640
  * Crop paginator window when there are >9 pages in a list (Frank Loemker) #646
+ * Render django.contrib.messages with template tag and inclusion template: Configurable and bootstrap 3 compatible (Benjamin Bach and Frank Loemker) #654
 
 
 django-wiki 0.2.4

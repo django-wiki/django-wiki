@@ -13,7 +13,6 @@ from __future__ import unicode_literals
 
 import os
 
-from django.contrib.messages import constants as messages
 from django.core.urlresolvers import reverse_lazy
 
 
@@ -153,9 +152,6 @@ STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 MEDIA_ROOT = os.path.join(PROJECT_DIR, 'media')
 MEDIA_URL = '/media/'
 
-MESSAGE_TAGS = {
-    messages.ERROR: 'danger'
-}
 
 WIKI_ANONYMOUS_WRITE = True
 WIKI_ANONYMOUS_CREATE = False
