@@ -117,15 +117,33 @@ class Update(UpdateView):
     model = User
     form_class = forms.UserUpdateForm
     template_name = "wiki/accounts/account_settings.html"
-    success_url = "/_accounts/settings/"
 
     def get_object(self, queryset=None):
         return get_object_or_404(self.model, pk=self.request.user.pk)
+
+    def get(self, request, *args, **kwargs):
+        """
+        Save the initial referer
+        """
+        self.referer = request.META.get('HTTP_REFERER', '')
+        request.session['login_referer'] = self.referer
+        return UpdateView.get(self, request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.referer = request.session.get('login_referer', '')
+        return UpdateView.post(self, request, *args, **kwargs)
 
     def form_valid(self, form):
         pw = form.cleaned_data["password1"]
         if pw is not "":
             self.object.set_password(pw)
-            self.object.save()
+        self.object.save()
+
         messages.info(self.request, _("Account info saved!"))
-        return super(Update, self).form_valid(form)
+
+        # Redirect after saving
+        if self.referer:
+            return redirect(self.referer)
+        if django_settings.LOGIN_REDIRECT_URL:
+            return redirect(django_settings.LOGIN_REDIRECT_URL)
+        return redirect("wiki:root")

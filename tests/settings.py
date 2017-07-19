@@ -1,5 +1,8 @@
 import os
 
+from django.core.urlresolvers import reverse_lazy
+
+
 TESTS_DATA_ROOT = os.path.dirname(__file__)
 
 MEDIA_ROOT = os.path.join(TESTS_DATA_ROOT, 'media')
@@ -63,3 +66,5 @@ TEMPLATES = [
         },
     },
 ]
+
+LOGIN_REDIRECT_URL = reverse_lazy('wiki:get', kwargs={'path': ''})
