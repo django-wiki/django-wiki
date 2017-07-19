@@ -22,6 +22,7 @@ django-wiki 0.3 (unreleased)
  * Move article support with redirects (Frank Loemker) #640
  * Crop paginator window when there are >9 pages in a list (Frank Loemker) #646
  * Render django.contrib.messages with template tag and inclusion template: Configurable and bootstrap 3 compatible (Benjamin Bach and Frank Loemker) #654
+ * Don't hardcode redirect url in account update view (Benjamin Bach) #650
 
 
 django-wiki 0.2.4
