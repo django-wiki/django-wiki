@@ -21,8 +21,8 @@
          {% endif %}
       </a>
     </div>
-    {% with paginator.object_list.count as cnt %}
-       {% blocktrans %}List of all <strong>{{ cnt }} changes</strong> in the wiki.{% endblocktrans %}
+    {% with paginator.object_list.count as cnt and paginator.count as total_cnt %}
+       {% blocktrans %}Showing <strong>{{ cnt }}</strong> of <strong>{{ total_cnt }}</strong> changes in list{% endblocktrans %}
     {% endwith %}
   </div>
 </div>
@@ -99,10 +99,10 @@
   {% else %}
     <div class="alert alert-info">
       {% if page %}
-        {% trans "No more changes to display !" %}
+        {% trans "No more changes to display!" %}
         <a href="?page={{page|add:"-1"}}">{% trans "Go back to previous page" %}</a>
       {% else %}
-        {% trans "No changes to display !" %}
+        {% trans "No changes to display!" %}
       {% endif %}
     </div>
   {% endif %}
