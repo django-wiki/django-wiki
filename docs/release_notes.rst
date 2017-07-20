@@ -7,11 +7,12 @@ Release plan
 
 The next release series **0.3** will support Django 1.11. Likewise, it will be
 the last series with Python 2 support. Series 0.3 is in development in the
-current master branch.
+current master branch and the latest pre-release is available with
+`pip install wiki --pre`.
 
 
-django-wiki 0.3 (unreleased)
-----------------------------
+django-wiki 0.3b1
+-----------------
 
  * Test refactor: Use django-functest and separate WebTest from Selenium (Luke Plant) #634
  * Django 1.11 compatibility (Luke Plant) #634
