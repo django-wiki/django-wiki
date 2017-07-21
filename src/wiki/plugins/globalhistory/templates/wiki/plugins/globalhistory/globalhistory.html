@@ -30,20 +30,65 @@
 <div class="row">
   <div class="col-sm-12">
   {% if revisions %}
-    <table class="table table-bordered table-striped table-condensed table-hover">
-      <thead>
-        <tr>
-          <th>{% trans "Revision ID" %}</th>
-          <th>{% trans "Article" %}</th>
-          <th>{% trans "Message" %}</th>
-          <th>{% trans "User" %}</th>
-          <th>{% trans "Date" %}</th>
-          <th></th>
-        </tr>
-      </thead>
+    {% for revision in revisions %}
 
-      <tbody>
-        {% for article_revision in revisions %}
+      {% with revision.article as article %}
+
+      <div class="panel-group" id="accordion{{ revision.revision_number }}">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <a class="panel-toggle" style="float: left;" href="#collapse{{ revision.revision_number }}" onclick="get_diff_json('{% url 'wiki:diff' revision.id %}', $('#collapse{{ revision.revision_number }}'))">
+              {% if revision == article.current_revision %}
+                <i class="fa fa-flag"></i>
+              {% else %}
+                <i class="fa fa-plus"></i>
+              {% endif %}
+              {% include "wiki/includes/revision_info.html" with current_revision=article.current_revision %}
+              <div class="text-muted">
+                <small>
+                {% if revision.user_message %}
+                  {{ revision.user_message }}
+                {% elif revision.automatic_log %}
+                  {{ revision.automatic_log }}
+                {% else %}
+                  ({% trans "no log message" %})
+                {% endif %}
+                </small>
+              </div>
+            </a>
+            <div class="progress progress-striped active" style="display: none; width: 40px; float: left; margin-top: 7px; margin-bottom: -7px;">
+              <div class="bar" style="width: 100%;"></div>
+            </div>
+            <div class="pull-right" style="vertical-align: middle; margin: 8px 8px;">
+              <button type="submit" class="btn btn-default" onclick="$('#previewModal').modal('show'); this.form.target='previewWindow'; this.form.r.value='{{ revision.id }}'; this.form.action='{% url 'wiki:preview_revision' article.id %}'; $('#previewModal .switch-to-revision').attr('href', '{% url 'wiki:change_revision' path=urlpath.path article_id=article.id revision_id=revision.id %}')">
+                <span class="fa fa-eye fa-fw"></span>
+                {% trans "Preview this revision" %}
+              </button>
+
+            </div>
+            <div style="clear: both"></div>
+          </div>
+          <div id="collapse{{ revision.revision_number }}" class="panel-collapse collapse">
+            <div class="panel-body diff-container" style="padding: 0;">
+              <dl class="dl-horizontal">
+                <dt>{% trans "Auto log:" %}</dt>
+                <dd>{{ revision.automatic_log|default:"-"|linebreaksbr }}</dd>
+              </dl>
+              <table class="table table-condensed" style="margin: 0; border-collapse: collapse;">
+                <thead>
+                  <tr>
+                    <th class="linenumber">{% if revision.previous_revision %}#{{revision.previous_revision.revision_number}}{% endif %}</th>
+                    <th class="linenumber">#{{revision.revision_number}}</th>
+                    <th>{% trans "Change" %}</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+{% comment %}
           <tr>
             <td>
               {{ article_revision.revision_number }}
@@ -93,9 +138,12 @@
               <a href="{% url 'wiki:get' article_revision.article.pk %}" class="btn btn-primary btn-xs">{% trans "Go to article" %}</a>
             </td>
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+{% endcomment %}
+
+
+    {% endwith %}
+    {% endfor %}
+
   {% else %}
     <div class="alert alert-info">
       {% if page %}
