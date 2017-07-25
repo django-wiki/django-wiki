@@ -55,6 +55,11 @@ class AttachmentView(ArticleMixin, FormView):
         return redirect("wiki:attachments_index", path=self.urlpath.path, article_id=self.article.id)
     
     def get_context_data(self, **kwargs):
+        # Needed since Django 1.9 because get_context_data is no longer called
+        # with the form instance
+        if 'form' not in kwargs:
+            kwargs['form'] = self.get_form()
+
         kwargs['attachments'] = self.attachments
         kwargs['search_form'] = forms.SearchForm()
         kwargs['selected_tab'] = 'attachments'
@@ -127,6 +132,8 @@ class AttachmentReplaceView(ArticleMixin, FormView):
         return {'description': self.attachment.current_revision.description}
     
     def get_context_data(self, **kwargs):
+        if 'form' not in kwargs:
+            kwargs['form'] = self.get_form()
         kwargs['attachment'] = self.attachment
         kwargs['selected_tab'] = 'attachments'
         return super(AttachmentReplaceView, self).get_context_data(**kwargs)
@@ -178,6 +185,8 @@ class AttachmentChangeRevisionView(ArticleMixin, View):
     
     def get_context_data(self, **kwargs):
         kwargs['selected_tab'] = 'attachments'
+        if 'form' not in kwargs:
+            kwargs['form'] = self.get_form()
         return ArticleMixin.get_context_data(self, **kwargs)
 
 class AttachmentAddView(ArticleMixin, View):
@@ -231,6 +240,8 @@ class AttachmentDeleteView(ArticleMixin, FormView):
     def get_context_data(self, **kwargs):
         kwargs['attachment'] = self.attachment
         kwargs['selected_tab'] = 'attachments'
+        if 'form' not in kwargs:
+            kwargs['form'] = self.get_form()
         return super(AttachmentDeleteView, self).get_context_data(**kwargs)
 
 
@@ -265,4 +276,6 @@ class AttachmentSearchView(ArticleMixin, ListView):
         kwargs.update(kwargs_article)
         kwargs.update(kwargs_listview)
         kwargs['selected_tab'] = 'attachments'
+        if 'form' not in kwargs:
+            kwargs['form'] = self.get_form()
         return kwargs
