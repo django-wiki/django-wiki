@@ -3,7 +3,6 @@ from os import path as os_path
 import os
 
 PROJECT_PATH = os_path.abspath(os_path.split(__file__)[0])
-PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 DEBUG = True
 
@@ -80,7 +79,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(PROJECT_DIR, 'templates'),
+            os.path.join(PROJECT_PATH, 'templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
