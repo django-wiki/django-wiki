@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.utils.translation import ugettext_lazy as _
 
 from wiki.conf import settings
@@ -13,9 +13,9 @@ from django.core.urlresolvers import reverse_lazy
 class LinkPlugin(BasePlugin):
     
     slug = 'links'
-    urlpatterns = patterns('',
+    urlpatterns = [
         url(r'^json/query-urlpath/$', views.QueryUrlPath.as_view(), name='links_query_urlpath'),
-    )
+    ]
     
     sidebar = {'headline': _('Links'),
                'icon_class': 'icon-bookmark',

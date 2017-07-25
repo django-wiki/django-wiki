@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.utils.translation import ugettext_lazy as _
 
 from wiki.core.plugins import registry
@@ -39,15 +39,15 @@ class ImagePlugin(BasePlugin):
         css = {
             'screen': 'wiki/colorbox/example1/colorbox.css'
         }
-    
-    urlpatterns = patterns('',
+
+    urlpatterns = [
         url('^$', views.ImageView.as_view(), name='images_index'),
         url('^delete/(?P<image_id>\d+)/$', views.DeleteView.as_view(), name='images_delete'),
         url('^restore/(?P<image_id>\d+)/$', views.DeleteView.as_view(), name='images_restore', kwargs={'restore': True}),
         url('^purge/(?P<image_id>\d+)/$', views.PurgeView.as_view(), name='images_purge'),
         url('^(?P<image_id>\d+)/revision/change/(?P<rev_id>\d+)/$', views.RevisionChangeView.as_view(), name='images_restore'),
         url('^(?P<image_id>\d+)/revision/add/$', views.RevisionAddView.as_view(), name='images_add_revision'),
-    )
+    ]
 
     markdown_extensions = [ImageExtension()]
     
