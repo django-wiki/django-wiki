@@ -43,11 +43,13 @@ class Create(FormView, ArticleMixin):
     @method_decorator(get_article(can_write=True))
     def dispatch(self, request, article, *args, **kwargs):
         return super(Create, self).dispatch(request, article, *args, **kwargs)
-    
-    def get_form(self, form_class):
+
+    def get_form(self, form_class=None):
         """
         Returns an instance of the form to be used in this view.
         """
+        if form_class is None:
+            form_class = self.get_form_class()
         kwargs = self.get_form_kwargs()
         initial = kwargs.get('initial', {})
         initial['slug'] = self.request.GET.get('slug', None)
@@ -145,9 +147,9 @@ class Delete(FormView, ArticleMixin):
     
     def get_initial(self):
         return {'revision': self.article.current_revision}
-    
-    def get_form(self, form_class):
-        form = super(Delete, self).get_form(form_class)
+
+    def get_form(self, form_class=None):
+        form = super(Delete, self).get_form(form_class=form_class)
         if self.article.can_moderate(self.request.user):
             form.fields['purge'].widget = forms.forms.CheckboxInput()
         return form
@@ -222,12 +224,14 @@ class Edit(ArticleMixin, FormView):
         self.sidebar_plugins = plugin_registry.get_sidebar()
         self.sidebar = []
         return super(Edit, self).dispatch(request, article, *args, **kwargs)
-    
-    def get_form(self, form_class):
+
+    def get_form(self, form_class=None):
         """
         Checks from querystring data that the edit form is actually being saved,
         otherwise removes the 'data' and 'files' kwargs from form initialisation.
         """
+        if form_class is None:
+            form_class = self.get_form_class()
         kwargs = self.get_form_kwargs()
         if self.request.POST.get('save', '') != '1' and self.request.POST.get('preview') != '1':
             kwargs['data'] = None
@@ -362,10 +366,6 @@ class Deleted(Delete):
     def get_initial(self):
         return {'revision': self.article.current_revision,
                 'purge': True}
-
-    def get_form(self, form_class):
-        form = super(Delete, self).get_form(form_class)
-        return form
 
     def get_context_data(self, **kwargs):
         # Needed since Django 1.9 because get_context_data is no longer called
