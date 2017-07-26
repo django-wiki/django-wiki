@@ -12,5 +12,3 @@ IMAGE_PATH_OBSCURIFY = getattr(django_settings, 'WIKI_IMAGE_PATH_OBSCURIFY', Tru
 ANONYMOUS = getattr(django_settings, 'WIKI_ATTACHMENTS_ANONYMOUS', False)
 
 SLUG = 'images'
-
-APP_LABEL = 'wiki'

@@ -48,13 +48,7 @@ MEDIA_URL = '/media/'
 
 STATIC_ROOT = os_path.join(PROJECT_PATH, 'static')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-)
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
-)
+
 
 SECRET_KEY = 'b^fv_)t39h%9p40)fnkfblo##jkr!$0)lkp6bpy!fi*f$4*92!'
 
@@ -87,8 +81,8 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.template.context_processors.debug",
                 "django.template.context_processors.i18n",
-                "django.core.context_processors.media",
-                "django.core.context_processors.static",
+                "django.template.context_processors.media",
+                "django.template.context_processors.static",
                 "django.template.context_processors.request",  # TODO: is this needed?
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",

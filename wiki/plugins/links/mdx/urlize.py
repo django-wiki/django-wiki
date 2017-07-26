@@ -95,6 +95,8 @@ class UrlizeExtension(markdown.Extension):
         md.inlinePatterns['autolink'] = UrlizePattern(URLIZE_RE, md)
 
 def makeExtension(configs=None):
+    if configs is None:
+        configs = {}
     return UrlizeExtension(configs=configs)
 
 if __name__ == "__main__":

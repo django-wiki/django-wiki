@@ -18,10 +18,7 @@ class ArticleSubscription(ArticlePlugin, Subscription):
                 {'user': self.settings.user.username,
                  'article': self.article.current_revision.title,
                  'type': self.notification_type.label})
-    
-    class Meta:
-        app_label = settings.APP_LABEL
-    
+
 
 def default_url(article, urlpath=None):
     try:

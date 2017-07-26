@@ -45,12 +45,16 @@ class ImagePreprocessor(markdown.preprocessors.Preprocessor):
                     caption_lines.append(line[4:])
                     line = None
                 else:
-                    html = render_to_string("wiki/plugins/images/render.html",
-                                            Context({'image': image, 
-                                                     'caption': article_markdown("\n".join(caption_lines),
-                                                                                 self.markdown.article,
-                                                                                 extensions=self.markdown.registeredExtensions), 
-                                                     'align': alignment}))
+                    html = render_to_string(
+                        "wiki/plugins/images/render.html",
+                        context={
+                            'image': image,
+                            'caption': article_markdown("\n".join(caption_lines),
+                                                        self.markdown.article,
+                                                        extensions=self.markdown.registeredExtensions),
+                            'align': alignment
+                        }
+                    )
                     line = html + line
                     previous_line_was_image = False
             if not line is None:
