@@ -8,7 +8,6 @@ admin.autodiscover()
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^notify/', include('django_notify.urls', namespace='notify')),
 ]
 
 if settings.DEBUG:

@@ -16,6 +16,7 @@ from django.forms.widgets import HiddenInput
 from wiki.core.plugins.base import PluginSettingsFormMixin
 from django.contrib.auth.models import User
 from wiki.core import permissions
+from wiki.core.compat import BuildAttrsCompat
 
 class SpamProtectionMixin():
     
@@ -100,7 +101,7 @@ class EditForm(forms.Form):
         return cd
 
 
-class SelectWidgetBootstrap(forms.Select):
+class SelectWidgetBootstrap(BuildAttrsCompat, forms.Select):
     """
     http://twitter.github.com/bootstrap/components.html#buttonDropdowns
     Needs bootstrap and jquery
@@ -143,7 +144,7 @@ class SelectWidgetBootstrap(forms.Select):
     
     def render(self, name, value, attrs=None, choices=()):
         if value is None: value = ''
-        final_attrs = self.build_attrs(attrs, name=name)
+        final_attrs = self.build_attrs_compat(attrs, name=name)
         output = ["""<div%(attrs)s>"""
                   """    <button class="btn btn-group-label" type="button">%(label)s</button>"""
                   """    <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">"""
