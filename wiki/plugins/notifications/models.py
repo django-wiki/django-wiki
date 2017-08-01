@@ -3,8 +3,7 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import signals
 
-from django_notify import notify
-from django_notify.models import Subscription
+from django_notify.models import notify, Subscription
 
 from wiki import models as wiki_models
 from wiki.models.pluginbase import ArticlePlugin
@@ -19,10 +18,7 @@ class ArticleSubscription(ArticlePlugin, Subscription):
                 {'user': self.settings.user.username,
                  'article': self.article.current_revision.title,
                  'type': self.notification_type.label})
-    
-    class Meta:
-        app_label = settings.APP_LABEL
-    
+
 
 def default_url(article, urlpath=None):
     try:

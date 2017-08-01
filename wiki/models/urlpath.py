@@ -33,7 +33,6 @@ class URLPath(MPTTModel):
     INHERIT_PERMISSIONS = True
     
     objects = managers.URLPathManager()
-    _default_manager = objects
     
     articles = fields.GenericRelation(ArticleForObject)
     
@@ -148,7 +147,6 @@ class URLPath(MPTTModel):
         verbose_name = _(u'URL path')
         verbose_name_plural = _(u'URL paths')
         unique_together = ('site', 'parent', 'slug')
-        app_label = settings.APP_LABEL
     
     def clean(self, *args, **kwargs):
         if self.slug and not self.parent:

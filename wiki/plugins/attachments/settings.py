@@ -1,6 +1,5 @@
 from django.conf import settings as django_settings
 
-APP_LABEL = 'wiki'
 SLUG = "attachments"
 
 # Allow anonymous users to upload (not nice on an open network)

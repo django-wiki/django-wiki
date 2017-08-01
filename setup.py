@@ -29,7 +29,7 @@ package_data = dict(
 
 setup(
     name = "django-wiki",
-    version = "0.0.10",
+    version="0.0.11",
     author = "Benjamin Bach",
     author_email = "benjamin@overtag.dk",
     description = ("A wiki system written for the Django framework."),
@@ -39,7 +39,7 @@ setup(
     long_description=read('README.md'),
     zip_safe = False,
     install_requires=[
-        'Django>=1.4',
+        'Django>=1.8',
         'markdown',
         'django-sekizai',
         'django-mptt',

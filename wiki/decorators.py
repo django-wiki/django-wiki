@@ -24,9 +24,9 @@ def response_forbidden(request, article, urlpath):
     if request.user.is_anonymous():
         return redirect(django_settings.LOGIN_URL)
     else:
-        c = RequestContext(request, {'article': article,
-                                     'urlpath' : urlpath})
-        return HttpResponseForbidden(render_to_string("wiki/permission_denied.html", context_instance=c))
+        return HttpResponseForbidden(
+            render_to_string("wiki/permission_denied.html", context={'article': article, 'urlpath': urlpath},
+                             request=request))
 
 def get_article(func=None, can_read=True, can_write=False, 
                  deleted_contents=False, not_locked=False,
@@ -75,8 +75,9 @@ def get_article(func=None, can_read=True, can_write=False,
                     parent = models.URLPath.get_by_path(path)
                     return redirect(reverse("wiki:create", kwargs={'path': parent.path,}) + "?slug=%s" % pathlist[-1])
                 except models.URLPath.DoesNotExist:
-                    c = RequestContext(request, {'error_type' : 'ancestors_missing'})
-                    return HttpResponseNotFound(render_to_string("wiki/error.html", context_instance=c))
+                    return HttpResponseNotFound(
+                        render_to_string("wiki/error.html", context={'error_type': 'ancestors_missing'},
+                                         request=request))
             if urlpath.article:
                 # urlpath is already smart about prefetching items on article (like current_revision), so we don't have to
                 article = urlpath.article

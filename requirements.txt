@@ -1,6 +1,6 @@
-django<1.9
-South==1.0.1
-Markdown<2.3.0
-django-sekizai<0.7
-django-mptt<0.8
-sorl-thumbnail<13
+django>=1.8,<2.0
+Markdown>=2.6,<2.7
+django-sekizai>=0.10
+django-mptt>=0.8.6,<0.9
+sorl-thumbnail>=12,<13
+six>=1.10.0,<2.0.0

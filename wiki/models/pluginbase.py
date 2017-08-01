@@ -27,7 +27,6 @@ There are three kinds of plugin base models:
 
 from article import Article, ArticleRevision
 
-from wiki.conf import settings 
 
 class ArticlePlugin(models.Model):
     """This is the mother of all plugins. Extending from it means a deletion
@@ -55,10 +54,8 @@ class ArticlePlugin(models.Model):
     def purge(self):
         """Remove related contents completely, ie. media files."""
         pass
-    
-    class Meta:
-        app_label = settings.APP_LABEL
-    
+
+
 class ReusablePlugin(ArticlePlugin):
     """Extend from this model if you have a plugin that may be related to many
     articles. Please note that the ArticlePlugin.article ForeignKey STAYS! This
@@ -101,9 +98,7 @@ class ReusablePlugin(ArticlePlugin):
                 self.article = articles[0]
             
         super(ReusablePlugin, self).save(*args, **kwargs)
-    
-    class Meta:
-        app_label = settings.APP_LABEL
+
 
 class SimplePluginCreateError(Exception): pass
 
@@ -148,9 +143,7 @@ class SimplePlugin(ArticlePlugin):
             
             self.article_revision = new_revision
         super(SimplePlugin, self).save(*args, **kwargs)
-    
-    class Meta:
-        app_label = settings.APP_LABEL
+
 
 class RevisionPlugin(ArticlePlugin):
     """
@@ -188,8 +181,6 @@ class RevisionPlugin(ArticlePlugin):
         self.current_revision = new_revision
         if save: self.save()
 
-    class Meta:
-        app_label = settings.APP_LABEL
 
 
 class RevisionPluginRevision(BaseRevisionMixin, models.Model):
@@ -226,7 +217,6 @@ class RevisionPluginRevision(BaseRevisionMixin, models.Model):
             self.plugin.save()
 
     class Meta:
-        app_label = settings.APP_LABEL
         get_latest_by = 'revision_number'
         ordering = ('-created',)
 

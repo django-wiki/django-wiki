@@ -6,7 +6,6 @@ from django.core.urlresolvers import reverse_lazy
 URL_CASE_SENSITIVE = getattr(django_settings, 'WIKI_URL_CASE_SENSITIVE', False)
 
 # Non-configurable (at the moment)
-APP_LABEL = 'wiki'
 WIKI_LANGUAGE = 'markdown'
 
 # The editor class to use -- maybe a 3rd party or your own...? You can always

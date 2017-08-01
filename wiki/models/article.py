@@ -169,7 +169,6 @@ class Article(models.Model):
         return _(u'Article without content (%(id)d)') % {'id': self.id}
 
     class Meta:
-        app_label = settings.APP_LABEL
         permissions = (
             ("moderate", "Can edit all articles and lock/unlock/restore"),
             ("assign", "Can change ownership of any article"),
@@ -203,7 +202,6 @@ class ArticleForObject(models.Model):
     is_mptt = models.BooleanField(default=False, editable=False)
 
     class Meta:
-        app_label = settings.APP_LABEL
         verbose_name = _(u'Article for object')
         verbose_name_plural = _(u'Articles for object')
         # Do not allow several objects
@@ -311,7 +309,6 @@ class ArticleRevision(BaseRevisionMixin, models.Model):
             self.article.save()
 
     class Meta:
-        app_label = settings.APP_LABEL
         get_latest_by = 'revision_number'
         ordering = ('created',)
         unique_together = ('article', 'revision_number')
