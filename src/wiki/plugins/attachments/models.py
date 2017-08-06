@@ -197,7 +197,7 @@ def on_revision_delete(instance, *args, **kwargs):
 @disable_signal_for_loaddata
 def on_attachment_revision_pre_save(**kwargs):
     instance = kwargs['instance']
-    if kwargs.get('created', False):
+    if instance._state.adding:
         update_previous_revision = (
             not instance.previous_revision and
             instance.attachment and
