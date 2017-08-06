@@ -98,7 +98,13 @@
       $("#article_edit_form").data("changed",true);
     }
     window.onbeforeunload = confirmOnPageExit;
-    $("#article_edit_form").on("submit", function () {
+    var click_time = 0;
+    $("#article_edit_form").on("submit", function (ev) {
+        now = Date.now();
+        elapsed = now-click_time;
+        click_time = now;
+        if (elapsed < 3000)
+            ev.preventDefault();
         window.onbeforeunload = null;
         return true;
     });
