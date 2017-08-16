@@ -11,7 +11,7 @@ current master branch and the latest pre-release is available with
 `pip install wiki --pre`.
 
 
-django-wiki 0.3b1
+django-wiki 0.3b2
 -----------------
 
  * Test refactor: Use django-functest and separate WebTest from Selenium (Luke Plant) #634
@@ -25,6 +25,7 @@ django-wiki 0.3b1
  * Render django.contrib.messages with template tag and inclusion template: Configurable and bootstrap 3 compatible (Benjamin Bach and Frank Loemker) #654
  * Don't hardcode redirect url in account update view (Benjamin Bach) #650
  * Python 3.6 support added to test matrix (Benjamin Bach) #664
+ * Fix restoring of attachments and other RevisionPlugin types after deletion (Frank Loemker) #672
 
 
 django-wiki 0.2.4
