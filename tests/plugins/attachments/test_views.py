@@ -175,6 +175,6 @@ class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClient
         output = self.get_article('[attachment:1 title:"Test title 2" size]')
         expected = (
             '<span class="attachment"><a href=".*attachments/download/1/"'
-            ' title="Click to download test\.txt">\s*Test title 2 \[25\sbytes\]\s*</a>'
+            ' title="Click to download test\.txt">\s*Test title 2 \[25[^b]bytes\]\s*</a>'
         )
         self._assertRegex(output, expected)
