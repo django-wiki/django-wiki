@@ -106,7 +106,7 @@ MARKDOWN_HTML_ATTRIBUTES.update(
 )
 
 #: Allowed inline styles in Markdown article contents, default is no styles
-#: (empty list)
+#: (empty list).
 MARKDOWN_HTML_STYLES = (
     getattr(
         django_settings,
@@ -121,7 +121,7 @@ _project_defined_attrs = getattr(
     False)
 
 # If styles are allowed but no custom attributes are defined, we allow styles
-# for all kinds of tags
+# for all kinds of tags.
 if MARKDOWN_HTML_STYLES and not _project_defined_attrs:
     MARKDOWN_HTML_ATTRIBUTES['*'] = 'style'
 
@@ -147,7 +147,7 @@ LOG_IPS_ANONYMOUS = getattr(django_settings, 'WIKI_LOG_IPS_ANONYMOUS', True)
 #: Do we want to log IPs of logged in users?
 LOG_IPS_USERS = getattr(django_settings, 'WIKI_LOG_IPS_USERS', False)
 
-#: Map from message.tag to bootstrap class name
+#: Mapping from message.tag to bootstrap class names.
 MESSAGE_TAG_CSS_CLASS = getattr(
     django_settings,
     'WIKI_MESSAGE_TAG_CSS_CLASS',
@@ -168,34 +168,34 @@ MESSAGE_TAG_CSS_CLASS = getattr(
 # in separate settings...
 
 #: A function returning True/False if a user has permission to
-#: read contents of an article + plugins
-#: Relevance: viewing articles and plugins
+#: read contents of an article and plugins.
+#: Relevance: Viewing articles and plugins.
 CAN_READ = getattr(django_settings, 'WIKI_CAN_READ', None)
 
 #: A function returning True/False if a user has permission to
-#: change contents, ie add new revisions to an article
-#: Often, plugins also use this
-#: Relevance: editing articles, changing revisions, editing plugins
+#: change contents, i.e. add new revisions to an article.
+#: Often, plugins also use this.
+#: Relevance: Editing articles, changing revisions, editing plugins.
 CAN_WRITE = getattr(django_settings, 'WIKI_CAN_WRITE', None)
 
 #: A function returning True/False if a user has permission to assign
-#: permissions on an article
-#: Relevance: changing owner and group membership
+#: permissions on an article.
+#: Relevance: Changing owner and group membership.
 CAN_ASSIGN = getattr(django_settings, 'WIKI_CAN_ASSIGN', None)
 
-#: A function returning True/False if the owner of an article has permission to change
-#: the group to a user's own groups
-#: Relevance: changing group membership
+#: A function returning True/False if the owner of an article has permission
+#: to change the group to a user's own groups.
+#: Relevance: Changing group membership.
 CAN_ASSIGN_OWNER = getattr(django_settings, 'WIKI_ASSIGN_OWNER', None)
 
 #: A function returning True/False if a user has permission to change
-#: read/write access for groups and others
+#: read/write access for groups and others.
 CAN_CHANGE_PERMISSIONS = getattr(
     django_settings,
     'WIKI_CAN_CHANGE_PERMISSIONS',
     None)
 
-#: Specifies if a user has access to soft deletion of articles
+#: Specifies if a user has access to soft deletion of articles.
 CAN_DELETE = getattr(django_settings, 'WIKI_CAN_DELETE', None)
 
 #: A function returning True/False if a user has permission to change
@@ -206,25 +206,26 @@ CAN_MODERATE = getattr(django_settings, 'WIKI_CAN_MODERATE', None)
 #: new groups and users for the wiki.
 CAN_ADMIN = getattr(django_settings, 'WIKI_CAN_ADMIN', None)
 
-#: Treat anonymous (non logged in) users as the "other" user group
+#: Treat anonymous (i.e. non logged in) users as the "other" user group.
 ANONYMOUS = getattr(django_settings, 'WIKI_ANONYMOUS', True)
 
-#: Globally enable write access for anonymous users, if true anonymous users will be treated
-#: as the others_write boolean field on models.Article.
+#: Globally enable write access for anonymous users, if true anonymous users
+#: will be treated as the others_write boolean field on models.Article.
 ANONYMOUS_WRITE = getattr(django_settings, 'WIKI_ANONYMOUS_WRITE', False)
 
-#: Globally enable create access for anonymous users
-#: Defaults to ANONYMOUS_WRITE.
+#: Globally enable create access for anonymous users.
+#: Defaults to ``ANONYMOUS_WRITE``.
 ANONYMOUS_CREATE = getattr(
     django_settings,
     'WIKI_ANONYMOUS_CREATE',
     ANONYMOUS_WRITE)
 
-#: Default setting to allow anonymous users upload access (used in
-#: plugins.attachments and plugins.images).
+#: Default setting to allow anonymous users upload access. Used in
+#: plugins.attachments and plugins.images, and can be overwritten in
+#: these plugins.
 ANONYMOUS_UPLOAD = getattr(django_settings, 'WIKI_ANONYMOUS_UPLOAD', False)
 
-#: Sign up, login and logout views should be accessible
+#: Sign up, login and logout views should be accessible.
 ACCOUNT_HANDLING = getattr(django_settings, 'WIKI_ACCOUNT_HANDLING', True)
 
 #: Signup allowed? If it's not allowed, logged in superusers can still access
@@ -246,7 +247,7 @@ else:
 # OTHER SETTINGS #
 ##################
 
-#: Maximum amount of children to display in a menu before going "+more"
+#: Maximum amount of children to display in a menu before showing "+more".
 #: NEVER set this to 0 as it will wrongly inform the user that there are no
 #: children and for instance that an article can be safely deleted.
 SHOW_MAX_CHILDREN = getattr(django_settings, 'WIKI_SHOW_MAX_CHILDREN', 20)
@@ -257,8 +258,7 @@ USE_BOOTSTRAP_SELECT_WIDGET = getattr(
     'WIKI_USE_BOOTSTRAP_SELECT_WIDGET',
     True)
 
-#: dottedname of class used to construct urlpatterns for wiki.
-#:
+#: Dotted name of the class used to construct urlpatterns for the wiki.
 #: Default is wiki.urls.WikiURLPatterns. To customize urls or view handlers,
 #: you can derive from this.
 URL_CONFIG_CLASS = getattr(
@@ -266,7 +266,7 @@ URL_CONFIG_CLASS = getattr(
     'WIKI_URL_CONFIG_CLASS',
     'wiki.urls.WikiURLPatterns')
 
-#: Search view - dotted path denoting where the search view Class is located
+#: Search view - dotted path denoting where the search view Class is located.
 SEARCH_VIEW = getattr(
     django_settings,
     'WIKI_SEARCH_VIEW',
@@ -276,41 +276,41 @@ SEARCH_VIEW = getattr(
     'wiki.plugins.haystack.views.HaystackSearchView'
 )
 
-#: Seconds of timeout before renewing article cache. Articles are automatically
+#: Seconds of timeout before renewing the article cache. Articles are automatically
 #: renewed whenever an edit occurs but article content may be generated from
 #: other objects that are changed.
 CACHE_TIMEOUT = getattr(django_settings, 'WIKI_CACHE_TIMEOUT', 600)
 
-#: Choose the Group model to use. Defaults to django's auth.Group
+#: Choose the Group model to use for permission handling. Defaults to django's auth.Group.
 GROUP_MODEL = getattr(django_settings, 'WIKI_GROUP_MODEL', 'auth.Group')
 
 ###################
 # SPAM PROTECTION #
 ###################
 
-#: Maximum allowed revisions per hour for any given user or IP
+#: Maximum allowed revisions per hour for any given user or IP.
 REVISIONS_PER_HOUR = getattr(django_settings, 'WIKI_REVISIONS_PER_HOUR', 60)
 
-#: Maximum allowed revisions per minute for any given user or IP
+#: Maximum allowed revisions per minute for any given user or IP.
 REVISIONS_PER_MINUTES = getattr(
     django_settings,
     'WIKI_REVISIONS_PER_MINUTES',
     5)
 
-#: Maximum allowed revisions per hour for any given user or IP
+#: Maximum allowed revisions per hour for any anonymous user and any IP.
 REVISIONS_PER_HOUR_ANONYMOUS = getattr(
     django_settings,
     'WIKI_REVISIONS_PER_HOUR_ANONYMOUS',
     10)
 
-#: Maximum allowed revisions per hour for any given user or IP
+#: Maximum allowed revisions per minute for any anonymous user and any IP.
 REVISIONS_PER_MINUTES_ANONYMOUS = getattr(
     django_settings,
     'WIKI_REVISIONS_PER_MINUTES_ANONYMOUS',
     2)
 
-#: Number of minutes for looking up REVISIONS_PER_MINUTES and
-#: REVISIONS_PER_MINUTES_ANONYMOUS
+#: Number of minutes to look back for looking up ``REVISIONS_PER_MINUTES``
+#: and ``REVISIONS_PER_MINUTES_ANONYMOUS``.
 REVISIONS_MINUTES_LOOKBACK = getattr(
     django_settings,
     'WIKI_REVISIONS_MINUTES_LOOKBACK',
@@ -320,11 +320,12 @@ REVISIONS_MINUTES_LOOKBACK = getattr(
 # STORAGE #
 ###########
 
-#: Django Storage backend to use for images, attachments etc.
+#: Default Django storage backend to use for images, attachments etc.
 STORAGE_BACKEND = getattr(
     django_settings,
     'WIKI_STORAGE_BACKEND',
     default_storage)
 
-#: Use Sendfile
+#: Use Django Sendfile for sending out files? Otherwise the whole file is
+#: first read into memory and than send with a mime type based on the file.
 USE_SENDFILE = getattr(django_settings, 'WIKI_ATTACHMENTS_USE_SENDFILE', False)
