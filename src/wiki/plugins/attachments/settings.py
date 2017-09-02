@@ -35,7 +35,7 @@ UPLOAD_PATH = getattr(
 
 #: Should the upload path be obscurified? If so, a random hash will be
 #: added to the path such that someone can not guess the location of files
-#:(if you have restricted permissions and the files are still located
+#: (if you have restricted permissions and the files are still located
 #: within the web server's file system).
 UPLOAD_PATH_OBSCURIFY = getattr(
     django_settings,
