@@ -114,7 +114,10 @@ class URLPath(MPTTModel):
         If the cached ancestors were not set explicitly, they will be retrieved from
         the database.
         """
-        if not self.get_ancestors().exists():
+        # "not self.pk": HACK needed till PR#591 is included in all supported django-mptt
+        #   versions. Prevent accessing a deleted URLPath when deleting it from the admin
+        #   interface.
+        if not self.pk or not self.get_ancestors().exists():
             self._cached_ancestors = []
         if not hasattr(self, "_cached_ancestors"):
             self._cached_ancestors = list(
