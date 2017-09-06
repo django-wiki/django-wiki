@@ -6,29 +6,50 @@ Release plan
 ------------
 
 The next release series **0.3** will support Django 1.11. Likewise, it will be
-the last series with Python 2 support. Series 0.3 is in development in the
-current master branch and the latest pre-release is available with
-`pip install wiki --pre`.
+the last series with Python 2 support.
 
 
 django-wiki 0.3b3
 -----------------
 
- * Test refactor: Use django-functest and separate WebTest from Selenium (Luke Plant) #634
- * Django 1.11 compatibility (Luke Plant) #634
- * Repo refactor: Moved ``wiki`` package to ``src/`` folder and test code to ``tests/`` #631
+.. note:: Series 0.3 is in development in the current master branch and the
+  latest pre-release is available with ``pip install wiki --pre``.
+
+**Translation updates from Transifex**
+
+ * Languages that `need support <https://www.transifex.com/django-wiki/django-wiki/languages/>`__:
+ 
+   * Slovak 88%
+   * Dutch 86%
+   * Finnish 85%
+   * Japanese 70%
+   * Chinese (Taiwan) 36%
+   * Norwegian 31%
+   * Turkish 30%
+   * Czech 13%
+   
+ * >90% completed: Chinese, French, German, Russian, Spanish, Danish, Korean, Polish, Portuguese (Brazilian), Spanish
+
+**New features**
+
  * New bootstrapped image insert dialog (Frank Loemker) #628
  * Allow the HTML tag ``<hr>`` (Frank Loemker) #629
  * Global History overview of page revisions (Frank Loemker and Maximilien Cuony) #627
  * Move article support with redirects (Frank Loemker) #640
+ * Django 1.11 compatibility (Luke Plant) #634
  * Crop paginator window when there are >9 pages in a list (Frank Loemker) #646
+ * Extended syntax for attachment macro: ``[attachment:id title:"text" size]`` (Frank Loemker) #678
+ * Add Sphinx documentation for plugin settings (Frank Loemker) #681
+
+**Bug fixes and smaller changes**
+
+ * Test refactor: Use django-functest and separate WebTest from Selenium (Luke Plant) #634
+ * Repo refactor: Moved ``wiki`` package to ``src/`` folder and test code to ``tests/`` #631
  * Render django.contrib.messages with template tag and inclusion template: Configurable and bootstrap 3 compatible (Benjamin Bach and Frank Loemker) #654
  * Don't hardcode redirect url in account update view (Benjamin Bach) #650
  * Python 3.6 support added to test matrix (Benjamin Bach) #664
  * Fix restoring of attachments and other RevisionPlugin types after deletion (Frank Loemker) #672
- * Extended syntax for attachment macro: ``[attachment:id title:"text" size]`` (Frank Loemker) #678
  * Keep CSS global namespace clean, refactor CSS rule ``label`` -> ``.wiki-label label`` (Christian Duvholt) #679
- * Add Sphinx documentation for plugin settings (Frank Loemker) #681
  * Fix article settings page in Django 1.11 (Frank Loemker) #682
  * Fix upstream MPTT breaking deletion of articles from django-admin (Frank Loemker) #683
 
