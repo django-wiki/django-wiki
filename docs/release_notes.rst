@@ -11,7 +11,7 @@ current master branch and the latest pre-release is available with
 `pip install wiki --pre`.
 
 
-django-wiki 0.3b2
+django-wiki 0.3b3
 -----------------
 
  * Test refactor: Use django-functest and separate WebTest from Selenium (Luke Plant) #634
@@ -26,6 +26,11 @@ django-wiki 0.3b2
  * Don't hardcode redirect url in account update view (Benjamin Bach) #650
  * Python 3.6 support added to test matrix (Benjamin Bach) #664
  * Fix restoring of attachments and other RevisionPlugin types after deletion (Frank Loemker) #672
+ * Extended syntax for attachment macro: ``[attachment:id title:"text" size]`` (Frank Loemker) #678
+ * Keep CSS global namespace clean, refactor CSS rule ``label`` -> ``.wiki-label label`` (Christian Duvholt) #679
+ * Add Sphinx documentation for plugin settings (Frank Loemker) #681
+ * Fix article settings page in Django 1.11 (Frank Loemker) #682
+ * Fix upstream MPTT breaking deletion of articles from django-admin (Frank Loemker) #683
 
 
 django-wiki 0.2.4
