@@ -54,7 +54,8 @@ class AttachmentPreprocessor(markdown.preprocessors.Preprocessor):
                     kwargs={
                         'article_id': self.markdown.article.id,
                         'attachment_id': attachment.id,
-                    })
+                    }
+                )
 
                 # The readability of the attachment is decided relative
                 # to the owner of the original article.
@@ -79,14 +80,17 @@ class AttachmentPreprocessor(markdown.preprocessors.Preprocessor):
                         'title': title,
                         'size': size,
                         'attachment_can_read': attachment_can_read,
-                    })
+                    }
+                )
                 line = self.markdown.htmlStash.store(html, safe=True)
             except models.Attachment.DoesNotExist:
-                html = """<span class="attachment attachment-deleted">Attachment with ID #%s is deleted.</span>""" % attachment_id
+                html = (
+                    """<span class="attachment attachment-deleted">Attachment with ID """
+                    """#{} is deleted.</span>"""
+                ).format(attachment_id)
                 line = line.replace(
-                    '['+m.group(2)+']',
-                    self.markdown.htmlStash.store(
-                        html,
-                        safe=True))
+                    '[' + m.group(2) + ']',
+                    self.markdown.htmlStash.store(html, safe=True)
+                )
             new_text.append(before + line + after)
         return new_text
