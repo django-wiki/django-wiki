@@ -326,6 +326,6 @@ STORAGE_BACKEND = getattr(
     'WIKI_STORAGE_BACKEND',
     default_storage)
 
-#: Use Django Sendfile for sending out files? Otherwise the whole file is
+#: Use django-sendfile for sending out files? Otherwise the whole file is
 #: first read into memory and than send with a mime type based on the file.
 USE_SENDFILE = getattr(django_settings, 'WIKI_ATTACHMENTS_USE_SENDFILE', False)
