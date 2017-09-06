@@ -1,14 +1,22 @@
 from __future__ import print_function, unicode_literals
 
+import sys
 from io import BytesIO
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.urlresolvers import reverse
+from wiki.models import URLPath
 
 from ...base import RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase
 
 
 class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
+
+    def _assertRegex(self, a, b):
+        if sys.version_info >= (3, 2):
+            return self.assertRegex(a, b)
+        else:
+            return self.assertRegexpMatches(a, b)
 
     def setUp(self):
         super(AttachmentTests, self).setUp()
@@ -39,8 +47,8 @@ class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClient
         )
         return filestream
 
-    def _create_test_attachment(self):
-        url = reverse('wiki:attachments_index', kwargs={'path': ''})
+    def _create_test_attachment(self, path):
+        url = reverse('wiki:attachments_index', kwargs={'path': path})
         filestream = self._createTxtFilestream(self.test_data)
         response = self.c.post(url,
                                {'description': self.test_description,
@@ -55,7 +63,7 @@ class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClient
         Uploading a file should preserve the original filename.
         Uploading should not modify file in any way.
         """
-        self._create_test_attachment()
+        self._create_test_attachment('')
         # Check the object was created.
         attachment = self.article.shared_plugins_set.all()[0].attachment
         self.assertEqual(attachment.original_filename, 'test.txt')
@@ -125,7 +133,48 @@ class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClient
         """
         Call the search view
         """
-        self._create_test_attachment()
+        self._create_test_attachment('')
         url = reverse('wiki:attachments_search', kwargs={'path': ''})
         response = self.c.get(url, {'query': self.test_description})
         self.assertContains(response, self.test_description)
+
+    def get_article(self, cont):
+        urlpath = URLPath.create_urlpath(
+            URLPath.root(),
+            "html_attach",
+            title="TestAttach",
+            content=cont
+        )
+        self._create_test_attachment(urlpath.path)
+        return urlpath.article.render()
+
+    def test_render(self):
+        output = self.get_article('[attachment:1]')
+        expected = (
+            '<span class="attachment"><a href=".*attachments/download/1/"'
+            ' title="Click to download test\.txt">\s*test\.txt\s*</a>'
+        )
+        self._assertRegex(output, expected)
+
+    def test_render_missing(self):
+        output = self.get_article('[attachment:2]')
+        expected = (
+            '<span class="attachment attachment-deleted">\s*Attachment with ID #2 is deleted.\s*</span>'
+        )
+        self._assertRegex(output, expected)
+
+    def test_render_title(self):
+        output = self.get_article('[attachment:1 title:"Test title"]')
+        expected = (
+            '<span class="attachment"><a href=".*attachments/download/1/"'
+            ' title="Click to download test\.txt">\s*Test title\s*</a>'
+        )
+        self._assertRegex(output, expected)
+
+    def test_render_title_size(self):
+        output = self.get_article('[attachment:1 title:"Test title 2" size]')
+        expected = (
+            '<span class="attachment"><a href=".*attachments/download/1/"'
+            ' title="Click to download test\.txt">\s*Test title 2 \[25[^b]bytes\]\s*</a>'
+        )
+        self._assertRegex(output, expected)
