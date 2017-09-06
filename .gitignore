@@ -8,7 +8,7 @@ testproject/testproject/xapian_index/
 tests/media
 
 # Ignore compiled version of source language
-wiki/locale/en/LC_MESSAGES/django.mo
+src/wiki/locale/en/LC_MESSAGES/django.mo
 
 # Ignore Transifex managed msgids
 src/wiki/locale/*/LC_MESSAGES/django.po
