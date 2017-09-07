@@ -3,8 +3,6 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 import mptt.fields
-import wiki.plugins.images.models
-import wiki.plugins.attachments.models
 from django.conf import settings
 
 
@@ -107,7 +105,7 @@ class Migration(migrations.Migration):
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('deleted', models.BooleanField(default=False, verbose_name='deleted')),
                 ('locked', models.BooleanField(default=False, verbose_name='locked')),
-                ('file', models.FileField(upload_to=wiki.plugins.attachments.models.upload_path, verbose_name='file')),
+                ('file', models.FileField(upload_to='wiki/uploads/', verbose_name='file')),
                 ('description', models.TextField(blank=True)),
             ],
             options={
@@ -182,7 +180,7 @@ class Migration(migrations.Migration):
             name='ImageRevision',
             fields=[
                 ('revisionpluginrevision_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.RevisionPluginRevision')),
-                ('image', models.ImageField(upload_to=wiki.plugins.images.models.upload_path, width_field=b'width', height_field=b'height', max_length=2000, blank=True, null=True)),
+                ('image', models.ImageField(upload_to='wiki/uploads/', width_field=b'width', height_field=b'height', max_length=2000, blank=True, null=True)),
                 ('width', models.SmallIntegerField(null=True, blank=True)),
                 ('height', models.SmallIntegerField(null=True, blank=True)),
             ],

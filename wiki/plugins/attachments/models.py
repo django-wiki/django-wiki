@@ -35,6 +35,7 @@ class Attachment(ReusablePlugin):
     class Meta:
         verbose_name = _(u'attachment')
         verbose_name_plural = _(u'attachments')
+        db_table = 'wiki_attachments_attachment'
     
     def __unicode__(self):
         return "%s: %s" % (self.article.current_revision.title, self.original_filename)    
@@ -85,6 +86,7 @@ class AttachmentRevision(BaseRevisionMixin, models.Model):
         verbose_name_plural = _(u'attachment revisions')
         ordering = ('created',)
         get_latest_by = 'revision_number'
+        db_table = 'wiki_attachments_attachmentrevision'
         
     def get_filename(self):
         """Used to retrieve the filename of a revision.

@@ -39,6 +39,7 @@ class Image(RevisionPlugin):
     class Meta:
         verbose_name = _(u'image')
         verbose_name_plural = _(u'images')
+        db_table = 'wiki_images_image'
     
     def __unicode__(self):
         title = (_(u'Image: %s') % self.current_revision.imagerevision.get_filename()) if self.current_revision else _(u'Current revision not set!!')
@@ -90,6 +91,7 @@ class ImageRevision(RevisionPluginRevision):
     class Meta:
         verbose_name = _(u'image revision')
         verbose_name_plural = _(u'image revisions')
+        db_table = 'wiki_images_imagerevision'
         ordering = ('-created',)
 
     def __unicode__(self):

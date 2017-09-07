@@ -19,6 +19,8 @@ class ArticleSubscription(ArticlePlugin, Subscription):
                  'article': self.article.current_revision.title,
                  'type': self.notification_type.label})
 
+    class Meta:
+        db_table = 'wiki_notifications_articlesubscription'
 
 def default_url(article, urlpath=None):
     try:
