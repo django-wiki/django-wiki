@@ -66,13 +66,13 @@
                       {% trans "Account Settings" %}
                     </a>
                   </li>
+                  {% endif %}
                   <li>
-                    <a href="{% url 'wiki:logout' %}">
+                    <a href="{{ "LOGOUT_URL"|wiki_settings }}">
                       <i class="fa fa-power-off"></i>
                       {% trans "Log out" %}
                     </a>
                   </li>
-                  {% endif %}
                   {% if user.is_superuser %}
                   <li>
                     <a href="{% url 'wiki:deleted_list' %}">
