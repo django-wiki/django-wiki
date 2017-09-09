@@ -40,6 +40,7 @@ django-wiki 0.3b3
  * Crop paginator window when there are >9 pages in a list (Frank Loemker) #646
  * Extended syntax for attachment macro: ``[attachment:id title:"text" size]`` (Frank Loemker) #678
  * Add Sphinx documentation for plugin settings (Frank Loemker) #681
+ * Show "log out" in menu when account handling is disabled (jenda1) #691
 
 **Bug fixes and smaller changes**
 
