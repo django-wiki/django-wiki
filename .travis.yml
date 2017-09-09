@@ -1,8 +1,5 @@
 # Because Python 3.6 is available on GCE
-sudo: required
 dist: trusty
-
-env: PIP_DOWNLOAD_CACHE="pip_cache"
 
 language: python
 
@@ -11,6 +8,30 @@ python:
   - "3.4"
   - "3.5"
   - "3.6"
+
+env:
+  - LINT="yes"
+  - DJANGO="1.8"
+  - DJANGO="1.9"
+  - DJANGO="1.10"
+  - DJANGO="1.11"
+#  - PIP_DOWNLOAD_CACHE="pip_cache"
+
+matrix:
+  exclude:
+  - python: "3.4"
+    env: LINT="yes"
+  - python: "3.5"
+    env: LINT="yes"
+  - python: "3.6"
+    env: LINT="yes"
+  - python: "3.6"
+    env: DJANGO="1.8"
+  - python: "3.6"
+    env: DJANGO="1.9"
+  - python: "3.6"
+    env: DJANGO="1.10"
+
 
 addons:
   apt:
