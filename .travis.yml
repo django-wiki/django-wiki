@@ -1,12 +1,37 @@
 # Because Python 3.6 is available on GCE
-sudo: required
 dist: trusty
-
-env: PIP_DOWNLOAD_CACHE="pip_cache"
 
 language: python
 
-python: 3.6
+python:
+  - "2.7"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+
+env:
+  - LINT="yes"
+  - DJANGO="1.8"
+  - DJANGO="1.9"
+  - DJANGO="1.10"
+  - DJANGO="1.11"
+#  - PIP_DOWNLOAD_CACHE="pip_cache"
+
+matrix:
+  exclude:
+  - python: "3.4"
+    env: LINT="yes"
+  - python: "3.5"
+    env: LINT="yes"
+  - python: "3.6"
+    env: LINT="yes"
+  - python: "3.6"
+    env: DJANGO="1.8"
+  - python: "3.6"
+    env: DJANGO="1.9"
+  - python: "3.6"
+    env: DJANGO="1.10"
+
 
 addons:
   apt:
@@ -14,28 +39,11 @@ addons:
       - libjpeg8
       - libjpeg8-dev
 
-# See tox.ini for env list
-env:
-- TOXENV=py27-django18
-- TOXENV=py27-django19
-- TOXENV=py27-django110
-- TOXENV=py27-django111
-- TOXENV=py34-django18
-- TOXENV=py34-django19
-- TOXENV=py34-django110
-- TOXENV=py34-django111
-- TOXENV=py35-django18
-- TOXENV=py35-django19
-- TOXENV=py35-django110
-- TOXENV=py35-django111
-- TOXENV=py36-django111
-- TOXENV=lint
-
 install:
-  - pip install tox>=2.1
+  - pip install tox>=2.1 tox-travis
 
 script:
-  - tox -e $TOXENV
+  - tox
 
 notifications:
   irc:
