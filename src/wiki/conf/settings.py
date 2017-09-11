@@ -72,6 +72,8 @@ _default_tag_whitelists = bleach.ALLOWED_TAGS + [
     'dl',
     'dt',
     'dd',
+    'input',
+    'textarea',
 ] + ['h{}'.format(n) for n in range(8)]
 
 
@@ -94,6 +96,12 @@ for tag in MARKDOWN_HTML_WHITELIST:
 
 _default_attribute_whitelist['img'].append('src')
 _default_attribute_whitelist['img'].append('alt')
+_default_attribute_whitelist['input'].append('type')
+_default_attribute_whitelist['input'].append('disabled')
+_default_attribute_whitelist['input'].append('multiple')
+_default_attribute_whitelist['textarea'].append('disabled')
+
+_default_attribute_whitelist['*'] = lambda t, n, v: n.startswith('data-') and len(n) > 5
 
 #: Dictionary of allowed attributes in Markdown article contents.
 MARKDOWN_HTML_ATTRIBUTES = _default_attribute_whitelist

@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'wiki.plugins.images',
     'wiki.plugins.macros',
     'wiki.plugins.globalhistory',
+    'wiki.plugins.inputs',
 ]
 MIDDLEWARE_CLASSES = [
     'django.middleware.common.CommonMiddleware',

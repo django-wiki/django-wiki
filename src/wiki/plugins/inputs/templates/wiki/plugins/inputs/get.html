@@ -1,0 +1,11 @@
+{% load wiki_input_tags %}
+
+{% block content %}
+<span class="dw-input"
+      {% if variant %}
+      data-variant="{{variant}}"
+      {% endif %}
+      {% if not preview %}
+      data-url="{% url 'wiki:input_data' input_name=name path=path %}"
+      {% endif %}>...</span>
+{% endblock %}
