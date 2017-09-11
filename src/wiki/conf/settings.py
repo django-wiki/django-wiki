@@ -101,7 +101,13 @@ _default_attribute_whitelist['input'].append('disabled')
 _default_attribute_whitelist['input'].append('multiple')
 _default_attribute_whitelist['textarea'].append('disabled')
 
-_default_attribute_whitelist['*'] = lambda t, n, v: n.startswith('data-') and len(n) > 5
+# FIXME: require bleach >= 2.0
+# _default_attribute_whitelist['*'] = lambda t, n, v: n.startswith('data-') and len(n) > 5
+# this is workaround:
+_default_attribute_whitelist['input'].append('data-url')
+_default_attribute_whitelist['input'].append('data-variant')
+_default_attribute_whitelist['textarea'].append('data-url')
+
 
 #: Dictionary of allowed attributes in Markdown article contents.
 MARKDOWN_HTML_ATTRIBUTES = _default_attribute_whitelist
