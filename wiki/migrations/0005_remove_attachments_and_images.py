@@ -17,10 +17,6 @@ class Migration(migrations.Migration):
             name='current_revision',
         ),
         migrations.RemoveField(
-            model_name='attachment',
-            name='reusableplugin_ptr',
-        ),
-        migrations.RemoveField(
             model_name='attachmentrevision',
             name='attachment',
         ),
@@ -31,10 +27,6 @@ class Migration(migrations.Migration):
         migrations.RemoveField(
             model_name='attachmentrevision',
             name='user',
-        ),
-        migrations.RemoveField(
-            model_name='image',
-            name='revisionplugin_ptr',
         ),
         migrations.RemoveField(
             model_name='imagerevision',
