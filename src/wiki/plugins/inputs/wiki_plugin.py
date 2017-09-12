@@ -13,7 +13,7 @@ class InputsPlugin(BasePlugin):
     slug = settings.SLUG
 
     urlpatterns = {'article': [
-        url(r'change/(?P<input_name>.*)$', views.InputDataView.as_view(), name='input_data'),
+        url(r'(?P<input_name>.*)$', views.InputDataView.as_view(), name='input_data'),
     ]}
 
 

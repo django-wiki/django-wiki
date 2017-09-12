@@ -8,7 +8,8 @@ import markdown
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 from six import string_types
-from wiki.plugins.inputs import settings
+from .. import settings
+from .. import utils
 
 # See:
 # http://stackoverflow.com/questions/430759/regex-for-managing-escaped-characters-for-items-like-string-literals
@@ -23,10 +24,6 @@ KWARG_RE = re.compile(
     r'\s*(?P<arg>[-a-z0-9_./]+)(:(?P<value>([^\'\s]+|%s)))?' %
     re_sq_short,
     re.IGNORECASE)
-
-FIELD_RE = re.compile(
-    r'\s*((?P<article>[-a-z0-9_./]+)/)?(?P<field>\w+?)\s*$'
-)
 
 
 class InputExtension(markdown.Extension):
@@ -131,21 +128,17 @@ class InputPreprocessor(markdown.preprocessors.Preprocessor):
 
     def cmd_get(self, variant, args):
         for k in args:
-            m = FIELD_RE.match(k)
-            if args[k] is None and m:
+            field = utils.parse_input(self.markdown.article, k)
+            if args[k] is None and field:
                 break
         else:
             return "<b>!!</b>"
 
-        path = self.markdown.article.get_absolute_url()
-        if m.group('article'):
-            path = os.path.normpath(os.path.join(path, m.group('article')))
-
         return render_to_string(
             "wiki/plugins/inputs/get.html".format(variant),
             context=dict(
-                name=m.group('field'),
-                path=path.strip('/')+"/",
+                name=field[1],
+                path=field[0],
                 preview=self.markdown.preview,
                 variant=variant,
             )

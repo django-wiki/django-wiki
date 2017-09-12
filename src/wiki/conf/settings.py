@@ -107,6 +107,8 @@ _default_attribute_whitelist['textarea'].append('disabled')
 _default_attribute_whitelist['input'].append('data-url')
 _default_attribute_whitelist['input'].append('data-variant')
 _default_attribute_whitelist['textarea'].append('data-url')
+_default_attribute_whitelist['span'].append('data-url')
+_default_attribute_whitelist['span'].append('data-variant')
 
 
 #: Dictionary of allowed attributes in Markdown article contents.
