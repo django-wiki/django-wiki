@@ -20,3 +20,8 @@ class AttachmentsConfig(AppConfig):
     name = 'wiki.plugins.attachments'
     verbose_name = _("Wiki attachments")
     label = 'wiki_attachments'
+
+class InputsConfig(AppConfig):
+    name = 'wiki.plugins.inputs'
+    verbose_name = _("Wiki inputs")
+    label = 'wiki_inputs'

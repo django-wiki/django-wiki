@@ -1,0 +1,7 @@
+{% if preview %}
+<textarea class="form-control dw-input" disabled>...</textarea>
+{% else %}
+<textarea class="form-control dw-input"
+          data-url="{% url 'wiki:input_data' input_name=name article_id=article.id %}"
+          disabled />...</textarea>
+{% endif %}

@@ -1,0 +1,18 @@
+<table class="table table-condensed">
+  <thead>
+    <tr>
+      {{for titles}}
+      <th>{{:#data}}</th>
+      {{/for}}
+    </tr>
+  </thead>
+  <tbody>
+    {{for values}}
+    <tr>
+      {{for #data}}
+      <td>{{:#data}}</td>
+      {{/for}}
+    </tr>
+    {{/for}}
+  </tbody>
+</table>

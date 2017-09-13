@@ -1,0 +1,9 @@
+{% if preview %}
+<input class="form-control dw-input" type="file" disabled multiple/>
+{% else %}
+<input class="form-control dw-input"
+       type="file"
+       data-url="{% url 'wiki:input_data' input_name=name article_id=article.id %}"
+       disabled
+       multiple />
+{% endif %}

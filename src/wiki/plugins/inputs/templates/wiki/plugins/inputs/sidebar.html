@@ -1,0 +1,20 @@
+{% load i18n wiki_input_tags %}
+{% allowed_input_types as input_types %}
+
+{% for it in input_types %}
+<h4>{{ it.short_description }}</h4>
+{{ it.help_text|linebreaks|safe }}
+{% if it.example_code %}
+<pre>{{ it.example_code }}</pre>
+{% endif %}
+{% if it.args %}
+<table class="table table-compact">
+{% for arg,description in it.args.items %}
+  <tr>
+    <th>{{ arg }}</th>
+    <td>{{ description }}</td>
+  </tr>
+{% endfor %}
+</table>
+{% endif %}
+{% endfor %}
