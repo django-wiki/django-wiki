@@ -2,7 +2,6 @@
 from __future__ import absolute_import, unicode_literals
 
 import re
-import os.path
 import itertools
 import markdown
 from django.template.loader import render_to_string
