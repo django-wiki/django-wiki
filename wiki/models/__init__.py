@@ -5,8 +5,9 @@ from django.core.exceptions import ImproperlyConfigured
 from six import string_types, text_type
 
 # TODO: Don't use wildcards
-from article import *
-from urlpath import *
+from .article import *
+from .pluginbase import *
+from .urlpath import *
 from django.utils.functional import lazy
 
 # TODO: Should the below stuff be executed a more logical place?
