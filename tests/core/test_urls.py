@@ -19,7 +19,7 @@ class WikiCustomUrlPatterns(WikiURLPatterns):
 
     def get_article_urls(self):
         urlpatterns = [
-            url('^some-prefix/(?P<article_id>\d+)/$',
+            url('^some-prefix/(?P<article_id>[0-9]+)/$',
                 self.article_view_class.as_view(),
                 name='get'
                 ),

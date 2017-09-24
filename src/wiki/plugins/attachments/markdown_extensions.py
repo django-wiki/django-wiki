@@ -10,7 +10,7 @@ from wiki.core.permissions import can_read
 from wiki.plugins.attachments import models
 
 ATTACHMENT_RE = re.compile(
-    r'(?P<before>.*)\[( *((attachment\:(?P<id>\d+))|(title\:\"(?P<title>[^\"]+)\")|(?P<size>size)))+\](?P<after>.*)',
+    r'(?P<before>.*)\[( *((attachment\:(?P<id>[0-9]+))|(title\:\"(?P<title>[^\"]+)\")|(?P<size>size)))+\](?P<after>.*)',
     re.IGNORECASE)
 
 

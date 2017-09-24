@@ -75,7 +75,7 @@ class WikiURLPatterns(object):
             url(r'^_search/$',
                 get_class_from_str(self.search_view_class).as_view(),
                 name='search'),
-            url(r'^_revision/diff/(?P<revision_id>\d+)/$',
+            url(r'^_revision/diff/(?P<revision_id>[0-9]+)/$',
                 self.article_diff_view,
                 name='diff'),
         ]
@@ -114,14 +114,14 @@ class WikiURLPatterns(object):
             # This one doesn't work because it don't know
             # where to redirect after...
             url(
-                r'^_revision/change/(?P<article_id>\d+)/(?P<revision_id>\d+)/$',
+                r'^_revision/change/(?P<article_id>[0-9]+)/(?P<revision_id>[0-9]+)/$',
                 self.revision_change_view_class.as_view(),
                 name='change_revision'),
-            url(r'^_revision/preview/(?P<article_id>\d+)/$',
+            url(r'^_revision/preview/(?P<article_id>[0-9]+)/$',
                 self.article_preview_view_class.as_view(),
                 name='preview_revision'),
             url(
-                r'^_revision/merge/(?P<article_id>\d+)/(?P<revision_id>\d+)/preview/$',
+                r'^_revision/merge/(?P<article_id>[0-9]+)/(?P<revision_id>[0-9]+)/preview/$',
                 self.revision_merge_view,
                 name='merge_revision_preview',
                 kwargs={
@@ -132,42 +132,42 @@ class WikiURLPatterns(object):
     def get_article_urls(self):
         urlpatterns = [
             # Paths decided by article_ids
-            url(r'^(?P<article_id>\d+)/$',
+            url(r'^(?P<article_id>[0-9]+)/$',
                 self.article_view_class.as_view(),
                 name='get'),
-            url(r'^(?P<article_id>\d+)/delete/$',
+            url(r'^(?P<article_id>[0-9]+)/delete/$',
                 self.article_delete_view_class.as_view(),
                 name='delete'),
-            url(r'^(?P<article_id>\d+)/deleted/$',
+            url(r'^(?P<article_id>[0-9]+)/deleted/$',
                 self.article_deleted_view_class.as_view(),
                 name='deleted'),
-            url(r'^(?P<article_id>\d+)/edit/$',
+            url(r'^(?P<article_id>[0-9]+)/edit/$',
                 self.article_edit_view_class.as_view(),
                 name='edit'),
-            url(r'^(?P<article_id>\d+)/move/$',
+            url(r'^(?P<article_id>[0-9]+)/move/$',
                 self.article_move_view_class.as_view(),
                 name='move'),
-            url(r'^(?P<article_id>\d+)/preview/$',
+            url(r'^(?P<article_id>[0-9]+)/preview/$',
                 self.article_preview_view_class.as_view(),
                 name='preview'),
-            url(r'^(?P<article_id>\d+)/history/$',
+            url(r'^(?P<article_id>[0-9]+)/history/$',
                 self.article_history_view_class.as_view(),
                 name='history'),
-            url(r'^(?P<article_id>\d+)/settings/$',
+            url(r'^(?P<article_id>[0-9]+)/settings/$',
                 self.article_settings_view_class.as_view(),
                 name='settings'),
-            url(r'^(?P<article_id>\d+)/source/$',
+            url(r'^(?P<article_id>[0-9]+)/source/$',
                 self.article_source_view_class.as_view(),
                 name='source'),
             url(
-                r'^(?P<article_id>\d+)/revision/change/(?P<revision_id>\d+)/$',
+                r'^(?P<article_id>[0-9]+)/revision/change/(?P<revision_id>[0-9]+)/$',
                 self.revision_change_view_class.as_view(),
                 name='change_revision'),
             url(
-                r'^(?P<article_id>\d+)/revision/merge/(?P<revision_id>\d+)/$',
+                r'^(?P<article_id>[0-9]+)/revision/merge/(?P<revision_id>[0-9]+)/$',
                 self.revision_merge_view,
                 name='merge_revision'),
-            url(r'^(?P<article_id>\d+)/plugin/(?P<slug>\w+)/$',
+            url(r'^(?P<article_id>[0-9]+)/plugin/(?P<slug>\w+)/$',
                 self.article_plugin_view_class.as_view(),
                 name='plugin'),
         ]
@@ -207,11 +207,11 @@ class WikiURLPatterns(object):
                 self.article_source_view_class.as_view(),
                 name='source'),
             url(
-                r'^(?P<path>.+/|)_revision/change/(?P<revision_id>\d+)/$',
+                r'^(?P<path>.+/|)_revision/change/(?P<revision_id>[0-9]+)/$',
                 self.revision_change_view_class.as_view(),
                 name='change_revision'),
             url(
-                r'^(?P<path>.+/|)_revision/merge/(?P<revision_id>\d+)/$',
+                r'^(?P<path>.+/|)_revision/merge/(?P<revision_id>[0-9]+)/$',
                 self.revision_merge_view,
                 name='merge_revision'),
             url(r'^(?P<path>.+/|)_plugin/(?P<slug>\w+)/$',
@@ -232,7 +232,7 @@ class WikiURLPatterns(object):
             if slug:
                 article_urlpatterns = plugin.urlpatterns.get('article', [])
                 urlpatterns += [
-                    url(r'^(?P<article_id>\d+)/plugin/' + slug + '/',
+                    url(r'^(?P<article_id>[0-9]+)/plugin/' + slug + '/',
                         include(article_urlpatterns)),
                     url(r'^(?P<path>.+/|)_plugin/' + slug + '/',
                         include(article_urlpatterns)),
