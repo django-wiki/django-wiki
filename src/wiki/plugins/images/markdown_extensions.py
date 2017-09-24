@@ -8,7 +8,7 @@ from django.template.loader import render_to_string
 from wiki.plugins.images import models, settings
 
 IMAGE_RE = re.compile(
-    r'.*(\[image\:(?P<id>\d+)(\s+align\:(?P<align>right|left))?(\s+size\:(?P<size>default|small|medium|large|orig))?\s*\]).*',
+    r'.*(\[image\:(?P<id>[0-9]+)(\s+align\:(?P<align>right|left))?(\s+size\:(?P<size>default|small|medium|large|orig))?\s*\]).*',
     re.IGNORECASE)
 
 class ImageExtension(markdown.Extension):

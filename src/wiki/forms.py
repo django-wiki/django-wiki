@@ -36,7 +36,7 @@ except ImportError:
 
 
 validate_slug_numbers = RegexValidator(
-    r'^\d+$',
+    r'^[0-9]+$',
     _("A 'slug' cannot consist solely of numbers."),
     'invalid',
     inverse_match=True
