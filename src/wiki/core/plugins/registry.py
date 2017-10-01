@@ -15,6 +15,8 @@ _settings_forms = []
 _markdown_extensions = []
 _article_tabs = []
 _sidebar = []
+_html_whitelist = []
+_html_attributes = {}
 
 
 def register(PluginClass):
@@ -48,6 +50,19 @@ def register(PluginClass):
             'markdown_extensions',
             []))
 
+    _html_whitelist.extend(
+        getattr(
+            PluginClass,
+            'html_whitelist',
+            []))
+
+    # TODO: should we sanitize the list somehow or do we trust plugins to 100%?
+    _html_attributes.update(
+        getattr(
+            PluginClass,
+            'html_attributes',
+            dict()))
+
 
 def get_plugins():
     """Get loaded plugins - do not call before all plugins are loaded."""
@@ -71,3 +86,12 @@ def get_sidebar():
 
 def get_settings_forms():
     return _settings_forms
+
+
+def get_html_whitelist():
+    """Returns additional html tags that should be whitelisted"""
+    return _html_whitelist
+
+def get_html_attributes():
+    """Returns additional html attributes that should be whitelisted"""
+    return _html_attributes
