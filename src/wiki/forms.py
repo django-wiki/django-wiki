@@ -16,6 +16,7 @@ from django.forms.widgets import HiddenInput
 from django.utils import timezone
 from django.utils.html import conditional_escape, escape
 from django.utils.safestring import mark_safe
+from django.utils.translation import pgettext_lazy
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
 from django.shortcuts import get_object_or_404
@@ -218,7 +219,7 @@ class EditForm(forms.Form, SpamProtectionMixin):
         widget=getEditor().get_widget())  # @UndefinedVariable
 
     summary = forms.CharField(
-        label=_('Summary'),
+        label=pgettext_lazy('Revision comment', 'Summary'),
         help_text=_(
             'Give a short reason for your edit, which will be stated in the revision log.'),
         required=False)
@@ -407,7 +408,7 @@ class CreateForm(forms.Form, SpamProtectionMixin):
         widget=getEditor().get_widget())  # @UndefinedVariable
 
     summary = forms.CharField(
-        label=_('Summary'),
+        label=pgettext_lazy('Revision comment', 'Summary'),
         help_text=_("Write a brief message for the article's history log."),
         required=False)
 
