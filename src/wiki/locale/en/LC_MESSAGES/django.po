@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-06 14:21+0200\n"
+"POT-Creation-Date: 2017-10-05 13:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,244 +41,245 @@ msgstr ""
 msgid "Settings for plugin"
 msgstr ""
 
-#: forms.py:40
+#: forms.py:41
 msgid "A 'slug' cannot consist solely of numbers."
 msgstr ""
 
-#: forms.py:65
+#: forms.py:66
 msgid "A slug may not begin with an underscore."
 msgstr ""
 
-#: forms.py:68
+#: forms.py:69
 msgid "'admin' is not a permitted slug name."
 msgstr ""
 
-#: forms.py:83
+#: forms.py:84
 #, python-format
 msgid "A deleted article with slug \"%s\" already exists."
 msgstr ""
 
-#: forms.py:87
+#: forms.py:88
 #, python-format
 msgid "A slug named \"%s\" already exists."
 msgstr ""
 
-#: forms.py:96
+#: forms.py:97
 msgid "This slug conflicts with an existing URL."
 msgstr ""
 
-#: forms.py:137
+#: forms.py:138
 msgid "Spam protection failed to find both a logged in user and an IP address."
 msgstr ""
 
-#: forms.py:152
+#: forms.py:153
 #, python-format
 msgid ""
 "Spam protection: You are only allowed to create or edit %(revisions)d "
 "article(s) per %(interval_name)s."
 msgstr ""
 
-#: forms.py:170
+#: forms.py:171
 msgid "minute"
 msgstr ""
 
-#: forms.py:171
+#: forms.py:172
 #, python-format
 msgid "%d minutes"
 msgstr ""
 
-#: forms.py:180
+#: forms.py:181
 msgid "hour"
 msgstr ""
 
-#: forms.py:186 forms.py:214 forms.py:398 templates/wiki/dir.html:48
+#: forms.py:187 forms.py:215 forms.py:399 templates/wiki/dir.html:48
 #: templates/wiki/search.html:30
 msgid "Title"
 msgstr ""
 
-#: forms.py:188
+#: forms.py:189
 msgid "Initial title of the article. May be overridden with revision titles."
 msgstr ""
 
-#: forms.py:190
+#: forms.py:191
 msgid "Type in some contents"
 msgstr ""
 
-#: forms.py:192
+#: forms.py:193
 msgid ""
 "This is just the initial contents of your article. After creating it, you "
 "can use more complex features like adding plugins, meta data, related "
 "articles etc..."
 msgstr ""
 
-#: forms.py:199
+#: forms.py:200
 msgid "Destination"
 msgstr ""
 
-#: forms.py:201
+#: forms.py:202
 msgid "Redirect pages"
 msgstr ""
 
-#: forms.py:202
+#: forms.py:203
 msgid "Create a redirect page for every moved article?"
 msgstr ""
 
-#: forms.py:216 forms.py:405
+#: forms.py:217 forms.py:406
 msgid "Contents"
 msgstr ""
 
-#: forms.py:221 forms.py:410
+#: forms.py:222 forms.py:411
+msgctxt "Revision comment"
 msgid "Summary"
 msgstr ""
 
-#: forms.py:223
+#: forms.py:224
 msgid ""
 "Give a short reason for your edit, which will be stated in the revision log."
 msgstr ""
 
-#: forms.py:279
+#: forms.py:280
 msgid "Article is missing title or has an invalid title"
 msgstr ""
 
-#: forms.py:293
+#: forms.py:294
 msgid ""
 "While you were editing, someone else changed the revision. Your contents "
 "have been automatically merged with the new contents. Please review the text "
 "below."
 msgstr ""
 
-#: forms.py:297
+#: forms.py:298
 msgid "No changes made. Nothing to save."
 msgstr ""
 
-#: forms.py:337
+#: forms.py:338
 msgid "Select an option"
 msgstr ""
 
-#: forms.py:400 templates/wiki/dir.html:49
+#: forms.py:401 templates/wiki/dir.html:49
 msgid "Slug"
 msgstr ""
 
-#: forms.py:402
+#: forms.py:403
 msgid ""
 "This will be the address where your article can be found. Use only "
 "alphanumeric characters and - or _.<br>Note: If you change the slug later "
 "on, links pointing to this article are <b>not</b> updated."
 msgstr ""
 
-#: forms.py:411
+#: forms.py:412
 msgid "Write a brief message for the article's history log."
 msgstr ""
 
-#: forms.py:430
+#: forms.py:431
 msgid "Yes, I am sure"
 msgstr ""
 
-#: forms.py:433 templates/wiki/deleted.html:47
+#: forms.py:434 templates/wiki/deleted.html:47
 msgid "Purge"
 msgstr ""
 
-#: forms.py:435
+#: forms.py:436
 msgid ""
 "Purge the article: Completely remove it (and all its contents) with no undo. "
 "Purging is a good idea if you want to free the slug such that users can "
 "create new articles in its place."
 msgstr ""
 
-#: forms.py:442 plugins/attachments/forms.py:167 plugins/images/forms.py:69
+#: forms.py:443 plugins/attachments/forms.py:167 plugins/images/forms.py:69
 msgid "You are not sure enough!"
 msgstr ""
 
-#: forms.py:446
+#: forms.py:447
 msgid "While you tried to delete this article, it was modified. TAKE CARE!"
 msgstr ""
 
-#: forms.py:453
+#: forms.py:454
 msgid "Lock article"
 msgstr ""
 
-#: forms.py:454
+#: forms.py:455
 msgid "Deny all users access to edit this article."
 msgstr ""
 
-#: forms.py:457
+#: forms.py:458
 msgid "Permissions"
 msgstr ""
 
-#: forms.py:463
+#: forms.py:464
 msgid "Owner"
 msgstr ""
 
-#: forms.py:464
+#: forms.py:465
 msgid "Enter the username of the owner."
 msgstr ""
 
-#: forms.py:467 forms.py:526 plugins/notifications/util.py:14
+#: forms.py:468 forms.py:527 plugins/notifications/util.py:14
 msgid "(none)"
 msgstr ""
 
-#: forms.py:468
+#: forms.py:469
 msgid "Group"
 msgstr ""
 
-#: forms.py:474
+#: forms.py:475
 msgid "Inherit permissions"
 msgstr ""
 
-#: forms.py:476
+#: forms.py:477
 msgid ""
 "Check here to apply the above permissions (excluding group and owner of the "
 "article) recursively to articles below this one."
 msgstr ""
 
-#: forms.py:480
+#: forms.py:481
 msgid "Inherit owner"
 msgstr ""
 
-#: forms.py:482
+#: forms.py:483
 msgid ""
 "Check here to apply the ownership setting recursively to articles below this "
 "one."
 msgstr ""
 
-#: forms.py:486
+#: forms.py:487
 msgid "Inherit group"
 msgstr ""
 
-#: forms.py:488
+#: forms.py:489
 msgid ""
 "Check here to apply the group setting recursively to articles below this one."
 msgstr ""
 
-#: forms.py:493
+#: forms.py:494
 msgid "Permission settings for the article were updated."
 msgstr ""
 
-#: forms.py:496
+#: forms.py:497
 msgid "Your permission settings were unchanged, so nothing saved."
 msgstr ""
 
-#: forms.py:556
+#: forms.py:557
 msgid "No user with that username"
 msgstr ""
 
-#: forms.py:591
+#: forms.py:592
 msgid "Article locked for editing"
 msgstr ""
 
-#: forms.py:598
+#: forms.py:599
 msgid "Article unlocked for editing"
 msgstr ""
 
-#: forms.py:625
+#: forms.py:626
 msgid "Filter..."
 msgstr ""
 
-#: forms.py:635 templates/wiki/base_site.html:44
+#: forms.py:636 templates/wiki/base_site.html:44
 msgid "Search..."
 msgstr ""
 
-#: forms.py:682
+#: forms.py:683
 msgid "Passwords don't match"
 msgstr ""
 
@@ -1442,7 +1443,7 @@ msgstr ""
 msgid "This article was last modified:"
 msgstr ""
 
-#: templates/wiki/base_site.html:72
+#: templates/wiki/base_site.html:73
 msgid "Log out"
 msgstr ""
 
