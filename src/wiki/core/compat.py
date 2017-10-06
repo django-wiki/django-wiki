@@ -3,15 +3,8 @@ compatibility with several Django versions simultaneously."""
 from __future__ import absolute_import, unicode_literals
 
 from django.conf import settings as django_settings
-from django.db import transaction
 
 USER_MODEL = getattr(django_settings, 'AUTH_USER_MODEL', 'auth.User')
-
-
-def get_user_model():
-
-    from django.contrib.auth import get_user_model as gum
-    return gum()
 
 
 # Django 1.11 Widget.build_attrs has a different signature, designed for the new

@@ -14,7 +14,7 @@ from __future__ import absolute_import, unicode_literals
 
 from django.conf import settings as django_settings
 from django.contrib import messages
-from django.contrib.auth import login as auth_login
+from django.contrib.auth import get_user_model, login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.urlresolvers import reverse
@@ -24,7 +24,6 @@ from django.views.generic.base import View
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from wiki import forms
 from wiki.conf import settings
-from wiki.core.compat import get_user_model
 
 User = get_user_model()
 

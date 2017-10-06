@@ -8,6 +8,7 @@ from itertools import chain
 
 from django import forms
 from django.apps import apps
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.core import validators
 from django.core.urlresolvers import Resolver404, resolve
@@ -27,7 +28,7 @@ from six.moves import range
 from wiki import models
 from wiki.conf import settings
 from wiki.core import permissions
-from wiki.core.compat import get_user_model, BuildAttrsCompat
+from wiki.core.compat import BuildAttrsCompat
 from wiki.core.diff import simple_merge
 from wiki.core.plugins.base import PluginSettingsFormMixin
 from wiki.editors import getEditor
