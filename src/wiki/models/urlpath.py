@@ -19,7 +19,6 @@ from mptt.models import MPTTModel
 from six.moves import filter  # @UnresolvedImport
 from wiki import managers
 from wiki.conf import settings
-from wiki.core.compat import atomic, transaction_commit_on_success
 from wiki.core.exceptions import MultipleRootURLs, NoRootURL
 from wiki.decorators import disable_signal_for_loaddata
 from wiki.models.article import Article, ArticleForObject, ArticleRevision
@@ -163,8 +162,7 @@ class URLPath(MPTTModel):
                 return ancestor
         return None
 
-    @atomic
-    @transaction_commit_on_success
+    @transaction.atomic
     def _delete_subtree(self):
         for descendant in self.get_descendants(
                 include_self=True).order_by("-level"):
@@ -293,8 +291,7 @@ class URLPath(MPTTModel):
         return root
 
     @classmethod
-    @atomic
-    @transaction_commit_on_success
+    @transaction.atomic
     def create_urlpath(
             cls,
             parent,

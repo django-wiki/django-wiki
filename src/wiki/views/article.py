@@ -7,6 +7,7 @@ import logging
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.db import transaction
 from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
@@ -19,7 +20,7 @@ from six.moves import range
 from wiki import editors, forms, models
 from wiki.conf import settings
 from wiki.core import permissions
-from wiki.core.compat import atomic, transaction_commit_on_success, urljoin
+from wiki.core.compat import urljoin
 from wiki.core.diff import simple_merge
 from wiki.core.exceptions import NoRootURL
 from wiki.core.paginator import WikiPaginator
@@ -428,8 +429,7 @@ class Move(ArticleMixin, FormView):
 
         return super(Move, self).get_context_data(**kwargs)
 
-    @atomic
-    @transaction_commit_on_success
+    @transaction.atomic
     def form_valid(self, form):
         if not self.urlpath.parent:
             messages.error(
