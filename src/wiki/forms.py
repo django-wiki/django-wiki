@@ -193,9 +193,8 @@ class CreateRootForm(forms.Form):
             'This is just the initial contents of your article. After creating it, you can use more complex features like adding plugins, meta data, related articles etc...'),
         required=False, widget=getEditor().get_widget())  # @UndefinedVariable
 
+
 class MoveForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super(MoveForm, self).__init__(*args, **kwargs)
 
     destination = forms.CharField(label=_('Destination'))
     slug = WikiSlugField(max_length=models.URLPath.SLUG_MAX_LENGTH)
@@ -209,6 +208,7 @@ class MoveForm(forms.Form):
             dest_path = get_object_or_404(models.URLPath, pk=self.cleaned_data['destination'])
             cd['slug'] = _clean_slug(cd['slug'], dest_path)
         return cd
+
 
 class EditForm(forms.Form, SpamProtectionMixin):
 

@@ -97,12 +97,6 @@ class URLPath(MPTTModel):
         related_name='moved_from'
     )
 
-    def __init__(self, *args, **kwargs):
-        pass
-        # Fixed in django-mptt 0.5.3
-        # self._tree_manager = URLPath.objects
-        return super(URLPath, self).__init__(*args, **kwargs)
-
     def __cached_ancestors(self):
         """
         This returns the ancestors of this urlpath. These ancestors are hopefully
