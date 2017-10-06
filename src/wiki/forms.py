@@ -12,15 +12,18 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core import validators
 from django.core.urlresolvers import Resolver404, resolve
 from django.core.validators import RegexValidator
+from django.forms.utils import flatatt
 from django.forms.widgets import HiddenInput
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from django.utils.encoding import force_text
 from django.utils.html import conditional_escape, escape
 from django.utils.safestring import mark_safe
 from django.utils.translation import pgettext_lazy
-from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
-from django.shortcuts import get_object_or_404
+from django.utils.translation import ugettext_lazy as _
 from six.moves import range
+
 from wiki import models
 from wiki.conf import settings
 from wiki.core import permissions
@@ -28,13 +31,6 @@ from wiki.core.compat import get_user_model, BuildAttrsCompat
 from wiki.core.diff import simple_merge
 from wiki.core.plugins.base import PluginSettingsFormMixin
 from wiki.editors import getEditor
-
-try:
-    from django.utils.encoding import force_unicode
-except ImportError:
-    def force_unicode(x):
-        return(x)
-
 
 validate_slug_numbers = RegexValidator(
     r'^[0-9]+$',
@@ -103,12 +99,6 @@ def _clean_slug(slug, urlpath):
 
 User = get_user_model()
 Group = apps.get_model(settings.GROUP_MODEL)
-
-# Due to deprecation of django.forms.util in Django 1.9
-try:
-    from django.forms.utils import flatatt
-except ImportError:
-    from django.forms.util import flatatt
 
 
 class SpamProtectionMixin():
@@ -341,23 +331,23 @@ class SelectWidgetBootstrap(BuildAttrsCompat, forms.Select):
         return mark_safe('\n'.join(output))
 
     def render_option(self, selected_choices, option_value, option_label):
-        option_value = force_unicode(option_value)
+        option_value = force_text(option_value)
         selected_html = (
             option_value in selected_choices) and ' selected="selected"' or ''
         return '<li><a href="javascript:void(0)" data-value="%s"%s>%s</a></li>' % (
             escape(option_value), selected_html,
-            conditional_escape(force_unicode(option_label)))
+            conditional_escape(force_text(option_label)))
 
     def render_options(self, choices, selected_choices):
         # Normalize to strings.
-        selected_choices = set([force_unicode(v) for v in selected_choices])
+        selected_choices = set([force_text(v) for v in selected_choices])
         output = []
         for option_value, option_label in chain(self.choices, choices):
             if isinstance(option_label, (list, tuple)):
                 output.append(
                     '<li class="divider" label="%s"></li>' %
                     escape(
-                        force_unicode(option_value)))
+                        force_text(option_value)))
                 for option in option_label:
                     output.append(
                         self.render_option(

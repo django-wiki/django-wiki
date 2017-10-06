@@ -4,6 +4,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 import warnings
 
+from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
@@ -27,13 +28,6 @@ try:
     notrans = transaction.non_atomic_requests
 except:
     notrans = transaction.commit_manually  # @UndefinedVariable
-
-# Django 1.9 deprecation of contenttypes.generic
-try:
-    from django.contrib.contenttypes.fields import GenericRelation
-except ImportError:
-    from django.contrib.contenttypes.generic import GenericRelation
-
 
 
 log = logging.getLogger(__name__)
