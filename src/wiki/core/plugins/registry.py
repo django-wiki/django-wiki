@@ -56,7 +56,6 @@ def register(PluginClass):
             'html_whitelist',
             []))
 
-    # TODO: should we sanitize the list somehow or do we trust plugins to 100%?
     _html_attributes.update(
         getattr(
             PluginClass,
