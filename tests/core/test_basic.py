@@ -28,8 +28,5 @@ class CustomGroupTests(TestCase):
         self.assertEqual(wiki_settings.GROUP_MODEL, 'auth.Group')
 
     def test_custom(self):
-        if django.VERSION < (1, 7):
-            self.assertEqual(Group, auth.models.Group)
-        else:
-            self.assertEqual(Group, CustomGroup)
-            self.assertEqual(wiki_settings.GROUP_MODEL, 'testdata.CustomGroup')
+        self.assertEqual(Group, CustomGroup)
+        self.assertEqual(wiki_settings.GROUP_MODEL, 'testdata.CustomGroup')
