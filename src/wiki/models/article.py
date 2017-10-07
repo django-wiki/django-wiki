@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.db.models.fields import GenericIPAddressField as IPAddressField
 from django.db.models.signals import post_save, pre_delete, pre_save
 from django.utils import translation
 from django.utils.encoding import python_2_unicode_compatible
@@ -17,18 +19,6 @@ from wiki.core import compat, permissions
 from wiki.core.markdown import article_markdown
 from wiki.decorators import disable_signal_for_loaddata
 
-# Django 1.9 deprecation of IPAddressField
-try:
-    from django.db.models.fields import GenericIPAddressField as IPAddressField
-except ImportError:
-    from django.db.models.fields import IPAddressField
-
-
-# Django 1.9 deprecation of contenttypes.generic
-try:
-    from django.contrib.contenttypes.fields import GenericForeignKey
-except ImportError:
-    from django.contrib.contenttypes.generic import GenericForeignKey
 
 
 @python_2_unicode_compatible

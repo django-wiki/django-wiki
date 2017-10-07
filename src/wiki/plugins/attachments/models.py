@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
-import os.path
+import os
 
 from django.conf import settings as django_settings
 from django.db import models
@@ -88,8 +88,6 @@ def extension_allowed(filename):
 
 
 def upload_path(instance, filename):
-    from os import path
-
     extension = extension_allowed(filename)
 
     # Has to match original extension filename
@@ -112,11 +110,11 @@ def upload_path(instance, filename):
         import hashlib
         m = hashlib.md5(
             str(random.randint(0, 100000000000000)).encode('ascii'))
-        upload_path = path.join(upload_path, m.hexdigest())
+        upload_path = os.path.join(upload_path, m.hexdigest())
 
     if settings.APPEND_EXTENSION:
         filename += '.upload'
-    return path.join(upload_path, filename)
+    return os.path.join(upload_path, filename)
 
 
 @python_2_unicode_compatible
@@ -153,9 +151,7 @@ class AttachmentRevision(BaseRevisionMixin, models.Model):
         """Used to retrieve the file size and not cause exceptions."""
         try:
             return self.file.size
-        except OSError:
-            return None
-        except ValueError:
+        except (ValueError, OSError):
             return None
 
     def __str__(self):

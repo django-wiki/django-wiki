@@ -4,6 +4,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 import warnings
 
+from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
@@ -19,23 +20,9 @@ from mptt.models import MPTTModel
 from six.moves import filter  # @UnresolvedImport
 from wiki import managers
 from wiki.conf import settings
-from wiki.core.compat import atomic, transaction_commit_on_success
 from wiki.core.exceptions import MultipleRootURLs, NoRootURL
 from wiki.decorators import disable_signal_for_loaddata
 from wiki.models.article import Article, ArticleForObject, ArticleRevision
-
-try:
-    notrans = transaction.non_atomic_requests
-except:
-    notrans = transaction.commit_manually  # @UndefinedVariable
-
-# Django 1.9 deprecation of contenttypes.generic
-try:
-    from django.contrib.contenttypes.fields import GenericRelation
-except ImportError:
-    from django.contrib.contenttypes.generic import GenericRelation
-
-
 
 log = logging.getLogger(__name__)
 
@@ -98,12 +85,6 @@ class URLPath(MPTTModel):
         related_name='moved_from'
     )
 
-    def __init__(self, *args, **kwargs):
-        pass
-        # Fixed in django-mptt 0.5.3
-        # self._tree_manager = URLPath.objects
-        return super(URLPath, self).__init__(*args, **kwargs)
-
     def __cached_ancestors(self):
         """
         This returns the ancestors of this urlpath. These ancestors are hopefully
@@ -163,8 +144,7 @@ class URLPath(MPTTModel):
                 return ancestor
         return None
 
-    @atomic
-    @transaction_commit_on_success
+    @transaction.atomic
     def _delete_subtree(self):
         for descendant in self.get_descendants(
                 include_self=True).order_by("-level"):
@@ -293,8 +273,7 @@ class URLPath(MPTTModel):
         return root
 
     @classmethod
-    @atomic
-    @transaction_commit_on_success
+    @transaction.atomic
     def create_urlpath(
             cls,
             parent,

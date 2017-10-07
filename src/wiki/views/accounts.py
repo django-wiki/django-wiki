@@ -14,7 +14,7 @@ from __future__ import absolute_import, unicode_literals
 
 from django.conf import settings as django_settings
 from django.contrib import messages
-from django.contrib.auth import login as auth_login
+from django.contrib.auth import get_user_model, login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.urlresolvers import reverse
@@ -24,7 +24,6 @@ from django.views.generic.base import View
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from wiki import forms
 from wiki.conf import settings
-from wiki.core.compat import get_user_model
 
 User = get_user_model()
 
@@ -49,7 +48,7 @@ class Signup(CreateView):
         return super(Signup, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context = CreateView.get_context_data(self, **kwargs)
+        context = super(Signup, self).get_context_data(**kwargs)
         context['honeypot_class'] = context['form'].honeypot_class
         context['honeypot_jsfunction'] = context['form'].honeypot_jsfunction
         return context
@@ -94,12 +93,12 @@ class Login(FormView):
 
     def post(self, request, *args, **kwargs):
         self.referer = request.session.get('login_referer', '')
-        return FormView.post(self, request, *args, **kwargs)
+        return super(Login, self).post(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         self.referer = request.META.get('HTTP_REFERER', '')
         request.session['login_referer'] = self.referer
-        return FormView.get(self, request, *args, **kwargs)
+        return super(Login, self).get(request, *args, **kwargs)
 
     def form_valid(self, form, *args, **kwargs):
         auth_login(self.request, form.get_user())
@@ -112,6 +111,7 @@ class Login(FormView):
             if not self.referer:
                 return redirect("wiki:root")
             return redirect(self.referer)
+
 
 class Update(UpdateView):
     model = User
@@ -127,11 +127,11 @@ class Update(UpdateView):
         """
         self.referer = request.META.get('HTTP_REFERER', '')
         request.session['login_referer'] = self.referer
-        return UpdateView.get(self, request, *args, **kwargs)
+        return super(Update, self).get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         self.referer = request.session.get('login_referer', '')
-        return UpdateView.post(self, request, *args, **kwargs)
+        return super(Update, self).post(request, *args, **kwargs)
 
     def form_valid(self, form):
         pw = form.cleaned_data["password1"]

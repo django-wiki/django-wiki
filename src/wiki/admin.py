@@ -2,16 +2,11 @@ from __future__ import absolute_import, unicode_literals
 
 from django import forms
 from django.contrib import admin
+from django.contrib.contenttypes.admin import GenericTabularInline
 from django.utils.translation import ugettext_lazy as _
 from mptt.admin import MPTTModelAdmin
 
 from . import editors, models
-
-# Django 1.9 deprecation of contenttypes.generic
-try:
-    from django.contrib.contenttypes.admin import GenericTabularInline
-except ImportError:
-    from django.contrib.contenttypes.generic import GenericTabularInline
 
 
 class ArticleObjectAdmin(GenericTabularInline):

@@ -8,33 +8,30 @@ from itertools import chain
 
 from django import forms
 from django.apps import apps
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.core import validators
 from django.core.urlresolvers import Resolver404, resolve
 from django.core.validators import RegexValidator
+from django.forms.utils import flatatt
 from django.forms.widgets import HiddenInput
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from django.utils.encoding import force_text
 from django.utils.html import conditional_escape, escape
 from django.utils.safestring import mark_safe
 from django.utils.translation import pgettext_lazy
-from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
-from django.shortcuts import get_object_or_404
+from django.utils.translation import ugettext_lazy as _
 from six.moves import range
+
 from wiki import models
 from wiki.conf import settings
 from wiki.core import permissions
-from wiki.core.compat import get_user_model, BuildAttrsCompat
+from wiki.core.compat import BuildAttrsCompat
 from wiki.core.diff import simple_merge
 from wiki.core.plugins.base import PluginSettingsFormMixin
 from wiki.editors import getEditor
-
-try:
-    from django.utils.encoding import force_unicode
-except ImportError:
-    def force_unicode(x):
-        return(x)
-
 
 validate_slug_numbers = RegexValidator(
     r'^[0-9]+$',
@@ -103,12 +100,6 @@ def _clean_slug(slug, urlpath):
 
 User = get_user_model()
 Group = apps.get_model(settings.GROUP_MODEL)
-
-# Due to deprecation of django.forms.util in Django 1.9
-try:
-    from django.forms.utils import flatatt
-except ImportError:
-    from django.forms.util import flatatt
 
 
 class SpamProtectionMixin():
@@ -193,9 +184,8 @@ class CreateRootForm(forms.Form):
             'This is just the initial contents of your article. After creating it, you can use more complex features like adding plugins, meta data, related articles etc...'),
         required=False, widget=getEditor().get_widget())  # @UndefinedVariable
 
+
 class MoveForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super(MoveForm, self).__init__(*args, **kwargs)
 
     destination = forms.CharField(label=_('Destination'))
     slug = WikiSlugField(max_length=models.URLPath.SLUG_MAX_LENGTH)
@@ -209,6 +199,7 @@ class MoveForm(forms.Form):
             dest_path = get_object_or_404(models.URLPath, pk=self.cleaned_data['destination'])
             cd['slug'] = _clean_slug(cd['slug'], dest_path)
         return cd
+
 
 class EditForm(forms.Form, SpamProtectionMixin):
 
@@ -294,8 +285,7 @@ class EditForm(forms.Form, SpamProtectionMixin):
                     'While you were editing, someone else changed the revision. Your contents have been automatically merged with the new contents. Please review the text below.'))
         if ('title' in cd) and cd['title'] == self.initial_revision.title and cd[
                 'content'] == self.initial_revision.content:
-            raise forms.ValidationError(
-                ugettext('No changes made. Nothing to save.'))
+            raise forms.ValidationError(ugettext('No changes made. Nothing to save.'))
         self.check_spam()
         return cd
 
@@ -341,34 +331,26 @@ class SelectWidgetBootstrap(BuildAttrsCompat, forms.Select):
         return mark_safe('\n'.join(output))
 
     def render_option(self, selected_choices, option_value, option_label):
-        option_value = force_unicode(option_value)
+        option_value = force_text(option_value)
         selected_html = (
             option_value in selected_choices) and ' selected="selected"' or ''
         return '<li><a href="javascript:void(0)" data-value="%s"%s>%s</a></li>' % (
             escape(option_value), selected_html,
-            conditional_escape(force_unicode(option_label)))
+            conditional_escape(force_text(option_label)))
 
     def render_options(self, choices, selected_choices):
         # Normalize to strings.
-        selected_choices = set([force_unicode(v) for v in selected_choices])
+        selected_choices = set([force_text(v) for v in selected_choices])
         output = []
         for option_value, option_label in chain(self.choices, choices):
             if isinstance(option_label, (list, tuple)):
                 output.append(
                     '<li class="divider" label="%s"></li>' %
-                    escape(
-                        force_unicode(option_value)))
+                    escape(force_text(option_value)))
                 for option in option_label:
-                    output.append(
-                        self.render_option(
-                            selected_choices,
-                            *option))
+                    output.append(self.render_option(selected_choices, *option))
             else:
-                output.append(
-                    self.render_option(
-                        selected_choices,
-                        option_value,
-                        option_label))
+                output.append(self.render_option(selected_choices, option_value, option_label))
         return '\n'.join(output)
 
     class Media(forms.Media):
@@ -473,28 +455,24 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
 
     recursive = forms.BooleanField(
         label=_('Inherit permissions'),
-        help_text=_(
-            'Check here to apply the above permissions (excluding group and owner of the article) recursively to articles below this one.'),
+        help_text=_('Check here to apply the above permissions (excluding group and owner of the article) recursively to articles below this one.'),
         required=False)
 
     recursive_owner = forms.BooleanField(
         label=_('Inherit owner'),
-        help_text=_(
-            'Check here to apply the ownership setting recursively to articles below this one.'),
+        help_text=_('Check here to apply the ownership setting recursively to articles below this one.'),
         required=False)
 
     recursive_group = forms.BooleanField(
         label=_('Inherit group'),
-        help_text=_(
-            'Check here to apply the group setting recursively to articles below this one.'),
+        help_text=_('Check here to apply the group setting recursively to articles below this one.'),
         required=False)
 
     def get_usermessage(self):
         if self.changed_data:
             return _('Permission settings for the article were updated.')
         else:
-            return _(
-                'Your permission settings were unchanged, so nothing saved.')
+            return _('Your permission settings were unchanged, so nothing saved.')
 
     def __init__(self, article, request, *args, **kwargs):
         self.article = article
@@ -670,6 +648,7 @@ class UserCreationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ("username", "email")
+
 
 class UserUpdateForm(forms.ModelForm):
     password1 = forms.CharField(label="New password", widget=forms.PasswordInput(), required=False)

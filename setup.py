@@ -34,7 +34,7 @@ def read_file(fname):
 
 
 requirements = [
-    "Django>=1.8,<1.12",
+    "Django>=1.8,<2.0",
     "bleach>=1.5,<2",
     "Pillow",
     "django-nyt>=1.0b1",
@@ -69,9 +69,7 @@ setup(
         'Intended Audience :: Developers',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',

@@ -7,17 +7,10 @@ import django_functest
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.core.urlresolvers import reverse
 from django.template import Context, Template
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.test.client import Client
 
 from wiki.models import URLPath
-
-try:
-    from django.test import override_settings
-except ImportError:
-    from django.test.utils import override_settings
-
-
 
 SUPERUSER1_USERNAME = 'admin'
 SUPERUSER1_PASSWORD = 'secret'
@@ -28,11 +21,8 @@ class RequireSuperuserMixin(object):
     def setUp(self):
         super(RequireSuperuserMixin, self).setUp()
 
-        try:
-            from django.contrib.auth import get_user_model
-            User = get_user_model()
-        except ImportError:
-            from django.contrib.auth.models import User
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
 
         self.superuser1 = User.objects.create_superuser(
             SUPERUSER1_USERNAME,
