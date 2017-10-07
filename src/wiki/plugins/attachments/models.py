@@ -153,9 +153,7 @@ class AttachmentRevision(BaseRevisionMixin, models.Model):
         """Used to retrieve the file size and not cause exceptions."""
         try:
             return self.file.size
-        except OSError:
-            return None
-        except ValueError:
+        except (ValueError, OSError):
             return None
 
     def __str__(self):

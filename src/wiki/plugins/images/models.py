@@ -80,9 +80,7 @@ class ImageRevision(RevisionPluginRevision):
         """Used to retrieve the file size and not cause exceptions."""
         try:
             return self.image.size
-        except ValueError:
-            return None
-        except OSError:
+        except (ValueError, OSError):
             return None
 
     def inherit_predecessor(self, image, skip_image_file=False):
