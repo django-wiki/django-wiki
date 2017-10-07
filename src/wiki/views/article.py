@@ -697,7 +697,7 @@ class SearchView(ListView):
         return articles
 
     def get_context_data(self, **kwargs):
-        kwargs = ListView.get_context_data(self, **kwargs)
+        kwargs = super(SearchView, self).get_context_data(**kwargs)
         kwargs['search_form'] = self.search_form
         kwargs['search_query'] = self.query
         return kwargs
