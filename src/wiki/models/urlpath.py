@@ -24,12 +24,6 @@ from wiki.core.exceptions import MultipleRootURLs, NoRootURL
 from wiki.decorators import disable_signal_for_loaddata
 from wiki.models.article import Article, ArticleForObject, ArticleRevision
 
-try:
-    notrans = transaction.non_atomic_requests
-except:
-    notrans = transaction.commit_manually  # @UndefinedVariable
-
-
 log = logging.getLogger(__name__)
 
 
