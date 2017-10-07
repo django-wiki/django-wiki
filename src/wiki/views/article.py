@@ -107,9 +107,7 @@ class Create(FormView, ArticleMixin):
                     _("There was an error creating this article: %s") %
                     str(e))
             else:
-                messages.error(
-                    self.request,
-                    _("There was an error creating this article."))
+                messages.error(self.request, _("There was an error creating this article."))
             return redirect('wiki:get', '')
 
         url = self.get_success_url()
@@ -283,10 +281,7 @@ class Edit(ArticleMixin, FormView):
             kwargs['data'] = None
             kwargs['files'] = None
             kwargs['no_clean'] = True
-        return form_class(
-            self.request,
-            self.article.current_revision,
-            **kwargs)
+        return form_class(self.request, self.article.current_revision, **kwargs)
 
     def get_sidebar_form_classes(self):
         """Returns dictionary of form classes for the sidebar. If no form class is
@@ -569,13 +564,7 @@ class Deleted(Delete):
                 else:
                     return redirect('wiki:get', article_id=article.id)
 
-        return super(
-            Deleted,
-            self).dispatch1(
-            request,
-            article,
-            *args,
-            **kwargs)
+        return super(Deleted, self).dispatch1(request, article, *args, **kwargs)
 
     def get_initial(self):
         return {'revision': self.article.current_revision,
@@ -732,13 +721,7 @@ class Settings(ArticleMixin, TemplateView):
     @method_decorator(login_required)
     @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, *args, **kwargs):
-        return super(
-            Settings,
-            self).dispatch(
-            request,
-            article,
-            *args,
-            **kwargs)
+        return super(Settings, self).dispatch(request, article, *args, **kwargs)
 
     def get_form_classes(self,):
         """
@@ -813,21 +796,13 @@ class ChangeRevisionView(RedirectView):
         self.urlpath = kwargs.pop('kwargs', False)
         self.change_revision()
 
-        return super(
-            ChangeRevisionView,
-            self).dispatch(
-            request,
-            *args,
-            **kwargs)
+        return super(ChangeRevisionView, self).dispatch(request, *args, **kwargs)
 
     def get_redirect_url(self, **kwargs):
         if self.urlpath:
             return reverse("wiki:history", kwargs={'path': self.urlpath.path})
         else:
-            return reverse(
-                'wiki:history',
-                kwargs={
-                    'article_id': self.article.id})
+            return reverse('wiki:history', kwargs={'article_id': self.article.id})
 
     def change_revision(self):
         revision = get_object_or_404(
@@ -871,11 +846,7 @@ class Preview(ArticleMixin, TemplateView):
         return super(Preview, self).dispatch(request, article, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        edit_form = forms.EditForm(
-            request,
-            self.article.current_revision,
-            request.POST,
-            preview=True)
+        edit_form = forms.EditForm(request, self.article.current_revision, request.POST, preview=True)
         if edit_form.is_valid():
             self.title = edit_form.cleaned_data['title']
             self.content = edit_form.cleaned_data['content']

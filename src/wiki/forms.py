@@ -285,8 +285,7 @@ class EditForm(forms.Form, SpamProtectionMixin):
                     'While you were editing, someone else changed the revision. Your contents have been automatically merged with the new contents. Please review the text below.'))
         if ('title' in cd) and cd['title'] == self.initial_revision.title and cd[
                 'content'] == self.initial_revision.content:
-            raise forms.ValidationError(
-                ugettext('No changes made. Nothing to save.'))
+            raise forms.ValidationError(ugettext('No changes made. Nothing to save.'))
         self.check_spam()
         return cd
 
@@ -347,19 +346,11 @@ class SelectWidgetBootstrap(BuildAttrsCompat, forms.Select):
             if isinstance(option_label, (list, tuple)):
                 output.append(
                     '<li class="divider" label="%s"></li>' %
-                    escape(
-                        force_text(option_value)))
+                    escape(force_text(option_value)))
                 for option in option_label:
-                    output.append(
-                        self.render_option(
-                            selected_choices,
-                            *option))
+                    output.append(self.render_option(selected_choices, *option))
             else:
-                output.append(
-                    self.render_option(
-                        selected_choices,
-                        option_value,
-                        option_label))
+                output.append(self.render_option(selected_choices, option_value, option_label))
         return '\n'.join(output)
 
     class Media(forms.Media):
@@ -464,28 +455,24 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
 
     recursive = forms.BooleanField(
         label=_('Inherit permissions'),
-        help_text=_(
-            'Check here to apply the above permissions (excluding group and owner of the article) recursively to articles below this one.'),
+        help_text=_('Check here to apply the above permissions (excluding group and owner of the article) recursively to articles below this one.'),
         required=False)
 
     recursive_owner = forms.BooleanField(
         label=_('Inherit owner'),
-        help_text=_(
-            'Check here to apply the ownership setting recursively to articles below this one.'),
+        help_text=_('Check here to apply the ownership setting recursively to articles below this one.'),
         required=False)
 
     recursive_group = forms.BooleanField(
         label=_('Inherit group'),
-        help_text=_(
-            'Check here to apply the group setting recursively to articles below this one.'),
+        help_text=_('Check here to apply the group setting recursively to articles below this one.'),
         required=False)
 
     def get_usermessage(self):
         if self.changed_data:
             return _('Permission settings for the article were updated.')
         else:
-            return _(
-                'Your permission settings were unchanged, so nothing saved.')
+            return _('Your permission settings were unchanged, so nothing saved.')
 
     def __init__(self, article, request, *args, **kwargs):
         self.article = article
@@ -661,6 +648,7 @@ class UserCreationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ("username", "email")
+
 
 class UserUpdateForm(forms.ModelForm):
     password1 = forms.CharField(label="New password", widget=forms.PasswordInput(), required=False)
