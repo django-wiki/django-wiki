@@ -15,7 +15,6 @@ env:
   - DJANGO="1.9"
   - DJANGO="1.10"
   - DJANGO="1.11"
-#  - PIP_DOWNLOAD_CACHE="pip_cache"
 
 matrix:
   exclude:
@@ -32,7 +31,6 @@ matrix:
   - python: "3.6"
     env: DJANGO="1.10"
 
-
 addons:
   apt:
     packages:
@@ -40,7 +38,7 @@ addons:
       - libjpeg8-dev
 
 install:
-  - pip install tox>=2.1 tox-travis
+  - pip install tox\>=2.1 tox-travis codecov
 
 script:
   - tox
@@ -50,4 +48,4 @@ notifications:
     - "irc.freenode.org#django-wiki"
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - codecov
