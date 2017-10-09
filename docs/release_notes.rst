@@ -54,6 +54,7 @@ django-wiki 0.3b3
  * Fix article settings page in Django 1.11 (Frank Loemker) #682
  * Fix upstream MPTT breaking deletion of articles from django-admin (Frank Loemker) #683
  * Wrong HTML attribute 'type' on search result page (Geoff Clapp) #698
+ * Plugins can whitelist HTML tags and attributes (jenda1) #700
 
 
 django-wiki 0.2.4
