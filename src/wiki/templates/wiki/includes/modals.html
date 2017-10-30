@@ -23,6 +23,9 @@ $(document).ready(function() {
   });
 
   $(".modal-content").resizable();
+
+  //maybe a better way todo this, jquery-ui above is applying the class ui-resizable for some reason.
+  $("#martor-content").resizable('destroy');
 });
 </script>
 {% endaddtoblock %}

@@ -8,6 +8,9 @@ from django.http.response import HttpResponse
 from django.views.static import serve as static_serve
 from django_nyt.urls import get_pattern as get_notify_pattern
 from wiki.urls import get_pattern as get_wiki_pattern
+from testproject.views import martor
+from testproject.views import simplemde
+from wiki.views import article
 
 admin.autodiscover()
 
@@ -24,6 +27,8 @@ if settings.DEBUG:
 
 
 urlpatterns += [
+    url(r'^martor/(?P<path>.+/|)_create/$', martor.as_view()),
+    url(r'^simplemde/(?P<path>.+/|)_create/$', simplemde.as_view()),
     url(r'^notify/', get_notify_pattern()),
     url(r'', get_wiki_pattern())
 ]

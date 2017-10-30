@@ -19,6 +19,9 @@ class BaseEditor():
     def get_admin_widget(self):
         return forms.Textarea()
 
+    def get_urls(self):
+        return []
+
     class AdminMedia:
         css = {}
         js = ()

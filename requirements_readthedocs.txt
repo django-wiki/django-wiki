@@ -10,3 +10,5 @@ django-sekizai>=0.10
 sorl-thumbnail>=12,<13
 Markdown>=2.6,<2.7
 bleach>=1.5,<2
+django-simplemde>=1.11, <2
+martor>=1.2, <2

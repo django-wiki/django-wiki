@@ -7,6 +7,7 @@ from wiki.core.plugins import registry
 from wiki.core.plugins.loader import load_wiki_plugins
 from wiki.core.utils import get_class_from_str
 from wiki.views import accounts, article, deleted_list
+from wiki.editors import getEditor
 
 
 class WikiURLPatterns(object):
@@ -49,6 +50,7 @@ class WikiURLPatterns(object):
 
     def get_urls(self):
         urlpatterns = self.get_root_urls()
+        urlpatterns += getEditor().get_urls()
         urlpatterns += self.get_accounts_urls()
         urlpatterns += self.get_deleted_list_urls()
         urlpatterns += self.get_revision_urls()
