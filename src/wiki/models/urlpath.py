@@ -155,12 +155,7 @@ class URLPath(MPTTModel):
         NB! This deletes this urlpath, its children, and ALL of the related
         articles. This is a purged delete and CANNOT be undone.
         """
-        try:
-            self._delete_subtree()
-        except:
-            # Not sure why any exception is getting caught here? Have we had
-            # unresolved database integrity errors?
-            log.exception("Exception deleting article subtree.")
+        self._delete_subtree()
 
     @classmethod
     def root(cls):
