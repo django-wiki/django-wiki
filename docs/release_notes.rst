@@ -9,6 +9,15 @@ The next release series **0.3** will support Django 1.11. Likewise, it will be
 the last series with Python 2 support.
 
 
+django-wiki 0.3dev (unreleased master)
+--------------------------------------
+
+**Changed**
+
+ * Removed exception catch all in ``URLPath.delete_subtree`` which silenced errors while delete articles with descendents
+
+
+
 django-wiki 0.3b3
 -----------------
 
