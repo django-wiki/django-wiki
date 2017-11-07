@@ -686,7 +686,7 @@ class SearchView(ListView):
 
     def get_queryset(self):
         if not self.query:
-            return models.Article.objects.none()
+            return models.Article.objects.none().order_by('-current_revision__created')
         articles = models.Article.objects.filter(
             Q(current_revision__title__icontains=self.query) |
             Q(current_revision__content__icontains=self.query))
@@ -694,7 +694,7 @@ class SearchView(ListView):
                 models.URLPath.root().article,
                 self.request.user):
             articles = articles.active().can_read(self.request.user)
-        return articles
+        return articles.order_by('-current_revision__created')
 
     def get_context_data(self, **kwargs):
         kwargs = super(SearchView, self).get_context_data(**kwargs)
