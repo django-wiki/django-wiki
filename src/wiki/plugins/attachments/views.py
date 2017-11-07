@@ -386,7 +386,7 @@ class AttachmentSearchView(ArticleMixin, ListView):
                 Q(original_filename__contains=self.query) |
                 Q(current_revision__description__contains=self.query) |
                 Q(article__current_revision__title__contains=self.query))
-        return qs
+        return qs.order_by('original_filename')
 
     def get_context_data(self, **kwargs):
         # Is this a bit of a hack? Use better inheritance?

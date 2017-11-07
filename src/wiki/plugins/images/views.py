@@ -41,7 +41,7 @@ class ImageView(ArticleMixin, ListView):
                 article=self.article,
                 current_revision__deleted=False)
         images.select_related()
-        return images
+        return images.order_by('-current_revision__imagerevision__created')
 
     def get_context_data(self, **kwargs):
         kwargs.update(ArticleMixin.get_context_data(self, **kwargs))
