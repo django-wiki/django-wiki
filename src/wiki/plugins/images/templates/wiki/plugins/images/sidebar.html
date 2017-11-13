@@ -10,7 +10,7 @@ function insert_image(data) {
         $("#img_modal").on('shown.bs.modal', function(){
             $(this).find('#img_caption').focus();
         });
-        $("#img_modal").modal();
+        jQuery("#img_modal").djwModal('show');
    } else {
         align = data.img_align.options[data.img_align.selectedIndex].text;
         size = data.img_size.options[data.img_size.selectedIndex].text;

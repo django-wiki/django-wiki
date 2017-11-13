@@ -17,11 +17,11 @@ class SimpleMDE(BaseEditor):
     class AdminMedia:
         css = {}
         js = (
-              "wiki/js/editors/simplemde.js",
+            "wiki/js/editors/simplemde.js",
         )
 
     class Media:
         css = {}
         js = (
-              "wiki/js/editors/simplemde.js",
+            "wiki/js/editors/simplemde.js",
         )

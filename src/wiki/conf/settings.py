@@ -21,6 +21,11 @@ EDITOR = getattr(
     'WIKI_EDITOR',
     'wiki.editors.markitup.MarkItUp')
 
+EDITOR_INCLUDE_JAVASCRIPT = getattr(
+    django_settings,
+    'WIKI_EDITOR_INCLUDE_JAVASCRIPT',
+    True)
+
 #: Whether to use Bleach or not. It's not recommended to turn this off unless
 #: you know what you're doing and you don't want to use the other options.
 MARKDOWN_SANITIZE_HTML = getattr(

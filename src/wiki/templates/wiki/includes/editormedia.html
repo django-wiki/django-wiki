@@ -1,7 +1,7 @@
 {% load sekizai_tags static %}
 {% addtoblock "js" %}
 {% for js in editor.Media.js %}
-<script type="text/javascript" src="{% static js %}" defer="defer" ></script>
+<script type="text/javascript" src="{% static js %}"></script>
 {% endfor %}
 {% endaddtoblock %}
 

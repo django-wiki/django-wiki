@@ -9,7 +9,7 @@
     <meta name="author" content="www.django-wiki.org">
 
     <!-- Le styles -->
-    <link href="{% static "wiki/bootstrap/css/wiki-bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "wiki/bootstrap/css/wiki-bootstrap.css" %}" rel="stylesheet">
 
     {% render_block "css" %}
 
@@ -143,6 +143,9 @@
     <script src="{% static "wiki/js/jquery.min.js" %}"></script>
     <script src="{% static "wiki/js/core.js" %}"></script>
     <script src="{% static "wiki/bootstrap/js/bootstrap.min.js" %}"></script>
+    <script type="text/javascript">
+        $.fn.djwModal = $.fn.modal.noConflict();
+    </script>
     <!-- Optionally enable responsive features in IE8 -->
     <script src="{% static "wiki/js/respond.min.js" %}"></script>
     {% render_block "js" %}
