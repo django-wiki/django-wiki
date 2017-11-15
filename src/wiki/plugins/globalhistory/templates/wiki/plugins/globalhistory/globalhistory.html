@@ -11,7 +11,12 @@
 <div class="row">
   <div class="lead col-xs-8">
     {% with paginator.object_list.count as cnt %}
-       {% blocktrans %}List of all <strong>{{ cnt }} changes</strong> in the wiki.{% endblocktrans %}
+      {% blocktrans count cnt=cnt %}
+        List of <strong>{{ cnt }} change</strong> in the wiki.
+        {% plural %}
+        List of <strong>{{ cnt }} changes</strong> in the wiki.
+      {% endblocktrans %}
+      {% blocktrans %}{% endblocktrans %}
     {% endwith %}
   </div>
   <div class="pull-right">

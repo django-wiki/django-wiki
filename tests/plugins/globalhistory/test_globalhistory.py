@@ -24,11 +24,7 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
 
         response = self.c.get(url)
         expected = (
-            '(?s)<title>Global history.*'
-            '>Global history</.*'
-            'List of all <strong>1 changes</strong>.*'
-            'Root Article.*no log message.*'
-            '</table>'
+            '(?s).*Root Article.*no log message.*'
         )
         self._assertRegex(response.rendered_content, expected)
 
@@ -37,12 +33,8 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
                                user_message="Comment 1")
         response = self.c.get(url)
         expected = (
-            '(?s)<title>Global history.*'
-            '>Global history</.*'
-            'List of all <strong>2 changes</strong>.*'
-            'TestHistory1.*Comment 1.*'
+            '(?s).*TestHistory1.*Comment 1.*'
             'Root Article.*no log message.*'
-            '</table>'
         )
         self._assertRegex(response.rendered_content, expected)
 
@@ -54,13 +46,9 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
             user_message="Comment 2"
         )
         expected = (
-            '(?s)<title>Global history.*'
-            '>Global history</.*'
-            'List of all <strong>3 changes</strong>.*'
-            'TestHistory2.*Comment 2.*'
+            '(?s).*TestHistory2.*Comment 2.*'
             'TestHistory1.*Comment 1.*'
             'Root Article.*no log message.*'
-            '</table>'
         )
         response = self.c.get(url)
         self._assertRegex(response.rendered_content, expected)
@@ -82,14 +70,10 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
         )
 
         expected = (
-            '(?s)<title>Global history.*'
-            '>Global history</.*'
-            'List of all <strong>4 changes</strong>.*'
-            'TestHistory2Mod.*Testing Revision.*'
+            '(?s).*TestHistory2Mod.*Testing Revision.*'
             'TestHistory2.*Comment 2.*'
             'TestHistory1.*Comment 1.*'
             'Root Article.*no log message.*'
-            '</table>'
         )
         response = self.c.get(url)
         self._assertRegex(response.rendered_content, expected)
@@ -98,13 +82,9 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
         self._assertRegex(response.rendered_content, expected)
 
         expected = (
-            '(?s)<title>Global history.*'
-            '>Global history</.*'
-            'List of all <strong>3 changes</strong>.*'
-            'TestHistory2Mod.*Testing Revision.*'
+            '(?s).*TestHistory2Mod.*Testing Revision.*'
             'TestHistory1.*Comment 1.*'
             'Root Article.*no log message.*'
-            '</table>'
         )
         response = self.c.get(url1)
         self._assertRegex(response.rendered_content, expected)
