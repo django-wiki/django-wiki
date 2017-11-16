@@ -111,6 +111,7 @@ class AttachmentArchiveForm(AttachmentForm):
         return uploaded_file
 
     def clean(self):
+        super(AttachmentArchiveForm, self).clean()
         if not can_moderate(self.article, self.request.user):
             raise forms.ValidationError(
                 ugettext("User not allowed to moderate this article"))
