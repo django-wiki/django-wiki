@@ -15,11 +15,9 @@ class AccountUpdateTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClie
         """
         Test that we can make a successful password change via the update form
         """
-        c = self.c
-
         # Check out that it works as expected, notice that there is no referrer
         # on this GET request.
-        c.get(
+        self.client.get(
             resolve_url('wiki:profile_update',)
         )
 
@@ -31,7 +29,7 @@ class AccountUpdateTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClie
         }
 
         # save a new revision
-        response = c.post(
+        response = self.client.post(
             resolve_url('wiki:profile_update'),
             example_data
         )
@@ -45,7 +43,7 @@ class AccountUpdateTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClie
         }
 
         # save a new revision
-        response = c.post(
+        response = self.client.post(
             resolve_url('wiki:profile_update'),
             example_data
         )

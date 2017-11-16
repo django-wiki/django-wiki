@@ -19,9 +19,6 @@ if not django_settings.configured:
     django_settings.configure()
 
 
-
-
-
 # copypasted from SIX source for tox tests compatebility reason.
 if PY3:
     _assertCountEqual = "assertCountEqual"
@@ -31,6 +28,7 @@ else:
 
 def assertCountEqual(self, *args, **kwargs):
     return getattr(self, _assertCountEqual)(*args, **kwargs)
+
 
 # XXX article_for_object accepts context, but not using it
 class ArticleForObjectTemplatetagTest(TemplateTestCase):

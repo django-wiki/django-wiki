@@ -82,7 +82,6 @@ class ArticleViewViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoC
         Test automatic adding and removing the new article to/from article_list.
         """
 
-        c = self.c
         root_data = {
             'content': '[article_list depth:2]',
             'current_revision': str(URLPath.root().article.current_revision.id),
@@ -90,11 +89,11 @@ class ArticleViewViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoC
             'title': 'Root Article'
         }
 
-        response = c.post(resolve_url('wiki:edit', path=''), root_data)
+        response = self.client.post(resolve_url('wiki:edit', path=''), root_data)
         self.assertRedirects(response, resolve_url('wiki:root'))
 
         # verify the new article is added to article_list
-        response = c.post(
+        response = self.client.post(
             resolve_url('wiki:create', path=''),
             {'title': 'Sub Article 1', 'slug': 'SubArticle1'}
         )
@@ -107,7 +106,7 @@ class ArticleViewViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoC
         self.assertContains(self.get_by_path(''), 'subarticle1/')
 
         # verify the deleted article is removed from article_list
-        response = c.post(
+        response = self.client.post(
             resolve_url('wiki:delete', path='SubArticle1/'),
             {'confirm': 'on',
              'purge': 'on',
@@ -115,7 +114,7 @@ class ArticleViewViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoC
              }
         )
 
-        message = getattr(c.cookies['messages'], 'value')
+        message = getattr(self.client.cookies['messages'], 'value')
 
         self.assertRedirects(
             response,
@@ -132,9 +131,7 @@ class CreateViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientT
 
     def test_create_nested_article_in_article(self):
 
-        c = self.c
-
-        response = c.post(
+        response = self.client.post(
             resolve_url('wiki:create', path=''),
             {'title': 'Level 1', 'slug': 'Level1', 'content': 'Content level 1'}
         )
@@ -142,7 +139,7 @@ class CreateViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientT
             response,
             resolve_url('wiki:get', path='level1/')
         )
-        response = c.post(
+        response = self.client.post(
             resolve_url('wiki:create', path='Level1/'),
             {'title': 'test', 'slug': 'Test', 'content': 'Content on level 2'}
         )
@@ -150,7 +147,7 @@ class CreateViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientT
             response,
             resolve_url('wiki:get', path='level1/test/')
         )
-        response = c.post(
+        response = self.client.post(
             resolve_url('wiki:create', path=''),
             {'title': 'test',
              'slug': 'Test',
@@ -173,10 +170,8 @@ class CreateViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientT
 
     def test_illegal_slug(self):
 
-        c = self.c
-
         # A slug cannot be '123' because it gets confused with an article ID.
-        response = c.post(
+        response = self.client.post(
             resolve_url('wiki:create', path=''),
             {'title': 'Illegal slug', 'slug': '123', 'content': 'blah'}
         )
@@ -190,7 +185,7 @@ class MoveViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
 
     def test_illegal_slug(self):
         # A slug cannot be '123' because it gets confused with an article ID.
-        response = self.c.post(
+        response = self.client.post(
             resolve_url('wiki:move', path=''),
             {'destination': '', 'slug': '123', 'redirect': ''}
         )
@@ -200,31 +195,30 @@ class MoveViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
         )
 
     def test_move(self):
-        c = self.c
         # Create a hierarchy of pages
-        c.post(
+        self.client.post(
             resolve_url('wiki:create', path=''),
             {'title': 'Test', 'slug': 'test0', 'content': 'Content .0.'}
         )
-        c.post(
+        self.client.post(
             resolve_url('wiki:create', path='test0/'),
             {'title': 'Test00', 'slug': 'test00', 'content': 'Content .00.'}
         )
-        c.post(
+        self.client.post(
             resolve_url('wiki:create', path=''),
             {'title': 'Test1', 'slug': 'test1', 'content': 'Content .1.'}
         )
-        c.post(
+        self.client.post(
             resolve_url('wiki:create', path='test1/'),
             {'title': 'Tes10', 'slug': 'test10', 'content': 'Content .10.'}
         )
-        c.post(
+        self.client.post(
             resolve_url('wiki:create', path='test1/test10/'),
             {'title': 'Test100', 'slug': 'test100', 'content': 'Content .100.'}
         )
 
         # Move /test1 => /test0 (an already existing destination slug!)
-        response = self.c.post(
+        response = self.client.post(
             resolve_url('wiki:move', path='test1/'),
             {
                 'destination': str(URLPath.root().article.current_revision.id),
@@ -237,7 +231,7 @@ class MoveViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
 
         # Move /test1 >= /test2 (valid slug), no redirect
         test0_id = URLPath.objects.get(slug='test0').article.current_revision.id
-        response = self.c.post(
+        response = self.client.post(
             resolve_url('wiki:move', path='test1/'),
             {'destination': str(test0_id), 'slug': 'test2', 'redirect': ''}
         )
@@ -251,12 +245,12 @@ class MoveViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
         self.assertRedirects(response, '/_create/?slug=test1')
 
         # Create /test0/test2/test020
-        response = c.post(
+        response = self.client.post(
             resolve_url('wiki:create', path='test0/test2/'),
             {'title': 'Test020', 'slug': 'test020', 'content': 'Content .020.'}
         )
         # Move /test0/test2 => /test1new + create redirect
-        response = self.c.post(
+        response = self.client.post(
             resolve_url('wiki:move', path='test0/test2/'),
             {
                 'destination': str(URLPath.root().article.current_revision.id),
@@ -301,9 +295,8 @@ class DeleteViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientT
 
         # That bug is tested by one individual test, otherwise it could be
         # revealed only by sequence of tests in some particular order
-        c = self.c
 
-        response = c.post(
+        response = self.client.post(
             resolve_url('wiki:create', path=''),
             {'title': 'Test cache', 'slug': 'testcache', 'content': 'Content 1'}
         )
@@ -313,7 +306,7 @@ class DeleteViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientT
             resolve_url('wiki:get', path='testcache/')
         )
 
-        response = c.post(
+        response = self.client.post(
             resolve_url('wiki:delete', path='testcache/'),
             {'confirm': 'on', 'purge': 'on',
              'revision': str(URLPath.objects.get(slug='testcache').article.current_revision.id)}
@@ -323,7 +316,7 @@ class DeleteViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientT
             response,
             resolve_url('wiki:get', path='')
         )
-        response = c.post(
+        response = self.client.post(
             resolve_url('wiki:create', path=''),
             {'title': 'Test cache', 'slug': 'TestCache', 'content': 'Content 2'}
         )
@@ -341,7 +334,6 @@ class EditViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
     def test_preview_save(self):
         """Test edit preview, edit save and messages."""
 
-        c = self.c
         example_data = {
             'content': 'The modified text',
             'current_revision': str(URLPath.root().article.current_revision.id),
@@ -352,7 +344,7 @@ class EditViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
         }
 
         # test preview
-        response = c.post(
+        response = self.client.post(
             resolve_url('wiki:preview', path=''),  # url: '/_preview/'
             example_data
         )
@@ -364,8 +356,6 @@ class EditViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
         Test the warning if the same article is being edited concurrently.
         """
 
-        c = self.c
-
         example_data = {
             'content': 'More modifications',
             'current_revision': str(URLPath.root().article.current_revision.id),
@@ -375,14 +365,14 @@ class EditViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
             'title': 'wiki test'
         }
 
-        response = c.post(
+        response = self.client.post(
             resolve_url('wiki:edit', path=''),
             example_data
         )
 
         self.assertRedirects(response, resolve_url('wiki:root'))
 
-        response = c.post(
+        response = self.client.post(
             resolve_url('wiki:edit', path=''),
             example_data
         )
@@ -391,6 +381,7 @@ class EditViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
             response,
             'While you were editing, someone else changed the revision.'
         )
+
 
 class EditViewTestsBase(RequireRootArticleMixin, FuncBaseMixin):
     def test_edit_save(self):
@@ -433,25 +424,19 @@ class SearchViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientT
 
     def test_query_string(self):
 
-        c = self.c
-
-        response = c.get(resolve_url('wiki:search'), {'q': 'Article'})
+        response = self.client.get(resolve_url('wiki:search'), {'q': 'Article'})
         self.assertContains(response, 'Root Article')
 
     def test_empty_query_string(self):
 
-        c = self.c
-
-        response = c.get(resolve_url('wiki:search'), {'q': ''})
+        response = self.client.get(resolve_url('wiki:search'), {'q': ''})
         self.assertFalse(response.context['articles'])
 
 
 class DeletedListViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     def test_deleted_articles_list(self):
-        c = self.c
-
-        response = c.post(
+        response = self.client.post(
             resolve_url('wiki:create', path=''),
             {'title': 'Delete Me', 'slug': 'deleteme', 'content': 'delete me please!'}
         )
@@ -461,7 +446,7 @@ class DeletedListViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCl
             resolve_url('wiki:get', path='deleteme/')
         )
 
-        response = c.post(
+        response = self.client.post(
             resolve_url('wiki:delete', path='deleteme/'),
             {'confirm': 'on',
              'revision': URLPath.objects.get(slug='deleteme').article.current_revision.id}
@@ -472,16 +457,14 @@ class DeletedListViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCl
             resolve_url('wiki:get', path='')
         )
 
-        response = c.get(resolve_url('wiki:deleted_list'))
+        response = self.client.get(resolve_url('wiki:deleted_list'))
         self.assertContains(response, 'Delete Me')
 
 
 class UpdateProfileViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     def test_update_profile(self):
-        c = self.c
-
-        c.post(
+        self.client.post(
             resolve_url('wiki:profile_update'),
             {"email": "test@test.com", "password1": "newPass", "password2": "newPass"},
             follow=True
@@ -498,7 +481,6 @@ class MergeViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTe
     def test_merge_preview(self):
         """Test merge preview"""
 
-        c = self.c
         first_revision = self.root_article.current_revision
         example_data = {
             'content': 'More modifications\n\nMerge new line',
@@ -509,9 +491,8 @@ class MergeViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTe
             'title': 'wiki test'
         }
 
-
         # save a new revision
-        c.post(
+        self.client.post(
             resolve_url('wiki:edit', path=''),
             example_data
         )
@@ -520,7 +501,7 @@ class MergeViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTe
             id=self.root_article.id
         ).current_revision
 
-        response = c.get(
+        response = self.client.get(
             resolve_url(
                 'wiki:merge_revision_preview',
                 article_id=self.root_article.id, revision_id=first_revision.id

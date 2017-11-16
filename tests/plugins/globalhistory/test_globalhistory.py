@@ -22,7 +22,7 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
         url0 = reverse('wiki:globalhistory', kwargs={'only_last': '0'})
         url1 = reverse('wiki:globalhistory', kwargs={'only_last': '1'})
 
-        response = self.c.get(url)
+        response = self.client.get(url)
         expected = (
             '(?s).*Root Article.*no log message.*'
         )
@@ -31,7 +31,7 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
         URLPath.create_urlpath(URLPath.root(), "testhistory1",
                                title="TestHistory1", content="a page",
                                user_message="Comment 1")
-        response = self.c.get(url)
+        response = self.client.get(url)
         expected = (
             '(?s).*TestHistory1.*Comment 1.*'
             'Root Article.*no log message.*'
@@ -50,16 +50,16 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
             'TestHistory1.*Comment 1.*'
             'Root Article.*no log message.*'
         )
-        response = self.c.get(url)
+        response = self.client.get(url)
         self._assertRegex(response.rendered_content, expected)
 
-        response = self.c.get(url0)
+        response = self.client.get(url0)
         self._assertRegex(response.rendered_content, expected)
 
-        response = self.c.get(url1)
+        response = self.client.get(url1)
         self._assertRegex(response.rendered_content, expected)
 
-        response = self.c.post(
+        response = self.client.post(
             reverse('wiki:edit', kwargs={'path': 'testhistory2/'}),
             {'content': 'a page modified',
              'current_revision': str(urlpath.article.current_revision.id),
@@ -75,10 +75,10 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
             'TestHistory1.*Comment 1.*'
             'Root Article.*no log message.*'
         )
-        response = self.c.get(url)
+        response = self.client.get(url)
         self._assertRegex(response.rendered_content, expected)
 
-        response = self.c.get(url0)
+        response = self.client.get(url0)
         self._assertRegex(response.rendered_content, expected)
 
         expected = (
@@ -86,5 +86,5 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
             'TestHistory1.*Comment 1.*'
             'Root Article.*no log message.*'
         )
-        response = self.c.get(url1)
+        response = self.client.get(url1)
         self._assertRegex(response.rendered_content, expected)

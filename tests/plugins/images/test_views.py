@@ -63,7 +63,7 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         base_edit_url = reverse('wiki:edit', kwargs={'path': path})
         url = base_edit_url + '?f=form{0:d}'.format(plugin_index)
         filestream = self._create_gif_filestream_from_base64(self.test_data)
-        response = self.c.post(
+        response = self.client.post(
             url,
             {
                 'unsaved_article_title': self.article.current_revision.title,
@@ -76,7 +76,7 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
 
     def test_index(self):
         url = reverse('wiki:images_index', kwargs={'path': ''})
-        response = self.c.get(url,)
+        response = self.client.get(url,)
         self.assertContains(response, 'Images')
 
     def test_upload(self):

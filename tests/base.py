@@ -8,7 +8,6 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.core.urlresolvers import reverse
 from django.template import Context, Template
 from django.test import TestCase, override_settings
-from django.test.client import Client
 
 from wiki.models import URLPath
 
@@ -65,9 +64,7 @@ class DjangoClientTestBase(TestBase):
     def setUp(self):
         super(DjangoClientTestBase, self).setUp()
 
-        self.c = c = Client()
-        c.login(username=SUPERUSER1_USERNAME, password=SUPERUSER1_PASSWORD)
-
+        self.client.login(username=SUPERUSER1_USERNAME, password=SUPERUSER1_PASSWORD)
 
 
 class WebTestCommonMixin(RequireBasicData, django_functest.ShortcutLoginMixin):
@@ -88,7 +85,7 @@ class WebTestBase(WebTestCommonMixin, django_functest.FuncWebTestMixin, TestCase
 INCLUDE_SELENIUM_TESTS = os.environ.get('INCLUDE_SELENIUM_TESTS', '0') == '1'
 
 
-@unittest.skipIf(not INCLUDE_SELENIUM_TESTS, "Skipping Selenium tests")
+@unittest.skipUnless(INCLUDE_SELENIUM_TESTS, "Skipping Selenium tests")
 class SeleniumBase(WebTestCommonMixin, django_functest.FuncSeleniumMixin, StaticLiveServerTestCase):
     driver_name = "Chrome"
     display = os.environ.get('SELENIUM_SHOW_BROWSER', '0') == '1'
@@ -113,7 +110,7 @@ class ArticleWebTestUtils(object):
         Example:  self.get_by_path("Level1/Slug2/").title
         """
 
-        return self.c.get(reverse('wiki:get', kwargs={'path': path}))
+        return self.client.get(reverse('wiki:get', kwargs={'path': path}))
 
 
 class TemplateTestCase(TestCase):
