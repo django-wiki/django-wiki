@@ -194,7 +194,7 @@ class MoveForm(forms.Form):
                                   required=False)
 
     def clean(self):
-        cd = self.cleaned_data
+        cd = super(MoveForm, self).clean()
         if cd.get('slug'):
             dest_path = get_object_or_404(models.URLPath, pk=self.cleaned_data['destination'])
             cd['slug'] = _clean_slug(cd['slug'], dest_path)
@@ -276,7 +276,7 @@ class EditForm(forms.Form, SpamProtectionMixin):
         No new revisions have been created since user attempted to edit
         Revision title or content has changed
         """
-        cd = self.cleaned_data
+        cd = super(EditForm, self).clean()
         if self.no_clean or self.preview:
             return cd
         if not str(self.initial_revision.id) == str(self.presumed_revision):
@@ -398,6 +398,7 @@ class CreateForm(forms.Form, SpamProtectionMixin):
         return _clean_slug(self.cleaned_data['slug'], self.urlpath_parent)
 
     def clean(self):
+        super(CreateForm, self).clean()
         self.check_spam()
         return self.cleaned_data
 
@@ -420,7 +421,7 @@ class DeleteForm(forms.Form):
                                       widget=HiddenInput(), required=False)
 
     def clean(self):
-        cd = self.cleaned_data
+        cd = super(DeleteForm, self).clean()
         if not cd['confirm']:
             raise forms.ValidationError(ugettext('You are not sure enough!'))
         if cd['revision'] != self.article.current_revision:
@@ -655,13 +656,14 @@ class UserUpdateForm(forms.ModelForm):
     password2 = forms.CharField(label="Confirm password", widget=forms.PasswordInput(), required=False)
 
     def clean(self):
-        password1 = self.cleaned_data.get('password1')
-        password2 = self.cleaned_data.get('password2')
+        cd = super(UserUpdateForm, self).clean()
+        password1 = cd.get('password1')
+        password2 = cd.get('password2')
 
         if password1 and password1 != password2:
             raise forms.ValidationError(_("Passwords don't match"))
 
-        return self.cleaned_data
+        return cd
 
     class Meta:
         model = User
