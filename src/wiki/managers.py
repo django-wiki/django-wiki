@@ -2,7 +2,7 @@ from __future__ import absolute_import, unicode_literals
 
 import django
 from django.db import models
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.db.models.query import EmptyQuerySet, QuerySet
 from mptt.managers import TreeManager
 
@@ -33,7 +33,7 @@ class ArticleQuerySet(QuerySet):
             q = self.filter(Q(other_read=True) |
                             Q(owner=user) |
                             (Q(group__user=user) & Q(group_read=True))
-                            ).distinct()
+                            ).annotate(Count('id'))
         return q
 
     def can_write(self, user):
@@ -80,7 +80,7 @@ class ArticleFkQuerySetMixin(object):
             q = self.filter(
                 Q(article__other_read=True) | Q(article__owner=user) |
                 (Q(article__group__user=user) & Q(
-                    article__group_read=True))).distinct()
+                    article__group_read=True))).annotate(Count('id'))
         return q
 
     def can_write(self, user):
@@ -95,7 +95,7 @@ class ArticleFkQuerySetMixin(object):
             q = self.filter(
                 Q(article__other_write=True) | Q(article__owner=user) |
                 (Q(article__group__user=user) & Q(
-                    article__group_write=True))).distinct()
+                    article__group_write=True))).annotate(Count('id'))
         return q
 
     def active(self):
