@@ -50,11 +50,14 @@ class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClient
     def _create_test_attachment(self, path):
         url = reverse('wiki:attachments_index', kwargs={'path': path})
         filestream = self._createTxtFilestream(self.test_data)
-        response = self.c.post(url,
-                               {'description': self.test_description,
-                                'file': filestream,
-                                'save': '1',
-                                })
+        response = self.client.post(
+            url,
+            {
+                'description': self.test_description,
+                'file': filestream,
+                'save': '1',
+            }
+        )
         self.assertRedirects(response, url)
 
     def test_upload(self):
@@ -79,7 +82,7 @@ class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClient
         url = reverse('wiki:attachments_index', kwargs={'path': ''})
         data = "This is a plain text file"
         filestream = self._createTxtFilestream(data)
-        self.c.post(url, {'description': 'My file', 'file': filestream, 'save': '1', })
+        self.client.post(url, {'description': 'My file', 'file': filestream, 'save': '1', })
         attachment = self.article.shared_plugins_set.all()[0].attachment
 
         # uploading for the first time should mean that there is only one revision.
@@ -94,7 +97,7 @@ class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClient
         # Upload replacement without removing revisions
         replacement_data = data + ' And this is my edit'
         replacement_filestream = self._createTxtFilestream(replacement_data)
-        self.c.post(
+        self.client.post(
             url,
             {
                 'description': 'Replacement upload',
@@ -113,7 +116,7 @@ class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClient
         # Upload another replacement, this time removing most recent revision
         replacement_data2 = data + ' And this is a different edit'
         replacement_filestream2 = self._createTxtFilestream(replacement_data2)
-        self.c.post(
+        self.client.post(
             url,
             {
                 'description': 'Replacement upload',
@@ -135,7 +138,7 @@ class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClient
         """
         self._create_test_attachment('')
         url = reverse('wiki:attachments_search', kwargs={'path': ''})
-        response = self.c.get(url, {'query': self.test_description})
+        response = self.client.get(url, {'query': self.test_description})
         self.assertContains(response, self.test_description)
 
     def get_article(self, cont):
