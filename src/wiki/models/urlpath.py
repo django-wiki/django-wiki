@@ -17,7 +17,6 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
-from six.moves import filter  # @UnresolvedImport
 from wiki import managers
 from wiki.conf import settings
 from wiki.core.exceptions import MultipleRootURLs, NoRootURL

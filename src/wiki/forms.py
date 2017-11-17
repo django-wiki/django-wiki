@@ -23,7 +23,6 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import pgettext_lazy
 from django.utils.translation import ugettext
 from django.utils.translation import ugettext_lazy as _
-from six.moves import range
 
 from wiki import models
 from wiki.conf import settings
@@ -39,6 +38,7 @@ validate_slug_numbers = RegexValidator(
     'invalid',
     inverse_match=True
 )
+
 
 class WikiSlugField(forms.SlugField):
     """
@@ -56,6 +56,7 @@ class WikiSlugField(forms.SlugField):
                 validate_slug_numbers
             ]
         super(forms.SlugField, self).__init__(*args, **kwargs)
+
 
 def _clean_slug(slug, urlpath):
     if slug.startswith("_"):
@@ -246,7 +247,7 @@ class EditForm(forms.Form, SpamProtectionMixin):
                         self.presumed_revision) == str(
                         self.initial_revision.id):
                     newdata = {}
-                    for k, v in list(data.items()):
+                    for k, v in data.items():
                         newdata[k] = v
                     newdata['current_revision'] = self.initial_revision.id
                     newdata['content'] = simple_merge(

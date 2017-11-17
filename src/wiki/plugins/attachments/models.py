@@ -9,7 +9,6 @@ from django.db.models import signals
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
-from six.moves import map, range
 from wiki import managers
 from wiki.decorators import disable_signal_for_loaddata
 from wiki.models.article import BaseRevisionMixin
@@ -158,6 +157,7 @@ class AttachmentRevision(BaseRevisionMixin, models.Model):
         return "%s: %s (r%d)" % (self.attachment.article.current_revision.title,
                                  self.attachment.original_filename,
                                  self.revision_number)
+
 
 @disable_signal_for_loaddata
 def on_revision_delete(instance, *args, **kwargs):

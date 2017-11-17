@@ -9,7 +9,6 @@ from django.db.models import signals
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
-from six.moves import range
 from wiki.models.pluginbase import RevisionPlugin, RevisionPluginRevision
 
 from . import settings
