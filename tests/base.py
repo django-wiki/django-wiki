@@ -117,7 +117,7 @@ class TemplateTestCase(TestCase):
 
     @property
     def template(self):
-        raise Exception("Not implemented")
+        raise NotImplementedError("Subclasses must implement this")
 
     def render(self, context):
         return Template(self.template).render(Context(context))
