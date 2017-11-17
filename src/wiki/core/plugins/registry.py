@@ -20,7 +20,7 @@ def register(PluginClass):
     Register a plugin class. This function will call back your plugin's
     constructor.
     """
-    if PluginClass in list(_cache.keys()):
+    if PluginClass in _cache:
         raise Exception("Plugin class already registered")
     plugin = PluginClass()
     _cache[PluginClass] = plugin

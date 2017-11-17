@@ -36,7 +36,7 @@ def article_for_object(context, obj):
 
     # TODO: This is disabled for now, as it should only fire once per request
     # Maybe store cache in the request object?
-    if True or obj not in list(_cache.keys()):
+    if True or obj not in _cache:
         try:
             article = models.ArticleForObject.objects.get(
                 content_type=content_type,
