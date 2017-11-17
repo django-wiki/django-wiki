@@ -7,7 +7,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 from django.conf import settings as django_settings
 from django.contrib.contenttypes.models import ContentType
 from django.http import HttpRequest
-from six import PY3
+from django.utils.six import assertCountEqual
+
 from wiki.conf import settings
 from wiki.forms import CreateRootForm
 from wiki.models import Article, ArticleForObject, ArticleRevision
@@ -17,17 +18,6 @@ from ..base import TemplateTestCase
 
 if not django_settings.configured:
     django_settings.configure()
-
-
-# copypasted from SIX source for tox tests compatebility reason.
-if PY3:
-    _assertCountEqual = "assertCountEqual"
-else:
-    _assertCountEqual = "assertItemsEqual"
-
-
-def assertCountEqual(self, *args, **kwargs):
-    return getattr(self, _assertCountEqual)(*args, **kwargs)
 
 
 # XXX article_for_object accepts context, but not using it
@@ -194,8 +184,7 @@ class WikiRenderTest(TemplateTestCase):
         # Additional check
         self.render({'article': article, 'pc': None})
 
-    def test_called_with_preview_content_and_article_have_current_revision(
-            self):
+    def test_called_with_preview_content_and_article_have_current_revision(self):
 
         article = Article.objects.create()
         ArticleRevision.objects.create(

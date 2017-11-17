@@ -87,6 +87,7 @@ def get_html_whitelist():
     """Returns additional html tags that should be whitelisted"""
     return _html_whitelist
 
+
 def get_html_attributes():
     """Returns additional html attributes that should be whitelisted"""
     return _html_attributes
