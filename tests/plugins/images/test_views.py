@@ -1,7 +1,6 @@
 from __future__ import print_function, unicode_literals
 
 import base64
-import sys
 from io import BytesIO
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -16,12 +15,6 @@ from ...base import (ArticleWebTestUtils, DjangoClientTestBase,
 
 
 class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
-
-    def _assertRegex(self, a, b):
-        if sys.version_info >= (3, 2):
-            return self.assertRegex(a, b)
-        else:
-            return self.assertRegexpMatches(a, b)
 
     def setUp(self):
         super(ImageTests, self).setUp()
@@ -124,7 +117,7 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
             '<img alt="test\.gif" src="cache/.*\.jpg">'
             '</a><figcaption class="caption"></figcaption></figure>'
         )
-        self._assertRegex(output, expected)
+        self.assertRegexpMatches(output, expected)
 
     def test_image_large_right(self):
         output = self.get_article("[image:1 align:right size:large]", True)
@@ -135,7 +128,7 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
             '<img alt="test\.gif" src="cache/.*\.jpg"></a>'
             '<figcaption class="caption"></figcaption></figure>'
         )
-        self._assertRegex(output, expected)
+        self.assertRegexpMatches(output, expected)
 
     def test_image_orig(self):
         output = self.get_article("[image:1 size:orig]", True)
