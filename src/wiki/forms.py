@@ -40,6 +40,7 @@ validate_slug_numbers = RegexValidator(
     inverse_match=True
 )
 
+
 class WikiSlugField(forms.SlugField):
     """
     In future versions of Django, we might be able to define this field as
@@ -56,6 +57,7 @@ class WikiSlugField(forms.SlugField):
                 validate_slug_numbers
             ]
         super(forms.SlugField, self).__init__(*args, **kwargs)
+
 
 def _clean_slug(slug, urlpath):
     if slug.startswith("_"):
@@ -304,7 +306,7 @@ class SelectWidgetBootstrap(BuildAttrsCompat, forms.Select):
 
     def __setattr__(self, k, value):
         super(SelectWidgetBootstrap, self).__setattr__(k, value)
-        if k != 'attrs' and k != 'disabled':
+        if k not in ('attrs', 'disabled'):
             self.noscript_widget.__setattr__(k, value)
 
     def render(self, name, value, attrs=None, choices=()):
