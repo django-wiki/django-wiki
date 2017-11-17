@@ -1,7 +1,5 @@
 from __future__ import print_function, unicode_literals
 
-import sys
-
 from django.core.urlresolvers import reverse
 from wiki.models import URLPath
 
@@ -10,12 +8,6 @@ from ...base import (ArticleWebTestUtils, DjangoClientTestBase,
 
 
 class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
-
-    def _assertRegex(self, a, b):
-        if sys.version_info >= (3, 2):
-            return self.assertRegex(a, b)
-        else:
-            return self.assertRegexpMatches(a, b)
 
     def test_history(self):
         url = reverse('wiki:globalhistory')
@@ -26,7 +18,7 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
         expected = (
             '(?s).*Root Article.*no log message.*'
         )
-        self._assertRegex(response.rendered_content, expected)
+        self.assertRegexpMatches(response.rendered_content, expected)
 
         URLPath.create_urlpath(URLPath.root(), "testhistory1",
                                title="TestHistory1", content="a page",
@@ -36,7 +28,7 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
             '(?s).*TestHistory1.*Comment 1.*'
             'Root Article.*no log message.*'
         )
-        self._assertRegex(response.rendered_content, expected)
+        self.assertRegexpMatches(response.rendered_content, expected)
 
         urlpath = URLPath.create_urlpath(
             URLPath.root(),
@@ -51,13 +43,13 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
             'Root Article.*no log message.*'
         )
         response = self.client.get(url)
-        self._assertRegex(response.rendered_content, expected)
+        self.assertRegexpMatches(response.rendered_content, expected)
 
         response = self.client.get(url0)
-        self._assertRegex(response.rendered_content, expected)
+        self.assertRegexpMatches(response.rendered_content, expected)
 
         response = self.client.get(url1)
-        self._assertRegex(response.rendered_content, expected)
+        self.assertRegexpMatches(response.rendered_content, expected)
 
         response = self.client.post(
             reverse('wiki:edit', kwargs={'path': 'testhistory2/'}),
@@ -76,10 +68,10 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
             'Root Article.*no log message.*'
         )
         response = self.client.get(url)
-        self._assertRegex(response.rendered_content, expected)
+        self.assertRegexpMatches(response.rendered_content, expected)
 
         response = self.client.get(url0)
-        self._assertRegex(response.rendered_content, expected)
+        self.assertRegexpMatches(response.rendered_content, expected)
 
         expected = (
             '(?s).*TestHistory2Mod.*Testing Revision.*'
@@ -87,4 +79,4 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
             'Root Article.*no log message.*'
         )
         response = self.client.get(url1)
-        self._assertRegex(response.rendered_content, expected)
+        self.assertRegexpMatches(response.rendered_content, expected)

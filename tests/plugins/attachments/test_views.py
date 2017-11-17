@@ -1,6 +1,5 @@
 from __future__ import print_function, unicode_literals
 
-import sys
 from io import BytesIO
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -11,12 +10,6 @@ from ...base import RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTe
 
 
 class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
-
-    def _assertRegex(self, a, b):
-        if sys.version_info >= (3, 2):
-            return self.assertRegex(a, b)
-        else:
-            return self.assertRegexpMatches(a, b)
 
     def setUp(self):
         super(AttachmentTests, self).setUp()
@@ -157,14 +150,14 @@ class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClient
             '<span class="attachment"><a href=".*attachments/download/1/"'
             ' title="Click to download test\.txt">\s*test\.txt\s*</a>'
         )
-        self._assertRegex(output, expected)
+        self.assertRegexpMatches(output, expected)
 
     def test_render_missing(self):
         output = self.get_article('[attachment:2]')
         expected = (
             '<span class="attachment attachment-deleted">\s*Attachment with ID #2 is deleted.\s*</span>'
         )
-        self._assertRegex(output, expected)
+        self.assertRegexpMatches(output, expected)
 
     def test_render_title(self):
         output = self.get_article('[attachment:1 title:"Test title"]')
@@ -172,7 +165,7 @@ class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClient
             '<span class="attachment"><a href=".*attachments/download/1/"'
             ' title="Click to download test\.txt">\s*Test title\s*</a>'
         )
-        self._assertRegex(output, expected)
+        self.assertRegexpMatches(output, expected)
 
     def test_render_title_size(self):
         output = self.get_article('[attachment:1 title:"Test title 2" size]')
@@ -180,4 +173,4 @@ class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClient
             '<span class="attachment"><a href=".*attachments/download/1/"'
             ' title="Click to download test\.txt">\s*Test title 2 \[25[^b]bytes\]\s*</a>'
         )
-        self._assertRegex(output, expected)
+        self.assertRegexpMatches(output, expected)
