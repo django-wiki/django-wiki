@@ -71,9 +71,7 @@ def extension_allowed(filename):
         # No extension
         raise IllegalFileExtension(
             ugettext("No file extension found in filename. That's not okay!"))
-    if not extension.lower() in map(
-            lambda x: x.lower(),
-            settings.FILE_EXTENSIONS):
+    if not extension.lower() in map(str.lower, settings.FILE_EXTENSIONS):
         raise IllegalFileExtension(
             ugettext(
                 "The following filename is illegal: {filename:s}. Extension "
