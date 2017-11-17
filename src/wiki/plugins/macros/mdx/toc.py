@@ -88,7 +88,7 @@ def order_toc_list(toc_list):
             return [], []
 
         current = remaining_list.pop(0)
-        if 'children' not in list(current.keys()):
+        if 'children' not in current:
             current['children'] = []
 
         if not prev_elements:

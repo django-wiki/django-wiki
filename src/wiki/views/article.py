@@ -262,7 +262,7 @@ class Edit(ArticleMixin, FormView):
         for field_name in ['title', 'content']:
             session_key = 'unsaved_article_%s_%d' % (
                 field_name, self.article.id)
-            if session_key in list(self.request.session.keys()):
+            if session_key in self.request.session:
                 content = self.request.session[session_key]
                 initial[field_name] = content
                 del self.request.session[session_key]
