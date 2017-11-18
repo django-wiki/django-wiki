@@ -57,13 +57,13 @@ class ArticleForObjectTemplatetagTest(TemplateTestCase):
         article_for_object({}, obj)
 
         self.assertIn(obj, cache)
-        self.assertEqual(cache[obj], None)
+        self.assertIsNone(cache[obj])
         self.assertEqual(len(cache), 1)
 
         self.render({'obj': obj})
 
         self.assertIn(obj, cache)
-        self.assertEqual(cache[obj], None)
+        self.assertIsNone(cache[obj])
         self.assertEqual(len(cache), 1)
 
     def test_obj_is_not_in__cache_and_articleforobjec_is_exist(self):
@@ -100,13 +100,13 @@ class ArticleForObjectTemplatetagTest(TemplateTestCase):
         article_for_object({}, model)
 
         self.assertIn(model, wiki_tags._cache)
-        self.assertEqual(wiki_tags._cache[model], None)
+        self.assertIsNone(wiki_tags._cache[model])
         self.assertEqual(len(wiki_tags._cache), 1)
 
         self.render({'obj': model})
 
         self.assertIn(model, wiki_tags._cache)
-        self.assertEqual(wiki_tags._cache[model], None)
+        self.assertIsNone(wiki_tags._cache[model])
         self.assertEqual(len(wiki_tags._cache), 1)
 
         self.assertNotIn('spam', wiki_tags._cache.values())
@@ -174,8 +174,8 @@ class WikiRenderTest(TemplateTestCase):
         assertCountEqual(self, self.keys, output)
 
         self.assertEqual(output['article'], article)
-        self.assertEqual(output['content'], None)
-        self.assertEqual(output['preview'], False)
+        self.assertIsNone(output['content'])
+        self.assertIs(output['preview'], False)
 
         self.assertEqual(output['plugins'], {'ham': 'spam'})
         self.assertEqual(output['STATIC_URL'], django_settings.STATIC_URL)
@@ -213,7 +213,7 @@ class WikiRenderTest(TemplateTestCase):
         assertCountEqual(self, self.keys, output)
         self.assertEqual(output['article'], article)
         self.assertMultiLineEqual(output['content'], expected_markdown)
-        self.assertEqual(output['preview'], True)
+        self.assertIs(output['preview'], True)
         self.assertEqual(output['plugins'], {'spam': 'eggs'})
         self.assertEqual(output['STATIC_URL'], django_settings.STATIC_URL)
         self.assertEqual(output['CACHE_TIMEOUT'], settings.CACHE_TIMEOUT)
@@ -244,7 +244,7 @@ class WikiRenderTest(TemplateTestCase):
         self.assertEqual(output['article'], article)
 
         self.assertMultiLineEqual(output['content'], '')
-        self.assertEqual(output['preview'], True)
+        self.assertIs(output['preview'], True)
 
         self.assertEqual(output['plugins'], {'spam': 'eggs'})
         self.assertEqual(output['STATIC_URL'], django_settings.STATIC_URL)
