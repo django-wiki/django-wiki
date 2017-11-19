@@ -683,7 +683,17 @@ class SearchView(ListView):
     def get_queryset(self):
         if not self.query:
             return models.Article.objects.none().order_by('-current_revision__created')
-        articles = models.Article.objects.filter(
+        articles = models.Article.objects
+        path = self.kwargs.pop('path', None)
+        if path:
+            try:
+                urlpath = models.URLPath.get_by_path(path)
+                article_ids = urlpath.get_descendants(
+                    include_self=True).values_list('article_id')
+                articles = articles.filter(id__in=article_ids)
+            except (NoRootURL, models.URLPath.DoesNotExist):
+                pass
+        articles = articles.filter(
             Q(current_revision__title__icontains=self.query) |
             Q(current_revision__content__icontains=self.query))
         if not permissions.can_moderate(
