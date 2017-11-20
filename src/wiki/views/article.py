@@ -670,6 +670,7 @@ class SearchView(ListView):
     context_object_name = "articles"
 
     def dispatch(self, request, *args, **kwargs):
+        self.urlpath = None
         # Do not allow anonymous users to search if they cannot read content
         if request.user.is_anonymous() and not settings.ANONYMOUS:
             return redirect(settings.LOGIN_URL)
@@ -684,11 +685,11 @@ class SearchView(ListView):
         if not self.query:
             return models.Article.objects.none().order_by('-current_revision__created')
         articles = models.Article.objects
-        path = self.kwargs.pop('path', None)
+        path = self.kwargs.get('path', None)
         if path:
             try:
-                urlpath = models.URLPath.get_by_path(path)
-                article_ids = urlpath.get_descendants(
+                self.urlpath = models.URLPath.get_by_path(path)
+                article_ids = self.urlpath.get_descendants(
                     include_self=True).values_list('article_id')
                 articles = articles.filter(id__in=article_ids)
             except (NoRootURL, models.URLPath.DoesNotExist):
@@ -706,6 +707,7 @@ class SearchView(ListView):
         kwargs = super(SearchView, self).get_context_data(**kwargs)
         kwargs['search_form'] = self.search_form
         kwargs['search_query'] = self.query
+        kwargs['urlpath'] = self.urlpath
         return kwargs
 
 

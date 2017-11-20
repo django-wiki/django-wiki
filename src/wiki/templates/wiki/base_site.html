@@ -39,7 +39,14 @@
           {% endblock %}
         </div>
         <div class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right" id="wiki-search-form" method="GET" action="{% url 'wiki:search' %}">
+          <form class="navbar-form navbar-right" id="wiki-search-form" method="GET" action="{% spaceless %}
+              {% if article or urlpath %}
+                {% url 'wiki:search' article_id=article.id path=urlpath.path %}
+              {% else %}
+                {% url 'wiki:search' %}
+              {% endif %}
+            {% endspaceless %}"
+          >
             <div class="input-group">
               <input type="search" class="form-control search-query" name="q" placeholder="{% trans "Search..." %}" />
               <span class="input-group-btn">
