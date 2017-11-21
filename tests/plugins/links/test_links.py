@@ -35,6 +35,13 @@ class WikiPathExtensionTests(TestCase):
             '<p><a class="wikipath" href="/linktest/">Test link</a></p>',
         )
 
+        # Link with an empty fragment
+        text = '[Test link](wiki:/linktest#)'
+        self.assertEqual(
+            md.convert(text),
+            '<p><a class="wikipath" href="/linktest/#">Test link</a></p>',
+        )
+
         # Link to a header in an existing page
         text = '[Test head](wiki:/linktest#wiki-toc-a-section)'
         self.assertEqual(

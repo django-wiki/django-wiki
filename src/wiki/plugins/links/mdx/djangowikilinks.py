@@ -57,7 +57,7 @@ class WikiPathExtension(markdown.Extension):
         self.md = md
 
         # append to end of inline patterns
-        WIKI_RE = r'\[(?P<label>[^\]]+?)\]\(wiki:(?P<wikipath>[a-zA-Z0-9\./_-]*?)(?P<fragment>#[a-zA-Z0-9\./_-]+)?\)'
+        WIKI_RE = r'\[(?P<label>[^\]]+?)\]\(wiki:(?P<wikipath>[a-zA-Z0-9\./_-]*?)(?P<fragment>#[a-zA-Z0-9\./_-]*)?\)'
         wikiPathPattern = WikiPath(WIKI_RE, self.config, markdown_instance=md)
         wikiPathPattern.md = md
         md.inlinePatterns.add('djangowikipath', wikiPathPattern, "<reference")
@@ -118,9 +118,7 @@ class WikiPath(markdown.inlinepatterns.Pattern):
                 path = self.config['base_url'][0] + path_from_link
 
         label = m.group('label')
-        fragment = m.group('fragment')
-        if not fragment:
-            fragment = ""
+        fragment = m.group('fragment') or ""
 
         a = etree.Element('a')
         a.set('href', path + fragment)
