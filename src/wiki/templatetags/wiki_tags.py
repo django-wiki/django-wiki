@@ -206,9 +206,11 @@ def plugin_enabled(plugin_name):
     """
     return plugin_name in django_settings.INSTALLED_APPS
 
+
 @register.filter
 def wiki_settings(name):
     return getattr(settings, name, "")
+
 
 @register.filter
 def starts_with(value, arg):

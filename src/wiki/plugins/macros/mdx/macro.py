@@ -22,7 +22,6 @@ KWARG_RE = re.compile(
     re.IGNORECASE)
 
 
-
 class MacroExtension(markdown.Extension):
 
     """ Macro plugin markdown extension for django-wiki. """

@@ -10,7 +10,6 @@ from ..base import TemplateTestCase, wiki_override_settings
 User = get_user_model()
 
 
-
 class GetContentSnippet(TemplateTestCase):
 
     template = """

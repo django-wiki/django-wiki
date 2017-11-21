@@ -39,13 +39,7 @@ class ArticleView(ArticleMixin, TemplateView):
 
     @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, *args, **kwargs):
-        return super(
-            ArticleView,
-            self).dispatch(
-            request,
-            article,
-            *args,
-            **kwargs)
+        return super(ArticleView, self).dispatch(request, article, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         kwargs['selected_tab'] = 'view'
@@ -487,8 +481,8 @@ class Move(ArticleMixin, FormView):
                 dst_path = descendant.path
                 src_path = urljoin(old_path, dst_path[root_len:])
                 src_len = len(src_path)
-                pos = src_path.rfind("/", 0, src_len-1)
-                slug = src_path[pos+1:src_len-1]
+                pos = src_path.rfind("/", 0, src_len - 1)
+                slug = src_path[pos + 1:src_len - 1]
                 parent_urlpath = models.URLPath.get_by_path(src_path[0:max(pos, 0)])
 
                 link = "[wiki:/{path}](wiki:/{path})".format(path=dst_path)

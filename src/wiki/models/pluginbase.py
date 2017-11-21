@@ -280,6 +280,7 @@ def on_revision_plugin_revision_post_save(**kwargs):
     # Invalidate plugin's article cache
     instance.plugin.article.clear_cache()
 
+
 @disable_signal_for_loaddata
 def on_revision_plugin_revision_pre_save(**kwargs):
     instance = kwargs['instance']
