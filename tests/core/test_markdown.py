@@ -18,7 +18,6 @@ except ImportError:
     pygments = False
 
 
-
 class ArticleMarkdownTests(ArticleTestBase):
 
     @patch('wiki.core.markdown.settings')

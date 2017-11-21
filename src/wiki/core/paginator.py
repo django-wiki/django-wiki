@@ -1,5 +1,6 @@
 from django.core.paginator import Paginator
 
+
 class WikiPaginator(Paginator):
 
     def __init__(self, *args, **kwargs):
@@ -17,7 +18,7 @@ class WikiPaginator(Paginator):
     @property
     def page_range(self):
         left = max(self.last_accessed_page_number - self.side_pages, 2)
-        right = min(self.last_accessed_page_number + self.side_pages+1, self.num_pages)
+        right = min(self.last_accessed_page_number + self.side_pages + 1, self.num_pages)
         pages = []
         if self.num_pages > 0:
             pages = [1]

@@ -11,6 +11,7 @@ IMAGE_RE = re.compile(
     r'.*(\[image\:(?P<id>[0-9]+)(\s+align\:(?P<align>right|left))?(\s+size\:(?P<size>default|small|medium|large|orig))?\s*\]).*',
     re.IGNORECASE)
 
+
 class ImageExtension(markdown.Extension):
 
     """ Images plugin markdown extension for django-wiki. """

@@ -20,7 +20,6 @@ from wiki.core.markdown import article_markdown
 from wiki.decorators import disable_signal_for_loaddata
 
 
-
 @python_2_unicode_compatible
 class Article(models.Model):
 
@@ -382,6 +381,7 @@ class ArticleRevision(BaseRevisionMixin, models.Model):
 def _clear_ancestor_cache(article):
     for ancestor in article.ancestor_objects():
         ancestor.article.clear_cache()
+
 
 @disable_signal_for_loaddata
 def on_article_save_clear_cache(instance, **kwargs):

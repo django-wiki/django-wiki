@@ -159,6 +159,7 @@ class AttachmentRevision(BaseRevisionMixin, models.Model):
                                  self.attachment.original_filename,
                                  self.revision_number)
 
+
 @disable_signal_for_loaddata
 def on_revision_delete(instance, *args, **kwargs):
     if not instance.file:
