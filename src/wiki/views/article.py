@@ -693,7 +693,7 @@ class SearchView(ListView):
                     include_self=True).values_list('article_id')
                 articles = articles.filter(id__in=article_ids)
             except (NoRootURL, models.URLPath.DoesNotExist):
-                pass
+                raise Http404
         articles = articles.filter(
             Q(current_revision__title__icontains=self.query) |
             Q(current_revision__content__icontains=self.query))

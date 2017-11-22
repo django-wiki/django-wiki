@@ -459,6 +459,15 @@ class SearchViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientT
         self.assertFalse(contains_title(articles, 'Test1'))
         self.assertTrue(contains_title(articles, 'Subtest0'))
 
+    def test_hierarchy_search_404(self):
+
+        c = self.client
+
+        response = c.get(resolve_url(
+            'wiki:search', path='test0/'), {'q': 'Content test'})
+
+        self.assertEqual(response.status_code, 404)
+
 
 class DeletedListViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
