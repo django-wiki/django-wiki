@@ -19,7 +19,7 @@ Dependencies:
 * [Python 2.3+](http://python.org)
 * [Markdown 2.0+](http://www.freewisdom.org/projects/python-markdown/)
 '''
-from __future__ import absolute_import, unicode_literals
+from __future__ import unicode_literals
 
 from os import path as os_path
 
