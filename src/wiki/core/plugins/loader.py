@@ -5,7 +5,7 @@ https://github.com/ojii/django-load.
 
 Thanks for the technique!
 """
-from __future__ import absolute_import, print_function, unicode_literals
+from __future__ import print_function, unicode_literals
 
 from importlib import import_module
 

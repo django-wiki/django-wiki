@@ -2,7 +2,7 @@
 Almost all test cases covers both tag calling and template using.
 """
 
-from __future__ import absolute_import, print_function, unicode_literals
+from __future__ import print_function, unicode_literals
 
 from django.conf import settings as django_settings
 from django.contrib.contenttypes.models import ContentType
