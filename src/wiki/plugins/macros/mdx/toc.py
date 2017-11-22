@@ -24,22 +24,14 @@ SO WE AN JUST DEPEND ON THAT!
 from __future__ import absolute_import, unicode_literals
 
 import re
-import unicodedata
 
 import markdown
+from markdown.extensions.toc import nest_toc_tokens as order_toc_list
+from markdown.extensions.toc import slugify, IDCOUNT_RE
 from markdown.util import etree
 from wiki.plugins.macros import settings
 
 HEADER_ID_PREFIX = "wiki-toc-"
-
-IDCOUNT_RE = re.compile(r'^(.*)_([0-9]+)$')
-
-
-def slugify(value, separator):
-    """ Slugify a string, to make it URL friendly. """
-    value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore')
-    value = re.sub('[^\w\s-]', '', value.decode('ascii')).strip().lower()
-    return re.sub('[%s\s]+' % separator, separator, value)
 
 
 def itertext(elem):
@@ -67,73 +59,6 @@ def unique(elem_id, ids):
             elem_id = '%s_%d' % (elem_id, 1)
     ids.add(elem_id)
     return HEADER_ID_PREFIX + elem_id
-
-
-def order_toc_list(toc_list):
-    """Given an unsorted list with errors and skips, return a nested one.
-    [{'level': 1}, {'level': 2}]
-    =>
-    [{'level': 1, 'children': [{'level': 2, 'children': []}]}]
-
-    A wrong list is also converted:
-    [{'level': 2}, {'level': 1}]
-    =>
-    [{'level': 2, 'children': []}, {'level': 1, 'children': []}]
-    """
-
-    def build_correct(remaining_list, prev_elements=[{'level': 1000}]):
-
-        if not remaining_list:
-            return [], []
-
-        current = remaining_list.pop(0)
-        if 'children' not in current:
-            current['children'] = []
-
-        if not prev_elements:
-            # This happens for instance with [8, 1, 1], ie. when some
-            # header level is outside a scope. We treat it as a
-            # top-level
-            next_elements, children = build_correct(remaining_list, [current])
-            current['children'].append(children)
-            return [current] + next_elements, []
-
-        prev_element = prev_elements.pop()
-        children = []
-        next_elements = []
-        # Is current part of the child list or next list?
-        if current['level'] > prev_element['level']:
-            # print "%d is a child of %d" % (current['level'],
-            # prev_element['level'])
-            prev_elements.append(prev_element)
-            prev_elements.append(current)
-            prev_element['children'].append(current)
-            next_elements2, children2 = build_correct(
-                remaining_list, prev_elements)
-            children += children2
-            next_elements += next_elements2
-        else:
-            # print "%d is ancestor of %d" % (current['level'],
-            # prev_element['level'])
-            if not prev_elements:
-                # print "No previous elements, so appending to the next set"
-                next_elements.append(current)
-                prev_elements = [current]
-                next_elements2, children2 = build_correct(
-                    remaining_list, prev_elements)
-                current['children'].extend(children2)
-            else:
-                # print "Previous elements, comparing to those first"
-                remaining_list.insert(0, current)
-                next_elements2, children2 = build_correct(
-                    remaining_list, prev_elements)
-                children.extend(children2)
-            next_elements += next_elements2
-
-        return next_elements, children
-
-    flattened_list, __ = build_correct(toc_list)
-    return flattened_list
 
 
 class TocTreeprocessor(markdown.treeprocessors.Treeprocessor):
@@ -311,4 +236,4 @@ class WikiTocExtension(TocExtension):
 
     def extendMarkdown(self, md, md_globals):
         if 'toc' in settings.METHODS:
-            TocExtension.extendMarkdown(self, md, md_globals)
+            super(WikiTocExtension, self).extendMarkdown(md, md_globals)
