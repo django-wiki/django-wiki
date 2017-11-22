@@ -244,7 +244,7 @@ class ArticleForObject(models.Model):
     is_mptt = models.BooleanField(default=False, editable=False)
 
     def __str__(self):
-        return "{}".format(self.article)
+        return str(self.article)
 
     class Meta:
         verbose_name = _('Article for object')
