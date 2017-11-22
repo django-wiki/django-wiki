@@ -12,6 +12,11 @@
 <p class="lead">
   <div class="pull-right">
     <div class="input-group">
+      {% if urlpath %}
+        <p>{% trans "Searching in" %} {{ urlpath.article }}</p>
+      {% else %}
+        <p>{% trans "Searching whole wiki" %}</p>
+      {% endif %}
       <input type="search" class="form-control search-query" name="q" value="{{ search_query }}" />
       <span class="input-group-btn">
         <button class="btn btn-default" type="submit">

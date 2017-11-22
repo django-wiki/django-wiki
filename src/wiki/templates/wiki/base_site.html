@@ -48,7 +48,13 @@
             {% endspaceless %}"
           >
             <div class="input-group">
-              <input type="search" class="form-control search-query" name="q" placeholder="{% trans "Search..." %}" />
+              <input type="search" class="form-control search-query" name="q" placeholder="{% spaceless %}
+                {% if article or urlpath %}
+                   {% trans "Search from current article..." %}
+                {% else %}
+                  {% trans "Search whole wiki..." %}
+                {% endif %}
+              {% endspaceless %}" />
               <span class="input-group-btn">
                 <button class="btn btn-default" type="submit">
                   <span class="fa fa-search"></span>
