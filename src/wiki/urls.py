@@ -227,7 +227,7 @@ class WikiURLPatterns(object):
     @staticmethod
     def get_plugin_urls():
         urlpatterns = []
-        for plugin in list(registry.get_plugins().values()):
+        for plugin in registry.get_plugins().values():
             slug = getattr(plugin, 'slug', None)
             if slug:
                 article_urlpatterns = plugin.urlpatterns.get('article', [])

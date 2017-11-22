@@ -295,8 +295,7 @@ class Edit(ArticleMixin, FormView):
     def get(self, request, *args, **kwargs):
         # Generate sidebar forms
         self.sidebar_forms = []
-        for form_id, (plugin, Form) in list(
-                self.get_sidebar_form_classes().items()):
+        for form_id, (plugin, Form) in self.get_sidebar_form_classes().items():
             if Form:
                 form = Form(self.article, self.request.user)
                 setattr(form, 'form_id', form_id)
@@ -308,8 +307,7 @@ class Edit(ArticleMixin, FormView):
     def post(self, request, *args, **kwargs):
         # Generate sidebar forms
         self.sidebar_forms = []
-        for form_id, (plugin, Form) in list(
-                self.get_sidebar_form_classes().items()):
+        for form_id, (plugin, Form) in self.get_sidebar_form_classes().items():
             if Form:
                 if form_id == self.request.GET.get('f', None):
                     form = Form(

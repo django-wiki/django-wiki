@@ -90,8 +90,7 @@ class AttachmentArchiveForm(AttachmentForm):
         super(AttachmentArchiveForm, self).__init__(*args, **kwargs)
         ordered_fields = ['unzip_archive', 'file']
         self.fields.keyOrder = ordered_fields + [k
-                                                 for k in list(
-                                                     self.fields.keys())
+                                                 for k in self.fields.keys()
                                                  if k not in ordered_fields]
 
     def clean_file(self):
