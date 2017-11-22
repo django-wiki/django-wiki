@@ -159,9 +159,7 @@ class URLPath(MPTTModel):
     @classmethod
     def root(cls):
         site = Site.objects.get_current()
-        root_nodes = list(
-            cls.objects.root_nodes().filter(site=site).select_related_common()
-        )
+        root_nodes = cls.objects.root_nodes().filter(site=site).select_related_common()
         # We fetch the nodes as a list and use len(), not count() because we need
         # to get the result out anyway. This only takes one sql query
         no_paths = len(root_nodes)
