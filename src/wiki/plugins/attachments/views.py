@@ -288,7 +288,7 @@ class AttachmentChangeRevisionView(ArticleMixin, View):
         kwargs['selected_tab'] = 'attachments'
         if 'form' not in kwargs:
             kwargs['form'] = self.get_form()
-        return ArticleMixin.get_context_data(self, **kwargs)
+        return super(AttachmentChangeRevisionView, self).get_context_data(**kwargs)
 
 
 class AttachmentAddView(ArticleMixin, View):

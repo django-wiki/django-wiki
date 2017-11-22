@@ -131,7 +131,7 @@ class RevisionChangeView(ArticleMixin, RedirectView):
             id=kwargs.get(
                 'rev_id',
                 None))
-        return ArticleMixin.dispatch(self, request, article, *args, **kwargs)
+        return super(RevisionChangeView, self).dispatch(request, article, *args, **kwargs)
 
     def get_redirect_url(self, **kwargs):
 
@@ -164,7 +164,7 @@ class RevisionAddView(ArticleMixin, FormView):
                                        id=kwargs.get('image_id', None))
         if not self.image.can_write(request.user):
             return redirect(wiki_settings.LOGIN_URL)
-        return ArticleMixin.dispatch(self, request, article, *args, **kwargs)
+        return super(RevisionAddView, self).dispatch(request, article, *args, **kwargs)
 
     def get_form_kwargs(self, **kwargs):
         kwargs = super(RevisionAddView, self).get_form_kwargs(**kwargs)
