@@ -15,9 +15,9 @@ from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
 
 from wiki import managers
-from wiki import get_current_request
 from wiki.conf import settings
 from wiki.core.exceptions import NoRootURL, MultipleRootURLs
+from wiki.middleware import get_current_request
 from wiki.models.article import ArticleRevision, ArticleForObject, Article
 
 log = logging.getLogger(__name__)
