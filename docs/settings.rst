@@ -11,7 +11,7 @@ images plugin.
    :members:
 
 Plugin attachments
--------------
+------------------
 
 .. automodule:: wiki.plugins.attachments.settings
    :members:
@@ -23,7 +23,7 @@ Plugin images
    :members:
 
 Plugin links
--------------
+------------
 
 .. automodule:: wiki.plugins.links.settings
    :members:
