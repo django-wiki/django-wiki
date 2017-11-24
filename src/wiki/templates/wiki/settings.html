@@ -8,7 +8,7 @@
 
   {% for form in forms %}
   <form method="POST" class="form-horizontal settings-form" action="?f={{form.action}}">
-    <h3 class="page-header">{{ form.settings_form_headline }}</h2>
+    <h3 class="page-header">{{ form.settings_form_headline }}</h3>
     {% wiki_form form %}
     <div class="form-group form-actions">
       <div class="col-lg-10 col-lg-2-offset">
