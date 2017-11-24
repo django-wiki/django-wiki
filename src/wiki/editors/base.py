@@ -3,7 +3,7 @@ from __future__ import absolute_import, unicode_literals
 from django import forms
 
 
-class BaseEditor():
+class BaseEditor(object):
 
     """Editors should inherit from this. See wiki.editors for examples."""
 

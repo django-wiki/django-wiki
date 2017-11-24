@@ -103,7 +103,7 @@ User = get_user_model()
 Group = apps.get_model(settings.GROUP_MODEL)
 
 
-class SpamProtectionMixin():
+class SpamProtectionMixin(object):
 
     """Check a form for spam. Only works if properties 'request' and 'revision_model' are set."""
 
