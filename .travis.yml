@@ -1,52 +1,52 @@
-# THANKS!
-# https://travis-ci.org/peterbe/premailer
-
-# This indicates to Travis that we will not use or need sudo
-# so that we can benefit from and use the cache->directories
-# directive.
-
-sudo: false
+# Because Python 3.6 is available on GCE
 dist: trusty
 
-env: PIP_DOWNLOAD_CACHE="pip_cache"
-
 language: python
+cache: pip
+
+python:
+  - "2.7"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+
+env:
+  - LINT="yes"
+  - DJANGO="1.8"
+  - DJANGO="1.9"
+  - DJANGO="1.10"
+  - DJANGO="1.11"
+
+matrix:
+  exclude:
+  - python: "3.4"
+    env: LINT="yes"
+  - python: "3.5"
+    env: LINT="yes"
+  - python: "3.6"
+    env: LINT="yes"
+  - python: "3.6"
+    env: DJANGO="1.8"
+  - python: "3.6"
+    env: DJANGO="1.9"
+  - python: "3.6"
+    env: DJANGO="1.10"
 
 addons:
   apt:
-    sources:
-      - deadsnakes
     packages:
-      - python3.5
-      - python3.5-dev
       - libjpeg8
       - libjpeg8-dev
 
-# See tox.ini for env list
-env:
-- TOXENV=py27-django18
-- TOXENV=py27-django19
-- TOXENV=py27-django110
-- TOXENV=py27-django111
-- TOXENV=py34-django18
-- TOXENV=py34-django19
-- TOXENV=py34-django110
-- TOXENV=py34-django111
-- TOXENV=py35-django18
-- TOXENV=py35-django19
-- TOXENV=py35-django110
-- TOXENV=py35-django111
-- TOXENV=lint
-
 install:
-  - pip install tox>=2.1 coveralls
+  - pip install tox\>=2.1 tox-travis codecov
 
 script:
-  - tox -e $TOXENV
+  - tox
 
 notifications:
   irc:
     - "irc.freenode.org#django-wiki"
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - codecov

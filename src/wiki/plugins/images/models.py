@@ -9,7 +9,6 @@ from django.db.models import signals
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
-from six.moves import range
 from wiki.models.pluginbase import RevisionPlugin, RevisionPluginRevision
 
 from . import settings
@@ -80,9 +79,7 @@ class ImageRevision(RevisionPluginRevision):
         """Used to retrieve the file size and not cause exceptions."""
         try:
             return self.image.size
-        except ValueError:
-            return None
-        except OSError:
+        except (ValueError, OSError):
             return None
 
     def inherit_predecessor(self, image, skip_image_file=False):
@@ -115,7 +112,7 @@ class ImageRevision(RevisionPluginRevision):
         ordering = ('-created',)
 
     def __str__(self):
-        return ugettext('Image Revsion: %d') % self.revision_number
+        return ugettext('Image Revision: %d') % self.revision_number
 
 
 def on_image_revision_delete(instance, *args, **kwargs):

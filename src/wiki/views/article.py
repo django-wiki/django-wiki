@@ -7,19 +7,20 @@ import logging
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.db import transaction
 from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
+from django.utils.translation import ungettext
 from django.views.generic.base import RedirectView, TemplateView, View
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
-from six.moves import range
 from wiki import editors, forms, models
 from wiki.conf import settings
 from wiki.core import permissions
-from wiki.core.compat import atomic, transaction_commit_on_success, urljoin
+from wiki.core.compat import urljoin
 from wiki.core.diff import simple_merge
 from wiki.core.exceptions import NoRootURL
 from wiki.core.paginator import WikiPaginator
@@ -37,13 +38,7 @@ class ArticleView(ArticleMixin, TemplateView):
 
     @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, *args, **kwargs):
-        return super(
-            ArticleView,
-            self).dispatch(
-            request,
-            article,
-            *args,
-            **kwargs)
+        return super(ArticleView, self).dispatch(request, article, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         kwargs['selected_tab'] = 'view'
@@ -106,9 +101,7 @@ class Create(FormView, ArticleMixin):
                     _("There was an error creating this article: %s") %
                     str(e))
             else:
-                messages.error(
-                    self.request,
-                    _("There was an error creating this article."))
+                messages.error(self.request, _("There was an error creating this article."))
             return redirect('wiki:get', '')
 
         url = self.get_success_url()
@@ -262,7 +255,7 @@ class Edit(ArticleMixin, FormView):
         for field_name in ['title', 'content']:
             session_key = 'unsaved_article_%s_%d' % (
                 field_name, self.article.id)
-            if session_key in list(self.request.session.keys()):
+            if session_key in self.request.session:
                 content = self.request.session[session_key]
                 initial[field_name] = content
                 del self.request.session[session_key]
@@ -282,10 +275,7 @@ class Edit(ArticleMixin, FormView):
             kwargs['data'] = None
             kwargs['files'] = None
             kwargs['no_clean'] = True
-        return form_class(
-            self.request,
-            self.article.current_revision,
-            **kwargs)
+        return form_class(self.request, self.article.current_revision, **kwargs)
 
     def get_sidebar_form_classes(self):
         """Returns dictionary of form classes for the sidebar. If no form class is
@@ -428,8 +418,7 @@ class Move(ArticleMixin, FormView):
 
         return super(Move, self).get_context_data(**kwargs)
 
-    @atomic
-    @transaction_commit_on_success
+    @transaction.atomic
     def form_valid(self, form):
         if not self.urlpath.parent:
             messages.error(
@@ -491,8 +480,8 @@ class Move(ArticleMixin, FormView):
                 dst_path = descendant.path
                 src_path = urljoin(old_path, dst_path[root_len:])
                 src_len = len(src_path)
-                pos = src_path.rfind("/", 0, src_len-1)
-                slug = src_path[pos+1:src_len-1]
+                pos = src_path.rfind("/", 0, src_len - 1)
+                slug = src_path[pos + 1:src_len - 1]
                 parent_urlpath = models.URLPath.get_by_path(src_path[0:max(pos, 0)])
 
                 link = "[wiki:/{path}](wiki:/{path})".format(path=dst_path)
@@ -510,7 +499,11 @@ class Move(ArticleMixin, FormView):
 
             messages.success(
                 self.request,
-                _("Article successfully moved! Created {n} redirects.").format(
+                ungettext(
+                    "Article successfully moved! Created {n} redirect.",
+                    "Article successfully moved! Created {n} redirects.",
+                    len(descendants)
+                ).format(
                     n=len(descendants)
                 )
             )
@@ -569,13 +562,7 @@ class Deleted(Delete):
                 else:
                     return redirect('wiki:get', article_id=article.id)
 
-        return super(
-            Deleted,
-            self).dispatch1(
-            request,
-            article,
-            *args,
-            **kwargs)
+        return super(Deleted, self).dispatch1(request, article, *args, **kwargs)
 
     def get_initial(self):
         return {'revision': self.article.current_revision,
@@ -697,7 +684,7 @@ class SearchView(ListView):
 
     def get_queryset(self):
         if not self.query:
-            return models.Article.objects.none()
+            return models.Article.objects.none().order_by('-current_revision__created')
         articles = models.Article.objects.filter(
             Q(current_revision__title__icontains=self.query) |
             Q(current_revision__content__icontains=self.query))
@@ -705,10 +692,10 @@ class SearchView(ListView):
                 models.URLPath.root().article,
                 self.request.user):
             articles = articles.active().can_read(self.request.user)
-        return articles
+        return articles.order_by('-current_revision__created')
 
     def get_context_data(self, **kwargs):
-        kwargs = ListView.get_context_data(self, **kwargs)
+        kwargs = super(SearchView, self).get_context_data(**kwargs)
         kwargs['search_form'] = self.search_form
         kwargs['search_query'] = self.query
         return kwargs
@@ -732,13 +719,7 @@ class Settings(ArticleMixin, TemplateView):
     @method_decorator(login_required)
     @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, *args, **kwargs):
-        return super(
-            Settings,
-            self).dispatch(
-            request,
-            article,
-            *args,
-            **kwargs)
+        return super(Settings, self).dispatch(request, article, *args, **kwargs)
 
     def get_form_classes(self,):
         """
@@ -813,21 +794,13 @@ class ChangeRevisionView(RedirectView):
         self.urlpath = kwargs.pop('kwargs', False)
         self.change_revision()
 
-        return super(
-            ChangeRevisionView,
-            self).dispatch(
-            request,
-            *args,
-            **kwargs)
+        return super(ChangeRevisionView, self).dispatch(request, *args, **kwargs)
 
     def get_redirect_url(self, **kwargs):
         if self.urlpath:
             return reverse("wiki:history", kwargs={'path': self.urlpath.path})
         else:
-            return reverse(
-                'wiki:history',
-                kwargs={
-                    'article_id': self.article.id})
+            return reverse('wiki:history', kwargs={'article_id': self.article.id})
 
     def change_revision(self):
         revision = get_object_or_404(
@@ -871,11 +844,7 @@ class Preview(ArticleMixin, TemplateView):
         return super(Preview, self).dispatch(request, article, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        edit_form = forms.EditForm(
-            request,
-            self.article.current_revision,
-            request.POST,
-            preview=True)
+        edit_form = forms.EditForm(request, self.article.current_revision, request.POST, preview=True)
         if edit_form.is_valid():
             self.title = edit_form.cleaned_data['title']
             self.content = edit_form.cleaned_data['content']

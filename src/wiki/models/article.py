@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.db.models.fields import GenericIPAddressField as IPAddressField
 from django.db.models.signals import post_save, pre_delete, pre_save
 from django.utils import translation
 from django.utils.encoding import python_2_unicode_compatible
@@ -16,19 +18,6 @@ from wiki.conf import settings
 from wiki.core import compat, permissions
 from wiki.core.markdown import article_markdown
 from wiki.decorators import disable_signal_for_loaddata
-
-# Django 1.9 deprecation of IPAddressField
-try:
-    from django.db.models.fields import GenericIPAddressField as IPAddressField
-except ImportError:
-    from django.db.models.fields import IPAddressField
-
-
-# Django 1.9 deprecation of contenttypes.generic
-try:
-    from django.contrib.contenttypes.fields import GenericForeignKey
-except ImportError:
-    from django.contrib.contenttypes.generic import GenericForeignKey
 
 
 @python_2_unicode_compatible
@@ -217,12 +206,14 @@ class Article(models.Model):
         )
 
     def get_cached_content(self):
-        """Returns cached """
+        """Returns cached version of rendered article"""
         cache_key = self.get_cache_key()
         cached_content = cache.get(cache_key)
         if cached_content is None:
             cached_content = self.render()
             cache.set(cache_key, cached_content, settings.CACHE_TIMEOUT)
+        else:
+            cached_content = mark_safe(cached_content)
         return cached_content
 
     def clear_cache(self):
@@ -253,7 +244,7 @@ class ArticleForObject(models.Model):
     is_mptt = models.BooleanField(default=False, editable=False)
 
     def __str__(self):
-        return "{}".format(self.article)
+        return str(self.article)
 
     class Meta:
         verbose_name = _('Article for object')
@@ -354,7 +345,7 @@ class ArticleRevision(BaseRevisionMixin, models.Model):
 
     # TODO:
     # Allow a revision to redirect to another *article*. This
-    # way, we can redirects and still maintain old content.
+    # way, we can have redirects and still maintain old content.
     # redirect = models.ForeignKey('Article', null=True, blank=True,
     #                             verbose_name=_('redirect'),
     #                             help_text=_('If set, the article will redirect to the contents of another article.'),
@@ -390,6 +381,7 @@ class ArticleRevision(BaseRevisionMixin, models.Model):
 def _clear_ancestor_cache(article):
     for ancestor in article.ancestor_objects():
         ancestor.article.clear_cache()
+
 
 @disable_signal_for_loaddata
 def on_article_save_clear_cache(instance, **kwargs):

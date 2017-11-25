@@ -1,9 +1,8 @@
 from __future__ import absolute_import, unicode_literals
 
 import django
-from django import VERSION as DJANGO_VERSION
 from django.db import models
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.db.models.query import EmptyQuerySet, QuerySet
 from mptt.managers import TreeManager
 
@@ -21,15 +20,6 @@ if django.VERSION >= (1, 6):
         # hack can be removed.
 
 
-class QuerySetCompatMixin(object):
-
-    def get_queryset_compat(self):
-        get_queryset = (self.get_query_set
-                        if hasattr(self, 'get_query_set')
-                        else self.get_queryset)
-        return get_queryset()
-
-
 class ArticleQuerySet(QuerySet):
 
     def can_read(self, user):
@@ -43,7 +33,7 @@ class ArticleQuerySet(QuerySet):
             q = self.filter(Q(other_read=True) |
                             Q(owner=user) |
                             (Q(group__user=user) & Q(group_read=True))
-                            ).distinct()
+                            ).annotate(Count('id'))
         return q
 
     def can_write(self, user):
@@ -76,7 +66,7 @@ class ArticleEmptyQuerySet(EmptyQuerySet):
         return self
 
 
-class ArticleFkQuerySetMixin():
+class ArticleFkQuerySetMixin(object):
 
     def can_read(self, user):
         """Filter objects so only the ones with a user's reading access
@@ -90,7 +80,7 @@ class ArticleFkQuerySetMixin():
             q = self.filter(
                 Q(article__other_read=True) | Q(article__owner=user) |
                 (Q(article__group__user=user) & Q(
-                    article__group_read=True))).distinct()
+                    article__group_read=True))).annotate(Count('id'))
         return q
 
     def can_write(self, user):
@@ -105,14 +95,14 @@ class ArticleFkQuerySetMixin():
             q = self.filter(
                 Q(article__other_write=True) | Q(article__owner=user) |
                 (Q(article__group__user=user) & Q(
-                    article__group_write=True))).distinct()
+                    article__group_write=True))).annotate(Count('id'))
         return q
 
     def active(self):
         return self.filter(article__current_revision__deleted=False)
 
 
-class ArticleFkEmptyQuerySetMixin():
+class ArticleFkEmptyQuerySetMixin(object):
 
     def can_read(self, user):
         return self
@@ -132,60 +122,40 @@ class ArticleFkEmptyQuerySet(ArticleFkEmptyQuerySetMixin, EmptyQuerySet):
     pass
 
 
-class ArticleManager(QuerySetCompatMixin, models.Manager):
+class ArticleManager(models.Manager):
 
     def get_empty_query_set(self):
-        # Pre 1.6 django, we needed a custom inheritor of EmptyQuerySet
-        # to pass custom methods. However, 1.6 introduced that EmptyQuerySet
-        # cannot be instantiated but instead passes through the methods
-        # of the custom QuerySet.
-        # See: https://code.djangoproject.com/ticket/22817
-        if DJANGO_VERSION < (1, 6):
-            return ArticleEmptyQuerySet(self.model, using=self._db)
-        return self.get_queryset_compat().none()
+        return self.get_queryset().none()
 
     def get_queryset(self):
         return ArticleQuerySet(self.model, using=self._db)
 
     def active(self):
-        return self.get_queryset_compat().active()
+        return self.get_queryset().active()
 
     def can_read(self, user):
-        return self.get_queryset_compat().can_read(user)
+        return self.get_queryset().can_read(user)
 
     def can_write(self, user):
-        return self.get_queryset_compat().can_write(user)
-
-    if django.VERSION < (1, 6):
-        get_query_set = get_queryset
+        return self.get_queryset().can_write(user)
 
 
-class ArticleFkManager(QuerySetCompatMixin, models.Manager):
+class ArticleFkManager(models.Manager):
 
     def get_empty_query_set(self):
-        # Pre 1.6 django, we needed a custom inheritor of EmptyQuerySet
-        # to pass custom methods. However, 1.6 introduced that EmptyQuerySet
-        # cannot be instantiated but instead passes through the methods
-        # of the custom QuerySet.
-        # See: https://code.djangoproject.com/ticket/22817
-        if DJANGO_VERSION < (1, 6):
-            return ArticleFkEmptyQuerySet(model=self.model)
-        return self.get_queryset_compat().none()
+        return self.get_queryset().none()
 
     def get_queryset(self):
         return ArticleFkQuerySet(self.model, using=self._db)
 
-    if django.VERSION < (1, 6):
-        get_query_set = get_queryset
-
     def active(self):
-        return self.get_queryset_compat().active()
+        return self.get_queryset().active()
 
     def can_read(self, user):
-        return self.get_queryset_compat().can_read(user)
+        return self.get_queryset().can_read(user)
 
     def can_write(self, user):
-        return self.get_queryset_compat().can_write(user)
+        return self.get_queryset().can_write(user)
 
 
 class URLPathEmptyQuerySet(EmptyQuerySet, ArticleFkEmptyQuerySetMixin):
@@ -195,6 +165,7 @@ class URLPathEmptyQuerySet(EmptyQuerySet, ArticleFkEmptyQuerySetMixin):
 
     def default_order(self):
         return self
+
 
 class URLPathQuerySet(QuerySet, ArticleFkQuerySetMixin):
 
@@ -209,34 +180,24 @@ class URLPathQuerySet(QuerySet, ArticleFkQuerySetMixin):
         return self.order_by('article__current_revision__title')
 
 
-class URLPathManager(QuerySetCompatMixin, TreeManager):
+class URLPathManager(TreeManager):
 
     def get_empty_query_set(self):
-        # Pre 1.6 django, we needed a custom inheritor of EmptyQuerySet
-        # to pass custom methods. However, 1.6 introduced that EmptyQuerySet
-        # cannot be instantiated but instead passes through the methods
-        # of the custom QuerySet.
-        # See: https://code.djangoproject.com/ticket/22817
-        if DJANGO_VERSION < (1, 6):
-            return URLPathEmptyQuerySet(model=self.model)
-        return self.get_queryset_compat().none()
+        return self.get_queryset().none()
 
     def get_queryset(self):
         """Return a QuerySet with the same ordering as the TreeManager."""
         return URLPathQuerySet(self.model, using=self._db).order_by(
             self.tree_id_attr, self.left_attr)
 
-    if django.VERSION < (1, 6):
-        get_query_set = get_queryset
-
     def select_related_common(self):
-        return self.get_queryset_compat().common_select_related()
+        return self.get_queryset().common_select_related()
 
     def active(self):
-        return self.get_queryset_compat().active()
+        return self.get_queryset().active()
 
     def can_read(self, user):
-        return self.get_queryset_compat().can_read(user)
+        return self.get_queryset().can_read(user)
 
     def can_write(self, user):
-        return self.get_queryset_compat().can_write(user)
+        return self.get_queryset().can_write(user)

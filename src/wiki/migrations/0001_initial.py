@@ -5,13 +5,9 @@ import django.db.models.deletion
 import mptt.fields
 from django.conf import settings
 from django.db import migrations, models
-from wiki.conf.settings import GROUP_MODEL
+from django.db.models.fields import GenericIPAddressField as IPAddressField
 
-# Django 1.9 deprecation of IPAddressField
-try:
-    from django.db.models.fields import GenericIPAddressField as IPAddressField
-except ImportError:
-    from django.db.models.fields import IPAddressField
+from wiki.conf.settings import GROUP_MODEL
 
 
 class Migration(migrations.Migration):

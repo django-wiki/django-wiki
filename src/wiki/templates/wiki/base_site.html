@@ -66,13 +66,13 @@
                       {% trans "Account Settings" %}
                     </a>
                   </li>
+                  {% endif %}
                   <li>
-                    <a href="{% url 'wiki:logout' %}">
+                    <a href="{{ "LOGOUT_URL"|wiki_settings }}">
                       <i class="fa fa-power-off"></i>
                       {% trans "Log out" %}
                     </a>
                   </li>
-                  {% endif %}
                   {% if user.is_superuser %}
                   <li>
                     <a href="{% url 'wiki:deleted_list' %}">
@@ -116,15 +116,7 @@
 
     <div class="container" style="margin-top: 60px;">
 
-      {% if messages %}
-        <!-- Messages for this instance -->
-        {% for message in messages %}
-          <div class="alert alert-{{ message.tags }}">
-            <a class="close" data-dismiss="alert" href="#">&times;</a>
-            {{ message }}
-          </div>
-        {% endfor %}
-      {% endif %}
+      {% wiki_messages %}
 
       <!-- Reserved for breadcrumbs -->
       {% block wiki_breadcrumbs %}{% endblock %}

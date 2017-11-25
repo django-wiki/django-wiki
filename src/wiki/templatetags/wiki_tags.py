@@ -11,7 +11,6 @@ from django.forms import BaseForm
 from django.template.defaultfilters import striptags
 from django.utils.http import urlquote
 from django.utils.safestring import mark_safe
-from six.moves import filter
 from wiki import models
 from wiki.conf import settings
 from wiki.core.plugins import registry as plugin_registry
@@ -36,7 +35,7 @@ def article_for_object(context, obj):
 
     # TODO: This is disabled for now, as it should only fire once per request
     # Maybe store cache in the request object?
-    if True or obj not in list(_cache.keys()):
+    if True or obj not in _cache:
         try:
             article = models.ArticleForObject.objects.get(
                 content_type=content_type,
@@ -72,6 +71,22 @@ def wiki_form(context, form_obj):
             "Error including form, it's not a form, it's a %s" %
             type(form_obj))
     context.update({'form': form_obj})
+    return context
+
+
+@register.inclusion_tag('wiki/includes/messages.html', takes_context=True)
+def wiki_messages(context):
+
+    messages = context.get('messages', [])
+    for message in messages:
+        message.css_class = ""
+        for tag in message.tags.split(" "):
+            # Drop KeyError if MESSAGE_TAG_CSS_CLASS doesn't have the tag,
+            # that seems valuable.
+            message.css_class += " " + settings.MESSAGE_TAG_CSS_CLASS[tag]
+    context.update({
+        'messages': messages
+    })
     return context
 
 
@@ -190,9 +205,11 @@ def plugin_enabled(plugin_name):
     """
     return plugin_name in django_settings.INSTALLED_APPS
 
+
 @register.filter
 def wiki_settings(name):
     return getattr(settings, name, "")
+
 
 @register.filter
 def starts_with(value, arg):

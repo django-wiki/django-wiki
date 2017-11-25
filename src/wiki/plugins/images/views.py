@@ -30,13 +30,7 @@ class ImageView(ArticleMixin, ListView):
 
     @method_decorator(get_article(can_read=True, not_locked=True))
     def dispatch(self, request, article, *args, **kwargs):
-        return super(
-            ImageView,
-            self).dispatch(
-            request,
-            article,
-            *args,
-            **kwargs)
+        return super(ImageView, self).dispatch(request, article, *args, **kwargs)
 
     def get_queryset(self):
         if (self.article.can_moderate(self.request.user) or
@@ -47,7 +41,7 @@ class ImageView(ArticleMixin, ListView):
                 article=self.article,
                 current_revision__deleted=False)
         images.select_related()
-        return images
+        return images.order_by('-current_revision__imagerevision__created')
 
     def get_context_data(self, **kwargs):
         kwargs.update(ArticleMixin.get_context_data(self, **kwargs))
@@ -83,24 +77,12 @@ class DeleteView(ArticleMixin, RedirectView):
         self.image.current_revision = new_revision
         self.image.save()
         if self.restore:
-            messages.info(
-                self.request,
-                _('%s has been restored') %
-                new_revision.get_filename())
+            messages.info(self.request, _('%s has been restored') % new_revision.get_filename())
         else:
-            messages.info(
-                self.request,
-                _('%s has been marked as deleted') %
-                new_revision.get_filename())
+            messages.info(self.request, _('%s has been marked as deleted') % new_revision.get_filename())
         if self.urlpath:
-            return reverse(
-                'wiki:images_index',
-                kwargs={
-                    'path': self.urlpath.path})
-        return reverse(
-            'wiki:images_index',
-            kwargs={
-                'article_id': self.article.id})
+            return reverse('wiki:images_index', kwargs={'path': self.urlpath.path})
+        return reverse('wiki:images_index', kwargs={'article_id': self.article.id})
 
 
 class PurgeView(ArticleMixin, FormView):
@@ -113,12 +95,11 @@ class PurgeView(ArticleMixin, FormView):
     def dispatch(self, request, article, *args, **kwargs):
         self.image = get_object_or_404(models.Image, article=article,
                                        id=kwargs.get('image_id', None))
-        return ArticleMixin.dispatch(self, request, article, *args, **kwargs)
+        return super(PurgeView, self).dispatch(request, article, *args, **kwargs)
 
     def form_valid(self, form):
 
-        for revision in self.image.revision_set.all().select_related(
-                "imagerevision"):
+        for revision in self.image.revision_set.all().select_related("imagerevision"):
             revision.imagerevision.image.delete(save=False)
             revision.imagerevision.delete()
 

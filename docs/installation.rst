@@ -132,6 +132,29 @@ If you're working with fresh Django installation, you need to set the SITE_ID
     SITE_ID = 1
     
 
+User account handling
+~~~~~~~~~~~~~~~~~~~~~
+
+There is a limited account handling included to allow users to sign up. Its
+settings are shown below with their default values. To switch off account
+handling entirely, set ``WIKI_ACCOUNT_HANDLING = False``.
+
+.. code-block:: python
+
+    WIKI_ACCOUNT_HANDLING = True
+    WIKI_ACCOUNT_SIGNUP_ALLOWED = True
+
+After a user is logged in, they will be redirected to the value of
+``LOGIN_REDIRECT_URL``, which you can configure in your project settings to
+point to the root article:
+
+.. code-block:: python
+
+    from django.core.urlresolvers import reverse_lazy
+    LOGIN_REDIRECT_URL = reverse_lazy('wiki:get', kwargs={'path': ''})
+
+
+
 Include urlpatterns
 ~~~~~~~~~~~~~~~~~~~
 

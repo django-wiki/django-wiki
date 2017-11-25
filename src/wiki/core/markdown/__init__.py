@@ -36,10 +36,16 @@ class ArticleMarkdown(markdown.Markdown):
     def convert(self, text, *args, **kwargs):
         html = super(ArticleMarkdown, self).convert(text, *args, **kwargs)
         if settings.MARKDOWN_SANITIZE_HTML:
+            tags = settings.MARKDOWN_HTML_WHITELIST + plugin_registry.get_html_whitelist()
+
+            attrs = dict()
+            attrs.update(settings.MARKDOWN_HTML_ATTRIBUTES)
+            attrs.update(plugin_registry.get_html_attributes().items())
+
             html = bleach.clean(
                 html,
-                tags=settings.MARKDOWN_HTML_WHITELIST,
-                attributes=settings.MARKDOWN_HTML_ATTRIBUTES,
+                tags=tags,
+                attributes=attrs,
                 styles=settings.MARKDOWN_HTML_STYLES,
             )
         return html

@@ -8,39 +8,37 @@ from itertools import chain
 
 from django import forms
 from django.apps import apps
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.core import validators
 from django.core.urlresolvers import Resolver404, resolve
 from django.core.validators import RegexValidator
+from django.forms.utils import flatatt
 from django.forms.widgets import HiddenInput
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from django.utils.encoding import force_text
 from django.utils.html import conditional_escape, escape
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import pgettext_lazy
 from django.utils.translation import ugettext
-from django.shortcuts import get_object_or_404
-from six.moves import range
+from django.utils.translation import ugettext_lazy as _
+
 from wiki import models
 from wiki.conf import settings
 from wiki.core import permissions
-from wiki.core.compat import get_user_model, BuildAttrsCompat
+from wiki.core.compat import BuildAttrsCompat
 from wiki.core.diff import simple_merge
 from wiki.core.plugins.base import PluginSettingsFormMixin
 from wiki.editors import getEditor
 
-try:
-    from django.utils.encoding import force_unicode
-except ImportError:
-    def force_unicode(x):
-        return(x)
-
-
 validate_slug_numbers = RegexValidator(
-    r'^\d+$',
+    r'^[0-9]+$',
     _("A 'slug' cannot consist solely of numbers."),
     'invalid',
     inverse_match=True
 )
+
 
 class WikiSlugField(forms.SlugField):
     """
@@ -58,6 +56,7 @@ class WikiSlugField(forms.SlugField):
                 validate_slug_numbers
             ]
         super(forms.SlugField, self).__init__(*args, **kwargs)
+
 
 def _clean_slug(slug, urlpath):
     if slug.startswith("_"):
@@ -102,12 +101,6 @@ def _clean_slug(slug, urlpath):
 
 User = get_user_model()
 Group = apps.get_model(settings.GROUP_MODEL)
-
-# Due to deprecation of django.forms.util in Django 1.9
-try:
-    from django.forms.utils import flatatt
-except ImportError:
-    from django.forms.util import flatatt
 
 
 class SpamProtectionMixin():
@@ -192,9 +185,8 @@ class CreateRootForm(forms.Form):
             'This is just the initial contents of your article. After creating it, you can use more complex features like adding plugins, meta data, related articles etc...'),
         required=False, widget=getEditor().get_widget())  # @UndefinedVariable
 
+
 class MoveForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super(MoveForm, self).__init__(*args, **kwargs)
 
     destination = forms.CharField(label=_('Destination'))
     slug = WikiSlugField(max_length=models.URLPath.SLUG_MAX_LENGTH)
@@ -203,11 +195,12 @@ class MoveForm(forms.Form):
                                   required=False)
 
     def clean(self):
-        cd = self.cleaned_data
+        cd = super(MoveForm, self).clean()
         if cd.get('slug'):
             dest_path = get_object_or_404(models.URLPath, pk=self.cleaned_data['destination'])
             cd['slug'] = _clean_slug(cd['slug'], dest_path)
         return cd
+
 
 class EditForm(forms.Form, SpamProtectionMixin):
 
@@ -218,7 +211,7 @@ class EditForm(forms.Form, SpamProtectionMixin):
         widget=getEditor().get_widget())  # @UndefinedVariable
 
     summary = forms.CharField(
-        label=_('Summary'),
+        label=pgettext_lazy('Revision comment', 'Summary'),
         help_text=_(
             'Give a short reason for your edit, which will be stated in the revision log.'),
         required=False)
@@ -254,7 +247,7 @@ class EditForm(forms.Form, SpamProtectionMixin):
                         self.presumed_revision) == str(
                         self.initial_revision.id):
                     newdata = {}
-                    for k, v in list(data.items()):
+                    for k, v in data.items():
                         newdata[k] = v
                     newdata['current_revision'] = self.initial_revision.id
                     newdata['content'] = simple_merge(
@@ -284,7 +277,7 @@ class EditForm(forms.Form, SpamProtectionMixin):
         No new revisions have been created since user attempted to edit
         Revision title or content has changed
         """
-        cd = self.cleaned_data
+        cd = super(EditForm, self).clean()
         if self.no_clean or self.preview:
             return cd
         if not str(self.initial_revision.id) == str(self.presumed_revision):
@@ -293,8 +286,7 @@ class EditForm(forms.Form, SpamProtectionMixin):
                     'While you were editing, someone else changed the revision. Your contents have been automatically merged with the new contents. Please review the text below.'))
         if ('title' in cd) and cd['title'] == self.initial_revision.title and cd[
                 'content'] == self.initial_revision.content:
-            raise forms.ValidationError(
-                ugettext('No changes made. Nothing to save.'))
+            raise forms.ValidationError(ugettext('No changes made. Nothing to save.'))
         self.check_spam()
         return cd
 
@@ -313,7 +305,7 @@ class SelectWidgetBootstrap(BuildAttrsCompat, forms.Select):
 
     def __setattr__(self, k, value):
         super(SelectWidgetBootstrap, self).__setattr__(k, value)
-        if k != 'attrs' and k != 'disabled':
+        if k not in ('attrs', 'disabled'):
             self.noscript_widget.__setattr__(k, value)
 
     def render(self, name, value, attrs=None, choices=()):
@@ -340,34 +332,26 @@ class SelectWidgetBootstrap(BuildAttrsCompat, forms.Select):
         return mark_safe('\n'.join(output))
 
     def render_option(self, selected_choices, option_value, option_label):
-        option_value = force_unicode(option_value)
+        option_value = force_text(option_value)
         selected_html = (
             option_value in selected_choices) and ' selected="selected"' or ''
         return '<li><a href="javascript:void(0)" data-value="%s"%s>%s</a></li>' % (
             escape(option_value), selected_html,
-            conditional_escape(force_unicode(option_label)))
+            conditional_escape(force_text(option_label)))
 
     def render_options(self, choices, selected_choices):
         # Normalize to strings.
-        selected_choices = set([force_unicode(v) for v in selected_choices])
+        selected_choices = set([force_text(v) for v in selected_choices])
         output = []
         for option_value, option_label in chain(self.choices, choices):
             if isinstance(option_label, (list, tuple)):
                 output.append(
                     '<li class="divider" label="%s"></li>' %
-                    escape(
-                        force_unicode(option_value)))
+                    escape(force_text(option_value)))
                 for option in option_label:
-                    output.append(
-                        self.render_option(
-                            selected_choices,
-                            *option))
+                    output.append(self.render_option(selected_choices, *option))
             else:
-                output.append(
-                    self.render_option(
-                        selected_choices,
-                        option_value,
-                        option_label))
+                output.append(self.render_option(selected_choices, option_value, option_label))
         return '\n'.join(output)
 
     class Media(forms.Media):
@@ -407,7 +391,7 @@ class CreateForm(forms.Form, SpamProtectionMixin):
         widget=getEditor().get_widget())  # @UndefinedVariable
 
     summary = forms.CharField(
-        label=_('Summary'),
+        label=pgettext_lazy('Revision comment', 'Summary'),
         help_text=_("Write a brief message for the article's history log."),
         required=False)
 
@@ -415,6 +399,7 @@ class CreateForm(forms.Form, SpamProtectionMixin):
         return _clean_slug(self.cleaned_data['slug'], self.urlpath_parent)
 
     def clean(self):
+        super(CreateForm, self).clean()
         self.check_spam()
         return self.cleaned_data
 
@@ -437,7 +422,7 @@ class DeleteForm(forms.Form):
                                       widget=HiddenInput(), required=False)
 
     def clean(self):
-        cd = self.cleaned_data
+        cd = super(DeleteForm, self).clean()
         if not cd['confirm']:
             raise forms.ValidationError(ugettext('You are not sure enough!'))
         if cd['revision'] != self.article.current_revision:
@@ -472,28 +457,24 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
 
     recursive = forms.BooleanField(
         label=_('Inherit permissions'),
-        help_text=_(
-            'Check here to apply the above permissions (excluding group and owner of the article) recursively to articles below this one.'),
+        help_text=_('Check here to apply the above permissions (excluding group and owner of the article) recursively to articles below this one.'),
         required=False)
 
     recursive_owner = forms.BooleanField(
         label=_('Inherit owner'),
-        help_text=_(
-            'Check here to apply the ownership setting recursively to articles below this one.'),
+        help_text=_('Check here to apply the ownership setting recursively to articles below this one.'),
         required=False)
 
     recursive_group = forms.BooleanField(
         label=_('Inherit group'),
-        help_text=_(
-            'Check here to apply the group setting recursively to articles below this one.'),
+        help_text=_('Check here to apply the group setting recursively to articles below this one.'),
         required=False)
 
     def get_usermessage(self):
         if self.changed_data:
             return _('Permission settings for the article were updated.')
         else:
-            return _(
-                'Your permission settings were unchanged, so nothing saved.')
+            return _('Your permission settings were unchanged, so nothing saved.')
 
     def __init__(self, article, request, *args, **kwargs):
         self.article = article
@@ -670,18 +651,20 @@ class UserCreationForm(UserCreationForm):
         model = User
         fields = ("username", "email")
 
+
 class UserUpdateForm(forms.ModelForm):
     password1 = forms.CharField(label="New password", widget=forms.PasswordInput(), required=False)
     password2 = forms.CharField(label="Confirm password", widget=forms.PasswordInput(), required=False)
 
     def clean(self):
-        password1 = self.cleaned_data.get('password1')
-        password2 = self.cleaned_data.get('password2')
+        cd = super(UserUpdateForm, self).clean()
+        password1 = cd.get('password1')
+        password2 = cd.get('password2')
 
         if password1 and password1 != password2:
             raise forms.ValidationError(_("Passwords don't match"))
 
-        return self.cleaned_data
+        return cd
 
     class Meta:
         model = User

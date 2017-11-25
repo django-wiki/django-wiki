@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
-import os.path
+import os
 
 from django.conf import settings as django_settings
 from django.db import models
@@ -9,7 +9,6 @@ from django.db.models import signals
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
-from six.moves import map, range
 from wiki import managers
 from wiki.decorators import disable_signal_for_loaddata
 from wiki.models.article import BaseRevisionMixin
@@ -88,8 +87,6 @@ def extension_allowed(filename):
 
 
 def upload_path(instance, filename):
-    from os import path
-
     extension = extension_allowed(filename)
 
     # Has to match original extension filename
@@ -112,11 +109,11 @@ def upload_path(instance, filename):
         import hashlib
         m = hashlib.md5(
             str(random.randint(0, 100000000000000)).encode('ascii'))
-        upload_path = path.join(upload_path, m.hexdigest())
+        upload_path = os.path.join(upload_path, m.hexdigest())
 
     if settings.APPEND_EXTENSION:
         filename += '.upload'
-    return path.join(upload_path, filename)
+    return os.path.join(upload_path, filename)
 
 
 @python_2_unicode_compatible
@@ -153,15 +150,14 @@ class AttachmentRevision(BaseRevisionMixin, models.Model):
         """Used to retrieve the file size and not cause exceptions."""
         try:
             return self.file.size
-        except OSError:
-            return None
-        except ValueError:
+        except (ValueError, OSError):
             return None
 
     def __str__(self):
         return "%s: %s (r%d)" % (self.attachment.article.current_revision.title,
                                  self.attachment.original_filename,
                                  self.revision_number)
+
 
 @disable_signal_for_loaddata
 def on_revision_delete(instance, *args, **kwargs):
@@ -197,7 +193,7 @@ def on_revision_delete(instance, *args, **kwargs):
 @disable_signal_for_loaddata
 def on_attachment_revision_pre_save(**kwargs):
     instance = kwargs['instance']
-    if kwargs.get('created', False):
+    if instance._state.adding:
         update_previous_revision = (
             not instance.previous_revision and
             instance.attachment and

@@ -110,7 +110,7 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
     settings_write_access = False
 
     settings = SettingsModelChoiceField(
-        Settings,
+        None,
         empty_label=None,
         label=_('Settings')
     )

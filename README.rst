@@ -25,7 +25,7 @@ The below table explains which Django versions are supported.
 +------------------+----------------+--------------+
 | Release          | Django         | Upgrade from |
 +==================+================+==============+
-| 0.3 (unreleased) | 1.8, 1.9,      | 0.2          |
+| 0.3 (beta)       | 1.8, 1.9,      | 0.2          |
 |                  | 1.10, 1.11     |              |
 +------------------+----------------+--------------+
 | 0.2              | 1.8, 1.9, 1.10 | 0.1          |
@@ -74,12 +74,11 @@ personal support.
 Currently, the model API is subject to smaller changes, and the plugin
 API seems pretty stable.
 
-South is used so no database changes will cause data loss. In order to
-customize the wiki, best idea is to override templates and create your
-own template tags. Do not make your own hard copy of this repository in
-order to fiddle with internal parts of the wiki -- this strategy will
-lead you to lose out on future updates with highly improved features
-and plugins. Possibly security updates as well!
+In order to customize the wiki, best idea is to override templates and create
+your own template tags. Do not make your own hard copy of this repository in
+order to fiddle with internal parts of the wiki -- this strategy will lead you
+to lose out on future updates with highly improved features and plugins.
+Possibly security updates as well!
 
 The release cycle has already begun, so you can administer django-wiki
 through Pypi and pip.
@@ -181,7 +180,7 @@ on your host system.
 -  `django-sekizai <https://github.com/ojii/django-sekizai/>`__
 -  `sorl-thumbnail <https://github.com/mariocesar/sorl-thumbnail>`__
 -  `Pillow (Python Imaging Library) <https://pillow.readthedocs.io/en/latest/installation.html>`__
--  Python>=2.7 or Python>=3.2
+-  Python>=2.7 or Python>=3.4
 
 
 

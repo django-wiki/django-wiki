@@ -9,7 +9,6 @@ from django.http import (HttpResponseForbidden, HttpResponseNotFound,
 from django.shortcuts import get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.utils.http import urlquote
-from six.moves import filter
 from wiki.conf import settings
 from wiki.core.exceptions import NoRootURL
 

@@ -18,8 +18,5 @@ class NotifyPlugin(BasePlugin):
 
     settings_form = 'wiki.plugins.notifications.forms.SubscriptionForm'
 
-    def __init__(self):
-        pass
-
 
 registry.register(NotifyPlugin)

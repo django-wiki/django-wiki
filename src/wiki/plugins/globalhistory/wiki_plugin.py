@@ -15,8 +15,5 @@ class GlobalHistoryPlugin(BasePlugin):
         url('^(?P<only_last>[01])/$', views.GlobalHistory.as_view(), name='globalhistory'),
     ]}
 
-    def __init__(self):
-        pass
-
 
 registry.register(GlobalHistoryPlugin)

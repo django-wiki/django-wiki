@@ -20,7 +20,7 @@ class WikiCustomUrlPatterns(WikiURLPatterns):
 
     def get_article_urls(self):
         urlpatterns = [
-            url('^my-wiki/(?P<article_id>\d+)/$',
+            url('^my-wiki/(?P<article_id>[0-9]+)/$',
                 self.article_view_class.as_view(),
                 name='get'
                 ),
@@ -132,3 +132,11 @@ class ArticleModelTest(TestCase):
 
         self.assertEqual(a.group, g)
         self.assertIn(a, g.article_set.all())
+
+    def test_cache(self):
+        a = Article.objects.create()
+        ArticleRevision.objects.create(
+            article=a, title="test", content="# header"
+        )
+        self.assertEqual(a.get_cached_content(), """<h1 id="wiki-toc-header">header</h1>""")
+        self.assertEqual(a.get_cached_content(), """<h1 id="wiki-toc-header">header</h1>""")

@@ -28,7 +28,6 @@ import unicodedata
 
 import markdown
 from markdown.util import etree
-from six.moves import range
 from wiki.plugins.macros import settings
 
 HEADER_ID_PREFIX = "wiki-toc-"
@@ -88,7 +87,7 @@ def order_toc_list(toc_list):
             return [], []
 
         current = remaining_list.pop(0)
-        if 'children' not in list(current.keys()):
+        if 'children' not in current:
             current['children'] = []
 
         if not prev_elements:

@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-from six import string_types
+from importlib import import_module
 
-try:
-    from importlib import import_module
-except ImportError:
-    # Python 2.6 fallback
-    from django.utils.importlib import import_module
+from six import string_types
 
 
 _cache = {}
@@ -15,6 +11,8 @@ _settings_forms = []
 _markdown_extensions = []
 _article_tabs = []
 _sidebar = []
+_html_whitelist = []
+_html_attributes = {}
 
 
 def register(PluginClass):
@@ -22,7 +20,7 @@ def register(PluginClass):
     Register a plugin class. This function will call back your plugin's
     constructor.
     """
-    if PluginClass in list(_cache.keys()):
+    if PluginClass in _cache:
         raise Exception("Plugin class already registered")
     plugin = PluginClass()
     _cache[PluginClass] = plugin
@@ -48,6 +46,18 @@ def register(PluginClass):
             'markdown_extensions',
             []))
 
+    _html_whitelist.extend(
+        getattr(
+            PluginClass,
+            'html_whitelist',
+            []))
+
+    _html_attributes.update(
+        getattr(
+            PluginClass,
+            'html_attributes',
+            dict()))
+
 
 def get_plugins():
     """Get loaded plugins - do not call before all plugins are loaded."""
@@ -71,3 +81,13 @@ def get_sidebar():
 
 def get_settings_forms():
     return _settings_forms
+
+
+def get_html_whitelist():
+    """Returns additional html tags that should be whitelisted"""
+    return _html_whitelist
+
+
+def get_html_attributes():
+    """Returns additional html attributes that should be whitelisted"""
+    return _html_attributes

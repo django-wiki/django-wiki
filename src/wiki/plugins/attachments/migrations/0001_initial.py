@@ -2,15 +2,11 @@
 from __future__ import unicode_literals
 
 import django.db.models.deletion
-import wiki.plugins.attachments.models
 from django.conf import settings
 from django.db import migrations, models
+from django.db.models.fields import GenericIPAddressField as IPAddressField
 
-# Django 1.9 deprecation of IPAddressField
-try:
-    from django.db.models.fields import GenericIPAddressField as IPAddressField
-except ImportError:
-    from django.db.models.fields import IPAddressField
+import wiki.plugins.attachments.models
 
 
 class Migration(migrations.Migration):

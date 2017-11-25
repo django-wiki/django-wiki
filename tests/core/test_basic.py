@@ -1,12 +1,10 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
-import django
-from django.contrib import auth
 from django.test import TestCase
+
 from wiki.conf import settings as wiki_settings
 from wiki.forms import Group
 from wiki.models import URLPath
-
 from ..base import wiki_override_settings
 from ..testdata.models import CustomGroup
 
@@ -28,8 +26,5 @@ class CustomGroupTests(TestCase):
         self.assertEqual(wiki_settings.GROUP_MODEL, 'auth.Group')
 
     def test_custom(self):
-        if django.VERSION < (1, 7):
-            self.assertEqual(Group, auth.models.Group)
-        else:
-            self.assertEqual(Group, CustomGroup)
-            self.assertEqual(wiki_settings.GROUP_MODEL, 'testdata.CustomGroup')
+        self.assertEqual(Group, CustomGroup)
+        self.assertEqual(wiki_settings.GROUP_MODEL, 'testdata.CustomGroup')
