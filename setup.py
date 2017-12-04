@@ -39,7 +39,7 @@ setup(
     long_description=read('README.md'),
     zip_safe = False,
     install_requires=[
-        'Django>=1.8',
+        'Django>=1.8,<2',
         'markdown',
         'django-sekizai',
         'django-mptt',
