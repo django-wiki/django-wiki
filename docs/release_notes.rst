@@ -12,6 +12,12 @@ the last series with Python 2 support.
 django-wiki 0.3dev (unreleased master)
 --------------------------------------
 
+**Added**
+
+ * Markdown tag with wiki paths now support fragments like
+   ``[Click Here](wiki:/path#header)`` (Frank Loemker) #701
+
+
 **Changed**
 
  * Removed exception catch all in ``URLPath.delete_subtree`` which silenced errors while delete articles with descendents
