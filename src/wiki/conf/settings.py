@@ -63,6 +63,7 @@ _default_tag_whitelists = bleach.ALLOWED_TAGS + [
     'img',
     'pre',
     'span',
+    'sup',
     'table',
     'thead',
     'tbody',
