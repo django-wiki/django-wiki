@@ -1,7 +1,7 @@
 django-wiki
 ===========
 
-|Docs| |Build Status| |Coverage Status| |PyPi| |Dependency Status|
+|Docs| |Build Status| |Coverage Status| |PyPi| |Dependency Status| |IRC|
 
 .. |Docs| image:: https://readthedocs.org/projects/django-wiki/badge/?version=latest
    :target: http://django-wiki.readthedocs.io/
@@ -15,7 +15,8 @@ django-wiki
    :target: https://pypi.python.org/pypi/wiki/
 .. |Dependency Status| image:: https://gemnasium.com/django-wiki/django-wiki.svg
    :target: https://gemnasium.com/django-wiki/django-wiki
-
+.. |IRC| image:: https://img.shields.io/badge/irc-%23django--wiki%20on%20freenode-blue.svg
+   :target: http://webchat.freenode.net?channels=%23django-wiki
 
 Django support
 --------------
