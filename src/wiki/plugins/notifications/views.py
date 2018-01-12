@@ -42,12 +42,12 @@ class NotificationSettings(FormView):
         ).distinct()
 
     def get_form_kwargs(self):
-        kwargs = FormView.get_form_kwargs(self)
+        kwargs = super(NotificationSettings, self).get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
 
     def get_context_data(self, **kwargs):
-        context = FormView.get_context_data(self, **kwargs)
+        context = super(NotificationSettings, self).get_context_data(**kwargs)
         if 'form' not in context:
             context['form'] = self.get_form()
         context['formset'] = context['form']

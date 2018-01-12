@@ -42,7 +42,7 @@ class ArticleView(ArticleMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         kwargs['selected_tab'] = 'view'
-        return ArticleMixin.get_context_data(self, **kwargs)
+        return super(ArticleView, self).get_context_data(**kwargs)
 
 
 class Create(FormView, ArticleMixin):
@@ -173,7 +173,7 @@ class Delete(FormView, ArticleMixin):
         return form
 
     def get_form_kwargs(self):
-        kwargs = FormView.get_form_kwargs(self)
+        kwargs = super(Delete, self).get_form_kwargs()
         kwargs['article'] = self.article
         kwargs['has_children'] = bool(self.children_slice)
         return kwargs
@@ -250,7 +250,7 @@ class Edit(ArticleMixin, FormView):
         return super(Edit, self).dispatch(request, article, *args, **kwargs)
 
     def get_initial(self):
-        initial = FormView.get_initial(self)
+        initial = super(Edit, self).get_initial()
 
         for field_name in ['title', 'content']:
             session_key = 'unsaved_article_%s_%d' % (
@@ -585,7 +585,7 @@ class Source(ArticleMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         kwargs['selected_tab'] = 'source'
-        return ArticleMixin.get_context_data(self, **kwargs)
+        return super(ArticleMixin, self).get_context_data(**kwargs)
 
 
 class History(ListView, ArticleMixin):
