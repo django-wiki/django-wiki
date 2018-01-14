@@ -189,7 +189,7 @@ class Article(models.Model):
             ("grant", _("Can assign permissions to other users")),
         )
 
-    def render(self, preview_content=None):
+    def render(self, preview_content=None, user=None):
         if not self.current_revision:
             return ""
         if preview_content:
@@ -197,28 +197,28 @@ class Article(models.Model):
         else:
             content = self.current_revision.content
         return mark_safe(article_markdown(content, self,
-                                          preview=preview_content is not None))
+                                          preview=preview_content is not None,
+                                          user=user))
 
-    def get_cache_key(self):
+    def get_cache_key(self, user=None):
         lang = translation.get_language()
-        return "wiki:article:{id:d}:{lang:s}".format(
+        key = "wiki:article:{id:d}:{lang:s}".format(
             id=self.current_revision.id if self.current_revision else self.id,
-            lang=lang
+            lang=lang,
         )
 
-    def get_cached_content(self):
-        """Returns cached version of rendered article"""
-        cache_key = self.get_cache_key()
-        cached_content = cache.get(cache_key)
-        if cached_content is None:
-            cached_content = self.render()
-            cache.set(cache_key, cached_content, settings.CACHE_TIMEOUT)
-        else:
-            cached_content = mark_safe(cached_content)
-        return cached_content
+        if user:
+            key = "{}:{user!s}".format(key, user=user)
 
-    def clear_cache(self):
-        cache.delete(self.get_cache_key())
+        return key
+
+
+    def clear_cache(self, user=None):
+        """
+        Clear rendered content from cache.
+        If user is None, clear cache for all users.
+        """
+        cache.delete(self.get_cache_key(user))
 
     def get_absolute_url(self):
         urlpaths = self.urlpath_set.all()

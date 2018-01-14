@@ -6,6 +6,7 @@ import re
 from django import template
 from django.conf import settings as django_settings
 from django.contrib.contenttypes.models import ContentType
+from django.core.cache import cache
 from django.db.models import Model
 from django.forms import BaseForm
 from django.template.defaultfilters import striptags
@@ -46,14 +47,27 @@ def article_for_object(context, obj):
         _cache[obj] = article
     return _cache[obj]
 
-
 @register.inclusion_tag('wiki/includes/render.html', takes_context=True)
 def wiki_render(context, article, preview_content=None):
+    user = context['user'] if 'user' in context else None
 
     if preview_content:
         content = article.render(preview_content=preview_content)
     else:
-        content = None
+        key = str(user) if user else ""
+        cache_key = article.get_cache_key()
+        cache_user_key = article.get_cache_key(key)
+
+        cache_items = cache.get(cache_key, list())
+        content = cache.get(cache_user_key) if key in cache_items else None
+
+        if content is None:
+            content = article.render(user=user)
+            cache_items.append(key)
+
+            cache.set(cache_key, cache_items, settings.CACHE_TIMEOUT)
+            cache.set(cache_user_key, content, settings.CACHE_TIMEOUT)
+
     context.update({
         'article': article,
         'content': content,
