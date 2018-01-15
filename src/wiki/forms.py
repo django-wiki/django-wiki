@@ -234,7 +234,14 @@ class EditForm(forms.Form, SpamProtectionMixin):
         self.initial_revision = current_revision
         self.presumed_revision = None
         if current_revision:
-            initial = {'content': current_revision.content,
+            # For e.g. editing a section of the text: The content provided by the caller is used.
+            #      Otherwise use the content of the revision.
+            provided_content = True
+            content = kwargs.pop('content', None)
+            if content is None:
+                provided_content = False
+                content = current_revision.content
+            initial = {'content': content,
                        'title': current_revision.title,
                        'current_revision': current_revision.id}
             initial.update(kwargs.get('initial', {}))
@@ -249,18 +256,17 @@ class EditForm(forms.Form, SpamProtectionMixin):
                 data = kwargs.get('data', None)
             if data:
                 self.presumed_revision = data.get('current_revision', None)
-                if not str(
-                        self.presumed_revision) == str(
-                        self.initial_revision.id):
+                if not str(self.presumed_revision) == str(self.initial_revision.id):
                     newdata = {}
                     for k, v in data.items():
                         newdata[k] = v
                     newdata['current_revision'] = self.initial_revision.id
-                    newdata['content'] = simple_merge(
-                        self.initial_revision.content,
-                        data.get(
-                            'content',
-                            ""))
+                    # Don't merge if content comes from the caller
+                    if provided_content:
+                        self.presumed_revision = self.initial_revision.id
+                    else:
+                        newdata['content'] = simple_merge(
+                            content, data.get('content', ""))
                     newdata['title'] = current_revision.title
                     kwargs['data'] = newdata
                 else:
