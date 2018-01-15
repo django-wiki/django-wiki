@@ -94,7 +94,7 @@ def process_docstring(app, what, name, obj, options, lines):
 
 
 extlinks = {
-    'url-issue': ('https://github.com/learningequality/ka-lite/issues/%s', '#'),
+    'url-issue': ('https://github.com/django-wiki/django-wiki/issues/%s', '#'),
 }
 
 
