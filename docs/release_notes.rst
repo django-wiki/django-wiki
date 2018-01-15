@@ -14,17 +14,20 @@ django-wiki 0.3dev (unreleased master)
 
 **Added**
 
- * Markdown tag with wiki paths now support fragments like
-   ``[Click Here](wiki:/path#header)`` (Frank Loemker) #701
+ * TBA
 
 
 **Changed**
 
- * Removed exception catch all in ``URLPath.delete_subtree`` which silenced errors while delete articles with descendents
+ * TBA
 
 
+**Fixed**
 
-django-wiki 0.3b3
+ * TBA
+
+
+django-wiki 0.3b4
 -----------------
 
 .. note:: Series 0.3 is in development in the current master branch and the
@@ -33,7 +36,7 @@ django-wiki 0.3b3
 **Translation updates from Transifex**
 
  * Languages that `need support <https://www.transifex.com/django-wiki/django-wiki/languages/>`__:
- 
+
    * Slovak 88%
    * Dutch 86%
    * Finnish 85%
@@ -42,11 +45,12 @@ django-wiki 0.3b3
    * Norwegian 31%
    * Turkish 30%
    * Czech 13%
-   
+
  * >90% completed: Chinese, French, German, Russian, Spanish, Danish, Korean, Polish, Portuguese (Brazilian), Spanish
 
-**New features**
+**Added**
 
+ * Search choice between either current or global tree (Christian Duvholt) #580 #731
  * New bootstrapped image insert dialog (Frank Loemker) #628
  * Allow the HTML tag ``<hr>`` (Frank Loemker) #629
  * Global History overview of page revisions (Frank Loemker and Maximilien Cuony) #627
@@ -56,20 +60,31 @@ django-wiki 0.3b3
  * Extended syntax for attachment macro: ``[attachment:id title:"text" size]`` (Frank Loemker) #678
  * Add Sphinx documentation for plugin settings (Frank Loemker) #681
  * Show "log out" in menu when account handling is disabled (jenda1) #691
+ * Markdown tag with wiki paths now support fragments like
+   ``[Click Here](wiki:/path#header)`` (Frank Loemker) #701
 
-**Bug fixes and smaller changes**
+**Changed**
 
  * Test refactor: Use django-functest and separate WebTest from Selenium (Luke Plant) #634
  * Repo refactor: Moved ``wiki`` package to ``src/`` folder and test code to ``tests/`` #631
  * Render django.contrib.messages with template tag and inclusion template: Configurable and bootstrap 3 compatible (Benjamin Bach and Frank Loemker) #654
  * Don't hardcode redirect url in account update view (Benjamin Bach) #650
  * Python 3.6 support added to test matrix (Benjamin Bach) #664
- * Fix restoring of attachments and other RevisionPlugin types after deletion (Frank Loemker) #672
  * Keep CSS global namespace clean, refactor CSS rule ``label`` -> ``.wiki-label label`` (Christian Duvholt) #679
+ * Plugins can whitelist HTML tags and attributes (jenda1) #700
+ * Optimizations to fundamental permission lookup managers (Christian Duvholt) #714
+ * Code quality upgrade, remove obsolete code, linting and tidying up (Mads Jensen) #797, #705, #707, #716, #717, #718, #719, #720, #721, #722, #724, #725, #726, #727, #728, #730, #732, #733, #735, #736, #737, #738, #741, #743, #743
+
+
+**Fixed**
+
+ * Removed exception catch all in ``URLPath.delete_subtree`` which silenced errors while delete articles with descendents
  * Fix article settings page in Django 1.11 (Frank Loemker) #682
  * Fix upstream MPTT breaking deletion of articles from django-admin (Frank Loemker) #683
  * Wrong HTML attribute 'type' on search result page (Geoff Clapp) #698
- * Plugins can whitelist HTML tags and attributes (jenda1) #700
+ * Fix restoring of attachments and other RevisionPlugin types after deletion (Frank Loemker) #672
+ * Allowing ``<sup>`` because of footnotes (Frank Loemker) #750
+ * Hunted down unclosed HTML tags #750 (Mads Jensen) #741
 
 
 django-wiki 0.2.4
@@ -194,19 +209,19 @@ django-wiki 0.1
    If you are upgrading from a previous release, please ensure that you
    pass through the 0.0.24 release because it contains the final migrations
    necessary before entering the django-wiki 0.1+ migration tree.
-   
+
    If you are using django 1.7+ and have an old installation of django-wiki
    (which should be impossible since it wouldn't run) please downgrade to 1.6
    as follows:
-   
+
    ::
-   
+
        $ pip install wiki\<0.1 --upgrade  # Latest 0.0.24 release
        $ pip install django\<1.7  # Downgrade django if necessary
        $ python manage.py migrate  # Run 0.0.24 migrations
        $ pip install wiki\<0.2 --upgrade  # Upgrade to latest 0.1 series
        $ python manage.py migrate --delete-ghost-migrations  # Run migrations again,
-                                                             # removing the (ghost) 
+                                                             # removing the (ghost)
                                                              # migrations from previous
                                                              # release
        $ # Feel free to upgrade Django again
@@ -266,7 +281,7 @@ Firstly, upgrade django-wiki through familiar steps with pip
 ::
 
     $ pip install wiki --upgrade
-   
+
 During the upgrade, notice that `django-nyt`_ is installed. This replaces the
 previously bundled django_notify and you need to make a few changes in
 your settings and urls.
@@ -331,7 +346,7 @@ Don't worry, just fake the backwards migration:
 
 ::
 
-    python manage.py migrate notifications zero --fake  
+    python manage.py migrate notifications zero --fake
 
 If you get ``relation "notifications_articlesubscription" already exists`` you
 may need to do a manual ``DROP TABLE notifications_articlesubscription;`` using
@@ -424,4 +439,3 @@ actually new features, too.
 -  Python 3 and Django 1.6 compatibility (Russell-Jones, Antonin
    Lenfant, Luke Plant, Lubimov Igor, Benjamin Bach)
 -  (and more, forgiveness asked if anyone feels left out)
-
