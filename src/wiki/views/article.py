@@ -225,6 +225,7 @@ class Edit(ArticleMixin, FormView):
 
     @method_decorator(get_article(can_write=True, not_locked=True))
     def dispatch(self, request, article, *args, **kwargs):
+        self.orig_content = kwargs.pop('content', None)
         self.sidebar_plugins = plugin_registry.get_sidebar()
         self.sidebar = []
         return super().dispatch(request, article, *args, **kwargs)
@@ -253,6 +254,7 @@ class Edit(ArticleMixin, FormView):
             kwargs['data'] = None
             kwargs['files'] = None
             kwargs['no_clean'] = True
+            kwargs['content'] = self.orig_content
         return form_class(self.request, self.article.current_revision, **kwargs)
 
     def get_sidebar_form_classes(self):
@@ -301,8 +303,10 @@ class Edit(ArticleMixin, FormView):
 
                         title = form.cleaned_data['unsaved_article_title']
                         content = form.cleaned_data['unsaved_article_content']
-
-                        if title != self.article.current_revision.title or content != self.article.current_revision.content:
+                        orig_content = self.orig_content
+                        if not orig_content:
+                            orig_content = self.article.current_revision.content
+                        if title != self.article.current_revision.title or content != orig_content:
                             request.session['unsaved_article_title_%d' % self.article.id] = title
                             request.session['unsaved_article_content_%d' % self.article.id] = content
                             messages.warning(
