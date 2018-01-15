@@ -16,6 +16,12 @@ Plugin attachments
 .. automodule:: wiki.plugins.attachments.settings
    :members:
 
+Plugin editSection
+-------------
+
+.. automodule:: wiki.plugins.editsection.settings
+   :members:
+
 Plugin images
 -------------
 
