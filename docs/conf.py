@@ -93,6 +93,11 @@ def process_docstring(app, what, name, obj, options, lines):
     return lines
 
 
+extlinks = {
+    'url-issue': ('https://github.com/learningequality/ka-lite/issues/%s', '#'),
+}
+
+
 def setup(app):
     # Register the docstring processor with sphinx
     app.connect('autodoc-process-docstring', process_docstring)
@@ -100,7 +105,12 @@ def setup(app):
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode']
+extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.extlinks',
+    'sphinx.ext.todo',
+    'sphinx.ext.viewcode',
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
