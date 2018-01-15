@@ -197,7 +197,8 @@ class WikiRenderTest(TemplateTestCase):
 
         expected_markdown = (
             """<p>This is a normal paragraph</p>\n"""
-            """<h1 id="wiki-toc-headline">Headline</h1>"""
+            """<h1 id="wiki-toc-headline">Headline"""
+            """<a class="article-edit" href="/1/_plugin/editsection/1-0-0/header/H/">[edit]</a></h1>"""
         )
 
         # monkey patch

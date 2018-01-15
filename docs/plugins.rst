@@ -5,6 +5,7 @@ Add/remove the following to your ``settings.INSTALLED_APPS`` to
 enable/disable the core plugins:
 
 -  ``'wiki.plugins.attachments.apps.AttachmentsConfig'``
+-  ``'wiki.plugins.editsection.apps.AttachmentsConfig'``
 -  ``'wiki.plugins.globalhistory.apps.GlobalHistoryConfig'``
 -  ``'wiki.plugins.help.apps.HelpConfig'``
 -  ``'wiki.plugins.images.apps.ImagesConfig'``
