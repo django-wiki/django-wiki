@@ -47,6 +47,7 @@ def article_for_object(context, obj):
         _cache[obj] = article
     return _cache[obj]
 
+
 @register.inclusion_tag('wiki/includes/render.html', takes_context=True)
 def wiki_render(context, article, preview_content=None):
     user = context['user'] if 'user' in context else None

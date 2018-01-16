@@ -212,7 +212,6 @@ class Article(models.Model):
 
         return key
 
-
     def clear_cache(self, user=None):
         """
         Clear rendered content from cache.
