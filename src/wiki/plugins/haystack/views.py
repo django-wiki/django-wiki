@@ -12,7 +12,7 @@ class HaystackSearchView(SearchView):
 
     def get_queryset(self):
         qs = SearchQuerySet().all()
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             if not permissions.can_moderate(
                     models.URLPath.root().article,
                     self.request.user):

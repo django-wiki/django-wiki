@@ -40,7 +40,7 @@ class Attachment(ReusablePlugin):
         null=True)
 
     def can_write(self, user):
-        if not settings.ANONYMOUS and (not user or user.is_anonymous()):
+        if not settings.ANONYMOUS and (not user or user.is_anonymous):
             return False
         return ReusablePlugin.can_write(self, user)
 

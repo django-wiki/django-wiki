@@ -36,7 +36,7 @@ class Image(RevisionPlugin):
     # anything! :D
 
     def can_write(self, user):
-        if not settings.ANONYMOUS and (not user or user.is_anonymous()):
+        if not settings.ANONYMOUS and (not user or user.is_anonymous):
             return False
         return RevisionPlugin.can_write(self, user)
 
