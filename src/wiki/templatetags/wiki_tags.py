@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 import re
 
+from django.apps import apps
 from django import template
 from django.conf import settings as django_settings
 from django.contrib.contenttypes.models import ContentType
@@ -203,7 +204,7 @@ def plugin_enabled(plugin_name):
     :param: plugin_name: String specifying the full name of the plugin, e.g.
                          'wiki.plugins.attachments'
     """
-    return plugin_name in django_settings.INSTALLED_APPS
+    return apps.is_installed(plugin_name)
 
 
 @register.filter

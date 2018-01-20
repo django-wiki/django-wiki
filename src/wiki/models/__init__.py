@@ -2,6 +2,7 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+from django.apps import apps
 from django.conf import settings as django_settings
 from django.core.exceptions import ImproperlyConfigured
 from six import string_types, text_type
@@ -20,24 +21,24 @@ from django.utils.functional import lazy
 # Configuration stuff
 ######################
 
-if 'mptt' not in django_settings.INSTALLED_APPS:
+if not apps.is_installed('mptt'):
     raise ImproperlyConfigured('django-wiki: needs mptt in INSTALLED_APPS')
 
-if 'sekizai' not in django_settings.INSTALLED_APPS:
+if not apps.is_installed('sekizai'):
     raise ImproperlyConfigured('django-wiki: needs sekizai in INSTALLED_APPS')
 
-# if not 'django_nyt' in django_settings.INSTALLED_APPS:
+# if not apps.is_installed('django_nyt'):
 #    raise ImproperlyConfigured('django-wiki: needs django_nyt in INSTALLED_APPS')
 
-if 'django.contrib.humanize' not in django_settings.INSTALLED_APPS:
+if not apps.is_installed('django.contrib.humanize'):
     raise ImproperlyConfigured(
         'django-wiki: needs django.contrib.humanize in INSTALLED_APPS')
 
-if 'django.contrib.contenttypes' not in django_settings.INSTALLED_APPS:
+if not apps.is_installed('django.contrib.contenttypes'):
     raise ImproperlyConfigured(
         'django-wiki: needs django.contrib.contenttypes in INSTALLED_APPS')
 
-if 'django.contrib.sites' not in django_settings.INSTALLED_APPS:
+if not apps.is_installed('django.contrib.sites'):
     raise ImproperlyConfigured(
         'django-wiki: needs django.contrib.sites in INSTALLED_APPS')
 
@@ -59,7 +60,7 @@ if not any(s in TEMPLATE_CONTEXT_PROCESSORS for s in ['django.core.context_proce
     raise ImproperlyConfigured(
         'django-wiki: needs django.core.context_processors.request or django.template.context_processors.request in TEMPLATE_CONTEXT_PROCESSORS')
 
-if 'django_notify' in django_settings.INSTALLED_APPS:
+if apps.is_installed('django_notify'):
     raise ImproperlyConfigured(
         'django-wiki: You need to change from django_notify to django_nyt in INSTALLED_APPS and your urlconfig.')
 
