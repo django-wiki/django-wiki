@@ -9,12 +9,6 @@ class WikiConfig(AppConfig):
     verbose_name = _("Wiki")
 
 
-class ImagesConfig(AppConfig):
-    name = 'wiki.plugins.images'
-    verbose_name = _("Wiki images")
-    label = 'wiki_images'
-
-
 class AttachmentsConfig(AppConfig):
     name = 'wiki.plugins.attachments'
     verbose_name = _("Wiki attachments")
