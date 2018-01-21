@@ -71,7 +71,7 @@ maintain the order due to database relational constraints:
     'mptt',
     'sekizai',
     'sorl.thumbnail',
-    'wiki',
+    'wiki.apps.WikiConfig',
     'wiki.plugins.attachments',
     'wiki.plugins.notifications',
     'wiki.plugins.images',

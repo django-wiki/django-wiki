@@ -4,6 +4,11 @@ from django.apps import AppConfig
 from django.utils.translation import ugettext_lazy as _
 
 
+class WikiConfig(AppConfig):
+    name = "wiki"
+    verbose_name = _("Wiki")
+
+
 class NotifcationsConfig(AppConfig):
     name = 'wiki.plugins.notifications'
     verbose_name = _("Wiki notifications")
