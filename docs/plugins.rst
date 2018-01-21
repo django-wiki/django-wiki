@@ -6,6 +6,7 @@ enable/disable the core plugins:
 
 -  ``'wiki.plugins.attachments.apps.AttachmentsConfig'``
 -  ``'wiki.plugins.globalhistory.apps.GlobalHistoryConfig'``
+-  ``'wiki.plugins.help.apps.HelpConfig'``
 -  ``'wiki.plugins.images.apps.ImagesConfig'``
 -  ``'wiki.plugins.notifications.apps.NotificationsConfig'``
 
