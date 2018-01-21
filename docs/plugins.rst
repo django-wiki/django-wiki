@@ -5,8 +5,8 @@ Add/remove the following to your ``settings.INSTALLED_APPS`` to
 enable/disable the core plugins:
 
 -  ``'wiki.plugins.attachments.apps.AttachmentsConfig'``
+-  ``'wiki.plugins.globalhistory.apps.GlobalHistoryConfig'``
 -  ``'wiki.plugins.images.apps.ImagesConfig'``
--  ``'wiki.plugins.globalhistory'``
 -  ``'wiki.plugins.notifications.apps.NotificationsConfig'``
 
 The notifications plugin is mandatory for an out-of-the-box installation. You
