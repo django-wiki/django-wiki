@@ -75,7 +75,7 @@ maintain the order due to database relational constraints:
     'wiki.plugins.attachments.apps.AttachmentsConfig',
     'wiki.plugins.notifications.apps.NotificationsConfig',
     'wiki.plugins.images.apps.ImagesConfig',
-    'wiki.plugins.macros',
+    'wiki.plugins.macros.apps.MacrosConfig',
 
 
 Database

@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'wiki.plugins.attachments.apps.AttachmentsConfig',
     'wiki.plugins.notifications.apps.NotificationsConfig',
     'wiki.plugins.images.apps.ImagesConfig',
-    'wiki.plugins.macros',
+    'wiki.plugins.macros.apps.MacrosConfig',
     'wiki.plugins.globalhistory.apps.GlobalHistoryConfig',
 ]
 MIDDLEWARE_CLASSES = [
