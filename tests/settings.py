@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
     'wiki.apps.WikiConfig',
     'wiki.plugins.attachments',
-    'wiki.plugins.notifications',
+    'wiki.plugins.notifications.apps.NotificationsConfig',
     'wiki.plugins.images',
     'wiki.plugins.macros',
     'wiki.plugins.globalhistory',
