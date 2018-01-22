@@ -6,6 +6,8 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
+    atomic = False
+
     dependencies = [
         ('wiki_images', '0001_initial'),
     ]
