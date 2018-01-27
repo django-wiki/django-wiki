@@ -21,5 +21,4 @@ class DeletedListView(TemplateView):
             if(article.current_revision.deleted):
                 deleted_articles.append(article)
         kwargs['deleted_articles'] = deleted_articles
-        context = super(DeletedListView, self).get_context_data(**kwargs)
-        return context
+        return super(DeletedListView, self).get_context_data(**kwargs)
