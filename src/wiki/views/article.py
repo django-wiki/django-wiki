@@ -399,10 +399,6 @@ class Move(ArticleMixin, FormView):
     def dispatch(self, request, article, *args, **kwargs):
         return super(Move, self).dispatch(request, article, *args, **kwargs)
 
-    def get_initial(self):
-        initial = FormView.get_initial(self)
-        return initial
-
     def get_form(self, form_class=None):
         if form_class is None:
             form_class = self.get_form_class()
