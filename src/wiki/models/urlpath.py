@@ -66,11 +66,12 @@ class URLPath(MPTTModel):
 
     slug = models.SlugField(verbose_name=_('slug'), null=True, blank=True,
                             max_length=SLUG_MAX_LENGTH)
-    site = models.ForeignKey(Site)
+    site = models.ForeignKey(Site, on_delete=models.CASCADE)
     parent = TreeForeignKey(
         'self',
         null=True,
         blank=True,
+        on_delete=models.SET_NULL,
         related_name='children',
         help_text=_("Position of URL path in the tree.")
     )

@@ -161,6 +161,7 @@ class RevisionPlugin(ArticlePlugin):
         verbose_name=_('current revision'),
         blank=True,
         null=True,
+        on_delete=models.SET_NULL,
         related_name='plugin_set',
         help_text=_(
             'The revision being displayed for this plugin. '
@@ -202,7 +203,7 @@ class RevisionPluginRevision(BaseRevisionMixin, models.Model):
     (this class is very much copied from wiki.models.article.ArticleRevision
     """
 
-    plugin = models.ForeignKey(RevisionPlugin, related_name='revision_set')
+    plugin = models.ForeignKey(RevisionPlugin, on_delete=models.CASCADE, related_name='revision_set')
 
     class Meta:
         # Override this setting with app_label = '' in your extended model

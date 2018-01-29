@@ -28,6 +28,7 @@ class Article(models.Model):
     current_revision = models.OneToOneField(
         'ArticleRevision', verbose_name=_('current revision'),
         blank=True, null=True, related_name='current_set',
+        on_delete=models.SET_NULL,
         help_text=_(
             'The revision being displayed for this article. If you need to do a roll-back, simply change the value of this field.'),)
 
@@ -236,6 +237,7 @@ class ArticleForObject(models.Model):
     # Same as django.contrib.comments
     content_type = models.ForeignKey(
         ContentType,
+        on_delete=models.CASCADE,
         verbose_name=_('content type'),
         related_name="content_type_set_for_%(class)s")
     object_id = models.PositiveIntegerField(_('object ID'))
