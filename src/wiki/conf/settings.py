@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import bleach
 
+from django.apps import apps
 from django.conf import settings as django_settings
 from django.contrib.messages import constants as messages
 from django.core.files.storage import default_storage
@@ -272,7 +273,7 @@ SEARCH_VIEW = getattr(
     django_settings,
     'WIKI_SEARCH_VIEW',
     'wiki.views.article.SearchView'
-    if 'wiki.plugins.haystack' not in django_settings.INSTALLED_APPS
+    if not apps.is_installed('wiki.plugins.haystack')
     else
     'wiki.plugins.haystack.views.HaystackSearchView'
 )

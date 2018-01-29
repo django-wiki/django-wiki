@@ -30,12 +30,12 @@ INSTALLED_APPS = [
     'mptt',
     'sekizai',
     'sorl.thumbnail',
-    'wiki',
-    'wiki.plugins.attachments',
-    'wiki.plugins.notifications',
-    'wiki.plugins.images',
-    'wiki.plugins.macros',
-    'wiki.plugins.globalhistory',
+    'wiki.apps.WikiConfig',
+    'wiki.plugins.attachments.apps.AttachmentsConfig',
+    'wiki.plugins.notifications.apps.NotificationsConfig',
+    'wiki.plugins.images.apps.ImagesConfig',
+    'wiki.plugins.macros.apps.MacrosConfig',
+    'wiki.plugins.globalhistory.apps.GlobalHistoryConfig',
 ]
 MIDDLEWARE_CLASSES = [
     'django.middleware.common.CommonMiddleware',

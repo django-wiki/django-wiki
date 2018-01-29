@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import os.path
 
+from django.apps import apps
 from django.conf import settings as django_settings
 from django.core.exceptions import ImproperlyConfigured
 from django.db import models
@@ -13,7 +14,7 @@ from wiki.models.pluginbase import RevisionPlugin, RevisionPluginRevision
 
 from . import settings
 
-if "sorl.thumbnail" not in django_settings.INSTALLED_APPS:
+if not apps.is_installed("sorl.thumbnail"):
     raise ImproperlyConfigured(
         'wiki.plugins.images: needs sorl.thumbnail in INSTALLED_APPS')
 
