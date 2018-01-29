@@ -10,6 +10,12 @@ the last series with Python 2 support. Series 0.3 is in development in the
 current master branch.
 
 
+django-wiki 0.2.5
+-----------------
+
+ * Put an upper limit on django-nyt version
+
+
 django-wiki 0.2.4
 -----------------
 
@@ -132,19 +138,19 @@ django-wiki 0.1
    If you are upgrading from a previous release, please ensure that you
    pass through the 0.0.24 release because it contains the final migrations
    necessary before entering the django-wiki 0.1+ migration tree.
-   
+
    If you are using django 1.7+ and have an old installation of django-wiki
    (which should be impossible since it wouldn't run) please downgrade to 1.6
    as follows:
-   
+
    ::
-   
+
        $ pip install wiki\<0.1 --upgrade  # Latest 0.0.24 release
        $ pip install django\<1.7  # Downgrade django if necessary
        $ python manage.py migrate  # Run 0.0.24 migrations
        $ pip install wiki\<0.2 --upgrade  # Upgrade to latest 0.1 series
        $ python manage.py migrate --delete-ghost-migrations  # Run migrations again,
-                                                             # removing the (ghost) 
+                                                             # removing the (ghost)
                                                              # migrations from previous
                                                              # release
        $ # Feel free to upgrade Django again
@@ -204,7 +210,7 @@ Firstly, upgrade django-wiki through familiar steps with pip
 ::
 
     $ pip install wiki --upgrade
-   
+
 During the upgrade, notice that `django-nyt`_ is installed. This replaces the
 previously bundled django_notify and you need to make a few changes in
 your settings and urls.
@@ -269,7 +275,7 @@ Don't worry, just fake the backwards migration:
 
 ::
 
-    python manage.py migrate notifications zero --fake  
+    python manage.py migrate notifications zero --fake
 
 If you get ``relation "notifications_articlesubscription" already exists`` you
 may need to do a manual ``DROP TABLE notifications_articlesubscription;`` using
@@ -343,4 +349,3 @@ actually new features, too.
 -  Python 3 and Django 1.6 compatibility (Russell-Jones, Antonin
    Lenfant, Luke Plant, Lubimov Igor, Benjamin Bach)
 -  (and more, forgiveness asked if anyone feels left out)
-
