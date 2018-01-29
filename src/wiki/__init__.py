@@ -19,5 +19,5 @@ from __future__ import unicode_literals
 
 from wiki.core.version import get_version
 
-VERSION = (0, 3, 0, 'beta', 4)
+VERSION = (0, 3, 0, 'rc', 1)
 __version__ = get_version(VERSION)

@@ -5,31 +5,31 @@ Release notes
 Release plan
 ------------
 
-The next release series **0.3** will support Django 1.11. Likewise, it will be
-the last series with Python 2 support.
+The current release series **0.3** supports Django 1.11. As with the upstream
+Django release, 0.3 will be the last series with Python 2.7 support.
+
+The next series **0.4** will support Django 1.11 and Django 2.x and be for
+Python 3.4+.
 
 
-django-wiki 0.3b4
------------------
-
-.. note:: Series 0.3 is in development in the current master branch and the
-  latest pre-release is available with ``pip install wiki --pre``.
+django-wiki 0.3
+---------------
 
 Translation updates from Transifex
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * Languages that `need support <https://www.transifex.com/django-wiki/django-wiki/languages/>`__:
 
-  * Slovak 88%
-  * Dutch 86%
+  * Dutch 88%
   * Finnish 85%
-  * Japanese 70%
+  * Japanese 80%
   * Chinese (Taiwan) 36%
-  * Norwegian 31%
+  * Norwegian 36%
   * Turkish 30%
   * Czech 13%
+  * Italian 8%
 
-* >90% completed: Chinese, French, German, Russian, Spanish, Danish, Korean, Polish, Portuguese (Brazilian), Spanish
+* >90% completed: Chinese, French, German, Russian, Spanish, Danish, Korean, Polish, Portuguese (Brazilian), Slovak, Spanish
 
 Added
 ~~~~~
