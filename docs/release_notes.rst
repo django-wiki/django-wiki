@@ -58,7 +58,11 @@ Changed
 * Keep CSS global namespace clean, refactor CSS rule ``label`` -> ``.wiki-label label`` (Christian Duvholt) :url-issue:`679`
 * Plugins can whitelist HTML tags and attributes (jenda1) :url-issue:`700`
 * Optimizations to fundamental permission lookup managers (Christian Duvholt) :url-issue:`714`
-* Code quality upgrade, remove obsolete code, linting and tidying up (Mads Jensen) :url-issue:`797`, :url-issue:`705`, :url-issue:`707`, :url-issue:`716`, :url-issue:`717`, :url-issue:`718`, :url-issue:`719`, :url-issue:`720`, :url-issue:`721`, :url-issue:`722`, :url-issue:`724`, :url-issue:`725`, :url-issue:`726`, :url-issue:`727`, :url-issue:`728`, :url-issue:`730`, :url-issue:`732`, :url-issue:`733`, :url-issue:`735`, :url-issue:`736`, :url-issue:`737`, :url-issue:`738`, :url-issue:`741`, :url-issue:`743`, :url-issue:`743`
+* Code quality upgrade, remove obsolete code, linting and tidying up (Mads Jensen) :url-issue:`797`, :url-issue:`705`, :url-issue:`707`, :url-issue:`716`, :url-issue:`717`, :url-issue:`718`, :url-issue:`719`, :url-issue:`720`, :url-issue:`721`, :url-issue:`722`, :url-issue:`724`, :url-issue:`725`, :url-issue:`726`, :url-issue:`727`, :url-issue:`728`, :url-issue:`730`, :url-issue:`732`, :url-issue:`733`, :url-issue:`735`, :url-issue:`736`, :url-issue:`737`, :url-issue:`738`, :url-issue:`741`, :url-issue:`743`, :url-issue:`743`, :url-issue:`756`, :url-issue:`757`
+* Added ``AppConfig`` class for all plugins (Raffaele Salmaso) :url-issue:`758`
+* Explicit ``on_delete`` for all ``ForeignKey`` fields (Raffaele Salmaso) :url-issue:`759`
+* Django 2.0 preparation: ``atomic=False`` for 3 migrations that rename tables/fields (Raffaele Salmaso) :url-issue:`760`
+* Set dependency ``django-nyt<1.1`` to avoid future breakage (Benjamin Bach) :url-issue:`761`
 
 
 Fixed
@@ -76,7 +80,7 @@ Fixed
 django-wiki 0.2.5
 -----------------
 
-* Put an upper limit on django-nyt version
+* Set dependency ``django-nyt<1.1`` to avoid future breakage (Benjamin Bach) :url-issue:`761`
 
 
 django-wiki 0.2.4
