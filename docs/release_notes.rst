@@ -73,6 +73,12 @@ Fixed
 * Hunted down unclosed HTML tags :url-issue:`750` (Mads Jensen) :url-issue:`741`
 
 
+django-wiki 0.2.5
+-----------------
+
+* Put an upper limit on django-nyt version
+
+
 django-wiki 0.2.4
 -----------------
 
