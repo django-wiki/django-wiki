@@ -4,6 +4,7 @@ from __future__ import absolute_import, unicode_literals
 
 import os
 import sys
+
 from setuptools import find_packages, setup
 
 from wiki import __version__
@@ -30,7 +31,7 @@ requirements = [
     "Django>=1.8,<1.11",
     "bleach>=1.5,<2",
     "Pillow",
-    "django-nyt>=1.0b1",
+    "django-nyt>=1.0b1,<1.1",
     "six",
     "django-mptt>=0.8.6,<0.9",
     "django-sekizai>=0.10",
