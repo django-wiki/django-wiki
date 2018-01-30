@@ -265,8 +265,7 @@ class EditForm(forms.Form, SpamProtectionMixin):
                     if provided_content:
                         self.presumed_revision = self.initial_revision.id
                     else:
-                        newdata['content'] = simple_merge(
-                            content, data.get('content', ""))
+                        newdata['content'] = simple_merge(content, data.get('content', ""))
                     newdata['title'] = current_revision.title
                     kwargs['data'] = newdata
                 else:

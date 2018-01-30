@@ -17,7 +17,7 @@ Plugin attachments
    :members:
 
 Plugin editSection
--------------
+------------------
 
 .. automodule:: wiki.plugins.editsection.settings
    :members:
