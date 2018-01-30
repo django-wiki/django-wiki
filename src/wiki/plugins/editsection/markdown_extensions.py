@@ -24,10 +24,10 @@ class EditSectionExtension(Extension):
 
 
 def get_header_id(header):
-    id = ''.join(w[0] for w in re.findall("\w+", header))
-    if not len(id):
+    header_id = ''.join(w[0] for w in re.findall("\w+", header))
+    if not len(header_id):
         return '_'
-    return id
+    return header_id
 
 
 class EditSectionProcessor(Treeprocessor):

@@ -119,8 +119,7 @@ class EditSection(EditView):
             kwargs['content'] = request.session.get('editSection_content')
             self.orig_section = kwargs.get('content')
 
-        return super(EditSection, self).dispatch(
-            request, article, *args, **kwargs)
+        return super(EditSection, self).dispatch(request, article, *args, **kwargs)
 
     def form_valid(self, form):
         super(EditSection, self).form_valid(form)
