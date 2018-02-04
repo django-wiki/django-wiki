@@ -102,7 +102,7 @@ MARKDOWN_HTML_ATTRIBUTES = _default_attribute_whitelist
 MARKDOWN_HTML_ATTRIBUTES.update(
     getattr(
         django_settings,
-        'WIKI_MARKDOWN_HTML_ATTRIBUTE_WHITELIST',
+        'WIKI_MARKDOWN_HTML_ATTRIBUTES',
         {}
     )
 )
