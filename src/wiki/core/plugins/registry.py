@@ -3,8 +3,7 @@ from __future__ import unicode_literals
 
 from importlib import import_module
 
-from six import string_types
-
+from django.utils.six import string_types
 
 _cache = {}
 _settings_forms = []

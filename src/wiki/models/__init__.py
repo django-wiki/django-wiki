@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from django.apps import apps
 from django.conf import settings as django_settings
 from django.core.exceptions import ImproperlyConfigured
-from six import string_types, text_type
+from django.utils.six import string_types, text_type
 
 # TODO: Don't use wildcards
 from .article import *  # noqa

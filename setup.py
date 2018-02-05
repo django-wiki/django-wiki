@@ -38,7 +38,6 @@ requirements = [
     "bleach>=1.5,<2",
     "Pillow",
     "django-nyt>=1.0b1,<1.1",
-    "six",
     "django-mptt>=0.8.6,<0.9",
     "django-sekizai>=0.10",
     "sorl-thumbnail>=12,<13",
