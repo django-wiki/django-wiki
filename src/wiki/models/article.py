@@ -201,29 +201,46 @@ class Article(models.Model):
                                           user=user))
 
     def get_cache_key(self):
+        """Returns per-article cache key."""
         lang = translation.get_language()
+
         return "wiki:article:{id:d}:{lang:s}".format(
             id=self.current_revision.id if self.current_revision else self.id,
-            lang=lang
-        )
+            lang=lang)
+
+
+    def get_cache_content_key(self, user=None):
+        """Returns per-article-user cache key."""
+        return "{key}:{user!s}".format(
+            key=self.get_cache_key(),
+            user=user if user else "")
 
     def get_cached_content(self, user=None):
-        """Returns cached version of rendered article"""
-        user_key = str(user) if user else ""
+        """Returns cached version of rendered article.
+
+        The cache contains one "per-article" entry plus multiple
+        "per-article-user" entries. The per-article-user entries contain the
+        rendered article, the per-article entry contains list of the
+        per-article-user keys. The rendered article in cache (per-article-user)
+        is used only if the key is in the per-article entry. To delete
+        per-article invalidates all article cache entries."""
+
         cache_key = self.get_cache_key()
-        cache_content_key = "{}:{}".format(cache_key, user_key)
+        cache_content_key = self.get_cache_content_key(user)
 
         cached_items = cache.get(cache_key, list())
-        cached_content = cache.get(cache_content_key) if user_key in cached_items else None
 
-        if cached_content is None:
-            cached_content = self.render(user=user)
-            cached_items.append(user_key)
-            cache.set(cache_key, cached_items, settings.CACHE_TIMEOUT)
-            cache.set(cache_content_key, cached_content, settings.CACHE_TIMEOUT)
-        else:
-            cached_content = mark_safe(cached_content)
-        return cached_content
+        if cache_content_key in cached_items:
+            cached_content = cache.get(cache_content_key)
+            if cached_content is not None:
+                return mark_safe(cached_content)
+
+        cached_content = self.render(user=user)
+        cached_items.append(cache_content_key)
+        cache.set(cache_key, cached_items, settings.CACHE_TIMEOUT)
+        cache.set(cache_content_key, cached_content, settings.CACHE_TIMEOUT)
+
+        return mark_safe(cached_content)
 
     def clear_cache(self):
         cache.delete(self.get_cache_key())
