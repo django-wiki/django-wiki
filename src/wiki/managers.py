@@ -1,23 +1,9 @@
 from __future__ import unicode_literals
 
-import django
 from django.db import models
 from django.db.models import Q, Count
 from django.db.models.query import EmptyQuerySet, QuerySet
 from mptt.managers import TreeManager
-
-if django.VERSION >= (1, 6):
-    # TreeManager bug:
-    if 'get_query_set' in TreeManager.__dict__:
-        # TreeManager should not define this, it messes things up.
-        del TreeManager.get_query_set
-
-        # See also:
-        # https://github.com/django-mptt/django-mptt/pull/388
-
-        # Once this has been merged, a new release for django-mptt has been
-        # made, and we can specify the new version in our requirements, this
-        # hack can be removed.
 
 
 class ArticleQuerySet(QuerySet):
