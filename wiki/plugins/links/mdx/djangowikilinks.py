@@ -30,20 +30,19 @@ try:
 except ImportError:
     from markdown import etree #@UnresolvedImport @Reimport
 
+
 class WikiPathExtension(markdown.Extension):
-    def __init__(self, configs):
+    def __init__(self, **kwargs):
         # set extension defaults
         self.config = {
-                        'base_url' : ['/', 'String to append to beginning of URL.'],
-                        'html_class' : ['wikipath', 'CSS hook. Leave blank for none.'],
-                        'live_lookups' : [True, 'If the plugin should try and match links to real articles'],
-                        'default_level' : [2, 'The level that most articles are created at. Relative links will tend to start at that level.']
+            'base_url': ['/', 'String to append to beginning of URL.'],
+            'html_class': ['wikipath', 'CSS hook. Leave blank for none.'],
+            'live_lookups': [True, 'If the plugin should try and match links to real articles'],
+            'default_level': [2, 'The level that most articles are created at. Relative links will tend to start at that level.']
         }
         
         # Override defaults with user settings
-        for key, value in configs :
-            # self.config[key][0] = value
-            self.setConfig(key, value)
+        super(WikiPathExtension, self).__init__(**kwargs)
         
     def extendMarkdown(self, md, md_globals):
         self.md = md
@@ -53,6 +52,7 @@ class WikiPathExtension(markdown.Extension):
         wikiPathPattern = WikiPath(WIKI_RE, self.config, markdown_instance=md)
         wikiPathPattern.md = md
         md.inlinePatterns.add('djangowikipath', wikiPathPattern, "<reference")
+
 
 class WikiPath(markdown.inlinepatterns.Pattern):
     def __init__(self, pattern, config, **kwargs):
@@ -130,8 +130,10 @@ class WikiPath(markdown.inlinepatterns.Pattern):
                 html_class = self.md.Meta['wiki_html_class'][0]
         return base_url, html_class
 
-def makeExtension(configs=None) :
-    return WikiPathExtension(configs=configs)
+
+def makeExtension(**kwargs):
+    return WikiPathExtension(**kwargs)
+
 
 if __name__ == "__main__":
     import doctest

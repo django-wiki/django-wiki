@@ -10,6 +10,7 @@ from wiki.plugins.links.mdx.urlize import makeExtension
 from wiki.plugins.links.mdx.djangowikilinks import WikiPathExtension
 from django.core.urlresolvers import reverse_lazy
 
+
 class LinkPlugin(BasePlugin):
     
     slug = 'links'
@@ -29,10 +30,10 @@ class LinkPlugin(BasePlugin):
         ('default_level', settings.LINK_DEFAULT_LEVEL ),
         ]
     
-    markdown_extensions = [makeExtension(), WikiPathExtension(wikipath_config)]
+    markdown_extensions = [makeExtension(), WikiPathExtension(**dict(wikipath_config))]
     
     def __init__(self):
         pass
-    
-registry.register(LinkPlugin)
 
+
+registry.register(LinkPlugin)
