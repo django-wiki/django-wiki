@@ -208,7 +208,6 @@ class Article(models.Model):
             id=self.current_revision.id if self.current_revision else self.id,
             lang=lang)
 
-
     def get_cache_content_key(self, user=None):
         """Returns per-article-user cache key."""
         return "{key}:{user!s}".format(
