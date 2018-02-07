@@ -54,6 +54,7 @@ URLIZE_RE = (
     r'(?:/?|[/?]\S+))'
 )
 
+
 class UrlizePattern(markdown.inlinepatterns.Pattern):
 
     def __init__(self, pattern, markdown_instance=None):
@@ -87,6 +88,7 @@ class UrlizePattern(markdown.inlinepatterns.Pattern):
         el.extend([icon, span_text])
         return el
 
+
 class UrlizeExtension(markdown.Extension):
     """ Urlize Extension for Python-Markdown. """
 
@@ -94,10 +96,10 @@ class UrlizeExtension(markdown.Extension):
         """ Replace autolink with UrlizePattern """
         md.inlinePatterns['autolink'] = UrlizePattern(URLIZE_RE, md)
 
-def makeExtension(configs=None):
-    if configs is None:
-        configs = {}
-    return UrlizeExtension(configs=configs)
+
+def makeExtension(**kwargs):
+    return UrlizeExtension(**kwargs)
+
 
 if __name__ == "__main__":
     import doctest
