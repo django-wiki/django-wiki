@@ -12,12 +12,13 @@ from wiki.core.plugins import registry as plugin_registry
 
 class ArticleMarkdown(markdown.Markdown):
 
-    def __init__(self, article, preview=False, *args, **kwargs):
+    def __init__(self, article, preview=False, user=None, *args, **kwargs):
         kwargs.update(settings.MARKDOWN_KWARGS)
         kwargs['extensions'] = self.get_markdown_extensions()
         markdown.Markdown.__init__(self, *args, **kwargs)
         self.article = article
         self.preview = preview
+        self.user = user
 
     def core_extensions(self):
         """List of core extensions found in the mdx folder"""
