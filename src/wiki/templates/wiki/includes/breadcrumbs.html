@@ -45,12 +45,12 @@
         {% if urlpath.parent %}
         <a href="{% url 'wiki:create' path=urlpath.parent.path %}" style="padding: 7px;">
           <span class="fa fa-arrow-right"></span>
-          {% trans "New article next to" %} {{ article.current_revision.title }}
+          {% blocktrans with article.current_revision.title as title %}New article next to {{ title }}{% endblocktrans %}
         </a>
         {% endif %}
         <a href="{% url 'wiki:create' path=urlpath.path %}" style="padding: 7px;">
           <span class="fa fa-arrow-down"></span>
-          {% trans "New article below" %} {{ article.current_revision.title }}
+          {% blocktrans with article.current_revision.title as title %}New article below {{ title }}{% endblocktrans %}
         </a>
       </li>
     </ul>
