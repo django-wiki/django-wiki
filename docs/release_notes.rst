@@ -12,6 +12,15 @@ The next series **0.4** will support Django 1.11 and Django 2.x and be for
 Python 3.4+.
 
 
+django-wiki 0.3.1
+-----------------
+
+Fixed
+~~~~~
+
+* Added missing migrations. Changes ``on_delete`` to ``CASCADE``, an important difference. :url-issue:`772`
+
+
 django-wiki 0.3
 ---------------
 
