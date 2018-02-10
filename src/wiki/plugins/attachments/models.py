@@ -31,7 +31,7 @@ class Attachment(ReusablePlugin):
     current_revision = models.OneToOneField(
         'AttachmentRevision', verbose_name=_('current revision'),
         blank=True, null=True, related_name='current_set',
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         help_text=_(
             'The revision of this attachment currently in use (on all articles using the attachment)'),)
 
