@@ -12,8 +12,6 @@ class QueryUrlPath(View):
     @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, *args, **kwargs):
         max_num = kwargs.pop('max_num', 20)
-        # TODO: Move this import when circularity issue is resolved
-        # https://github.com/django-wiki/django-wiki/issues/23
         query = request.GET.get('query', None)
 
         matches = []
