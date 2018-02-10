@@ -161,7 +161,7 @@ class RevisionPlugin(ArticlePlugin):
         verbose_name=_('current revision'),
         blank=True,
         null=True,
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         related_name='plugin_set',
         help_text=_(
             'The revision being displayed for this plugin. '
