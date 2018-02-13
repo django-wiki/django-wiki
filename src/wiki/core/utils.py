@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import json
 from importlib import import_module
 
-from django.http.response import HttpResponse
+from django.http.response import JsonResponse
 
 
 def get_class_from_str(class_path):
@@ -20,7 +19,6 @@ def object_to_json_response(obj, status=200):
     Given an object, returns an HttpResponse object with a JSON serialized
     version of that object
     """
-    data = json.dumps(obj, ensure_ascii=False)
-    response = HttpResponse(content_type='application/json', status=status)
-    response.write(data)
-    return response
+    return JsonResponse(
+        data=obj, status=status, safe=False, json_dumps_params={'ensure_ascii': False},
+    )
