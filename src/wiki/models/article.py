@@ -149,8 +149,7 @@ class Article(models.Model):
             self.save()
         revisions = self.articlerevision_set.all()
         try:
-            new_revision.revision_number = revisions.latest(
-            ).revision_number + 1
+            new_revision.revision_number = revisions.latest().revision_number + 1
         except ArticleRevision.DoesNotExist:
             new_revision.revision_number = 0
         new_revision.article = self
@@ -162,13 +161,12 @@ class Article(models.Model):
             self.save()
 
     def add_object_relation(self, obj):
-        content_type = ContentType.objects.get_for_model(obj)
-        is_mptt = isinstance(obj, MPTTModel)
-        rel = ArticleForObject.objects.get_or_create(article=self,
-                                                     content_type=content_type,
-                                                     object_id=obj.id,
-                                                     is_mptt=is_mptt)
-        return rel
+        return ArticleForObject.objects.get_or_create(
+            article=self,
+            content_type=ContentType.objects.get_for_model(obj),
+            object_id=obj.id,
+            is_mptt=isinstance(obj, MPTTModel),
+        )
 
     @classmethod
     def get_for_object(cls, obj):
