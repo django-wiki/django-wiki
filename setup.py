@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from __future__ import print_function
 
 import os
 import sys
@@ -24,17 +23,8 @@ def get_path(fname):
     return os.path.join(os.path.dirname(__file__), fname)
 
 
-def read_file(fname):
-    """
-    Read file and decode in py2k
-    """
-    if sys.version_info < (3,):
-        return open(fname).read().decode("utf-8")
-    return open(fname).read()
-
-
 requirements = [
-    "Django>=1.8,<2.0",
+    "Django>=1.11,<2.0",
     "bleach>=1.5,<2",
     "Pillow",
     "django-nyt>=1.0,<1.1",
@@ -57,7 +47,7 @@ setup(
     packages=find_packages('src'),
     package_dir={'': 'src'},
     py_modules=[os.path.splitext(os.path.basename(path))[0] for path in glob('src/*.py')],
-    long_description=read_file('README.rst'),
+    long_description=open('README.rst').read(),
     zip_safe=False,
     install_requires=requirements,
     classifiers=[
@@ -68,7 +58,6 @@ setup(
         'Intended Audience :: Developers',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
