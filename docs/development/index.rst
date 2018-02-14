@@ -70,7 +70,7 @@ Ready to contribute? Here's how to set up `django-wiki` for local development.
 
     $ mkvirtualenv django-wiki
     $ cd django-wiki/
-    $ python setup.py develop
+    $ pip install -e .[devel]
 
 4. Create a branch for local development::
 
@@ -78,21 +78,30 @@ Ready to contribute? Here's how to set up `django-wiki` for local development.
 
    Now you can make your changes locally.
 
-5. When you're done making changes, check that your changes pass flake8 and the tests, including testing other Python versions with tox::
+5. As you are making changes you may want to verify that changes are
+   passing all the relevant styling and functional/unit tests::
 
-    $ tox -e lint
-    $ py.test  # Run tests in current environment
-    $ tox
+    $ flake8
+    $ pytest
+
+6. When you're done making changes, perform one final round of
+   testing, and also ensure relevant tests pass with all supported
+   Python versions with tox::
+
+    $ flake8
+    $ pytest
+    $ tox -e lint # Runs linter within isolated environment
+    $ tox # Runs all tests that pytest would run, just with various Python/Django combinations
 
    To get flake8 and tox, just pip install them into your virtualenv.
 
-6. Commit your changes and push your branch to GitHub::
+7. Commit your changes and push your branch to GitHub::
 
     $ git add .
     $ git commit -m "Your detailed description of your changes."
     $ git push origin name-of-your-bugfix-or-feature
 
-7. Submit a pull request through the GitHub website.
+8. Submit a pull request through the GitHub website.
 
 Pull Request Guidelines
 -----------------------
@@ -112,7 +121,9 @@ Tips
 
 To run a subset of tests::
 
-    $ py.test tests.test_django-wiki
+    $ pytest tests/core/test_basic.py # All tests from a single file.
+    $ pytest tests/core/test_basic.py::URLPathTests # All tests from a single class.
+    $ pytest tests/core/test_basic.py::URLPathTests::test_manager # Just one test.
 
 
 Roadmap
