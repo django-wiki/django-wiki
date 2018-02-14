@@ -4,19 +4,30 @@ Tests
 Running tests
 -------------
 
-To run django-wiki's tests, run ``make test`` or ``./runtests.py``
+To run django-wiki's tests, run ``make test`` or ``pytest``
 
 If you want to test for more **environments**, install "tox"
 (``pip install tox``) and then just run ``tox`` to run the test
 suite on multiple environments.
 
-To run **specific tests**, see ``./runtests.py --help``.
+To run **specific tests**, see ``pytest --help``.
 
-To include Selenium tests, you need to install `chromedriver
-<https://sites.google.com/a/chromium.org/chromedriver/>`_ and run
-``./runtests.py --include-selenium``. For tox, do::
+To include Selenium tests, you need to have ``Xvfb`` installed
+(usually via system-provided package manager), `chromedriver
+<https://sites.google.com/a/chromium.org/chromedriver/>`_ and set the
+environment variable ``INCLUDE_SELENIUM_TESTS=1``. For example, run
+tests with (depending on whether you want to test directly or via
+tox)::
 
-    INCLUDE_SELENIUM_TESTS=1 tox
+  INCLUDE_SELENIUM_TESTS=1 pytest
+  INCLUDE_SELENIUM_TESTS=1 tox
+
+If you wish to also show the browser window while running the
+functional tests, set the environment variable
+``SELENIUM_SHOW_BROWSER=1`` in *addition* to
+``INCLUDE_SELENIUM_TESTS=1``, for example::
+
+  INCLUDE_SELENIUM_TESTS=1 SELENIUM_SHOW_BROWSER=1 pytest
 
 
 Writing tests

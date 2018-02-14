@@ -51,7 +51,7 @@ lint:  ## Check python code conventions
 	flake8 src/wiki tests/
 
 test:  ## Run automated test suite
-	./runtests.py
+	pytest
 
 test-all:  ## Run tests on all supported Python environments
 	tox
