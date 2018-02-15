@@ -23,7 +23,7 @@ def get_path(fname):
     return os.path.join(os.path.dirname(__file__), fname)
 
 
-requirements = [
+install_requirements = [
     "Django>=1.11,<2.0",
     "bleach>=1.5,<2",
     "Pillow",
@@ -34,6 +34,30 @@ requirements = [
     "Markdown>=2.6,<2.7",
 ]
 
+test_requirements = [
+    'django-functest>=1.0,<1.1',
+    'mock>=2.0,<2.1',
+    'pytest>=3.4,<3.5',
+    'pytest-django>=3.1,<3.2',
+    'pytest-cov>=2.4,<2.5',
+    'pytest-pythonpath>=0.7,<0.8',
+]
+
+test_lint_requirements = [
+    'flake8>=3.5,<3.6',
+]
+
+setup_requirements = [
+    'pytest-runner',
+]
+
+development_requirements = test_requirements + test_lint_requirements
+
+extras_requirements = {
+    'devel': development_requirements,
+    'test': test_requirements,
+    'testlint': test_lint_requirements,
+}
 
 setup(
     name="wiki",
@@ -49,7 +73,7 @@ setup(
     py_modules=[os.path.splitext(os.path.basename(path))[0] for path in glob('src/*.py')],
     long_description=open('README.rst').read(),
     zip_safe=False,
-    install_requires=requirements,
+    install_requires=install_requirements,
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
@@ -68,5 +92,7 @@ setup(
         'Topic :: Software Development :: Libraries :: Application Frameworks',
     ],
     include_package_data=True,
-    test_suite='runtests',
+    setup_requires=setup_requirements,
+    tests_require=test_requirements,
+    extras_require=extras_requirements,
 )

@@ -7,6 +7,5 @@ Setting up a development environment
 * Install the requirements::
 
     $ pip install --upgrade pip setuptools
-    $ pip install -e .
-    $ pip install pytest pytest-django pytest-pythonpath pytest-cov mock django-functest
-
+    $ pip install -e .[devel]
+    $ pip install tox
