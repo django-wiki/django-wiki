@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from django.conf import settings as django_settings
 from django.core.exceptions import ImproperlyConfigured
 from wiki.conf import settings as wiki_settings

@@ -19,8 +19,6 @@ There are three kinds of plugin base models:
 
 
 """
-from __future__ import unicode_literals
-
 from django.db import models
 from django.db.models import signals
 from django.utils.translation import ugettext_lazy as _

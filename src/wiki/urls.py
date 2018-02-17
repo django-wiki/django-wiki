@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.conf.urls import include, url
 from wiki.conf import settings
 from wiki.core.plugins import registry
