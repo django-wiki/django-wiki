@@ -5,7 +5,7 @@
 Wikipath Extension for Python-Markdown
 ======================================
 
-Converts [Link Name](wiki:ArticleName) to relative links pointing to article.  Requires Python-Markdown 2.0+
+Converts [Link Name](wiki:ArticleName) to relative links pointing to article.  Requires Markdown 2.6+
 
 Basic usage:
 
@@ -16,20 +16,15 @@ Basic usage:
     '<p>Some text with a <a class="wikipath" href="/wiki/view/ArticleName/">Link Name</a>.</p>'
 
 Dependencies:
-* [Python 2.3+](http://python.org)
-* [Markdown 2.0+](http://www.freewisdom.org/projects/python-markdown/)
+* [Python 3.4+](https://python.org)
+* [Markdown 2.6+](https://pypi.python.org/pypi/Markdown)
 """
 from os import path as os_path
 
 import markdown
-from wiki import models
+from markdown.util import etree
 
-try:
-    # Markdown 2.1.0 changed from 2.0.3. We try importing the new version first,
-    # but import the 2.0.3 version if it fails
-    from markdown.util import etree  # @UnusedImport
-except ImportError:
-    from markdown import etree  # @UnresolvedImport @Reimport @UnusedImport
+from wiki import models
 
 
 class WikiPathExtension(markdown.Extension):
