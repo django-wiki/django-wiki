@@ -43,10 +43,10 @@ class Signup(CreateView):
             c = {'error_msg': _('Account signup is only allowed for administrators.')}
             return render(request, "wiki/error.html", context=c)
 
-        return super(Signup, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context = super(Signup, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['honeypot_class'] = context['form'].honeypot_class
         context['honeypot_jsfunction'] = context['form'].honeypot_jsfunction
         return context
@@ -63,7 +63,7 @@ class Logout(View):
     def dispatch(self, request, *args, **kwargs):
         if not settings.ACCOUNT_HANDLING:
             return redirect(settings.LOGOUT_URL)
-        return super(Logout, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         auth_logout(request)
@@ -81,22 +81,22 @@ class Login(FormView):
             return redirect('wiki:root')
         if not settings.ACCOUNT_HANDLING:
             return redirect(settings.LOGIN_URL)
-        return super(Login, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
         self.request.session.set_test_cookie()
-        kwargs = super(Login, self).get_form_kwargs()
+        kwargs = super().get_form_kwargs()
         kwargs['request'] = self.request
         return kwargs
 
     def post(self, request, *args, **kwargs):
         self.referer = request.session.get('login_referer', '')
-        return super(Login, self).post(request, *args, **kwargs)
+        return super().post(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         self.referer = request.META.get('HTTP_REFERER', '')
         request.session['login_referer'] = self.referer
-        return super(Login, self).get(request, *args, **kwargs)
+        return super().get(request, *args, **kwargs)
 
     def form_valid(self, form, *args, **kwargs):
         auth_login(self.request, form.get_user())
@@ -125,11 +125,11 @@ class Update(UpdateView):
         """
         self.referer = request.META.get('HTTP_REFERER', '')
         request.session['login_referer'] = self.referer
-        return super(Update, self).get(request, *args, **kwargs)
+        return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         self.referer = request.session.get('login_referer', '')
-        return super(Update, self).post(request, *args, **kwargs)
+        return super().post(request, *args, **kwargs)
 
     def form_valid(self, form):
         pw = form.cleaned_data["password1"]

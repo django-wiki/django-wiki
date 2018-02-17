@@ -193,7 +193,7 @@ class MoveForm(forms.Form):
                                   required=False)
 
     def clean(self):
-        cd = super(MoveForm, self).clean()
+        cd = super().clean()
         if cd.get('slug'):
             dest_path = get_object_or_404(models.URLPath, pk=self.cleaned_data['destination'])
             cd['slug'] = _clean_slug(cd['slug'], dest_path)
@@ -261,7 +261,7 @@ class EditForm(forms.Form, SpamProtectionMixin):
 
             kwargs['initial'] = initial
 
-        super(EditForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def clean_title(self):
         title = self.cleaned_data.get('title', None)
@@ -275,7 +275,7 @@ class EditForm(forms.Form, SpamProtectionMixin):
         No new revisions have been created since user attempted to edit
         Revision title or content has changed
         """
-        cd = super(EditForm, self).clean()
+        cd = super().clean()
         if self.no_clean or self.preview:
             return cd
         if not str(self.initial_revision.id) == str(self.presumed_revision):
@@ -299,10 +299,10 @@ class SelectWidgetBootstrap(BuildAttrsCompat, forms.Select):
         attrs['class'] = 'btn-group pull-left btn-group-form'
         self.disabled = disabled
         self.noscript_widget = forms.Select(attrs={}, choices=choices)
-        super(SelectWidgetBootstrap, self).__init__(attrs, choices)
+        super().__init__(attrs, choices)
 
     def __setattr__(self, k, value):
-        super(SelectWidgetBootstrap, self).__setattr__(k, value)
+        super().__setattr__(k, value)
         if k not in ('attrs', 'disabled'):
             self.noscript_widget.__setattr__(k, value)
 
@@ -361,10 +361,10 @@ class TextInputPrepend(forms.TextInput):
 
     def __init__(self, *args, **kwargs):
         self.prepend = kwargs.pop('prepend', "")
-        super(TextInputPrepend, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def render(self, *args, **kwargs):
-        html = super(TextInputPrepend, self).render(*args, **kwargs)
+        html = super().render(*args, **kwargs)
         return mark_safe(
             '<div class="input-group"><span class="input-group-addon">%s</span>%s</div>' %
             (self.prepend, html))
@@ -373,7 +373,7 @@ class TextInputPrepend(forms.TextInput):
 class CreateForm(forms.Form, SpamProtectionMixin):
 
     def __init__(self, request, urlpath_parent, *args, **kwargs):
-        super(CreateForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.request = request
         self.urlpath_parent = urlpath_parent
 
@@ -397,7 +397,7 @@ class CreateForm(forms.Form, SpamProtectionMixin):
         return _clean_slug(self.cleaned_data['slug'], self.urlpath_parent)
 
     def clean(self):
-        super(CreateForm, self).clean()
+        super().clean()
         self.check_spam()
         return self.cleaned_data
 
@@ -407,7 +407,7 @@ class DeleteForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.article = kwargs.pop('article')
         self.has_children = kwargs.pop('has_children')
-        super(DeleteForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     confirm = forms.BooleanField(required=False,
                                  label=_('Yes, I am sure'))
@@ -420,7 +420,7 @@ class DeleteForm(forms.Form):
                                       widget=HiddenInput(), required=False)
 
     def clean(self):
-        cd = super(DeleteForm, self).clean()
+        cd = super().clean()
         if not cd['confirm']:
             raise forms.ValidationError(ugettext('You are not sure enough!'))
         if cd['revision'] != self.article.current_revision:
@@ -481,7 +481,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
         kwargs['instance'] = article
         kwargs['initial'] = {'locked': article.current_revision.locked}
 
-        super(PermissionsForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.can_change_groups = False
         self.can_assign = False
@@ -540,7 +540,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
         return user
 
     def save(self, commit=True):
-        article = super(PermissionsForm, self).save(commit=False)
+        article = super().save(commit=False)
 
         # Alter the owner according to the form field owner_username
         # TODO: Why not rename this field to 'owner' so this happens
@@ -620,7 +620,7 @@ class UserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
 
     def __init__(self, *args, **kwargs):
-        super(UserCreationForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         # Add honeypots
         self.honeypot_fieldnames = "address", "phone"
@@ -638,7 +638,7 @@ class UserCreationForm(UserCreationForm):
             )
 
     def clean(self):
-        cd = super(UserCreationForm, self).clean()
+        cd = super().clean()
         for fieldname in self.honeypot_fieldnames:
             if cd[fieldname]:
                 raise forms.ValidationError(
@@ -655,7 +655,7 @@ class UserUpdateForm(forms.ModelForm):
     password2 = forms.CharField(label="Confirm password", widget=forms.PasswordInput(), required=False)
 
     def clean(self):
-        cd = super(UserUpdateForm, self).clean()
+        cd = super().clean()
         password1 = cd.get('password1')
         password2 = cd.get('password2')
 

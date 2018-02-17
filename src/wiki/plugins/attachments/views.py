@@ -37,7 +37,7 @@ class AttachmentView(ArticleMixin, FormView):
 
         # Fixing some weird transaction issue caused by adding commit_manually
         # to form_valid
-        return super(AttachmentView, self).dispatch(request, article, *args, **kwargs)
+        return super().dispatch(request, article, *args, **kwargs)
 
     def form_valid(self, form):
 
@@ -65,7 +65,7 @@ class AttachmentView(ArticleMixin, FormView):
             article_id=self.article.id)
 
     def get_form_kwargs(self):
-        kwargs = super(AttachmentView, self).get_form_kwargs()
+        kwargs = super().get_form_kwargs()
         kwargs['article'] = self.article
         kwargs['request'] = self.request
         return kwargs
@@ -82,7 +82,7 @@ class AttachmentView(ArticleMixin, FormView):
         kwargs['search_form'] = forms.SearchForm()
         kwargs['selected_tab'] = 'attachments'
         kwargs['anonymous_disallowed'] = self.request.user.is_anonymous() and not settings.ANONYMOUS
-        return super(AttachmentView, self).get_context_data(**kwargs)
+        return super().get_context_data(**kwargs)
 
 
 class AttachmentHistoryView(ArticleMixin, TemplateView):
@@ -101,14 +101,14 @@ class AttachmentHistoryView(ArticleMixin, TemplateView):
                 models.Attachment.objects.active(),
                 id=attachment_id,
                 articles=article)
-        return super(AttachmentHistoryView, self).dispatch(request, article, *args, **kwargs)
+        return super().dispatch(request, article, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         kwargs['attachment'] = self.attachment
         kwargs['revisions'] = self.attachment.attachmentrevision_set.all().order_by(
             '-revision_number')
         kwargs['selected_tab'] = 'attachments'
-        return super(AttachmentHistoryView, self).get_context_data(**kwargs)
+        return super().get_context_data(**kwargs)
 
 
 class AttachmentReplaceView(ArticleMixin, FormView):
@@ -132,7 +132,7 @@ class AttachmentReplaceView(ArticleMixin, FormView):
                 id=attachment_id,
                 articles=article)
             self.can_moderate = False
-        return super(AttachmentReplaceView, self).dispatch(request, article, *args, **kwargs)
+        return super().dispatch(request, article, *args, **kwargs)
 
     def get_form_class(self):
         if self.can_moderate:
@@ -182,13 +182,13 @@ class AttachmentReplaceView(ArticleMixin, FormView):
             article_id=self.article.id)
 
     def get_form(self, form_class=None):
-        form = super(AttachmentReplaceView, self).get_form(form_class=form_class)
+        form = super().get_form(form_class=form_class)
         form.fields['file'].help_text = _(
             'Your new file will automatically be renamed to match the file already present. Files with different extensions are not allowed.')
         return form
 
     def get_form_kwargs(self):
-        kwargs = super(AttachmentReplaceView, self).get_form_kwargs()
+        kwargs = super().get_form_kwargs()
         kwargs['article'] = self.article
         kwargs['request'] = self.request
         kwargs['attachment'] = self.attachment
@@ -202,7 +202,7 @@ class AttachmentReplaceView(ArticleMixin, FormView):
             kwargs['form'] = self.get_form()
         kwargs['attachment'] = self.attachment
         kwargs['selected_tab'] = 'attachments'
-        return super(AttachmentReplaceView, self).get_context_data(**kwargs)
+        return super().get_context_data(**kwargs)
 
 
 class AttachmentDownloadView(ArticleMixin, View):
@@ -227,7 +227,7 @@ class AttachmentDownloadView(ArticleMixin, View):
                 attachment__articles=article)
         else:
             self.revision = self.attachment.current_revision
-        return super(AttachmentDownloadView, self).dispatch(request, article, *args, **kwargs)
+        return super().dispatch(request, article, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         if self.revision:
@@ -266,7 +266,7 @@ class AttachmentChangeRevisionView(ArticleMixin, View):
             models.AttachmentRevision,
             id=revision_id,
             attachment__articles=article)
-        return super(AttachmentChangeRevisionView, self).dispatch(request, article, *args, **kwargs)
+        return super().dispatch(request, article, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         self.attachment.current_revision = self.revision
@@ -297,7 +297,7 @@ class AttachmentAddView(ArticleMixin, View):
             models.Attachment.objects.active().can_write(
                 request.user),
             id=attachment_id)
-        return super(AttachmentAddView, self).dispatch(request, article, *args, **kwargs)
+        return super().dispatch(request, article, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         if not self.attachment.articles.filter(id=self.article.id):
@@ -329,7 +329,7 @@ class AttachmentDeleteView(ArticleMixin, FormView):
         self.attachment = get_object_or_404(models.Attachment, id=attachment_id, articles=article)
         if not self.attachment.can_delete(request.user):
             return response_forbidden(request, article, kwargs.get('urlpath', None))
-        return super(AttachmentDeleteView, self).dispatch(request, article, *args, **kwargs)
+        return super().dispatch(request, article, *args, **kwargs)
 
     def form_valid(self, form):
 
@@ -359,7 +359,7 @@ class AttachmentDeleteView(ArticleMixin, FormView):
         kwargs['selected_tab'] = 'attachments'
         if 'form' not in kwargs:
             kwargs['form'] = self.get_form()
-        return super(AttachmentDeleteView, self).get_context_data(**kwargs)
+        return super().get_context_data(**kwargs)
 
 
 class AttachmentSearchView(ArticleMixin, ListView):
@@ -372,7 +372,7 @@ class AttachmentSearchView(ArticleMixin, ListView):
 
     @method_decorator(get_article(can_write=True))
     def dispatch(self, request, article, *args, **kwargs):
-        return super(AttachmentSearchView, self).dispatch(request, article, *args, **kwargs)
+        return super().dispatch(request, article, *args, **kwargs)
 
     def get_queryset(self):
         self.query = self.request.GET.get('query', None)

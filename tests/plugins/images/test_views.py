@@ -17,7 +17,7 @@ from ...base import (ArticleWebTestUtils, DjangoClientTestBase,
 class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     def setUp(self):
-        super(ImageTests, self).setUp()
+        super().setUp()
         self.article = self.root_article
         # A black 1x1 gif
         self.test_data = "R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs="

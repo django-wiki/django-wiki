@@ -42,7 +42,7 @@ class WikiFencedBlockPreprocessor(Preprocessor):
     CODE_WRAP = '<pre>%s</pre>'
 
     def __init__(self, md):
-        super(WikiFencedBlockPreprocessor, self).__init__(md)
+        super().__init__(md)
 
         self.checked_for_codehilite = False
         self.codehilite_conf = {}

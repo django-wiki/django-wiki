@@ -91,7 +91,7 @@ class ImageRevision(RevisionPluginRevision):
         be unset if it's the initial history entry.
         """
         predecessor = image.current_revision.imagerevision
-        super(ImageRevision, self).inherit_predecessor(image)
+        super().inherit_predecessor(image)
         self.plugin = predecessor.plugin
         self.deleted = predecessor.deleted
         self.locked = predecessor.locked

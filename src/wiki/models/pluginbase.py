@@ -131,7 +131,7 @@ class SimplePlugin(ArticlePlugin):
 
     def __init__(self, *args, **kwargs):
         article = kwargs.pop('article', None)
-        super(SimplePlugin, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         if not self.pk and not article:
             raise SimplePluginCreateError(
                 "Keyword argument 'article' expected.")

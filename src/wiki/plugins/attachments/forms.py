@@ -23,7 +23,7 @@ class AttachmentForm(forms.ModelForm):
         self.article = kwargs.pop('article', None)
         self.request = kwargs.pop('request', None)
         self.attachment = kwargs.pop('attachment', None)
-        super(AttachmentForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def clean_file(self):
         uploaded_file = self.cleaned_data.get('file', None)
@@ -36,7 +36,7 @@ class AttachmentForm(forms.ModelForm):
 
     def save(self, *args, **kwargs):
         commit = kwargs.get('commit', True)
-        attachment_revision = super(AttachmentForm, self).save(commit=False)
+        attachment_revision = super().save(commit=False)
 
         # Added because of AttachmentArchiveForm removing file from fields
         # should be more elegant
@@ -85,7 +85,7 @@ class AttachmentArchiveForm(AttachmentForm):
         required=False)
 
     def __init__(self, *args, **kwargs):
-        super(AttachmentArchiveForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         ordered_fields = ['unzip_archive', 'file']
         self.fields.keyOrder = ordered_fields + [k
                                                  for k in self.fields.keys()
@@ -104,11 +104,11 @@ class AttachmentArchiveForm(AttachmentForm):
             except zipfile.BadZipfile:
                 raise forms.ValidationError(ugettext("Not a zip file"))
         else:
-            return super(AttachmentArchiveForm, self).clean_file()
+            return super().clean_file()
         return uploaded_file
 
     def clean(self):
-        super(AttachmentArchiveForm, self).clean()
+        super().clean()
         if not can_moderate(self.article, self.request.user):
             raise forms.ValidationError(
                 ugettext("User not allowed to moderate this article"))
@@ -148,7 +148,7 @@ class AttachmentArchiveForm(AttachmentForm):
                 raise
             return new_attachments
         else:
-            return super(AttachmentArchiveForm, self).save(*args, **kwargs)
+            return super().save(*args, **kwargs)
 
     class Meta(AttachmentForm.Meta):
         fields = ['description', ]

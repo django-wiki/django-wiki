@@ -10,7 +10,7 @@ class SidebarForm(PluginSidebarFormMixin):
     def __init__(self, article, request, *args, **kwargs):
         self.article = article
         self.request = request
-        super(SidebarForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields['image'].required = True
 
     def get_usermessage(self):
@@ -22,11 +22,11 @@ class SidebarForm(PluginSidebarFormMixin):
             image = models.Image()
             image.article = self.article
             kwargs['commit'] = False
-            revision = super(SidebarForm, self).save(*args, **kwargs)
+            revision = super().save(*args, **kwargs)
             revision.set_from_request(self.request)
             image.add_revision(self.instance, save=True)
             return revision
-        return super(SidebarForm, self).save(*args, **kwargs)
+        return super().save(*args, **kwargs)
 
     class Meta:
         model = models.ImageRevision
@@ -38,19 +38,19 @@ class RevisionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.image = kwargs.pop('image')
         self.request = kwargs.pop('request')
-        super(RevisionForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields['image'].required = True
 
     def save(self, *args, **kwargs):
         if not self.instance.id:
             kwargs['commit'] = False
-            revision = super(RevisionForm, self).save(*args, **kwargs)
+            revision = super().save(*args, **kwargs)
             revision.inherit_predecessor(self.image, skip_image_file=True)
             revision.deleted = False  # Restore automatically if deleted
             revision.set_from_request(self.request)
             self.image.add_revision(self.instance, save=True)
             return revision
-        return super(RevisionForm, self).save(*args, **kwargs)
+        return super().save(*args, **kwargs)
 
     class Meta:
         model = models.ImageRevision

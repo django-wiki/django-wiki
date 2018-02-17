@@ -12,7 +12,7 @@ from ...base import RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTe
 class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     def setUp(self):
-        super(AttachmentTests, self).setUp()
+        super().setUp()
         self.article = self.root_article
         self.test_data = "This is a plain text file"
         self.test_description = 'My file'

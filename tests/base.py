@@ -18,7 +18,7 @@ SUPERUSER1_PASSWORD = 'secret'
 class RequireSuperuserMixin(object):
 
     def setUp(self):
-        super(RequireSuperuserMixin, self).setUp()
+        super().setUp()
 
         from django.contrib.auth import get_user_model
         User = get_user_model()
@@ -44,7 +44,7 @@ class TestBase(RequireBasicData, TestCase):
 class RequireRootArticleMixin(object):
 
     def setUp(self):
-        super(RequireRootArticleMixin, self).setUp()
+        super().setUp()
         self.root = URLPath.create_root()
         self.root_article = URLPath.root().article
         rev = self.root_article.current_revision
@@ -62,7 +62,7 @@ class ArticleTestBase(RequireRootArticleMixin, TestBase):
 
 class DjangoClientTestBase(TestBase):
     def setUp(self):
-        super(DjangoClientTestBase, self).setUp()
+        super().setUp()
 
         self.client.login(username=SUPERUSER1_USERNAME, password=SUPERUSER1_PASSWORD)
 
@@ -72,7 +72,7 @@ class WebTestCommonMixin(RequireBasicData, django_functest.ShortcutLoginMixin):
     Common setup required for WebTest and Selenium tests
     """
     def setUp(self):
-        super(WebTestCommonMixin, self).setUp()
+        super().setUp()
 
         self.shortcut_login(username=SUPERUSER1_USERNAME,
                             password=SUPERUSER1_PASSWORD)
