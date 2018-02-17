@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
 from wiki.conf import settings
 from wiki.core import permissions
 from wiki import models
@@ -19,22 +17,13 @@ class SearchViewHaystack(haystack_views.SearchView):
 
     @classonlymethod
     def as_view(cls, *args, **kwargs):
-        return haystack_views.search_view_factory(
-            view_class=cls,
-            *
-            args,
-            **kwargs)
+        return haystack_views.search_view_factory(view_class=cls, *args, **kwargs)
 
     def dispatch(self, request, *args, **kwargs):
         # Do not allow anonymous users to search if they cannot read content
         if request.user.is_anonymous() and not settings.ANONYMOUS:
             return redirect(settings.LOGIN_URL)
-        return super(
-            SearchViewHaystack,
-            self).dispatch(
-            request,
-            *args,
-            **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def __filter_can_read(self, user):
         """Filter objects so only the ones with a user's reading access
@@ -68,6 +57,6 @@ class SearchViewHaystack(haystack_views.SearchView):
         return self.create_response()
 
     def extra_context(self):
-        extra = super(SearchViewHaystack, self).extra_context()
+        extra = super().extra_context()
         extra['search_query'] = self.query
         return extra

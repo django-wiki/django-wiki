@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from django import template
 from wiki.plugins.macros import settings
 from wiki.plugins.macros.mdx.macro import MacroPreprocessor

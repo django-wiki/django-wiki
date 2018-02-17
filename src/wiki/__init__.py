@@ -1,4 +1,3 @@
-from __future__ import unicode_literals
 # -*- coding: utf-8 -*-
 # This package and all its sub-packages are part of django-wiki,
 # except where otherwise stated.

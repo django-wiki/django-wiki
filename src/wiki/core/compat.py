@@ -1,8 +1,7 @@
 """Abstraction layer to deal with Django related changes in order to keep
 compatibility with several Django versions simultaneously."""
-from __future__ import unicode_literals
-
 from django.conf import settings as django_settings
+from urllib.parse import urljoin  # noqa
 
 USER_MODEL = getattr(django_settings, 'AUTH_USER_MODEL', 'auth.User')
 
@@ -21,11 +20,3 @@ class BuildAttrsCompat(object):
         if kwargs is not None:
             attrs.update(kwargs)
         return attrs
-
-
-try:
-    # Python 3
-    from urllib.parse import urljoin  # noqa
-except ImportError:
-    # Python 2
-    from urlparse import urljoin  # noqa @UnusedImport

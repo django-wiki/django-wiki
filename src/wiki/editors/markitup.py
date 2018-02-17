@@ -1,6 +1,4 @@
 # -*- coding: utf-8
-from __future__ import unicode_literals
-
 from django import forms
 from django.forms.utils import flatatt
 from django.utils.encoding import force_text

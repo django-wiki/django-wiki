@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from haystack.backends import SQ
 from haystack.inputs import AutoQuery
 from haystack.query import SearchQuerySet

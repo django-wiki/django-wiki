@@ -21,8 +21,6 @@ SO WE AN JUST DEPEND ON THAT!
 
 
 """
-from __future__ import unicode_literals
-
 import re
 import unicodedata
 

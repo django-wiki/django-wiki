@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from haystack import indexes
 from wiki import models
 

@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import logging
 
 from django.views.generic.base import TemplateResponseMixin
