@@ -9,13 +9,13 @@ from wiki.views import accounts, article, deleted_list
 
 class WikiURLPatterns(object):
 
-    '''
+    """
     configurator for wiki urls.
 
     To customize, you can define your own subclass, either overriding
     the view providers, or overriding the functions that collect
     views.
-    '''
+    """
 
     # basic views
     article_view_class = article.ArticleView
@@ -34,7 +34,7 @@ class WikiURLPatterns(object):
     revision_merge_view = staticmethod(article.merge)
 
     search_view_class = settings.SEARCH_VIEW
-    article_diff_view = staticmethod(article.diff)
+    article_diff_view_class = article.DiffView
 
     # account views
     signup_view_class = accounts.Signup
@@ -74,7 +74,7 @@ class WikiURLPatterns(object):
                 get_class_from_str(self.search_view_class).as_view(),
                 name='search'),
             url(r'^_revision/diff/(?P<revision_id>[0-9]+)/$',
-                self.article_diff_view,
+                self.article_diff_view_class.as_view(),
                 name='diff'),
         ]
         return urlpatterns

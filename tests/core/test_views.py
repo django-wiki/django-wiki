@@ -3,12 +3,13 @@ from __future__ import print_function, unicode_literals
 import pprint
 
 from django.contrib.auth import authenticate
+from django.http import JsonResponse
 from django.shortcuts import resolve_url
 from django.utils.html import escape
 from django_functest import FuncBaseMixin
 from wiki import models
 from wiki.forms import validate_slug_numbers
-from wiki.models import URLPath
+from wiki.models import URLPath, ArticleRevision, reverse
 
 from ..base import (ArticleWebTestUtils, DjangoClientTestBase,
                     RequireRootArticleMixin, SeleniumBase, WebTestBase)
@@ -381,6 +382,26 @@ class EditViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
             response,
             'While you were editing, someone else changed the revision.'
         )
+
+
+class DiffViewTests(RequireRootArticleMixin, DjangoClientTestBase):
+
+    def setUp(self):
+        super().setUp()
+        self.root_article.add_revision(ArticleRevision(
+            title='New Revision'), save=True
+        )
+        self.new_revision = self.root_article.current_revision
+
+    def test_diff(self):
+        response = self.client.get(reverse('wiki:diff', kwargs={'revision_id': self.root_article.pk}))
+        diff = {
+            "diff": ["+ root article content"],
+            "other_changes": [["New title", "Root Article"]]
+        }
+        self.assertJSONEqual(str(response.content, encoding='utf8'), diff)
+        self.assertIsInstance(response, JsonResponse)
+        self.assertEqual(response.status_code, 200)
 
 
 class EditViewTestsBase(RequireRootArticleMixin, FuncBaseMixin):

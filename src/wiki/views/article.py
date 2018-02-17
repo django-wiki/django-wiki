@@ -12,6 +12,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.utils.translation import ungettext
+from django.views.generic import DetailView
 from django.views.generic.base import RedirectView, TemplateView, View
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
@@ -869,27 +870,29 @@ class Preview(ArticleMixin, TemplateView):
         return ArticleMixin.get_context_data(self, **kwargs)
 
 
-def diff(request, revision_id, other_revision_id=None):
+class DiffView(DetailView):
+    model = models.ArticleRevision
+    pk_url_kwarg = 'revision_id'
 
-    revision = get_object_or_404(models.ArticleRevision, id=revision_id)
-
-    if not other_revision_id:
+    def render_to_response(self, context, **response_kwargs):
+        revision = self.get_object()
         other_revision = revision.previous_revision
 
-    baseText = other_revision.content if other_revision else ""
-    newText = revision.content
+        baseText = other_revision.content if other_revision is not None else ""
+        newText = revision.content
 
-    differ = difflib.Differ(charjunk=difflib.IS_CHARACTER_JUNK)
-    diff = differ.compare(baseText.splitlines(1), newText.splitlines(1))
+        differ = difflib.Differ(charjunk=difflib.IS_CHARACTER_JUNK)
+        diff = differ.compare(
+            baseText.splitlines(keepends=True), newText.splitlines(keepends=True)
+        )
+        other_changes = []
 
-    other_changes = []
+        if not other_revision or other_revision.title != revision.title:
+            other_changes.append((_('New title'), revision.title))
 
-    if not other_revision or other_revision.title != revision.title:
-        other_changes.append((_('New title'), revision.title))
-
-    return object_to_json_response(
-        dict(diff=list(diff), other_changes=other_changes)
-    )
+        return object_to_json_response(
+            {'diff': list(diff), 'other_changes': other_changes}
+        )
 
 # TODO: Throw in a class-based view
 
