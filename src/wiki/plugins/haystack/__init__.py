@@ -21,7 +21,7 @@ class SearchViewHaystack(haystack_views.SearchView):
 
     def dispatch(self, request, *args, **kwargs):
         # Do not allow anonymous users to search if they cannot read content
-        if request.user.is_anonymous() and not settings.ANONYMOUS:
+        if request.user.is_anonymous and not settings.ANONYMOUS:
             return redirect(settings.LOGIN_URL)
         return super().dispatch(request, *args, **kwargs)
 
@@ -30,7 +30,7 @@ class SearchViewHaystack(haystack_views.SearchView):
          are included"""
         if user.has_perm('wiki.moderator'):
             return self.results
-        if user.is_anonymous():
+        if user.is_anonymous:
             q = self.results.filter(other_read='True')
             return q
         else:

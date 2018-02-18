@@ -316,7 +316,7 @@ class BaseRevisionMixin(models.Model):
     )
 
     def set_from_request(self, request):
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             self.user = request.user
             if settings.LOG_IPS_USERS:
                 self.ip_address = request.META.get('REMOTE_ADDR', None)

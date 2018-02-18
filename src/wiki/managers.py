@@ -11,7 +11,7 @@ class ArticleQuerySet(QuerySet):
         are included"""
         if user.has_perm('wiki.moderator'):
             return self
-        if user.is_anonymous():
+        if user.is_anonymous:
             q = self.filter(other_read=True)
         else:
             q = self.filter(Q(other_read=True) |
@@ -25,7 +25,7 @@ class ArticleQuerySet(QuerySet):
         are included"""
         if user.has_perm('wiki.moderator'):
             return self
-        if user.is_anonymous():
+        if user.is_anonymous:
             q = self.filter(other_write=True)
         else:
             q = self.filter(Q(other_write=True) |
@@ -57,7 +57,7 @@ class ArticleFkQuerySetMixin(object):
         are included"""
         if user.has_perm('wiki.moderate'):
             return self
-        if user.is_anonymous():
+        if user.is_anonymous:
             q = self.filter(article__other_read=True)
         else:
             # https://github.com/django-wiki/django-wiki/issues/67
@@ -72,7 +72,7 @@ class ArticleFkQuerySetMixin(object):
         are included"""
         if user.has_perm('wiki.moderate'):
             return self
-        if user.is_anonymous():
+        if user.is_anonymous:
             q = self.filter(article__other_write=True)
         else:
             # https://github.com/django-wiki/django-wiki/issues/67
