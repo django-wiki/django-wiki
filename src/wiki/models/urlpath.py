@@ -182,7 +182,7 @@ class URLPath(MPTTModel):
     def delete(self, *args, **kwargs):
         assert not (self.parent and self.get_children()
                     ), "You cannot delete a root article with children."
-        super(URLPath, self).delete(*args, **kwargs)
+        super().delete(*args, **kwargs)
 
     class Meta:
         verbose_name = _('URL path')
@@ -203,7 +203,7 @@ class URLPath(MPTTModel):
                 raise ValidationError(
                     _('There is already a root node on %s') %
                     self.site)
-        super(URLPath, self).clean(*args, **kwargs)
+        super().clean(*args, **kwargs)
 
     @classmethod
     def get_by_path(cls, path, select_related=False):

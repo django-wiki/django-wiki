@@ -21,7 +21,7 @@ class ArticleRevisionForm(forms.ModelForm):
         exclude = ()
 
     def __init__(self, *args, **kwargs):
-        super(ArticleRevisionForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         # TODO: This pattern is too weird
         editor = editors.getEditor()
         self.fields['content'].widget = editor.get_admin_widget()
@@ -55,7 +55,7 @@ class ArticleForm(forms.ModelForm):
         exclude = ()
 
     def __init__(self, *args, **kwargs):
-        super(ArticleForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         if self.instance.pk:
             revisions = models.ArticleRevision.objects.filter(
                 article=self.instance)

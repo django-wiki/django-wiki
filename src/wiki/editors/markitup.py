@@ -19,7 +19,7 @@ class MarkItUpAdminWidget(BuildAttrsCompat, forms.Widget):
                          'rows': '10', 'cols': '40', }
         if attrs:
             default_attrs.update(attrs)
-        super(MarkItUpAdminWidget, self).__init__(default_attrs)
+        super().__init__(default_attrs)
 
     def render(self, name, value, attrs=None, renderer=None):
         if value is None:
@@ -40,7 +40,7 @@ class MarkItUpWidget(BuildAttrsCompat, forms.Widget):
                          'rows': '10', 'cols': '40', }
         if attrs:
             default_attrs.update(attrs)
-        super(MarkItUpWidget, self).__init__(default_attrs)
+        super().__init__(default_attrs)
 
     def render(self, name, value, attrs=None, renderer=None):
         if value is None:

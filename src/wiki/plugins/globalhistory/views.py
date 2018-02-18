@@ -17,7 +17,7 @@ class GlobalHistory(ListView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.only_last = kwargs.get('only_last', 0)
-        return super(GlobalHistory, self).dispatch(
+        return super().dispatch(
             request, *args, **kwargs)
 
     def get_queryset(self):
@@ -29,4 +29,4 @@ class GlobalHistory(ListView):
 
     def get_context_data(self, **kwargs):
         kwargs['only_last'] = self.only_last
-        return super(GlobalHistory, self).get_context_data(**kwargs)
+        return super().get_context_data(**kwargs)

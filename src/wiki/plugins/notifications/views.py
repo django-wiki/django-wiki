@@ -15,7 +15,7 @@ class NotificationSettings(FormView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        return super(NotificationSettings, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, formset):
         for form in formset:

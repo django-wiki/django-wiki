@@ -33,7 +33,7 @@ class ArticleSubscriptionModelMultipleChoiceField(
 class SettingsModelForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
-        super(SettingsModelForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         instance = kwargs.get('instance', None)
         self.__editing_instance = False
         if instance:
@@ -60,7 +60,7 @@ class SettingsModelForm(forms.ModelForm):
             )
 
     def save(self, *args, **kwargs):
-        instance = super(SettingsModelForm, self).save(*args, **kwargs)
+        instance = super().save(*args, **kwargs)
         if self.__editing_instance:
             # Django < 1.5 returns list objects when ModelMultipleChoiceField
             # is empty.. so check before calling delete()
@@ -81,7 +81,7 @@ class BaseSettingsFormSet(BaseModelFormSet):
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
-        super(BaseSettingsFormSet, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def get_queryset(self):
         return Settings.objects.filter(
@@ -152,7 +152,7 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
                 'settings': self.default_settings,
             }
         kwargs['initial'] = initial
-        super(SubscriptionForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields['settings'].queryset = Settings.objects.filter(
             user=request.user,
         )
