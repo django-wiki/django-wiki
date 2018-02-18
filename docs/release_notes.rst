@@ -17,7 +17,7 @@ django-wiki 0.4.0
 Added
 ~~~~~
 
- * ...
+ * Django 2 support :url-issue:`755`
 
 Changed
 ~~~~~~~
@@ -27,12 +27,15 @@ Changed
 Fixed
 ~~~~~
 
- * ...
+ * Use ``user.is_authenticated/is_anonymous`` as a boolean :url-issue:`790`
+ * Use ``simple_tag`` for assignment tag :url-issue:`791`
+ * Use ``pytest`` instead of ``runtests.py`` :url-issue:`781`
 
 Deprecated/Removed
 ~~~~~~~~~~~~~~~~~~
 
- * ...
+ * Django < 1.11 support is dropped :url-issue:`779`
+ * Python < 3.3 support is dropped :url-issue:`779` and :url-issue:`792`
 
 
 django-wiki 0.3.1
