@@ -1,6 +1,8 @@
+from django import shortcuts, urls
 from django.apps import apps
 from django.conf import settings as django_settings
 from django.core.exceptions import ImproperlyConfigured
+from django.urls import base
 
 # TODO: Don't use wildcards
 from .article import *  # noqa
@@ -99,15 +101,9 @@ urlresolvers.reverse = reverse
 urlresolvers.reverse_lazy = reverse_lazy
 
 # Patch up other locations of the reverse function
-try:
-    from django.urls import base
-    from django import urls
-    from django import shortcuts
-    base.reverse = reverse
-    base.reverse_lazy = reverse_lazy
-    urls.reverse = reverse
-    urls.reverse_lazy = reverse_lazy
-    shortcuts.reverse = reverse
-    urls.reverse_lazy = reverse_lazy
-except ImportError:
-    pass
+base.reverse = reverse
+base.reverse_lazy = reverse_lazy
+urls.reverse = reverse
+urls.reverse_lazy = reverse_lazy
+shortcuts.reverse = reverse
+urls.reverse_lazy = reverse_lazy
