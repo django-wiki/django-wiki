@@ -5,7 +5,6 @@ from django.conf import settings as django_settings
 from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.db.models import signals
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
 from wiki.models.pluginbase import RevisionPlugin, RevisionPluginRevision
@@ -29,7 +28,6 @@ def upload_path(instance, filename):
     return os.path.join(upload_path, filename)
 
 
-@python_2_unicode_compatible
 class Image(RevisionPlugin):
 
     # The plugin system is so awesome that the inheritor doesn't need to do
@@ -55,7 +53,6 @@ class Image(RevisionPlugin):
             return ugettext('Current revision not set!!')
 
 
-@python_2_unicode_compatible
 class ImageRevision(RevisionPluginRevision):
 
     image = models.ImageField(upload_to=upload_path,

@@ -6,7 +6,6 @@ from django.db import models
 from django.db.models.fields import GenericIPAddressField as IPAddressField
 from django.db.models.signals import post_save, pre_delete, pre_save
 from django.utils import translation
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from mptt.models import MPTTModel
@@ -17,7 +16,6 @@ from wiki.core.markdown import article_markdown
 from wiki.decorators import disable_signal_for_loaddata
 
 
-@python_2_unicode_compatible
 class Article(models.Model):
 
     objects = managers.ArticleManager()
@@ -247,7 +245,6 @@ class Article(models.Model):
             return reverse('wiki:get', kwargs={'article_id': self.id})
 
 
-@python_2_unicode_compatible
 class ArticleForObject(models.Model):
 
     objects = managers.ArticleFkManager()
@@ -342,7 +339,6 @@ class BaseRevisionMixin(models.Model):
         abstract = True
 
 
-@python_2_unicode_compatible
 class ArticleRevision(BaseRevisionMixin, models.Model):
 
     """This is where main revision data is stored. To make it easier to

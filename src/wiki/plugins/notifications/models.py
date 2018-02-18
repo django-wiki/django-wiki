@@ -1,7 +1,6 @@
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import signals
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from django_nyt.models import Subscription
 from django_nyt.utils import notify
@@ -13,7 +12,6 @@ from wiki.plugins.notifications import settings
 from wiki.plugins.notifications.util import get_title
 
 
-@python_2_unicode_compatible
 class ArticleSubscription(ArticlePlugin):
 
     subscription = models.OneToOneField(Subscription, on_delete=models.CASCADE)

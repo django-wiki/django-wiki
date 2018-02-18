@@ -9,7 +9,6 @@ from django.core.urlresolvers import reverse
 from django.db import models, transaction
 from django.db.models.signals import post_save, pre_delete
 # Django 1.6 transaction API, required for 1.8+
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
 from mptt.fields import TreeForeignKey
@@ -23,7 +22,6 @@ from wiki.models.article import Article, ArticleForObject, ArticleRevision
 log = logging.getLogger(__name__)
 
 
-@python_2_unicode_compatible
 class URLPath(MPTTModel):
 
     """
