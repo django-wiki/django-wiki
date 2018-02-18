@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from wiki.compat import url
 from wiki.plugins.attachments import views
 
 urlpatterns = [

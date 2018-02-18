@@ -1,6 +1,6 @@
-from django.conf.urls import url
 from django.urls import reverse_lazy
 from django.utils.translation import gettext as _
+from wiki.compat import url
 from wiki.core.plugins import registry
 from wiki.core.plugins.base import BasePlugin
 from wiki.plugins.links import settings, views
