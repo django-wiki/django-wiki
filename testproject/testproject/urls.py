@@ -10,7 +10,7 @@ from wiki.urls import get_pattern as get_wiki_pattern
 admin.autodiscover()
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
     url(r'^robots.txt', lambda _: HttpResponse('User-agent: *\nDisallow: /')),
 ]
 
