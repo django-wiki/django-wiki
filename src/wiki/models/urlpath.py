@@ -9,8 +9,8 @@ from django.core.urlresolvers import reverse
 from django.db import models, transaction
 from django.db.models.signals import post_save, pre_delete
 # Django 1.6 transaction API, required for 1.8+
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ugettext
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
 from wiki import managers
@@ -174,7 +174,7 @@ class URLPath(MPTTModel):
 
     def __str__(self):
         path = self.path
-        return path if path else ugettext("(root)")
+        return path if path else gettext("(root)")
 
     def delete(self, *args, **kwargs):
         assert not (self.parent and self.get_children()

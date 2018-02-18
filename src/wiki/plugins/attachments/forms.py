@@ -3,8 +3,8 @@ import zipfile
 
 from django import forms
 from django.core.files.uploadedfile import File
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ugettext
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext
 from wiki.core.permissions import can_moderate
 from wiki.plugins.attachments import models
 from wiki.plugins.attachments.models import IllegalFileExtension
@@ -101,7 +101,7 @@ class AttachmentArchiveForm(AttachmentForm):
                     except IllegalFileExtension as e:
                         raise forms.ValidationError(e)
             except zipfile.BadZipfile:
-                raise forms.ValidationError(ugettext("Not a zip file"))
+                raise forms.ValidationError(gettext("Not a zip file"))
         else:
             return super().clean_file()
         return uploaded_file
@@ -110,7 +110,7 @@ class AttachmentArchiveForm(AttachmentForm):
         super().clean()
         if not can_moderate(self.article, self.request.user):
             raise forms.ValidationError(
-                ugettext("User not allowed to moderate this article"))
+                gettext("User not allowed to moderate this article"))
         return self.cleaned_data
 
     def save(self, *args, **kwargs):
@@ -161,7 +161,7 @@ class DeleteForm(forms.Form):
 
     def clean_confirm(self):
         if not self.cleaned_data['confirm']:
-            raise forms.ValidationError(ugettext('You are not sure enough!'))
+            raise forms.ValidationError(gettext('You are not sure enough!'))
         return True
 
 

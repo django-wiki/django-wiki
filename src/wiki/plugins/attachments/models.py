@@ -3,8 +3,8 @@ import os
 from django.conf import settings as django_settings
 from django.db import models
 from django.db.models import signals
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ugettext
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext
 from wiki import managers
 from wiki.decorators import disable_signal_for_loaddata
 from wiki.models.article import BaseRevisionMixin
@@ -65,12 +65,12 @@ def extension_allowed(filename):
     except IndexError:
         # No extension
         raise IllegalFileExtension(
-            ugettext("No file extension found in filename. That's not okay!"))
+            gettext("No file extension found in filename. That's not okay!"))
     if not extension.lower() in map(
             lambda x: x.lower(),
             settings.FILE_EXTENSIONS):
         raise IllegalFileExtension(
-            ugettext(
+            gettext(
                 "The following filename is illegal: {filename:s}. Extension "
                 "has to be one of {extensions:s}"
             ).format(

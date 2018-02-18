@@ -16,7 +16,7 @@ from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.views.generic.base import View
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from wiki import forms

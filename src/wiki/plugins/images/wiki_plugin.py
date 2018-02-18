@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from wiki.core.plugins import registry
 from wiki.core.plugins.base import BasePlugin
 from wiki.plugins.images import forms, models, settings, views

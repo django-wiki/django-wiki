@@ -7,7 +7,7 @@ from django.db.models.fields import GenericIPAddressField as IPAddressField
 from django.db.models.signals import post_save, pre_delete, pre_save
 from django.utils import translation
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from mptt.models import MPTTModel
 from wiki import managers
 from wiki.conf import settings
