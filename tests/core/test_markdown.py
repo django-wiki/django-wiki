@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import markdown
 from django.test import TestCase
 from mock import patch
@@ -43,7 +40,7 @@ class ArticleMarkdownTests(ArticleTestBase):
 class ResponsiveTableExtensionTests(TestCase):
 
     def setUp(self):
-        super(ResponsiveTableExtensionTests, self).setUp()
+        super().setUp()
         self.md = markdown.Markdown(extensions=[
             'extra',
             ResponsiveTableExtension()

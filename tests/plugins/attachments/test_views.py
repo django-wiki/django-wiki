@@ -1,5 +1,3 @@
-from __future__ import print_function, unicode_literals
-
 from io import BytesIO
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -12,7 +10,7 @@ from ...base import RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTe
 class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     def setUp(self):
-        super(AttachmentTests, self).setUp()
+        super().setUp()
         self.article = self.root_article
         self.test_data = "This is a plain text file"
         self.test_description = 'My file'

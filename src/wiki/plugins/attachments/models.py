@@ -1,12 +1,10 @@
-# -*- coding: utf-8 -*-
 import os
 
 from django.conf import settings as django_settings
 from django.db import models
 from django.db.models import signals
-from django.utils.encoding import python_2_unicode_compatible
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ugettext
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext
 from wiki import managers
 from wiki.decorators import disable_signal_for_loaddata
 from wiki.models.article import BaseRevisionMixin
@@ -21,7 +19,6 @@ class IllegalFileExtension(Exception):
     pass
 
 
-@python_2_unicode_compatible
 class Attachment(ReusablePlugin):
 
     objects = managers.ArticleFkManager()
@@ -40,7 +37,7 @@ class Attachment(ReusablePlugin):
         null=True)
 
     def can_write(self, user):
-        if not settings.ANONYMOUS and (not user or user.is_anonymous()):
+        if not settings.ANONYMOUS and (not user or user.is_anonymous):
             return False
         return ReusablePlugin.can_write(self, user)
 
@@ -68,12 +65,12 @@ def extension_allowed(filename):
     except IndexError:
         # No extension
         raise IllegalFileExtension(
-            ugettext("No file extension found in filename. That's not okay!"))
+            gettext("No file extension found in filename. That's not okay!"))
     if not extension.lower() in map(
             lambda x: x.lower(),
             settings.FILE_EXTENSIONS):
         raise IllegalFileExtension(
-            ugettext(
+            gettext(
                 "The following filename is illegal: {filename:s}. Extension "
                 "has to be one of {extensions:s}"
             ).format(
@@ -115,7 +112,6 @@ def upload_path(instance, filename):
     return os.path.join(upload_path, filename)
 
 
-@python_2_unicode_compatible
 class AttachmentRevision(BaseRevisionMixin, models.Model):
 
     attachment = models.ForeignKey('Attachment', on_delete=models.CASCADE)

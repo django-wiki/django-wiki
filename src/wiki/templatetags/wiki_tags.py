@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import re
 
 from django.apps import apps
@@ -22,7 +21,7 @@ register = template.Library()
 _cache = {}
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def article_for_object(context, obj):
     if not isinstance(obj, Model):
         raise TypeError(
@@ -186,7 +185,7 @@ def is_locked(model):
     return (model.current_revision and model.current_revision.locked)
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def login_url(context):
     request = context['request']
     qs = request.META.get('QUERY_STRING', '')

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 There are three kinds of plugin base models:
 
@@ -21,7 +20,7 @@ There are three kinds of plugin base models:
 """
 from django.db import models
 from django.db.models import signals
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from wiki.decorators import disable_signal_for_loaddata
 
 from .article import ArticleRevision, BaseRevisionMixin
@@ -131,7 +130,7 @@ class SimplePlugin(ArticlePlugin):
 
     def __init__(self, *args, **kwargs):
         article = kwargs.pop('article', None)
-        super(SimplePlugin, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         if not self.pk and not article:
             raise SimplePluginCreateError(
                 "Keyword argument 'article' expected.")

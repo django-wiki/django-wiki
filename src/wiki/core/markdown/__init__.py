@@ -33,7 +33,7 @@ class ArticleMarkdown(markdown.Markdown):
         return extensions
 
     def convert(self, text, *args, **kwargs):
-        html = super(ArticleMarkdown, self).convert(text, *args, **kwargs)
+        html = super().convert(text, *args, **kwargs)
         if settings.MARKDOWN_SANITIZE_HTML:
             tags = settings.MARKDOWN_HTML_WHITELIST + plugin_registry.get_html_whitelist()
 

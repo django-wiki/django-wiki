@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Here is a very basic handling of accounts.
 If you have your own account handling, don't worry,
 just switch off account handling in
@@ -17,7 +16,7 @@ from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.views.generic.base import View
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from wiki import forms
@@ -33,7 +32,7 @@ class Signup(CreateView):
 
     def dispatch(self, request, *args, **kwargs):
         # Let logged in super users continue
-        if not request.user.is_anonymous() and not request.user.is_superuser:
+        if not request.user.is_anonymous and not request.user.is_superuser:
             return redirect('wiki:root')
         # If account handling is disabled, don't go here
         if not settings.ACCOUNT_HANDLING:
@@ -43,10 +42,10 @@ class Signup(CreateView):
             c = {'error_msg': _('Account signup is only allowed for administrators.')}
             return render(request, "wiki/error.html", context=c)
 
-        return super(Signup, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context = super(Signup, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['honeypot_class'] = context['form'].honeypot_class
         context['honeypot_jsfunction'] = context['form'].honeypot_jsfunction
         return context
@@ -63,7 +62,7 @@ class Logout(View):
     def dispatch(self, request, *args, **kwargs):
         if not settings.ACCOUNT_HANDLING:
             return redirect(settings.LOGOUT_URL)
-        return super(Logout, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         auth_logout(request)
@@ -77,26 +76,26 @@ class Login(FormView):
     template_name = "wiki/accounts/login.html"
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_anonymous():
+        if not request.user.is_anonymous:
             return redirect('wiki:root')
         if not settings.ACCOUNT_HANDLING:
             return redirect(settings.LOGIN_URL)
-        return super(Login, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
         self.request.session.set_test_cookie()
-        kwargs = super(Login, self).get_form_kwargs()
+        kwargs = super().get_form_kwargs()
         kwargs['request'] = self.request
         return kwargs
 
     def post(self, request, *args, **kwargs):
         self.referer = request.session.get('login_referer', '')
-        return super(Login, self).post(request, *args, **kwargs)
+        return super().post(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         self.referer = request.META.get('HTTP_REFERER', '')
         request.session['login_referer'] = self.referer
-        return super(Login, self).get(request, *args, **kwargs)
+        return super().get(request, *args, **kwargs)
 
     def form_valid(self, form, *args, **kwargs):
         auth_login(self.request, form.get_user())
@@ -125,11 +124,11 @@ class Update(UpdateView):
         """
         self.referer = request.META.get('HTTP_REFERER', '')
         request.session['login_referer'] = self.referer
-        return super(Update, self).get(request, *args, **kwargs)
+        return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         self.referer = request.session.get('login_referer', '')
-        return super(Update, self).post(request, *args, **kwargs)
+        return super().post(request, *args, **kwargs)
 
     def form_valid(self, form):
         pw = form.cleaned_data["password1"]

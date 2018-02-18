@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from functools import wraps
 
 from django.core.urlresolvers import reverse
@@ -12,7 +11,7 @@ from wiki.core.exceptions import NoRootURL
 
 
 def response_forbidden(request, article, urlpath):
-    if request.user.is_anonymous():
+    if request.user.is_anonymous:
         qs = request.META.get('QUERY_STRING', '')
         if qs:
             qs = urlquote('?' + qs)
@@ -143,7 +142,7 @@ def get_article(func=None, can_read=True, can_write=False,  # noqa
             return response_forbidden(request, article, urlpath)
 
         if can_create and not (
-                request.user.is_authenticated() or settings.ANONYMOUS_CREATE):
+                request.user.is_authenticated or settings.ANONYMOUS_CREATE):
             return response_forbidden(request, article, urlpath)
 
         if can_delete and not article.can_delete(request.user):

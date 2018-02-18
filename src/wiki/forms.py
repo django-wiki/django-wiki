@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import random
 import string
 from datetime import timedelta
@@ -19,8 +18,8 @@ from django.utils.encoding import force_text
 from django.utils.html import conditional_escape, escape
 from django.utils.safestring import mark_safe
 from django.utils.translation import pgettext_lazy
-from django.utils.translation import ugettext
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext
+from django.utils.translation import gettext_lazy as _
 
 from wiki import models
 from wiki.conf import settings
@@ -59,10 +58,10 @@ class WikiSlugField(forms.SlugField):
 def _clean_slug(slug, urlpath):
     if slug.startswith("_"):
         raise forms.ValidationError(
-            ugettext('A slug may not begin with an underscore.'))
+            gettext('A slug may not begin with an underscore.'))
     if slug == 'admin':
         raise forms.ValidationError(
-            ugettext("'admin' is not a permitted slug name."))
+            gettext("'admin' is not a permitted slug name."))
 
     if settings.URL_CASE_SENSITIVE:
         already_existing_slug = models.URLPath.objects.filter(
@@ -77,11 +76,11 @@ def _clean_slug(slug, urlpath):
         already_urlpath = already_existing_slug[0]
         if already_urlpath.article and already_urlpath.article.current_revision.deleted:
             raise forms.ValidationError(
-                ugettext('A deleted article with slug "%s" already exists.') %
+                gettext('A deleted article with slug "%s" already exists.') %
                 already_urlpath.slug)
         else:
             raise forms.ValidationError(
-                ugettext('A slug named "%s" already exists.') %
+                gettext('A slug named "%s" already exists.') %
                 already_urlpath.slug)
 
     if settings.CHECK_SLUG_URL_AVAILABLE:
@@ -90,7 +89,7 @@ def _clean_slug(slug, urlpath):
             match = resolve(urlpath.path + '/' + slug + '/')
             if match.app_name != 'wiki':
                 raise forms.ValidationError(
-                    ugettext('This slug conflicts with an existing URL.'))
+                    gettext('This slug conflicts with an existing URL.'))
         except Resolver404:
             pass
 
@@ -117,14 +116,14 @@ class SpamProtectionMixin(object):
         request = self.request
         user = None
         ip_address = None
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             user = request.user
         else:
             ip_address = request.META.get('REMOTE_ADDR', None)
 
         if not (user or ip_address):
             raise forms.ValidationError(
-                ugettext(
+                gettext(
                     'Spam protection failed to find both a logged in user and an IP address.'))
 
         def check_interval(from_time, max_count, interval_name):
@@ -140,7 +139,7 @@ class SpamProtectionMixin(object):
             revisions = revisions.count()
             if revisions >= max_count:
                 raise forms.ValidationError(
-                    ugettext('Spam protection: You are only allowed to create or edit %(revisions)d article(s) per %(interval_name)s.') % {
+                    gettext('Spam protection: You are only allowed to create or edit %(revisions)d article(s) per %(interval_name)s.') % {
                         'revisions': max_count,
                         'interval_name': interval_name,
                     })
@@ -151,7 +150,7 @@ class SpamProtectionMixin(object):
             return
 
         from_time = timezone.now() - timedelta(minutes=settings.REVISIONS_MINUTES_LOOKBACK)
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             per_minute = settings.REVISIONS_PER_MINUTES
         else:
             per_minute = settings.REVISIONS_PER_MINUTES_ANONYMOUS
@@ -164,7 +163,7 @@ class SpamProtectionMixin(object):
         )
 
         from_time = timezone.now() - timedelta(minutes=60)
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             per_hour = settings.REVISIONS_PER_MINUTES
         else:
             per_hour = settings.REVISIONS_PER_MINUTES_ANONYMOUS
@@ -193,7 +192,7 @@ class MoveForm(forms.Form):
                                   required=False)
 
     def clean(self):
-        cd = super(MoveForm, self).clean()
+        cd = super().clean()
         if cd.get('slug'):
             dest_path = get_object_or_404(models.URLPath, pk=self.cleaned_data['destination'])
             cd['slug'] = _clean_slug(cd['slug'], dest_path)
@@ -261,13 +260,13 @@ class EditForm(forms.Form, SpamProtectionMixin):
 
             kwargs['initial'] = initial
 
-        super(EditForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def clean_title(self):
         title = self.cleaned_data.get('title', None)
         title = (title or "").strip()
         if not title:
-            raise forms.ValidationError(ugettext('Article is missing title or has an invalid title'))
+            raise forms.ValidationError(gettext('Article is missing title or has an invalid title'))
         return title
 
     def clean(self):
@@ -275,16 +274,16 @@ class EditForm(forms.Form, SpamProtectionMixin):
         No new revisions have been created since user attempted to edit
         Revision title or content has changed
         """
-        cd = super(EditForm, self).clean()
+        cd = super().clean()
         if self.no_clean or self.preview:
             return cd
         if not str(self.initial_revision.id) == str(self.presumed_revision):
             raise forms.ValidationError(
-                ugettext(
+                gettext(
                     'While you were editing, someone else changed the revision. Your contents have been automatically merged with the new contents. Please review the text below.'))
         if ('title' in cd) and cd['title'] == self.initial_revision.title and cd[
                 'content'] == self.initial_revision.content:
-            raise forms.ValidationError(ugettext('No changes made. Nothing to save.'))
+            raise forms.ValidationError(gettext('No changes made. Nothing to save.'))
         self.check_spam()
         return cd
 
@@ -299,10 +298,10 @@ class SelectWidgetBootstrap(BuildAttrsCompat, forms.Select):
         attrs['class'] = 'btn-group pull-left btn-group-form'
         self.disabled = disabled
         self.noscript_widget = forms.Select(attrs={}, choices=choices)
-        super(SelectWidgetBootstrap, self).__init__(attrs, choices)
+        super().__init__(attrs, choices)
 
     def __setattr__(self, k, value):
-        super(SelectWidgetBootstrap, self).__setattr__(k, value)
+        super().__setattr__(k, value)
         if k not in ('attrs', 'disabled'):
             self.noscript_widget.__setattr__(k, value)
 
@@ -361,10 +360,10 @@ class TextInputPrepend(forms.TextInput):
 
     def __init__(self, *args, **kwargs):
         self.prepend = kwargs.pop('prepend', "")
-        super(TextInputPrepend, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def render(self, *args, **kwargs):
-        html = super(TextInputPrepend, self).render(*args, **kwargs)
+        html = super().render(*args, **kwargs)
         return mark_safe(
             '<div class="input-group"><span class="input-group-addon">%s</span>%s</div>' %
             (self.prepend, html))
@@ -373,7 +372,7 @@ class TextInputPrepend(forms.TextInput):
 class CreateForm(forms.Form, SpamProtectionMixin):
 
     def __init__(self, request, urlpath_parent, *args, **kwargs):
-        super(CreateForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.request = request
         self.urlpath_parent = urlpath_parent
 
@@ -397,7 +396,7 @@ class CreateForm(forms.Form, SpamProtectionMixin):
         return _clean_slug(self.cleaned_data['slug'], self.urlpath_parent)
 
     def clean(self):
-        super(CreateForm, self).clean()
+        super().clean()
         self.check_spam()
         return self.cleaned_data
 
@@ -407,7 +406,7 @@ class DeleteForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.article = kwargs.pop('article')
         self.has_children = kwargs.pop('has_children')
-        super(DeleteForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     confirm = forms.BooleanField(required=False,
                                  label=_('Yes, I am sure'))
@@ -420,12 +419,12 @@ class DeleteForm(forms.Form):
                                       widget=HiddenInput(), required=False)
 
     def clean(self):
-        cd = super(DeleteForm, self).clean()
+        cd = super().clean()
         if not cd['confirm']:
-            raise forms.ValidationError(ugettext('You are not sure enough!'))
+            raise forms.ValidationError(gettext('You are not sure enough!'))
         if cd['revision'] != self.article.current_revision:
             raise forms.ValidationError(
-                ugettext(
+                gettext(
                     'While you tried to delete this article, it was modified. TAKE CARE!'))
         return cd
 
@@ -481,7 +480,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
         kwargs['instance'] = article
         kwargs['initial'] = {'locked': article.current_revision.locked}
 
-        super(PermissionsForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.can_change_groups = False
         self.can_assign = False
@@ -532,7 +531,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
                     user = User.objects.get(**kwargs)
                 except User.DoesNotExist:
                     raise forms.ValidationError(
-                        ugettext('No user with that username'))
+                        gettext('No user with that username'))
             else:
                 user = None
         else:
@@ -540,7 +539,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
         return user
 
     def save(self, commit=True):
-        article = super(PermissionsForm, self).save(commit=False)
+        article = super().save(commit=False)
 
         # Alter the owner according to the form field owner_username
         # TODO: Why not rename this field to 'owner' so this happens
@@ -620,7 +619,7 @@ class UserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
 
     def __init__(self, *args, **kwargs):
-        super(UserCreationForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         # Add honeypots
         self.honeypot_fieldnames = "address", "phone"
@@ -638,7 +637,7 @@ class UserCreationForm(UserCreationForm):
             )
 
     def clean(self):
-        cd = super(UserCreationForm, self).clean()
+        cd = super().clean()
         for fieldname in self.honeypot_fieldnames:
             if cd[fieldname]:
                 raise forms.ValidationError(
@@ -655,7 +654,7 @@ class UserUpdateForm(forms.ModelForm):
     password2 = forms.CharField(label="Confirm password", widget=forms.PasswordInput(), required=False)
 
     def clean(self):
-        cd = super(UserUpdateForm, self).clean()
+        cd = super().clean()
         password1 = cd.get('password1')
         password2 = cd.get('password2')
 

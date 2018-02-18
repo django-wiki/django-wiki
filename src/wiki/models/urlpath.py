@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import logging
 import warnings
 
@@ -10,9 +9,8 @@ from django.core.urlresolvers import reverse
 from django.db import models, transaction
 from django.db.models.signals import post_save, pre_delete
 # Django 1.6 transaction API, required for 1.8+
-from django.utils.encoding import python_2_unicode_compatible
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ugettext
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
 from wiki import managers
@@ -24,7 +22,6 @@ from wiki.models.article import Article, ArticleForObject, ArticleRevision
 log = logging.getLogger(__name__)
 
 
-@python_2_unicode_compatible
 class URLPath(MPTTModel):
 
     """
@@ -177,12 +174,12 @@ class URLPath(MPTTModel):
 
     def __str__(self):
         path = self.path
-        return path if path else ugettext("(root)")
+        return path if path else gettext("(root)")
 
     def delete(self, *args, **kwargs):
         assert not (self.parent and self.get_children()
                     ), "You cannot delete a root article with children."
-        super(URLPath, self).delete(*args, **kwargs)
+        super().delete(*args, **kwargs)
 
     class Meta:
         verbose_name = _('URL path')
@@ -203,7 +200,7 @@ class URLPath(MPTTModel):
                 raise ValidationError(
                     _('There is already a root node on %s') %
                     self.site)
-        super(URLPath, self).clean(*args, **kwargs)
+        super().clean(*args, **kwargs)
 
     @classmethod
     def get_by_path(cls, path, select_related=False):
@@ -314,7 +311,7 @@ class URLPath(MPTTModel):
         """
         user = None
         ip_address = None
-        if not request.user.is_anonymous():
+        if not request.user.is_anonymous:
             user = request.user
             if settings.LOG_IPS_USERS:
                 ip_address = request.META.get('REMOTE_ADDR', None)

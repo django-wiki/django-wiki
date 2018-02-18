@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.views.generic.edit import FormView
 
 from . import forms, models
@@ -15,7 +15,7 @@ class NotificationSettings(FormView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        return super(NotificationSettings, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, formset):
         for form in formset:

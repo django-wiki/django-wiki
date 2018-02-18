@@ -15,7 +15,7 @@ def article_list(context, urlpath, depth):
     return context
 
 
-@register.assignment_tag
+@register.simple_tag
 def allowed_macros():
     for method in settings.METHODS:
         try:

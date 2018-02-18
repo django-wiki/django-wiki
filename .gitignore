@@ -2,6 +2,7 @@
 build
 dist
 *.egg-info
+.eggs
 testproject/testproject/whoosh_index/
 testproject/testproject/xapian_index/
 

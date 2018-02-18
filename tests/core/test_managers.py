@@ -4,8 +4,6 @@ because the pattern of building them is different from Django
 1.5 to 1.6 to 1.7 so there will be 3 patterns in play at the
 same time.
 """
-from __future__ import print_function, unicode_literals
-
 from wiki.models import Article, URLPath
 from wiki.plugins.attachments.models import Attachment
 
