@@ -11,6 +11,29 @@ Django release, 0.3 will be the last series with Python 2.7 support.
 The next series **0.4** will support Django 1.11 and Django 2.x and be for
 Python 3.4+.
 
+django-wiki 0.4.0
+-----------------
+
+Added
+~~~~~
+
+ * ...
+
+Changed
+~~~~~~~
+
+ * ...
+
+Fixed
+~~~~~
+
+ * ...
+
+Deprecated/Removed
+~~~~~~~~~~~~~~~~~~
+
+ * ...
+
 
 django-wiki 0.3.1
 -----------------
