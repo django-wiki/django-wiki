@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'wiki.plugins.macros.apps.MacrosConfig',
     'wiki.plugins.globalhistory.apps.GlobalHistoryConfig',
 ]
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
