@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import signals

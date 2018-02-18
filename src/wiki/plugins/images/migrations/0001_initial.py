@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import wiki.plugins.images.models
 from django.db import migrations, models
 

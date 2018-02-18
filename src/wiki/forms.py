@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import random
 import string
 from datetime import timedelta

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from django.conf.urls import include, url
 from django.utils.translation import ugettext as _
 from wiki.core.plugins import registry

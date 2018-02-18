@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 There are three kinds of plugin base models:
 

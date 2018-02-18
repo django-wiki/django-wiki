@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Here is a very basic handling of accounts.
 If you have your own account handling, don't worry,
 just switch off account handling in
