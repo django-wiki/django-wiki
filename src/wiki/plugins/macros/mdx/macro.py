@@ -3,7 +3,6 @@ import re
 import markdown
 from django.template.loader import render_to_string
 from django.utils.translation import gettext as _
-from django.utils.six import string_types
 from wiki.plugins.macros import settings
 
 # See:
@@ -51,7 +50,7 @@ class MacroPreprocessor(markdown.preprocessors.Preprocessor):
                             value = kwarg.group('value')
                             if value is None:
                                 value = True
-                            if isinstance(value, string_types):
+                            if isinstance(value, str):
                                 # If value is enclosed with ': Remove and
                                 # remove escape sequences
                                 if value.startswith("'") and len(value) > 2:
