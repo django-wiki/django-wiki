@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.utils.translation import gettext as _
 from wiki.core.plugins import registry
 from wiki.core.plugins.base import BasePlugin

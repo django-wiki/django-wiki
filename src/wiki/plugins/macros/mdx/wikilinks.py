@@ -5,7 +5,7 @@ Extend the shipped Markdown extension 'wikilinks'
 import re
 
 import markdown
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from markdown.extensions import wikilinks
 
 

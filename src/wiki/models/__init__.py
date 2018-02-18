@@ -1,6 +1,9 @@
 from django.apps import apps
 from django.conf import settings as django_settings
 from django.core.exceptions import ImproperlyConfigured
+from django.urls import base
+from django import urls
+from django import shortcuts
 
 # TODO: Don't use wildcards
 from .article import *  # noqa
@@ -60,9 +63,7 @@ if apps.is_installed('django_notify'):
         'django-wiki: You need to change from django_notify to django_nyt in INSTALLED_APPS and your urlconfig.')
 
 
-from django.core import urlresolvers  # noqa
-
-original_django_reverse = urlresolvers.reverse
+original_django_reverse = urls.reverse
 
 
 def reverse(*args, **kwargs):
@@ -93,21 +94,12 @@ def reverse(*args, **kwargs):
     return url
 
 
-# Now we redefine reverse method
 reverse_lazy = lazy(reverse, str)
-urlresolvers.reverse = reverse
-urlresolvers.reverse_lazy = reverse_lazy
+
 
 # Patch up other locations of the reverse function
-try:
-    from django.urls import base
-    from django import urls
-    from django import shortcuts
-    base.reverse = reverse
-    base.reverse_lazy = reverse_lazy
-    urls.reverse = reverse
-    urls.reverse_lazy = reverse_lazy
-    shortcuts.reverse = reverse
-    urls.reverse_lazy = reverse_lazy
-except ImportError:
-    pass
+base.reverse = reverse
+base.reverse_lazy = reverse_lazy
+urls.reverse = reverse
+urls.reverse_lazy = reverse_lazy
+shortcuts.reverse = reverse
