@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import markdown
 from django.test import TestCase
 from mock import patch

@@ -1,8 +1,6 @@
-# -*- coding: utf-8 -*-
 from django.apps import apps
 from django.conf import settings as django_settings
 from django.core.exceptions import ImproperlyConfigured
-from django.utils.six import string_types, text_type
 
 # TODO: Don't use wildcards
 from .article import *  # noqa
@@ -77,7 +75,7 @@ def reverse(*args, **kwargs):
     return the result of calling reverse._transform_url(reversed_url)
     for every url in the wiki namespace.
     """
-    if isinstance(args[0], string_types) and args[0].startswith('wiki:'):
+    if isinstance(args[0], str) and args[0].startswith('wiki:'):
         url_kwargs = kwargs.get('kwargs', {})
         path = url_kwargs.get('path', False)
         # If a path is supplied then discard the article_id
@@ -96,7 +94,7 @@ def reverse(*args, **kwargs):
 
 
 # Now we redefine reverse method
-reverse_lazy = lazy(reverse, text_type)
+reverse_lazy = lazy(reverse, str)
 urlresolvers.reverse = reverse
 urlresolvers.reverse_lazy = reverse_lazy
 

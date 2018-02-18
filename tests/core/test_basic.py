@@ -1,5 +1,3 @@
-from __future__ import print_function, unicode_literals
-
 from django.test import TestCase
 
 from wiki.conf import settings as wiki_settings

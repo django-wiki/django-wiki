@@ -1,13 +1,9 @@
 """
 Almost all test cases covers both tag calling and template using.
 """
-
-from __future__ import print_function, unicode_literals
-
 from django.conf import settings as django_settings
 from django.contrib.contenttypes.models import ContentType
 from django.http import HttpRequest
-from django.utils.six import assertCountEqual
 
 from wiki.conf import settings
 from wiki.forms import CreateRootForm
@@ -171,7 +167,7 @@ class WikiRenderTest(TemplateTestCase):
 
         output = wiki_render({}, article)
 
-        assertCountEqual(self, self.keys, output)
+        self.assertCountEqual(self.keys, output)
 
         self.assertEqual(output['article'], article)
         self.assertIsNone(output['content'])
@@ -210,7 +206,7 @@ class WikiRenderTest(TemplateTestCase):
         registry._cache = {'spam': 'eggs'}
 
         output = wiki_render({}, article, preview_content=content)
-        assertCountEqual(self, self.keys, output)
+        self.assertCountEqual(self.keys, output)
         self.assertEqual(output['article'], article)
         self.assertMultiLineEqual(output['content'], expected_markdown)
         self.assertIs(output['preview'], True)
@@ -239,7 +235,7 @@ class WikiRenderTest(TemplateTestCase):
 
         output = wiki_render({}, article, preview_content=content)
 
-        assertCountEqual(self, self.keys, output)
+        self.assertCountEqual(self.keys, output)
 
         self.assertEqual(output['article'], article)
 

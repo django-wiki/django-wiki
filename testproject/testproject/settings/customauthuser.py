@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import os  # noqa @UnusedImport
 
 from .base import *  # noqa @UnusedWildImport
