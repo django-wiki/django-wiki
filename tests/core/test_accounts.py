@@ -1,6 +1,3 @@
-from __future__ import print_function, unicode_literals
-
-
 from django.conf import settings as django_settings
 from django.contrib.auth import authenticate
 from django.shortcuts import resolve_url

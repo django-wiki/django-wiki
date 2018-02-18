@@ -1,5 +1,3 @@
-from __future__ import print_function, unicode_literals
-
 from django.core.urlresolvers import reverse
 from wiki.models import URLPath
 

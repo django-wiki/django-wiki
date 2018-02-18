@@ -1,5 +1,3 @@
-from __future__ import print_function, unicode_literals
-
 from io import BytesIO
 
 from django.core.files.uploadedfile import InMemoryUploadedFile

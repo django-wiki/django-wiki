@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import markdown
 from django.core.urlresolvers import reverse_lazy
 from django.test import TestCase
