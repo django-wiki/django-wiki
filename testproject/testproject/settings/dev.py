@@ -12,7 +12,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 try:
     import debug_toolbar  # @UnusedImport
-    MIDDLEWARE_CLASSES = list(MIDDLEWARE_CLASSES) + [
+    MIDDLEWARE = list(MIDDLEWARE) + [
         'debug_toolbar.middleware.DebugToolbarMiddleware',
     ]
     INSTALLED_APPS = list(INSTALLED_APPS) + ['debug_toolbar']

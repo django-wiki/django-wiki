@@ -55,7 +55,7 @@ INSTALLED_APPS = [
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
