@@ -1,7 +1,7 @@
 from io import BytesIO
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from wiki.models import URLPath
 
 from ...base import RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase

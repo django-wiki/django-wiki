@@ -2,7 +2,7 @@ import base64
 from io import BytesIO
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from wiki.core.plugins import registry as plugin_registry
 from wiki.models import URLPath
 from wiki.plugins.images import models

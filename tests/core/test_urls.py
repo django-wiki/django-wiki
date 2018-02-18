@@ -1,8 +1,8 @@
-from django.conf.urls import url
 from django.contrib.auth import get_user_model
 from django.contrib.sites.models import Site
 from django.test.testcases import TestCase
 from django_nyt.urls import get_pattern as get_notify_pattern
+from wiki.compat import include, url
 from wiki.models import Article, URLPath
 from wiki.urls import get_pattern as get_wiki_pattern
 from wiki.urls import WikiURLPatterns

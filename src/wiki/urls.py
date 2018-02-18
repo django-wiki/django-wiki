@@ -1,4 +1,4 @@
-from django.conf.urls import include, url
+from wiki.compat import include, url
 from wiki.conf import settings
 from wiki.core.plugins import registry
 from wiki.core.plugins.loader import load_wiki_plugins

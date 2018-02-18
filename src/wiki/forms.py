@@ -8,7 +8,7 @@ from django.apps import apps
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.core import validators
-from django.core.urlresolvers import Resolver404, resolve
+from django.urls import Resolver404, resolve
 from django.core.validators import RegexValidator
 from django.forms.utils import flatatt
 from django.forms.widgets import HiddenInput
