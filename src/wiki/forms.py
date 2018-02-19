@@ -23,8 +23,8 @@ from django.utils.translation import gettext_lazy as _
 
 from wiki import models
 from wiki.conf import settings
+from wiki.compat import BuildAttrsCompat
 from wiki.core import permissions
-from wiki.core.compat import BuildAttrsCompat
 from wiki.core.diff import simple_merge
 from wiki.core.plugins.base import PluginSettingsFormMixin
 from wiki.editors import getEditor
