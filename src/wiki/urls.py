@@ -6,7 +6,7 @@ from wiki.core.utils import get_class_from_str
 from wiki.views import accounts, article, deleted_list
 
 
-class WikiURLPatterns(object):
+class WikiURLPatterns:
 
     """
     configurator for wiki urls.

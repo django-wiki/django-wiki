@@ -1,7 +1,7 @@
 from django import forms
 
 
-class BaseEditor(object):
+class BaseEditor:
 
     """Editors should inherit from this. See wiki.editors for examples."""
 

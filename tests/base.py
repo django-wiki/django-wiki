@@ -13,7 +13,7 @@ SUPERUSER1_USERNAME = 'admin'
 SUPERUSER1_PASSWORD = 'secret'
 
 
-class RequireSuperuserMixin(object):
+class RequireSuperuserMixin:
 
     def setUp(self):
         super().setUp()
@@ -39,7 +39,7 @@ class TestBase(RequireBasicData, TestCase):
     pass
 
 
-class RequireRootArticleMixin(object):
+class RequireRootArticleMixin:
 
     def setUp(self):
         super().setUp()
@@ -100,7 +100,7 @@ class SeleniumBase(WebTestCommonMixin, django_functest.FuncSeleniumMixin, Static
             pass
 
 
-class ArticleWebTestUtils(object):
+class ArticleWebTestUtils:
 
     def get_by_path(self, path):
         """

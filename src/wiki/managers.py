@@ -50,7 +50,7 @@ class ArticleEmptyQuerySet(EmptyQuerySet):
         return self
 
 
-class ArticleFkQuerySetMixin(object):
+class ArticleFkQuerySetMixin:
 
     def can_read(self, user):
         """Filter objects so only the ones with a user's reading access
@@ -86,7 +86,7 @@ class ArticleFkQuerySetMixin(object):
         return self.filter(article__current_revision__deleted=False)
 
 
-class ArticleFkEmptyQuerySetMixin(object):
+class ArticleFkEmptyQuerySetMixin:
 
     def can_read(self, user):
         return self
