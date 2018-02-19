@@ -1,5 +1,6 @@
 import difflib
 import logging
+from urllib.parse import urljoin
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -18,7 +19,6 @@ from django.views.generic.list import ListView
 from wiki import editors, forms, models
 from wiki.conf import settings
 from wiki.core import permissions
-from wiki.core.compat import urljoin
 from wiki.core.diff import simple_merge
 from wiki.core.exceptions import NoRootURL
 from wiki.core.paginator import WikiPaginator

@@ -1,6 +1,5 @@
 """Abstraction layer to deal with Django related changes in order to keep
 compatibility with several Django versions simultaneously."""
-from urllib.parse import urljoin  # noqa
 
 
 # Django 1.11 Widget.build_attrs has a different signature, designed for the new
