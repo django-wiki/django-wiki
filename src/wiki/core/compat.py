@@ -1,9 +1,6 @@
 """Abstraction layer to deal with Django related changes in order to keep
 compatibility with several Django versions simultaneously."""
-from django.conf import settings as django_settings
 from urllib.parse import urljoin  # noqa
-
-USER_MODEL = getattr(django_settings, 'AUTH_USER_MODEL', 'auth.User')
 
 
 # Django 1.11 Widget.build_attrs has a different signature, designed for the new

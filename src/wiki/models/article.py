@@ -1,3 +1,4 @@
+from django.conf import settings as django_settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.cache import cache
@@ -11,7 +12,7 @@ from django.utils.translation import gettext_lazy as _
 from mptt.models import MPTTModel
 from wiki import managers
 from wiki.conf import settings
-from wiki.core import compat, permissions
+from wiki.core import permissions
 from wiki.core.markdown import article_markdown
 from wiki.decorators import disable_signal_for_loaddata
 
@@ -37,7 +38,7 @@ class Article(models.Model):
         help_text=_('Article properties last modified'))
 
     owner = models.ForeignKey(
-        compat.USER_MODEL, verbose_name=_('owner'),
+        django_settings.AUTH_USER_MODEL, verbose_name=_('owner'),
         blank=True, null=True, related_name='owned_articles',
         help_text=_(
             'The owner of the article, usually the creator. The owner always has both read and write access.'),
@@ -288,7 +289,7 @@ class BaseRevisionMixin(models.Model):
         blank=True,
         null=True,
         editable=False)
-    user = models.ForeignKey(compat.USER_MODEL, verbose_name=_('user'),
+    user = models.ForeignKey(django_settings.AUTH_USER_MODEL, verbose_name=_('user'),
                              blank=True, null=True,
                              on_delete=models.SET_NULL)
 
