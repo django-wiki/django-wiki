@@ -11,13 +11,14 @@ Django release, 0.3 will be the last series with Python 2.7 support.
 The next series **0.4** will support Django 1.11 and Django 2.x and be for
 Python 3.4+.
 
-django-wiki 0.4.0
------------------
+
+django-wiki 0.4.0 (unreleased)
+------------------------------
 
 Added
 ~~~~~
 
- * Django 2 support :url-issue:`755`
+ * Django 2 support :url-issue:`755` (Raffaele Salmaso & Mads Jensen)
 
 Changed
 ~~~~~~~
@@ -27,9 +28,9 @@ Changed
 Fixed
 ~~~~~
 
- * Use ``user.is_authenticated/is_anonymous`` as a boolean :url-issue:`790`
- * Use ``simple_tag`` for assignment tag :url-issue:`791`
- * Use ``pytest`` instead of ``runtests.py`` :url-issue:`781`
+ * Use ``user.is_authenticated/is_anonymous`` as a boolean :url-issue:`790` (Raffaele Salmaso)
+ * Use ``simple_tag`` for assignment tag :url-issue:`791` (Raffaele Salmaso)
+ * Use ``pytest`` instead of ``runtests.py`` :url-issue:`781` (Branko Majic)
 
 Deprecated/Removed
 ~~~~~~~~~~~~~~~~~~
