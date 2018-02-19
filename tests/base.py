@@ -134,6 +134,6 @@ class wiki_override_settings(override_settings):
         self.reload_wiki_settings()
 
     def reload_wiki_settings(self):
-        from imp import reload
+        from importlib import reload
         from wiki.conf import settings
         reload(settings)
