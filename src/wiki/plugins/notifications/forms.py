@@ -62,10 +62,7 @@ class SettingsModelForm(forms.ModelForm):
     def save(self, *args, **kwargs):
         instance = super().save(*args, **kwargs)
         if self.__editing_instance:
-            # Django < 1.5 returns list objects when ModelMultipleChoiceField
-            # is empty.. so check before calling delete()
-            if self.cleaned_data['delete_subscriptions']:
-                self.cleaned_data['delete_subscriptions'].delete()
+            self.cleaned_data['delete_subscriptions'].delete()
             if self.cleaned_data['email'] == 1:
                 instance.subscription_set.all().update(
                     send_emails=False,
