@@ -11,7 +11,7 @@ USER_MODEL = getattr(django_settings, 'AUTH_USER_MODEL', 'auth.User')
 # so we restore that version.
 # When support for Django < 1.11 is dropped, we should look at using the
 # new template based rendering, at which point this probably won't be needed at all.
-class BuildAttrsCompat(object):
+class BuildAttrsCompat:
     def build_attrs_compat(self, extra_attrs=None, **kwargs):
         "Helper function for building an attribute dictionary."
         attrs = self.attrs.copy()
