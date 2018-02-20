@@ -1,24 +1,15 @@
 import pprint
 
-from django.contrib import auth
-from django.contrib.auth import authenticate
-from django.contrib.auth.models import AnonymousUser
 from django.http import JsonResponse
 from django.shortcuts import resolve_url
 from django.utils.html import escape
 from django_functest import FuncBaseMixin
-
-from tests.testdata.models import CustomUser
 from wiki import models
-from wiki.conf import settings as wiki_settings
 from wiki.forms import validate_slug_numbers
-from wiki.models import URLPath, ArticleRevision, reverse
+from wiki.models import ArticleRevision, URLPath, reverse
 
-from ..base import (
-    ArticleWebTestUtils, DjangoClientTestBase, RequireRootArticleMixin, SeleniumBase,
-    WebTestBase, TestBase, SUPERUSER1_USERNAME, SUPERUSER1_PASSWORD,
-    wiki_override_settings,
-)
+from ..base import (ArticleWebTestUtils, DjangoClientTestBase,
+                    RequireRootArticleMixin, SeleniumBase, WebTestBase)
 
 
 class RootArticleViewTestsBase(FuncBaseMixin):
@@ -522,62 +513,6 @@ class DeletedListViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCl
 
         response = self.client.get(resolve_url('wiki:deleted_list'))
         self.assertContains(response, 'Delete Me')
-
-
-class UpdateProfileViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
-
-    def test_update_profile(self):
-        self.client.post(
-            resolve_url('wiki:profile_update'),
-            {"email": "test@test.com", "password1": "newPass", "password2": "newPass"},
-            follow=True
-        )
-
-        test_auth = authenticate(username='admin', password='newPass')
-
-        self.assertNotEqual(test_auth, None)
-        self.assertEqual(test_auth.email, 'test@test.com')
-
-
-@wiki_override_settings(ACCOUNT_HANDLING=True)
-class LogoutViewTests(RequireRootArticleMixin, DjangoClientTestBase):
-
-    def test_logout_account_handling(self):
-        self.client.get(wiki_settings.LOGOUT_URL)
-        user = auth.get_user(self.client)
-        self.assertIs(auth.get_user(self.client).is_authenticated(), False)
-        self.assertIsInstance(user, AnonymousUser)
-
-
-@wiki_override_settings(ACCOUNT_HANDLING=True)
-class LoginTestViews(RequireRootArticleMixin, TestBase):
-    def test_already_signed_in(self):
-        self.client.force_login(self.superuser1)
-        response = self.client.get(wiki_settings.LOGIN_URL)
-        self.assertRedirects(response, reverse('wiki:root'))
-
-    def test_log_in(self):
-        self.client.post(
-            wiki_settings.LOGIN_URL,
-            {'username': SUPERUSER1_USERNAME, 'password': SUPERUSER1_PASSWORD}
-        )
-        self.assertIs(self.superuser1.is_authenticated(), True)
-        self.assertEqual(auth.get_user(self.client), self.superuser1)
-
-
-class SignupViewTests(RequireRootArticleMixin, TestBase):
-
-    @wiki_override_settings(ACCOUNT_HANDLING=True, ACCOUNT_SIGNUP_ALLOWED=True)
-    def test_signup(self):
-        response = self.client.post(
-            wiki_settings.SIGNUP_URL,
-            data={
-                'password1': 'wiki', 'password2': 'wiki', 'username': 'wiki',
-                'email': 'wiki@wiki.com'
-            }
-        )
-        self.assertIs(CustomUser.objects.filter(email='wiki@wiki.com').exists(), True)
-        self.assertRedirects(response, reverse('wiki:login'))
 
 
 class MergeViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
