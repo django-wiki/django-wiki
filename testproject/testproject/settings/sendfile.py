@@ -1,6 +1,5 @@
 from .base import *  # noqa @UnusedWildImport
 
-
 INSTALLED_APPS += ['sendfile']
 
 WIKI_ATTACHMENTS_USE_SENDFILE = True

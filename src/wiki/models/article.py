@@ -2,10 +2,10 @@ from django.conf import settings as django_settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.cache import cache
-from django.urls import reverse
 from django.db import models
 from django.db.models.fields import GenericIPAddressField as IPAddressField
 from django.db.models.signals import post_save, pre_delete, pre_save
+from django.urls import reverse
 from django.utils import translation
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
@@ -15,7 +15,6 @@ from wiki.conf import settings
 from wiki.core import permissions
 from wiki.core.markdown import article_markdown
 from wiki.decorators import disable_signal_for_loaddata
-
 
 __all__ = [
     'Article', 'ArticleForObject', 'ArticleRevision',

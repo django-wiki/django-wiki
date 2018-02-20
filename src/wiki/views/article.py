@@ -4,14 +4,13 @@ from urllib.parse import urljoin
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse
 from django.db import transaction
 from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils.decorators import method_decorator
-from django.utils.translation import gettext as _
-from django.utils.translation import ngettext
+from django.utils.translation import gettext as _, ngettext
 from django.views.generic import DetailView
 from django.views.generic.base import RedirectView, TemplateView, View
 from django.views.generic.edit import FormView

@@ -23,7 +23,6 @@ from os import path as os_path
 
 import markdown
 from markdown.util import etree
-
 from wiki import models
 
 

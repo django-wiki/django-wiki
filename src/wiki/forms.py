@@ -8,22 +8,19 @@ from django.apps import apps
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.core import validators
-from django.urls import Resolver404, resolve
 from django.core.validators import RegexValidator
 from django.forms.utils import flatatt
 from django.forms.widgets import HiddenInput
 from django.shortcuts import get_object_or_404
+from django.urls import Resolver404, resolve
 from django.utils import timezone
 from django.utils.encoding import force_text
 from django.utils.html import conditional_escape, escape
 from django.utils.safestring import mark_safe
-from django.utils.translation import pgettext_lazy
-from django.utils.translation import gettext
-from django.utils.translation import gettext_lazy as _
-
+from django.utils.translation import gettext, gettext_lazy as _, pgettext_lazy
 from wiki import models
-from wiki.conf import settings
 from wiki.compat import BuildAttrsCompat
+from wiki.conf import settings
 from wiki.core import permissions
 from wiki.core.diff import simple_merge
 from wiki.core.plugins.base import PluginSettingsFormMixin

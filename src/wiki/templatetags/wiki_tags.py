@@ -1,7 +1,7 @@
 import re
 
-from django.apps import apps
 from django import template
+from django.apps import apps
 from django.conf import settings as django_settings
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model

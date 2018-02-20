@@ -1,11 +1,10 @@
+from django.db.models import Q
+from django.shortcuts import redirect
+from django.utils.decorators import classonlymethod
+from haystack import views as haystack_views
+from wiki import models
 from wiki.conf import settings
 from wiki.core import permissions
-from wiki import models
-
-from haystack import views as haystack_views
-from django.db.models import Q
-from django.utils.decorators import classonlymethod
-from django.shortcuts import redirect
 
 
 class SearchViewHaystack(haystack_views.SearchView):

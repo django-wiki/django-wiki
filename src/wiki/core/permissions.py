@@ -1,6 +1,5 @@
 from wiki.conf import settings
 
-
 ###############################
 # ARTICLE PERMISSION HANDLING #
 ###############################

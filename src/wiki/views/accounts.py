@@ -11,11 +11,10 @@ SETTINGS.LOGOUT_URL
 
 from django.conf import settings as django_settings
 from django.contrib import messages
-from django.contrib.auth import get_user_model, login as auth_login
-from django.contrib.auth import logout as auth_logout
+from django.contrib.auth import get_user_model, login as auth_login, logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
-from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.views.generic.base import View
 from django.views.generic.edit import CreateView, FormView, UpdateView

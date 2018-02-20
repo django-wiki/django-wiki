@@ -25,7 +25,6 @@ from wiki.decorators import disable_signal_for_loaddata
 
 from .article import ArticleRevision, BaseRevisionMixin
 
-
 __all__ = [
     'ArticlePlugin',
     'SimplePlugin', 'SimplePluginCreateError',

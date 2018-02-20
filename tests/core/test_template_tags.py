@@ -4,12 +4,11 @@ Almost all test cases covers both tag calling and template using.
 from django.conf import settings as django_settings
 from django.contrib.contenttypes.models import ContentType
 from django.http import HttpRequest
-
 from wiki.conf import settings
 from wiki.forms import CreateRootForm
 from wiki.models import Article, ArticleForObject, ArticleRevision
-from wiki.templatetags.wiki_tags import (article_for_object, login_url,
-                                         wiki_form, wiki_render)
+from wiki.templatetags.wiki_tags import article_for_object, login_url, wiki_form, wiki_render
+
 from ..base import TemplateTestCase
 
 if not django_settings.configured:

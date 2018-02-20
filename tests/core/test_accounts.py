@@ -6,9 +6,9 @@ from django.shortcuts import resolve_url
 from wiki.conf import settings as wiki_settings
 from wiki.models import reverse
 
-from ..base import (SUPERUSER1_PASSWORD, SUPERUSER1_USERNAME,
-                    ArticleWebTestUtils, DjangoClientTestBase,
-                    RequireRootArticleMixin, TestBase, wiki_override_settings)
+from ..base import (
+    SUPERUSER1_PASSWORD, SUPERUSER1_USERNAME, ArticleWebTestUtils, DjangoClientTestBase, RequireRootArticleMixin, TestBase, wiki_override_settings,
+)
 from ..testdata.models import CustomUser
 
 

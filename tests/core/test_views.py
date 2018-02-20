@@ -8,8 +8,7 @@ from wiki import models
 from wiki.forms import validate_slug_numbers
 from wiki.models import ArticleRevision, URLPath, reverse
 
-from ..base import (ArticleWebTestUtils, DjangoClientTestBase,
-                    RequireRootArticleMixin, SeleniumBase, WebTestBase)
+from ..base import ArticleWebTestUtils, DjangoClientTestBase, RequireRootArticleMixin, SeleniumBase, WebTestBase
 
 
 class RootArticleViewTestsBase(FuncBaseMixin):
