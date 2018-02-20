@@ -10,6 +10,7 @@ except ImportError:
 
 __all__ = [
     'BuildAttrsCompat',
+    'get_default_engine',
     'include', 'url'
 ]
 
@@ -28,3 +29,16 @@ class BuildAttrsCompat:
         if kwargs is not None:
             attrs.update(kwargs)
         return attrs
+
+
+def get_default_engine():
+    """
+    Django >= 2.1 Engine.get_default() behaviour
+    """
+    from django.core.exceptions import ImproperlyConfigured
+    from django.template import engines
+    from django.template.backends.django import DjangoTemplates
+    for engine in engines.all():
+        if isinstance(engine, DjangoTemplates):
+            return engine.engine
+    raise ImproperlyConfigured('No DjangoTemplates backend is configured.')
