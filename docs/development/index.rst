@@ -70,7 +70,7 @@ Ready to contribute? Here's how to set up `django-wiki` for local development.
 
     $ mkvirtualenv django-wiki
     $ cd django-wiki/
-    $ pip install -e .[devel]
+    $ pip install -e '.[devel]'
 
 4. Create a branch for local development::
 
