@@ -12,8 +12,8 @@ The next series **0.4** will support Django 1.11 and Django 2.x and be for
 Python 3.4+.
 
 
-django-wiki 0.4.0 (unreleased)
-------------------------------
+django-wiki 0.4a1
+-----------------
 
 Added
 ~~~~~
