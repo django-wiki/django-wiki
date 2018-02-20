@@ -112,7 +112,7 @@ Before you submit a pull request, check that it meets these guidelines:
 2. If the pull request adds functionality, the docs should be updated. Put
    your new functionality into a function with a docstring, and add the
    feature to the list in README.rst.
-3. The pull request should work for Python 2.7, 3.4, 3.5, 3.6, and for PyPy. Check
+3. The pull request should work for Python 3.4, 3.5, 3.6, and for PyPy. Check
    https://travis-ci.org/django-wiki/django-wiki/pull_requests
    and make sure that the tests pass for all supported Python versions.
 
@@ -145,4 +145,3 @@ features will not be accepted without tests. To add more stuff to the project
 without tests wouldn't be fair to the project or your hard work. We use coverage
 metrics to see that each new contribution does not significantly impact test
 coverage.
-
