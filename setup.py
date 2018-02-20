@@ -24,11 +24,11 @@ def get_path(fname):
 
 
 install_requirements = [
-    "Django>=1.11,<2.0",
+    "Django>=1.11,<2.1",
     "bleach>=1.5,<2",
     "Pillow",
-    "django-nyt>=1.0,<1.1",
-    "django-mptt>=0.8.6,<0.9",
+    "django-nyt>=1.1b1,<1.2",
+    "django-mptt>=0.9,<0.10",
     "django-sekizai>=0.10",
     "sorl-thumbnail>=12,<13",
     "Markdown>=2.6,<2.7",

@@ -12,6 +12,7 @@ python:
 env:
   - LINT="yes"
   - DJANGO="1.11"
+  - DJANGO="2.0"
 
 matrix:
   exclude:
