@@ -408,8 +408,7 @@ class DeleteForm(forms.Form):
         self.has_children = kwargs.pop('has_children')
         super().__init__(*args, **kwargs)
 
-    confirm = forms.BooleanField(required=False,
-                                 label=_('Yes, I am sure'))
+    confirm = forms.BooleanField(required=False, label=_('Yes, I am sure'))
     purge = forms.BooleanField(
         widget=HiddenInput(),
         required=False, label=_('Purge'),
@@ -424,8 +423,7 @@ class DeleteForm(forms.Form):
             raise forms.ValidationError(gettext('You are not sure enough!'))
         if cd['revision'] != self.article.current_revision:
             raise forms.ValidationError(
-                gettext(
-                    'While you tried to delete this article, it was modified. TAKE CARE!'))
+                gettext('While you tried to delete this article, it was modified. TAKE CARE!'))
         return cd
 
 
@@ -510,9 +508,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
             self.fields['group_write'].widget = forms.HiddenInput()
 
         if not self.can_assign:
-            self.fields['owner_username'].widget = forms.TextInput(
-                attrs={
-                    'readonly': 'true'})
+            self.fields['owner_username'].widget = forms.TextInput(attrs={'readonly': 'true'})
             self.fields['recursive'].widget = forms.HiddenInput()
             self.fields['recursive_group'].widget = forms.HiddenInput()
             self.fields['recursive_owner'].widget = forms.HiddenInput()
