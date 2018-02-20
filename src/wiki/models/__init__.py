@@ -2,7 +2,6 @@ from django.urls import base
 from django import urls
 from django import shortcuts
 
-# TODO: Don't use wildcards
 from .article import *  # noqa
 from .pluginbase import *  # noqa
 from .urlpath import *  # noqa

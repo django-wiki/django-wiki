@@ -19,6 +19,12 @@ from wiki.core.exceptions import MultipleRootURLs, NoRootURL
 from wiki.decorators import disable_signal_for_loaddata
 from wiki.models.article import Article, ArticleForObject, ArticleRevision
 
+
+__all__ = [
+    'URLPath',
+]
+
+
 log = logging.getLogger(__name__)
 
 

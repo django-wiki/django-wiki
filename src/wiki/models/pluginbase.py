@@ -26,6 +26,14 @@ from wiki.decorators import disable_signal_for_loaddata
 from .article import ArticleRevision, BaseRevisionMixin
 
 
+__all__ = [
+    'ArticlePlugin',
+    'SimplePlugin', 'SimplePluginCreateError',
+    'ReusablePlugin',
+    'RevisionPlugin', 'RevisionPluginRevision',
+]
+
+
 class ArticlePlugin(models.Model):
 
     """This is the mother of all plugins. Extending from it means a deletion

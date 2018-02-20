@@ -17,6 +17,12 @@ from wiki.core.markdown import article_markdown
 from wiki.decorators import disable_signal_for_loaddata
 
 
+__all__ = [
+    'Article', 'ArticleForObject', 'ArticleRevision',
+    'BaseRevisionMixin',
+]
+
+
 class Article(models.Model):
 
     objects = managers.ArticleManager()
