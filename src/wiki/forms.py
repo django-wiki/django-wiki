@@ -37,7 +37,7 @@ validate_slug_numbers = RegexValidator(
 )
 
 
-class WikiSlugField(forms.SlugField):
+class WikiSlugField(forms.CharField):
     """
     In future versions of Django, we might be able to define this field as
     the default field directly on the model. For now, it's used in CreateForm.
@@ -52,7 +52,7 @@ class WikiSlugField(forms.SlugField):
                 validators.validate_unicode_slug,
                 validate_slug_numbers
             ]
-        super(forms.SlugField, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
 
 def _clean_slug(slug, urlpath):
