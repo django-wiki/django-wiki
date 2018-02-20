@@ -1,5 +1,5 @@
-from wiki.conf import settings
 from django.urls import get_callable
+from wiki.conf import settings
 
 _EditorClass = None
 _editor = None

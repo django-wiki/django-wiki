@@ -1,8 +1,7 @@
 from django.urls import reverse
 from wiki.models import URLPath
 
-from ...base import (ArticleWebTestUtils, DjangoClientTestBase,
-                     RequireRootArticleMixin)
+from ...base import ArticleWebTestUtils, DjangoClientTestBase, RequireRootArticleMixin
 
 
 class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):

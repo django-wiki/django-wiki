@@ -1,12 +1,10 @@
+from django import shortcuts, urls
 from django.urls import base
-from django import urls
-from django import shortcuts
+from django.utils.functional import lazy
 
 from .article import *  # noqa
 from .pluginbase import *  # noqa
 from .urlpath import *  # noqa
-from django.utils.functional import lazy
-
 
 original_django_reverse = urls.reverse
 

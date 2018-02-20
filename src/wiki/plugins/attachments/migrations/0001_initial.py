@@ -1,9 +1,8 @@
 import django.db.models.deletion
+import wiki.plugins.attachments.models
 from django.conf import settings
 from django.db import migrations, models
 from django.db.models.fields import GenericIPAddressField as IPAddressField
-
-import wiki.plugins.attachments.models
 
 
 class Migration(migrations.Migration):

@@ -3,7 +3,6 @@ from django.forms.utils import flatatt
 from django.utils.encoding import force_text
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
-
 from wiki.compat import BuildAttrsCompat
 from wiki.editors.base import BaseEditor
 

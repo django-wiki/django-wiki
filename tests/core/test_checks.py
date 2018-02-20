@@ -1,9 +1,9 @@
 import copy
 
 from django.conf import settings
-from django.test import TestCase
 from django.core.checks import Error, registry
-from wiki.checks import REQUIRED_CONTEXT_PROCESSORS, REQUIRED_INSTALLED_APPS, OBSOLETE_INSTALLED_APPS, Tags
+from django.test import TestCase
+from wiki.checks import OBSOLETE_INSTALLED_APPS, REQUIRED_CONTEXT_PROCESSORS, REQUIRED_INSTALLED_APPS, Tags
 
 
 class CheckTests(TestCase):

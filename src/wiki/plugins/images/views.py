@@ -1,8 +1,8 @@
 import logging
 
 from django.contrib import messages
-from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext as _
 from django.views.generic.base import RedirectView

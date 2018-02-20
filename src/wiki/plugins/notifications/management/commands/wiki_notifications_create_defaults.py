@@ -4,7 +4,6 @@ from django.core.management.base import BaseCommand
 from django.utils import translation
 from django_nyt.models import Settings
 from django_nyt.utils import subscribe
-
 from wiki.models import Article
 from wiki.plugins.notifications import models
 from wiki.plugins.notifications.settings import ARTICLE_EDIT

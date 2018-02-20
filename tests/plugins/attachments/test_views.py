@@ -4,7 +4,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.urls import reverse
 from wiki.models import URLPath
 
-from ...base import RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase
+from ...base import ArticleWebTestUtils, DjangoClientTestBase, RequireRootArticleMixin
 
 
 class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):

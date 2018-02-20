@@ -4,11 +4,9 @@ from django.test.testcases import TestCase
 from django_nyt.urls import get_pattern as get_notify_pattern
 from wiki.compat import include, url
 from wiki.models import Article, URLPath
-from wiki.urls import get_pattern as get_wiki_pattern
-from wiki.urls import WikiURLPatterns
+from wiki.urls import WikiURLPatterns, get_pattern as get_wiki_pattern
 
 from ..base import wiki_override_settings
-
 
 User = get_user_model()
 

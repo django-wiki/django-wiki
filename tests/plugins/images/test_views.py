@@ -8,8 +8,7 @@ from wiki.models import URLPath
 from wiki.plugins.images import models
 from wiki.plugins.images.wiki_plugin import ImagePlugin
 
-from ...base import (ArticleWebTestUtils, DjangoClientTestBase,
-                     RequireRootArticleMixin)
+from ...base import ArticleWebTestUtils, DjangoClientTestBase, RequireRootArticleMixin
 
 
 class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):

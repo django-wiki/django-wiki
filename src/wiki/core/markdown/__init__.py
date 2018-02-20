@@ -1,10 +1,9 @@
 import bleach
 import markdown
-
 from wiki.conf import settings
+from wiki.core.markdown.mdx.codehilite import WikiCodeHiliteExtension
 from wiki.core.markdown.mdx.previewlinks import PreviewLinksExtension
 from wiki.core.markdown.mdx.responsivetable import ResponsiveTableExtension
-from wiki.core.markdown.mdx.codehilite import WikiCodeHiliteExtension
 from wiki.core.plugins import registry as plugin_registry
 
 

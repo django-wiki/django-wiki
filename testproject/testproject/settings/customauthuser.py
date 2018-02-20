@@ -2,7 +2,6 @@ import os  # noqa @UnusedImport
 
 from .base import *  # noqa @UnusedWildImport
 
-
 DATABASES = {
     'default': {
         # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
