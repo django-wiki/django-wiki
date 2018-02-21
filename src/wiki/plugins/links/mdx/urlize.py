@@ -91,7 +91,8 @@ class UrlizePattern(markdown.inlinepatterns.Pattern):
         to standard matching flags added by parent class.
         """
 
-        return re.compile(r'^(.*?)%s(.*?)$' % URLIZE_RE, re.DOTALL | re.UNICODE | re.IGNORECASE)
+        # Ensure links are matched only if they stand on their own to avoid bad matches etc.
+        return re.compile(r'^(|.*?\s)%s(\s.*?|)$' % URLIZE_RE, re.DOTALL | re.UNICODE | re.IGNORECASE)
 
     def handleMatch(self, m):
         """

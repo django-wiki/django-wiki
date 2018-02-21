@@ -120,6 +120,24 @@ FIXTURE_POSITIVE_MATCHES = [
         'http://example.com/my/path?param1=value1&param2=value2',
         EXPECTED_PARAGRAPH_TEMPLATE % ('http://example.com/my/path?param1=value1&amp;param2=value2', 'http://example.com/my/path?param1=value1&amp;param2=value2')
     ),
+
+    # Link positioned somewhere within the text, but around whitespace boundary.
+    (
+        'This is link myhost.example.com',
+        "<p>This is link " + EXPECTED_LINK_TEMPLATE % ('http://myhost.example.com', 'myhost.example.com') + "</p>"
+    ),
+    (
+        'myhost.example.com is the link',
+        "<p>" + EXPECTED_LINK_TEMPLATE % ('http://myhost.example.com', 'myhost.example.com') + " is the link</p>"
+    ),
+    (
+        'I have best myhost.example.com link ever',
+        "<p>I have best " + EXPECTED_LINK_TEMPLATE % ('http://myhost.example.com', 'myhost.example.com') + " link ever</p>"
+    ),
+    (
+        'I have best\nmyhost.example.com link ever',
+        "<p>I have best\n" + EXPECTED_LINK_TEMPLATE % ('http://myhost.example.com', 'myhost.example.com') + " link ever</p>"
+    ),
 ]
 
 
@@ -138,6 +156,14 @@ FIXTURE_NEGATIVE_MATCHES = [
     (
         'example-.com',
         '<p>example-.com</p>'
+    ),
+    (
+        '-example.com',
+        '<p>-example.com</p>'
+    ),
+    (
+        'my.-example.com',
+        '<p>my.-example.com</p>'
     ),
 ]
 
