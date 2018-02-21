@@ -152,6 +152,12 @@ FIXTURE_NEGATIVE_MATCHES = [
         '<p>.example .com</p>'
     ),
 
+    # localhost as part of another word.
+    (
+        'localhosts',
+        '<p>localhosts</p>'
+    ),
+
     # Invalid FQDNs.
     (
         'example-.com',
@@ -165,6 +171,31 @@ FIXTURE_NEGATIVE_MATCHES = [
         'my.-example.com',
         '<p>my.-example.com</p>'
     ),
+
+    # Invalid IPv6 patterns.
+    (
+        '1:2:3:4:5:6:7:8:a',  # Use :a, because using a number would match as optional port
+        '<p>1:2:3:4:5:6:7:8:a</p>',
+    ),
+    (
+        '1::2::3',
+        '<p>1::2::3</p>',
+    ),
+    (
+        '::::1',
+        '<p>::::1</p>',
+    ),
+    (
+        '1::::',
+        '<p>1::::</p>',
+    ),
+
+    # Invalid IPv4 patterns.
+    (
+        '1.2.3.4.5',
+        '<p>1.2.3.4.5</p>',
+    ),
+
 ]
 
 

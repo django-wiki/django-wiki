@@ -63,7 +63,7 @@ URLIZE_RE = (
     r'(?P<host>'  # begin host identifier group
 
     r'[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}|'  # IPv4, match before FQDN
-    r'\[?[A-F0-9]{1,4}:([A-F0-9]{1,4}:){6}[A-F0-9]{1,4}\]?|'  # IPv6, full form
+    r'\[?([A-F0-9]{1,4}:){7}([A-F0-9]{1,4})\]?|'  # IPv6, full form
     r'\[?:(:[A-F0-9]{1,4}){1,6}\]?|'  # IPv6, leading zeros removed
     r'([A-F0-9]{1,4}:){1,6}:([A-F0-9]{1,4}){1,6}|'  # IPv6, zeros in middle removed.
     r'\[?([A-F0-9]{1,4}:){1,6}:\]?|'  # IPv6, trailing zeros removed
