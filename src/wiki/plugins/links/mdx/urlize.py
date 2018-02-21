@@ -2,98 +2,137 @@ import re
 
 import markdown
 
-"""
-Code modified from:
-https://github.com/r0wb0t/markdown-urlize
-
-A more liberal autolinker
-
-Inspired by Django's urlize function.
-
-Positive examples:
-
->>> import markdown
->>> md = markdown.Markdown(extensions=['urlize'])
-
->>> md.convert('http://example.com/')
-'<p><a href="http://example.com/">http://example.com/</a></p>'
-
->>> md.convert('go to http://example.com')
-'<p>go to <a href="http://example.com">http://example.com</a></p>'
-
->>> md.convert('example.com')
-'<p><a href="http://example.com">example.com</a></p>'
-
->>> md.convert('example.net')
-'<p><a href="http://example.net">example.net</a></p>'
-
->>> md.convert('www.example.us')
-'<p><a href="http://www.example.us">www.example.us</a></p>'
-
->>> md.convert('(www.example.us/path/?name=val)')
-'<p>(<a href="http://www.example.us/path/?name=val">www.example.us/path/?name=val</a>)</p>'
-
->>> md.convert('go to <http://example.com> now!')
-'<p>go to <a href="http://example.com">http://example.com</a> now!</p>'
-
-Negative examples:
-
->>> md.convert('del.icio.us')
-'<p>del.icio.us</p>'
-
-"""
-
-
-# Taken from Django trunk 2f121dfe635b3f497fe1fe03bc8eb97cdf5083b3
-# https://github.com/django/django/blob/master/django/core/validators.py#L47
+# Regular expression is meant to match the following pattern:
+#
+# [BEGIN_URL][PROTOCOL]HOST[:PORT][/[PATH]][END_URL]
+#
+# Everything except HOST is meant to be optional, as denoted by square
+# brackets.
+#
+# Patter elements are as follows:
+#
+# BEGIN_URL
+#   Either '<' or '('.
+#
+# PROTOCOL
+#   One of: 'http://', 'https://', 'ftp://', or 'ftps://'.
+#
+# HOST
+#   Host can be one of: IPv4 address, IPv6 address in full form, IPv6
+#   address in shortened form (e.g. ::1 vs 0:....:0:1 or any
+#   combination of), FQDN-like entry (dot-separated domain
+#   components), or string 'localhost'.
+#
+# PORT
+#   Port should be a numeric value. Keep in mind that it must be
+#   preceded with the colon (':').
+#
+# PATH
+#   Additional PATH, including any GET parameters that should be part
+#   of the URL.
+#
+# END_URL
+#   Either '>' or ')'. Should match with same type as BEGIN_URL.
+#
+# It should be noted that there are some inconsitencies with the below
+# regex, mainly that:
+#
+# - No IPv4 or IPv6 address validation is performed.
+# - Excessively long IPv6 addresses will end-up being matched if the
+#   shortened form happens somewhere in the middle of host string.
+#
+# In order to make the regex easier to handle later on, the following
+# named groups are provided:
+#
+# - begin (character denoting beginning of URL)
+# - url (entire URL that can be used, for example, as actual link for
+#   href).
+# - protocol (protocol, together with the trailing ://)
+# - host (just the host part)
+# - port (just the port number)
+# - path (path, combined with any additional GET parameters)
+# - end (character denoting end of URL)
+#
 URLIZE_RE = (
-    r'((?:(?:http|ftp)s?://|www\.)'  # http:// or https://
-    # domain...
-    r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'
-    r'localhost|'  # localhost...
-    r'[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}|'  # ...or ipv4
-    r'\[?[A-F0-9]*:[A-F0-9:]+\]?)'  # ...or ipv6
-    r'(?::[0-9]+)?'  # optional port
-    r'(?:/[^\s\[\(\]\)]*(?:\s+|$))?)'
+    r'(?P<begin>[\(\<])?(?P<url>'  # begin url group
+
+    # Leading protocol specification.
+    r'(?P<protocol>http://|https://|ftp://|ftps://|)'
+
+    # Host identifier
+    r'(?P<host>'  # begin host identifier group
+
+    r'[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}|'  # IPv4, match before FQDN
+    r'\[?[A-F0-9]{1,4}:([A-F0-9]{1,4}:){6}[A-F0-9]{1,4}\]?|'  # IPv6, full form
+    r'\[?:(:[A-F0-9]{1,4}){1,6}\]?|'  # IPv6, leading zeros removed
+    r'([A-F0-9]{1,4}:){1,6}:([A-F0-9]{1,4}){1,6}|'  # IPv6, zeros in middle removed.
+    r'\[?([A-F0-9]{1,4}:){1,6}:\]?|'  # IPv6, trailing zeros removed
+    r'\[?::\]?|'  # IPv6, just "empty" address
+    r'([A-Z0-9]([A-Z0-9-]{0,61}[A-Z0-9])?\.)+([A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'  # FQDN
+    r'localhost'  # localhost
+    r')'  # end host identifier group
+
+    # Optional port
+    r'(:(?P<port>[0-9]+))?'
+
+    # Optional trailing slash with path and GET parameters.
+    r'(/(?P<path>[^\s\[\(\]\)\<\>]*))?'
+
+    r')(?P<end>[\)\>])?'  # end url group
 )
 
 
 class UrlizePattern(markdown.inlinepatterns.Pattern):
 
-    def __init__(self, pattern, markdown_instance=None):
-        markdown.inlinepatterns.Pattern.__init__(
-            self,
-            pattern,
-            markdown_instance=markdown_instance)
-        self.compiled_re = re.compile("^(.*?)%s(.*?)$" % pattern,
-                                      re.DOTALL | re.UNICODE | re.IGNORECASE)
+    def getCompiledRegExp(self):
+        """
+        Return compiled regular expression for matching the URL
+        patterns. We introduce case-insensitive matching in addition
+        to standard matching flags added by parent class.
+        """
 
-    """ Return a link Element given an autolink (`http://example/com`). """
+        return re.compile(r'^(.*?)%s(.*?)$' % URLIZE_RE, re.DOTALL | re.UNICODE | re.IGNORECASE)
 
     def handleMatch(self, m):
-        url = m.group(2)
+        """
+        Processes match found within the text.
+        """
 
-        if url.startswith('<'):
-            url = url[1:-1]
+        matched_string = m.group(0)
 
+        protocol = m.group('protocol')
+
+        url = m.group('url')
         text = url
 
-        if not url.split('://')[0] in ('http', 'https', 'ftp'):
-            if '@' in url and '/' not in url:
-                url = 'mailto:' + url
-            else:
-                url = 'http://' + url
+        begin_url = m.group('begin')
+        end_url = m.group('end')
 
+        # If opening and ending character for URL are not the same,
+        # return text unchanged.
+        if begin_url == '<' and end_url != '>' or begin_url == '(' and end_url != ')':
+            return matched_string
+
+        # If no supported protocol is specified, assume plaintext http
+        # and add it to the url.
+        if protocol not in ('http://', 'https://', 'ftp://', 'ftps://'):
+            url = 'http://' + url
+
+        # Convenience link to distinguish external links more easily.
         icon = markdown.util.etree.Element("span")
         icon.set('class', 'fa fa-external-link')
 
+        # Link text.
         span_text = markdown.util.etree.Element("span")
         span_text.text = markdown.util.AtomicString(" " + text)
+
+        # Set-up link itself.
         el = markdown.util.etree.Element("a")
         el.set('href', url)
         el.set('target', '_blank')
         el.append(icon)
         el.append(span_text)
+
         return el
 
 
@@ -110,8 +149,3 @@ def makeExtension(configs=None):
     if configs is None:
         configs = {}
     return UrlizeExtension(configs=configs)
-
-
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod()
