@@ -36,7 +36,6 @@ install_requirements = [
 
 test_requirements = [
     'django-functest>=1.0.2,<1.1',
-    'mock>=2.0,<2.1',
     'pytest>=3.4,<3.5',
     'pytest-django>=3.1,<3.2',
     'pytest-cov>=2.4,<2.5',
