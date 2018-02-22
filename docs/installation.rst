@@ -127,7 +127,7 @@ If you're working with fresh Django installation, you need to set the SITE_ID
 .. code-block:: python
 
     SITE_ID = 1
-    
+
 
 User account handling
 ~~~~~~~~~~~~~~~~~~~~~
@@ -161,9 +161,8 @@ following lines at the end of your project's ``urls.py``.
 .. code-block:: python
 
     from wiki.urls import get_pattern as get_wiki_pattern
-    from django_nyt.urls import get_pattern as get_nyt_pattern
     urlpatterns += [
-        url(r'^notifications/', get_nyt_pattern()),
+        url(r'^notifications/', include('django_nyt.urls')),
         url(r'', get_wiki_pattern())
     ]
 
@@ -173,12 +172,12 @@ end of your urlconf. You can also put it in */wiki* by putting
 ``'^wiki/'`` as the pattern.
 
 .. note::
-    
+
     If you are running ``manage.py runserver``, you need to have static files
     and media files from ``STATIC_ROOT`` and ``MEDIA_ROOT`` served by the
     development server. ``STATIC_ROOT`` is automatically served, but you have
     to add ``MEDIA_ROOT`` manually::
-    
+
         urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
     Please refer to
