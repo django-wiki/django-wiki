@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.sites.models import Site
 from django.test.testcases import TestCase
-from django_nyt.urls import get_pattern as get_notify_pattern
 from wiki.compat import include, url
 from wiki.models import Article, URLPath
 from wiki.urls import WikiURLPatterns, get_pattern as get_wiki_pattern
@@ -32,7 +31,7 @@ class WikiCustomUrlPatterns(WikiURLPatterns):
 
 
 urlpatterns = [
-    url(r'^notify/', get_notify_pattern()),
+    url(r'^notify/', include('django_nyt.urls')),
     url(r'', get_wiki_pattern(url_config_class=WikiCustomUrlPatterns))
 ]
 
