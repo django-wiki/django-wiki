@@ -1,8 +1,8 @@
+from django.utils.module_loading import import_string
 from wiki.compat import include, url
 from wiki.conf import settings
 from wiki.core.plugins import registry
 from wiki.core.plugins.loader import load_wiki_plugins
-from wiki.core.utils import get_class_from_str
 from wiki.views import accounts, article, deleted_list
 
 
@@ -70,7 +70,7 @@ class WikiURLPatterns:
                 article.MissingRootView.as_view(),
                 name='root_missing'),
             url(r'^_search/$',
-                get_class_from_str(self.search_view_class).as_view(),
+                import_string(self.search_view_class).as_view(),
                 name='search'),
             url(r'^_revision/diff/(?P<revision_id>[0-9]+)/$',
                 self.article_diff_view_class.as_view(),
@@ -198,7 +198,7 @@ class WikiURLPatterns:
                 self.article_dir_view_class.as_view(),
                 name='dir'),
             url(r'^(?P<path>.+/|)_search/$',
-                get_class_from_str(self.search_view_class).as_view(),
+                import_string(self.search_view_class).as_view(),
                 name='search'),
             url(r'^(?P<path>.+/|)_settings/$',
                 self.article_settings_view_class.as_view(),
@@ -255,7 +255,7 @@ def get_pattern(app_name="wiki", namespace="wiki", url_config_class=None):
         if url_config_classname is None:
             url_config_class = WikiURLPatterns
         else:
-            url_config_class = get_class_from_str(url_config_classname)
+            url_config_class = import_string(url_config_classname)
     urlpatterns = url_config_class().get_urls()
 
     return urlpatterns, app_name, namespace
