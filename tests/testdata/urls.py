@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django_nyt.urls import get_pattern as get_notify_pattern
 from wiki.compat import include, url
 from wiki.urls import get_pattern as get_wiki_pattern
 
@@ -23,6 +22,6 @@ if settings.DEBUG:
 
 urlpatterns += [
     url(r'^django_functest/', include('django_functest.urls')),
-    url(r'^notify/', get_notify_pattern()),
+    url(r'^notify/', include('django_nyt.urls')),
     url(r'', get_wiki_pattern())
 ]
