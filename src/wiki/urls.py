@@ -2,7 +2,6 @@ from django.utils.module_loading import import_string
 from wiki.compat import include, url
 from wiki.conf import settings
 from wiki.core.plugins import registry
-from wiki.core.plugins.loader import load_wiki_plugins
 from wiki.views import accounts, article, deleted_list
 
 
@@ -257,11 +256,3 @@ def get_pattern(app_name="wiki", namespace="wiki", url_config_class=None):
     urlpatterns = url_config_class().get_urls()
 
     return urlpatterns, app_name, namespace
-
-
-######################
-# PLUGINS
-######################
-
-
-load_wiki_plugins()
