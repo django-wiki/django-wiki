@@ -354,16 +354,16 @@ class SelectWidgetBootstrap(BuildAttrsCompat, forms.Select):
 
 
 class TextInputPrepend(forms.TextInput):
+    template_name = "wiki/forms/text.html"
 
     def __init__(self, *args, **kwargs):
         self.prepend = kwargs.pop('prepend', "")
         super().__init__(*args, **kwargs)
 
-    def render(self, *args, **kwargs):
-        html = super().render(*args, **kwargs)
-        return mark_safe(
-            '<div class="input-group"><span class="input-group-addon">%s</span>%s</div>' %
-            (self.prepend, html))
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context['prepend'] = mark_safe(self.prepend)
+        return context
 
 
 class CreateForm(forms.Form, SpamProtectionMixin):
