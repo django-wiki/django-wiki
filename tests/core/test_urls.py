@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from django.contrib.sites.models import Site
 from django.test.testcases import TestCase
 from wiki.compat import include, url
@@ -6,8 +5,6 @@ from wiki.models import Article, URLPath
 from wiki.urls import WikiURLPatterns, get_pattern as get_wiki_pattern
 
 from ..base import wiki_override_settings
-
-User = get_user_model()
 
 
 class WikiCustomUrlPatterns(WikiURLPatterns):
