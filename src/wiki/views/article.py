@@ -891,76 +891,76 @@ class DiffView(DetailView):
             {'diff': list(diff), 'other_changes': other_changes}
         )
 
-# TODO: Throw in a class-based view
 
+class MergeView(View):
+    preview = False
+    template_name = "wiki/preview_inline.html"
+    template_error_name = "wiki/error.html"
+    urlpath = None
 
-@get_article(can_write=True)
-def merge(
-        request,
-        article,
-        revision_id,
-        urlpath=None,
-        template_file="wiki/preview_inline.html",
-        preview=False):
+    @method_decorator(get_article(can_write=True))
+    def dispatch(self, request, article, revision_id, *args, **kwargs):
+        return super().dispatch(request, article, revision_id, *args, **kwargs)
 
-    revision = get_object_or_404(
-        models.ArticleRevision,
-        article=article,
-        id=revision_id)
+    def get(self, request, article, revision_id, *args, **kwargs):
+        revision = get_object_or_404(
+            models.ArticleRevision,
+            article=article,
+            id=revision_id)
 
-    current_text = article.current_revision.content if article.current_revision else ""
-    new_text = revision.content
+        current_text = article.current_revision.content if article.current_revision else ""
+        new_text = revision.content
 
-    content = simple_merge(current_text, new_text)
+        content = simple_merge(current_text, new_text)
 
-    # Save new revision
-    if not preview:
-        old_revision = article.current_revision
+        # Save new revision
+        if not self.preview:
+            old_revision = article.current_revision
 
-        if revision.deleted:
-            c = {
-                'error_msg': _('You cannot merge with a deleted revision'),
-                'article': article,
-                'urlpath': urlpath
-            }
-            return render(request, "wiki/error.html", context=c)
+            if revision.deleted:
+                c = {
+                    'error_msg': _('You cannot merge with a deleted revision'),
+                    'article': article,
+                    'urlpath': self.urlpath
+                }
+                return render(request, self.template_error_name, context=c)
 
-        new_revision = models.ArticleRevision()
-        new_revision.inherit_predecessor(article)
-        new_revision.deleted = False
-        new_revision.locked = False
-        new_revision.title = article.current_revision.title
-        new_revision.content = content
-        new_revision.automatic_log = (
-            _('Merge between revision #%(r1)d and revision #%(r2)d') % {
-                'r1': revision.revision_number,
-                'r2': old_revision.revision_number})
-        article.add_revision(new_revision, save=True)
+            new_revision = models.ArticleRevision()
+            new_revision.inherit_predecessor(article)
+            new_revision.deleted = False
+            new_revision.locked = False
+            new_revision.title = article.current_revision.title
+            new_revision.content = content
+            new_revision.automatic_log = (
+                _('Merge between revision #%(r1)d and revision #%(r2)d') % {
+                    'r1': revision.revision_number,
+                    'r2': old_revision.revision_number})
+            article.add_revision(new_revision, save=True)
 
-        old_revision.simpleplugin_set.all().update(
-            article_revision=new_revision)
-        revision.simpleplugin_set.all().update(article_revision=new_revision)
+            old_revision.simpleplugin_set.all().update(
+                article_revision=new_revision)
+            revision.simpleplugin_set.all().update(article_revision=new_revision)
 
-        messages.success(
-            request,
-            _('A new revision was created: Merge between revision #%(r1)d and revision #%(r2)d') % {
-                'r1': revision.revision_number,
-                'r2': old_revision.revision_number})
-        if urlpath:
-            return redirect('wiki:edit', path=urlpath.path)
-        else:
-            return redirect('wiki:edit', article_id=article.id)
+            messages.success(
+                request,
+                _('A new revision was created: Merge between revision #%(r1)d and revision #%(r2)d') % {
+                    'r1': revision.revision_number,
+                    'r2': old_revision.revision_number})
+            if self.urlpath:
+                return redirect('wiki:edit', path=self.urlpath.path)
+            else:
+                return redirect('wiki:edit', article_id=article.id)
 
-    c = {
-        'article': article,
-        'title': article.current_revision.title,
-        'revision': None,
-        'merge1': revision,
-        'merge2': article.current_revision,
-        'merge': True,
-        'content': content
-    }
-    return render(request, template_file, c)
+        c = {
+            'article': article,
+            'title': article.current_revision.title,
+            'revision': None,
+            'merge1': revision,
+            'merge2': article.current_revision,
+            'merge': True,
+            'content': content
+        }
+        return render(request, self.template_name, c)
 
 
 class CreateRootView(FormView):

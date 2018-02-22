@@ -30,7 +30,7 @@ class WikiURLPatterns:
     article_source_view_class = article.Source
     article_plugin_view_class = article.Plugin
     revision_change_view_class = article.ChangeRevisionView
-    revision_merge_view = staticmethod(article.merge)
+    revision_merge_view_class = article.MergeView
 
     search_view_class = settings.SEARCH_VIEW
     article_diff_view_class = article.DiffView
@@ -119,10 +119,8 @@ class WikiURLPatterns:
                 name='preview_revision'),
             url(
                 r'^_revision/merge/(?P<article_id>[0-9]+)/(?P<revision_id>[0-9]+)/preview/$',
-                self.revision_merge_view,
-                name='merge_revision_preview',
-                kwargs={
-                    'preview': True}),
+                self.revision_merge_view_class.as_view(preview=True),
+                name='merge_revision_preview'),
         ]
         return urlpatterns
 
@@ -162,7 +160,7 @@ class WikiURLPatterns:
                 name='change_revision'),
             url(
                 r'^(?P<article_id>[0-9]+)/revision/merge/(?P<revision_id>[0-9]+)/$',
-                self.revision_merge_view,
+                self.revision_merge_view_class.as_view(),
                 name='merge_revision'),
             url(r'^(?P<article_id>[0-9]+)/plugin/(?P<slug>\w+)/$',
                 self.article_plugin_view_class.as_view(),
@@ -212,7 +210,7 @@ class WikiURLPatterns:
                 name='change_revision'),
             url(
                 r'^(?P<path>.+/|)_revision/merge/(?P<revision_id>[0-9]+)/$',
-                self.revision_merge_view,
+                self.revision_merge_view_class.as_view(),
                 name='merge_revision'),
             url(r'^(?P<path>.+/|)_plugin/(?P<slug>\w+)/$',
                 self.article_plugin_view_class.as_view(),
