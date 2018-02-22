@@ -65,9 +65,9 @@ maintain the order due to database relational constraints:
 
 .. code-block:: python
 
-    'django.contrib.sites',
-    'django.contrib.humanize',
-    'django_nyt',
+    'django.contrib.sites.apps.SitesConfig',
+    'django.contrib.humanize.apps.HumanizeConfig',
+    'django_nyt.apps.DjangoNytConfig',
     'mptt',
     'sekizai',
     'sorl.thumbnail',
