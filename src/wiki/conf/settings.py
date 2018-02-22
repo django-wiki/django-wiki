@@ -35,15 +35,15 @@ MARKDOWN_SANITIZE_HTML = getattr(
 #:    WIKI_MARKDOWN_KWARGS = {'extension_configs': {'toc': _('Contents of this article')}}
 MARKDOWN_KWARGS = {
     'extensions': [
-        'footnotes',
-        'attr_list',
-        'smart_strong',
-        'footnotes',
-        'attr_list',
-        'def_list',
-        'tables',
-        'abbr',
-        'sane_lists',
+        'markdown.extensions.footnotes',
+        'markdown.extensions.attr_list',
+        'markdown.extensions.smart_strong',
+        'markdown.extensions.footnotes',
+        'markdown.extensions.attr_list',
+        'markdown.extensions.def_list',
+        'markdown.extensions.tables',
+        'markdown.extensions.abbr',
+        'markdown.extensions.sane_lists',
     ],
     'extension_configs': {
         'toc': {

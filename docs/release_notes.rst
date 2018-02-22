@@ -23,7 +23,8 @@ Added
 Changed
 ~~~~~~~
 
- * ...
+ * Use full path names for ``MARKDOWN_KWARGS['extensions']`` as short names
+   support wil be removed in ``Markdown 2.7`` :url-issue:`823`
 
 Fixed
 ~~~~~
