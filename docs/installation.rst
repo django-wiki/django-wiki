@@ -87,13 +87,13 @@ To sync and create tables, do:
 
     python manage.py migrate
 
-Configure ``TEMPLATE_CONTEXT_PROCESSORS``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Configure ``context_processors``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Add ``'sekizai.context_processors.sekizai'`` and
-``'django.core.context_processors.debug'`` to
-``settings.TEMPLATE_CONTEXT_PROCESSORS``. Please refer to the `Django
-settings docs <https://docs.djangoproject.com/en/dev/ref/settings/>`_
+``django-wiki`` uses the `Django Templates` backend.
+Add ``'sekizai.context_processors.sekizai'`` and ``'django.core.context_processors.debug'`` to
+``context_processors`` section of your template backend settings.
+Please refer to the `Django templates docs <https://docs.djangoproject.com/en/1.11/topics/templates/#django.template.backends.django.DjangoTemplates/>`_
 to see the current default setting for this variable.
 
 .. code-block:: python
