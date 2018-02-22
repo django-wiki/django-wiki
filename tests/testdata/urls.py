@@ -4,7 +4,6 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from wiki.compat import include, url
 from wiki.urls import get_pattern as get_wiki_pattern
 
-admin.autodiscover()
 
 urlpatterns = [
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

@@ -6,10 +6,14 @@ from django.test import TestCase
 from wiki.checks import OBSOLETE_INSTALLED_APPS, REQUIRED_CONTEXT_PROCESSORS, REQUIRED_INSTALLED_APPS, Tags
 
 
+def _remove(settings, arg):
+    return [setting for setting in settings if not setting.startswith(arg)]
+
+
 class CheckTests(TestCase):
     def test_required_installed_apps(self):
         for app in REQUIRED_INSTALLED_APPS:
-            with self.modify_settings(INSTALLED_APPS={'remove': [app[0]]}):
+            with self.settings(INSTALLED_APPS=_remove(settings.INSTALLED_APPS, app[0])):
                 errors = registry.run_checks(tags=[Tags.required_installed_apps])
                 expected_errors = [
                     Error(
