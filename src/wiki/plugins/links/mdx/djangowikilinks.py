@@ -58,7 +58,7 @@ class WikiPathExtension(markdown.Extension):
 class WikiPath(markdown.inlinepatterns.Pattern):
 
     def __init__(self, pattern, config, **kwargs):
-        markdown.inlinepatterns.Pattern.__init__(self, pattern, **kwargs)
+        super().__init__(pattern, **kwargs)
         self.config = config
 
     def handleMatch(self, m):
