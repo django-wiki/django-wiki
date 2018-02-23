@@ -26,11 +26,11 @@ FIXTURE_POSITIVE_MATCHES = [
     # Test surrounding begin/end characters.
     (
         '(example.com)',
-        EXPECTED_PARAGRAPH_TEMPLATE % ('http://example.com', 'example.com')
+        '<p>(' + EXPECTED_LINK_TEMPLATE % ('http://example.com', 'example.com') + ')</p>'
     ),
     (
         '<example.com>',
-        EXPECTED_PARAGRAPH_TEMPLATE % ('http://example.com', 'example.com')
+        '<p>&lt;' + EXPECTED_LINK_TEMPLATE % ('http://example.com', 'example.com') + '&gt;</p>'
     ),
 
     # Test protocol specification.
@@ -53,6 +53,14 @@ FIXTURE_POSITIVE_MATCHES = [
     (
         'example.com',
         EXPECTED_PARAGRAPH_TEMPLATE % ('http://example.com', 'example.com')
+    ),
+    (
+        'onion://example.com',
+        EXPECTED_PARAGRAPH_TEMPLATE % ('onion://example.com', 'onion://example.com')
+    ),
+    (
+        'onion9+.-://example.com',
+        EXPECTED_PARAGRAPH_TEMPLATE % ('onion9+.-://example.com', 'onion9+.-://example.com')
     ),
 
     # Test various supported host variations.
@@ -87,6 +95,10 @@ FIXTURE_POSITIVE_MATCHES = [
     (
         'example.com',
         EXPECTED_PARAGRAPH_TEMPLATE % ('http://example.com', 'example.com')
+    ),
+    (
+        'example.horse',
+        EXPECTED_PARAGRAPH_TEMPLATE % ('http://example.horse', 'example.horse')
     ),
     (
         'my.long.domain.example.com',
@@ -196,6 +208,23 @@ FIXTURE_NEGATIVE_MATCHES = [
         '<p>1.2.3.4.5</p>',
     ),
 
+    # Invalid protocols.
+    (
+        '9onion://example.com',
+        '<p>9onion://example.com</p>',
+    ),
+    (
+        '-onion://example.com',
+        '<p>-onion://example.com</p>',
+    ),
+    (
+        '+onion://example.com',
+        '<p>+onion://example.com</p>',
+    ),
+    (
+        '.onion://example.com',
+        '<p>.onion://example.com</p>',
+    ),
 ]
 
 
@@ -215,6 +244,10 @@ class TestUrlizeExtension:
     def test_url_with_non_matching_begin_and_end_ignored(self):
         assert self.md.convert('(example.com>') == "<p>%s</p>" % html.escape('(example.com>')
         assert self.md.convert('<example.com)') == "<p>%s</p>" % html.escape('<example.com)')
+        assert self.md.convert('(example.com') == "<p>%s</p>" % html.escape('(example.com')
+        assert self.md.convert('example.com)') == "<p>%s</p>" % html.escape('example.com)')
+        assert self.md.convert('<example.com') == "<p>%s</p>" % html.escape('<example.com')
+        assert self.md.convert('example.com>') == "<p>%s</p>" % html.escape('example.com>')
 
 
 def test_makeExtension_return_value():

@@ -4,18 +4,20 @@ import markdown
 
 # Regular expression is meant to match the following pattern:
 #
-# [BEGIN_URL][PROTOCOL]HOST[:PORT][/[PATH]][END_URL]
+# [BEGIN][PROTOCOL]HOST[:PORT][/[PATH]][END]
 #
 # Everything except HOST is meant to be optional, as denoted by square
 # brackets.
 #
 # Patter elements are as follows:
 #
-# BEGIN_URL
-#   Either '<' or '('.
+# BEGIN
+#   String preceding the link. Can be empty, or any string that ends
+#   in whitespace, '(', or '<'.
 #
 # PROTOCOL
-#   One of: 'http://', 'https://', 'ftp://', or 'ftps://'.
+#   Syntax defined in https://tools.ietf.org/html/rfc3986 - for
+#   example: 'http://', 'https://', 'ftp://', or 'ftps://'.
 #
 # HOST
 #   Host can be one of: IPv4 address, IPv6 address in full form, IPv6
@@ -31,8 +33,10 @@ import markdown
 #   Additional PATH, including any GET parameters that should be part
 #   of the URL.
 #
-# END_URL
-#   Either '>' or ')'. Should match with same type as BEGIN_URL.
+# END
+#   String following the link. Can be empty, or any string that ends
+#   in whitespace, ')', or '>'. If ')', then must match with '(' in
+#   BEGIN. If '>', then must match with '<' in BEGIN.
 #
 # It should be noted that there are some inconsitencies with the below
 # regex, mainly that:
@@ -44,20 +48,26 @@ import markdown
 # In order to make the regex easier to handle later on, the following
 # named groups are provided:
 #
-# - begin (character denoting beginning of URL)
+# - begin (string coming before the link, including whitespace or
+#   brackets).
 # - url (entire URL that can be used, for example, as actual link for
 #   href).
 # - protocol (protocol, together with the trailing ://)
 # - host (just the host part)
 # - port (just the port number)
 # - path (path, combined with any additional GET parameters)
-# - end (character denoting end of URL)
+# - end (string coming after the link, including whitespace or
+#   brackets)
 #
 URLIZE_RE = (
-    r'(?P<begin>[\(\<])?(?P<url>'  # begin url group
+    # Links must start at beginning of string, or be preceded with
+    # whitespace, '(', or '<'.
+    r'^(?P<begin>|.*?[\s\(\<])'
+
+    r'(?P<url>'  # begin url group
 
     # Leading protocol specification.
-    r'(?P<protocol>http://|https://|ftp://|ftps://|)'
+    r'(?P<protocol>([A-Z][A-Z0-9+.-]*://|))'
 
     # Host identifier
     r'(?P<host>'  # begin host identifier group
@@ -78,7 +88,10 @@ URLIZE_RE = (
     # Optional trailing slash with path and GET parameters.
     r'(/(?P<path>[^\s\[\(\]\)\<\>]*))?'
 
-    r')(?P<end>[\)\>])?'  # end url group
+    r')'  # end url group
+
+    # Links must stop at end of string, or be followed by a whitespace, ')', or '>'.
+    r'(?P<end>[\s\)\>].*?|)$'
 )
 
 
@@ -92,14 +105,12 @@ class UrlizePattern(markdown.inlinepatterns.Pattern):
         """
 
         # Ensure links are matched only if they stand on their own to avoid bad matches etc.
-        return re.compile(r'^(|.*?\s)%s(\s.*?|)$' % URLIZE_RE, re.DOTALL | re.UNICODE | re.IGNORECASE)
+        return re.compile(URLIZE_RE, re.DOTALL | re.UNICODE | re.IGNORECASE)
 
     def handleMatch(self, m):
         """
         Processes match found within the text.
         """
-
-        matched_string = m.group(0)
 
         protocol = m.group('protocol')
 
@@ -111,12 +122,26 @@ class UrlizePattern(markdown.inlinepatterns.Pattern):
 
         # If opening and ending character for URL are not the same,
         # return text unchanged.
-        if begin_url == '<' and end_url != '>' or begin_url == '(' and end_url != ')':
-            return matched_string
+        if begin_url:
+            begin_delimeter = begin_url[-1]
+        else:
+            begin_delimeter = ''
+        if end_url:
+            end_delimeter = end_url[0]
+        else:
+            end_delimeter = ''
+
+        if (
+                begin_delimeter == '<' and end_delimeter != '>' or
+                begin_delimeter == '(' and end_delimeter != ')' or
+                end_delimeter == ')' and begin_delimeter != '(' or
+                end_delimeter == '>' and begin_delimeter != '<'
+        ):
+            return url
 
         # If no supported protocol is specified, assume plaintext http
         # and add it to the url.
-        if protocol not in ('http://', 'https://', 'ftp://', 'ftps://'):
+        if protocol == '':
             url = 'http://' + url
 
         # Convenience link to distinguish external links more easily.
