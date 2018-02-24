@@ -337,8 +337,6 @@ class BaseRevisionMixin(models.Model):
         self.previous_revision = predecessor
         self.deleted = predecessor.deleted
         self.locked = predecessor.locked
-        self.deleted = predecessor.deleted
-        self.locked = predecessor.locked
         self.revision_number = predecessor.revision_number + 1
 
     class Meta:
