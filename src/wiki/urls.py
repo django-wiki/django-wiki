@@ -253,11 +253,20 @@ def get_pattern(app_name="wiki", namespace="wiki", url_config_class=None):
        single Django project.
        https://docs.djangoproject.com/en/dev/topics/http/urls/#topics-http-reversing-url-namespaces
     """
+    import warnings
+    warnings.warn(
+        "wiki.urls.get_pattern is deprecated and will be removed in next version, just `include('wiki.urls')` in your urlconf",
+        DeprecationWarning
+    )
     if url_config_class is None:
         url_config_classname = getattr(settings, 'URL_CONFIG_CLASS', None)
         if url_config_classname is None:
             url_config_class = WikiURLPatterns
         else:
+            warnings.warn(
+                "URL_CONFIG_CLASS is deprecated and will be removed in next version, override `wiki.sites.WikiSite` instead",
+                DeprecationWarning
+            )
             url_config_class = import_string(url_config_classname)
     urlpatterns = url_config_class().get_urls()
 
