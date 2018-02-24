@@ -4,7 +4,6 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.http.response import HttpResponse
 from django.views.static import serve as static_serve
 from wiki.compat import include, url
-from wiki.urls import get_pattern as get_wiki_pattern
 
 admin.autodiscover()
 
@@ -22,7 +21,7 @@ if settings.DEBUG:
 
 urlpatterns += [
     url(r'^notify/', include('django_nyt.urls')),
-    url(r'', get_wiki_pattern())
+    url(r'', include('wiki.urls')),
 ]
 
 handler500 = 'testproject.views.server_error'
