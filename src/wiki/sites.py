@@ -1,6 +1,7 @@
 from django.apps import apps
 from django.utils.functional import LazyObject
 from django.utils.module_loading import import_string
+from wiki.conf import settings
 from wiki.compat import include, url
 from wiki.core.plugins import registry
 
@@ -17,7 +18,6 @@ class WikiSite:
     """
 
     def __init__(self, name='wiki'):
-        from wiki.conf import settings
         from wiki.views import accounts, article, deleted_list
 
         self.name = name
@@ -43,7 +43,7 @@ class WikiSite:
         self.revision_merge_view = getattr(self, "revision_merge_view", article.MergeView.as_view())
         self.revision_preview_merge_view = getattr(self, "revision_preview_merge_view", article.MergeView.as_view(preview=True))
 
-        self.search_view = import_string(getattr(self, "search_view", settings.SEARCH_VIEW)).as_view()
+        self.search_view = getattr(self, "search_view", article.SearchView.as_view())
         self.article_diff_view = getattr(self, "article_diff_view", article.DiffView.as_view())
 
         # account views
@@ -89,7 +89,6 @@ class WikiSite:
         return urlpatterns
 
     def get_accounts_urls(self):
-        from wiki.conf import settings
         if settings.ACCOUNT_HANDLING:
             urlpatterns = [
                 url(r'^_accounts/sign-up/$', self.signup_view, name='signup'),

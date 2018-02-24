@@ -41,6 +41,7 @@ Deprecated/Removed
  * Django < 1.11 support is dropped :url-issue:`779`
  * Python < 3.3 support is dropped :url-issue:`779` and :url-issue:`792`
  * Deprecate ``wiki.urls.get_pattern`` :url-issue:`799`
+ * Removed ``SEARCH_VIEW`` setting, replaced by ``WikiSite`` override :url-issue:`837`
 
 
 django-wiki 0.3.1
