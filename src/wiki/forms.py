@@ -1,7 +1,6 @@
 import random
 import string
 from datetime import timedelta
-from itertools import chain
 
 from django import forms
 from django.apps import apps
@@ -9,17 +8,13 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.core import validators
 from django.core.validators import RegexValidator
-from django.forms.utils import flatatt
 from django.forms.widgets import HiddenInput
 from django.shortcuts import get_object_or_404
 from django.urls import Resolver404, resolve
 from django.utils import timezone
-from django.utils.encoding import force_text
-from django.utils.html import conditional_escape, escape
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext, gettext_lazy as _, pgettext_lazy
 from wiki import models
-from wiki.compat import BuildAttrsCompat
 from wiki.conf import settings
 from wiki.core import permissions
 from wiki.core.diff import simple_merge
@@ -285,11 +280,14 @@ class EditForm(forms.Form, SpamProtectionMixin):
         return cd
 
 
-class SelectWidgetBootstrap(BuildAttrsCompat, forms.Select):
+class SelectWidgetBootstrap(forms.Select):
     """
     http://twitter.github.com/bootstrap/components.html#buttonDropdowns
     Needs bootstrap and jquery
     """
+
+    template_name = "wiki/forms/select.html"
+    option_template_name = "wiki/forms/select_option.html"
 
     def __init__(self, attrs={}, choices=(), disabled=False):
         attrs['class'] = 'btn-group pull-left btn-group-form'
@@ -302,51 +300,12 @@ class SelectWidgetBootstrap(BuildAttrsCompat, forms.Select):
         if k not in ('attrs', 'disabled'):
             self.noscript_widget.__setattr__(k, value)
 
-    def render(self, name, value, attrs=None, choices=()):
-        if value is None:
-            value = ''
-        final_attrs = self.build_attrs_compat(attrs, name=name)
-        output = [
-            """<div%(attrs)s>"""
-            """    <button class="btn btn-group-label%(disabled)s" type="button">%(label)s</button>"""
-            """    <button class="btn btn-default dropdown-toggle%(disabled)s" type="button" data-toggle="dropdown">"""
-            """        <span class="caret"></span>"""
-            """    </button>"""
-            """    <ul class="dropdown-menu">"""
-            """        %(options)s"""
-            """    </ul>"""
-            """    <input type="hidden" name="%(name)s" value="" class="btn-group-value" />"""
-            """</div>"""
-            """<noscript>%(noscript)s</noscript>""" %
-            {'attrs': flatatt(final_attrs),
-             'options': self.render_options(choices, [value]),
-             'label': _('Select an option'),
-             'name': name, 'disabled': ' disabled' if self.disabled else '',
-             'noscript': self.noscript_widget.render(name, value, {})}]
-        return mark_safe('\n'.join(output))
-
-    def render_option(self, selected_choices, option_value, option_label):
-        option_value = force_text(option_value)
-        selected_html = (
-            option_value in selected_choices) and ' selected="selected"' or ''
-        return '<li><a href="javascript:void(0)" data-value="%s"%s>%s</a></li>' % (
-            escape(option_value), selected_html,
-            conditional_escape(force_text(option_label)))
-
-    def render_options(self, choices, selected_choices):
-        # Normalize to strings.
-        selected_choices = set([force_text(v) for v in selected_choices])
-        output = []
-        for option_value, option_label in chain(self.choices, choices):
-            if isinstance(option_label, (list, tuple)):
-                output.append(
-                    '<li class="divider" label="%s"></li>' %
-                    escape(force_text(option_value)))
-                for option in option_label:
-                    output.append(self.render_option(selected_choices, *option))
-            else:
-                output.append(self.render_option(selected_choices, option_value, option_label))
-        return '\n'.join(output)
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context['label'] = _('Select an option')
+        context['noscript'] = self.noscript_widget.render(name, value, {})
+        context['disabled'] = ' disabled' if self.disabled else ''
+        return context
 
     class Media(forms.Media):
 
@@ -354,16 +313,16 @@ class SelectWidgetBootstrap(BuildAttrsCompat, forms.Select):
 
 
 class TextInputPrepend(forms.TextInput):
+    template_name = "wiki/forms/text.html"
 
     def __init__(self, *args, **kwargs):
         self.prepend = kwargs.pop('prepend', "")
         super().__init__(*args, **kwargs)
 
-    def render(self, *args, **kwargs):
-        html = super().render(*args, **kwargs)
-        return mark_safe(
-            '<div class="input-group"><span class="input-group-addon">%s</span>%s</div>' %
-            (self.prepend, html))
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context['prepend'] = mark_safe(self.prepend)
+        return context
 
 
 class CreateForm(forms.Form, SpamProtectionMixin):

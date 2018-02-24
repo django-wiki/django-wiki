@@ -1,0 +1,15 @@
+<div{% include "django/forms/widgets/attrs.html" %}>
+  <button class="btn btn-group-label{{ disabled }}" type="button">{{ label }}</button>
+  <button class="btn btn-default dropdown-toggle{{ disabled }}" type="button" data-toggle="dropdown">
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">{% for group_name, group_choices, group_index in widget.optgroups %}
+      {% if group_name %}<li class="divider" label="{{ group_name }}"></li>{% endif %}
+      {% for option in group_choices %}
+      {% include option.template_name with widget=option %}
+      {% endfor %}
+      {% endfor %}
+    </ul>
+    <input type="hidden" name="{{ widget.name }}" value="" class="btn-group-value" />
+</div>
+<noscript>{{ noscript }}</noscript>
