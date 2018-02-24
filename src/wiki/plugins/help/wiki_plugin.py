@@ -15,8 +15,5 @@ class HelpPlugin(BasePlugin):
 
     markdown_extensions = []
 
-    def __init__(self):
-        pass
-
 
 registry.register(HelpPlugin)
