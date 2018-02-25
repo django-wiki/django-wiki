@@ -49,8 +49,7 @@ def itertext(elem):
     if elem.text:
         yield elem.text
     for e in elem:
-        for s in itertext(e):
-            yield s
+        yield from itertext(e)
         if e.tail:
             yield e.tail
 
