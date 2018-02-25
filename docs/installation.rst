@@ -160,10 +160,9 @@ following lines at the end of your project's ``urls.py``.
 
 .. code-block:: python
 
-    from wiki.urls import get_pattern as get_wiki_pattern
     urlpatterns += [
         url(r'^notifications/', include('django_nyt.urls')),
-        url(r'', get_wiki_pattern())
+        url(r'', include('wiki.urls'))
     ]
 
 

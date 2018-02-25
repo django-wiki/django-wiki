@@ -263,7 +263,7 @@ USE_BOOTSTRAP_SELECT_WIDGET = getattr(
 URL_CONFIG_CLASS = getattr(
     django_settings,
     'WIKI_URL_CONFIG_CLASS',
-    'wiki.urls.WikiURLPatterns')
+    None)
 
 #: Search view - dotted path denoting where the search view Class is located.
 SEARCH_VIEW = getattr(

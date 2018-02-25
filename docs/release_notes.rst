@@ -19,12 +19,14 @@ Added
 ~~~~~
 
  * Django 2 support :url-issue:`755` (Raffaele Salmaso & Mads Jensen)
+ * Added ``wiki.sites.WikiSite`` for easy customization :url-issue:`827`
 
 Changed
 ~~~~~~~
 
  * Use full path names for ``MARKDOWN_KWARGS['extensions']`` as short names
    support wil be removed in ``Markdown 2.7`` :url-issue:`823`
+ * Support for ``include('wiki.urls')`` for urls instantiation :url-issue:`827`
 
 Fixed
 ~~~~~
@@ -38,6 +40,7 @@ Deprecated/Removed
 
  * Django < 1.11 support is dropped :url-issue:`779`
  * Python < 3.3 support is dropped :url-issue:`779` and :url-issue:`792`
+ * Deprecate ``wiki.urls.get_pattern`` :url-issue:`799`
 
 
 django-wiki 0.3.1
