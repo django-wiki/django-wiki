@@ -37,7 +37,7 @@ class WikiURLPatterns:
     revision_change_view_class = article.ChangeRevisionView
     revision_merge_view_class = article.MergeView
 
-    search_view_class = settings.SEARCH_VIEW
+    search_view_class = article.SearchView
     article_diff_view_class = article.DiffView
 
     # account views
@@ -75,7 +75,7 @@ class WikiURLPatterns:
                 article.MissingRootView.as_view(),
                 name='root_missing'),
             url(r'^_search/$',
-                import_string(self.search_view_class).as_view(),
+                self.search_view_class.as_view(),
                 name='search'),
             url(r'^_revision/diff/(?P<revision_id>[0-9]+)/$',
                 self.article_diff_view_class.as_view(),
@@ -201,7 +201,7 @@ class WikiURLPatterns:
                 self.article_dir_view_class.as_view(),
                 name='dir'),
             url(r'^(?P<path>.+/|)_search/$',
-                import_string(self.search_view_class).as_view(),
+                self.search_view_class.as_view(),
                 name='search'),
             url(r'^(?P<path>.+/|)_settings/$',
                 self.article_settings_view_class.as_view(),
