@@ -40,7 +40,7 @@ Deprecated/Removed
 
  * Django < 1.11 support is dropped :url-issue:`779`
  * Python < 3.3 support is dropped :url-issue:`779` and :url-issue:`792`
- * Deprecate ``wiki.urls.get_pattern`` :url-issue:`799`
+ * Deprecate ``wiki.urls.get_pattern`` and ``URL_CONFIG_CLASS`` setting :url-issue:`799`
 
 
 django-wiki 0.3.1
