@@ -50,6 +50,7 @@ of a custom ``AppConfig`` to the dotted import path of either a ``WikiSite`` sub
 or a callable that returns a site instance.
 
 .. code-block:: python
+
     # myproject/sites.py
 
     from wiki.sites import WikiSite
@@ -58,6 +59,7 @@ or a callable that returns a site instance.
         ...
 
 .. code-block:: python
+
     # myproject/apps.py
 
     from wiki.apps import WikiConfig
@@ -66,6 +68,7 @@ or a callable that returns a site instance.
         default_site = 'myproject.sites.MyWikiSite'
 
 .. code-block:: python
+
     # myproject/settings.py
 
     INSTALLED_APPS = [
