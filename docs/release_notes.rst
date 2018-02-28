@@ -12,7 +12,7 @@ The next series **0.4** will support Django 1.11 and Django 2.x and be for
 Python 3.4+.
 
 
-django-wiki 0.4a2
+django-wiki 0.4a3
 -----------------
 
 Added
@@ -20,6 +20,7 @@ Added
 
  * Django 2 support :url-issue:`755` (Raffaele Salmaso & Mads Jensen)
  * Added ``wiki.sites.WikiSite`` for easy customization :url-issue:`827`
+ * Automatic link highlighting of URLs handles lots of new patterns :url-issue:`816` (Branko Majic)
 
 Changed
 ~~~~~~~
@@ -27,13 +28,17 @@ Changed
  * Use full path names for ``MARKDOWN_KWARGS['extensions']`` as short names
    support wil be removed in ``Markdown 2.7`` :url-issue:`823`
  * Support for ``include('wiki.urls')`` for urls instantiation :url-issue:`827`
+ * Use Django's 'checks.py' pattern to test configuration (Raffaele Salmaso & Mads Jensen) :url-issue:`830` :url-issue:`807`
+ * Test coverage added: Images plugin + Account handling (Mads Jensen) :url-issue:`804`
+ * Last couple of non-CBVs (Class Based Views) refactored to CBV (Raffaele Salmaso & Mads Jensen) :url-issue:`788` :url-issue:`819` :url-issue:`808`
+ * Big cleanup: Deprecating lots of Python 2.7 specific code (Mads Jensen & Raffaele Salmaso) `See: >30 PRs <https://github.com/django-wiki/django-wiki/pulls?q=is%3Apr+is%3Aclosed+label%3Aclean-up>`__
 
 Fixed
 ~~~~~
 
  * Use ``user.is_authenticated/is_anonymous`` as a boolean :url-issue:`790` (Raffaele Salmaso)
  * Use ``simple_tag`` for assignment tag :url-issue:`791` (Raffaele Salmaso)
- * Use ``pytest`` instead of ``runtests.py`` :url-issue:`781` (Branko Majic)
+ * Direct invocation of ``pytest`` fixed (removing ``runtests.py``) :url-issue:`781` (Branko Majic)
 
 Deprecated/Removed
 ~~~~~~~~~~~~~~~~~~
@@ -397,21 +402,21 @@ News archive
 April 15, 2017
 ~~~~~~~~~~~~~~
 
-0.2.3 released: `Release notes <http://django-wiki.readthedocs.io/en/master/release_notes.html#django-wiki-0-2-3>`_
+0.2.3 released: `Release notes <http://django-wiki.readthedocs.io/en/master/release_notes.html#django-wiki-0-2-3>`__
 
-0.2.2 released: `Release notes <http://django-wiki.readthedocs.io/en/master/release_notes.html#django-wiki-0-2-2>`_
+0.2.2 released: `Release notes <http://django-wiki.readthedocs.io/en/master/release_notes.html#django-wiki-0-2-2>`__
 
 
 February 27, 2017
 ~~~~~~~~~~~~~~~~~
 
-0.2.1 released: `Release notes <http://django-wiki.readthedocs.io/en/master/release_notes.html#django-wiki-0-2-1>`_
+0.2.1 released: `Release notes <http://django-wiki.readthedocs.io/en/master/release_notes.html#django-wiki-0-2-1>`__
 
 
 December 27, 2016
 ~~~~~~~~~~~~~~~~~
 
-0.2 final released: `Release notes <http://django-wiki.readthedocs.io/en/0.2/release_notes.html>`_
+0.2 final released: `Release notes <http://django-wiki.readthedocs.io/en/0.2/release_notes.html>`__
 
 
 June 19, 2016
