@@ -1,0 +1,19 @@
+{% load i18n %}<h4>{% trans "Conditional Parts" %}</h4>
+<p>
+  You can make part of wiki page visible just to some users based on user name or group name.
+</p>
+<p>
+  The block starts with the tag
+<code>[if <em>condition</em>]</code>
+and ends with tag
+<code>[endif]</code>. If the condition is true, the block are output.
+</p>
+
+<p>
+  Possible conditions:
+  <ul>
+	  <li><code>[if user in <em>username...</em>]</code> is true if the user has one of the username(s)</li>
+	  <li><code>[if group in <em>group...</em>]</code> is true if the user is in one of the group(s)</li>
+  </ul>
+</p>
+
