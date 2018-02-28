@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 Extend the shipped Markdown extension 'wikilinks'
 """
