@@ -204,7 +204,6 @@ class URLPath(MPTTModel):
                 raise ValidationError(
                     _('There is already a root node on %s') %
                     self.site)
-        super().clean(*args, **kwargs)
 
     @classmethod
     def get_by_path(cls, path, select_related=False):
@@ -251,7 +250,6 @@ class URLPath(MPTTModel):
             site = Site.objects.get_current()
         root_nodes = cls.objects.root_nodes().filter(site=site)
         if not root_nodes:
-            # (get_or_create does not work for MPTT models??)
             article = Article()
             revision = ArticleRevision(title=title, **kwargs)
             if request:
