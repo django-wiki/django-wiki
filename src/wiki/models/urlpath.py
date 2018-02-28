@@ -84,34 +84,6 @@ class URLPath(MPTTModel):
         related_name='moved_from'
     )
 
-    def __cached_ancestors(self):
-        """
-        This returns the ancestors of this urlpath. These ancestors are hopefully
-        cached from the article path lookup. Accessing a foreign key included in
-        add_selecte_related on one of these ancestors will not occur an additional
-        sql query, as they were retrieved with a select_related.
-
-        If the cached ancestors were not set explicitly, they will be retrieved from
-        the database.
-        """
-        # "not self.pk": HACK needed till PR#591 is included in all supported django-mptt
-        #   versions. Prevent accessing a deleted URLPath when deleting it from the admin
-        #   interface.
-        if not self.pk or not self.get_ancestors().exists():
-            self._cached_ancestors = []
-        if not hasattr(self, "_cached_ancestors"):
-            self._cached_ancestors = list(
-                self.get_ancestors().select_related_common())
-
-        return self._cached_ancestors
-
-    def __cached_ancestors_setter(self, ancestors):
-        self._cached_ancestors = ancestors
-
-    # Python 2.5 compatible property constructor
-    cached_ancestors = property(__cached_ancestors,
-                                __cached_ancestors_setter)
-
     def set_cached_ancestors_from_parent(self, parent):
         self.cached_ancestors = parent.cached_ancestors + [parent]
 
