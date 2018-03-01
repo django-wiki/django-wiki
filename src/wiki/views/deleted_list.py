@@ -18,7 +18,7 @@ class DeletedListView(TemplateView):
         article_list = models.Article.objects.all()
         deleted_articles = []
         for article in article_list:
-            if(article.current_revision.deleted):
+            if article.current_revision.deleted:
                 deleted_articles.append(article)
         kwargs['deleted_articles'] = deleted_articles
         return super().get_context_data(**kwargs)
