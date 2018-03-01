@@ -182,7 +182,7 @@ def is_locked(model):
     """
     Check if article is locked.
     """
-    return (model.current_revision and model.current_revision.locked)
+    return model.current_revision and model.current_revision.locked
 
 
 @register.simple_tag(takes_context=True)
