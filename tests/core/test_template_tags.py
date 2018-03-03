@@ -195,10 +195,10 @@ class WikiRenderTest(TemplateTestCase):
             """========\n"""
         )
 
-        expected_markdown = (
-            """<p>This is a normal paragraph</p>\n"""
+        expected = (
+            """(?s).*<p>This is a normal paragraph</p>\n"""
             """<h1 id="wiki-toc-headline">Headline"""
-            """<a class="article-edit" href="/1/_plugin/editsection/1-0-0/header/H/">[edit]</a></h1>"""
+            """.*</h1>.*"""
         )
 
         # monkey patch
@@ -208,14 +208,14 @@ class WikiRenderTest(TemplateTestCase):
         output = wiki_render({}, article, preview_content=content)
         self.assertCountEqual(self.keys, output)
         self.assertEqual(output['article'], article)
-        self.assertMultiLineEqual(output['content'], expected_markdown)
+        self.assertRegexpMatches(output['content'], expected)
         self.assertIs(output['preview'], True)
         self.assertEqual(output['plugins'], {'spam': 'eggs'})
         self.assertEqual(output['STATIC_URL'], django_settings.STATIC_URL)
         self.assertEqual(output['CACHE_TIMEOUT'], settings.CACHE_TIMEOUT)
 
         output = self.render({'article': article, 'pc': content})
-        self.assertIn(expected_markdown, output)
+        self.assertRegexpMatches(output, expected)
 
     def test_called_with_preview_content_and_article_dont_have_current_revision(
             self):

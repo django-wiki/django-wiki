@@ -1,5 +1,3 @@
-from __future__ import absolute_import, unicode_literals
-
 import re
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect

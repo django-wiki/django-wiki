@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import re
 from markdown import Extension
 from markdown.treeprocessors import Treeprocessor
@@ -97,8 +95,8 @@ class EditSectionProcessor(Treeprocessor):
 
             # Insert link to allow editing this section
             link = etree.SubElement(child, 'a')
-            link.text = "[edit]"
-            link.attrib["class"] = "article-edit"
+            link.text = settings.LINK_TEXT
+            link.attrib["class"] = "article-edit-title-link"
             link.attrib["href"] = self.markdown.article.get_absolute_url() \
                 + "_plugin/editsection/" + location \
                 + "/header/" + header_id + "/"
