@@ -29,12 +29,12 @@ class EditSectionTests(RequireRootArticleMixin, DjangoClientTestBase):
         output = urlpath.article.render()
         expected = (
             '(?s)'
-            'Title 1<a class="article-edit" href="/testedit/_plugin/editsection/1-0-0/header/T1/">\[edit\]</a>.*'
-            'Title 2<a class="article-edit" href="/testedit/_plugin/editsection/1-1-0/header/T2/">\[edit\]</a>.*'
-            'Title 3<a class="article-edit" href="/testedit/_plugin/editsection/1-2-0/header/T3/">\[edit\]</a>.*'
-            'Title 4<a class="article-edit" href="/testedit/_plugin/editsection/1-2-1/header/T4/">\[edit\]</a>.*'
-            'Title 5<a class="article-edit" href="/testedit/_plugin/editsection/1-3-0/header/T5/">\[edit\]</a>.*'
-            'Title 6<a class="article-edit" href="/testedit/_plugin/editsection/2-0-0/header/T6/">\[edit\]</a>.*'
+            'Title 1<a class="article-edit-title-link" href="/testedit/_plugin/editsection/1-0-0/header/T1/">\[edit\]</a>.*'
+            'Title 2<a class="article-edit-title-link" href="/testedit/_plugin/editsection/1-1-0/header/T2/">\[edit\]</a>.*'
+            'Title 3<a class="article-edit-title-link" href="/testedit/_plugin/editsection/1-2-0/header/T3/">\[edit\]</a>.*'
+            'Title 4<a class="article-edit-title-link" href="/testedit/_plugin/editsection/1-2-1/header/T4/">\[edit\]</a>.*'
+            'Title 5<a class="article-edit-title-link" href="/testedit/_plugin/editsection/1-3-0/header/T5/">\[edit\]</a>.*'
+            'Title 6<a class="article-edit-title-link" href="/testedit/_plugin/editsection/2-0-0/header/T6/">\[edit\]</a>.*'
         )
         self.assertRegexpMatches(output, expected)
 
@@ -84,12 +84,12 @@ class EditSectionEditTests(EditSectionEditBase, WebTestBase):
         self.submit('#id_save')
         expected = (
             '(?s)'
-            'Title 1<a class="article-edit" href="/testedit/_plugin/editsection/1-0-0/header/T1/">\[edit\]</a>.*'
-            'Title 2<a class="article-edit" href="/testedit/_plugin/editsection/1-1-0/header/T2/">\[edit\]</a>.*'
-            'Header 1<a class="article-edit" href="/testedit/_plugin/editsection/2-0-0/header/H1/">\[edit\]</a>.*'
+            'Title 1<a class="article-edit-title-link" href="/testedit/_plugin/editsection/1-0-0/header/T1/">\[edit\]</a>.*'
+            'Title 2<a class="article-edit-title-link" href="/testedit/_plugin/editsection/1-1-0/header/T2/">\[edit\]</a>.*'
+            'Header 1<a class="article-edit-title-link" href="/testedit/_plugin/editsection/2-0-0/header/H1/">\[edit\]</a>.*'
             'Content of the new section.*'
-            'Title 5<a class="article-edit" href="/testedit/_plugin/editsection/2-1-0/header/T5/">\[edit\]</a>.*'
-            'Title 6<a class="article-edit" href="/testedit/_plugin/editsection/3-0-0/header/T6/">\[edit\]</a>.*'
+            'Title 5<a class="article-edit-title-link" href="/testedit/_plugin/editsection/2-1-0/header/T5/">\[edit\]</a>.*'
+            'Title 6<a class="article-edit-title-link" href="/testedit/_plugin/editsection/3-0-0/header/T6/">\[edit\]</a>.*'
         )
         self.assertRegexpMatches(self.last_response.content.decode('utf-8'), expected)
 

@@ -134,8 +134,8 @@ class ArticleModelTest(TestCase):
         ArticleRevision.objects.create(
             article=a, title="test", content="# header"
         )
-        expected_markdown = (
+        expected = (
             """<h1 id="wiki-toc-header">header"""
-            """<a class="article-edit" href="/1/_plugin/editsection/1-0-0/header/h/">[edit]</a></h1>"""
+            """.*</h1>"""
         )
-        self.assertEqual(a.get_cached_content(), expected_markdown)
+        self.assertRegexpMatches(a.get_cached_content(), expected)
