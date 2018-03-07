@@ -1,11 +1,8 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 """
 Wikipath Extension for Python-Markdown
 ======================================
 
-Converts [Link Name](wiki:ArticleName) to relative links pointing to article.  Requires Markdown 2.6+
+Converts [Link Name](wiki:ArticleName) to relative links pointing to article.
 
 Basic usage:
 
