@@ -67,10 +67,10 @@
       </td>
     </tr>
     <tr>
-      <th colspan="100">{% trans "History" %}</th>
+      <th colspan="4">{% trans "History" %}</th>
     </tr>
     <tr>
-      <td colspan="100">
+      <td colspan="4">
         <table class="table">
           {% for old_revision in image.revision_set.all %}
             <tr>
@@ -98,7 +98,7 @@
     {% endwith %}
   {% empty %}
     <tr>
-    <td colspan="100">
+    <td colspan="4">
       <p style="margin-bottom: 20px;"><em>{% trans "There are no images for this article." %}</em></p>
     </td>
   {% endfor %}
