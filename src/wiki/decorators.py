@@ -63,8 +63,6 @@ def get_article(func=None, can_read=True, can_write=False,  # noqa
         path = kwargs.pop('path', None)
         article_id = kwargs.pop('article_id', None)
 
-        urlpath = None
-
         # fetch by urlpath.path
         if path is not None:
             try:
@@ -99,10 +97,7 @@ def get_article(func=None, can_read=True, can_write=False,  # noqa
             else:
                 # Be robust: Somehow article is gone but urlpath exists...
                 # clean up
-                return_url = reverse(
-                    'wiki:get',
-                    kwargs={
-                        'path': urlpath.parent.path})
+                return_url = reverse('wiki:get', kwargs={'path': urlpath.parent.path})
                 urlpath.delete()
                 return HttpResponseRedirect(return_url)
 
