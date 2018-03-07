@@ -2,7 +2,7 @@ from django.apps import apps
 from django.contrib.auth import get_user_model
 from django.contrib.sites.models import Site
 from django.test.testcases import TestCase
-from wiki.compat import include, url
+from wiki.compat import url
 from wiki.conf import settings
 from wiki.managers import ArticleManager
 from wiki.models import Article, ArticleRevision, URLPath
@@ -134,5 +134,4 @@ class ArticleModelTest(TestCase):
         ArticleRevision.objects.create(
             article=a, title="test", content="# header"
         )
-        self.assertEqual(a.get_cached_content(), """<h1 id="wiki-toc-header">header</h1>""")
         self.assertEqual(a.get_cached_content(), """<h1 id="wiki-toc-header">header</h1>""")
