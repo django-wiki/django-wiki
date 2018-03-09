@@ -8,7 +8,6 @@ from django.core.exceptions import ValidationError
 from django.db import models, transaction
 from django.db.models.signals import post_save, pre_delete
 from django.urls import reverse
-# Django 1.6 transaction API, required for 1.8+
 from django.utils.translation import gettext, gettext_lazy as _
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
