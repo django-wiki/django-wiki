@@ -1,7 +1,7 @@
 Disqus comment embed
 ====================
 
-This page describes how to embed the Disqus comment system on each wiki page.
+This page describes how to embed the Disqus_ comment system on each wiki page.
 
 Put the following as ``wiki/base.html`` somewhere in your
 ``TEMPLATE_DIRS``:
@@ -32,6 +32,8 @@ Put the following as ``wiki/base.html`` somewhere in your
       {% endif %}
     {% endblock wiki_body %}
 
-Replace ``your_disqus_sortname`` to your disqus sortname.
+Replace ``your_disqus_sortname`` with your disqus sortname.
 
 See also in :doc:`/customization`.
+
+.. _Disqus: https://disqus.com/
