@@ -86,8 +86,7 @@ def upload_path(instance, filename):
 
     # Has to match original extension filename
     if instance.id and instance.attachment and instance.attachment.original_filename:
-        original_extension = instance.attachment.original_filename.split(
-            ".")[-1]
+        original_extension = instance.attachment.original_filename.split(".")[-1]
         if not extension.lower() == original_extension:
             raise IllegalFileExtension(
                 "File extension has to be '%s', not '%s'." %
@@ -173,11 +172,7 @@ def on_revision_delete(instance, *args, **kwargs):
     for depth in range(0, max_depth):
         delete_path = "/".join(path[:-depth] if depth > 0 else path)
         try:
-            if len(
-                os.listdir(
-                    os.path.join(
-                        django_settings.MEDIA_ROOT,
-                        delete_path))) == 0:
+            if len(os.listdir(os.path.join(django_settings.MEDIA_ROOT, delete_path))) == 0:
                 os.rmdir(delete_path)
         except OSError:
             # Raised by os.listdir if directory is missing
