@@ -12,7 +12,7 @@ The next series **0.4** will support Django 1.11 and Django 2.x and be for
 Python 3.4+.
 
 
-django-wiki 0.4a3
+django-wiki 0.4a4
 -----------------
 
 Added
@@ -32,6 +32,8 @@ Changed
  * Test coverage added: Images plugin + Account handling (Mads Jensen) :url-issue:`804`
  * Last couple of non-CBVs (Class Based Views) refactored to CBV (Raffaele Salmaso & Mads Jensen) :url-issue:`788` :url-issue:`819` :url-issue:`808`
  * Big cleanup: Deprecating lots of Python 2.7 specific code (Mads Jensen & Raffaele Salmaso) `See: >30 PRs <https://github.com/django-wiki/django-wiki/pulls?q=is%3Apr+is%3Aclosed+label%3Aclean-up>`__
+ * Languages: Merged ``pt`` and ``pt_PT``, then deleted ``pt`` and linked it to ``pt_PT`` :url-issue:`858`
+ * Languages: Linked ``zh_Hans`` to ``zh_CN`` :url-issue:`711`
 
 Fixed
 ~~~~~
@@ -39,6 +41,7 @@ Fixed
  * Use ``user.is_authenticated/is_anonymous`` as a boolean :url-issue:`790` (Raffaele Salmaso)
  * Use ``simple_tag`` for assignment tag :url-issue:`791` (Raffaele Salmaso)
  * Direct invocation of ``pytest`` fixed (removing ``runtests.py``) :url-issue:`781` (Branko Majic)
+ * Line breaks in help texts for macros :url-issue:`851` (Mathias Dannesbo)
 
 Deprecated/Removed
 ~~~~~~~~~~~~~~~~~~
