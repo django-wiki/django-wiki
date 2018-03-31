@@ -5,6 +5,21 @@ from django.db import models
 
 class CustomUser(AbstractUser):
     some_field = models.IntegerField(default=0)
+    is_superuser = models.BooleanField(
+        default=False,
+    )
+    groups = models.ManyToManyField(
+        'CustomGroup',
+        blank=True,
+        related_name="user_set",
+        related_query_name="user",
+    )
+    user_permissions = models.ManyToManyField(
+        'CustomPermission',
+        blank=True,
+        related_name="user_set",
+        related_query_name="user",
+    )
 
 
 class CustomPermission(models.Model):

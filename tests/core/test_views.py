@@ -513,6 +513,34 @@ class DeletedListViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCl
         response = self.client.get(resolve_url('wiki:deleted_list'))
         self.assertContains(response, 'Delete Me')
 
+    def test_redirect_non_superuser_to_root(self):
+        response = self.client.post(
+            resolve_url('wiki:create', path=''),
+            {'title': 'Delete Me', 'slug': 'deleteme', 'content': 'delete me please!'}
+        )
+
+        response = self.client.post(
+            resolve_url('wiki:delete', path='deleteme/'),
+            {'confirm': 'on',
+             'revision': URLPath.objects.get(slug='deleteme').article.current_revision.id}
+        )
+
+        # Set-up regular user, and login as one.
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+        User.objects.create_user(
+            username='testuser',
+            password='testuser',
+            email='testuser@example.com'
+        )
+
+        if not self.client.login(username='testuser', password='testuser'):
+            raise Exception('Could not login!')
+
+        response = self.client.get(resolve_url('wiki:deleted_list'))
+
+        self.assertRedirects(response, resolve_url('wiki:root'))
+
 
 class MergeViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
