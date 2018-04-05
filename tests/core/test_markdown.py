@@ -34,7 +34,7 @@ class ArticleMarkdownTests(ArticleTestBase):
             content="</html>only_this"
         )
 
-        self.assertEqual(urlpath.article.render(), "<p>&lt;/html&gt;only_this</p>")
+        self.assertEqual(urlpath.article.render(), "<p>only_this</p>")
 
 
 class ResponsiveTableExtensionTests(TestCase):
