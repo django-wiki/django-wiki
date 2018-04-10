@@ -25,6 +25,7 @@ Added
 Changed
 ~~~~~~~
 
+ * Dependency for escaping HTML and safeguarding against injections ``bleach`` upgraded ``>=2.1,<2.2`` (last-partizan) :url-issue:`702`
  * Use full path names for ``MARKDOWN_KWARGS['extensions']`` as short names
    support wil be removed in ``Markdown 2.7`` :url-issue:`823`
  * Support for ``include('wiki.urls')`` for urls instantiation :url-issue:`827`
