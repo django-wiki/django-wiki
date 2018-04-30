@@ -31,3 +31,7 @@ virtualenv
 # text editors
 *~
 *.swp
+
+.idea/
+
+.idea/vcs.xml
