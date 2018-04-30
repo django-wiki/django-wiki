@@ -198,8 +198,7 @@ class RevisionPluginRevision(BaseRevisionMixin, models.Model):
             not self.previous_revision and 
             self.plugin and
             self.plugin.current_revision and 
-            self.plugin.current_revision != self):
-            
+                self.plugin.current_revision != self):
             self.previous_revision = self.plugin.current_revision
 
         if not self.revision_number:
@@ -216,6 +215,15 @@ class RevisionPluginRevision(BaseRevisionMixin, models.Model):
             self.plugin.current_revision = self
             self.plugin.save()
 
+    @classmethod
+    def retire_user(cls, user):
+        """
+        Updates a user record as a part of GDPR Phase II
+        :param user (obj)
+        :return: bool
+        """
+        return cls.objects.filter(user=user).update(ip_address='') > 0
+
     class Meta:
         get_latest_by = 'revision_number'
         ordering = ('-created',)
@@ -228,6 +236,7 @@ class RevisionPluginRevision(BaseRevisionMixin, models.Model):
 # And the plane becomes a metaphor for my life.
 # It's my art, when I disguise my body in the shape of a plane.
 # (Shellac, 1993)
+
 
 def update_simple_plugins(instance, *args, **kwargs):
     """Every time a new article revision is created, we update all active 
