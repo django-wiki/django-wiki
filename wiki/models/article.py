@@ -13,6 +13,7 @@ from wiki.core.plugins import registry as plugin_registry
 from wiki import managers
 from mptt.models import MPTTModel
 
+
 class Article(models.Model):
 
     objects = managers.ArticleManager()
@@ -207,6 +208,7 @@ class ArticleForObject(models.Model):
         # Do not allow several objects
         unique_together = ('content_type', 'object_id')
 
+
 class BaseRevisionMixin(models.Model):
     """This is an abstract model used as a mixin: Do not override any of the
     core model methods but respect the inheritor's freedom to do so itself."""
@@ -216,14 +218,18 @@ class BaseRevisionMixin(models.Model):
     user_message = models.TextField(blank=True,)
     automatic_log = models.TextField(blank=True, editable=False,)
 
-    ip_address  = models.GenericIPAddressField(
+    ip_address = models.GenericIPAddressField(
         _('IP address'),
         blank=True,
         null=True,
         editable=False
     )
-    user        = models.ForeignKey(User, verbose_name=_('user'),
-                                    blank=True, null=True)
+    user = models.ForeignKey(
+        User,
+        verbose_name=_('user'),
+        blank=True,
+        null=True
+    )
 
     modified = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -234,7 +240,7 @@ class BaseRevisionMixin(models.Model):
     # but the actual related object. If the latest revision says "deleted=True" then
     # the related object should be regarded as deleted.
     deleted = models.BooleanField(verbose_name=_(u'deleted'), default=False)
-    locked  = models.BooleanField(verbose_name=_(u'locked'), default=False)
+    locked = models.BooleanField(verbose_name=_(u'locked'), default=False)
 
     def set_from_request(self, request):
         if request.user.is_authenticated():
@@ -246,6 +252,7 @@ class BaseRevisionMixin(models.Model):
 
     class Meta:
         abstract = True
+
 
 class ArticleRevision(BaseRevisionMixin, models.Model):
     """This is where main revision data is stored. To make it easier to
@@ -308,8 +315,18 @@ class ArticleRevision(BaseRevisionMixin, models.Model):
             self.article.current_revision = self
             self.article.save()
 
+    @classmethod
+    def retire_user(cls, user):
+        """
+        Updates a user record as a part of GDPR Phase II
+        :param user (obj)
+        :return: bool
+        """
+
+        article_revisions = cls.objects.filter(user=user).update(ip_address='')
+        return article_revisions > 0
+
     class Meta:
         get_latest_by = 'revision_number'
         ordering = ('created',)
         unique_together = ('article', 'revision_number')
-

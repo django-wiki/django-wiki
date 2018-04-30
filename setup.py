@@ -29,15 +29,15 @@ package_data = dict(
 
 setup(
     name = "django-wiki",
-    version="0.0.17",
-    author = "Benjamin Bach",
-    author_email = "benjamin@overtag.dk",
-    description = ("A wiki system written for the Django framework."),
-    license = "GPLv3",
-    keywords = "django wiki markdown",
+    version="0.0.18",
+    author="Benjamin Bach",
+    author_email="benjamin@overtag.dk",
+    description=("A wiki system written for the Django framework."),
+    license="GPLv3",
+    keywords="django wiki markdown",
     packages=find_packages(exclude=["testproject","testproject.*"]),
     long_description=read('README.md'),
-    zip_safe = False,
+    zip_safe=False,
     install_requires=[
         'Django>=1.8,<2',
         'markdown',
