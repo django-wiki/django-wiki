@@ -33,5 +33,3 @@ virtualenv
 *.swp
 
 .idea/
-
-.idea/vcs.xml
