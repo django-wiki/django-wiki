@@ -7,6 +7,7 @@ from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
 from django.db import models, transaction
 from django.db.models.signals import post_save, pre_delete
+from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.translation import gettext, gettext_lazy as _
 from mptt.fields import TreeForeignKey
@@ -368,29 +369,22 @@ def on_article_relation_save(**kwargs):
 post_save.connect(on_article_relation_save, ArticleForObject)
 
 
-class Namespace:
-    # An instance of Namespace simulates "nonlocal variable_name" declaration
-    # in any nested function, that is possible in Python 3. It allows assigning
-    # to non local variable without rebinding it local. See PEP 3104.
-    pass
-
-
+@receiver(signal=pre_delete, sender=Article)
 def on_article_delete(instance, *args, **kwargs):
     # If an article is deleted, then throw out its URLPaths
     # But move all descendants to a lost-and-found node.
     site = Site.objects.get_current()
+    lost_and_found = None
 
     # Get the Lost-and-found path or create a new one
     # Only create the lost-and-found article if it's necessary and such
     # that the lost-and-found article can be deleted without being recreated!
-    ns = Namespace()   # nonlocal namespace backported to Python 2.x
-    ns.lost_and_found = None
-
     def get_lost_and_found():
-        if ns.lost_and_found:
-            return ns.lost_and_found
+        nonlocal lost_and_found
+        if lost_and_found:
+            return lost_and_found
         try:
-            ns.lost_and_found = URLPath.objects.get(
+            lost_and_found = URLPath.objects.get(
                 slug=settings.LOST_AND_FOUND_SLUG,
                 parent=URLPath.root(),
                 site=site)
@@ -404,23 +398,18 @@ def on_article_delete(instance, *args, **kwargs):
                     content=_(
                         'Articles who lost their parents\n'
                         '===============================\n\n'
-                        'The children of this article have had their parents deleted. You should probably find a new home for them.'),
+                        'The children of this article have had their parents deleted. '
+                        'You should probably find a new home for them.'),
                     title=_("Lost and found")))
-            ns.lost_and_found = URLPath.objects.create(
+            lost_and_found = URLPath.objects.create(
                 slug=settings.LOST_AND_FOUND_SLUG,
                 parent=URLPath.root(),
                 site=site,
                 article=article)
-            article.add_object_relation(ns.lost_and_found)
-        return ns.lost_and_found
+            article.add_object_relation(lost_and_found)
+        return lost_and_found
 
-    for urlpath in URLPath.objects.filter(
-            articles__article=instance,
-            site=site):
+    for urlpath in URLPath.objects.filter(articles__article=instance, site=site):
         # Delete the children
         for child in urlpath.get_children():
             child.move_to(get_lost_and_found())
-        # ...and finally delete the path itself
-
-
-pre_delete.connect(on_article_delete, Article)
