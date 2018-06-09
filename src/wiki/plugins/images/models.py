@@ -108,7 +108,11 @@ def on_image_revision_delete(instance, *args, **kwargs):
     if not instance.image:
         return
     # Remove image file
-    path = instance.image.name.split("/")[:-1]
+    import storages
+    if isinstance(instance.image.storage, (storages.backends.s3boto3.S3Boto3Storage,)):
+        path = instance.image.name.split("/")[:-1]
+    else:
+        path = instance.image.path.split("/")[:-1]
     instance.image.delete(save=False)
 
     # Clean up empty directories
