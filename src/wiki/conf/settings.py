@@ -28,11 +28,16 @@ MARKDOWN_SANITIZE_HTML = getattr(
 
 #: Arguments for the Markdown instance, for instance a list of extensions to
 #: use.
-#: See: https://pythonhosted.org/Markdown/extensions/index.html
+#: See: https://python-markdown.github.io/extensions/
 #:
-#: To set a custom title for TOC's::
+#: To set a custom title for table of contents, specify the following in your
+#: Django project settings::
 #:
-#:    WIKI_MARKDOWN_KWARGS = {'extension_configs': {'toc': _('Contents of this article')}}
+#:     WIKI_MARKDOWN_KWARGS = {
+#:         'extension_configs': {
+#:             'wiki.plugins.macros.mdx.toc': {'title': 'Contents of this article'},
+#:         },
+#:     }
 MARKDOWN_KWARGS = {
     'extensions': [
         'markdown.extensions.footnotes',
@@ -45,9 +50,6 @@ MARKDOWN_KWARGS = {
         'markdown.extensions.abbr',
         'markdown.extensions.sane_lists',
     ],
-    'extension_configs': {
-        'toc': {
-            'title': _('Table of Contents')}},
 }
 MARKDOWN_KWARGS.update(getattr(django_settings, 'WIKI_MARKDOWN_KWARGS', {}))
 
