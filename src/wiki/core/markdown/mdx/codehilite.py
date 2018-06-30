@@ -117,3 +117,8 @@ class WikiCodeHiliteExtension(CodeHiliteExtension):
                              ">normalize_whitespace")
 
         md.registerExtension(self)
+
+
+def makeExtension(*args, **kwargs):
+    """Return an instance of the extension."""
+    return WikiCodeHiliteExtension(*args, **kwargs)

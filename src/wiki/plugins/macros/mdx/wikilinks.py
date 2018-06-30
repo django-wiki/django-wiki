@@ -62,3 +62,8 @@ class WikiLinks(wikilinks.WikiLinks):
         else:
             a = ''
         return a
+
+
+def makeExtension(*args, **kwargs):
+    """Return an instance of the extension."""
+    return WikiLinkExtension(*args, **kwargs)

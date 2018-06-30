@@ -99,3 +99,8 @@ class MacroPreprocessor(markdown.preprocessors.Preprocessor):
             'Insert a link to another wiki page with a short notation.'),
         example_code='[[WikiLink]]',
         args={})
+
+
+def makeExtension(*args, **kwargs):
+    """Return an instance of the extension."""
+    return MacroExtension(*args, **kwargs)

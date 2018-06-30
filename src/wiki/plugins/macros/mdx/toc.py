@@ -309,3 +309,8 @@ class WikiTocExtension(TocExtension):
     def extendMarkdown(self, md, md_globals):
         if 'toc' in settings.METHODS:
             TocExtension.extendMarkdown(self, md, md_globals)
+
+
+def makeExtension(*args, **kwargs):
+    """Return an instance of the extension."""
+    return WikiTocExtension(*args, **kwargs)
