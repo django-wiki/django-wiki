@@ -26,9 +26,13 @@ MARKDOWN_SANITIZE_HTML = getattr(
     'WIKI_MARKDOWN_SANITIZE_HTML',
     True)
 
-#: Arguments for the Markdown instance, for instance a list of extensions to
-#: use.
-#: See: https://python-markdown.github.io/extensions/
+#: Arguments for the Markdown instance, as a dictionary. The "extensions" key
+#: should be a list of extra extensions to use besides the built-in django-wiki
+#: extensions, and the "extension_configs" should be a dictionary, specifying
+#: the keyword-arguments to pass to each extension.
+#:
+#: For a list of extensions officially supported by Python-Markdown, see:
+#: https://python-markdown.github.io/extensions/
 #:
 #: To set a custom title for table of contents, specify the following in your
 #: Django project settings::
@@ -38,6 +42,12 @@ MARKDOWN_SANITIZE_HTML = getattr(
 #:             'wiki.plugins.macros.mdx.toc': {'title': 'Contents of this article'},
 #:         },
 #:     }
+#:
+#: Besides the extensions enabled by the "extensions" key, the following
+#: built-in django-wiki extensions can be configured with "extension_configs":
+#: "wiki.core.markdown.mdx.codehilite", "wiki.core.markdown.mdx.previewlinks",
+#: "wiki.core.markdown.mdx.responsivetable", "wiki.plugins.macros.mdx.macro",
+#: "wiki.plugins.macros.mdx.toc", "wiki.plugins.macros.mdx.wikilinks".
 MARKDOWN_KWARGS = {
     'extensions': [
         'markdown.extensions.footnotes',
