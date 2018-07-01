@@ -1,9 +1,6 @@
 import bleach
 import markdown
 from wiki.conf import settings
-from wiki.core.markdown.mdx.codehilite import WikiCodeHiliteExtension
-from wiki.core.markdown.mdx.previewlinks import PreviewLinksExtension
-from wiki.core.markdown.mdx.responsivetable import ResponsiveTableExtension
 from wiki.core.plugins import registry as plugin_registry
 
 
@@ -20,9 +17,9 @@ class ArticleMarkdown(markdown.Markdown):
     def core_extensions(self):
         """List of core extensions found in the mdx folder"""
         return [
-            PreviewLinksExtension(),
-            ResponsiveTableExtension(),
-            WikiCodeHiliteExtension(),
+            'wiki.core.markdown.mdx.codehilite',
+            'wiki.core.markdown.mdx.previewlinks',
+            'wiki.core.markdown.mdx.responsivetable',
         ]
 
     def get_markdown_extensions(self):

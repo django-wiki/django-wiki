@@ -5,7 +5,7 @@ import re
 
 import markdown
 from django.urls import reverse
-from markdown.extensions import wikilinks
+from markdown.extensions import Extension, wikilinks
 
 
 def build_url(label, base, end, md):
@@ -22,9 +22,9 @@ def build_url(label, base, end, md):
     return '%s%s%s' % (base, clean_label, end)
 
 
-class WikiLinkExtension(wikilinks.WikiLinkExtension):
+class WikiLinkExtension(Extension):
 
-    def __init__(self, configs={}):
+    def __init__(self, **kwargs):
         # set extension defaults
         self.config = {
             'base_url': ['', 'String to append to beginning or URL.'],
@@ -32,10 +32,7 @@ class WikiLinkExtension(wikilinks.WikiLinkExtension):
             'html_class': ['wiki_wikilink', 'CSS hook. Leave blank for none.'],
             'build_url': [build_url, 'Callable formats URL from label.'],
         }
-
-        # Override defaults with user settings
-        for key, value in configs:
-            self.setConfig(key, value)
+        super().__init__(**kwargs)
 
     def extendMarkdown(self, md, md_globals):
         self.md = md
@@ -62,3 +59,8 @@ class WikiLinks(wikilinks.WikiLinks):
         else:
             a = ''
         return a
+
+
+def makeExtension(*args, **kwargs):
+    """Return an instance of the extension."""
+    return WikiLinkExtension(*args, **kwargs)
