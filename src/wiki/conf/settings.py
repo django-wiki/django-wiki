@@ -61,7 +61,7 @@ MARKDOWN_KWARGS = {
         'markdown.extensions.sane_lists',
     ],
     'extension_configs': {
-        'wiki.plugins.macros.mdx.toc': {'title': _('Table of Contents')},
+        'wiki.plugins.macros.mdx.toc': {'title': _('Contents')},
     },
 }
 MARKDOWN_KWARGS.update(getattr(django_settings, 'WIKI_MARKDOWN_KWARGS', {}))
