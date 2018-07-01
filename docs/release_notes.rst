@@ -43,6 +43,7 @@ Fixed
  * Use ``simple_tag`` for assignment tag :url-issue:`791` (Raffaele Salmaso)
  * Direct invocation of ``pytest`` fixed (removing ``runtests.py``) :url-issue:`781` (Branko Majic)
  * Line breaks in help texts for macros :url-issue:`851` (Mathias Dannesbo)
+ * Several built-in django-wiki extensions can now be configured using ``MARKDOWN_KWARGS`` :url-issue:`881` (Mathias Rav)
 
 Deprecated/Removed
 ~~~~~~~~~~~~~~~~~~
