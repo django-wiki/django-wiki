@@ -16,6 +16,7 @@ def wiki_slugify(*args, **kwargs):
 class WikiTreeProcessorClass(TocTreeprocessor):
 
     def run(self, doc):
+        # Necessary because self.title is set to a LazyObject via gettext_lazy
         if self.title:
             self.title = str(self.title)
         super().run(doc)
