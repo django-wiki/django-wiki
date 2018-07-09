@@ -37,11 +37,11 @@
 <p>
   {% with paginator.object_list.count as cnt %}
     {% if filter_query %}
-      {% blocktrans with cnt|pluralize:_("article,articles") as articles_plur and cnt|pluralize:_("matches,match") as match_plur %}
+      {% blocktrans with cnt|pluralize:_("article,articles") as articles_plur and cnt|pluralize:_("matches,match") as match_plur trimmed %}
         {{ cnt }} {{ articles_plur }} in this level {{ match_plur }} your search.
       {% endblocktrans %}
     {% else %}
-      {% blocktrans with cnt|pluralize:_("article,articles") as articles_plur and cnt|pluralize:_("is,are") as articles_plur_verb %}
+      {% blocktrans with cnt|pluralize:_("article,articles") as articles_plur and cnt|pluralize:_("is,are") as articles_plur_verb trimmed %}
         There {{ articles_plur_verb }} {{ cnt }} {{ articles_plur }} in this level.
       {% endblocktrans %}
     {% endif %}
