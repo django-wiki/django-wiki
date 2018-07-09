@@ -9,7 +9,7 @@
 {% if attachment.article == article %}
 <h2>{% trans "Delete" %} "{{ attachment.current_revision.get_filename }}"?</h2>
   <p class="lead">
-    {% blocktrans with attachment.original_filename as filename %}
+    {% blocktrans with attachment.original_filename as filename trimmed %}
     The file may be referenced on other articles. Deleting it means that they will loose their references to this file. The following articles reference this file:
     {% endblocktrans %}
   </p>
@@ -39,7 +39,7 @@
 {% else %}
   <h2>{% trans "Remove" %} "{{ attachment.current_revision.get_filename }}"?</h2>
   <p class="lead">
-    {% blocktrans with attachment.original_filename as filename %}
+    {% blocktrans with attachment.original_filename as filename trimmed %}
     You can remove a reference to a file, but it will retain its references on other articles.
     {% endblocktrans %}
   </p>
