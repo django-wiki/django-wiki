@@ -1,3 +1,17 @@
+{% load i18n sekizai_tags %}
+{% addtoblock "js" %}
+<script type="text/javascript">
+  $(document).ready( function() {
+    $('.sidebar-form').each(function () {
+      $(this).submit( function() {
+        this.unsaved_article_title.value = $('#id_title').val();
+        this.unsaved_article_content.value = $('#id_content').val();
+      });
+    });
+  });
+</script>
+{% endaddtoblock %}
+
 <div class="accordion" id="accordion_{{ plugin.slug }}">
 
 {% for plugin, plugin_form in sidebar %}
@@ -6,7 +20,7 @@
     
     <div class="accordion-heading">
       <a class="accordion-toggle" href="#collapse_{{ plugin.slug }}" data-toggle="collapse">
-        <h3>{{ plugin.sidebar.headline }} <span class="{{ plugin.sidebar.icon_class }}"></span></h3>
+        <h3>{{ plugin.sidebar.headline }} <span class="icon {{ plugin.sidebar.icon_class }}"></span></h3>
       </a>
     </div>
     
@@ -14,7 +28,7 @@
       <div class="accordion-inner form-vertical">
         {% if plugin.sidebar.template %}
           {% with plugin_form as form and plugin as plugin %}
-            <form method="POST" class="form-horizontal" action="?f={{ plugin_form.form_id }}" enctype="multipart/form-data">
+            <form method="POST" class="form-horizontal sidebar-form" action="?f={{ plugin_form.form_id }}" enctype="multipart/form-data">
               {% csrf_token %}
               {% include plugin.sidebar.template %}
             </form>

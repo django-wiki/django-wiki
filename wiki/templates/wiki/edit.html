@@ -2,23 +2,30 @@
 {% load wiki_tags i18n %}
 {% load url from future %}
 
-{% block pagetitle %}{% trans "Edit" %}: {{ article.current_revision.title }}{% endblock %}
+{% block wiki_pagetitle %}{% trans "Edit" %}: {{ article.current_revision.title }}{% endblock %}
 
 {% block wiki_contents_tab %}
 
-<div class="row-fluid">
+{% if not user.is_authenticated %}
+<p class="alert alert-warning">
+{% trans "<strong>Warning:</strong> You are not logged in. Your IP address will be logged." %}
+<a href="{% url 'wiki:login' %}?next={% url 'wiki:edit' article_id=article.id path=urlpath.path %}">{% trans "Click here to log in" %} &raquo;</a>
+</p>
+{% endif %}
 
-  <div class="span8">
+<div class="row">
+
+  <div class="col-lg-8">
     <form method="POST" class="form-horizontal" id="article_edit_form">
       <input type="hidden" name="save" value="1" />
       <input type="hidden" name="preview" value="1" />
-    {% with edit_form as form %}
-      {% include "wiki/includes/editor.html" %}
-    {% endwith %}
+      {% with edit_form as form %}
+        {% include "wiki/includes/editor.html" %}
+      {% endwith %}
     </form>
   </div>
 
-  <div class="span4" id="edit_sidebar">
+  <div class="col-lg-4" id="wiki-edit-sidebar">
     {% include "wiki/includes/editor_sidebar.html" %}
   </div>
 
@@ -26,30 +33,42 @@
 
 <div style="clear: both"></div>
 
-    <div class="form-actions">
-        <a class="btn btn-large" onclick="$('#previewModal').modal('show'); document.getElementById('article_edit_form').target='previewWindow'; document.getElementById('article_edit_form').action='{% url 'wiki:preview' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit()" href="#">
-          <span class="icon-eye-open"></span>
-          {% trans "Preview" %}
-        </a>
-        <a class="btn btn-large btn-primary" onclick="document.getElementById('article_edit_form').target=''; document.getElementById('article_edit_form').action='{% url 'wiki:edit' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit();" href="#">
-          <span class="icon-ok"></span>
-          {% trans "Save changes" %}
-        </a>
-        
-        {% if article|can_delete:user %}
-        <a href="{% url 'wiki:delete' path=urlpath.path article_id=article.id %}" class="pull-right btn">
-          <span class="icon-trash"></span>
-          {% trans "Delete article" %}
-        </a>
-        {% endif %}
-        
+<div class="form-group form-actions">
+  <div class="col-lg-8">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-10">
+      <a class="btn btn-default btn-large" onclick="$('#previewModal').modal('show'); document.getElementById('article_edit_form').target='previewWindow'; document.getElementById('article_edit_form').action='{% url 'wiki:preview' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit()" href="#">
+        <span class="icon-eye-open"></span>
+        {% trans "Preview" %}
+      </a>
+      <a class="btn btn-large btn-primary" onclick="document.getElementById('article_edit_form').target=''; document.getElementById('article_edit_form').action='{% url 'wiki:edit' path=urlpath.path article_id=article.id %}'; $('#article_edit_form').submit();" href="#">
+        <span class="icon-ok"></span>
+        {% trans "Save changes" %}
+      </a>
     </div>
-    <div class="modal hide" id="previewModal" style="width: 80%; min-height: 500px; margin-left: -40%;">
+  </div>
+  {% if article|can_delete:user %}
+  <div class="col-lg-4">
+    <div class="pull-right">
+    <a href="{% url 'wiki:delete' path=urlpath.path article_id=article.id %}" class="btn btn-danger">
+      <span class="icon-trash"></span>
+      {% trans "Delete article" %}
+    </a>
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+{% include "wiki/includes/modals.html" %}
+
+<div class="modal fade wiki-modal" id="previewModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
       <div class="modal-body">
-        <iframe name="previewWindow" style="width: 100%; min-height: 400px; border: 0;" frameborder="0"></iframe>
+        <iframe name="previewWindow" frameborder="0"></iframe>
       </div>
       <div class="modal-footer">
-        <a href="#" class="btn btn-large" data-dismiss="modal">
+        <a href="#" class="btn btn-default btn-large" data-dismiss="modal">
           <span class="icon-circle-arrow-left"></span>
           {% trans "Back to editor" %}
         </a>
@@ -59,6 +78,7 @@
         </a>
       </div>
     </div>
-
+  </div>
+</div>
 {% endblock %}
 

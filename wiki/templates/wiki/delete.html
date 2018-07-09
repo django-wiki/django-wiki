@@ -2,7 +2,7 @@
 {% load wiki_tags i18n sekizai_tags %}
 {% load url from future %}
 
-{% block pagetitle %}{% trans "Delete article" %}{% endblock %}
+{% block wiki_pagetitle %}{% trans "Delete article" %}{% endblock %}
 
 {% block wiki_contents %}
   <h1 class="page-header">{% trans "Delete" %} "{{ article.current_revision.title }}"</h1>
@@ -40,23 +40,29 @@
 
     <form method="POST" class="form-horizontal">
       {% wiki_form delete_form %}
-      <script type="text/javascript">
-        $('#id_revision').val('{{ article.current_revision.id }}');
-      </script>
-      <div class="form-actions">
-          <a href="{% url 'wiki:get' path=urlpath.path article_id=article.id %}" class="btn btn-large">
+      <div class="form-group form-actions">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-10">
+          <a href="{% url 'wiki:get' path=urlpath.path article_id=article.id %}" class="btn btn-default btn-large">
             <span class="icon-circle-arrow-left"></span>
             {% trans "Go back" %}
           </a>
           <button type="submit" name="save_changes" class="btn btn-danger btn-large">
-            <span class="icon-plus"></span>
+            <span class="icon-trash icon-white"></span>
             {% trans "Delete article" %}
           </button>
+        </div>
       </div>  
     </form>
     {% endif %}
  
   {% endif %}
+
+{% addtoblock "js" %}
+<script type="text/javascript">
+  $('#id_revision').val('{{ article.current_revision.id }}');
+</script>
+{% endaddtoblock %}
 
 {% endblock %}
 

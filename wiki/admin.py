@@ -1,11 +1,13 @@
+from __future__ import unicode_literals
+from __future__ import absolute_import
 from django.contrib import admin
 from django.contrib.contenttypes.generic import GenericTabularInline
 from django.utils.translation import ugettext_lazy as _
 from mptt.admin import MPTTModelAdmin
 
 from django import forms
-import models
-import editors
+from . import models
+from . import editors
 
 class ArticleObjectAdmin(GenericTabularInline):
     model = models.ArticleForObject
@@ -16,15 +18,18 @@ class ArticleRevisionForm(forms.ModelForm):
     
     class Meta:
         model = models.ArticleRevision
+        exclude = ()
         
     def __init__(self, *args, **kwargs):
         super(ArticleRevisionForm, self).__init__(*args, **kwargs)
+        # TODO: This pattern is too weird
         EditorClass = editors.getEditorClass()
         editor = editors.getEditor()
         self.fields['content'].widget = editor.get_admin_widget()
 
 class ArticleRevisionAdmin(admin.ModelAdmin):
     form = ArticleRevisionForm
+    list_display = ('title', 'created', 'modified', 'user', 'ip_address')
     class Media:
         js = editors.getEditorClass().AdminMedia.js
         css = editors.getEditorClass().AdminMedia.css
@@ -44,6 +49,7 @@ class ArticleForm(forms.ModelForm):
 
     class Meta:
         model = models.Article
+        exclude = ()
 
     def __init__(self, *args, **kwargs):
         super(ArticleForm, self).__init__(*args, **kwargs)
@@ -51,7 +57,7 @@ class ArticleForm(forms.ModelForm):
             revisions = models.ArticleRevision.objects.filter(article=self.instance)
             self.fields['current_revision'].queryset = revisions
         else:
-            self.fields['current_revision'].queryset = models.ArticleRevision.objects.get_empty_query_set()
+            self.fields['current_revision'].queryset = models.ArticleRevision.objects.none()
             self.fields['current_revision'].widget = forms.HiddenInput()
 
 class ArticleAdmin(admin.ModelAdmin):
@@ -63,11 +69,11 @@ class URLPathAdmin(MPTTModelAdmin):
     list_filter = ('site', 'articles__article__current_revision__deleted',
                    'articles__article__created',
                    'articles__article__modified')
-    list_display = ('__unicode__', 'article', 'get_created')
+    list_display = ('__str__', 'article', 'get_created')
     
     def get_created(self, instance):
         return instance.article.created
-    get_created.short_description = _(u'created')
+    get_created.short_description = _('created')
     
 admin.site.register(models.URLPath, URLPathAdmin)
 admin.site.register(models.Article, ArticleAdmin)

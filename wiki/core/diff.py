@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from __future__ import unicode_literals
 import difflib
 
 def simple_merge(txt1, txt2):

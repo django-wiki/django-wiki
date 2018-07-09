@@ -2,7 +2,7 @@
 {% load wiki_tags i18n humanize %}
 {% load url from future %}
 
-{% block pagetitle %}{% trans "History of" %} "{{ attachment.current_revision.get_filename }}"{% endblock %}
+{% block wiki_pagetitle %}{% trans "History of" %} "{{ attachment.current_revision.get_filename }}"{% endblock %}
 
 {% block wiki_contents_tab %}
 
@@ -36,7 +36,7 @@
           {% trans "Download" %}
         </a>
         {% if revision.attachment.article|can_write:user %}
-            <button{% if revision == attachment.current_revision %} disabled="disabled"{% endif %} class="btn">
+            <button{% if revision == attachment.current_revision %} disabled="disabled"{% endif %} class="btn btn-default">
               <span class="icon-flag"></span>
             {% trans "Use this!" %}
             </button>

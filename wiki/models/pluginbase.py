@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+from __future__ import absolute_import
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import signals
-from wiki.models.article import BaseRevisionMixin
 
 """
 There are three kinds of plugin base models:
@@ -25,9 +26,9 @@ There are three kinds of plugin base models:
 
 """
 
-from article import Article, ArticleRevision
-
+from .article import ArticleRevision, BaseRevisionMixin
 from wiki.conf import settings 
+
 
 class ArticlePlugin(models.Model):
     """This is the mother of all plugins. Extending from it means a deletion
@@ -35,20 +36,23 @@ class ArticlePlugin(models.Model):
     clean. Furthermore, it's possible to list all plugins and maintain generic
     properties in the future..."""    
     
-    article = models.ForeignKey(Article, on_delete=models.CASCADE, 
-                                verbose_name=_(u"article"))
+    article = models.ForeignKey('wiki.Article', on_delete=models.CASCADE, 
+                                verbose_name=_("article"))
     
     deleted = models.BooleanField(default=False)
     
     created = models.DateTimeField(auto_now_add=True)
     
     # Permission methods - you should override these, if they don't fit your logic.
-    def can_read(self, **kwargs):
-        return self.article.can_read(**kwargs)
-    def can_write(self, **kwargs):
-        return self.article.can_write(**kwargs)
+    def can_read(self, user):
+        return self.article.can_read(user)
+
+    def can_write(self, user):
+        return self.article.can_write(user)
+
     def can_delete(self, user):
         return self.article.can_delete(user)
+
     def can_moderate(self, user):
         return self.article.can_moderate(user)
 
@@ -57,8 +61,11 @@ class ArticlePlugin(models.Model):
         pass
     
     class Meta:
+        # Override this setting with app_label = '' in your extended model
+        # if it lives outside the wiki app.
         app_label = settings.APP_LABEL
-    
+
+
 class ReusablePlugin(ArticlePlugin):
     """Extend from this model if you have a plugin that may be related to many
     articles. Please note that the ArticlePlugin.article ForeignKey STAYS! This
@@ -73,22 +80,25 @@ class ReusablePlugin(ArticlePlugin):
     """
     # The article on which the plugin was originally created.
     # Used to apply permissions.
-    ArticlePlugin.article.on_delete=models.SET_NULL
-    ArticlePlugin.article.verbose_name=_(u'original article')
-    ArticlePlugin.article.help_text=_(u'Permissions are inherited from this article')
+    ArticlePlugin.article.on_delete = models.SET_NULL
+    ArticlePlugin.article.verbose_name = _('original article')
+    ArticlePlugin.article.help_text = _('Permissions are inherited from this article')
     ArticlePlugin.article.null = True
     ArticlePlugin.article.blank = True
     
-    articles = models.ManyToManyField(Article, related_name='shared_plugins_set')
+    articles = models.ManyToManyField('wiki.Article', related_name='shared_plugins_set')
     
     # Since the article relation may be None, we have to check for this
     # before handling permissions....
-    def can_read(self, **kwargs):
-        return self.article.can_read(**kwargs) if self.article else False
-    def can_write(self, **kwargs):
-        return self.article.can_write(**kwargs) if self.article else False
+    def can_read(self, user):
+        return self.article.can_read(user) if self.article else False
+
+    def can_write(self, user):
+        return self.article.can_write(user) if self.article else False
+
     def can_delete(self, user):
         return self.article.can_delete(user) if self.article else False
+
     def can_moderate(self, user):
         return self.article.can_moderate(user) if self.article else False
 
@@ -97,15 +107,19 @@ class ReusablePlugin(ArticlePlugin):
         # Automatically make the original article the first one in the added set
         if not self.article:
             articles = self.articles.all()
-            if articles.count() == 0:
+            if articles.exists():
                 self.article = articles[0]
             
         super(ReusablePlugin, self).save(*args, **kwargs)
     
     class Meta:
+        # Override this setting with app_label = '' in your extended model
+        # if it lives outside the wiki app.
         app_label = settings.APP_LABEL
 
+
 class SimplePluginCreateError(Exception): pass
+
 
 class SimplePlugin(ArticlePlugin):
     """
@@ -126,19 +140,23 @@ class SimplePlugin(ArticlePlugin):
     YourPlugin.objects.create(article=article_instance, ...)
     """
     # The article revision that this plugin is attached to
-    article_revision = models.ForeignKey(ArticleRevision, on_delete=models.CASCADE)
+    article_revision = models.ForeignKey('wiki.ArticleRevision', on_delete=models.CASCADE)
     
     def __init__(self, *args, **kwargs):
+        article = kwargs.pop('article', None)
         super(SimplePlugin, self).__init__(*args, **kwargs)
-        if not self.id and not 'article' in kwargs:
+        if not self.pk and not article:
             raise SimplePluginCreateError("Keyword argument 'article' expected.")
-            self.article = kwargs['article']
+        elif self.pk:
+            self.article = self.article_revision.article
+        else:
+            self.article = article
         
     def get_logmessage(self):
-        return _(u"A plugin was changed")
+        return _("A plugin was changed")
     
     def save(self, *args, **kwargs):
-        if not self.id:
+        if not self.pk:
             if not self.article.current_revision:
                 raise SimplePluginCreateError("Article does not have a current_revision set.")
             new_revision = ArticleRevision()
@@ -150,7 +168,10 @@ class SimplePlugin(ArticlePlugin):
         super(SimplePlugin, self).save(*args, **kwargs)
     
     class Meta:
+        # Override this setting with app_label = '' in your extended model
+        # if it lives outside the wiki app.
         app_label = settings.APP_LABEL
+
 
 class RevisionPlugin(ArticlePlugin):
     """
@@ -162,9 +183,9 @@ class RevisionPlugin(ArticlePlugin):
     """
     # The current revision of this plugin, if any!
     current_revision = models.OneToOneField('RevisionPluginRevision', 
-                                            verbose_name=_(u'current revision'),
+                                            verbose_name=_('current revision'),
                                             blank=True, null=True, related_name='plugin_set',
-                                            help_text=_(u'The revision being displayed for this plugin.'
+                                            help_text=_('The revision being displayed for this plugin. '
                                                          'If you need to do a roll-back, simply change the value of this field.'),
                                             )
     
@@ -189,6 +210,8 @@ class RevisionPlugin(ArticlePlugin):
         if save: self.save()
 
     class Meta:
+        # Override this setting with app_label = '' in your extended model
+        # if it lives outside the wiki app.
         app_label = settings.APP_LABEL
 
 
@@ -226,8 +249,10 @@ class RevisionPluginRevision(BaseRevisionMixin, models.Model):
             self.plugin.save()
 
     class Meta:
+        # Override this setting with app_label = '' in your extended model
+        # if it lives outside the wiki app.
         app_label = settings.APP_LABEL
-        get_latest_by = ('revision_number',)
+        get_latest_by = 'revision_number'
         ordering = ('-created',)
 
 ######################################################
@@ -239,12 +264,32 @@ class RevisionPluginRevision(BaseRevisionMixin, models.Model):
 # It's my art, when I disguise my body in the shape of a plane.
 # (Shellac, 1993)
 
-def update_simple_plugins(instance, *args, **kwargs):
+
+def update_simple_plugins(**kwargs):
     """Every time a new article revision is created, we update all active 
     plugins to match this article revision"""
+    instance = kwargs['instance']
     if kwargs.get('created', False):
         p_revisions = SimplePlugin.objects.filter(article=instance.article, deleted=False)
         # TODO: This was breaking things. SimplePlugin doesn't have a revision?
         p_revisions.update(article_revision=instance)
 
+
+def on_article_plugin_post_save(**kwargs):
+    articleplugin = kwargs['instance']
+    articleplugin.article.clear_cache()
+
+
+def on_reusable_plugin_post_save(**kwargs):
+    reusableplugin = kwargs['instance']
+    for article in reusableplugin.articles.all():
+        article.clear_cache()
+
+
+def on_revision_plugin_revision_post_save(**kwargs):
+    revision = kwargs['instance']
+    revision.plugin.article.clear_cache()
+
 signals.post_save.connect(update_simple_plugins, ArticleRevision)
+signals.post_save.connect(on_article_plugin_post_save, ArticlePlugin)
+signals.post_save.connect(on_reusable_plugin_post_save, ReusablePlugin)

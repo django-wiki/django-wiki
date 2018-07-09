@@ -1,8 +1,8 @@
 {% extends "wiki/article.html" %}
-{% load wiki_tags i18n humanize thumbnail %}
+{% load wiki_tags i18n humanize wiki_thumbnails %}
 {% load url from future %}
 
-{% block pagetitle %}{% trans "Images" %}: {{ article.current_revision.title }}{% endblock %}
+{% block wiki_pagetitle %}{% trans "Images" %}: {{ article.current_revision.title }}{% endblock %}
 
 {% block wiki_contents_tab %}
   <p class="lead">{% trans "The following images are available for this article. Copy the markdown tag to directly refer to an image from the article text." %}</p>
@@ -32,7 +32,7 @@
         <p>
           <a href="{% url 'wiki:images_add_revision' path=urlpath.path article_id=article.id image_id=image.id %}">
             <span class="icon-upload"></span>
-            {% trans "Upload new image" %}
+            {% trans "Upload replacement" %}
           </a> <br />
           {% if revision.deleted %}
             <a href="{% url 'wiki:images_restore' path=urlpath.path article_id=article.id image_id=image.id %}">
@@ -71,7 +71,7 @@
           {% for old_revision in image.revision_set.all %}
             <tr>
               <td>
-              {% thumbnail revision.imagerevision.image "50x50" crop="center" as thumb %}
+              {% thumbnail old_revision.imagerevision.image "50x50" crop="center" as thumb %}
                 <img src="{{ thumb.url }}" alt="{{ revision.imagerevision.get_filename }}" />
               {% endthumbnail %}
               </td>

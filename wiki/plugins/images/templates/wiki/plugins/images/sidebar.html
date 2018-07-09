@@ -1,9 +1,10 @@
-{% load i18n wiki_tags wiki_images_tags humanize thumbnail %}
+{% load i18n wiki_tags wiki_images_tags humanize wiki_thumbnails sekizai_tags %}
 {% load url from future %}
 
+{% addtoblock "js" %}
 <script type="text/javascript">
 function insert_image(image_id) {
-  align=prompt('Enter an alignment. \'left\', \'right\' or \'center\':', 'right');
+  align=prompt('Enter an alignment. \'left\' or \'right\':', 'right');
   caption=prompt('Enter a caption text. You may use markdown. You can edit the text after...');
   imagetag = '\n[image:'+image_id+' align:'+align+']';
   if (! caption == '') {
@@ -13,12 +14,13 @@ function insert_image(image_id) {
   }
 }
 </script>
+{% endaddtoblock %}
 
 {% with article|images_for_article as images %}
 <style type="text/css">
   #image-list tr:first-child td {border:0;}
 </style>
-<div style="max-height: 300px; overflow: scroll-y;">
+<div style="max-height: 300px; overflow: auto;">
   <table class="table" style="margin-bottom: 0;" id="image-list">
     {% for image in images %}
       {% with image.current_revision.imagerevision as revision %}
@@ -70,29 +72,34 @@ function insert_image(image_id) {
     {% endfor %}
   {% endif %}
 
-  {% for field in form %}
-  <fieldset id="div_{{ field.auto_id }}" class="control-group fields {% if field.errors %} error{% endif %}">
-    {% if field.label %}
-      <!--<label for="{{ field.id_for_label }}" class="{% if field.field.required %}requiredField{% endif %}">
-      {{ field.label|safe }}
-      </label>-->
-    {% endif %}
-    {{ field }}
-    {% if field.errors %}
-    <div id="error_{{ forloop.counter }}_{{ field.auto_id }}" class="help-block">
-      {% for error in field.errors %}
-      <div>{{ error }}</div>
-      {% endfor %}
-    </div>
-    {% endif %}
-  </fieldset>
+  {# Include the hidden fields #}
+  {% for hidden in form.hidden_fields %}
+    {{ hidden }}
+  {% endfor %}
+
+  {% for field in form.visible_fields %}
+    <fieldset id="div_{{ field.auto_id }}" class="control-group fields {% if field.errors %} error{% endif %}">
+      {% if field.label %}
+        <!--<label for="{{ field.id_for_label }}" class="{% if field.field.required %}requiredField{% endif %}">
+        {{ field.label|safe }}
+        </label>-->
+      {% endif %}
+      {{ field }}
+      {% if field.errors %}
+      <div id="error_{{ forloop.counter }}_{{ field.auto_id }}" class="help-block">
+        {% for error in field.errors %}
+        <div>{{ error }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </fieldset>
     {% if field.help_text %}
       <p id="hint_{{ field.auto_id }}" class="help-block">{{ field.help_text|safe }}</p>
     {% endif %}
   {% endfor %}
 
   <p>
-    <button type="submit" name="{{ plugin.slug }}_save" value="1" class="btn btn-large">
+    <button type="submit" name="{{ plugin.slug }}_save" value="1" class="btn btn-default btn-large">
       <span class="icon-upload"></span>
       {% trans "Add image" %}
     </button>
@@ -112,7 +119,7 @@ function insert_image(image_id) {
   {% trans "How to use images" %}
 </h4>
 
-<p>{% trans "After uploading an image, it is attached to this particular artice and can be used only here. Other users may replace the image, but older versions are kept. You probably want to show the image with a nice caption. To achieve this, press the Insert button and fill in the caption fields and possibly choose to have you image floating right or left of the content. You can use Markdown in the caption. The markdown code syntax for images looks like this, possible values for align are left/center/right:" %}<br />
+<p>{% trans "After uploading an image, it is attached to this particular artice and can be used only here. Other users may replace the image, but older versions are kept. You probably want to show the image with a nice caption. To achieve this, press the Insert button and fill in the caption fields and possibly choose to have you image floating right or left of the content. You can use Markdown in the caption. The markdown code syntax for images looks like this, possible values for align are left and right:" %}<br />
 <pre>[image:id align:right]
     caption indented by 4 spaces</pre>
 </p>

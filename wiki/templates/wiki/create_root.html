@@ -1,0 +1,41 @@
+{% extends "wiki/base.html" %}
+{% load wiki_tags i18n sekizai_tags %}
+
+{% block wiki_pagetitle %}{% trans "Create root article" %}{% endblock %}
+
+{% block wiki_contents %}
+
+  {% addtoblock "js" %}
+  {% for js in editor.Media.js %}
+  <script type="text/javascript" src="{{ STATIC_URL }}{{ js }}"></script>
+  {% endfor %}
+  {% endaddtoblock %}
+
+  {% addtoblock "css" %}
+  {% for media, srcs in editor.Media.css.items %}
+    {% for src in srcs %}
+      <link rel="stylesheet" media="{{ media }}" href="{{ STATIC_URL }}{{ src }}" />
+    {% endfor %}
+  {% endfor %}
+  {% endaddtoblock %}
+
+  <h1>{% trans "Congratulations!" %}</h1>
+  <p class="lead">
+    {% trans "You have django-wiki installed... but there are no articles. So it's time to create the first one, the root article." %}
+    {% trans "In the beginning, it will only be editable by administrators, but you can define permissions after." %}
+  </p>
+
+  <h2 class="page-header">{% trans "Root article" %}</h2>
+
+  <form method="POST" class="form-horizontal">
+    {% wiki_form form %}
+    <div class="form-group form-actions">
+      <div class="col-lg-2"></div>
+      <div class="col-lg-10">
+        <input type="submit" name="save_changes" value="{% trans "Create root" %} &raquo;" class="btn btn-primary btn-large" />
+      </div>
+    </div>
+  </form>
+
+{% endblock %}
+

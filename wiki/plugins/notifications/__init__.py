@@ -1,2 +1,2 @@
-# Key for django_notify
-ARTICLE_EDIT = "article_edit"
+from __future__ import unicode_literals
+default_app_config = 'wiki.apps.NotifcationsConfig'

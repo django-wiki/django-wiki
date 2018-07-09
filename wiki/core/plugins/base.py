@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+from __future__ import absolute_import
 from django.utils.translation import ugettext as _
 
 """Base classes for different plugin objects.
@@ -9,6 +11,7 @@ from django.utils.translation import ugettext as _
 Please have a look in wiki.models.pluginbase to see where to inherit your
 plugin's models.
 """
+from django import forms
 
 class BasePlugin(object):
     """Plugins should inherit from this"""
@@ -17,13 +20,16 @@ class BasePlugin(object):
     
     # Optional
     settings_form = None# A form class to add to the settings tab
-    urlpatterns = []
-    article_tab = None  #(_(u'Attachments'), "icon-file")
+    urlpatterns = {
+        'root': [], # General urlpatterns that will reside in /wiki/plugins/plugin-slug/...
+        'article': [], # urlpatterns that receive article_id or urlpath, i.e. /wiki/ArticleName/plugin/plugin-slug/...
+    }
+    article_tab = None  #(_('Attachments'), "icon-file")
     article_view = None # A view for article_id/plugin/slug/
     notifications = []  # A list of notification handlers to be subscribed if the notification system is active
                         # Example
                         #        [{'model': models.AttachmentRevision,
-                        #          'message': lambda obj: _(u"A file was changed: %s") % obj.get_filename(),
+                        #          'message': lambda obj: _("A file was changed: %s") % obj.get_filename(),
                         #          'key': ARTICLE_EDIT,
                         #          'created': True,
                         #          'get_article': lambda obj: obj.attachment.article}
@@ -35,13 +41,18 @@ class BasePlugin(object):
         js = []
         css = {}
 
-class PluginSidebarFormMixin(object):
-
+class PluginSidebarFormMixin(forms.ModelForm):
+    
+    unsaved_article_title = forms.CharField(widget=forms.HiddenInput(),
+                                            required=True)
+    unsaved_article_content = forms.CharField(widget=forms.HiddenInput(),
+                                              required=False)
+    
     def get_usermessage(self):
         pass
 
 class PluginSettingsFormMixin(object):    
-    settings_form_headline = _(u'Settings for plugin')
+    settings_form_headline = _('Settings for plugin')
     settings_order = 1
     settings_write_access = False
     

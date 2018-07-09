@@ -2,7 +2,7 @@
 {% load wiki_tags i18n humanize %}
 {% load url from future %}
 
-{% block pagetitle %}{% trans "Listing articles in" %} {{ article.current_revision.title }}{% endblock %}
+{% block wiki_pagetitle %}{% trans "Listing articles in" %} {{ article.current_revision.title }}{% endblock %}
 
 {% block wiki_contents_tab %}
 
@@ -12,12 +12,12 @@
 <div class="well well-small">
   <div class="btn-group pull-left">
     {% if urlpath.parent %}
-    <a href="{% url 'wiki:dir' path=urlpath.parent.path %}" class="btn">
+    <a href="{% url 'wiki:dir' path=urlpath.parent.path %}" class="btn btn-default">
       <span class="icon-arrow-up"></span>
       {% trans "Up one level" %}
     </a>
     {% endif %}
-    <a href="{% url 'wiki:create' path=urlpath.path %}" class="btn">
+    <a href="{% url 'wiki:create' path=urlpath.path %}" class="btn btn-default">
       <span class="icon-plus"></span>
       {% trans "Add article" %}
     </a>
@@ -37,7 +37,7 @@
 
 <p>
   {% with paginator.object_list.count as cnt %}
-    {% blocktrans with urlpath.path as path and cnt|pluralize:_("article,articles") as articles_plur and cnt|pluralize:_("is,are") as articles_plur_verb %}
+    {% blocktrans with urlpath.path as path and cnt|pluralize:_("article,articles") as articles_plur and cnt|pluralize:_("is,are") as articles_plur_verb trimmed %}
       Browsing <strong><a href="{{ self_url }}">/{{ path }}</a></strong>. There {{ articles_plur_verb }} <strong>{{ cnt }} {{ articles_plur }}</strong> in this level.
     {% endblocktrans %}
   {% endwith %}

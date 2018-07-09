@@ -1,0 +1,20 @@
+{% load wiki_macro_tags %}
+{% load url from future %}
+
+<li>
+  <a href="{% url 'wiki:get' path=parent.path article_id=parent.article.id %}">
+    {{ parent.article.current_revision.title }}
+    {% if not parent.article.other_read %}<i class="icon-lock"></i>{% endif %}
+  </a>
+{% if parent.article.other_read %}
+  {% with parent.children.active as children %}
+  {% if parent.level < depth and children.count %}
+    <ul>
+        {% for child in parent.children.active %}
+            {% article_list child depth %}
+        {% endfor %}
+    </ul>
+  {% endif %}
+  {% endwith %}
+{% endif %}
+</li>

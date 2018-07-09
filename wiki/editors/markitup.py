@@ -1,10 +1,18 @@
+# -*- coding: utf-8
+from __future__ import unicode_literals
+from __future__ import absolute_import
 from django import forms
 from django.forms.util import flatatt
-from django.utils.encoding import force_unicode
+try:
+    from django.utils.encoding import force_unicode
+except ImportError:
+    def force_unicode(x):
+        return(x)
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 
 from wiki.editors.base import BaseEditor
+
 
 class MarkItUpAdminWidget(forms.Widget):
     """A simplified more fail-safe widget for the backend"""
@@ -19,8 +27,9 @@ class MarkItUpAdminWidget(forms.Widget):
     def render(self, name, value, attrs=None):
         if value is None: value = ''
         final_attrs = self.build_attrs(attrs, name=name)
-        return mark_safe(u'<textarea%s>%s</textarea>' % (flatatt(final_attrs),
+        return mark_safe('<textarea%s>%s</textarea>' % (flatatt(final_attrs),
                 conditional_escape(force_unicode(value))))
+
 
 class MarkItUpWidget(forms.Widget):
     def __init__(self, attrs=None):
@@ -34,8 +43,9 @@ class MarkItUpWidget(forms.Widget):
     def render(self, name, value, attrs=None):
         if value is None: value = ''
         final_attrs = self.build_attrs(attrs, name=name)
-        return mark_safe(u'<div><textarea%s>%s</textarea></div>' % (flatatt(final_attrs),
+        return mark_safe('<div><textarea%s>%s</textarea></div>' % (flatatt(final_attrs),
                 conditional_escape(force_unicode(value))))
+
 
 class MarkItUp(BaseEditor):
     editor_id = 'markitup'

@@ -1,0 +1,1913 @@
+# THE GERMAN TRANSLATION OF DJANGO-WIKI.
+# Copyright (C) 2013 THOMAS LOTTERMANN
+# This file is distributed under the same license as the DJANGO-WIKI package.
+# THOMAS LOTTERMANN <TomLottermann@googlemail.com>, 2013.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.18\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-10-22 08:57+0200\n"
+"PO-Revision-Date: 2013-03-17 19:30+CET\n"
+"Last-Translator: Thomas Lottermann <TomLottermann@googlemail.com>\n"
+"Language-Team: \n"
+"Language: German\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: admin.py:72 models/article.py:28
+msgid "created"
+msgstr "erstellt"
+
+#: forms.py:49
+msgid "Spam protection failed to find both a logged in user and an IP address."
+msgstr ""
+"Dem Spam Schutz war es nicht möglich einen angemeldeten Benutzer oder eine "
+"IP Adresse zu finden."
+
+#: forms.py:62
+#, fuzzy, python-format
+msgid ""
+"Spam protection: You are only allowed to create or edit %(revisions)d article"
+"(s) per %(interval_name)s."
+msgstr ""
+"Spam Schutz: Du darfst pro %(interval_name)s nur %(revisions)d Artikel "
+"erzeugen oder verändern"
+
+#: forms.py:78
+msgid "minute"
+msgstr "Minute"
+
+#: forms.py:78
+#, python-format
+msgid "%d minutes"
+msgstr "%d Minuten"
+
+#: forms.py:85
+msgid "hour"
+msgstr "Stunde"
+
+#: forms.py:90 forms.py:98 forms.py:240
+#: plugins/search/haystack/templates/wiki/plugins/search/search.html:24
+#: templates/wiki/dir.html:48 templates/wiki/search.html:24
+msgid "Title"
+msgstr "Titel"
+
+#: forms.py:90
+msgid "Initial title of the article. May be overridden with revision titles."
+msgstr ""
+"Initialer Titel des Artikels. Er darf in zukünftigen Revisionen "
+"überschrieben werden."
+
+#: forms.py:91
+msgid "Type in some contents"
+msgstr "Gib den Inhalt an"
+
+#: forms.py:92
+msgid ""
+"This is just the initial contents of your article. After creating it, you "
+"can use more complex features like adding plugins, meta data, related "
+"articles etc..."
+msgstr ""
+"Das ist nur der initiale Inhalt des Artikels. Du darfst später komplexere "
+"Features wie Plugins, Metadaten oder abhängige Artikel ergänzen."
+
+#: forms.py:99 forms.py:243
+msgid "Contents"
+msgstr "Inhalt"
+
+#: forms.py:102 forms.py:246
+msgid "Summary"
+msgstr "Nachricht"
+
+#: forms.py:102
+msgid ""
+"Give a short reason for your edit, which will be stated in the revision log."
+msgstr ""
+"Gebe einen kurzen Grund für deine Änderung an. Er wird bei der Revision "
+"genannt werden."
+
+#: forms.py:152
+msgid ""
+"While you were editing, someone else changed the revision. Your contents "
+"have been automatically merged with the new contents. Please review the text "
+"below."
+msgstr ""
+"Jemand hat den Artikel modifiziert, während du den Artikel bearbeitet hast. "
+"Dein Inhalt wurde automatisch mit dem neuen Inhalt vereinigt. Bitte "
+"kontolliere den unten gezeigten Inhalt."
+
+#: forms.py:154
+msgid "No changes made. Nothing to save."
+msgstr "Da keine Änderungen gemacht wurden ist nichts zu speichern."
+
+#: forms.py:191
+msgid "Select an option"
+msgstr "Wähle eine Option aus"
+
+#: forms.py:241 templates/wiki/dir.html:49
+msgid "Slug"
+msgstr "Adresse"
+
+#: forms.py:241
+msgid ""
+"This will be the address where your article can be found. Use only "
+"alphanumeric characters and - or _. Note that you cannot change the slug "
+"after creating the article."
+msgstr ""
+"Das wird die Adresse sein, unter der der Artikel aufgerufen werden kann.Es "
+"sind nur Buchstaben, Zahlen sowie - und _ erlaubt. Die Adresse kann nachder "
+"Erstellung des Artikels nicht mehr geändert werden."
+
+#: forms.py:246
+msgid "Write a brief message for the article's history log."
+msgstr "Schreibe eine kurze Nachricht für für die Versionsübersicht."
+
+#: forms.py:252
+msgid "A slug may not begin with an underscore."
+msgstr "Die Adresse darf nicht mit _ beginnen."
+
+#: forms.py:254
+msgid "'admin' is not a permitted slug name."
+msgstr "'admin' ist als Adresse erlaubt."
+
+#: forms.py:263
+#, python-format
+msgid "A deleted article with slug \"%s\" already exists."
+msgstr "Ein gelöschter Artikel unter der Adresse \"%s\" existiert bereits."
+
+#: forms.py:265
+#, python-format
+msgid "A slug named \"%s\" already exists."
+msgstr "Ein Artikel unter der Adresse \"%s\" existiert bereits."
+
+#: forms.py:282
+msgid "Yes, I am sure"
+msgstr "Ja, ich bin mir sicher"
+
+#: forms.py:284 templates/wiki/deleted.html:47
+msgid "Purge"
+msgstr "Für immer löschen"
+
+#: forms.py:285
+msgid ""
+"Purge the article: Completely remove it (and all its contents) with no undo. "
+"Purging is a good idea if you want to free the slug such that users can "
+"create new articles in its place."
+msgstr ""
+"Löscht den Artikel (und seinen Inhalt) für immer, ohne dass es rückgängig "
+"gemacht werden kann. Dadurch kann die Adresse wieder neu belegt werden."
+
+#: forms.py:292 plugins/attachments/forms.py:157 plugins/images/forms.py:66
+msgid "You are not sure enough!"
+msgstr "Du scheinst dir nicht sicher zu sein!"
+
+#: forms.py:294
+msgid "While you tried to delete this article, it was modified. TAKE CARE!"
+msgstr ""
+"ACHTUNG: Während du den Artikel löschen wolltest wurde der Artikel "
+"modifiziert!"
+
+#: forms.py:300
+msgid "Lock article"
+msgstr "Artikel sperren"
+
+#: forms.py:300
+msgid "Deny all users access to edit this article."
+msgstr "Allen Benutzern verbieten den Artikel zu modifizieren."
+
+#: forms.py:303
+msgid "Permissions"
+msgstr "Rechte"
+
+#: forms.py:307
+msgid "Owner"
+msgstr "Besitzer"
+
+#: forms.py:308
+msgid "Enter the username of the owner."
+msgstr "Gib den Benutzernamen des Besitzers an."
+
+#: forms.py:309 forms.py:353 plugins/notifications/util.py:10
+msgid "(none)"
+msgstr "(nichts)"
+
+#: forms.py:314
+msgid "Inherit permissions"
+msgstr "Vererbe Rechte"
+
+#: forms.py:314
+msgid ""
+"Check here to apply the above permissions (excluding group and owner of the "
+"article) recursively to articles below this one."
+msgstr ""
+"Wähle diese Option aus, um die oben angegebenen Rechte (abgesehen von Gruppe "
+"und Besitzer) auf die Unterartikel zu übertragen."
+
+#: forms.py:317
+msgid "Inherit owner"
+msgstr "Vererbe den Besitzer"
+
+#: forms.py:317
+msgid ""
+"Check here to apply the ownership setting recursively to articles below this "
+"one."
+msgstr ""
+"Wähle diese Option aus, um die Besitzereinstellung auf die Unterartikel zu "
+"übertragen."
+
+#: forms.py:320
+msgid "Inherit group"
+msgstr "Vererbe Gruppe"
+
+#: forms.py:320
+msgid ""
+"Check here to apply the group setting recursively to articles below this one."
+msgstr ""
+"Wähle diese Option aus, um die Gruppeneinstellung auf die Unterartikel zu "
+"übertragen."
+
+#: forms.py:325
+msgid "Permission settings for the article were updated."
+msgstr "Die Rechte für den Artikel wurden aktualisiert."
+
+#: forms.py:327
+msgid "Your permission settings were unchanged, so nothing saved."
+msgstr "Da keine Änderungen gemacht wurden ist nichts zu speichern."
+
+#: forms.py:376
+msgid "No user with that username"
+msgstr "Es existiert kein Benutzer mit diesem Namen"
+
+#: forms.py:402
+msgid "Article locked for editing"
+msgstr "Artikel wurde für die Bearbeitung gesperrt"
+
+#: forms.py:409
+msgid "Article unlocked for editing"
+msgstr "Artikel wurde für die Bearbeitung freigegeben"
+
+#: forms.py:424
+msgid "Filter..."
+msgstr "Filtern..."
+
+#: forms.py:430 templates/wiki/base.html:42
+#, fuzzy
+msgid "Search..."
+msgstr "Suchen..."
+
+#: conf/settings.py:20
+msgid "Table of Contents"
+msgstr "Inhaltsverzeichnis"
+
+#: core/plugins/base.py:53
+msgid "Settings for plugin"
+msgstr "Plugineinstellungen"
+
+#: models/article.py:23 models/pluginbase.py:173
+#: plugins/attachments/models.py:24
+msgid "current revision"
+msgstr "aktuelle Revision"
+
+#: models/article.py:25
+msgid ""
+"The revision being displayed for this article. If you need to do a roll-"
+"back, simply change the value of this field."
+msgstr ""
+"Die Revision, die für diesen Artikel angezeigt wird. Falls du eine Änderung "
+"rückgängig machen willst, ändere einfach dieses Feld."
+
+#: models/article.py:29
+msgid "modified"
+msgstr "modifiziert"
+
+#: models/article.py:30
+msgid "Article properties last modified"
+msgstr "Wann der Artikel zuletzt modifiziert wurde"
+
+#: models/article.py:32
+msgid "owner"
+msgstr "Besitzer"
+
+#: models/article.py:34
+msgid ""
+"The owner of the article, usually the creator. The owner always has both "
+"read and write access."
+msgstr ""
+"Der Besitzer des Artikels (meistens der Ersteller). Der Besitzer hat immer "
+"Schreib- und Lesezugriff."
+
+#: models/article.py:37
+msgid "group"
+msgstr "Gruppe"
+
+#: models/article.py:39
+msgid ""
+"Like in a UNIX file system, permissions can be given to a user according to "
+"group membership. Groups are handled through the Django auth system."
+msgstr ""
+"Wie auch beim UNIX Dateisystem könnten Nutzern Rechte über Gruppen gegeben "
+"werden.Gruppen werden durch das Django auth System verwaltet."
+
+#: models/article.py:42
+msgid "group read access"
+msgstr "Lesezugriff für Gruppen"
+
+#: models/article.py:43
+msgid "group write access"
+msgstr "Schreibzugriff für Gruppen"
+
+#: models/article.py:44
+msgid "others read access"
+msgstr "Lesezugriff für andere"
+
+#: models/article.py:45
+msgid "others write access"
+msgstr "Schreibzugriff für andere"
+
+#: models/article.py:143
+#, python-format
+msgid "Article without content (%(id)d)"
+msgstr "Artikel ohne Inhalt (%(id)d)"
+
+#: models/article.py:149
+msgid "Can edit all articles and lock/unlock/restore"
+msgstr ""
+"Darf alle Artikel bearbeiten und sie sperren/entsperren/wiederherstellen"
+
+#: models/article.py:150
+msgid "Can change ownership of any article"
+msgstr "Darf den Besitzer jedes Artikels ändern"
+
+#: models/article.py:151
+msgid "Can assign permissions to other users"
+msgstr "Darf anderen Benutzern Rechte zuweisen"
+
+#: models/article.py:193
+msgid "content type"
+msgstr "Inhaltsart"
+
+#: models/article.py:195
+msgid "object ID"
+msgstr "Objekt ID"
+
+#: models/article.py:202
+msgid "Article for object"
+msgstr "Artikel für Objekt"
+
+#: models/article.py:203
+msgid "Articles for object"
+msgstr "Artikel für Objekt"
+
+#: models/article.py:211
+msgid "revision number"
+msgstr "Revisionsnummer"
+
+#: models/article.py:216
+msgid "IP address"
+msgstr "IP Adresse"
+
+#: models/article.py:217
+msgid "user"
+msgstr "Benutzer"
+
+#: models/article.py:231
+#: plugins/attachments/templates/wiki/plugins/attachments/history.html:23
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:21
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:40
+#: templates/wiki/includes/revision_info.html:15
+msgid "deleted"
+msgstr "Gelöscht"
+
+#: models/article.py:232 templates/wiki/article.html:23
+#: templates/wiki/includes/revision_info.html:21
+msgid "locked"
+msgstr "Gesperrt"
+
+#: models/article.py:250 models/pluginbase.py:37
+msgid "article"
+msgstr "Artikel"
+
+#: models/article.py:253
+msgid "article contents"
+msgstr "Artikelinhalt"
+
+#: models/article.py:257
+msgid "article title"
+msgstr "Artikeltitel"
+
+#: models/article.py:258
+msgid ""
+"Each revision contains a title field that must be filled out, even if the "
+"title has not changed"
+msgstr ""
+"Jede Revision enthält ein Titelfeld, das ausgefüllt werden muss, selbst wenn "
+"es nicht geändert wurde"
+
+#: models/pluginbase.py:77
+msgid "original article"
+msgstr "Ursprünglicher Artikel"
+
+#: models/pluginbase.py:78
+msgid "Permissions are inherited from this article"
+msgstr "Die rechte werden von diesem Artikel vererbt"
+
+#: models/pluginbase.py:144
+msgid "A plugin was changed"
+msgstr "Ein Plugin wurde geändert"
+
+#: models/pluginbase.py:175
+msgid ""
+"The revision being displayed for this plugin. If you need to do a roll-back, "
+"simply change the value of this field."
+msgstr ""
+"Die Revision die für dieses Plugin angezeigt wird. Falls du etwas rückgängig "
+"machen willst, ändere einfach den Wert dieses Feldes."
+
+#: models/urlpath.py:40
+msgid "Cache lookup value for articles"
+msgstr "Cache Aufrufwert für Artikel"
+
+#: models/urlpath.py:44
+msgid "slug"
+msgstr "Adresse"
+
+#: models/urlpath.py:141
+msgid "(root)"
+msgstr "(Wurzel)"
+
+#: models/urlpath.py:151
+msgid "URL path"
+msgstr "URL Pfad"
+
+#: models/urlpath.py:152
+msgid "URL paths"
+msgstr "URL Pfäde"
+
+#: models/urlpath.py:158
+msgid "Sorry but you cannot have a root article with a slug."
+msgstr "Ein Hauptartikel mit Adresse ist leider nicht möglich."
+
+#: models/urlpath.py:160
+msgid "A non-root note must always have a slug."
+msgstr ""
+"Ein Artikel muss immer eine Adresse haben (vom Hauptartikel abgesehen)."
+
+#: models/urlpath.py:163
+#, python-format
+msgid "There is already a root node on %s"
+msgstr "Es gibt bereits einen Wurzelknoten auf %s"
+
+#: models/urlpath.py:281
+msgid ""
+"Articles who lost their parents\n"
+"===============================\n"
+"\n"
+"The children of this article have had their parents deleted. You should "
+"probably find a new home for them."
+msgstr ""
+"Artikel die ihre Eltern verloren haben\n"
+"======================================\n"
+"\n"
+"Die Kinder dieses Artikels haben ihre Eltern verloren. Du solltest ihnen "
+"einen neuen Elternknoten zuweisen."
+
+#: models/urlpath.py:284
+msgid "Lost and found"
+msgstr "Unreferenzierte Artikel"
+
+# ################ PLUGINS #################
+#: plugins/attachments/forms.py:16
+#: plugins/attachments/templates/wiki/plugins/attachments/history.html:14
+msgid "Description"
+msgstr "Beschreibung"
+
+#: plugins/attachments/forms.py:17
+msgid "A short summary of what the file contains"
+msgstr "Eine kurze Beschreibung, was die Datei enthält"
+
+#: plugins/attachments/forms.py:66
+#, fuzzy
+msgid "Remove previous"
+msgstr "Bildrevisionen"
+
+#: plugins/attachments/forms.py:67
+msgid "Remove previous attachment revisions and their files (to save space)?"
+msgstr ""
+"Vorherige Versionen des Anhangs samt Dateien entfernen (um Platz zu sparen)?"
+
+#: plugins/attachments/forms.py:76
+msgid "File or zip archive"
+msgstr "Datei oder zip Archiv"
+
+#: plugins/attachments/forms.py:81
+msgid "Unzip file"
+msgstr "Datei entpacken"
+
+#: plugins/attachments/forms.py:82
+msgid ""
+"Create individual attachments for files in a .zip file - directories do not "
+"work."
+msgstr ""
+"Erstelle individuelle Anhänge für Dateien in einem .zip Archiv - "
+"Verzeichnisse funktionieren nicht."
+
+#: plugins/attachments/forms.py:102
+msgid "Not a zip file"
+msgstr "Kein zip Archiv"
+
+#: plugins/attachments/forms.py:152
+msgid "Yes I am sure..."
+msgstr "Ja, ich bin mir sicher..."
+
+#: plugins/attachments/models.py:26
+msgid ""
+"The revision of this attachment currently in use (on all articles using the "
+"attachment)"
+msgstr ""
+"Diese Revision wird aktuell benutzt (in allen Artikel, die den Anhang "
+"benutzen)"
+
+#: plugins/attachments/models.py:29
+msgid "original filename"
+msgstr "ursprünglicher Dateiname"
+
+#: plugins/attachments/models.py:40
+msgid "attachment"
+msgstr "Anhang"
+
+#: plugins/attachments/models.py:41
+msgid "attachments"
+msgstr "Anhänge"
+
+#: plugins/attachments/models.py:91
+msgid "file"
+msgstr "Datei"
+
+#: plugins/attachments/models.py:97
+msgid "attachment revision"
+msgstr "Revision des Anhangs"
+
+#: plugins/attachments/models.py:98
+msgid "attachment revisions"
+msgstr "Revisionen des Anhangs"
+
+#: plugins/attachments/views.py:48
+#, python-format
+msgid "Successfully added: %s"
+msgstr "Erfolgreich hinzugefügt: %s"
+
+#: plugins/attachments/views.py:50
+#, python-format
+msgid "%s was successfully added."
+msgstr "%s wurde erfolgreich hinzugefügt."
+
+#: plugins/attachments/views.py:122
+#, python-format
+msgid "%s uploaded and replaces old attachment."
+msgstr "%s wurde hochgeladen und ersetzt den alten Anhang."
+
+#: plugins/attachments/views.py:124
+#, python-format
+msgid "Your file could not be saved: %s"
+msgstr "Deine Datei konnte nicht gespeichert werden: %s"
+
+#: plugins/attachments/views.py:141
+msgid ""
+"Your new file will automatically be renamed to match the file already "
+"present. Files with different extensions are not allowed."
+msgstr ""
+"Deine Datei wird automatisch umbenannt um dem bereits vorhandenen zu "
+"entsprechen. Andere Dateitypen sind nicht erlaubt."
+
+#: plugins/attachments/views.py:204
+#, python-format
+msgid "Current revision changed for %s."
+msgstr "Aktuelle Revision ersetzt durch %s."
+
+#: plugins/attachments/views.py:223
+#, python-format
+msgid "Added a reference to \"%(att)s\" from \"%(art)s\"."
+msgstr "Es wurde eine Referenz von \"%(art)s\" zu \"%(att)s\" angelegt."
+
+#: plugins/attachments/views.py:253
+#, python-format
+msgid "The file %s was deleted."
+msgstr "Die Datei %s wurde gelöscht."
+
+#: plugins/attachments/views.py:256
+#, python-format
+msgid "This article is no longer related to the file %s."
+msgstr "Dieser Artikel ist nicht mehr im Bezug zu der Datei %s."
+
+#: plugins/attachments/wiki_plugin.py:24
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:5
+msgid "Attachments"
+msgstr "Anhänge"
+
+#: plugins/attachments/wiki_plugin.py:32
+#, python-format
+msgid "A file was changed: %s"
+msgstr "Eine Datei wurde geändert: %s"
+
+#: plugins/attachments/wiki_plugin.py:35
+#, python-format
+msgid "A file was deleted: %s"
+msgstr "Eine Datei wurde gelöscht: %s"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/delete.html:5
+#: plugins/attachments/templates/wiki/plugins/attachments/delete.html:10
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:36
+#: templates/wiki/delete.html:8
+msgid "Delete"
+msgstr "Löschen"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/delete.html:12
+msgid ""
+"\n"
+"    The file may be referenced on other articles. Deleting it means that "
+"they will loose their references to this file. The following articles "
+"reference this file:\n"
+"    "
+msgstr ""
+"\n"
+"    Die Datei könnte in anderen Artikeln referenziert sein. Wenn sie "
+"gelöscht wird, bedeutet das, dass diese Artikel die Referenz verlieren. "
+"Folgende Artikel sind betroffen:\n"
+"    "
+
+#: plugins/attachments/templates/wiki/plugins/attachments/delete.html:29
+#: plugins/attachments/templates/wiki/plugins/attachments/delete.html:53
+#: plugins/attachments/templates/wiki/plugins/attachments/history.html:49
+#: plugins/attachments/templates/wiki/plugins/attachments/replace.html:39
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:71
+#: plugins/images/templates/wiki/plugins/images/purge.html:23
+#: plugins/images/templates/wiki/plugins/images/revision_add.html:23
+#: templates/wiki/create.html:56 templates/wiki/delete.html:12
+#: templates/wiki/delete.html.py:48
+msgid "Go back"
+msgstr "Zurück"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/delete.html:33
+msgid "Delete it!"
+msgstr "Löschen!"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/delete.html:40
+msgid "Remove"
+msgstr "Löschen"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/delete.html:42
+msgid ""
+"\n"
+"    You can remove a reference to a file, but it will retain its references "
+"on other articles.\n"
+"    "
+msgstr ""
+"\n"
+"    Du kannst eine Referenz zu einer Datei löschen. Die Referenzen in "
+"anderen Artikeln bleiben erhalten.\n"
+"    "
+
+#: plugins/attachments/templates/wiki/plugins/attachments/delete.html:57
+msgid "Remove reference"
+msgstr "Lösche Referenz"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/history.html:5
+#: plugins/attachments/templates/wiki/plugins/attachments/history.html:9
+msgid "History of"
+msgstr "Revisionen von"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/history.html:12
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:24
+msgid "Date"
+msgstr "Datum"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/history.html:13
+msgid "User"
+msgstr "Benutzer"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/history.html:15
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:22
+msgid "File"
+msgstr "Datei"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/history.html:16
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:30
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:26
+#: plugins/images/templates/wiki/plugins/images/index.html:22
+msgid "Size"
+msgstr "Größe"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/history.html:17
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:27
+msgid "Action"
+msgstr "Aktion"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/history.html:28
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:33
+msgid "<em>No description</em>"
+msgstr "<em>Keine Beschreibung</em>"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/history.html:36
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:51
+msgid "Download"
+msgstr "Download"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/history.html:41
+msgid "Use this!"
+msgstr "Benutzen"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:10
+msgid ""
+"The following files are available for this article. Copy the markdown tag to "
+"directly refer to a file from the article text."
+msgstr ""
+"Die folgenden Dateien sind für diesen Artikel verfügbar. Kopiere den "
+"markdown Tag um die Datei direkt im Text zu verlinken."
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:28
+#: plugins/images/templates/wiki/plugins/images/index.html:20
+msgid "Markdown tag"
+msgstr "Markdown tag"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:29
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:25
+#: plugins/images/templates/wiki/plugins/images/index.html:21
+msgid "Uploaded by"
+msgstr "Hochgeladen von"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:34
+#: plugins/attachments/templates/wiki/plugins/attachments/replace.html:5
+#: plugins/attachments/templates/wiki/plugins/attachments/replace.html:9
+#: plugins/images/templates/wiki/plugins/images/sidebar.html:34
+msgid "Replace"
+msgstr "Ersetzen"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:38
+msgid "Detach"
+msgstr "Trennen"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:47
+msgid "File history"
+msgstr "Datei Revisionen"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:47
+msgid "revisions"
+msgstr "Revisionen"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:62
+msgid "There are no attachments for this article."
+msgstr "Es gibt keine Anhänge für diesen Artikel."
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:74
+msgid "Upload new file"
+msgstr "Neue Datei hochladen"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:86
+msgid "Upload file"
+msgstr "Datei hochladen"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:98
+msgid "Search and add file"
+msgstr "Datei suchen und hinzufügen"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:104
+msgid ""
+"You can reuse files from other articles. These files are subject to updates "
+"on other articles which may or may not be a good thing."
+msgstr ""
+"Du kannst Dateien von anderen Artikel verwenden. Diese Dateien könnten "
+"Änderungen unterliegen."
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:123
+msgid "Restore attachments"
+msgstr "Anhänge wiederherstellen"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:136
+#: templates/wiki/deleted.html:25 templates/wiki/deleted.html.py:30
+msgid "Restore"
+msgstr "Wiederherstellen"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:143
+msgid "Nothing to restore"
+msgstr "Es gibt nichts wiederherzustellen"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/index.html:159
+msgid ""
+"The article is currently locked for editing, and therefore no new "
+"attachments can be added."
+msgstr ""
+"Der Artikel ist aktuell für die Bearbeitung gesperrt, weshalb auch keine "
+"neuen Anhänge hinzugefügt werden können."
+
+#: plugins/attachments/templates/wiki/plugins/attachments/render.html:6
+#, fuzzy
+msgid "This attachment is not permitted on this page."
+msgstr "Dieser Artikel ist nicht mehr im Bezug zu der Datei %s."
+
+#: plugins/attachments/templates/wiki/plugins/attachments/render.html:8
+msgid "Click to download"
+msgstr "Klicken um Download zu starten"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/replace.html:12
+#, python-format
+msgid ""
+"\n"
+"  Replacing an attachment means adding a new file that will be used in its "
+"place. All references to the file will be replaced by the one you upload and "
+"the file will be downloaded as <strong>%(filename)s</strong>. Please note "
+"that this attachment is in use on other articles, you may distort contents. "
+"However, do not hestitate to take advantage of this and make replacements "
+"for the listed articles where necessary. This way of working is more "
+"efficient....\n"
+"  "
+msgstr ""
+"\n"
+"  Das Ersetzen eines Anhangs bedeutet, dass eine neue Datei stattdessen "
+"benutzt wird. Alle Referenzen auf die Datei werden ersetzt durch die, die du "
+"hochlädst. Der Dateiname wird <strong>%(filename)s</strong> sein. Bitte "
+"beachte, dass diese Datei in anderen Artikeln benutzt wird. Es könnte also "
+"zu inhaltlichen Problemen kommen. Zögere dennoch nicht diese Funktion zu "
+"benutzen und ersetze gegebenenfalls den Anhang in den aufgeführten "
+"Artikeln.\n"
+"  "
+
+#: plugins/attachments/templates/wiki/plugins/attachments/replace.html:17
+#, fuzzy, python-format
+msgid ""
+"\n"
+"  Articles using %(filename)s\n"
+"  "
+msgstr ""
+"\n"
+"  Artikel, die %(filename)s benutzen\n"
+"  "
+
+#: plugins/attachments/templates/wiki/plugins/attachments/replace.html:26
+#, python-format
+msgid ""
+"\n"
+"  Replacing an attachment means adding a new file that will be used in its "
+"place. All references to the file will be replaced by the one you upload and "
+"the file will be downloaded as <strong>%(filename)s</strong>.\n"
+"  "
+msgstr ""
+"\n"
+"  Das Ersetzen eines Anhangs bedeutet, dass eine neue Datei stattdessen "
+"benutzt wird. Alle Referenzen auf die Datei werden ersetzt durch die, die du "
+"hochlädst. Der Dateiname wird <strong>%(filename)s</strong> sein.\n"
+"  "
+
+#: plugins/attachments/templates/wiki/plugins/attachments/replace.html:43
+#: plugins/images/templates/wiki/plugins/images/index.html:35
+#: plugins/images/templates/wiki/plugins/images/revision_add.html:27
+msgid "Upload replacement"
+msgstr "Ersatz hochladen"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:5
+msgid "Add file to"
+msgstr "Datei hinzufügen zu"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:9
+msgid "Add attachment from other article"
+msgstr "Anhang von anderem Artikel hinzufügen"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:15
+msgid "Search files and articles"
+msgstr "Suche nach Dateien und Artikeln"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:23
+msgid "Main article"
+msgstr "Hauptartikel"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:55
+msgid "Add to article"
+msgstr "Zu Artikel hinzufügen"
+
+#: plugins/attachments/templates/wiki/plugins/attachments/search.html:63
+msgid "Your search did not return any results"
+msgstr "Deine Suche hat keine Ergebnisse geliefert"
+
+#: plugins/help/wiki_plugin.py:11
+msgid "Help"
+msgstr "Hilfe"
+
+#: plugins/help/templates/wiki/plugins/help/sidebar.html:1
+msgid "Adding new articles"
+msgstr "Neue Artikel hinzufügen"
+
+#: plugins/help/templates/wiki/plugins/help/sidebar.html:3
+msgid ""
+"To create a new wiki article, create a link to it. Clicking the link gives "
+"you the creation page."
+msgstr ""
+"Um einen neuen Artikel zu anzulegen, erstelle einen Link dahin. Wenn du auf "
+"den Link klickst kommst du zum Artikelformular."
+
+#: plugins/help/templates/wiki/plugins/help/sidebar.html:6
+#: plugins/links/templates/wiki/plugins/links/sidebar.html:24
+msgid "An external link"
+msgstr "Ein externer Link"
+
+#: plugins/help/templates/wiki/plugins/help/sidebar.html:9
+msgid "Headers"
+msgstr "Überschriften"
+
+#: plugins/help/templates/wiki/plugins/help/sidebar.html:10
+msgid ""
+"Use these codes for headers and to automatically generate Tables of Contents."
+msgstr ""
+"Benutze diese Kodierung für Überschriften und um automatisch ein "
+"Inhaltsverzeichnis zu generieren (TOC)."
+
+#: plugins/help/templates/wiki/plugins/help/sidebar.html:25
+msgid "Typography"
+msgstr "Typografie"
+
+#: plugins/help/templates/wiki/plugins/help/sidebar.html:30
+msgid "Lists"
+msgstr "Listen"
+
+#: plugins/help/templates/wiki/plugins/help/sidebar.html:38
+msgid "Tables"
+msgstr "Tabellen"
+
+#: plugins/images/forms.py:17
+#, python-format
+msgid ""
+"New image %s was successfully uploaded. You can use it by selecting it from "
+"the list of available images."
+msgstr ""
+"Das neue Bild %s wurde erfolgreich hochgeladen. Du kannst es benutzen, indem "
+"du es aus der Liste von verfügbaren Bildern auswählst."
+
+#: plugins/images/forms.py:61
+msgid "Are you sure?"
+msgstr "Bist du dir sicher?"
+
+#: plugins/images/models.py:41
+msgid "image"
+msgstr "Bild"
+
+#: plugins/images/models.py:42
+msgid "images"
+msgstr "Bilder"
+
+#: plugins/images/models.py:46
+#, python-format
+msgid "Image: %s"
+msgstr "Bild: %s"
+
+#: plugins/images/models.py:46
+msgid "Current revision not set!!"
+msgstr "Aktuelle Revision nicht ausgewählt!!"
+
+#: plugins/images/models.py:94
+msgid "image revision"
+msgstr "Bildrevision"
+
+#: plugins/images/models.py:95
+msgid "image revisions"
+msgstr "Bildrevisionen"
+
+#: plugins/images/models.py:100
+#, python-format
+msgid "Image Revsion: %d"
+msgstr "Bildrevision: %d"
+
+#: plugins/images/views.py:64
+#, python-format
+msgid "%s has been restored"
+msgstr "%s wurde gespeichert"
+
+#: plugins/images/views.py:66
+#, python-format
+msgid "%s has been marked as deleted"
+msgstr "%s wurde als gelöscht markiert"
+
+#: plugins/images/views.py:116
+#, python-format
+msgid "%(file)s has been changed to revision #%(revision)d"
+msgstr "%(file)s wurde auf Revision #%(revision)d geändert"
+
+#: plugins/images/views.py:150
+#, python-format
+msgid "%(file)s has been saved."
+msgstr "%(file)s wurde gespeichert."
+
+#: plugins/images/wiki_plugin.py:16
+#: plugins/images/templates/wiki/plugins/images/index.html:5
+msgid "Images"
+msgstr "Bilder"
+
+#: plugins/images/wiki_plugin.py:27
+#, python-format
+msgid "An image was added: %s"
+msgstr "Ein Bild wurde hinzugefügt: %s"
+
+#: plugins/images/templates/wiki/plugins/images/index.html:8
+msgid ""
+"The following images are available for this article. Copy the markdown tag "
+"to directly refer to an image from the article text."
+msgstr ""
+"Die folgenden Bilder sind für diesen Artikel verfügbar. Kopiere den "
+"Markdowntag um ein Bild in den Artiekl einzubinden."
+
+#: plugins/images/templates/wiki/plugins/images/index.html:12
+msgid "Back to edit page"
+msgstr "Zurück zur Bearbeitung"
+
+#: plugins/images/templates/wiki/plugins/images/index.html:19
+msgid "No file"
+msgstr "Keine Datei"
+
+#: plugins/images/templates/wiki/plugins/images/index.html:40
+msgid "Restore image"
+msgstr "Bild wiederherstellen"
+
+#: plugins/images/templates/wiki/plugins/images/index.html:45
+msgid "Remove image"
+msgstr "Bild löschen"
+
+#: plugins/images/templates/wiki/plugins/images/index.html:52
+msgid "Completely delete"
+msgstr "Vollständig löschen"
+
+#: plugins/images/templates/wiki/plugins/images/index.html:66
+#: templates/wiki/history.html:5
+msgid "History"
+msgstr "Revisionen"
+
+#: plugins/images/templates/wiki/plugins/images/index.html:85
+msgid "Revert to this version"
+msgstr "Zu dieser Revision zurückkehren"
+
+#: plugins/images/templates/wiki/plugins/images/index.html:98
+msgid "There are no images for this article."
+msgstr "Es gibt keine Bilder für diesen Artikel."
+
+#: plugins/images/templates/wiki/plugins/images/purge.html:5
+#: templates/wiki/deleted.html:40
+msgid "Purge deletion"
+msgstr "Für immer löschen"
+
+#: plugins/images/templates/wiki/plugins/images/purge.html:14
+msgid "Purge image: Completely remove image file and all revisions."
+msgstr ""
+"Löscht das Bild für immer, ohne dass es rückgängig gemacht werden kann."
+
+#: plugins/images/templates/wiki/plugins/images/purge.html:27
+msgid "Remove it completely!"
+msgstr "Für immer löschen!"
+
+#: plugins/images/templates/wiki/plugins/images/render.html:14
+msgid "Image not found"
+msgstr "Bild nicht gefunden"
+
+#: plugins/images/templates/wiki/plugins/images/revision_add.html:5
+msgid "Replace image"
+msgstr "Bild ersetzen"
+
+#: plugins/images/templates/wiki/plugins/images/revision_add.html:14
+msgid "Choose an image file to replace current image."
+msgstr "Wähle ein Bild aus, mit dem das aktuelle ersetzt werden soll."
+
+#: plugins/images/templates/wiki/plugins/images/sidebar.html:30
+msgid "Image id"
+msgstr "Bild id"
+
+#: plugins/images/templates/wiki/plugins/images/sidebar.html:32
+#: plugins/links/templates/wiki/plugins/links/sidebar.html:16
+msgid "Insert"
+msgstr "Einfügen"
+
+#: plugins/images/templates/wiki/plugins/images/sidebar.html:48
+msgid "No images found for this article"
+msgstr "Es wurden keine Bilder für diesen Artikel gefunden"
+
+#: plugins/images/templates/wiki/plugins/images/sidebar.html:57
+msgid "Manage images"
+msgstr "Bilder verwalten"
+
+#: plugins/images/templates/wiki/plugins/images/sidebar.html:63
+msgid "Add new image"
+msgstr "Neues Bild hinzufügen"
+
+#: plugins/images/templates/wiki/plugins/images/sidebar.html:104
+msgid "Add image"
+msgstr "Bild hinzufügen"
+
+#: plugins/images/templates/wiki/plugins/images/sidebar.html:112
+msgid "You do not have permissions to add images."
+msgstr "Du hast nicht die nötigen Rechte um Bilder hinzuzufügen."
+
+#: plugins/images/templates/wiki/plugins/images/sidebar.html:119
+msgid "How to use images"
+msgstr "Anleitung für Bilder"
+
+#: plugins/images/templates/wiki/plugins/images/sidebar.html:122
+msgid ""
+"After uploading an image, it is attached to this particular artice and can "
+"be used only here. Other users may replace the image, but older versions are "
+"kept. You probably want to show the image with a nice caption. To achieve "
+"this, press the Insert button and fill in the caption fields and possibly "
+"choose to have you image floating right or left of the content. You can use "
+"Markdown in the caption. The markdown code syntax for images looks like "
+"this, possible values for align are left and right:"
+msgstr ""
+"Nachdem ein Bild hochgeladen wurde, wird es mit diesem Artikel verknüpft und "
+"kann nur hierin genutzt werden. Andere Benutzer dürfen das Bild ersetzen, "
+"aber alte versionen bleiben erhalten. Wahrscheinlich willst du das Bild mit "
+"Bildbeschreibung einfügen. Klicke dazu einfach \"Einfügen\" und fülle das "
+"Feld aus. Du kannst auch auwählen ob es rechts- oder linksbündig ist. Du "
+"darfst in der Bildbeschreibung Markdown benutzen. Der Markdown Code für "
+"bilder sieht wie folgt aus, wobei mögliche Ausrichtungen \"right\" und \"left"
+"\" sind:"
+
+#: plugins/links/wiki_plugin.py:22
+msgid "Links"
+msgstr "Links"
+
+#: plugins/links/templates/wiki/plugins/links/sidebar.html:3
+msgid "Link to another wiki page"
+msgstr "Link zu anderer Wikiseite"
+
+#: plugins/links/templates/wiki/plugins/links/sidebar.html:6
+msgid ""
+"Type in something from another wiki page's title and auto-complete will help "
+"you create a tag for you wiki link. Tags for links look like this:"
+msgstr ""
+"Gib etwas aus dem Titel des anderen Wikieintrags ein. Auto-complete wird dir "
+"helfen, den Tag zu erstellen. Tags für links sehen so aus:"
+
+#: plugins/links/templates/wiki/plugins/links/sidebar.html:27
+msgid ""
+"You can link to another website simply by inserting an address example.com "
+"or http://example.com or by using the markdown syntax:"
+msgstr ""
+"Du darfst auf eine andere Webseite verlinken indem du einfach eine Adresse "
+"(z.B. example.com oder http://example.com) eingibst oder folgende Syntax "
+"benutzt:"
+
+#: plugins/macros/wiki_plugin.py:16
+msgid "Macros"
+msgstr "Macros"
+
+#: plugins/macros/mdx/macro.py:72
+msgid "Article list"
+msgstr "Artikelliste"
+
+#: plugins/macros/mdx/macro.py:73
+msgid "Insert a list of articles in this level."
+msgstr "Füge eine Liste von Artikeln auf dieser Ebene ein."
+
+#: plugins/macros/mdx/macro.py:74
+msgid "[article_list depth:2]"
+msgstr "[article_list depth:2]"
+
+#: plugins/macros/mdx/macro.py:75
+msgid "Maximum depth to show levels for."
+msgstr "Maximale Ebenentiefe, für die Artikel angezeigt werden sollen."
+
+#: plugins/macros/mdx/macro.py:81
+msgid "Table of contents"
+msgstr "Inhaltsverzeichnis"
+
+#: plugins/macros/mdx/macro.py:82
+msgid "Insert a table of contents matching the headings."
+msgstr "Füge ein Inhaltsverzeichnis passend zu den Überschriften ein."
+
+#: plugins/macros/mdx/macro.py:83
+msgid "[TOC]"
+msgstr "[TOC]"
+
+#: plugins/macros/mdx/macro.py:90
+#, fuzzy
+msgid "WikiLinks"
+msgstr "WikiLinks"
+
+#: plugins/macros/mdx/macro.py:91
+msgid "Insert a link to another wiki page with a short notation."
+msgstr "Füge einen Link zu einer anderen Wikiseite mittels Kurznotation ein."
+
+#: plugins/macros/mdx/macro.py:92
+msgid "[[WikiLink]]"
+msgstr "[[WikiLink]]"
+
+#: plugins/macros/templates/wiki/plugins/macros/article_list.html:6
+msgid "Article index"
+msgstr "Artikelindex"
+
+#: plugins/macros/templates/wiki/plugins/macros/article_list.html:10
+msgid "Nothing below this level"
+msgstr "Es gibt keine Unterartikel"
+
+#: plugins/notifications/forms.py:17
+#, fuzzy, python-format
+msgid "Receive notifications %(interval)s"
+msgstr "Leere Benachrichtigungsliste"
+
+#: plugins/notifications/forms.py:25
+#, python-format
+msgid "%(title)s - %(url)s"
+msgstr "%(title)s - %(url)s"
+
+# ################ PLUGINS #################
+#: plugins/notifications/forms.py:41
+#, fuzzy
+msgid "Remove subscriptions"
+msgstr "Beschreibung"
+
+#: plugins/notifications/forms.py:43
+msgid "Select article subscriptions to remove from notifications"
+msgstr "Artikel Abonnements auswählen um Benachrichtigungen zu entfernen"
+
+#: plugins/notifications/forms.py:47
+msgid "Email digests"
+msgstr "Email Benachrichtigungen"
+
+#: plugins/notifications/forms.py:49
+msgid "Unchanged (selected on each article)"
+msgstr "Unverändert (bei jedem Artikel ausgewählt)"
+
+#: plugins/notifications/forms.py:50
+msgid "No emails"
+msgstr "Keine Emails"
+
+#: plugins/notifications/forms.py:51
+msgid "Email on any change"
+msgstr "Email bei jeder Veränderung"
+
+#: plugins/notifications/forms.py:101
+#: plugins/notifications/templates/wiki/plugins/notifications/settings.html:5
+msgid "Notifications"
+msgstr "Benachrichtigungen"
+
+#: plugins/notifications/forms.py:111
+msgid "When this article is edited"
+msgstr "Wenn dieser Artikel bearbeitet wird"
+
+# TODO: right?
+#: plugins/notifications/forms.py:115
+msgid "Also receive emails about article edits"
+msgstr "Mails über Artikeländerungen senden"
+
+#: plugins/notifications/forms.py:154
+msgid "Your notification settings were updated."
+msgstr "Deine Benachrichtigungseinstellungen wurden aktualisiert."
+
+#: plugins/notifications/forms.py:156
+msgid "Your notification settings were unchanged, so nothing saved."
+msgstr ""
+"Deine Benachrichtigungseinstellungen sind unverändert. Es ist nicht zu "
+"speichern."
+
+#: plugins/notifications/models.py:18
+#, python-format
+msgid "%(user)s subscribing to %(article)s (%(type)s)"
+msgstr "%(user)s abonniert %(article)s (%(type)s)"
+
+#: plugins/notifications/models.py:43
+#, python-format
+msgid "Article deleted: %s"
+msgstr "Artikel gelöscht: %s"
+
+#: plugins/notifications/models.py:46
+#, python-format
+msgid "Article modified: %s"
+msgstr "Artikel geändert: %s"
+
+#: plugins/notifications/models.py:49
+#, python-format
+msgid "New article created: %s"
+msgstr "Neuer Artikel erstellt: %s"
+
+#: plugins/notifications/views.py:30
+#, python-format
+msgid "You will receive notifications %(interval)s for %(articles)d articles"
+msgstr ""
+
+#: plugins/notifications/templates/wiki/plugins/notifications/menubaritem.html:4
+msgid "No notifications"
+msgstr "Keine Benachrichtigungen"
+
+#: plugins/notifications/templates/wiki/plugins/notifications/menubaritem.html:9
+msgid "Clear notifications list"
+msgstr "Leere Benachrichtigungsliste"
+
+#: plugins/notifications/templates/wiki/plugins/notifications/menubaritem.html:15
+#, fuzzy
+msgid "Notification settings"
+msgstr "Benachrichtigungen"
+
+#: plugins/notifications/templates/wiki/plugins/notifications/settings.html:9
+#, fuzzy
+msgid "Your notification settings"
+msgstr "Deine Benachrichtigungseinstellungen wurden aktualisiert."
+
+#: plugins/notifications/templates/wiki/plugins/notifications/settings.html:11
+msgid "Manage how often you receive notifications"
+msgstr "Wähle aus wie oft du Benachrichtigungen erhalten willst"
+
+#: plugins/notifications/templates/wiki/plugins/notifications/settings.html:20
+#, fuzzy
+msgid "Settings for"
+msgstr "Einstellungen"
+
+#: plugins/notifications/templates/wiki/plugins/notifications/settings.html:20
+#, fuzzy
+msgid "articles"
+msgstr "Artikel"
+
+#: plugins/notifications/templates/wiki/plugins/notifications/settings.html:27
+msgid "You are not subscribed to any notifications yet."
+msgstr "Du hast noch keine Benachrichtigungen abonniert."
+
+#: plugins/notifications/templates/wiki/plugins/notifications/settings.html:35
+#: templates/wiki/edit.html:46 templates/wiki/edit.html.py:77
+#: templates/wiki/settings.html:18
+msgid "Save changes"
+msgstr "Speichern"
+
+#: plugins/search/haystack/wiki_plugin.py:19
+msgid "Search"
+msgstr "Suchen"
+
+#: plugins/search/haystack/templates/wiki/plugins/search/search.html:5
+#: plugins/search/haystack/templates/wiki/plugins/search/search.html:9
+#: templates/wiki/search.html:5 templates/wiki/search.html.py:9
+msgid "Search results for:"
+msgstr "Suchergebnisse für:"
+
+#: plugins/search/haystack/templates/wiki/plugins/search/search.html:17
+#: templates/wiki/search.html:17
+#, python-format
+msgid "Your search returned <strong>%(cnt)s</strong> results."
+msgstr "Deine Suche hat <strong>%(cnt)s</strong> Ergebnisse geliefert."
+
+#: plugins/search/haystack/templates/wiki/plugins/search/search.html:25
+#: templates/wiki/dir.html:50 templates/wiki/search.html:25
+msgid "Last modified"
+msgstr "Zuletzt modifiziert"
+
+#: plugins/search/haystack/templates/wiki/plugins/search/search.html:53
+#: templates/wiki/dir.html:74 templates/wiki/search.html:34
+msgid "There are no articles in this level"
+msgstr "Es gibt keine Artikel auf dieser Ebene"
+
+# ############################### Rest #######################################
+#: templates/wiki/article.html:39
+msgid "This article was last modified:"
+msgstr "Dieser Artikel wurde zuletzt modifiziert:"
+
+#: templates/wiki/base.html:63
+msgid "Log out"
+msgstr "Abmelden"
+
+#: templates/wiki/base.html:73 templates/wiki/accounts/login.html:4
+msgid "Log in"
+msgstr "Einloggen"
+
+#: templates/wiki/base.html:76 templates/wiki/accounts/login.html:22
+#: templates/wiki/accounts/signup.html:3 templates/wiki/accounts/signup.html:6
+msgid "Sign up"
+msgstr "Registrieren"
+
+#: templates/wiki/base.html:82
+msgid "Home"
+msgstr "Home"
+
+#: templates/wiki/base.html:83
+msgid "About"
+msgstr "About"
+
+#: templates/wiki/base.html:115
+msgid ""
+"Powered by <a href=\"http://www.django-wiki.org\">django-wiki</a>, an open "
+"source application under the <a href=\"http://www.gnu.org/licenses/quick-"
+"guide-gplv3.html\">GPLv3</a> license. Let knowledge be the cure."
+msgstr ""
+"Powered by <a href=\"http://www.django-wiki.org\">django-wiki</a>, eine Open-"
+"Source-Anwendung unter der <a href=\"http://www.gnu.org/licenses/quick-guide-"
+"gplv3.html\">GPLv3</a> Lizens. Let knowledge be the cure."
+
+#: templates/wiki/create.html:5 templates/wiki/create.html.py:47
+msgid "Add new article"
+msgstr "Neuen Artikel hinzufügen"
+
+#: templates/wiki/create.html:60
+msgid "Create article"
+msgstr "Artikel erstellen"
+
+#: templates/wiki/create_root.html:4
+msgid "Create root article"
+msgstr "Hauptartikel erstellen"
+
+#: templates/wiki/create_root.html:22 templates/wiki/root_missing.html:6
+msgid "Congratulations!"
+msgstr "Glückwunsch!"
+
+#: templates/wiki/create_root.html:24 templates/wiki/root_missing.html:8
+#, fuzzy
+msgid ""
+"You have django-wiki installed... but there are no articles. So it's time to "
+"create the first one, the root article."
+msgstr ""
+"Du hast django-wiki installiert... Allerdings gibt es noch keine Artikel. Es "
+"wird Zeit dafür, den Hauptartikel zu erstellen. Am Anfang wird es nur von "
+"Administratoren modifizierbar sein, aber du kannst die Rechte nach dem "
+"Erstellen noch ändern."
+
+#: templates/wiki/create_root.html:25
+#, fuzzy
+msgid ""
+"In the beginning, it will only be editable by administrators, but you can "
+"define permissions after."
+msgstr ""
+"Du hast django-wiki installiert... Allerdings gibt es noch keine Artikel. Es "
+"wird Zeit dafür, den Hauptartikel zu erstellen. Am Anfang wird es nur von "
+"Administratoren modifizierbar sein, aber du kannst die Rechte nach dem "
+"Erstellen noch ändern."
+
+#: templates/wiki/create_root.html:28
+msgid "Root article"
+msgstr "Hauptartikel"
+
+#: templates/wiki/create_root.html:35
+msgid "Create root"
+msgstr "Erstelle Hauptartikel"
+
+#: templates/wiki/delete.html:5 templates/wiki/delete.html.py:52
+#: templates/wiki/edit.html:55
+msgid "Delete article"
+msgstr "Lösche Artikel"
+
+#: templates/wiki/delete.html:11
+msgid "You cannot delete a root article."
+msgstr "Du kannst den Hauptartikel nicht löschen."
+
+#: templates/wiki/delete.html:17
+msgid ""
+"You cannot delete this article because you do not have permission to delete "
+"articles with children. Try to remove the children manually one-by-one."
+msgstr ""
+"Du darfst diesen Artikel nicht löschen, weil du nicht die nötigen Rechte "
+"besitzt, Artikel mit Unterartikeln zu löschen. Versuche jeweils die "
+"Unterartikel manuell zu löschen."
+
+#: templates/wiki/delete.html:23
+msgid ""
+"You are deleting an article. This means that its children will be deleted as "
+"well. If you choose to purge, children will also be purged!"
+msgstr ""
+"Du löschst einen Artikel. Das bedeutet, dass dessen Unterartikel ebenfalls "
+"gelöscht werden. Wenn du \"Für immer löschen\" auswählst, gilt das selbe für "
+"die Unterartikel."
+
+#: templates/wiki/delete.html:25
+msgid "Articles that will be deleted"
+msgstr "Artikel, die gelöscht werden"
+
+#: templates/wiki/delete.html:31
+msgid "...and more!"
+msgstr "...und noch mehr!"
+
+#: templates/wiki/delete.html:39
+msgid "You are deleting an article. Please confirm."
+msgstr "Du löschst einen Artikel. Bitte bestätige."
+
+#: templates/wiki/deleted.html:5
+msgid "Article deleted"
+msgstr "Artikel gelöscht"
+
+#: templates/wiki/deleted.html:14
+msgid "Article Deleted"
+msgstr "Artikel Gelöscht"
+
+#: templates/wiki/deleted.html:17
+msgid "The article you were looking for has been deleted."
+msgstr "Der Artikel wurde gelöscht."
+
+#: templates/wiki/deleted.html:26
+msgid "You may restore this article and its children by clicking restore."
+msgstr ""
+"Du kannst den Artikel und seine Unterartikel wiederherstellen, indem du "
+"\"Wiederherstellen\" klickst"
+
+#: templates/wiki/deleted.html:41
+msgid ""
+"You may remove this article and any children permanently and free their "
+"slugs by clicking the below button. This action cannot be undone."
+msgstr ""
+"Du darfst diesen Artikel und seine Unterartikel dauerhaft löschen und ihre "
+"Adressen freigeben, indem du den folgenden Button klickst. Diese Aktion kann "
+"nicht rückgängig gemacht werden."
+
+#: templates/wiki/dir.html:5
+msgid "Listing articles in"
+msgstr "Artikel in"
+
+#: templates/wiki/dir.html:17
+msgid "Up one level"
+msgstr "Zum übergeordneten Artikel"
+
+#: templates/wiki/dir.html:22
+msgid "Add article"
+msgstr "Artikel hinzufügen"
+
+#: templates/wiki/dir.html:30
+msgid "clear"
+msgstr "entfernen"
+
+#: templates/wiki/dir.html:40
+msgid "article,articles"
+msgstr "Artikel,Artikel"
+
+#: templates/wiki/dir.html:40
+msgid "is,are"
+msgstr "ist,sind"
+
+#: templates/wiki/dir.html:40
+#, python-format
+msgid ""
+"\n"
+"      Browsing <strong><a href=\"%(self_url)s\">/%(path)s</a></strong>. "
+"There %(articles_plur_verb)s <strong>%(cnt)s %(articles_plur)s</strong> in "
+"this level.\n"
+"    "
+msgstr ""
+"\n"
+"      Zeige <strong><a href=\"%(self_url)s\">/%(path)s</a></strong>. Es "
+"%(articles_plur_verb)s <strong>%(cnt)s %(articles_plur)s</strong> auf dieser "
+"Ebene.\n"
+"    "
+
+#: templates/wiki/edit.html:5 templates/wiki/includes/article_menu.html:34
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: templates/wiki/edit.html:11
+msgid ""
+"<strong>Warning:</strong> You are not logged in. Your IP address will be "
+"logged."
+msgstr ""
+"<strong>Achtung:</strong> Du bist nicht eingeloggt. Deine IP Addresse wird "
+"gespeichert."
+
+#: templates/wiki/edit.html:12
+msgid "Click here to log in"
+msgstr "Klicke hier um dich einzuloggen"
+
+#: templates/wiki/edit.html:42
+msgid "Preview"
+msgstr "Vorschau"
+
+#: templates/wiki/edit.html:73
+msgid "Back to editor"
+msgstr "Zurück zum Editor"
+
+#: templates/wiki/error.html:5 templates/wiki/error.html.py:26
+msgid "Error"
+msgstr "Fehler"
+
+#: templates/wiki/error.html:15
+msgid "Not found"
+msgstr "Nicht gefunden"
+
+#: templates/wiki/error.html:18
+msgid "This article was not found, and neither was its parent article."
+msgstr "Dieser Artikel und sein übergeordneter Artikel wurden nicht gefunden."
+
+#: templates/wiki/error.html:20
+msgid "Start page"
+msgstr "Hauptseite"
+
+#: templates/wiki/error.html:30
+msgid "There was some sort of error accessing this page. Sorry!"
+msgstr "Es tut uns leid! Es gab einen Fehler beim Zugriff auf diese Seite."
+
+#: templates/wiki/error.html:38
+msgid "Back to"
+msgstr "Zurück zu"
+
+#: templates/wiki/history.html:49
+msgid ""
+"Click each revision to see a list of edited lines. Click the Preview button "
+"to see how the article looked at this stage. At the bottom of this page, you "
+"can change to a particular revision or merge an old revision with the "
+"current one."
+msgstr ""
+"Klicke die Revisionen an, um zu sehen was sich verändert hat. Klicke auf den "
+"Vorschaubutton, um zu sehen, wie der Artikel zu diesem Zeitpunkt ausgesehen "
+"hat. Unten auf dieser Seite kannst du den Artikel auf eine andere Revision "
+"umschalten, oder eine alte Revision mit der aktuellen vereinigen."
+
+#: templates/wiki/history.html:72
+msgid "no log message"
+msgstr "keine Nachricht"
+
+#: templates/wiki/history.html:84 templates/wiki/history.html.py:89
+msgid "Preview this revision"
+msgstr "Vorschau"
+
+#: templates/wiki/history.html:103
+msgid "Auto log:"
+msgstr "Automatisches Log:"
+
+#: templates/wiki/history.html:111
+msgid "Change"
+msgstr "Ändern"
+
+#: templates/wiki/history.html:129
+msgid "Merge selected with current..."
+msgstr "Vereinige ausgewähltes und aktuelles..."
+
+#: templates/wiki/history.html:133
+msgid "Switch to selected version"
+msgstr "Wechsel zur ausgewählten Version"
+
+#: templates/wiki/history.html:152 templates/wiki/history.html.py:183
+msgid "Back to history view"
+msgstr "Zurück zur Versionsübersicht"
+
+#: templates/wiki/history.html:157 templates/wiki/history.html.py:162
+msgid "Switch to this version"
+msgstr "Zu dieser Version wechseln"
+
+#: templates/wiki/history.html:174
+msgid "Merge with current"
+msgstr "Vereinige mir aktueller Version"
+
+#: templates/wiki/history.html:175
+msgid ""
+"When you merge a revision with the current, all data will be retained from "
+"both versions and merged at its approximate location from each revision."
+msgstr ""
+"Wenn eine Revision mit der aktuellen vereinigt wird, bleiben alle Daten "
+"erhalten und an den in etwa passenden Stellen eingefügt."
+
+#: templates/wiki/history.html:175
+msgid "After this, it's important to do a manual review."
+msgstr "Hiernach sollte der Artikel nocheinmal überprüft werden."
+
+#: templates/wiki/history.html:188 templates/wiki/history.html.py:193
+msgid "Create new merged version"
+msgstr "Erzeuge eine neue vereinigte Version"
+
+#: templates/wiki/permission_denied.html:8
+msgid "Permission Denied"
+msgstr "Zugriff verweigert"
+
+#: templates/wiki/permission_denied.html:11
+msgid "Sorry, you don't have permission to access this page."
+msgstr ""
+"Du hast leider nicht die nötigen Rechte, um auf diese Seite zuzugreifen."
+
+#: templates/wiki/permission_denied.html:16
+msgid "This article is locked for editing."
+msgstr "Dieser Artikel wurde für die Bearbeitung gesperrt."
+
+#: templates/wiki/permission_denied.html:22
+msgid "Back to article"
+msgstr "Zurück zum Artikel"
+
+#: templates/wiki/preview_inline.html:8
+msgid "Previewing revision"
+msgstr "Revisionsvorschau"
+
+#: templates/wiki/preview_inline.html:15
+msgid "Previewing merge between"
+msgstr "Vereinigungsvorschau zwischen"
+
+#: templates/wiki/preview_inline.html:17
+msgid "and"
+msgstr "und"
+
+#: templates/wiki/preview_inline.html:22 views/article.py:680
+msgid "You cannot merge with a deleted revision"
+msgstr "Eine Vereinigung mit einer gelöschten Revision ist nicht möglich"
+
+#: templates/wiki/preview_inline.html:31
+msgid "This revision has been deleted."
+msgstr "Diese Revision wurde gelöscht"
+
+#: templates/wiki/preview_inline.html:32
+msgid "Restoring to this revision will mark the article as deleted."
+msgstr ""
+"Wenn diese Revision wiederhergestellt wird, wird der Artikel als gelöscht "
+"markiert."
+
+#: templates/wiki/root_missing.html:11
+msgid ""
+"It can be created and/or edited only by administrators, but you can define "
+"permissions after."
+msgstr ""
+"Er kann nur von Administratoren erstellt und/oder bearbeitet werden. Die "
+"Berechtigungen können allerdings danach geändert werden."
+
+#: templates/wiki/settings.html:5 templates/wiki/includes/article_menu.html:9
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: templates/wiki/source.html:5
+msgid "Source of"
+msgstr "Quellcode von"
+
+#: templates/wiki/source.html:10
+msgid "This article is currently locked for editing."
+msgstr "Dieser Artikel wurde für die Bearbeitung gesperrt."
+
+#: templates/wiki/accounts/login.html:7
+msgid "Please log in"
+msgstr "Bitte einloggen"
+
+#: templates/wiki/accounts/login.html:15
+msgid "Log me in..."
+msgstr "Einloggen..."
+
+#: templates/wiki/accounts/login.html:22
+msgid "Don't have an account?"
+msgstr "Du hast keinen Account?"
+
+#: templates/wiki/accounts/signup.html:14
+msgid "Sign me up..."
+msgstr "Registrieren..."
+
+#: templates/wiki/includes/anonymous_blocked.html:7
+#, python-format
+msgid ""
+"\n"
+"  You need to <a href=\"%(login_url)s\">log in</a> or <a href="
+"\"%(signup_url)s\">sign up</a> to use this function.\n"
+"  "
+msgstr ""
+"\n"
+"  Du musst dich <a href=\"%(login_url)s\">einloggen</a> oder <a href="
+"\"%(signup_url)s\">registrieren</a> um diese Funktionalität benutzen zu "
+"können.\n"
+"  "
+
+#: templates/wiki/includes/anonymous_blocked.html:11
+msgid "You need to log in or sign up to use this function."
+msgstr ""
+"Du musst dich einloggen oder registrieren um diese Funktionalität benutzen "
+"zu können."
+
+#: templates/wiki/includes/article_menu.html:26
+msgid "Changes"
+msgstr "Änderungen"
+
+#: templates/wiki/includes/article_menu.html:41
+msgid "View Source"
+msgstr "Quellcode"
+
+#: templates/wiki/includes/article_menu.html:49
+msgid "View"
+msgstr "Anzeigen"
+
+#: templates/wiki/includes/breadcrumbs.html:13
+#: templates/wiki/includes/breadcrumbs.html:39
+msgid "Sub-articles for"
+msgstr "Unterartikel für"
+
+#: templates/wiki/includes/breadcrumbs.html:25
+msgid "No sub-articles"
+msgstr "Keine Unterartikel"
+
+#: templates/wiki/includes/breadcrumbs.html:28
+msgid "...and more"
+msgstr "...und mehr"
+
+#: templates/wiki/includes/breadcrumbs.html:32
+msgid "Browse articles in this level"
+msgstr "Artikel auf dieser Ebene anzeigen"
+
+#: templates/wiki/includes/breadcrumbs.html:48
+msgid "New article next to"
+msgstr "Neuen Artikel neben"
+
+#: templates/wiki/includes/breadcrumbs.html:53
+msgid "New article below"
+msgstr "Neuen Artikel unterhalb"
+
+#: templates/wiki/includes/revision_info.html:10
+msgid "by"
+msgstr "von"
+
+#: templates/wiki/includes/revision_info.html:10
+msgid "anonymous (IP logged)"
+msgstr "anonym (IP gespeichert)"
+
+#: templates/wiki/includes/revision_info.html:18
+msgid "restored"
+msgstr "wiederhergestellt"
+
+#: templates/wiki/includes/revision_info.html:24
+msgid "unlocked"
+msgstr "entsprerrt"
+
+#: views/accounts.py:45
+msgid "Account signup is only allowed for administrators."
+msgstr "Die Registrierung ist nur für Administratoren erlaubt."
+
+#: views/accounts.py:58
+msgid "You are now signed up... and now you can sign in!"
+msgstr "Du bist jetzt registriert... Jetzt kannst du dich einloggen."
+
+#: views/accounts.py:71
+msgid "You are no longer logged in. Bye bye!"
+msgstr "Du bist jetzt abgemeldet. Bis bald!"
+
+#: views/accounts.py:104
+msgid "You are now logged in! Have fun!"
+msgstr "Du bist jetzt eingeloggt! Viel Spaß!"
+
+#: views/article.py:89
+#, python-format
+msgid "New article '%s' created."
+msgstr "Neuer Artikel '%s' wurde erstellt."
+
+#: views/article.py:96
+#, python-format
+msgid "There was an error creating this article: %s"
+msgstr "Es gab einen Fehler bei der Erstellung des Artikels: %s"
+
+#: views/article.py:98
+msgid "There was an error creating this article."
+msgstr "Es gab einen Fehler bei der Erstellung des Artikels."
+
+#: views/article.py:175
+msgid ""
+"This article cannot be deleted because it has children or is a root article."
+msgstr ""
+"Dieser Artikel kann nicht gelöscht werden, weil er Unterartikel besitzt oder "
+"ein Hauptartikel ist."
+
+#: views/article.py:184
+msgid ""
+"This article together with all its contents are now completely gone! Thanks!"
+msgstr "Der Artikel und sein Inhalt ist jetzt komplett gelöscht!"
+
+#: views/article.py:191
+#, python-format
+msgid ""
+"The article \"%s\" is now marked as deleted! Thanks for keeping the site "
+"free from unwanted material!"
+msgstr ""
+"Der Artikel \"%s\" wurde als gelöscht markiert! Danke für das sauber halten "
+"dieser Seite!"
+
+#: views/article.py:279
+msgid "Your changes were saved."
+msgstr "Deine Änderungen wurden gespeichert"
+
+#: views/article.py:287
+msgid "Please note that your article text has not yet been saved!"
+msgstr "Achtung: Dein Artikelinhalt wurde noch nicht gespeichert!"
+
+#: views/article.py:312
+msgid "A new revision of the article was succesfully added."
+msgstr "Eine neue Revision des Artikels wurde erfolgreich hinzugefügt."
+
+#: views/article.py:365
+msgid "Restoring article"
+msgstr "Artikel wiederherstellen"
+
+#: views/article.py:367
+#, python-format
+msgid "The article \"%s\" and its children are now restored."
+msgstr "Der Artikel \"%s\" und seine Unterartikel wurden wiederhergestellt."
+
+#: views/article.py:599
+#, python-format
+msgid ""
+"The article %(title)s is now set to display revision #%(revision_number)d"
+msgstr "Der Artikel %(title)s zeigt jetzt Revision #%(revision_number)d an"
+
+#: views/article.py:660
+msgid "New title"
+msgstr "Neuer Titel"
+
+#: views/article.py:691
+#, python-format
+msgid "Merge between revision #%(r1)d and revision #%(r2)d"
+msgstr "Vereinigung aus Revision #%(r1)d und Revision #%(r2)d"
+
+#: views/article.py:699
+#, python-format
+msgid ""
+"A new revision was created: Merge between revision #%(r1)d and revision #"
+"%(r2)d"
+msgstr ""
+"Eine neue Revision wurde erstellt: Eine Vereinigung aus Revision #%(r1)d und "
+"Revision #%(r2)d"
+
+#~ msgid ""
+#~ "Your file could not be saved, probably because of a permission error on "
+#~ "the web server."
+#~ msgstr ""
+#~ "Deine Datei konnte nicht gespeichert werden. Das liegt wahrscheinlich an "
+#~ "einem Rechtefehler auf dem Webserver."

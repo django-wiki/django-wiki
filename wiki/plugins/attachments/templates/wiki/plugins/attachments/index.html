@@ -2,54 +2,46 @@
 {% load wiki_tags i18n humanize %}
 {% load url from future %}
 
-{% block pagetitle %}{% trans "Attachments" %}: {{ article.current_revision.title }}{% endblock %}
+{% block wiki_pagetitle %}{% trans "Attachments" %}: {{ article.current_revision.title }}{% endblock %}
 
 {% block wiki_contents_tab %}
-<div class="row-fluid">
-  <div class="span8">
+<div class="row">
+  <div class="col-lg-8">
     <p class="lead">{% trans "The following files are available for this article. Copy the markdown tag to directly refer to a file from the article text." %}</p>
 
 
-    <table class="table table-bordered table-striped">
     {% for attachment in attachments %}
+    <table class="table table-bordered table-striped">
       <tr>
         <th colspan="4">
-          <h4>
+          <h4 style="margin-top:0;">
             <a href="{% url 'wiki:attachments_download' path=urlpath.path article_id=article.id attachment_id=attachment.id %}">{{ attachment.current_revision.get_filename }}</a>
             <span class="badge">{{ attachment.current_revision.created|naturaltime }}</span>
             {% if attachment.current_revision.deleted %}
             <span class="badge badge-important">{% trans "deleted" %}</span>
             {% endif %}
           </h4>
+          {{ attachment.current_revision.description }}
         </th>
       </tr>
       <tr>
-        <th>{% trans "Markdown tag" %}</th>
-        <th>{% trans "Uploaded by" %}</th>
-        <th>{% trans "Size" %}</th>
-        <td style="text-align: right; white-space: nowrap;" rowspan="2">
+        <th style="width: 25%">{% trans "Markdown tag" %}</th>
+        <th style="width: 25%">{% trans "Uploaded by" %}</th>
+        <th style="width: 25%">{% trans "Size" %}</th>
+        <td style="width: 25%; text-align: right; white-space: nowrap;" rowspan="2">
           {% if attachment|can_write:user %}
-            <p>
             {% if not attachment.current_revision.deleted %}
-              <a href="{% url 'wiki:attachments_replace' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn">{% trans "Replace" %}</a>
+              <a href="{% url 'wiki:attachments_replace' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-default btn-small">{% trans "Replace" %}</a>
               {% if attachment.article = article %}
-                <a href="{% url 'wiki:attachments_delete' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn">{% trans "Delete" %}</a>
+                <a href="{% url 'wiki:attachments_delete' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-default btn-small">{% trans "Delete" %}</a>
               {% else %}
-                <a href="{% url 'wiki:attachments_delete' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn">{% trans "Detach" %}</a>
+                <a href="{% url 'wiki:attachments_delete' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-default btn-small">{% trans "Detach" %}</a>
               {% endif %}
             {% else %}
-              {% if attachment.current_revision.previous_revision.id %}
-              <form method="POST" action="{% url 'wiki:attachments_revision_change' path=urlpath.path article_id=article.id attachment_id=attachment.id revision_id=attachment.current_revision.previous_revision.id %}">
-                {% csrf_token %}
-                <button class="btn">
-                  {% trans "Restore" %}
-                </button>
-              </form>
-              {% endif %}
+               Deleted
             {% endif %}
-            </p>
           {% endif %}
-          <p>
+          <p style="margin-top: 10px; margin-bottom:0;">
           <a href="{% url 'wiki:attachments_history' path=urlpath.path article_id=article.id attachment_id=attachment.id %}">
             <span class="icon-time"></span>
             {% trans "File history" %} ({{ attachment.attachmentrevision_set.all.count }} {% trans "revisions" %})
@@ -64,24 +56,22 @@
         </td>
         <td>{{ attachment.current_revision.get_size|filesizeformat }}</td>
       </tr>
-    {% empty %}
-      <tr>
-        <td>
-          <p style="margin-bottom: 20px;"><em>{% trans "There are no attachments for this article." %}</em></p>
-        </td>
-      </tr>
-    {% endfor %}
     </table>
+    {% empty %}
+
+      <p style="margin-bottom: 20px;"><em>{% trans "There are no attachments for this article." %}</em></p>
+
+    {% endfor %}
   </div>
-  {% if article|can_write:user %}
-  <div class="span4" style="min-width: 330px;">
+  <div class="col-lg-4" style="min-width: 330px;">
+  {% if article|can_write:user and not article|is_locked %}
     <div class="accordion">
 
       <div class="accordion-group">
         
         <div class="accordion-heading">
           <a class="accordion-toggle" href="#collapse_upload" data-toggle="collapse">
-            <h3>{% trans "Upload new file" %} <span class="icon-upload"></span></h3>
+            <h3>{% trans "Upload new file" %} <span class="icon icon-upload"></span></h3>
           </a>
         </div>
         
@@ -92,7 +82,7 @@
             {% else %}
             <form method="POST" class="form-vertical" id="attachment_form" enctype="multipart/form-data">
               {% wiki_form form %}
-              <button type="submit" name="save" value="1" class="btn btn-large">
+              <button type="submit" name="save" value="1" class="btn btn-primary">
                 {% trans "Upload file" %}
               </button>
             </form>
@@ -101,30 +91,77 @@
         </div>
       
       </div>
+      
       <div class="accordion-group">
         <div class="accordion-heading">
-          <a class="accordion-toggle" data-toggle="collapse">
-            <h3>{% trans "Search and add file" %} <span class="icon-plus-sign"></span></h3>
+          <a class="accordion-toggle" data-toggle="collapse" href="#collapse_add">
+            <h3>{% trans "Search and add file" %} <span class="icon icon-plus-sign"></span></h3>
           </a>
         </div>
         
         <div id="collapse_add" class="accordion-body collapse">
           <div class="accordion-inner">
             <p>{% trans "You can reuse files from other articles. These files are subject to updates on other articles which may or may not be a good thing." %}</p>
-            <form method="GET" action="{% url 'wiki:attachments_search' path=urlpath.path article_id=article.id %}" class="form-search">
-              {{ search_form.query }}
-              <button class="btn">
-                <span class="icon-search"></span>
-                {% trans "Search" %}
-              </button>
+            <form method="GET" action="{% url 'wiki:attachments_search' path=urlpath.path article_id=article.id %}" class="wiki-form-block">
+              <div class="input-group">
+                {{ search_form.query }}
+                <span class="input-group-btn">
+                  <button class="btn btn-default" type="submit">
+                    <span class="icon-search"></span>
+                  </button>
+                </span>
+              </div><!-- /input-group -->
             </form>
           </div>
         </div>
       </div>
       
+      {% if article|can_write:user %}
+        <div class="accordion-group">
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" href="#collapse_restore">
+              <h3>{% trans "Restore attachments" %} <span class="icon icon-trash"></span></h3>
+            </a>
+          </div>
+          <div id="collapse_restore" class="accordion-body collapse">
+            <div class="accordion-inner">
+            
+            {% for attachment in deleted_attachments %}
+            <p>
+              {{ attachment.current_revision.get_filename }}
+              {% if attachment.current_revision.previous_revision.id %}
+              <form method="POST" action="{% url 'wiki:attachments_revision_change' path=urlpath.path article_id=article.id attachment_id=attachment.id revision_id=attachment.current_revision.previous_revision.id %}" style="margin:0; padding:0;">
+                {% csrf_token %}
+                <button class="btn btn-default">
+                  {% trans "Restore" %}
+                </button>
+              </form>
+              {% endif %}
+            </p>  
+            {% empty %}
+            
+            <p><em>{% trans "Nothing to restore" %}</em></p>
+            
+            {% endfor %}
+            
+            </div>
+          </div>
+        </div>        
+      {% endif %}
+
+      
     </div>
-  </div>
+  {% else %}
+  
+    {% if article|is_locked %}
+    <p class="muted">
+      <i class="icon-lock"></i>
+      {% trans "The article is currently locked for editing, and therefore no new attachments can be added." %}
+    </p>
+    {% endif %}
+  
   {% endif %}
+  </div>
   
 </div>
   

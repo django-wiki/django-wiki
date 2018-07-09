@@ -1,0 +1,45 @@
+{% extends "wiki/base.html" %}
+{% load wiki_tags i18n humanize %}
+{% load url from future %}
+
+{% block wiki_pagetitle %}{% trans "Notifications" %}: {{ article.current_revision.title }}{% endblock %}
+
+{% block wiki_contents %}
+
+<h1>{% trans "Your notification settings" %}</h1>
+<p class="lead">
+  {% trans "Manage how often you receive notifications" %}
+</p>
+
+<form method="POST" class="form-horizontal">
+  {% include "wiki/includes/formerrors.html" with form=formset.management_form %}
+  {% csrf_token %}
+  {{ formset.management_form }}
+  {% for form in formset %}
+    <fieldset>
+      <legend>{% trans "Settings for" %} {{ form.instance.articlesubscriptions.count }} {% trans "articles" %}</legend>
+      {% include "wiki/includes/formerrors.html" with form=form %}
+      {% for field in form %}
+        {% include "wiki/includes/formfield.html" %}
+      {% endfor %}
+    </fieldset>
+  {% empty %}
+  <em>{% trans "You are not subscribed to any notifications yet." %}</em>
+  {% endfor %}
+  {% if formset.forms %}
+  <div class="form-group form-actions">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-10">
+      <button type="submit" class="btn btn-primary">
+        <span class="icon-ok"></span>
+        {% trans "Save changes" %}
+      </button>
+    </div>
+  </div>
+  {% endif %}
+</form>
+
+<div class="row">
+</div>
+{% endblock %}
+

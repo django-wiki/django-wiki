@@ -3,14 +3,21 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to django-wiki's documentation!
-=======================================
+A wiki for Django!
+==================
 
 Contents:
 
 .. toctree::
    :maxdepth: 2
 
+   installation
+   plugins
+   customization
+   settings
+   tips
+   release_notes
+   known_issues
 
 
 Indices and tables

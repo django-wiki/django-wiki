@@ -1,0 +1,17 @@
+{% extends "wiki/base.html" %}
+{% load wiki_tags i18n %}
+{% load url from future %}
+
+{% block pagetitle %}{% trans "404" %}{% endblock %}
+
+{% block wiki_breadcrumbs %}{% endblock %}
+
+{% block wiki_contents %}
+
+<h1 class="page-header">{% trans "404 - it's not here!" %}</h1>
+
+<div class="error">
+  <p>{% trans "Sorry, keep looking. Good luck!" %}</p>
+</div>
+
+{% endblock %}

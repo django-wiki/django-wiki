@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-from django.conf import settings as django_settings
+from __future__ import unicode_literals
+from __future__ import absolute_import
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseNotFound, \
-    HttpResponseForbidden
+    HttpResponseForbidden, HttpResponseRedirect
+
 from django.shortcuts import redirect, get_object_or_404
 from django.template.context import RequestContext
 from django.template.loader import render_to_string
@@ -10,9 +12,19 @@ from django.utils import simplejson as json
 
 from wiki.core.exceptions import NoRootURL
 
+from wiki.conf import settings
+from django.utils.http import urlquote
+from six.moves import filter
+
 def json_view(func):
     def wrap(request, *args, **kwargs):
         obj = func(request, *args, **kwargs)
+        if isinstance(obj, HttpResponse):
+            # Special behaviour: If it's a redirect, for instance
+            # because of login protection etc. just return
+            # the redirect
+            if obj.status_code == 301 or obj.status_code == 302:
+                return obj
         data = json.dumps(obj, ensure_ascii=False)
         status = kwargs.get('status', 200)
         response = HttpResponse(mimetype='application/json', status=status)
@@ -22,7 +34,12 @@ def json_view(func):
 
 def response_forbidden(request, article, urlpath):
     if request.user.is_anonymous():
-        return redirect(django_settings.LOGIN_URL)
+        qs = request.META.get('QUERY_STRING', '')
+        if qs:
+            qs = urlquote('?' + qs)
+        else:
+            qs = ''
+        return redirect(settings.LOGIN_URL+"?next="+request.path + qs)
     else:
         c = RequestContext(request, {'article': article,
                                      'urlpath' : urlpath})
@@ -30,7 +47,8 @@ def response_forbidden(request, article, urlpath):
 
 def get_article(func=None, can_read=True, can_write=False, 
                  deleted_contents=False, not_locked=False,
-                 can_delete=False, can_moderate=False):
+                 can_delete=False, can_moderate=False,
+                 can_create=False):
     """View decorator for processing standard url keyword args: Intercepts the 
     keyword args path or article_id and looks up an article, calling the decorated 
     func with this ID.
@@ -47,6 +65,8 @@ def get_article(func=None, can_read=True, can_write=False,
     
     can_delete and can_moderate: Verifies with wiki.core.permissions
     
+    can_create: Same as can_write but adds an extra global setting for anonymous access (ANONYMOUS_CREATE)
+
     deleted_contents=True: Do not redirect if the article has been deleted.
     
     not_locked=True: Return permission denied if the article is locked
@@ -55,7 +75,7 @@ def get_article(func=None, can_read=True, can_write=False,
     """
     
     def wrapper(request, *args, **kwargs):
-        import models
+        from . import models
 
         path = kwargs.pop('path', None)
         article_id = kwargs.pop('article_id', None)
@@ -70,10 +90,10 @@ def get_article(func=None, can_read=True, can_write=False,
                 return redirect('wiki:root_create')
             except models.URLPath.DoesNotExist:
                 try:
-                    pathlist = filter(lambda x: x!="", path.split("/"),)
+                    pathlist = list(filter(lambda x: x!="", path.split("/"),))
                     path = "/".join(pathlist[:-1])
                     parent = models.URLPath.get_by_path(path)
-                    return redirect(reverse("wiki:create", kwargs={'path': parent.path,}) + "?slug=%s" % pathlist[-1])
+                    return HttpResponseRedirect(reverse("wiki:create", kwargs={'path': parent.path,}) + "?slug=%s" % pathlist[-1])
                 except models.URLPath.DoesNotExist:
                     c = RequestContext(request, {'error_type' : 'ancestors_missing'})
                     return HttpResponseNotFound(render_to_string("wiki/error.html", context_instance=c))
@@ -84,7 +104,7 @@ def get_article(func=None, can_read=True, can_write=False,
                 # Be robust: Somehow article is gone but urlpath exists... clean up
                 return_url = reverse('wiki:get', kwargs={'path': urlpath.parent.path})
                 urlpath.delete()
-                return redirect(return_url)
+                return HttpResponseRedirect(return_url)
         
         
         # fetch by article.id
@@ -95,7 +115,8 @@ def get_article(func=None, can_read=True, can_write=False,
             article = get_object_or_404(articles, id=article_id)
             try:
                 urlpath = models.URLPath.objects.get(articles__article=article)
-            except models.URLPath.DoesNotExist, models.URLPath.MultipleObjectsReturned:
+            except models.URLPath.DoesNotExist as noarticle:
+                models.URLPath.MultipleObjectsReturned = noarticle
                 urlpath = None
         
         
@@ -115,10 +136,13 @@ def get_article(func=None, can_read=True, can_write=False,
         if article.current_revision.locked and not_locked:
             return response_forbidden(request, article, urlpath)
 
-        if can_read and not article.can_read(user=request.user):
+        if can_read and not article.can_read(request.user):
             return response_forbidden(request, article, urlpath)
         
-        if can_write and not article.can_write(user=request.user):
+        if (can_write or can_create) and not article.can_write(request.user):
+            return response_forbidden(request, article, urlpath)
+
+        if can_create and not (request.user.is_authenticated() or settings.ANONYMOUS_CREATE):
             return response_forbidden(request, article, urlpath)
         
         if can_delete and not article.can_delete(request.user):
@@ -126,7 +150,7 @@ def get_article(func=None, can_read=True, can_write=False,
             
         if can_moderate and not article.can_moderate(request.user):
             return response_forbidden(request, article, urlpath)
-            
+        
         kwargs['urlpath'] = urlpath
         
         return func(request, article, *args, **kwargs)
@@ -137,5 +161,5 @@ def get_article(func=None, can_read=True, can_write=False,
         return lambda func: get_article(func, can_read=can_read, can_write=can_write, 
                                         deleted_contents=deleted_contents,
                                         not_locked=not_locked,can_delete=can_delete,
-                                        can_moderate=can_moderate)
+                                        can_moderate=can_moderate, can_create=can_create)
 

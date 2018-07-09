@@ -1,5 +1,8 @@
+from __future__ import absolute_import
+from __future__ import unicode_literals
 # -*- coding: utf-8 -*-
 from django.utils.importlib import import_module
+from six import string_types
 
 _cache = {}
 _settings_forms = []
@@ -12,14 +15,14 @@ def register(PluginClass):
     Register a plugin class. This function will call back your plugin's
     constructor.
     """
-    if PluginClass in _cache.keys():
+    if PluginClass in list(_cache.keys()):
         raise Exception("Plugin class already registered")
     plugin = PluginClass()
     _cache[PluginClass] = plugin
     
     settings_form = getattr(PluginClass, 'settings_form', None)
     if settings_form:
-        if isinstance(settings_form, basestring):
+        if isinstance(settings_form, string_types):
             klassname = settings_form.split(".")[-1]
             modulename = ".".join(settings_form.split(".")[:-1])
             form_module = import_module(modulename)

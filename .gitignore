@@ -2,10 +2,24 @@
 build
 dist
 *.egg-info
+README.rst
+testproject/testproject/whoosh_index/
+testproject/testproject/xapian_index/
+
+# Ignore this folder which is created by tests
+wiki/attachments
+
+#PyCharm
+.idea
+
 
 #Docs
 docs/_build
 docs/_build/*
+
+# Test project
+testproject/testproject/settings/local.py
+testproject/testproject/media/*
 
 # Installer logs
 pip-log.txt
@@ -14,9 +28,6 @@ pip-log.txt
 .coverage
 .tox
 
-#Translations
-*.mo
-
 #Eclipse
 .project
 .pydevproject
@@ -24,6 +35,7 @@ pip-log.txt
 
 #Virtualenv
 virtualenv
+.venv
 
 #Mr Developer
 .mr.developer.cfg

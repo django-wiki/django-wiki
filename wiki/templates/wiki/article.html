@@ -1,8 +1,8 @@
 {% extends "wiki/base.html" %}
-{% load wiki_tags i18n %}
+{% load wiki_tags i18n sekizai_tags %}
 {% load url from future %}
 
-{% block pagetitle %}{{ article.current_revision.title }}{% endblock %}
+{% block wiki_pagetitle %}{{ article.current_revision.title }}{% endblock %}
 
 {% block wiki_breadcrumbs %}
 {% include "wiki/includes/breadcrumbs.html" %}
@@ -10,9 +10,9 @@
 
 {% block wiki_contents %}
 
-  <div class="" style="margin-top: 20px;">
-    <ul class="nav nav-pills" style="border-bottom: 1px solid #EEE;">
-      <li class="pull-left">
+  <div id="article-container">
+    <ul class="nav nav-pills" id="article-menu">
+      <li class="pull-left" id="article-title-li">
         <h1 id="article-title">
           {{ article.current_revision.title }}
           <small style="font-size: 14px;">
@@ -29,13 +29,12 @@
     </ul>
     <div>
       {% block wiki_contents_tab %}
-      {% wiki_render article %}
       {% endblock %}
     </div>
   </div>
 
 {% endblock %}
 
-{% block footer_prepend %}
+{% block wiki_footer_prepend %}
   <p style="margin-bottom: 10px;"><em>{% trans "This article was last modified:" %} {{ article.current_revision.modified }}</em></p>
 {% endblock %}

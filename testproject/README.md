@@ -6,13 +6,14 @@ that you have checked out the root of the Git repository.
 
 It comes with a prepopulated SQLite database.
 
-Setup
------
+Running
+-------
 
-You should link your wiki and django_notify folders like so
+You should be able to immediately run it like this:
 
-    ln -s ../wiki .
-    ln -s ../django_notify .
+    python manage.py runserver
+
+The settings come in a package to administer several test scenarios. For simple purposes, simply edit `local.py`.
 
 Login
 -----

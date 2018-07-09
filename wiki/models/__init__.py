@@ -1,14 +1,19 @@
+from __future__ import absolute_import
+from __future__ import unicode_literals
 # -*- coding: utf-8 -*-
 
+from django import VERSION
 from django.conf import settings as django_settings
 from django.core.exceptions import ImproperlyConfigured
 import warnings
+from six import string_types
 
 # TODO: Don't use wildcards
-from article import *
-from urlpath import *
+from .article import *
+from .urlpath import *
 
 # TODO: Should the below stuff be executed a more logical place?
+# Follow Django's default_settings.py / settings.py pattern and put these in d_s.py? That might be confusing, though.
 
 ######################
 # Configuration stuff
@@ -20,8 +25,8 @@ if not 'mptt' in django_settings.INSTALLED_APPS:
 if not 'sekizai' in django_settings.INSTALLED_APPS:
     raise ImproperlyConfigured('django-wiki: needs sekizai in INSTALLED_APPS')
 
-if not 'django_notify' in django_settings.INSTALLED_APPS:
-    raise ImproperlyConfigured('django-wiki: needs django_notify in INSTALLED_APPS')
+#if not 'django_nyt' in django_settings.INSTALLED_APPS:
+#    raise ImproperlyConfigured('django-wiki: needs django_nyt in INSTALLED_APPS')
 
 if not 'django.contrib.humanize' in django_settings.INSTALLED_APPS:
     raise ImproperlyConfigured('django-wiki: needs django.contrib.humanize in INSTALLED_APPS')
@@ -32,21 +37,17 @@ if not 'django.contrib.contenttypes' in django_settings.INSTALLED_APPS:
 if not 'django.contrib.auth.context_processors.auth' in django_settings.TEMPLATE_CONTEXT_PROCESSORS:
     raise ImproperlyConfigured('django-wiki: needs django.contrib.auth.context_processors.auth in TEMPLATE_CONTEXT_PROCESSORS')
 
+if not 'django.core.context_processors.request' in django_settings.TEMPLATE_CONTEXT_PROCESSORS:
+    raise ImproperlyConfigured('django-wiki: needs django.core.context_processors.request in TEMPLATE_CONTEXT_PROCESSORS')
+
 ######################
 # Warnings
 ######################
 
-if not 'south' in django_settings.INSTALLED_APPS:
-    warnings.warn("django-wiki: No south in your INSTALLED_APPS. This is highly discouraged.")
 
-
-######################
-# PLUGINS
-######################
-
-from wiki.core.plugins.loader import load_wiki_plugins
-
-load_wiki_plugins()
+if VERSION < (1, 7):
+    if not 'south' in django_settings.INSTALLED_APPS:
+        warnings.warn("django-wiki: No south in your INSTALLED_APPS. This is highly discouraged.")
 
 
 from django.core import urlresolvers
@@ -63,7 +64,7 @@ def reverse(*args, **kwargs):
     return the result of calling reverse._transform_url(reversed_url)
     for every url in the wiki namespace.
     """
-    if isinstance(args[0], basestring) and args[0].startswith('wiki:'):
+    if isinstance(args[0], string_types) and args[0].startswith('wiki:'):
         url_kwargs = kwargs.get('kwargs', {})
         path = url_kwargs.get('path', False)
         # If a path is supplied then discard the article_id

@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls.defaults import patterns, url
+from __future__ import unicode_literals
+from __future__ import absolute_import
+from django.conf.urls import patterns, url
 from django.utils.translation import ugettext as _
 
 from wiki.core.plugins import registry
 from wiki.core.plugins.base import BasePlugin
 from wiki.plugins.images import views, models, settings, forms
-from wiki.plugins.notifications import ARTICLE_EDIT
+from wiki.plugins.notifications.settings import ARTICLE_EDIT
+from wiki.plugins.notifications.util import truncate_title
 from wiki.plugins.images.markdown_extensions import ImageExtension
 
 class ImagePlugin(BasePlugin):
@@ -23,7 +26,7 @@ class ImagePlugin(BasePlugin):
     # is handled inside the notifications plugin.
     notifications = [
         {'model': models.ImageRevision,
-         'message': lambda obj: _(u"An image was added: %s") % obj.get_filename(),
+         'message': lambda obj: _("An image was added: %s") % truncate_title(obj.get_filename()),
          'key': ARTICLE_EDIT,
          'created': False,
          'ignore': lambda revision: bool(revision.previous_revision), # Ignore if there is a previous revision... the image isn't new
@@ -32,7 +35,7 @@ class ImagePlugin(BasePlugin):
     
     class RenderMedia:
         js = [
-            'wiki/colorbox/colorbox/jquery.colorbox-min.js',
+            'wiki/colorbox/jquery.colorbox-min.js',
             'wiki/js/images.js',
         ]
         
@@ -40,14 +43,16 @@ class ImagePlugin(BasePlugin):
             'screen': 'wiki/colorbox/example1/colorbox.css'
         }
     
-    urlpatterns = patterns('',
-        url('^$', views.ImageView.as_view(), name='images_index'),
-        url('^delete/(?P<image_id>\d+)/$', views.DeleteView.as_view(), name='images_delete'),
-        url('^restore/(?P<image_id>\d+)/$', views.DeleteView.as_view(), name='images_restore', kwargs={'restore': True}),
-        url('^purge/(?P<image_id>\d+)/$', views.PurgeView.as_view(), name='images_purge'),
-        url('^(?P<image_id>\d+)/revision/change/(?P<rev_id>\d+)/$', views.RevisionChangeView.as_view(), name='images_restore'),
-        url('^(?P<image_id>\d+)/revision/add/$', views.RevisionAddView.as_view(), name='images_add_revision'),
-    )
+    urlpatterns = {
+        'article': patterns('',
+            url('^$', views.ImageView.as_view(), name='images_index'),
+            url('^delete/(?P<image_id>\d+)/$', views.DeleteView.as_view(), name='images_delete'),
+            url('^restore/(?P<image_id>\d+)/$', views.DeleteView.as_view(), name='images_restore', kwargs={'restore': True}),
+            url('^purge/(?P<image_id>\d+)/$', views.PurgeView.as_view(), name='images_purge'),
+            url('^(?P<image_id>\d+)/revision/change/(?P<rev_id>\d+)/$', views.RevisionChangeView.as_view(), name='images_restore'),
+            url('^(?P<image_id>\d+)/revision/add/$', views.RevisionAddView.as_view(), name='images_add_revision'),
+        )
+    }
 
     markdown_extensions = [ImageExtension()]
     

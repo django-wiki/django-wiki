@@ -1,8 +1,8 @@
 {% extends "wiki/article.html" %}
-{% load wiki_tags i18n humanize thumbnail %}
+{% load wiki_tags i18n humanize wiki_thumbnails %}
 {% load url from future %}
 
-{% block pagetitle %}{% trans "Purge deletion" %}: {{ image }}{% endblock %}
+{% block wiki_pagetitle %}{% trans "Purge deletion" %}: {{ image }}{% endblock %}
 
 {% block wiki_contents_tab %}
   {% thumbnail image.current_revision.imagerevision.image "250x250" as thumb %}
@@ -15,15 +15,18 @@
   </p>
   <form method="POST" class="form-horizontal" enctype="multipart/form-data">
     {% wiki_form form %}
-    <div class="form-actions">
-      <a href="{% url 'wiki:images_index' path=urlpath.path article_id=article.id %}" class="btn">
-        <span class="icon-arrow-left"></span>
-        {% trans "Go back" %}
-      </a>
-      <button class="btn btn-primary">
-        <span class="icon-trash"></span>
-        {% trans "Remove it completely!" %}
-      </button>
+    <div class="form-group form-actions">
+      <div class="col-lg-2"></div>
+      <div class="col-lg-10">
+        <a href="{% url 'wiki:images_index' path=urlpath.path article_id=article.id %}" class="btn btn-default">
+          <span class="icon-arrow-left"></span>
+          {% trans "Go back" %}
+        </a>
+        <button class="btn btn-primary">
+          <span class="icon-trash"></span>
+          {% trans "Remove it completely!" %}
+        </button>
+      </div>
     </div>
   </form>
   

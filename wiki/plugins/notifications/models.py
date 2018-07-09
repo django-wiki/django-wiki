@@ -1,50 +1,60 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+from __future__ import absolute_import
 from django.core.urlresolvers import reverse
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import signals
+from django.db import models
 
-from django_notify import notify
-from django_notify.models import Subscription
+from django_nyt.utils import notify
+from django_nyt.models import Subscription
 
 from wiki import models as wiki_models
 from wiki.models.pluginbase import ArticlePlugin
 from wiki.core.plugins import registry
-from wiki.plugins.notifications import ARTICLE_EDIT #TODO: Is this bad practice?
 from wiki.plugins.notifications import settings
+from wiki.plugins.notifications.util import get_title
 
-class ArticleSubscription(ArticlePlugin, Subscription):
+
+@python_2_unicode_compatible
+class ArticleSubscription(ArticlePlugin):
     
-    def __unicode__(self):
-        return (_(u"%(user)s subscribing to %(article)s (%(type)s)") % 
-                {'user': self.settings.user.username,
-                 'article': self.article.current_revision.title,
-                 'type': self.notification_type.label})
+    subscription = models.OneToOneField(Subscription)
+    
+    def __str__(self):
+        title = (_("%(user)s subscribing to %(article)s (%(type)s)") %
+                 {'user': self.settings.user.username,
+                  'article': self.article.current_revision.title,
+                  'type': self.notification_type.label})
+        return str(title)
     
     class Meta:
-        app_label = settings.APP_LABEL
+        unique_together = ('subscription', 'articleplugin_ptr')
+        if settings.APP_LABEL:
+            app_label = settings.APP_LABEL
     
 
 def default_url(article, urlpath=None):
-    try:
-        if not urlpath:
-            urlpath = wiki_models.URLPath.objects.get(articles=article)
-        url = reverse('wiki:get', kwargs={'path': urlpath.path})
-    except wiki_models.URLPath.DoesNotExist:
-        url = reverse('wiki:get', kwargs={'article_id': article.id})
-    return url
+    if urlpath:
+        return reverse('wiki:get', kwargs={'path': urlpath.path})
+    return article.get_absolute_url()
 
-def post_article_revision_save(instance, **kwargs):
+
+def post_article_revision_save(**kwargs):
+    instance = kwargs['instance']
     if kwargs.get('created', False):
         url = default_url(instance.article)
+        filter_exclude = {'settings__user': instance.user}
         if instance.deleted:
-            notify(_(u'Article deleted: %s') % instance.title, ARTICLE_EDIT,
-                   target_object=instance.article, url=url)
+            notify(_('Article deleted: %s') % get_title(instance), settings.ARTICLE_EDIT,
+                   target_object=instance.article, url=url, filter_exclude=filter_exclude)
         elif instance.previous_revision:
-            notify(_(u'Article modified: %s') % instance.title, ARTICLE_EDIT,
-                   target_object=instance.article, url=url)
+            notify(_('Article modified: %s') % get_title(instance), settings.ARTICLE_EDIT,
+                   target_object=instance.article, url=url, filter_exclude=filter_exclude)
         else:
-            notify(_(u'New article created: %s') % instance.title, ARTICLE_EDIT,
-                   target_object=instance, url=url)
+            notify(_('New article created: %s') % get_title(instance), settings.ARTICLE_EDIT,
+                   target_object=instance, url=url, filter_exclude=filter_exclude)
             
 # Whenever a new revision is created, we notifý users that an article
 # was edited
@@ -65,7 +75,7 @@ for plugin in registry.get_plugins():
                 return
             if kwargs.get('created', False) == notification_dict.get('created', True):
                 url = None
-                if notification_dict.has_key('get_url'):
+                if 'get_url' in notification_dict:
                     url = notification_dict['get_url'](instance)
                 else:
                     url = default_url(notification_dict['get_article'](instance))
