@@ -37,7 +37,7 @@
 
 <p>
   {% with paginator.object_list.count as cnt %}
-    {% blocktrans with urlpath.path as path and cnt|pluralize:_("article,articles") as articles_plur and cnt|pluralize:_("is,are") as articles_plur_verb %}
+    {% blocktrans with urlpath.path as path and cnt|pluralize:_("article,articles") as articles_plur and cnt|pluralize:_("is,are") as articles_plur_verb trimmed %}
       Browsing <strong><a href="{{ self_url }}">/{{ path }}</a></strong>. There {{ articles_plur_verb }} <strong>{{ cnt }} {{ articles_plur }}</strong> in this level.
     {% endblocktrans %}
   {% endwith %}
