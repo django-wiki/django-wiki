@@ -20,7 +20,7 @@
         </ul>
       </div>
       <p class="col-lg-offset-2">
-        {% blocktrans count cnt=urlpath.get_descendants.count %}
+        {% blocktrans count cnt=urlpath.get_descendants.count trimmed %}
           {{ cnt }} nested article will also be moved.<br>
           Be careful, links to this article and {{ cnt }} article nested
           in this hierarchy will not be updated.

@@ -11,7 +11,7 @@
 <div class="row">
   <div class="lead col-xs-8">
     {% with paginator.object_list.count as cnt %}
-      {% blocktrans count cnt=cnt %}
+      {% blocktrans count cnt=cnt trimmed %}
         List of <strong>{{ cnt }} change</strong> in the wiki.
         {% plural %}
         List of <strong>{{ cnt }} changes</strong> in the wiki.
