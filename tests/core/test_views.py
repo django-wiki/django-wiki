@@ -269,11 +269,11 @@ class MoveViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
 
         response = self.get_by_path('test0/test2/')
         self.assertContains(response, 'Moved: Test1')
-        self.assertContains(response, 'moved to <a>wiki:/test1new/')
+        self.assertRegex(response.content, br'moved to <a[^>]*>wiki:/test1new/')
 
         response = self.get_by_path('test0/test2/test020/')
         self.assertContains(response, 'Moved: Test020')
-        self.assertContains(response, 'moved to <a>wiki:/test1new/test020')
+        self.assertRegex(response.content, br'moved to <a[^>]*>wiki:/test1new/test020')
 
         # Check that moved_to was correctly set
         urlsrc = URLPath.get_by_path('/test0/test2/')

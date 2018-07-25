@@ -30,6 +30,10 @@ h1#article-title {font-size: 2em; margin-top: -5px;}
 
 .wiki-article a.linknotfound {color: #C87;}
 
+.wiki-broken {
+  color: #ba0000;
+}
+
 .wiki-article pre {
   max-width: 700px;
 }
