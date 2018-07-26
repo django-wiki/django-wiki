@@ -50,7 +50,9 @@ setup_requirements = [
     'pytest-runner',
 ]
 
-development_requirements = test_requirements + test_lint_requirements
+development_requirements = test_requirements + test_lint_requirements + [
+    'pre-commit',
+]
 
 extras_requirements = {
     'devel': development_requirements,
