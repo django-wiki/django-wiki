@@ -6,7 +6,7 @@ from wiki.models import URLPath
 class RedlinksTests(RequireRootArticleMixin, TestBase):
     def setUp(self):
         super().setUp()
-        self.child = URLPath.create_urlpath(self.root, 'child')
+        self.child = URLPath.create_urlpath(self.root, "child")
 
     def test_root_to_self(self):
         self.assert_internal(self.root, "[Internal](./)")
