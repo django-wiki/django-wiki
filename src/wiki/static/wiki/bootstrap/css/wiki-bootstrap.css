@@ -6822,6 +6822,9 @@ h1#article-title {
 .wiki-article a.linknotfound {
   color: #C87;
 }
+.wiki-broken {
+  color: #ba0000;
+}
 .wiki-article pre {
   max-width: 700px;
   max-height: 150px;
