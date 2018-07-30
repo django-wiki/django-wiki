@@ -44,6 +44,7 @@ test_requirements = [
 
 test_lint_requirements = [
     'flake8>=3.5,<3.6',
+    'flake8-isort',
 ]
 
 setup_requirements = [

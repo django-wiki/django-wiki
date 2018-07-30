@@ -1,6 +1,7 @@
-from urllib.parse import urlparse, urljoin
-from markdown.treeprocessors import Treeprocessor
+from urllib.parse import urljoin, urlparse
+
 from markdown.extensions import Extension
+from markdown.treeprocessors import Treeprocessor
 from wiki.models import URLPath
 
 
@@ -22,7 +23,7 @@ def urljoin_internal(base, url):
     res1 = urljoin(canary1 + base, url)
     res2 = urljoin(canary2 + base, url)
     if res1.startswith(canary1) and res2.startswith(canary2):
-        return res1[len(canary1) :]
+        return res1[len(canary1):]
 
 
 class LinkTreeprocessor(Treeprocessor):

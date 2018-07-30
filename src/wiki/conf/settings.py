@@ -1,5 +1,4 @@
 import bleach
-from django.apps import apps
 from django.conf import settings as django_settings
 from django.contrib.messages import constants as messages
 from django.core.files.storage import default_storage

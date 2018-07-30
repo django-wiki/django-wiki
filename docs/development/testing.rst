@@ -62,4 +62,3 @@ fixtures for tests e.g. a root article.
   Javascript, and can be tested using the fast WebTest method, rather than
   relying on the slow and fragile Selenium method. Selenium tests are not run by
   default.
-
