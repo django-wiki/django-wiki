@@ -1,5 +1,4 @@
-"""
-Base classes for different plugin objects.
+"""Base classes for different plugin objects.
 
  * BasePlugin: Create a wiki_plugin.py with a class that inherits from BasePlugin.
  * PluginSidebarFormMixin: Mix in this class in the form that should be rendered in the editor sidebar
@@ -17,11 +16,10 @@ from django import forms
 from django.http.response import Http404
 from django.utils.translation import ugettext as _
 
-
 logger = logging.getLogger(__name__)
 
 
-class BasePlugin(object):
+class BasePlugin:
 
     def undefined_view(self, request, *args, **kwargs):
         logger.error("Undefined plugin view got called: {}".format(request.path))
@@ -71,7 +69,7 @@ class PluginSidebarFormMixin(forms.ModelForm):
         pass
 
 
-class PluginSettingsFormMixin(object):
+class PluginSettingsFormMixin:
     settings_form_headline = _('Settings for plugin')
     settings_order = 1
     settings_write_access = False

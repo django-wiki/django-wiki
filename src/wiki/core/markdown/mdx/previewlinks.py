@@ -1,5 +1,3 @@
-from __future__ import absolute_import, unicode_literals
-
 import markdown
 from markdown.treeprocessors import Treeprocessor
 
@@ -21,3 +19,8 @@ class PreviewLinksTree(Treeprocessor):
                 if not a.get('href').startswith('#'):
                     a.set('target', '_blank')
         return root
+
+
+def makeExtension(*args, **kwargs):
+    """Return an instance of the extension."""
+    return PreviewLinksExtension(*args, **kwargs)

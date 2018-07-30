@@ -1,23 +1,7 @@
-from __future__ import absolute_import, unicode_literals
-
-import django
 from django.db import models
-from django.db.models import Q, Count
+from django.db.models import Count, Q
 from django.db.models.query import EmptyQuerySet, QuerySet
 from mptt.managers import TreeManager
-
-if django.VERSION >= (1, 6):
-    # TreeManager bug:
-    if 'get_query_set' in TreeManager.__dict__:
-        # TreeManager should not define this, it messes things up.
-        del TreeManager.get_query_set
-
-        # See also:
-        # https://github.com/django-mptt/django-mptt/pull/388
-
-        # Once this has been merged, a new release for django-mptt has been
-        # made, and we can specify the new version in our requirements, this
-        # hack can be removed.
 
 
 class ArticleQuerySet(QuerySet):
@@ -27,7 +11,7 @@ class ArticleQuerySet(QuerySet):
         are included"""
         if user.has_perm('wiki.moderator'):
             return self
-        if user.is_anonymous():
+        if user.is_anonymous:
             q = self.filter(other_read=True)
         else:
             q = self.filter(Q(other_read=True) |
@@ -41,7 +25,7 @@ class ArticleQuerySet(QuerySet):
         are included"""
         if user.has_perm('wiki.moderator'):
             return self
-        if user.is_anonymous():
+        if user.is_anonymous:
             q = self.filter(other_write=True)
         else:
             q = self.filter(Q(other_write=True) |
@@ -66,14 +50,14 @@ class ArticleEmptyQuerySet(EmptyQuerySet):
         return self
 
 
-class ArticleFkQuerySetMixin(object):
+class ArticleFkQuerySetMixin:
 
     def can_read(self, user):
         """Filter objects so only the ones with a user's reading access
         are included"""
         if user.has_perm('wiki.moderate'):
             return self
-        if user.is_anonymous():
+        if user.is_anonymous:
             q = self.filter(article__other_read=True)
         else:
             # https://github.com/django-wiki/django-wiki/issues/67
@@ -88,7 +72,7 @@ class ArticleFkQuerySetMixin(object):
         are included"""
         if user.has_perm('wiki.moderate'):
             return self
-        if user.is_anonymous():
+        if user.is_anonymous:
             q = self.filter(article__other_write=True)
         else:
             # https://github.com/django-wiki/django-wiki/issues/67
@@ -102,7 +86,7 @@ class ArticleFkQuerySetMixin(object):
         return self.filter(article__current_revision__deleted=False)
 
 
-class ArticleFkEmptyQuerySetMixin(object):
+class ArticleFkEmptyQuerySetMixin:
 
     def can_read(self, user):
         return self

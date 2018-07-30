@@ -1,21 +1,12 @@
-from __future__ import absolute_import, unicode_literals
-
 import os.path
 
 from django.conf import settings as django_settings
-from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.db.models import signals
-from django.utils.encoding import python_2_unicode_compatible
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ugettext
+from django.utils.translation import gettext, gettext_lazy as _
 from wiki.models.pluginbase import RevisionPlugin, RevisionPluginRevision
 
 from . import settings
-
-if "sorl.thumbnail" not in django_settings.INSTALLED_APPS:
-    raise ImproperlyConfigured(
-        'wiki.plugins.images: needs sorl.thumbnail in INSTALLED_APPS')
 
 
 def upload_path(instance, filename):
@@ -30,14 +21,13 @@ def upload_path(instance, filename):
     return os.path.join(upload_path, filename)
 
 
-@python_2_unicode_compatible
 class Image(RevisionPlugin):
 
     # The plugin system is so awesome that the inheritor doesn't need to do
     # anything! :D
 
     def can_write(self, user):
-        if not settings.ANONYMOUS and (not user or user.is_anonymous()):
+        if not settings.ANONYMOUS and (not user or user.is_anonymous):
             return False
         return RevisionPlugin.can_write(self, user)
 
@@ -51,12 +41,11 @@ class Image(RevisionPlugin):
 
     def __str__(self):
         if self.current_revision:
-            return ugettext('Image: %s') % self.current_revision.imagerevision.get_filename()
+            return gettext('Image: %s') % self.current_revision.imagerevision.get_filename()
         else:
-            return ugettext('Current revision not set!!')
+            return gettext('Current revision not set!!')
 
 
-@python_2_unicode_compatible
 class ImageRevision(RevisionPluginRevision):
 
     image = models.ImageField(upload_to=upload_path,
@@ -92,7 +81,7 @@ class ImageRevision(RevisionPluginRevision):
         be unset if it's the initial history entry.
         """
         predecessor = image.current_revision.imagerevision
-        super(ImageRevision, self).inherit_predecessor(image)
+        super().inherit_predecessor(image)
         self.plugin = predecessor.plugin
         self.deleted = predecessor.deleted
         self.locked = predecessor.locked
@@ -112,15 +101,20 @@ class ImageRevision(RevisionPluginRevision):
         ordering = ('-created',)
 
     def __str__(self):
-        return ugettext('Image Revision: %d') % self.revision_number
+        return gettext('Image Revision: %d') % self.revision_number
 
 
 def on_image_revision_delete(instance, *args, **kwargs):
     if not instance.image:
         return
-    # Remove image file
-    path = instance.image.path.split("/")[:-1]
+    # Remove image file    
     instance.image.delete(save=False)
+    
+    try:
+        path = instance.image.path.split("/")[:-1]
+    except NotImplemented:
+            # This backend storage doesn't implement 'path' so there is no path to delete
+        return
 
     # Clean up empty directories
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 There are three kinds of plugin base models:
 
@@ -19,14 +18,19 @@ There are three kinds of plugin base models:
 
 
 """
-from __future__ import absolute_import, unicode_literals
-
 from django.db import models
 from django.db.models import signals
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from wiki.decorators import disable_signal_for_loaddata
 
 from .article import ArticleRevision, BaseRevisionMixin
+
+__all__ = [
+    'ArticlePlugin',
+    'SimplePlugin', 'SimplePluginCreateError',
+    'ReusablePlugin',
+    'RevisionPlugin', 'RevisionPluginRevision',
+]
 
 
 class ArticlePlugin(models.Model):
@@ -133,7 +137,7 @@ class SimplePlugin(ArticlePlugin):
 
     def __init__(self, *args, **kwargs):
         article = kwargs.pop('article', None)
-        super(SimplePlugin, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         if not self.pk and not article:
             raise SimplePluginCreateError(
                 "Keyword argument 'article' expected.")
@@ -161,6 +165,7 @@ class RevisionPlugin(ArticlePlugin):
         verbose_name=_('current revision'),
         blank=True,
         null=True,
+        on_delete=models.CASCADE,
         related_name='plugin_set',
         help_text=_(
             'The revision being displayed for this plugin. '
@@ -202,7 +207,7 @@ class RevisionPluginRevision(BaseRevisionMixin, models.Model):
     (this class is very much copied from wiki.models.article.ArticleRevision
     """
 
-    plugin = models.ForeignKey(RevisionPlugin, related_name='revision_set')
+    plugin = models.ForeignKey(RevisionPlugin, on_delete=models.CASCADE, related_name='revision_set')
 
     class Meta:
         # Override this setting with app_label = '' in your extended model

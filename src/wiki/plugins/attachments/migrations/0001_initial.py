@@ -1,12 +1,8 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import django.db.models.deletion
+import wiki.plugins.attachments.models
 from django.conf import settings
 from django.db import migrations, models
 from django.db.models.fields import GenericIPAddressField as IPAddressField
-
-import wiki.plugins.attachments.models
 
 
 class Migration(migrations.Migration):
@@ -20,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Attachment',
             fields=[
-                ('reusableplugin_ptr', models.OneToOneField(parent_link=True, serialize=False, primary_key=True, to='wiki.ReusablePlugin', auto_created=True)),
+                ('reusableplugin_ptr', models.OneToOneField(parent_link=True, serialize=False, primary_key=True, to='wiki.ReusablePlugin', auto_created=True, on_delete=models.CASCADE)),
                 ('original_filename', models.CharField(max_length=256, verbose_name='original filename', blank=True, null=True)),
             ],
             options={
@@ -43,7 +39,7 @@ class Migration(migrations.Migration):
                 ('locked', models.BooleanField(default=False, verbose_name='locked')),
                 ('file', models.FileField(max_length=255, verbose_name='file', upload_to=wiki.plugins.attachments.models.upload_path)),
                 ('description', models.TextField(blank=True)),
-                ('attachment', models.ForeignKey(to='wiki_attachments.Attachment')),
+                ('attachment', models.ForeignKey(to='wiki_attachments.Attachment', on_delete=models.CASCADE)),
                 ('previous_revision', models.ForeignKey(blank=True, on_delete=django.db.models.deletion.SET_NULL, to='wiki_attachments.AttachmentRevision', null=True)),
                 ('user', models.ForeignKey(blank=True, verbose_name='user', on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL, null=True)),
             ],
@@ -58,7 +54,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='attachment',
             name='current_revision',
-            field=models.OneToOneField(to='wiki_attachments.AttachmentRevision', blank=True, verbose_name='current revision', related_name='current_set', help_text='The revision of this attachment currently in use (on all articles using the attachment)', null=True),
+            field=models.OneToOneField(to='wiki_attachments.AttachmentRevision', blank=True, verbose_name='current revision', related_name='current_set', help_text='The revision of this attachment currently in use (on all articles using the attachment)', null=True, on_delete=models.CASCADE),
             preserve_default=True,
         ),
     ]

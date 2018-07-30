@@ -1,12 +1,7 @@
-from __future__ import absolute_import, unicode_literals
-
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from wiki.core.plugins import registry
 from wiki.core.plugins.base import BasePlugin
 from wiki.plugins.macros import settings
-from wiki.plugins.macros.mdx.macro import MacroExtension
-from wiki.plugins.macros.mdx.toc import WikiTocExtension
-from wiki.plugins.macros.mdx.wikilinks import WikiLinkExtension
 
 
 class MacroPlugin(BasePlugin):
@@ -20,9 +15,10 @@ class MacroPlugin(BasePlugin):
                'get_form_kwargs': (lambda a: {})}
 
     markdown_extensions = [
-        WikiLinkExtension(),
-        MacroExtension(),
-        WikiTocExtension()]
+        'wiki.plugins.macros.mdx.macro',
+        'wiki.plugins.macros.mdx.toc',
+        'wiki.plugins.macros.mdx.wikilinks',
+    ]
 
 
 registry.register(MacroPlugin)

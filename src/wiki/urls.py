@@ -1,23 +1,25 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, unicode_literals
-
-from django.conf.urls import include, url
+from django.utils.module_loading import import_string
+from wiki.compat import include, url
 from wiki.conf import settings
 from wiki.core.plugins import registry
-from wiki.core.plugins.loader import load_wiki_plugins
-from wiki.core.utils import get_class_from_str
+from wiki import sites
 from wiki.views import accounts, article, deleted_list
 
 
-class WikiURLPatterns(object):
+urlpatterns = [
+    url(r'^', sites.site.urls),
+]
 
-    '''
+
+class WikiURLPatterns:
+
+    """
     configurator for wiki urls.
 
     To customize, you can define your own subclass, either overriding
     the view providers, or overriding the functions that collect
     views.
-    '''
+    """
 
     # basic views
     article_view_class = article.ArticleView
@@ -33,10 +35,10 @@ class WikiURLPatterns(object):
     article_source_view_class = article.Source
     article_plugin_view_class = article.Plugin
     revision_change_view_class = article.ChangeRevisionView
-    revision_merge_view = staticmethod(article.merge)
+    revision_merge_view_class = article.MergeView
 
-    search_view_class = settings.SEARCH_VIEW
-    article_diff_view = staticmethod(article.diff)
+    search_view_class = article.SearchView
+    article_diff_view_class = article.DiffView
 
     # account views
     signup_view_class = accounts.Signup
@@ -73,10 +75,10 @@ class WikiURLPatterns(object):
                 article.MissingRootView.as_view(),
                 name='root_missing'),
             url(r'^_search/$',
-                get_class_from_str(self.search_view_class).as_view(),
+                self.search_view_class.as_view(),
                 name='search'),
             url(r'^_revision/diff/(?P<revision_id>[0-9]+)/$',
-                self.article_diff_view,
+                self.article_diff_view_class.as_view(),
                 name='diff'),
         ]
         return urlpatterns
@@ -122,10 +124,8 @@ class WikiURLPatterns(object):
                 name='preview_revision'),
             url(
                 r'^_revision/merge/(?P<article_id>[0-9]+)/(?P<revision_id>[0-9]+)/preview/$',
-                self.revision_merge_view,
-                name='merge_revision_preview',
-                kwargs={
-                    'preview': True}),
+                self.revision_merge_view_class.as_view(preview=True),
+                name='merge_revision_preview'),
         ]
         return urlpatterns
 
@@ -165,7 +165,7 @@ class WikiURLPatterns(object):
                 name='change_revision'),
             url(
                 r'^(?P<article_id>[0-9]+)/revision/merge/(?P<revision_id>[0-9]+)/$',
-                self.revision_merge_view,
+                self.revision_merge_view_class.as_view(),
                 name='merge_revision'),
             url(r'^(?P<article_id>[0-9]+)/plugin/(?P<slug>\w+)/$',
                 self.article_plugin_view_class.as_view(),
@@ -200,6 +200,9 @@ class WikiURLPatterns(object):
             url(r'^(?P<path>.+/|)_dir/$',
                 self.article_dir_view_class.as_view(),
                 name='dir'),
+            url(r'^(?P<path>.+/|)_search/$',
+                self.search_view_class.as_view(),
+                name='search'),
             url(r'^(?P<path>.+/|)_settings/$',
                 self.article_settings_view_class.as_view(),
                 name='settings'),
@@ -212,7 +215,7 @@ class WikiURLPatterns(object):
                 name='change_revision'),
             url(
                 r'^(?P<path>.+/|)_revision/merge/(?P<revision_id>[0-9]+)/$',
-                self.revision_merge_view,
+                self.revision_merge_view_class.as_view(),
                 name='merge_revision'),
             url(r'^(?P<path>.+/|)_plugin/(?P<slug>\w+)/$',
                 self.article_plugin_view_class.as_view(),
@@ -227,7 +230,7 @@ class WikiURLPatterns(object):
     @staticmethod
     def get_plugin_urls():
         urlpatterns = []
-        for plugin in list(registry.get_plugins().values()):
+        for plugin in registry.get_plugins().values():
             slug = getattr(plugin, 'slug', None)
             if slug:
                 article_urlpatterns = plugin.urlpatterns.get('article', [])
@@ -250,20 +253,21 @@ def get_pattern(app_name="wiki", namespace="wiki", url_config_class=None):
        single Django project.
        https://docs.djangoproject.com/en/dev/topics/http/urls/#topics-http-reversing-url-namespaces
     """
+    import warnings
+    warnings.warn(
+        "wiki.urls.get_pattern is deprecated and will be removed in next version, just `include('wiki.urls')` in your urlconf",
+        DeprecationWarning
+    )
     if url_config_class is None:
         url_config_classname = getattr(settings, 'URL_CONFIG_CLASS', None)
         if url_config_classname is None:
             url_config_class = WikiURLPatterns
         else:
-            url_config_class = get_class_from_str(url_config_classname)
+            warnings.warn(
+                "URL_CONFIG_CLASS is deprecated and will be removed in next version, override `wiki.sites.WikiSite` instead",
+                DeprecationWarning
+            )
+            url_config_class = import_string(url_config_classname)
     urlpatterns = url_config_class().get_urls()
 
     return urlpatterns, app_name, namespace
-
-
-######################
-# PLUGINS
-######################
-
-
-load_wiki_plugins()

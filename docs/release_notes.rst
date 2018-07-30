@@ -5,127 +5,194 @@ Release notes
 Release plan
 ------------
 
-The next release series **0.3** will support Django 1.11. Likewise, it will be
-the last series with Python 2 support.
+The current release series **0.3** supports Django 1.11. As with the upstream
+Django release, 0.3 will be the last series with Python 2.7 support.
+
+The next series **0.4** will support Django 1.11 and Django 2.x and be for
+Python 3.4+.
 
 
-django-wiki 0.3dev (unreleased master)
---------------------------------------
-
-**Changed**
-
- * Removed exception catch all in ``URLPath.delete_subtree`` which silenced errors while delete articles with descendents
-
-
-
-django-wiki 0.3b3
+django-wiki 0.4b1
 -----------------
 
-.. note:: Series 0.3 is in development in the current master branch and the
-  latest pre-release is available with ``pip install wiki --pre``.
+Added
+~~~~~
 
-**Translation updates from Transifex**
+ * Django 2 support :url-issue:`755` (Raffaele Salmaso & Mads Jensen)
+ * Added ``wiki.sites.WikiSite`` for easy customization :url-issue:`827`
+ * Automatic link highlighting of URLs handles lots of new patterns :url-issue:`816` (Branko Majic)
+ * Red links: Internal links turn red and link to Create Page (Mathias Rav)  :url-issue:`889`
 
- * Languages that `need support <https://www.transifex.com/django-wiki/django-wiki/languages/>`__:
- 
-   * Slovak 88%
-   * Dutch 86%
-   * Finnish 85%
-   * Japanese 70%
-   * Chinese (Taiwan) 36%
-   * Norwegian 31%
-   * Turkish 30%
-   * Czech 13%
-   
- * >90% completed: Chinese, French, German, Russian, Spanish, Danish, Korean, Polish, Portuguese (Brazilian), Spanish
+Changed
+~~~~~~~
 
-**New features**
+ * Dependency for escaping HTML and safeguarding against injections ``bleach`` upgraded ``>=2.1,<2.2`` (last-partizan) :url-issue:`702`
+ * Use full path names for ``MARKDOWN_KWARGS['extensions']`` as short names
+   support wil be removed in ``Markdown 2.7`` :url-issue:`823`
+ * Support for ``include('wiki.urls')`` for urls instantiation :url-issue:`827`
+ * Use Django's 'checks.py' pattern to test configuration (Raffaele Salmaso & Mads Jensen) :url-issue:`830` :url-issue:`807`
+ * Test coverage added: Images plugin + Account handling (Mads Jensen) :url-issue:`804`
+ * Last couple of non-CBVs (Class Based Views) refactored to CBV (Raffaele Salmaso & Mads Jensen) :url-issue:`788` :url-issue:`819` :url-issue:`808`
+ * Big cleanup: Deprecating lots of Python 2.7 specific code (Mads Jensen & Raffaele Salmaso) `See: >30 PRs <https://github.com/django-wiki/django-wiki/pulls?q=is%3Apr+is%3Aclosed+label%3Aclean-up>`__
+ * Languages: Merged ``pt`` and ``pt_PT``, then deleted ``pt`` and linked it to ``pt_PT`` :url-issue:`858`
+ * Languages: Linked ``zh_Hans`` to ``zh_CN`` :url-issue:`711`
+ * Languages: ``da`` translated 100%
 
- * New bootstrapped image insert dialog (Frank Loemker) #628
- * Allow the HTML tag ``<hr>`` (Frank Loemker) #629
- * Global History overview of page revisions (Frank Loemker and Maximilien Cuony) #627
- * Move article support with redirects (Frank Loemker) #640
- * Django 1.11 compatibility (Luke Plant) #634
- * Crop paginator window when there are >9 pages in a list (Frank Loemker) #646
- * Extended syntax for attachment macro: ``[attachment:id title:"text" size]`` (Frank Loemker) #678
- * Add Sphinx documentation for plugin settings (Frank Loemker) #681
- * Show "log out" in menu when account handling is disabled (jenda1) #691
+Fixed
+~~~~~
 
-**Bug fixes and smaller changes**
+ * Use ``user.is_authenticated/is_anonymous`` as a boolean :url-issue:`790` (Raffaele Salmaso)
+ * Use ``simple_tag`` for assignment tag :url-issue:`791` (Raffaele Salmaso)
+ * Direct invocation of ``pytest`` fixed (removing ``runtests.py``) :url-issue:`781` (Branko Majic)
+ * Line breaks in help texts for macros :url-issue:`851` (Mathias Dannesbo)
+ * Table of contents now has a header by default, and several built-in django-wiki extensions can be configured using ``WIKI_MARKDOWN_KWARGS`` :url-issue:`881` (Mathias Rav)
 
- * Test refactor: Use django-functest and separate WebTest from Selenium (Luke Plant) #634
- * Repo refactor: Moved ``wiki`` package to ``src/`` folder and test code to ``tests/`` #631
- * Render django.contrib.messages with template tag and inclusion template: Configurable and bootstrap 3 compatible (Benjamin Bach and Frank Loemker) #654
- * Don't hardcode redirect url in account update view (Benjamin Bach) #650
- * Python 3.6 support added to test matrix (Benjamin Bach) #664
- * Fix restoring of attachments and other RevisionPlugin types after deletion (Frank Loemker) #672
- * Keep CSS global namespace clean, refactor CSS rule ``label`` -> ``.wiki-label label`` (Christian Duvholt) #679
- * Fix article settings page in Django 1.11 (Frank Loemker) #682
- * Fix upstream MPTT breaking deletion of articles from django-admin (Frank Loemker) #683
- * Wrong HTML attribute 'type' on search result page (Geoff Clapp) #698
- * Plugins can whitelist HTML tags and attributes (jenda1) #700
+Deprecated/Removed
+~~~~~~~~~~~~~~~~~~
+
+ * Django < 1.11 support is dropped :url-issue:`779`
+ * Python < 3.3 support is dropped :url-issue:`779` and :url-issue:`792`
+ * Deprecate ``wiki.urls.get_pattern`` and ``URL_CONFIG_CLASS`` setting :url-issue:`799`
+ * Removed ``SEARCH_VIEW`` setting, replaced by ``WikiSite`` override :url-issue:`837`
+
+
+django-wiki 0.3.1
+-----------------
+
+* Fix error messages of missing migrations due to inconsistent change of ``on_delete`` on some model fields :url-issue:`776`
+
+
+django-wiki 0.3
+---------------
+
+Translation updates from Transifex
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* Languages that `need support <https://www.transifex.com/django-wiki/django-wiki/languages/>`__:
+
+  * Dutch 88%
+  * Finnish 85%
+  * Japanese 80%
+  * Chinese (Taiwan) 36%
+  * Norwegian 36%
+  * Turkish 30%
+  * Czech 13%
+  * Italian 8%
+
+* >90% completed: Chinese, French, German, Russian, Spanish, Danish, Korean, Polish, Portuguese (Brazilian), Slovak, Spanish
+
+Added
+~~~~~
+
+* Search choice between either current or global tree (Christian Duvholt) :url-issue:`580` :url-issue:`731`
+* New bootstrapped image insert dialog (Frank Loemker) :url-issue:`628`
+* Allow the HTML tag ``<hr>`` (Frank Loemker) :url-issue:`629`
+* Global History overview of page revisions (Frank Loemker and Maximilien Cuony) :url-issue:`627`
+* Move article support with redirects (Frank Loemker) :url-issue:`640`
+* Django 1.11 compatibility (Luke Plant) :url-issue:`634`
+* Crop paginator window when there are >9 pages in a list (Frank Loemker) :url-issue:`646`
+* Extended syntax for attachment macro: ``[attachment:id title:"text" size]`` (Frank Loemker) :url-issue:`678`
+* Add Sphinx documentation for plugin settings (Frank Loemker) :url-issue:`681`
+* Show "log out" in menu when account handling is disabled (jenda1) :url-issue:`691`
+* Markdown tag with wiki paths now support fragments like
+  ``[Click Here](wiki:/path#header)`` (Frank Loemker) :url-issue:`701`
+
+Changed
+~~~~~~~
+
+* Test refactor: Use django-functest and separate WebTest from Selenium (Luke Plant) :url-issue:`634`
+* Repo refactor: Moved ``wiki`` package to ``src/`` folder and test code to ``tests/`` :url-issue:`631`
+* Render django.contrib.messages with template tag and inclusion template: Configurable and bootstrap 3 compatible (Benjamin Bach and Frank Loemker) :url-issue:`654`
+* Don't hardcode redirect url in account update view (Benjamin Bach) :url-issue:`650`
+* Python 3.6 support added to test matrix (Benjamin Bach) :url-issue:`664`
+* Keep CSS global namespace clean, refactor CSS rule ``label`` -> ``.wiki-label label`` (Christian Duvholt) :url-issue:`679`
+* Plugins can whitelist HTML tags and attributes (jenda1) :url-issue:`700`
+* Optimizations to fundamental permission lookup managers (Christian Duvholt) :url-issue:`714`
+* Code quality upgrade, remove obsolete code, linting and tidying up (Mads Jensen) :url-issue:`797`, :url-issue:`705`, :url-issue:`707`, :url-issue:`716`, :url-issue:`717`, :url-issue:`718`, :url-issue:`719`, :url-issue:`720`, :url-issue:`721`, :url-issue:`722`, :url-issue:`724`, :url-issue:`725`, :url-issue:`726`, :url-issue:`727`, :url-issue:`728`, :url-issue:`730`, :url-issue:`732`, :url-issue:`733`, :url-issue:`735`, :url-issue:`736`, :url-issue:`737`, :url-issue:`738`, :url-issue:`741`, :url-issue:`743`, :url-issue:`743`, :url-issue:`756`, :url-issue:`757`
+* Added ``AppConfig`` class for all plugins (Raffaele Salmaso) :url-issue:`758`
+* Explicit ``on_delete`` for all ``ForeignKey`` fields (Raffaele Salmaso) :url-issue:`759`
+* Django 2.0 preparation: ``atomic=False`` for 3 migrations that rename tables/fields (Raffaele Salmaso) :url-issue:`760`
+* Set dependency ``django-nyt<1.1`` to avoid future breakage (Benjamin Bach) :url-issue:`761`
+
+
+Fixed
+~~~~~
+
+* Removed exception catch all in ``URLPath.delete_subtree`` which silenced errors while delete articles with descendents
+* Fix article settings page in Django 1.11 (Frank Loemker) :url-issue:`682`
+* Fix upstream MPTT breaking deletion of articles from django-admin (Frank Loemker) :url-issue:`683`
+* Wrong HTML attribute 'type' on search result page (Geoff Clapp) :url-issue:`698`
+* Fix restoring of attachments and other RevisionPlugin types after deletion (Frank Loemker) :url-issue:`672`
+* Allowing ``<sup>`` because of footnotes (Frank Loemker) :url-issue:`750`
+* Hunted down unclosed HTML tags :url-issue:`750` (Mads Jensen) :url-issue:`741`
+
+
+django-wiki 0.2.5
+-----------------
+
+* Set dependency ``django-nyt<1.1`` to avoid future breakage (Benjamin Bach) :url-issue:`761`
 
 
 django-wiki 0.2.4
 -----------------
 
- * Hot-fix because of missing woff2 files #625
+* Hot-fix because of missing woff2 files :url-issue:`625`
 
 
 django-wiki 0.2.3
 -----------------
 
- * Pulled Transifex translations and pushed source translations.
- * Fix support for Py2 unicode in code blocks (Benjamin Bach) #607
- * Support for Github style fenced codeblocks (Benjamin Bach) #618
- * Cached articles showing up in wrong language (Benjamin Bach) #592
- * Upgraded Bootstrap from 3.3.1 to 3.3.7 (Benjamin Bach) #620
- * Upgraded bundled jQuery to 1.12.4 (Benjamin Bach) #620
- * Setting ``WIKI_MARKDOWN_HTML_STYLES`` for allowing ``style='..'`` in user code (Benjamin Bach) #603
- * Strip Markdown code in search result snippets (Benjamin Bach) #42
+* Pulled Transifex translations and pushed source translations.
+* Fix support for Py2 unicode in code blocks (Benjamin Bach) :url-issue:`607`
+* Support for Github style fenced codeblocks (Benjamin Bach) :url-issue:`618`
+* Cached articles showing up in wrong language (Benjamin Bach) :url-issue:`592`
+* Upgraded Bootstrap from 3.3.1 to 3.3.7 (Benjamin Bach) :url-issue:`620`
+* Upgraded bundled jQuery to 1.12.4 (Benjamin Bach) :url-issue:`620`
+* Setting ``WIKI_MARKDOWN_HTML_STYLES`` for allowing ``style='..'`` in user code (Benjamin Bach) :url-issue:`603`
+* Strip Markdown code in search result snippets (Benjamin Bach) :url-issue:`42`
 
 
 django-wiki 0.2.2
 -----------------
 
- * Remove ``wiki.decorators.json_view``, fixes server errors when resolving 404 links #604
- * Replace usage of ``render_to_response()`` with ``render()`` #606
- * Fix memory leak #609 and #611 (obtroston)
- * Scroll bars and display area fixed for code blocks #601 and #608 (Branko Majic)
- * Option ``WIKI_MARKDOWN_SANITIZE_HTML`` skips Bleach (warning: Don't use for untrusted code) #610 (Michal Hozza)
- * Allow the HTML tag ``<br>``. #613 (Frank Loemker)
- * Add thumbnail size directive (example: ``[image:123 size:large]``). #612 (Frank Loemker and @inflrscns)
- * Fix error with absolute paths in wiki links (example: ``[Sub-root](wiki:/sub-root)``) #616 (Benoit C. Sirois)
- * Require ``Django<1.11`` #616 (Benoit C. Sirois)
+* Remove ``wiki.decorators.json_view``, fixes server errors when resolving 404 links :url-issue:`604`
+* Replace usage of ``render_to_response()`` with ``render()`` :url-issue:`606`
+* Fix memory leak :url-issue:`609` and :url-issue:`611` (obtroston)
+* Scroll bars and display area fixed for code blocks :url-issue:`601` and :url-issue:`608` (Branko Majic)
+* Option ``WIKI_MARKDOWN_SANITIZE_HTML`` skips Bleach (warning: Don't use for untrusted code) :url-issue:`610` (Michal Hozza)
+* Allow the HTML tag ``<br>``. :url-issue:`613` (Frank Loemker)
+* Add thumbnail size directive (example: ``[image:123 size:large]``). :url-issue:`612` (Frank Loemker and @inflrscns)
+* Fix error with absolute paths in wiki links (example: ``[Sub-root](wiki:/sub-root)``) :url-issue:`616` (Benoit C. Sirois)
+* Require ``Django<1.11`` :url-issue:`616` (Benoit C. Sirois)
 
 
 django-wiki 0.2.1
 -----------------
 
- * Lowercase slugs when creating new pages with ``[[Like This]]`` #595 (Eric Clack)
- * Fix issues related to Bleach before Markdown processing esp. pertaining ``>`` characters. #596
- * Remove ``wiki.plugins.mediawikiimport`` #597
- * Pretty up the highligted code's line enumeration #598
- * Customize codehilite in order to wrap highlighted code with scrollbars #598
+* Lowercase slugs when creating new pages with ``[[Like This]]`` :url-issue:`595` (Eric Clack)
+* Fix issues related to Bleach before Markdown processing esp. pertaining ``>`` characters. :url-issue:`596`
+* Remove ``wiki.plugins.mediawikiimport`` :url-issue:`597`
+* Pretty up the highligted code's line enumeration :url-issue:`598`
+* Customize codehilite in order to wrap highlighted code with scrollbars :url-issue:`598`
 
 
 django-wiki 0.2
 ---------------
 
- * Translation updates from Transifex
+* Translation updates from Transifex
 
-   * Danish translation from 39% to 100% (Bo Holm-Rasmussen)
-   * Updated languages since 0.1: Chinese, French, German, German, Russian, Spanish
+  * Danish translation from 39% to 100% (Bo Holm-Rasmussen)
+  * Updated languages since 0.1: Chinese, French, German, German, Russian, Spanish
 
- * Added Django 1.10 support #563
- * Security: Do not depend on markdown ``safe_mode``, instead use ``bleach``.
- * Fix duplicate search results when logged in #582 (duvholt)
- * Do not allow slugs only consisting of numbers #558
- * Copy in urlify.js and fix auto-population of slug field in Django 1.9+ #554
- * Fix memory leak in markdown extensions setting #564
- * Updated translations - Languages > 90% completed: Chinese (China), Portuguese (Brazil), Korean (Korea), French, Slovak, Spanish, Dutch, German, Russian, Finnish.
- * Taiwanese Chinese added (39% completed)
- * Cleanup documentation structure #575
+* Added Django 1.10 support :url-issue:`563`
+* Security: Do not depend on markdown ``safe_mode``, instead use ``bleach``.
+* Fix duplicate search results when logged in :url-issue:`582` (duvholt)
+* Do not allow slugs only consisting of numbers :url-issue:`558`
+* Copy in urlify.js and fix auto-population of slug field in Django 1.9+ :url-issue:`554`
+* Fix memory leak in markdown extensions setting :url-issue:`564`
+* Updated translations - Languages > 90% completed: Chinese (China), Portuguese (Brazil), Korean (Korea), French, Slovak, Spanish, Dutch, German, Russian, Finnish.
+* Taiwanese Chinese added (39% completed)
+* Cleanup documentation structure :url-issue:`575`
 
 HTML contents
 ~~~~~~~~~~~~~
@@ -152,33 +219,33 @@ Python and Django support
 
 Support has been removed for:
 
- * Python 2.6
- * Django < 1.8
- * South
+* Python 2.6
+* Django < 1.8
+* South
 
 django-wiki 0.1.2
 -----------------
 
- * Remove unwanted items from default menu when ``WIKI_ACCOUNT_HANDLING = False``. #545
- * Fix broken soft-deletion and restoring of images, and "set revision" functionality #533
- * Added responsiveness to tables by use of Bootstrap table-responsive class #552
+* Remove unwanted items from default menu when ``WIKI_ACCOUNT_HANDLING = False``. :url-issue:`545`
+* Fix broken soft-deletion and restoring of images, and "set revision" functionality :url-issue:`533`
+* Added responsiveness to tables by use of Bootstrap table-responsive class :url-issue:`552`
 
 
 django-wiki 0.1.1
 -----------------
 
- * Several languages updated from Transifex
+* Several languages updated from Transifex
 
-   * Slovak added **Thanks M Hozza**
-   * Portuguese also added, but as copy of PT-BR (make changes as desired in Transifex)
+  * Slovak added **Thanks M Hozza**
+  * Portuguese also added, but as copy of PT-BR (make changes as desired in Transifex)
 
- * Brand new Account Settings page (email / password) **Thanks inflrscns**
- * Testproject turned into Django 1.9 layout
- * Replace context-processor dependent use of ``{{ STATIC_URL }}`` with ``{% static %}``
- * Bugfix for ``pip install wiki`` in an empty (no Django installed) virtualenv
- * Precommit hooks added in repository
- * Import statements sorted and codebase re-pep8'thed
- * Log in page is now called "Log in" in ``<title>`` tag - **Thanks Eugene Obukhov**
+* Brand new Account Settings page (email / password) **Thanks inflrscns**
+* Testproject turned into Django 1.9 layout
+* Replace context-processor dependent use of ``{{ STATIC_URL }}`` with ``{% static %}``
+* Bugfix for ``pip install wiki`` in an empty (no Django installed) virtualenv
+* Precommit hooks added in repository
+* Import statements sorted and codebase re-pep8'thed
+* Log in page is now called "Log in" in ``<title>`` tag - **Thanks Eugene Obukhov**
 
 
 django-wiki 0.1
@@ -188,19 +255,19 @@ django-wiki 0.1
    If you are upgrading from a previous release, please ensure that you
    pass through the 0.0.24 release because it contains the final migrations
    necessary before entering the django-wiki 0.1+ migration tree.
-   
+
    If you are using django 1.7+ and have an old installation of django-wiki
    (which should be impossible since it wouldn't run) please downgrade to 1.6
    as follows:
-   
+
    ::
-   
+
        $ pip install wiki\<0.1 --upgrade  # Latest 0.0.24 release
        $ pip install django\<1.7  # Downgrade django if necessary
        $ python manage.py migrate  # Run 0.0.24 migrations
        $ pip install wiki\<0.2 --upgrade  # Upgrade to latest 0.1 series
        $ python manage.py migrate --delete-ghost-migrations  # Run migrations again,
-                                                             # removing the (ghost) 
+                                                             # removing the (ghost)
                                                              # migrations from previous
                                                              # release
        $ # Feel free to upgrade Django again
@@ -208,10 +275,10 @@ django-wiki 0.1
 
 **Supported**
 
- * Python 2.7, 3.3, 3.4, 3.5 (3.2 is not supported)
- * Django 1.5, 1.6, 1.7, 1.8, 1.9
- * Django < 1.7 still needs South, and migration trees are kept until next major
-   release.
+* Python 2.7, 3.3, 3.4, 3.5 (3.2 is not supported)
+* Django 1.5, 1.6, 1.7, 1.8, 1.9
+* Django < 1.7 still needs South, and migration trees are kept until next major
+  release.
 
 
 Breaking changes
@@ -247,9 +314,9 @@ the final release.
 
 **Compatibility**
 
- * Django 1.5, 1.6 (That means Django 1.7 is **not** yet fully supported)
- * South 1.0+ (if you are on an older South, you **need** to upgrade)
- * Python 2.6, 2.7, 3.3, 3.4
+* Django 1.5, 1.6 (That means Django 1.7 is **not** yet fully supported)
+* South 1.0+ (if you are on an older South, you **need** to upgrade)
+* Python 2.6, 2.7, 3.3, 3.4
 
 
 Upgrading
@@ -260,7 +327,7 @@ Firstly, upgrade django-wiki through familiar steps with pip
 ::
 
     $ pip install wiki --upgrade
-   
+
 During the upgrade, notice that `django-nyt`_ is installed. This replaces the
 previously bundled django_notify and you need to make a few changes in
 your settings and urls.
@@ -325,7 +392,7 @@ Don't worry, just fake the backwards migration:
 
 ::
 
-    python manage.py migrate notifications zero --fake  
+    python manage.py migrate notifications zero --fake
 
 If you get ``relation "notifications_articlesubscription" already exists`` you
 may need to do a manual ``DROP TABLE notifications_articlesubscription;`` using
@@ -342,21 +409,21 @@ News archive
 April 15, 2017
 ~~~~~~~~~~~~~~
 
-0.2.3 released: `Release notes <http://django-wiki.readthedocs.io/en/master/release_notes.html#django-wiki-0-2-3>`_
+0.2.3 released: `Release notes <http://django-wiki.readthedocs.io/en/master/release_notes.html#django-wiki-0-2-3>`__
 
-0.2.2 released: `Release notes <http://django-wiki.readthedocs.io/en/master/release_notes.html#django-wiki-0-2-2>`_
+0.2.2 released: `Release notes <http://django-wiki.readthedocs.io/en/master/release_notes.html#django-wiki-0-2-2>`__
 
 
 February 27, 2017
 ~~~~~~~~~~~~~~~~~
 
-0.2.1 released: `Release notes <http://django-wiki.readthedocs.io/en/master/release_notes.html#django-wiki-0-2-1>`_
+0.2.1 released: `Release notes <http://django-wiki.readthedocs.io/en/master/release_notes.html#django-wiki-0-2-1>`__
 
 
 December 27, 2016
 ~~~~~~~~~~~~~~~~~
 
-0.2 final released: `Release notes <http://django-wiki.readthedocs.io/en/0.2/release_notes.html>`_
+0.2 final released: `Release notes <http://django-wiki.readthedocs.io/en/0.2/release_notes.html>`__
 
 
 June 19, 2016
@@ -418,4 +485,3 @@ actually new features, too.
 -  Python 3 and Django 1.6 compatibility (Russell-Jones, Antonin
    Lenfant, Luke Plant, Lubimov Igor, Benjamin Bach)
 -  (and more, forgiveness asked if anyone feels left out)
-

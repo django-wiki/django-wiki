@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import logging
 import re
 
@@ -44,7 +42,7 @@ class WikiFencedBlockPreprocessor(Preprocessor):
     CODE_WRAP = '<pre>%s</pre>'
 
     def __init__(self, md):
-        super(WikiFencedBlockPreprocessor, self).__init__(md)
+        super().__init__(md)
 
         self.checked_for_codehilite = False
         self.codehilite_conf = {}
@@ -119,3 +117,8 @@ class WikiCodeHiliteExtension(CodeHiliteExtension):
                              ">normalize_whitespace")
 
         md.registerExtension(self)
+
+
+def makeExtension(*args, **kwargs):
+    """Return an instance of the extension."""
+    return WikiCodeHiliteExtension(*args, **kwargs)

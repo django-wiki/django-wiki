@@ -1,12 +1,10 @@
-from __future__ import absolute_import, unicode_literals
-
 import logging
 
 from django.contrib import messages
-from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
 from django.utils.decorators import method_decorator
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.views.generic.base import RedirectView
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
@@ -30,7 +28,7 @@ class ImageView(ArticleMixin, ListView):
 
     @method_decorator(get_article(can_read=True, not_locked=True))
     def dispatch(self, request, article, *args, **kwargs):
-        return super(ImageView, self).dispatch(request, article, *args, **kwargs)
+        return super().dispatch(request, article, *args, **kwargs)
 
     def get_queryset(self):
         if (self.article.can_moderate(self.request.user) or
@@ -95,7 +93,7 @@ class PurgeView(ArticleMixin, FormView):
     def dispatch(self, request, article, *args, **kwargs):
         self.image = get_object_or_404(models.Image, article=article,
                                        id=kwargs.get('image_id', None))
-        return super(PurgeView, self).dispatch(request, article, *args, **kwargs)
+        return super().dispatch(request, article, *args, **kwargs)
 
     def form_valid(self, form):
 
@@ -167,7 +165,7 @@ class RevisionAddView(ArticleMixin, FormView):
         return ArticleMixin.dispatch(self, request, article, *args, **kwargs)
 
     def get_form_kwargs(self, **kwargs):
-        kwargs = super(RevisionAddView, self).get_form_kwargs(**kwargs)
+        kwargs = super().get_form_kwargs(**kwargs)
         kwargs['image'] = self.image
         kwargs['request'] = self.request
         return kwargs
@@ -177,7 +175,7 @@ class RevisionAddView(ArticleMixin, FormView):
         # with the form instance
         if 'form' not in kwargs:
             kwargs['form'] = self.get_form()
-        kwargs = super(RevisionAddView, self).get_context_data(**kwargs)
+        kwargs = super().get_context_data(**kwargs)
         kwargs['image'] = self.image
         return kwargs
 

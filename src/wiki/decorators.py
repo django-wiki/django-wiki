@@ -1,20 +1,16 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, unicode_literals
-
 from functools import wraps
 
-from django.core.urlresolvers import reverse
-from django.http import (HttpResponseForbidden, HttpResponseNotFound,
-                         HttpResponseRedirect)
+from django.http import HttpResponseForbidden, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.template.loader import render_to_string
+from django.urls import reverse
 from django.utils.http import urlquote
 from wiki.conf import settings
 from wiki.core.exceptions import NoRootURL
 
 
 def response_forbidden(request, article, urlpath):
-    if request.user.is_anonymous():
+    if request.user.is_anonymous:
         qs = request.META.get('QUERY_STRING', '')
         if qs:
             qs = urlquote('?' + qs)
@@ -67,8 +63,6 @@ def get_article(func=None, can_read=True, can_write=False,  # noqa
         path = kwargs.pop('path', None)
         article_id = kwargs.pop('article_id', None)
 
-        urlpath = None
-
         # fetch by urlpath.path
         if path is not None:
             try:
@@ -103,10 +97,7 @@ def get_article(func=None, can_read=True, can_write=False,  # noqa
             else:
                 # Be robust: Somehow article is gone but urlpath exists...
                 # clean up
-                return_url = reverse(
-                    'wiki:get',
-                    kwargs={
-                        'path': urlpath.parent.path})
+                return_url = reverse('wiki:get', kwargs={'path': urlpath.parent.path})
                 urlpath.delete()
                 return HttpResponseRedirect(return_url)
 
@@ -145,7 +136,7 @@ def get_article(func=None, can_read=True, can_write=False,  # noqa
             return response_forbidden(request, article, urlpath)
 
         if can_create and not (
-                request.user.is_authenticated() or settings.ANONYMOUS_CREATE):
+                request.user.is_authenticated or settings.ANONYMOUS_CREATE):
             return response_forbidden(request, article, urlpath)
 
         if can_delete and not article.can_delete(request.user):

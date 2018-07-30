@@ -1,9 +1,6 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, unicode_literals
-
 import markdown
 from django.test import TestCase
-from mock import patch
+from unittest.mock import patch
 from wiki.core.markdown import ArticleMarkdown
 from wiki.core.markdown.mdx.codehilite import WikiCodeHiliteExtension
 from wiki.core.markdown.mdx.responsivetable import ResponsiveTableExtension
@@ -37,13 +34,13 @@ class ArticleMarkdownTests(ArticleTestBase):
             content="</html>only_this"
         )
 
-        self.assertEqual(urlpath.article.render(), "<p>&lt;/html&gt;only_this</p>")
+        self.assertEqual(urlpath.article.render(), "<p>only_this</p>")
 
 
 class ResponsiveTableExtensionTests(TestCase):
 
     def setUp(self):
-        super(ResponsiveTableExtensionTests, self).setUp()
+        super().setUp()
         self.md = markdown.Markdown(extensions=[
             'extra',
             ResponsiveTableExtension()

@@ -1,5 +1,3 @@
-from __future__ import absolute_import, unicode_literals
-
 from testproject.settings import *
 from testproject.settings.local import *
 

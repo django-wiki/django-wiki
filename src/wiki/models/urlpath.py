@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, print_function, unicode_literals
-
 import logging
 import warnings
 
@@ -8,13 +5,10 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
-from django.core.urlresolvers import reverse
 from django.db import models, transaction
 from django.db.models.signals import post_save, pre_delete
-# Django 1.6 transaction API, required for 1.8+
-from django.utils.encoding import python_2_unicode_compatible
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ugettext
+from django.urls import reverse
+from django.utils.translation import gettext, gettext_lazy as _
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
 from wiki import managers
@@ -23,10 +17,14 @@ from wiki.core.exceptions import MultipleRootURLs, NoRootURL
 from wiki.decorators import disable_signal_for_loaddata
 from wiki.models.article import Article, ArticleForObject, ArticleRevision
 
+__all__ = [
+    'URLPath',
+]
+
+
 log = logging.getLogger(__name__)
 
 
-@python_2_unicode_compatible
 class URLPath(MPTTModel):
 
     """
@@ -66,11 +64,12 @@ class URLPath(MPTTModel):
 
     slug = models.SlugField(verbose_name=_('slug'), null=True, blank=True,
                             max_length=SLUG_MAX_LENGTH)
-    site = models.ForeignKey(Site)
+    site = models.ForeignKey(Site, on_delete=models.CASCADE)
     parent = TreeForeignKey(
         'self',
         null=True,
         blank=True,
+        on_delete=models.CASCADE,
         related_name='children',
         help_text=_("Position of URL path in the tree.")
     )
@@ -159,9 +158,7 @@ class URLPath(MPTTModel):
     @classmethod
     def root(cls):
         site = Site.objects.get_current()
-        root_nodes = list(
-            cls.objects.root_nodes().filter(site=site).select_related_common()
-        )
+        root_nodes = cls.objects.root_nodes().filter(site=site).select_related_common()
         # We fetch the nodes as a list and use len(), not count() because we need
         # to get the result out anyway. This only takes one sql query
         no_paths = len(root_nodes)
@@ -180,12 +177,12 @@ class URLPath(MPTTModel):
 
     def __str__(self):
         path = self.path
-        return path if path else ugettext("(root)")
+        return path if path else gettext("(root)")
 
     def delete(self, *args, **kwargs):
         assert not (self.parent and self.get_children()
                     ), "You cannot delete a root article with children."
-        super(URLPath, self).delete(*args, **kwargs)
+        super().delete(*args, **kwargs)
 
     class Meta:
         verbose_name = _('URL path')
@@ -206,7 +203,6 @@ class URLPath(MPTTModel):
                 raise ValidationError(
                     _('There is already a root node on %s') %
                     self.site)
-        super(URLPath, self).clean(*args, **kwargs)
 
     @classmethod
     def get_by_path(cls, path, select_related=False):
@@ -253,7 +249,6 @@ class URLPath(MPTTModel):
             site = Site.objects.get_current()
         root_nodes = cls.objects.root_nodes().filter(site=site)
         if not root_nodes:
-            # (get_or_create does not work for MPTT models??)
             article = Article()
             revision = ArticleRevision(title=title, **kwargs)
             if request:
@@ -317,7 +312,7 @@ class URLPath(MPTTModel):
         """
         user = None
         ip_address = None
-        if not request.user.is_anonymous():
+        if not request.user.is_anonymous:
             user = request.user
             if settings.LOG_IPS_USERS:
                 ip_address = request.META.get('REMOTE_ADDR', None)

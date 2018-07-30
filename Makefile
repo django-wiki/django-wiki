@@ -51,7 +51,7 @@ lint:  ## Check python code conventions
 	flake8 src/wiki tests/
 
 test:  ## Run automated test suite
-	./runtests.py
+	pytest
 
 test-all:  ## Run tests on all supported Python environments
 	tox
@@ -59,6 +59,13 @@ test-all:  ## Run tests on all supported Python environments
 coverage:  ## Generate test coverage report
 	coverage run --source wiki setup.py test
 	coverage report -m
+
+translation-push:  ## Pushes translation sources
+	tx push -s
+
+translation-pull:  ## Pulls translation languages
+	tx pull -a
+	cd src/wiki && django-admin compilemessages
 
 docs: ## generate Sphinx HTML documentation, including API docs
 	$(MAKE) -C docs clean

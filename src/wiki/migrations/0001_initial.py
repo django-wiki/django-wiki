@@ -1,12 +1,8 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import django.db.models.deletion
 import mptt.fields
 from django.conf import settings
 from django.db import migrations, models
 from django.db.models.fields import GenericIPAddressField as IPAddressField
-
 from wiki.conf.settings import GROUP_MODEL
 
 
@@ -42,8 +38,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(serialize=False, primary_key=True, auto_created=True, verbose_name='ID')),
                 ('object_id', models.PositiveIntegerField(verbose_name='object ID')),
                 ('is_mptt', models.BooleanField(default=False, editable=False)),
-                ('article', models.ForeignKey(to='wiki.Article')),
-                ('content_type', models.ForeignKey(related_name='content_type_set_for_articleforobject', verbose_name='content type', to='contenttypes.ContentType')),
+                ('article', models.ForeignKey(to='wiki.Article', on_delete=models.CASCADE)),
+                ('content_type', models.ForeignKey(related_name='content_type_set_for_articleforobject', verbose_name='content type', to='contenttypes.ContentType', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name_plural': 'Articles for object',
@@ -76,7 +72,7 @@ class Migration(migrations.Migration):
                 ('locked', models.BooleanField(default=False, verbose_name='locked')),
                 ('content', models.TextField(blank=True, verbose_name='article contents')),
                 ('title', models.CharField(max_length=512, verbose_name='article title', help_text='Each revision contains a title field that must be filled out, even if the title has not changed')),
-                ('article', models.ForeignKey(to='wiki.Article', verbose_name='article')),
+                ('article', models.ForeignKey(to='wiki.Article', verbose_name='article', on_delete=models.CASCADE)),
                 ('previous_revision', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, blank=True, to='wiki.ArticleRevision')),
                 ('user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, blank=True, to=settings.AUTH_USER_MODEL, verbose_name='user')),
             ],
@@ -89,7 +85,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ReusablePlugin',
             fields=[
-                ('articleplugin_ptr', models.OneToOneField(primary_key=True, parent_link=True, to='wiki.ArticlePlugin', serialize=False, auto_created=True)),
+                ('articleplugin_ptr', models.OneToOneField(primary_key=True, parent_link=True, to='wiki.ArticlePlugin', serialize=False, auto_created=True, on_delete=models.CASCADE)),
                 ('articles', models.ManyToManyField(related_name='shared_plugins_set', to='wiki.Article')),
             ],
             options={
@@ -99,7 +95,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='RevisionPlugin',
             fields=[
-                ('articleplugin_ptr', models.OneToOneField(primary_key=True, parent_link=True, to='wiki.ArticlePlugin', serialize=False, auto_created=True)),
+                ('articleplugin_ptr', models.OneToOneField(primary_key=True, parent_link=True, to='wiki.ArticlePlugin', serialize=False, auto_created=True, on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -117,7 +113,7 @@ class Migration(migrations.Migration):
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('deleted', models.BooleanField(default=False, verbose_name='deleted')),
                 ('locked', models.BooleanField(default=False, verbose_name='locked')),
-                ('plugin', models.ForeignKey(related_name='revision_set', to='wiki.RevisionPlugin')),
+                ('plugin', models.ForeignKey(related_name='revision_set', to='wiki.RevisionPlugin', on_delete=models.CASCADE)),
                 ('previous_revision', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, blank=True, to='wiki.RevisionPluginRevision')),
                 ('user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, blank=True, to=settings.AUTH_USER_MODEL, verbose_name='user')),
             ],
@@ -130,8 +126,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SimplePlugin',
             fields=[
-                ('articleplugin_ptr', models.OneToOneField(primary_key=True, parent_link=True, to='wiki.ArticlePlugin', serialize=False, auto_created=True)),
-                ('article_revision', models.ForeignKey(to='wiki.ArticleRevision')),
+                ('articleplugin_ptr', models.OneToOneField(primary_key=True, parent_link=True, to='wiki.ArticlePlugin', serialize=False, auto_created=True, on_delete=models.CASCADE)),
+                ('article_revision', models.ForeignKey(to='wiki.ArticleRevision', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -163,7 +159,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='revisionplugin',
             name='current_revision',
-            field=models.OneToOneField(related_name='plugin_set', null=True, help_text='The revision being displayed for this plugin. If you need to do a roll-back, simply change the value of this field.', blank=True, to='wiki.RevisionPluginRevision', verbose_name='current revision'),
+            field=models.OneToOneField(related_name='plugin_set', null=True, help_text='The revision being displayed for this plugin. If you need to do a roll-back, simply change the value of this field.', blank=True, to='wiki.RevisionPluginRevision', verbose_name='current revision', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(
@@ -173,7 +169,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='articleplugin',
             name='article',
-            field=models.ForeignKey(to='wiki.Article', verbose_name='article'),
+            field=models.ForeignKey(to='wiki.Article', verbose_name='article', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(
@@ -183,7 +179,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='article',
             name='current_revision',
-            field=models.OneToOneField(related_name='current_set', null=True, help_text='The revision being displayed for this article. If you need to do a roll-back, simply change the value of this field.', blank=True, to='wiki.ArticleRevision', verbose_name='current revision'),
+            field=models.OneToOneField(related_name='current_set', null=True, help_text='The revision being displayed for this article. If you need to do a roll-back, simply change the value of this field.', blank=True, to='wiki.ArticleRevision', verbose_name='current revision', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(

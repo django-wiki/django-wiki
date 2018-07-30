@@ -1,5 +1,3 @@
-from __future__ import absolute_import, unicode_literals
-
 import logging
 
 from django.views.generic.base import TemplateResponseMixin
@@ -32,7 +30,7 @@ class ArticleMixin(TemplateResponseMixin):
                     "Attribute error most likely caused by wrong MPTT version. Use 0.5.3+.\n\n" +
                     str(e))
                 raise
-        return super(ArticleMixin, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         kwargs['urlpath'] = self.urlpath

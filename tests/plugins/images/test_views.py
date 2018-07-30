@@ -1,23 +1,24 @@
-from __future__ import print_function, unicode_literals
-
 import base64
 from io import BytesIO
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
-from django.core.urlresolvers import reverse
+from django.urls import reverse
+from PIL import Image
 from wiki.core.plugins import registry as plugin_registry
 from wiki.models import URLPath
 from wiki.plugins.images import models
 from wiki.plugins.images.wiki_plugin import ImagePlugin
 
-from ...base import (ArticleWebTestUtils, DjangoClientTestBase,
-                     RequireRootArticleMixin)
+from ...base import (
+    ArticleWebTestUtils, DjangoClientTestBase, RequireRootArticleMixin,
+    wiki_override_settings,
+)
 
 
 class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     def setUp(self):
-        super(ImageTests, self).setUp()
+        super().setUp()
         self.article = self.root_article
         # A black 1x1 gif
         self.test_data = "R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs="
@@ -140,3 +141,41 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
             '<figcaption class="caption"></figcaption></figure>'
         )
         self.assertEqual(output, expected)
+
+    # https://gist.github.com/guillaumepiot/817a70706587da3bd862835c59ef584e
+    def generate_photo_file(self):
+        file = BytesIO()
+        image = Image.new('RGBA', size=(100, 100), color=(155, 0, 0))
+        image.save(file, 'gif')
+        file.name = 'test.gif'
+        file.seek(0)
+        return file
+
+    def test_add_revision(self):
+        self._create_test_image(path='')
+        image = models.Image.objects.get()
+        before_edit_rev = image.current_revision.revision_number
+
+        response = self.client.post(
+            reverse('wiki:images_add_revision', kwargs={
+                'article_id': self.root_article, 'image_id': image.pk, 'path': '',
+            }),
+            data={'image': self.generate_photo_file()}
+        )
+        self.assertRedirects(
+            response, reverse('wiki:edit', kwargs={'path': ''})
+        )
+        image = models.Image.objects.get()
+        self.assertEqual(models.Image.objects.count(), 1)
+        self.assertEqual(image.current_revision.previous_revision.revision_number, before_edit_rev)
+
+    @wiki_override_settings(ACCOUNT_HANDLING=True)
+    def test_login_on_revision_add(self):
+        self._create_test_image(path='')
+        self.client.logout()
+        image = models.Image.objects.get()
+        url = reverse('wiki:images_add_revision', kwargs={
+            'article_id': self.root_article, 'image_id': image.pk, 'path': '',
+        })
+        response = self.client.post(url, data={'image': self.generate_photo_file()})
+        self.assertRedirects(response, '{}?next={}'.format(reverse('wiki:login'), url))

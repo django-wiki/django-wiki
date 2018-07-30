@@ -1,5 +1,3 @@
-from __future__ import absolute_import, unicode_literals
-
 from django import template
 from wiki.plugins.macros import settings
 from wiki.plugins.macros.mdx.macro import MacroPreprocessor
@@ -17,7 +15,7 @@ def article_list(context, urlpath, depth):
     return context
 
 
-@register.assignment_tag
+@register.simple_tag
 def allowed_macros():
     for method in settings.METHODS:
         try:

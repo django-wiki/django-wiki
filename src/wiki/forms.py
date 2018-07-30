@@ -1,33 +1,22 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, unicode_literals
-
 import random
 import string
 from datetime import timedelta
-from itertools import chain
 
 from django import forms
 from django.apps import apps
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.core import validators
-from django.core.urlresolvers import Resolver404, resolve
 from django.core.validators import RegexValidator
-from django.forms.utils import flatatt
 from django.forms.widgets import HiddenInput
 from django.shortcuts import get_object_or_404
+from django.urls import Resolver404, resolve
 from django.utils import timezone
-from django.utils.encoding import force_text
-from django.utils.html import conditional_escape, escape
 from django.utils.safestring import mark_safe
-from django.utils.translation import pgettext_lazy
-from django.utils.translation import ugettext
-from django.utils.translation import ugettext_lazy as _
-
+from django.utils.translation import gettext, gettext_lazy as _, pgettext_lazy
 from wiki import models
 from wiki.conf import settings
 from wiki.core import permissions
-from wiki.core.compat import BuildAttrsCompat
 from wiki.core.diff import simple_merge
 from wiki.core.plugins.base import PluginSettingsFormMixin
 from wiki.editors import getEditor
@@ -40,7 +29,7 @@ validate_slug_numbers = RegexValidator(
 )
 
 
-class WikiSlugField(forms.SlugField):
+class WikiSlugField(forms.CharField):
     """
     In future versions of Django, we might be able to define this field as
     the default field directly on the model. For now, it's used in CreateForm.
@@ -55,16 +44,16 @@ class WikiSlugField(forms.SlugField):
                 validators.validate_unicode_slug,
                 validate_slug_numbers
             ]
-        super(forms.SlugField, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
 
 def _clean_slug(slug, urlpath):
     if slug.startswith("_"):
         raise forms.ValidationError(
-            ugettext('A slug may not begin with an underscore.'))
+            gettext('A slug may not begin with an underscore.'))
     if slug == 'admin':
         raise forms.ValidationError(
-            ugettext("'admin' is not a permitted slug name."))
+            gettext("'admin' is not a permitted slug name."))
 
     if settings.URL_CASE_SENSITIVE:
         already_existing_slug = models.URLPath.objects.filter(
@@ -79,11 +68,11 @@ def _clean_slug(slug, urlpath):
         already_urlpath = already_existing_slug[0]
         if already_urlpath.article and already_urlpath.article.current_revision.deleted:
             raise forms.ValidationError(
-                ugettext('A deleted article with slug "%s" already exists.') %
+                gettext('A deleted article with slug "%s" already exists.') %
                 already_urlpath.slug)
         else:
             raise forms.ValidationError(
-                ugettext('A slug named "%s" already exists.') %
+                gettext('A slug named "%s" already exists.') %
                 already_urlpath.slug)
 
     if settings.CHECK_SLUG_URL_AVAILABLE:
@@ -92,7 +81,7 @@ def _clean_slug(slug, urlpath):
             match = resolve(urlpath.path + '/' + slug + '/')
             if match.app_name != 'wiki':
                 raise forms.ValidationError(
-                    ugettext('This slug conflicts with an existing URL.'))
+                    gettext('This slug conflicts with an existing URL.'))
         except Resolver404:
             pass
 
@@ -103,7 +92,7 @@ User = get_user_model()
 Group = apps.get_model(settings.GROUP_MODEL)
 
 
-class SpamProtectionMixin():
+class SpamProtectionMixin:
 
     """Check a form for spam. Only works if properties 'request' and 'revision_model' are set."""
 
@@ -119,14 +108,14 @@ class SpamProtectionMixin():
         request = self.request
         user = None
         ip_address = None
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             user = request.user
         else:
             ip_address = request.META.get('REMOTE_ADDR', None)
 
         if not (user or ip_address):
             raise forms.ValidationError(
-                ugettext(
+                gettext(
                     'Spam protection failed to find both a logged in user and an IP address.'))
 
         def check_interval(from_time, max_count, interval_name):
@@ -142,7 +131,7 @@ class SpamProtectionMixin():
             revisions = revisions.count()
             if revisions >= max_count:
                 raise forms.ValidationError(
-                    ugettext('Spam protection: You are only allowed to create or edit %(revisions)d article(s) per %(interval_name)s.') % {
+                    gettext('Spam protection: You are only allowed to create or edit %(revisions)d article(s) per %(interval_name)s.') % {
                         'revisions': max_count,
                         'interval_name': interval_name,
                     })
@@ -153,7 +142,7 @@ class SpamProtectionMixin():
             return
 
         from_time = timezone.now() - timedelta(minutes=settings.REVISIONS_MINUTES_LOOKBACK)
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             per_minute = settings.REVISIONS_PER_MINUTES
         else:
             per_minute = settings.REVISIONS_PER_MINUTES_ANONYMOUS
@@ -166,7 +155,7 @@ class SpamProtectionMixin():
         )
 
         from_time = timezone.now() - timedelta(minutes=60)
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             per_hour = settings.REVISIONS_PER_MINUTES
         else:
             per_hour = settings.REVISIONS_PER_MINUTES_ANONYMOUS
@@ -195,7 +184,7 @@ class MoveForm(forms.Form):
                                   required=False)
 
     def clean(self):
-        cd = super(MoveForm, self).clean()
+        cd = super().clean()
         if cd.get('slug'):
             dest_path = get_object_or_404(models.URLPath, pk=self.cleaned_data['destination'])
             cd['slug'] = _clean_slug(cd['slug'], dest_path)
@@ -263,13 +252,13 @@ class EditForm(forms.Form, SpamProtectionMixin):
 
             kwargs['initial'] = initial
 
-        super(EditForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def clean_title(self):
         title = self.cleaned_data.get('title', None)
         title = (title or "").strip()
         if not title:
-            raise forms.ValidationError(ugettext('Article is missing title or has an invalid title'))
+            raise forms.ValidationError(gettext('Article is missing title or has an invalid title'))
         return title
 
     def clean(self):
@@ -277,82 +266,46 @@ class EditForm(forms.Form, SpamProtectionMixin):
         No new revisions have been created since user attempted to edit
         Revision title or content has changed
         """
-        cd = super(EditForm, self).clean()
+        cd = super().clean()
         if self.no_clean or self.preview:
             return cd
         if not str(self.initial_revision.id) == str(self.presumed_revision):
             raise forms.ValidationError(
-                ugettext(
+                gettext(
                     'While you were editing, someone else changed the revision. Your contents have been automatically merged with the new contents. Please review the text below.'))
         if ('title' in cd) and cd['title'] == self.initial_revision.title and cd[
                 'content'] == self.initial_revision.content:
-            raise forms.ValidationError(ugettext('No changes made. Nothing to save.'))
+            raise forms.ValidationError(gettext('No changes made. Nothing to save.'))
         self.check_spam()
         return cd
 
 
-class SelectWidgetBootstrap(BuildAttrsCompat, forms.Select):
+class SelectWidgetBootstrap(forms.Select):
     """
     http://twitter.github.com/bootstrap/components.html#buttonDropdowns
     Needs bootstrap and jquery
     """
 
+    template_name = "wiki/forms/select.html"
+    option_template_name = "wiki/forms/select_option.html"
+
     def __init__(self, attrs={}, choices=(), disabled=False):
         attrs['class'] = 'btn-group pull-left btn-group-form'
         self.disabled = disabled
         self.noscript_widget = forms.Select(attrs={}, choices=choices)
-        super(SelectWidgetBootstrap, self).__init__(attrs, choices)
+        super().__init__(attrs, choices)
 
     def __setattr__(self, k, value):
-        super(SelectWidgetBootstrap, self).__setattr__(k, value)
+        super().__setattr__(k, value)
         if k not in ('attrs', 'disabled'):
             self.noscript_widget.__setattr__(k, value)
 
-    def render(self, name, value, attrs=None, choices=()):
-        if value is None:
-            value = ''
-        final_attrs = self.build_attrs_compat(attrs, name=name)
-        output = [
-            """<div%(attrs)s>"""
-            """    <button class="btn btn-group-label%(disabled)s" type="button">%(label)s</button>"""
-            """    <button class="btn btn-default dropdown-toggle%(disabled)s" type="button" data-toggle="dropdown">"""
-            """        <span class="caret"></span>"""
-            """    </button>"""
-            """    <ul class="dropdown-menu">"""
-            """        %(options)s"""
-            """    </ul>"""
-            """    <input type="hidden" name="%(name)s" value="" class="btn-group-value" />"""
-            """</div>"""
-            """<noscript>%(noscript)s</noscript>""" %
-            {'attrs': flatatt(final_attrs),
-             'options': self.render_options(choices, [value]),
-             'label': _('Select an option'),
-             'name': name, 'disabled': ' disabled' if self.disabled else '',
-             'noscript': self.noscript_widget.render(name, value, {})}]
-        return mark_safe('\n'.join(output))
-
-    def render_option(self, selected_choices, option_value, option_label):
-        option_value = force_text(option_value)
-        selected_html = (
-            option_value in selected_choices) and ' selected="selected"' or ''
-        return '<li><a href="javascript:void(0)" data-value="%s"%s>%s</a></li>' % (
-            escape(option_value), selected_html,
-            conditional_escape(force_text(option_label)))
-
-    def render_options(self, choices, selected_choices):
-        # Normalize to strings.
-        selected_choices = set([force_text(v) for v in selected_choices])
-        output = []
-        for option_value, option_label in chain(self.choices, choices):
-            if isinstance(option_label, (list, tuple)):
-                output.append(
-                    '<li class="divider" label="%s"></li>' %
-                    escape(force_text(option_value)))
-                for option in option_label:
-                    output.append(self.render_option(selected_choices, *option))
-            else:
-                output.append(self.render_option(selected_choices, option_value, option_label))
-        return '\n'.join(output)
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context['label'] = _('Select an option')
+        context['noscript'] = self.noscript_widget.render(name, value, {})
+        context['disabled'] = ' disabled' if self.disabled else ''
+        return context
 
     class Media(forms.Media):
 
@@ -360,22 +313,22 @@ class SelectWidgetBootstrap(BuildAttrsCompat, forms.Select):
 
 
 class TextInputPrepend(forms.TextInput):
+    template_name = "wiki/forms/text.html"
 
     def __init__(self, *args, **kwargs):
         self.prepend = kwargs.pop('prepend', "")
-        super(TextInputPrepend, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
-    def render(self, *args, **kwargs):
-        html = super(TextInputPrepend, self).render(*args, **kwargs)
-        return mark_safe(
-            '<div class="input-group"><span class="input-group-addon">%s</span>%s</div>' %
-            (self.prepend, html))
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context['prepend'] = mark_safe(self.prepend)
+        return context
 
 
 class CreateForm(forms.Form, SpamProtectionMixin):
 
     def __init__(self, request, urlpath_parent, *args, **kwargs):
-        super(CreateForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.request = request
         self.urlpath_parent = urlpath_parent
 
@@ -399,7 +352,7 @@ class CreateForm(forms.Form, SpamProtectionMixin):
         return _clean_slug(self.cleaned_data['slug'], self.urlpath_parent)
 
     def clean(self):
-        super(CreateForm, self).clean()
+        super().clean()
         self.check_spam()
         return self.cleaned_data
 
@@ -409,10 +362,9 @@ class DeleteForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.article = kwargs.pop('article')
         self.has_children = kwargs.pop('has_children')
-        super(DeleteForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
-    confirm = forms.BooleanField(required=False,
-                                 label=_('Yes, I am sure'))
+    confirm = forms.BooleanField(required=False, label=_('Yes, I am sure'))
     purge = forms.BooleanField(
         widget=HiddenInput(),
         required=False, label=_('Purge'),
@@ -422,13 +374,12 @@ class DeleteForm(forms.Form):
                                       widget=HiddenInput(), required=False)
 
     def clean(self):
-        cd = super(DeleteForm, self).clean()
+        cd = super().clean()
         if not cd['confirm']:
-            raise forms.ValidationError(ugettext('You are not sure enough!'))
+            raise forms.ValidationError(gettext('You are not sure enough!'))
         if cd['revision'] != self.article.current_revision:
             raise forms.ValidationError(
-                ugettext(
-                    'While you tried to delete this article, it was modified. TAKE CARE!'))
+                gettext('While you tried to delete this article, it was modified. TAKE CARE!'))
         return cd
 
 
@@ -483,7 +434,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
         kwargs['instance'] = article
         kwargs['initial'] = {'locked': article.current_revision.locked}
 
-        super(PermissionsForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.can_change_groups = False
         self.can_assign = False
@@ -513,9 +464,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
             self.fields['group_write'].widget = forms.HiddenInput()
 
         if not self.can_assign:
-            self.fields['owner_username'].widget = forms.TextInput(
-                attrs={
-                    'readonly': 'true'})
+            self.fields['owner_username'].widget = forms.TextInput(attrs={'readonly': 'true'})
             self.fields['recursive'].widget = forms.HiddenInput()
             self.fields['recursive_group'].widget = forms.HiddenInput()
             self.fields['recursive_owner'].widget = forms.HiddenInput()
@@ -534,7 +483,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
                     user = User.objects.get(**kwargs)
                 except User.DoesNotExist:
                     raise forms.ValidationError(
-                        ugettext('No user with that username'))
+                        gettext('No user with that username'))
             else:
                 user = None
         else:
@@ -542,7 +491,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
         return user
 
     def save(self, commit=True):
-        article = super(PermissionsForm, self).save(commit=False)
+        article = super().save(commit=False)
 
         # Alter the owner according to the form field owner_username
         # TODO: Why not rename this field to 'owner' so this happens
@@ -622,7 +571,7 @@ class UserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
 
     def __init__(self, *args, **kwargs):
-        super(UserCreationForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         # Add honeypots
         self.honeypot_fieldnames = "address", "phone"
@@ -640,7 +589,7 @@ class UserCreationForm(UserCreationForm):
             )
 
     def clean(self):
-        cd = super(UserCreationForm, self).clean()
+        cd = super().clean()
         for fieldname in self.honeypot_fieldnames:
             if cd[fieldname]:
                 raise forms.ValidationError(
@@ -657,7 +606,7 @@ class UserUpdateForm(forms.ModelForm):
     password2 = forms.CharField(label="Confirm password", widget=forms.PasswordInput(), required=False)
 
     def clean(self):
-        cd = super(UserUpdateForm, self).clean()
+        cd = super().clean()
         password1 = cd.get('password1')
         password2 = cd.get('password2')
 

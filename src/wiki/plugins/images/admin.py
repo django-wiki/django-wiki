@@ -1,5 +1,3 @@
-from __future__ import absolute_import, unicode_literals
-
 from django import forms
 from django.contrib import admin
 
@@ -13,7 +11,7 @@ class ImageForm(forms.ModelForm):
         exclude = ()
 
     def __init__(self, *args, **kwargs):
-        super(ImageForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         if self.instance.pk:
             revisions = models.ImageRevision.objects.filter(
                 plugin=self.instance)

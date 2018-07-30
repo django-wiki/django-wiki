@@ -1,8 +1,5 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, unicode_literals
-
-from django.conf.urls import include, url
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
+from wiki.compat import include, url
 from wiki.core.plugins import registry
 from wiki.core.plugins.base import BasePlugin
 from wiki.plugins.attachments import models, settings, views

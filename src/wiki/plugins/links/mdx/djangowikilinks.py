@@ -1,11 +1,8 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-'''
+"""
 Wikipath Extension for Python-Markdown
 ======================================
 
-Converts [Link Name](wiki:ArticleName) to relative links pointing to article.  Requires Python-Markdown 2.0+
+Converts [Link Name](wiki:ArticleName) to relative links pointing to article.
 
 Basic usage:
 
@@ -16,22 +13,14 @@ Basic usage:
     '<p>Some text with a <a class="wikipath" href="/wiki/view/ArticleName/">Link Name</a>.</p>'
 
 Dependencies:
-* [Python 2.3+](http://python.org)
-* [Markdown 2.0+](http://www.freewisdom.org/projects/python-markdown/)
-'''
-from __future__ import absolute_import, unicode_literals
-
+* [Python 3.4+](https://python.org)
+* [Markdown 2.6+](https://pypi.python.org/pypi/Markdown)
+"""
 from os import path as os_path
 
 import markdown
+from markdown.util import etree
 from wiki import models
-
-try:
-    # Markdown 2.1.0 changed from 2.0.3. We try importing the new version first,
-    # but import the 2.0.3 version if it fails
-    from markdown.util import etree  # @UnusedImport
-except ImportError:
-    from markdown import etree  # @UnresolvedImport @Reimport @UnusedImport
 
 
 class WikiPathExtension(markdown.Extension):
@@ -57,7 +46,7 @@ class WikiPathExtension(markdown.Extension):
         self.md = md
 
         # append to end of inline patterns
-        WIKI_RE = r'\[(?P<linkTitle>[^\]]+?)\]\(wiki:(?P<wikiTitle>[a-zA-Z0-9\./_-]*?)\)'
+        WIKI_RE = r'\[(?P<label>[^\]]+?)\]\(wiki:(?P<wikipath>[a-zA-Z0-9\./_-]*?)(?P<fragment>#[a-zA-Z0-9\./_-]*)?\)'
         wikiPathPattern = WikiPath(WIKI_RE, self.config, markdown_instance=md)
         wikiPathPattern.md = md
         md.inlinePatterns.add('djangowikipath', wikiPathPattern, "<reference")
@@ -66,15 +55,15 @@ class WikiPathExtension(markdown.Extension):
 class WikiPath(markdown.inlinepatterns.Pattern):
 
     def __init__(self, pattern, config, **kwargs):
-        markdown.inlinepatterns.Pattern.__init__(self, pattern, **kwargs)
+        super().__init__(pattern, **kwargs)
         self.config = config
 
     def handleMatch(self, m):
-        article_title = m.group('wikiTitle')
+        wiki_path = m.group('wikipath')
         absolute = False
-        if article_title.startswith("/"):
+        if wiki_path.startswith("/"):
             absolute = True
-        article_title = article_title.strip("/")
+        wiki_path = wiki_path.strip("/")
 
         # Use this to calculate some kind of meaningful path
         # from the link, regardless of whether or not something can be
@@ -83,12 +72,12 @@ class WikiPath(markdown.inlinepatterns.Pattern):
 
         if absolute:
             base_path = self.config['base_url'][0]
-            path_from_link = os_path.join(str(base_path), article_title)
+            path_from_link = os_path.join(str(base_path), wiki_path)
 
             urlpath = None
             path = path_from_link
             try:
-                urlpath = models.URLPath.get_by_path(article_title)
+                urlpath = models.URLPath.get_by_path(wiki_path)
                 path = urlpath.get_absolute_url()
             except models.URLPath.DoesNotExist:
                 pass
@@ -101,14 +90,14 @@ class WikiPath(markdown.inlinepatterns.Pattern):
             starting_level = max(0, self.config['default_level'][0] - 1)
             starting_path = "/".join(source_components[: starting_level])
 
-            path_from_link = os_path.join(starting_path, article_title)
+            path_from_link = os_path.join(starting_path, wiki_path)
 
             lookup = models.URLPath.objects.none()
             if urlpath.parent:
                 lookup = urlpath.parent.get_descendants().filter(
-                    slug=article_title)
+                    slug=wiki_path)
             else:
-                lookup = urlpath.get_descendants().filter(slug=article_title)
+                lookup = urlpath.get_descendants().filter(slug=wiki_path)
 
             if lookup.count() > 0:
                 urlpath = lookup[0]
@@ -117,9 +106,11 @@ class WikiPath(markdown.inlinepatterns.Pattern):
                 urlpath = None
                 path = self.config['base_url'][0] + path_from_link
 
-        label = m.group('linkTitle')
+        label = m.group('label')
+        fragment = m.group('fragment') or ""
+
         a = etree.Element('a')
-        a.set('href', path)
+        a.set('href', path + fragment)
         if not urlpath:
             a.set('class', self.config['html_class'][0] + " linknotfound")
         else:

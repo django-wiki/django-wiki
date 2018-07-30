@@ -1,5 +1,3 @@
-from __future__ import absolute_import, unicode_literals
-
 from django.conf import settings as django_settings
 
 #: If a relative slug is used in a wiki markdown link and no article is

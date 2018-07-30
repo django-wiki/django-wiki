@@ -1,5 +1,3 @@
-from __future__ import absolute_import, unicode_literals
-
 import markdown
 from markdown.treeprocessors import Treeprocessor
 from markdown.util import etree
@@ -39,3 +37,8 @@ class ResponsiveTableTree(Treeprocessor):
     def convert_to_wrapper(self, element):
         element.tag = 'div'
         element.set('class', 'table-responsive')
+
+
+def makeExtension(*args, **kwargs):
+    """Return an instance of the extension."""
+    return ResponsiveTableExtension(*args, **kwargs)

@@ -1,10 +1,8 @@
-from __future__ import absolute_import, print_function, unicode_literals
-
 from django.test import TestCase
-
 from wiki.conf import settings as wiki_settings
 from wiki.forms import Group
-from wiki.models import URLPath
+from wiki.models import Article, ArticleRevision, URLPath
+
 from ..base import wiki_override_settings
 from ..testdata.models import CustomGroup
 
@@ -28,3 +26,13 @@ class CustomGroupTests(TestCase):
     def test_custom(self):
         self.assertEqual(Group, CustomGroup)
         self.assertEqual(wiki_settings.GROUP_MODEL, 'testdata.CustomGroup')
+
+
+class LineEndingsTests(TestCase):
+
+    def test_manager(self):
+
+        article = Article()
+        article.add_revision(ArticleRevision(title="Root", content="Hello\nworld"),
+                             save=True)
+        self.assertEqual("Hello\r\nworld", article.current_revision.content)

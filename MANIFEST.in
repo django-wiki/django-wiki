@@ -1,10 +1,9 @@
 include COPYING
 include README.rst
 include setup.cfg
-include runtests.py
 recursive-include src *.html *.txt *.png *.js *.css *.gif *.less *.mo *.po *.otf *.svg *.woff *.woff2 *.eot *.ttf
 prune src/wiki/attachments
 prune src/wiki/images
-# Exclude compiled version of source language, it's meaningless
-exclude wiki/locale/en/LC_MESSAGES/django.mo
 
+# Exclude compiled version of source language, it's meaningless
+exclude src/wiki/locale/en/LC_MESSAGES/django.mo

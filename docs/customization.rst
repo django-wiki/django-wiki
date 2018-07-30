@@ -41,4 +41,38 @@ wiki. Add the following as ``wiki/base.html`` somewhere in your
    </ul>
    {% endblock %}
 
+Site
+----
 
+You can override default django-wiki ``wiki.sites.site`` urls/views site implementation
+with your own: override by setting the :attr:`~.WikiConfig.default_site` attribute
+of a custom ``AppConfig`` to the dotted import path of either a ``WikiSite`` subclass
+or a callable that returns a site instance.
+
+.. code-block:: python
+
+    # myproject/sites.py
+
+    from wiki.sites import WikiSite
+
+    class MyWikiSite(admin.WikiSite):
+        ...
+
+.. code-block:: python
+
+    # myproject/apps.py
+
+    from wiki.apps import WikiConfig
+
+    class MyWikiConfig(WikiConfig):
+        default_site = 'myproject.sites.MyWikiSite'
+
+.. code-block:: python
+
+    # myproject/settings.py
+
+    INSTALLED_APPS = [
+        ...
+        'myproject.apps.MyWikiConfig',  # replaces 'wiki.apps.WikiConfig'
+        ...
+    ]

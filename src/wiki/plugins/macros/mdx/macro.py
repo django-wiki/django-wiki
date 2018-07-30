@@ -1,12 +1,8 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, unicode_literals
-
 import re
 
 import markdown
 from django.template.loader import render_to_string
-from django.utils.translation import ugettext as _
-from six import string_types
+from django.utils.translation import gettext as _
 from wiki.plugins.macros import settings
 
 # See:
@@ -54,7 +50,7 @@ class MacroPreprocessor(markdown.preprocessors.Preprocessor):
                             value = kwarg.group('value')
                             if value is None:
                                 value = True
-                            if isinstance(value, string_types):
+                            if isinstance(value, str):
                                 # If value is enclosed with ': Remove and
                                 # remove escape sequences
                                 if value.startswith("'") and len(value) > 2:
@@ -103,3 +99,8 @@ class MacroPreprocessor(markdown.preprocessors.Preprocessor):
             'Insert a link to another wiki page with a short notation.'),
         example_code='[[WikiLink]]',
         args={})
+
+
+def makeExtension(*args, **kwargs):
+    """Return an instance of the extension."""
+    return MacroExtension(*args, **kwargs)

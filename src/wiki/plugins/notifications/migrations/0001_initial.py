@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.db import migrations, models
 
 
@@ -15,8 +12,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ArticleSubscription',
             fields=[
-                ('articleplugin_ptr', models.OneToOneField(auto_created=True, to='wiki.ArticlePlugin', primary_key=True, parent_link=True, serialize=False)),
-                ('subscription', models.OneToOneField(to='django_nyt.Subscription')),
+                ('articleplugin_ptr', models.OneToOneField(auto_created=True, to='wiki.ArticlePlugin', primary_key=True, parent_link=True, serialize=False, on_delete=models.CASCADE)),
+                ('subscription', models.OneToOneField(to='django_nyt.Subscription', on_delete=models.CASCADE)),
             ],
             options={
             },

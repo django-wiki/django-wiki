@@ -3,7 +3,7 @@
 
 {% for macro in macros %}
 <h4>{{ macro.short_description }}</h4>
-{{ macro.help_text|linebreaks|safe }}
+{{ macro.help_text|safe|linebreaks }}
 {% if macro.example_code %}
 <pre>{{ macro.example_code }}</pre>
 {% endif %}

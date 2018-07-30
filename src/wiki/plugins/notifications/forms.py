@@ -1,11 +1,8 @@
-from __future__ import absolute_import, unicode_literals
-
 from django import forms
 from django.contrib.contenttypes.models import ContentType
 from django.forms.models import BaseModelFormSet, modelformset_factory
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ugettext
+from django.utils.translation import gettext, gettext_lazy as _
 from django_nyt.models import NotificationType, Settings, Subscription
 from wiki.core.plugins.base import PluginSettingsFormMixin
 from wiki.plugins.notifications import models
@@ -15,7 +12,7 @@ from wiki.plugins.notifications.settings import ARTICLE_EDIT
 class SettingsModelChoiceField(forms.ModelChoiceField):
 
     def label_from_instance(self, obj):
-        return ugettext(
+        return gettext(
             "Receive notifications %(interval)s"
         ) % {
             'interval': obj.get_interval_display()
@@ -26,7 +23,7 @@ class ArticleSubscriptionModelMultipleChoiceField(
         forms.ModelMultipleChoiceField):
 
     def label_from_instance(self, obj):
-        return ugettext("%(title)s - %(url)s") % {
+        return gettext("%(title)s - %(url)s") % {
             'title': obj.article.current_revision.title,
             'url': obj.article.get_absolute_url()
         }
@@ -35,7 +32,7 @@ class ArticleSubscriptionModelMultipleChoiceField(
 class SettingsModelForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
-        super(SettingsModelForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         instance = kwargs.get('instance', None)
         self.__editing_instance = False
         if instance:
@@ -43,17 +40,17 @@ class SettingsModelForm(forms.ModelForm):
             self.fields['delete_subscriptions'] = ArticleSubscriptionModelMultipleChoiceField(
                 models.ArticleSubscription.objects.filter(
                     subscription__settings=instance),
-                label=ugettext("Remove subscriptions"),
+                label=gettext("Remove subscriptions"),
                 required=False,
-                help_text=ugettext("Select article subscriptions to remove from notifications"),
+                help_text=gettext("Select article subscriptions to remove from notifications"),
                 initial=models.ArticleSubscription.objects.none(),
             )
             self.fields['email'] = forms.TypedChoiceField(
                 label=_("Email digests"),
                 choices=(
-                    (0, ugettext('Unchanged (selected on each article)')),
-                    (1, ugettext('No emails')),
-                    (2, ugettext('Email on any change')),
+                    (0, gettext('Unchanged (selected on each article)')),
+                    (1, gettext('No emails')),
+                    (2, gettext('Email on any change')),
                 ),
                 coerce=lambda x: int(x) if x is not None else None,
                 widget=forms.RadioSelect(),
@@ -62,12 +59,9 @@ class SettingsModelForm(forms.ModelForm):
             )
 
     def save(self, *args, **kwargs):
-        instance = super(SettingsModelForm, self).save(*args, **kwargs)
+        instance = super().save(*args, **kwargs)
         if self.__editing_instance:
-            # Django < 1.5 returns list objects when ModelMultipleChoiceField
-            # is empty.. so check before calling delete()
-            if self.cleaned_data['delete_subscriptions']:
-                self.cleaned_data['delete_subscriptions'].delete()
+            self.cleaned_data['delete_subscriptions'].delete()
             if self.cleaned_data['email'] == 1:
                 instance.subscription_set.all().update(
                     send_emails=False,
@@ -83,7 +77,7 @@ class BaseSettingsFormSet(BaseModelFormSet):
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
-        super(BaseSettingsFormSet, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def get_queryset(self):
         return Settings.objects.filter(
@@ -154,7 +148,7 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
                 'settings': self.default_settings,
             }
         kwargs['initial'] = initial
-        super(SubscriptionForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields['settings'].queryset = Settings.objects.filter(
             user=request.user,
         )

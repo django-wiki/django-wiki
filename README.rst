@@ -1,7 +1,7 @@
 django-wiki
 ===========
 
-|Docs| |Build Status| |Coverage Status| |PyPi| |Dependency Status|
+|Docs| |Build Status| |Coverage Status| |PyPi| |Dependency Status| |IRC|
 
 .. |Docs| image:: https://readthedocs.org/projects/django-wiki/badge/?version=latest
    :target: http://django-wiki.readthedocs.io/
@@ -15,7 +15,8 @@ django-wiki
    :target: https://pypi.python.org/pypi/wiki/
 .. |Dependency Status| image:: https://gemnasium.com/django-wiki/django-wiki.svg
    :target: https://gemnasium.com/django-wiki/django-wiki
-
+.. |IRC| image:: https://img.shields.io/badge/irc-%23django--wiki%20on%20freenode-blue.svg
+   :target: http://webchat.freenode.net?channels=%23django-wiki
 
 Django support
 --------------
@@ -25,12 +26,14 @@ The below table explains which Django versions are supported.
 +------------------+----------------+--------------+
 | Release          | Django         | Upgrade from |
 +==================+================+==============+
-| 0.3 (beta)       | 1.8, 1.9,      | 0.2          |
+| 0.4a5            | 1.11, 2.0      | 0.3          |
++------------------+----------------+--------------+
+| 0.3.x            | 1.8, 1.9,      | 0.2          |
 |                  | 1.10, 1.11     |              |
 +------------------+----------------+--------------+
-| 0.2              | 1.8, 1.9, 1.10 | 0.1          |
+| 0.2.x            | 1.8, 1.9, 1.10 | 0.1          |
 +------------------+----------------+--------------+
-| 0.1              | 1.5, 1.6, 1.7  | 0.0.24       |
+| 0.1.x            | 1.5, 1.6, 1.7  | 0.0.24       |
 +------------------+----------------+--------------+
 | 0.0.24           | 1.4, 1.5, 1.6  | 0.0.?        |
 |                  | 1.7 (unstable) |              |
@@ -180,7 +183,7 @@ on your host system.
 -  `django-sekizai <https://github.com/ojii/django-sekizai/>`__
 -  `sorl-thumbnail <https://github.com/mariocesar/sorl-thumbnail>`__
 -  `Pillow (Python Imaging Library) <https://pillow.readthedocs.io/en/latest/installation.html>`__
--  Python>=2.7 or Python>=3.4
+-  Python>=3.4
 
 
 
@@ -206,4 +209,3 @@ Acknowledgements
    `crazyzubr <https://github.com/crazyzubr>`__, and `everyone
    else <https://github.com/django-wiki/django-wiki/graphs/contributors>`__
    involved!
-

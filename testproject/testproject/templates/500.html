@@ -1,7 +1,7 @@
 {% extends "wiki/base.html" %}
 {% load wiki_tags i18n %}
 
-{% block pagetitle %}{% trans "500 Server err" %}{% endblock %}
+{% block pagetitle %}{% trans "500 Server error" %}{% endblock %}
 
 {% block wiki_breadcrumbs %}{% endblock %}
 
@@ -10,7 +10,11 @@
 <h1 class="page-header">{% trans "500 - ERROR" %}</h1>
 
 <div class="error">
-  <p>{% trans "Oh god no the demo has failed. Please rest asured that an open source developer is the logs to resolve this, because it's fun!!" %}</p>
+  <p>{% blocktrans trimmed %]
+    Oh god no the demo has failed. Please rest assured that an open source developer is reading the
+    logs to resolve this, because it's fun!!
+    {% endblocktrans %}
+  </p>
 </div>
 
 {% endblock %}

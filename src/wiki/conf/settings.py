@@ -1,12 +1,10 @@
-from __future__ import absolute_import, unicode_literals
-
 import bleach
-
+from django.apps import apps
 from django.conf import settings as django_settings
 from django.contrib.messages import constants as messages
 from django.core.files.storage import default_storage
-from django.core.urlresolvers import reverse_lazy
-from django.utils.translation import ugettext_lazy as _
+from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 
 #: Should urls be case sensitive?
 URL_CASE_SENSITIVE = getattr(django_settings, 'WIKI_URL_CASE_SENSITIVE', False)
@@ -28,28 +26,43 @@ MARKDOWN_SANITIZE_HTML = getattr(
     'WIKI_MARKDOWN_SANITIZE_HTML',
     True)
 
-#: Arguments for the Markdown instance, for instance a list of extensions to
-#: use.
-#: See: https://pythonhosted.org/Markdown/extensions/index.html
+#: Arguments for the Markdown instance, as a dictionary. The "extensions" key
+#: should be a list of extra extensions to use besides the built-in django-wiki
+#: extensions, and the "extension_configs" should be a dictionary, specifying
+#: the keyword-arguments to pass to each extension.
 #:
-#: To set a custom title for TOC's::
+#: For a list of extensions officially supported by Python-Markdown, see:
+#: https://python-markdown.github.io/extensions/
 #:
-#:    WIKI_MARKDOWN_KWARGS = {'extension_configs': {'toc': _('Contents of this article')}}
+#: To set a custom title for table of contents, specify the following in your
+#: Django project settings::
+#:
+#:     WIKI_MARKDOWN_KWARGS = {
+#:         'extension_configs': {
+#:             'wiki.plugins.macros.mdx.toc': {'title': 'Contents of this article'},
+#:         },
+#:     }
+#:
+#: Besides the extensions enabled by the "extensions" key, the following
+#: built-in django-wiki extensions can be configured with "extension_configs":
+#: "wiki.core.markdown.mdx.codehilite", "wiki.core.markdown.mdx.previewlinks",
+#: "wiki.core.markdown.mdx.responsivetable", "wiki.plugins.macros.mdx.macro",
+#: "wiki.plugins.macros.mdx.toc", "wiki.plugins.macros.mdx.wikilinks".
 MARKDOWN_KWARGS = {
     'extensions': [
-        'footnotes',
-        'attr_list',
-        'smart_strong',
-        'footnotes',
-        'attr_list',
-        'def_list',
-        'tables',
-        'abbr',
-        'sane_lists',
+        'markdown.extensions.footnotes',
+        'markdown.extensions.attr_list',
+        'markdown.extensions.smart_strong',
+        'markdown.extensions.footnotes',
+        'markdown.extensions.attr_list',
+        'markdown.extensions.def_list',
+        'markdown.extensions.tables',
+        'markdown.extensions.abbr',
+        'markdown.extensions.sane_lists',
     ],
     'extension_configs': {
-        'toc': {
-            'title': _('Table of Contents')}},
+        'wiki.plugins.macros.mdx.toc': {'title': _('Contents')},
+    },
 }
 MARKDOWN_KWARGS.update(getattr(django_settings, 'WIKI_MARKDOWN_KWARGS', {}))
 
@@ -63,6 +76,7 @@ _default_tag_whitelists = bleach.ALLOWED_TAGS + [
     'img',
     'pre',
     'span',
+    'sup',
     'table',
     'thead',
     'tbody',
@@ -100,7 +114,7 @@ MARKDOWN_HTML_ATTRIBUTES = _default_attribute_whitelist
 MARKDOWN_HTML_ATTRIBUTES.update(
     getattr(
         django_settings,
-        'WIKI_MARKDOWN_HTML_ATTRIBUTE_WHITELIST',
+        'WIKI_MARKDOWN_HTML_ATTRIBUTES',
         {}
     )
 )
@@ -264,17 +278,7 @@ USE_BOOTSTRAP_SELECT_WIDGET = getattr(
 URL_CONFIG_CLASS = getattr(
     django_settings,
     'WIKI_URL_CONFIG_CLASS',
-    'wiki.urls.WikiURLPatterns')
-
-#: Search view - dotted path denoting where the search view Class is located.
-SEARCH_VIEW = getattr(
-    django_settings,
-    'WIKI_SEARCH_VIEW',
-    'wiki.views.article.SearchView'
-    if 'wiki.plugins.haystack' not in django_settings.INSTALLED_APPS
-    else
-    'wiki.plugins.haystack.views.HaystackSearchView'
-)
+    None)
 
 #: Seconds of timeout before renewing the article cache. Articles are automatically
 #: renewed whenever an edit occurs but article content may be generated from

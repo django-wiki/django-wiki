@@ -1,10 +1,7 @@
-from __future__ import absolute_import, unicode_literals
-
 from django.contrib.auth import get_user_model
 from wiki.models import Article, ArticleRevision
-from wiki.templatetags.wiki_tags import (can_delete, can_moderate, can_read,
-                                         can_write, get_content_snippet,
-                                         is_locked)
+from wiki.templatetags.wiki_tags import can_delete, can_moderate, can_read, can_write, get_content_snippet, is_locked
+
 from ..base import TemplateTestCase, wiki_override_settings
 
 User = get_user_model()

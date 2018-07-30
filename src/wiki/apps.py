@@ -1,22 +1,18 @@
-from __future__ import absolute_import, unicode_literals
-
 from django.apps import AppConfig
-from django.utils.translation import ugettext_lazy as _
+from django.core.checks import register
+from django.utils.translation import gettext_lazy as _
+from wiki.core.plugins.loader import load_wiki_plugins
+
+from . import checks
 
 
-class NotifcationsConfig(AppConfig):
-    name = 'wiki.plugins.notifications'
-    verbose_name = _("Wiki notifications")
-    label = 'wiki_notifications'
+class WikiConfig(AppConfig):
+    default_site = 'wiki.sites.WikiSite'
+    name = "wiki"
+    verbose_name = _("Wiki")
 
-
-class ImagesConfig(AppConfig):
-    name = 'wiki.plugins.images'
-    verbose_name = _("Wiki images")
-    label = 'wiki_images'
-
-
-class AttachmentsConfig(AppConfig):
-    name = 'wiki.plugins.attachments'
-    verbose_name = _("Wiki attachments")
-    label = 'wiki_attachments'
+    def ready(self):
+        register(checks.check_for_required_installed_apps, checks.Tags.required_installed_apps)
+        register(checks.check_for_obsolete_installed_apps, checks.Tags.obsolete_installed_apps)
+        register(checks.check_for_context_processors, checks.Tags.context_processors)
+        load_wiki_plugins()

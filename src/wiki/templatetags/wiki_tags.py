@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, unicode_literals
-
 import re
 
 from django import template
+from django.apps import apps
 from django.conf import settings as django_settings
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model
@@ -23,7 +21,7 @@ register = template.Library()
 _cache = {}
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def article_for_object(context, obj):
     if not isinstance(obj, Model):
         raise TypeError(
@@ -51,8 +49,11 @@ def wiki_render(context, article, preview_content=None):
 
     if preview_content:
         content = article.render(preview_content=preview_content)
+    elif article.current_revision:
+        content = article.get_cached_content(user=context.get('user'))
     else:
         content = None
+
     context.update({
         'article': article,
         'content': content,
@@ -181,10 +182,10 @@ def is_locked(model):
     """
     Check if article is locked.
     """
-    return (model.current_revision and model.current_revision.locked)
+    return model.current_revision and model.current_revision.locked
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def login_url(context):
     request = context['request']
     qs = request.META.get('QUERY_STRING', '')
@@ -203,7 +204,7 @@ def plugin_enabled(plugin_name):
     :param: plugin_name: String specifying the full name of the plugin, e.g.
                          'wiki.plugins.attachments'
     """
-    return plugin_name in django_settings.INSTALLED_APPS
+    return apps.is_installed(plugin_name)
 
 
 @register.filter

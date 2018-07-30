@@ -1,26 +1,27 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, unicode_literals
-
+from django.conf import settings as django_settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.cache import cache
-from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.fields import GenericIPAddressField as IPAddressField
 from django.db.models.signals import post_save, pre_delete, pre_save
+from django.urls import reverse
 from django.utils import translation
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from mptt.models import MPTTModel
 from wiki import managers
 from wiki.conf import settings
-from wiki.core import compat, permissions
+from wiki.core import permissions
 from wiki.core.markdown import article_markdown
 from wiki.decorators import disable_signal_for_loaddata
 
+__all__ = [
+    'Article', 'ArticleForObject', 'ArticleRevision',
+    'BaseRevisionMixin',
+]
 
-@python_2_unicode_compatible
+
 class Article(models.Model):
 
     objects = managers.ArticleManager()
@@ -28,6 +29,7 @@ class Article(models.Model):
     current_revision = models.OneToOneField(
         'ArticleRevision', verbose_name=_('current revision'),
         blank=True, null=True, related_name='current_set',
+        on_delete=models.CASCADE,
         help_text=_(
             'The revision being displayed for this article. If you need to do a roll-back, simply change the value of this field.'),)
 
@@ -41,7 +43,7 @@ class Article(models.Model):
         help_text=_('Article properties last modified'))
 
     owner = models.ForeignKey(
-        compat.USER_MODEL, verbose_name=_('owner'),
+        django_settings.AUTH_USER_MODEL, verbose_name=_('owner'),
         blank=True, null=True, related_name='owned_articles',
         help_text=_(
             'The owner of the article, usually the creator. The owner always has both read and write access.'),
@@ -86,14 +88,12 @@ class Article(models.Model):
     def ancestor_objects(self):
         """NB! This generator is expensive, so use it with care!!"""
         for obj in self.articleforobject_set.filter(is_mptt=True):
-            for ancestor in obj.content_object.get_ancestors():
-                yield ancestor
+            yield from obj.content_object.get_ancestors()
 
     def descendant_objects(self):
         """NB! This generator is expensive, so use it with care!!"""
         for obj in self.articleforobject_set.filter(is_mptt=True):
-            for descendant in obj.content_object.get_descendants():
-                yield descendant
+            yield from obj.content_object.get_descendants()
 
     def get_children(self, max_num=None, user_can_read=None, **kwargs):
         """NB! This generator is expensive, so use it with care!!"""
@@ -104,8 +104,7 @@ class Article(models.Model):
                     **kwargs).can_read(user_can_read)
             else:
                 objects = obj.content_object.get_children().filter(**kwargs)
-            for child in objects.order_by(
-                    'articles__article__current_revision__title'):
+            for child in objects.order_by('articles__article__current_revision__title'):
                 cnt += 1
                 if max_num and cnt > max_num:
                     return
@@ -148,26 +147,25 @@ class Article(models.Model):
             self.save()
         revisions = self.articlerevision_set.all()
         try:
-            new_revision.revision_number = revisions.latest(
-            ).revision_number + 1
+            new_revision.revision_number = revisions.latest().revision_number + 1
         except ArticleRevision.DoesNotExist:
             new_revision.revision_number = 0
         new_revision.article = self
         new_revision.previous_revision = self.current_revision
         if save:
+            new_revision.clean()
             new_revision.save()
         self.current_revision = new_revision
         if save:
             self.save()
 
     def add_object_relation(self, obj):
-        content_type = ContentType.objects.get_for_model(obj)
-        is_mptt = isinstance(obj, MPTTModel)
-        rel = ArticleForObject.objects.get_or_create(article=self,
-                                                     content_type=content_type,
-                                                     object_id=obj.id,
-                                                     is_mptt=is_mptt)
-        return rel
+        return ArticleForObject.objects.get_or_create(
+            article=self,
+            content_type=ContentType.objects.get_for_model(obj),
+            object_id=obj.id,
+            is_mptt=isinstance(obj, MPTTModel),
+        )
 
     @classmethod
     def get_for_object(cls, obj):
@@ -188,7 +186,7 @@ class Article(models.Model):
             ("grant", _("Can assign permissions to other users")),
         )
 
-    def render(self, preview_content=None):
+    def render(self, preview_content=None, user=None):
         if not self.current_revision:
             return ""
         if preview_content:
@@ -196,25 +194,49 @@ class Article(models.Model):
         else:
             content = self.current_revision.content
         return mark_safe(article_markdown(content, self,
-                                          preview=preview_content is not None))
+                                          preview=preview_content is not None,
+                                          user=user))
 
     def get_cache_key(self):
+        """Returns per-article cache key."""
         lang = translation.get_language()
+
         return "wiki:article:{id:d}:{lang:s}".format(
             id=self.current_revision.id if self.current_revision else self.id,
-            lang=lang
-        )
+            lang=lang)
 
-    def get_cached_content(self):
-        """Returns cached version of rendered article"""
+    def get_cache_content_key(self, user=None):
+        """Returns per-article-user cache key."""
+        return "{key}:{user!s}".format(
+            key=self.get_cache_key(),
+            user=user if user else "")
+
+    def get_cached_content(self, user=None):
+        """Returns cached version of rendered article.
+
+        The cache contains one "per-article" entry plus multiple
+        "per-article-user" entries. The per-article-user entries contain the
+        rendered article, the per-article entry contains list of the
+        per-article-user keys. The rendered article in cache (per-article-user)
+        is used only if the key is in the per-article entry. To delete
+        per-article invalidates all article cache entries."""
+
         cache_key = self.get_cache_key()
-        cached_content = cache.get(cache_key)
-        if cached_content is None:
-            cached_content = self.render()
-            cache.set(cache_key, cached_content, settings.CACHE_TIMEOUT)
-        else:
-            cached_content = mark_safe(cached_content)
-        return cached_content
+        cache_content_key = self.get_cache_content_key(user)
+
+        cached_items = cache.get(cache_key, list())
+
+        if cache_content_key in cached_items:
+            cached_content = cache.get(cache_content_key)
+            if cached_content is not None:
+                return mark_safe(cached_content)
+
+        cached_content = self.render(user=user)
+        cached_items.append(cache_content_key)
+        cache.set(cache_key, cached_items, settings.CACHE_TIMEOUT)
+        cache.set(cache_content_key, cached_content, settings.CACHE_TIMEOUT)
+
+        return mark_safe(cached_content)
 
     def clear_cache(self):
         cache.delete(self.get_cache_key())
@@ -227,7 +249,6 @@ class Article(models.Model):
             return reverse('wiki:get', kwargs={'article_id': self.id})
 
 
-@python_2_unicode_compatible
 class ArticleForObject(models.Model):
 
     objects = managers.ArticleFkManager()
@@ -236,6 +257,7 @@ class ArticleForObject(models.Model):
     # Same as django.contrib.comments
     content_type = models.ForeignKey(
         ContentType,
+        on_delete=models.CASCADE,
         verbose_name=_('content type'),
         related_name="content_type_set_for_%(class)s")
     object_id = models.PositiveIntegerField(_('object ID'))
@@ -270,7 +292,7 @@ class BaseRevisionMixin(models.Model):
         blank=True,
         null=True,
         editable=False)
-    user = models.ForeignKey(compat.USER_MODEL, verbose_name=_('user'),
+    user = models.ForeignKey(django_settings.AUTH_USER_MODEL, verbose_name=_('user'),
                              blank=True, null=True,
                              on_delete=models.SET_NULL)
 
@@ -294,7 +316,7 @@ class BaseRevisionMixin(models.Model):
     )
 
     def set_from_request(self, request):
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             self.user = request.user
             if settings.LOG_IPS_USERS:
                 self.ip_address = request.META.get('REMOTE_ADDR', None)
@@ -313,15 +335,12 @@ class BaseRevisionMixin(models.Model):
         self.previous_revision = predecessor
         self.deleted = predecessor.deleted
         self.locked = predecessor.locked
-        self.deleted = predecessor.deleted
-        self.locked = predecessor.locked
         self.revision_number = predecessor.revision_number + 1
 
     class Meta:
         abstract = True
 
 
-@python_2_unicode_compatible
 class ArticleRevision(BaseRevisionMixin, models.Model):
 
     """This is where main revision data is stored. To make it easier to
@@ -353,6 +372,12 @@ class ArticleRevision(BaseRevisionMixin, models.Model):
 
     def __str__(self):
         return "%s (%d)" % (self.title, self.revision_number)
+
+    def clean(self):
+        # Enforce DOS line endings \r\n. It is the standard for web browsers,
+        # but when revisions are created programatically, they might
+        # have UNIX line endings \n instead.
+        self.content = self.content.replace('\r', '').replace('\n', '\r\n')
 
     def inherit_predecessor(self, article):
         """

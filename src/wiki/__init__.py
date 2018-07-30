@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-# -*- coding: utf-8 -*-
 # This package and all its sub-packages are part of django-wiki,
 # except where otherwise stated.
 #
@@ -19,5 +17,8 @@ from __future__ import unicode_literals
 
 from wiki.core.version import get_version
 
-VERSION = (0, 3, 0, 'beta', 3)
+
+default_app_config = 'wiki.apps.WikiConfig'
+
+VERSION = (0, 4, 0, 'alpha', 5)
 __version__ = get_version(VERSION)

@@ -1,7 +1,6 @@
 import os
 
-from django.core.urlresolvers import reverse_lazy
-
+from django.urls import reverse_lazy
 
 TESTS_DATA_ROOT = os.path.dirname(__file__)
 
@@ -20,24 +19,25 @@ SITE_ID = 1
 ROOT_URLCONF = 'tests.testdata.urls'
 INSTALLED_APPS = [
     'tests.testdata',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.admin',
-    'django.contrib.humanize',
-    'django.contrib.sites',
-    'django_nyt',
+    'django.contrib.auth.apps.AuthConfig',
+    'django.contrib.contenttypes.apps.ContentTypesConfig',
+    'django.contrib.sessions.apps.SessionsConfig',
+    'django.contrib.admin.apps.AdminConfig',
+    'django.contrib.humanize.apps.HumanizeConfig',
+    'django.contrib.sites.apps.SitesConfig',
+    'django_nyt.apps.DjangoNytConfig',
     'mptt',
     'sekizai',
     'sorl.thumbnail',
-    'wiki',
-    'wiki.plugins.attachments',
-    'wiki.plugins.notifications',
-    'wiki.plugins.images',
-    'wiki.plugins.macros',
-    'wiki.plugins.globalhistory',
+    'wiki.apps.WikiConfig',
+    'wiki.plugins.attachments.apps.AttachmentsConfig',
+    'wiki.plugins.notifications.apps.NotificationsConfig',
+    'wiki.plugins.images.apps.ImagesConfig',
+    'wiki.plugins.macros.apps.MacrosConfig',
+    'wiki.plugins.globalhistory.apps.GlobalHistoryConfig',
+    "wiki.plugins.redlinks.apps.RedlinksConfig",
 ]
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',

@@ -1,9 +1,7 @@
-from __future__ import absolute_import, unicode_literals
-
 from django import forms
 from django.contrib import admin
 from django.contrib.contenttypes.admin import GenericTabularInline
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from mptt.admin import MPTTModelAdmin
 
 from . import editors, models
@@ -23,7 +21,7 @@ class ArticleRevisionForm(forms.ModelForm):
         exclude = ()
 
     def __init__(self, *args, **kwargs):
-        super(ArticleRevisionForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         # TODO: This pattern is too weird
         editor = editors.getEditor()
         self.fields['content'].widget = editor.get_admin_widget()
@@ -57,7 +55,7 @@ class ArticleForm(forms.ModelForm):
         exclude = ()
 
     def __init__(self, *args, **kwargs):
-        super(ArticleForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         if self.instance.pk:
             revisions = models.ArticleRevision.objects.filter(
                 article=self.instance)
