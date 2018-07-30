@@ -269,11 +269,11 @@ class MoveViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
 
         response = self.get_by_path('test0/test2/')
         self.assertContains(response, 'Moved: Test1')
-        self.assertRegex(response.content, br'moved to <a[^>]*>wiki:/test1new/')
+        self.assertRegex(response.rendered_content, r'moved to <a[^>]*>wiki:/test1new/')
 
         response = self.get_by_path('test0/test2/test020/')
         self.assertContains(response, 'Moved: Test020')
-        self.assertRegex(response.content, br'moved to <a[^>]*>wiki:/test1new/test020')
+        self.assertRegex(response.rendered_content, r'moved to <a[^>]*>wiki:/test1new/test020')
 
         # Check that moved_to was correctly set
         urlsrc = URLPath.get_by_path('/test0/test2/')
@@ -347,6 +347,24 @@ class EditViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
         )
 
         self.assertContains(response, 'The modified text')
+
+    def test_preview_xframe_options_sameorigin(self):
+        """Ensure that preview response has X-Frame-Options: SAMEORIGIN"""
+
+        example_data = {
+            'content': 'The modified text',
+            'current_revision': str(URLPath.root().article.current_revision.id),
+            'preview': '1',
+            'summary': 'why edited',
+            'title': 'wiki test'
+        }
+
+        response = self.client.post(
+            resolve_url('wiki:preview', path=''),
+            example_data
+        )
+
+        self.assertEquals(response.get('X-Frame-Options'), 'SAMEORIGIN')
 
     def test_revision_conflict(self):
         """
