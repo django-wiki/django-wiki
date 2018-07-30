@@ -15,6 +15,7 @@ from django.views.generic import DetailView
 from django.views.generic.base import RedirectView, TemplateView, View
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
+from django.views.decorators.clickjacking import xframe_options_sameorigin
 from wiki import editors, forms, models
 from wiki.conf import settings
 from wiki.core import permissions
@@ -822,6 +823,7 @@ class Preview(ArticleMixin, TemplateView):
 
     template_name = "wiki/preview_inline.html"
 
+    @method_decorator(xframe_options_sameorigin)
     @method_decorator(get_article(can_read=True, deleted_contents=True))
     def dispatch(self, request, article, *args, **kwargs):
         revision_id = request.GET.get('r', None)
