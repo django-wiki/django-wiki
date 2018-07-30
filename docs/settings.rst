@@ -33,4 +33,3 @@ Plugin macros
 
 .. automodule:: wiki.plugins.macros.settings
    :members:
-
