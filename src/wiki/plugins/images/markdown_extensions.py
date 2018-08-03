@@ -3,19 +3,18 @@ from django.template.loader import render_to_string
 from wiki.plugins.images import models, settings
 
 IMAGE_RE = (
-    # Match only at the beginning of a line
-    r"(?:(?im)^\s*" +
+    r"(?:(?im)" +
     # Match '[image:N'
     r"\[image\:(?P<id>[0-9]+)" +
     # Match optional 'align'
     r"(?:\s+align\:(?P<align>right|left))?" +
     # Match optional 'size'
     r"(?:\s+size\:(?P<size>default|small|medium|large|orig))?" +
-    # Match ']' at end of line
-    r"\s*\]\s*$" +
-    # Match zero or more caption lines, each indented by four spaces.
+    # Match ']' and rest of line.
     # Normally [^\n] could be replaced with a dot '.', since '.'
     # does not match newlines, but inline processors run with re.DOTALL.
+    r"\s*\](?P<trailer>[^\n]*)$" +
+    # Match zero or more caption lines, each indented by four spaces.
     r"(?P<caption>(?:\n    [^\n]*)*))"
 )
 
@@ -62,6 +61,7 @@ class ImagePattern(markdown.inlinepatterns.Pattern):
             pass
 
         caption = m.group("caption")
+        trailer = m.group('trailer')
 
         caption_placeholder = "{{{IMAGECAPTION}}}"
         width = size.split("x")[0] if size else None
@@ -78,7 +78,7 @@ class ImagePattern(markdown.inlinepatterns.Pattern):
         html_before, html_after = html.split(caption_placeholder)
         placeholder_before = self.markdown.htmlStash.store(html_before, safe=True)
         placeholder_after = self.markdown.htmlStash.store(html_after, safe=True)
-        return placeholder_before + caption + placeholder_after
+        return placeholder_before + caption + placeholder_after + trailer
 
 
 class ImagePostprocessor(markdown.postprocessors.Postprocessor):
