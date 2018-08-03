@@ -18,9 +18,9 @@ class ImageMarkdownTests(RequireRootArticleMixin, TestBase):
         self.assertNotIn("[image:1 align:left]", md_text)
         md_text = md.convert("image: [image:1 align:left]\nadasd")
         self.assertIn("<figure", md_text)
-        md_text = md.convert("image: [image:1 align:right medium]\nadasd")
-        self.assertIn("<img src", md_text)
-        md_text = md.convert("image: [image:123 align:left medium]\nadasd")
+        md_text = md.convert("image: [image:1 align:right size:medium]\nadasd")
+        self.assertIn("<figure", md_text)
+        md_text = md.convert("image: [image:123 align:left size:medium]\nadasd")
         self.assertIn("Image not found", md_text)
 
     def test_escape(self):
