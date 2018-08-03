@@ -3,6 +3,14 @@ from wiki.core import markdown
 
 
 class ImageMarkdownTests(RequireRootArticleMixin, TestBase):
+    def test_before_and_after(self):
+        md = markdown.ArticleMarkdown(article=self.root_article)
+        md_text = md.convert("before [image:1 align:left] after")
+        before_pos = md_text.index('before')
+        figure_pos = md_text.index('<figure')
+        after_pos = md_text.index('after')
+        self.assertTrue(before_pos < figure_pos < after_pos)
+
     def test_markdown(self):
         md = markdown.ArticleMarkdown(article=self.root_article)
         md_text = md.convert("[image:1 align:left]")
