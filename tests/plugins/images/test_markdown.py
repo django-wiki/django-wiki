@@ -18,23 +18,23 @@ class ImageMarkdownTests(RequireRootArticleMixin, TestBase):
         self.assertNotIn("[image:1 align:left]", md_text)
         md_text = md.convert("image: [image:1 align:left]\nadasd")
         self.assertIn("<figure", md_text)
-        self.assertNotIn("<caption", md_text)
+        self.assertNotIn("<figcaption", md_text)
         md_text = md.convert("image: [image:1 align:right size:medium]\nadasd")
         self.assertIn("<figure", md_text)
-        self.assertNotIn("<caption", md_text)
+        self.assertNotIn("<figcaption", md_text)
         md_text = md.convert("image: [image:123 align:left size:medium]\nadasd")
         self.assertIn("Image not found", md_text)
-        self.assertNotIn("<caption", md_text)
+        self.assertNotIn("<figcaption", md_text)
 
     def test_caption(self):
         md = markdown.ArticleMarkdown(article=self.root_article)
         md_text = md.convert("[image:1 align:left]\n    this is visual")
         self.assertIn("<figure", md_text)
-        self.assertIn("<caption", md_text)
+        self.assertIn("<figcaption class="caption">this is visual</figcaption>", md_text)
         md = markdown.ArticleMarkdown(article=self.root_article)
         md_text = md.convert("[image:1 align:left]\n    this is visual\n    second line")
         self.assertIn("<figure", md_text)
-        self.assertIn("<caption>this is visual\nsecond line</caption>", md_text)
+        self.assertIn("<figcaption class="caption">this is visual\nsecond line</figcaption>", md_text)
 
     def test_escape(self):
         md = markdown.ArticleMarkdown(article=self.root_article)
