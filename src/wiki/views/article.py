@@ -4,6 +4,7 @@ from urllib.parse import urljoin
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import InvalidPage
 from django.db import transaction
 from django.db.models import Q
 from django.http import Http404
@@ -11,11 +12,11 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext as _, ngettext
+from django.views.decorators.clickjacking import xframe_options_sameorigin
 from django.views.generic import DetailView
 from django.views.generic.base import RedirectView, TemplateView, View
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
-from django.views.decorators.clickjacking import xframe_options_sameorigin
 from wiki import editors, forms, models
 from wiki.conf import settings
 from wiki.core import permissions
@@ -654,7 +655,7 @@ class Dir(ListView, ArticleMixin):
         return kwargs
 
 
-class SearchView(ListView):
+class SearchView(TemplateView):
 
     template_name = "wiki/search.html"
     paginator_class = WikiPaginator
@@ -697,6 +698,31 @@ class SearchView(ListView):
 
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data(**kwargs)
+        queryset = self.get_queryset()
+
+        paginator = WikiPaginator(
+            queryset, self.paginate_by, orphans=0,
+            allow_empty_first_page=True)
+        page_str = self.kwargs.get('page') or self.request.GET.get('page') or 1
+        try:
+            page_number = int(page_str)
+        except ValueError:
+            if page_str == 'last':
+                page_number = paginator.num_pages
+            else:
+                raise Http404(_("Page is not 'last', nor can it be converted to an int."))
+        try:
+            page = paginator.page(page_number)
+        except InvalidPage as e:
+            raise Http404(_('Invalid page (%(page_number)s): %(message)s') % {
+                'page_number': page_number,
+                'message': str(e),
+            })
+
+        kwargs['paginator'] = paginator
+        kwargs['page_obj'] = page
+        kwargs['is_paginated'] = page.has_other_pages()
+        kwargs['object_list'] = kwargs[self.context_object_name] = page.object_list
         kwargs['search_form'] = self.search_form
         kwargs['search_query'] = self.query
         kwargs['urlpath'] = self.urlpath
