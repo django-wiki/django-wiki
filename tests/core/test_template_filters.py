@@ -40,18 +40,9 @@ class GetContentSnippet(TemplateTestCase):
 
         self.assertEqual(output, expected)
 
-    def test_whole_content_is_consist_from_keywords(self):
+    def test_whole_content_consists_of_keywords(self):
         content = 'lorem ' * 80
-        expected = (
-            '<strong>lorem</strong> <strong>lorem</strong> '
-            '<strong>lorem</strong> <strong>lorem</strong> '
-            '<strong>lorem</strong> <strong>lorem</strong> '
-            '<strong>lorem</strong> <strong>lorem</strong> '
-            '<strong>lorem</strong> <strong>lorem</strong> '
-            '<strong>lorem</strong> <strong>lorem</strong> '
-            '<strong>lorem</strong> <strong>lorem</strong> '
-            '<strong>lorem</strong> <strong>lorem</strong>'
-        )
+        expected = '<strong>lorem</strong>' + 30 * ' <strong>lorem</strong>'
 
         output = get_content_snippet(content, 'lorem')
 
@@ -79,11 +70,7 @@ class GetContentSnippet(TemplateTestCase):
         text = 'dolorum ' * 80
         content += text + ' list'
 
-        expected = (
-            'dolorum dolorum dolorum dolorum dolorum dolorum dolorum '
-            'dolorum dolorum dolorum dolorum dolorum dolorum dolorum dolorum '
-            '<strong>list</strong>'
-        )
+        expected = '<strong>list</strong>' + 30 * ' lorem'
 
         output = get_content_snippet(content, 'list')
 
@@ -145,8 +132,7 @@ class GetContentSnippet(TemplateTestCase):
         keyword = 'maybe'
 
         content = """
-        <h1>Some dummy</h1> text. <div>Actually</div> I don't what to write,
-        heh. Don't now, <b>maybe</b> I should citate Shakespeare or Byron.
+        I should citate Shakespeare or Byron.
         Or <a>maybe</a> copy paste from <a href="http://python.org">python</a>
         or django documentation. Maybe.
         """
@@ -168,8 +154,8 @@ class GetContentSnippet(TemplateTestCase):
         content = """
         knight eggs spam ham eggs guido python eggs circus
         """
-        expected = ('<strong>eggs</strong> guido python '
-                    '<strong>eggs</strong> circus')
+        expected = ('knight <strong>eggs</strong> spam ham '
+                    '<strong>eggs</strong> guido')
 
         output = get_content_snippet(content, keyword, 5)
 
