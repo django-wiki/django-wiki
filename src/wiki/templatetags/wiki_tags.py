@@ -116,7 +116,7 @@ def get_content_snippet(content, keyword, max_words=30):
 
     max_words = int(max_words)
 
-    match_position = content.lower().rfind(keyword.lower())
+    match_position = content.lower().find(keyword.lower())
 
     if match_position != -1:
         try:
