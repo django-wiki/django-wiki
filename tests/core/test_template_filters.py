@@ -19,7 +19,7 @@ class GetContentSnippet(TemplateTestCase):
         content = text + ' list'
         expected = (
             'lorem lorem lorem lorem lorem lorem lorem lorem lorem '
-            'lorem lorem lorem lorem lorem lorem <strong>list</strong> '
+            'lorem lorem lorem lorem lorem lorem <strong>list</strong>'
         )
 
         output = get_content_snippet(content, 'list')
@@ -30,7 +30,7 @@ class GetContentSnippet(TemplateTestCase):
         text = 'lorem ' * 80
         content = 'list ' + text
         expected = (
-            ' <strong>list</strong> lorem lorem lorem lorem lorem '
+            '<strong>list</strong> lorem lorem lorem lorem lorem '
             'lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem '
             'lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem '
             'lorem lorem lorem'
@@ -50,7 +50,7 @@ class GetContentSnippet(TemplateTestCase):
             '<strong>lorem</strong> <strong>lorem</strong> '
             '<strong>lorem</strong> <strong>lorem</strong> '
             '<strong>lorem</strong> <strong>lorem</strong> '
-            '<strong>lorem</strong> <strong>lorem</strong> '
+            '<strong>lorem</strong> <strong>lorem</strong>'
         )
 
         output = get_content_snippet(content, 'lorem')
@@ -82,7 +82,7 @@ class GetContentSnippet(TemplateTestCase):
         expected = (
             'dolorum dolorum dolorum dolorum dolorum dolorum dolorum '
             'dolorum dolorum dolorum dolorum dolorum dolorum dolorum dolorum '
-            '<strong>list</strong> '
+            '<strong>list</strong>'
         )
 
         output = get_content_snippet(content, 'list')
@@ -95,7 +95,7 @@ class GetContentSnippet(TemplateTestCase):
         content = text + ' list'
 
         output = get_content_snippet(content, 'list', 0)
-        expected = 'spam ' * 800 + '<strong>list</strong> '
+        expected = 'spam ' * 800 + '<strong>list</strong>'
 
         self.assertEqual(output, expected)
 
@@ -105,7 +105,7 @@ class GetContentSnippet(TemplateTestCase):
         content = text + ' list'
 
         output = get_content_snippet(content, 'list', -10)
-        expected = 'spam ' * 75 + '<strong>list</strong> '
+        expected = 'spam ' * 75 + '<strong>list</strong>'
 
         self.assertEqual(output, expected)
 
@@ -154,7 +154,7 @@ class GetContentSnippet(TemplateTestCase):
         expected = (
             'I should citate Shakespeare or Byron. '
             'Or <strong>maybe</strong> copy paste from python '
-            'or django documentation. <strong>maybe</strong> .'
+            'or django documentation. <strong>Maybe.</strong>'
         )
 
         output = get_content_snippet(content, keyword, 30)
@@ -179,9 +179,17 @@ class GetContentSnippet(TemplateTestCase):
 
         expected = (
             'knight <strong>eggs</strong> spam ham '
-            '<strong>eggs</strong> guido python <strong>eggs</strong> '
+            '<strong>eggs</strong> guido python <strong>eggs</strong>'
         )
         self.assertEqual(output, expected)
+
+    def test_content_case_preserved(self):
+        keyword = 'DOlOr'
+        match = 'DoLoR'
+        content = 'lorem ipsum %s sit amet' % match
+        output = get_content_snippet(content, keyword)
+        self.assertIn(match, output)
+        self.assertNotIn(keyword, output)
 
 
 class CanRead(TemplateTestCase):
