@@ -1,6 +1,8 @@
+import html
 from urllib.parse import urljoin, urlparse
 
 from markdown.extensions import Extension
+from markdown.postprocessors import AndSubstitutePostprocessor
 from markdown.treeprocessors import Treeprocessor
 from wiki.models import URLPath
 
@@ -48,11 +50,21 @@ class LinkTreeprocessor(Treeprocessor):
         return self._my_urlpath
 
     def get_class(self, el):
+        href = el.get("href")
+        if not href:
+            return
+        # The autolinker turns email links into links with many HTML entities.
+        # These entities are further escaped using markdown-specific codes.
+        # First unescape the markdown-specific, then use html.unescape.
+        href = AndSubstitutePostprocessor().run(href)
+        href = html.unescape(href)
         try:
-            url = urlparse(el.get("href"))
+            url = urlparse(href)
         except ValueError:
             return
-        if url.netloc or url.path.startswith("/"):
+        if url.scheme == "mailto":
+            return
+        if url.scheme or url.netloc or url.path.startswith("/"):
             # Contains a hostname or is an absolute link => external
             return self.external_class
         # Ensure that path ends with a slash
