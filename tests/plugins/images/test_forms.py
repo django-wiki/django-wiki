@@ -1,6 +1,5 @@
 from django.test import TestCase
 from django.utils.translation import gettext
-
 from wiki.plugins.images.forms import PurgeForm
 
 

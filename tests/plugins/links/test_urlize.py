@@ -1,11 +1,9 @@
 import html
-import markdown
 from unittest import mock
 
+import markdown
 import pytest
-
-from wiki.plugins.links.mdx.urlize import makeExtension, UrlizeExtension
-
+from wiki.plugins.links.mdx.urlize import UrlizeExtension, makeExtension
 
 # Template accepts two strings - href value and link text value.
 EXPECTED_LINK_TEMPLATE = (

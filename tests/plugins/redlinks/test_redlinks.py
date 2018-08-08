@@ -52,3 +52,12 @@ class RedlinksTests(RequireRootArticleMixin, TestBase):
         self.assertNotIn("wiki-internal", html)
         self.assertNotIn("wiki-external", html)
         self.assertIn("wiki-broken", html)
+
+    def test_mailto(self):
+        md = markdown.ArticleMarkdown(article=self.root.article)
+        md_text = "<foo@example.com>"
+        html = md.convert(md_text)
+        self.assertNotIn("wiki-internal", html)
+        self.assertNotIn("wiki-external", html)
+        self.assertNotIn("wiki-broken", html)
+        self.assertIn("<a ", html)

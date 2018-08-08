@@ -1,10 +1,9 @@
 from django.utils.module_loading import import_string
+from wiki import sites
 from wiki.compat import include, url
 from wiki.conf import settings
 from wiki.core.plugins import registry
-from wiki import sites
 from wiki.views import accounts, article, deleted_list
-
 
 urlpatterns = [
     url(r'^', sites.site.urls),

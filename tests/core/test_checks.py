@@ -3,7 +3,7 @@ import copy
 from django.conf import settings
 from django.core.checks import Error, registry
 from django.test import TestCase
-from wiki.checks import OBSOLETE_INSTALLED_APPS, REQUIRED_CONTEXT_PROCESSORS, REQUIRED_INSTALLED_APPS, Tags
+from wiki.checks import REQUIRED_CONTEXT_PROCESSORS, REQUIRED_INSTALLED_APPS, Tags
 
 
 def _remove(settings, arg):
