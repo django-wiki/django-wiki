@@ -301,9 +301,7 @@ class MoveViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
             response_da = self.client.get(url)
 
             self.assertNotIn('Move article', response_da.rendered_content)
-
-            # TODO: Fix this bug and change to assertNotIn.
-            self.assertIn('Be careful', response_da.rendered_content)
+            self.assertNotIn('Be careful', response_da.rendered_content)
 
 
 class DeleteViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):

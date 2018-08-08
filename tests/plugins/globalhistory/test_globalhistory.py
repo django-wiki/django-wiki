@@ -90,6 +90,4 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
             response_da = self.client.get(url)
 
             self.assertNotIn('Global history', response_da.rendered_content)
-
-            # TODO: Fix this bug and change to assertNotIn.
-            self.assertIn('in the wiki', response_da.rendered_content)
+            self.assertNotIn('in the wiki', response_da.rendered_content)
