@@ -2,6 +2,7 @@ import pprint
 
 from django.http import JsonResponse
 from django.shortcuts import resolve_url
+from django.utils import translation
 from django.utils.html import escape
 from django_functest import FuncBaseMixin
 from wiki import models
@@ -284,6 +285,23 @@ class MoveViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
         urlsrc = URLPath.get_by_path('/test0/test2/test020/')
         urldst = URLPath.get_by_path('/test1new/test020/')
         self.assertEqual(urlsrc.moved_to, urldst)
+
+    def test_translation(self):
+        # Test that translation of "Be careful, links to this article" exists.
+        self.client.post(
+            resolve_url('wiki:create', path=''),
+            {'title': 'Test', 'slug': 'test0', 'content': 'Content'}
+        )
+        url = resolve_url('wiki:move', path='test0/')
+        response_en = self.client.get(url)
+        self.assertIn('Move article', response_en.rendered_content)
+        self.assertIn('Be careful', response_en.rendered_content)
+
+        with translation.override('da-DK'):
+            response_da = self.client.get(url)
+
+            self.assertNotIn('Move article', response_da.rendered_content)
+            self.assertNotIn('Be careful', response_da.rendered_content)
 
 
 class DeleteViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
