@@ -12,7 +12,7 @@ The next series **0.4** will support Django 1.11 and Django 2.x and be for
 Python 3.4+.
 
 
-django-wiki 0.4a5
+django-wiki 0.4b1
 -----------------
 
 Added
@@ -21,6 +21,7 @@ Added
  * Django 2 support :url-issue:`755` (Raffaele Salmaso & Mads Jensen)
  * Added ``wiki.sites.WikiSite`` for easy customization :url-issue:`827`
  * Automatic link highlighting of URLs handles lots of new patterns :url-issue:`816` (Branko Majic)
+ * Red links: Internal links turn red and link to Create Page (Mathias Rav)  :url-issue:`889`
 
 Changed
 ~~~~~~~
@@ -35,6 +36,7 @@ Changed
  * Big cleanup: Deprecating lots of Python 2.7 specific code (Mads Jensen & Raffaele Salmaso) `See: >30 PRs <https://github.com/django-wiki/django-wiki/pulls?q=is%3Apr+is%3Aclosed+label%3Aclean-up>`__
  * Languages: Merged ``pt`` and ``pt_PT``, then deleted ``pt`` and linked it to ``pt_PT`` :url-issue:`858`
  * Languages: Linked ``zh_Hans`` to ``zh_CN`` :url-issue:`711`
+ * Languages: ``da`` translated 100%
 
 Fixed
 ~~~~~
@@ -43,6 +45,7 @@ Fixed
  * Use ``simple_tag`` for assignment tag :url-issue:`791` (Raffaele Salmaso)
  * Direct invocation of ``pytest`` fixed (removing ``runtests.py``) :url-issue:`781` (Branko Majic)
  * Line breaks in help texts for macros :url-issue:`851` (Mathias Dannesbo)
+ * Table of contents now has a header by default, and several built-in django-wiki extensions can be configured using ``WIKI_MARKDOWN_KWARGS`` :url-issue:`881` (Mathias Rav)
 
 Deprecated/Removed
 ~~~~~~~~~~~~~~~~~~

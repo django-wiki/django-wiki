@@ -2,6 +2,7 @@ import pprint
 
 from django.http import JsonResponse
 from django.shortcuts import resolve_url
+from django.utils import translation
 from django.utils.html import escape
 from django_functest import FuncBaseMixin
 from wiki import models
@@ -269,11 +270,11 @@ class MoveViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
 
         response = self.get_by_path('test0/test2/')
         self.assertContains(response, 'Moved: Test1')
-        self.assertContains(response, 'moved to <a>wiki:/test1new/')
+        self.assertRegex(response.rendered_content, r'moved to <a[^>]*>wiki:/test1new/')
 
         response = self.get_by_path('test0/test2/test020/')
         self.assertContains(response, 'Moved: Test020')
-        self.assertContains(response, 'moved to <a>wiki:/test1new/test020')
+        self.assertRegex(response.rendered_content, r'moved to <a[^>]*>wiki:/test1new/test020')
 
         # Check that moved_to was correctly set
         urlsrc = URLPath.get_by_path('/test0/test2/')
@@ -284,6 +285,23 @@ class MoveViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
         urlsrc = URLPath.get_by_path('/test0/test2/test020/')
         urldst = URLPath.get_by_path('/test1new/test020/')
         self.assertEqual(urlsrc.moved_to, urldst)
+
+    def test_translation(self):
+        # Test that translation of "Be careful, links to this article" exists.
+        self.client.post(
+            resolve_url('wiki:create', path=''),
+            {'title': 'Test', 'slug': 'test0', 'content': 'Content'}
+        )
+        url = resolve_url('wiki:move', path='test0/')
+        response_en = self.client.get(url)
+        self.assertIn('Move article', response_en.rendered_content)
+        self.assertIn('Be careful', response_en.rendered_content)
+
+        with translation.override('da-DK'):
+            response_da = self.client.get(url)
+
+            self.assertNotIn('Move article', response_da.rendered_content)
+            self.assertNotIn('Be careful', response_da.rendered_content)
 
 
 class DeleteViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
@@ -347,6 +365,24 @@ class EditViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
         )
 
         self.assertContains(response, 'The modified text')
+
+    def test_preview_xframe_options_sameorigin(self):
+        """Ensure that preview response has X-Frame-Options: SAMEORIGIN"""
+
+        example_data = {
+            'content': 'The modified text',
+            'current_revision': str(URLPath.root().article.current_revision.id),
+            'preview': '1',
+            'summary': 'why edited',
+            'title': 'wiki test'
+        }
+
+        response = self.client.post(
+            resolve_url('wiki:preview', path=''),
+            example_data
+        )
+
+        self.assertEquals(response.get('X-Frame-Options'), 'SAMEORIGIN')
 
     def test_revision_conflict(self):
         """

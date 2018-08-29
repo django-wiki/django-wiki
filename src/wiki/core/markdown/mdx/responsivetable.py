@@ -37,3 +37,8 @@ class ResponsiveTableTree(Treeprocessor):
     def convert_to_wrapper(self, element):
         element.tag = 'div'
         element.set('class', 'table-responsive')
+
+
+def makeExtension(*args, **kwargs):
+    """Return an instance of the extension."""
+    return ResponsiveTableExtension(*args, **kwargs)

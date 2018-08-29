@@ -16,8 +16,6 @@ env:
 
 matrix:
   exclude:
-  - python: "3.4"
-    env: LINT="yes"
   - python: "3.5"
     env: LINT="yes"
   - python: "3.6"

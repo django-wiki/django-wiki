@@ -60,7 +60,9 @@ coverage:  ## Generate test coverage report
 	coverage run --source wiki setup.py test
 	coverage report -m
 
-translation-push:  ## Pushes translation sources
+translation-push:  ## Updates and pushes
+	cd src/wiki && django-admin makemessages -l en
+	cd ..
 	tx push -s
 
 translation-pull:  ## Pulls translation languages
