@@ -18,7 +18,8 @@ django-wiki 0.4b2
 Added
 ~~~~~
 
- * Django 2 support :url-issue:`755` (Raffaele Salmaso & Mads Jensen)
+ * Django 2.0 and 2.1 support :url-issue:`755` (Raffaele Salmaso & Mads Jensen)
+ * Python 3.7 support
  * Added ``wiki.sites.WikiSite`` for easy customization :url-issue:`827`
  * Automatic link highlighting of URLs handles lots of new patterns :url-issue:`816` (Branko Majic)
  * Red links: Internal links turn red and link to Create Page (Mathias Rav)  :url-issue:`889`
