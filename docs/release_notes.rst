@@ -36,7 +36,7 @@ Changed
  * Last couple of non-CBVs (Class Based Views) refactored to CBV (Raffaele Salmaso & Mads Jensen) :url-issue:`788` :url-issue:`819` :url-issue:`808`
  * Big cleanup: Deprecating lots of Python 2.7 specific code (Mads Jensen & Raffaele Salmaso) `See: >30 PRs <https://github.com/django-wiki/django-wiki/pulls?q=is%3Apr+is%3Aclosed+label%3Aclean-up>`__
  * Search term highligting tweaked, first match is now highlighted instead of last (Mathias Rav)  :url-issue:`901`
- * Markdown parsing for ``[image]``, ``[article_list]`` and macros rewritten and improved to allow escaping (Mathis Rav) :url-issue:`896`
+ * Markdown parsing for ``[image]``, ``[article_list]`` and macros rewritten and improved to allow escaping (Mathias Rav) :url-issue:`896`
  * Languages: Merged ``pt`` and ``pt_PT``, then deleted ``pt`` and linked it to ``pt_PT`` :url-issue:`858`
  * Languages: Linked ``zh_Hans`` to ``zh_CN`` :url-issue:`711`
  * Languages: ``da`` completed
