@@ -1,4 +1,5 @@
 import base64
+import os
 from io import BytesIO
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -198,6 +199,29 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         self.assertEqual(models.Image.objects.count(), 1)
         self.assertEqual(image.current_revision.previous_revision.revision_number, before_edit_rev)
         self.assertFalse(image.current_revision.deleted)
+
+    def test_purge(self):
+        """
+        Tests that an image is really purged
+        """
+        self._create_test_image(path='')
+        image = models.Image.objects.get()
+        image_revision = image.current_revision.imagerevision
+        f_path = image_revision.image.file.name
+
+        self.assertTrue(os.path.exists(f_path))
+
+        response = self.client.post(
+            reverse('wiki:images_purge', kwargs={
+                'article_id': self.root_article, 'image_id': image.pk, 'path': '',
+            }),
+            data={'confirm': True}
+        )
+        self.assertRedirects(
+            response, reverse('wiki:images_index', kwargs={'path': ''})
+        )
+        self.assertEqual(models.Image.objects.count(), 0)
+        self.assertFalse(os.path.exists(f_path))
 
     @wiki_override_settings(ACCOUNT_HANDLING=True)
     def test_login_on_revision_add(self):
