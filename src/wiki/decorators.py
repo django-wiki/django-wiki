@@ -9,7 +9,7 @@ from wiki.conf import settings
 from wiki.core.exceptions import NoRootURL
 
 
-def response_forbidden(request, article, urlpath):
+def response_forbidden(request, article, urlpath, read_denied=False):
     if request.user.is_anonymous:
         qs = request.META.get('QUERY_STRING', '')
         if qs:
@@ -21,14 +21,18 @@ def response_forbidden(request, article, urlpath):
         return HttpResponseForbidden(
             render_to_string(
                 "wiki/permission_denied.html",
-                context={'article': article, 'urlpath': urlpath},
+                context={
+                    'article': article,
+                    'urlpath': urlpath,
+                    'read_denied': read_denied
+                },
                 request=request
             )
         )
 
 
 # TODO: This decorator is too complex (C901)
-def get_article(func=None, can_read=True, can_write=False,  # noqa
+def get_article(func=None, can_read=True, can_write=False,  # noqa: max-complexity=13
                 deleted_contents=False, not_locked=False,
                 can_delete=False, can_moderate=False,
                 can_create=False):
@@ -130,7 +134,7 @@ def get_article(func=None, can_read=True, can_write=False,  # noqa
             return response_forbidden(request, article, urlpath)
 
         if can_read and not article.can_read(request.user):
-            return response_forbidden(request, article, urlpath)
+            return response_forbidden(request, article, urlpath, read_denied=True)
 
         if (can_write or can_create) and not article.can_write(request.user):
             return response_forbidden(request, article, urlpath)
