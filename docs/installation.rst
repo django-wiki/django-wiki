@@ -44,10 +44,9 @@ To install the latest stable release::
 
     pip install wiki
 
-Install directly from Github (in case you have no worries about
-deploying our master branch directly)::
+Install the latest pre-release (alpha, beta or rc)::
 
-    pip install git+git://github.com/django-wiki/django-wiki.git
+    pip install --pre wiki
 
 Upgrading
 ---------
