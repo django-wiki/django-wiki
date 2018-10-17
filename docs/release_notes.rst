@@ -49,7 +49,9 @@ Fixed
  * Direct invocation of ``pytest`` fixed (removing ``runtests.py``) :url-issue:`781` (Branko Majic)
  * Line breaks in help texts for macros :url-issue:`851` (Mathias Dannesbo)
  * Table of contents now has a header by default, and several built-in django-wiki extensions can be configured using ``WIKI_MARKDOWN_KWARGS`` :url-issue:`881` (Mathias Rav)
- * S3 Storage engine image deletion bug :url-issue:`907` (Andrea Maschio)
+ * S3 Storage engine image deletion bug :url-issue:`907` (Andrea Maschio & Benjamin Bach)
+ * Back link on "permission denied" page should point to parent article on read errors (Benjamin Bach & Christian Duvholt)
+ *
 
 Deprecated/Removed
 ~~~~~~~~~~~~~~~~~~
