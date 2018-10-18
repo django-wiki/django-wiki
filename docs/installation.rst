@@ -44,10 +44,9 @@ To install the latest stable release::
 
     pip install wiki
 
-Install directly from Github (in case you have no worries about
-deploying our master branch directly)::
+Install the latest pre-release (alpha, beta or rc)::
 
-    pip install git+git://github.com/django-wiki/django-wiki.git
+    pip install --pre wiki
 
 Upgrading
 ---------
@@ -101,6 +100,7 @@ to see the current default setting for this variable.
     TEMPLATES = [
         {
             'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            'APP_DIRS': True,
             # ...
             'OPTIONS': {
                 'context_processors': [
@@ -155,14 +155,18 @@ point to the root article:
 Include urlpatterns
 ~~~~~~~~~~~~~~~~~~~
 
-To integrate the wiki to your existing application, you should add the
-following lines at the end of your project's ``urls.py``.
+To integrate the wiki in your existing application, you should ensure the
+following lines are included in your project's ``urls.py``.
 
 .. code-block:: python
 
-    urlpatterns += [
-        url(r'^notifications/', include('django_nyt.urls')),
-        url(r'', include('wiki.urls'))
+    from django.contrib import admin
+    from django.urls import path, include
+
+    urlpatterns = [
+        path('admin/', admin.site.urls),
+        path('notifications/', include('django_nyt.urls')),
+        path('', include('wiki.urls'))
     ]
 
 
