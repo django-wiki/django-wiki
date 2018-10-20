@@ -8,8 +8,16 @@ Release plan
 
 * **0.3** series supported Django 1.11. As with the upstream Django release, 0.3 was be the last series with Python 2.7 support.
 * **0.4+** supports Django 1.11 and Django 2.x and Python 3.4+.
-* **0.5** will target Bootstrap v4, if you are interested in this work, please get in touch on Github!
+* **0.5** should remove Django 1.11 support and target Bootstrap v4, if you are interested in this work, please get in touch on Github!
 
+
+0.4.1
+-----
+
+Security
+~~~~~~~~
+
+* jQuery upgrade from 1.12.4 to 3.3.1. jQuery UI also upgraded (for dynamic resizing of modals) :url-issue:`882` (Benjamin Bach)
 
 0.4
 ---
