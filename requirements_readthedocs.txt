@@ -3,6 +3,7 @@
 # dependency expressions (>=1.0b1 failes to find dist)
 Django>=1.8,<1.12
 django_nyt
+django-mptt>=0.9.1,<0.10
 Pillow
 django-sekizai>=0.10
 sorl-thumbnail>=12,<13
