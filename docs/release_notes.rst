@@ -11,6 +11,15 @@ Release plan
 * **0.5** should remove Django 1.11 support and target Bootstrap v4, if you are interested in this work, please get in touch on Github!
 
 
+0.5.dev (unreleased)
+--------------------
+
+Changed
+~~~~~~~
+
+* Update to Markdown >= 3 :url-issue:`920` (Don Bowman)
+
+
 0.4.1
 -----
 
