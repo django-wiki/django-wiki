@@ -20,7 +20,7 @@ class MacroExtension(markdown.Extension):
 
     """ Macro plugin markdown extension for django-wiki. """
 
-    def extendMarkdown(self, md, md_globals):
+    def extendMarkdown(self, md):
         md.inlinePatterns.add('dw-macros', MacroPattern(MACRO_RE, md), '>link')
 
 
@@ -62,7 +62,7 @@ class MacroPattern(markdown.inlinepatterns.Pattern):
                     article__current_revision__deleted=False),
                 'depth': int(depth) + 1,
             })
-        return self.markdown.htmlStash.store(html, safe=True)
+        return self.markdown.htmlStash.store(html)
     article_list.meta = dict(
         short_description=_('Article list'),
         help_text=_('Insert a list of articles in this level.'),

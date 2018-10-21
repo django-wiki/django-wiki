@@ -102,7 +102,7 @@ class LinkExtension(Extension):
         }
         super().__init__(*args, **kwargs)
 
-    def extendMarkdown(self, md, md_globals):
+    def extendMarkdown(self, md):
         md.registerExtension(self)
         self.md = md
         ext = self.TreeProcessorClass(md, self.getConfigs())

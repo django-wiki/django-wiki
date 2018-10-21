@@ -23,7 +23,7 @@ class ImageExtension(markdown.Extension):
 
     """ Images plugin markdown extension for django-wiki. """
 
-    def extendMarkdown(self, md, md_globals):
+    def extendMarkdown(self, md):
         md.inlinePatterns.add('dw-images', ImagePattern(IMAGE_RE, md), '>link')
         md.postprocessors.add('dw-images-cleanup', ImagePostprocessor(md), '>raw_html')
 
@@ -76,8 +76,8 @@ class ImagePattern(markdown.inlinepatterns.Pattern):
             },
         )
         html_before, html_after = html.split(caption_placeholder)
-        placeholder_before = self.markdown.htmlStash.store(html_before, safe=True)
-        placeholder_after = self.markdown.htmlStash.store(html_after, safe=True)
+        placeholder_before = self.markdown.htmlStash.store(html_before)
+        placeholder_after = self.markdown.htmlStash.store(html_after)
         return placeholder_before + caption + placeholder_after + trailer
 
 

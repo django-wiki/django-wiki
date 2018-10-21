@@ -23,7 +23,7 @@ from markdown.util import etree
 from wiki import models
 
 
-class WikiPathExtension(markdown.Extension):
+class WikiPathExtension(markdown.extensions.Extension):
 
     def __init__(self, configs):
         # set extension defaults
@@ -42,12 +42,12 @@ class WikiPathExtension(markdown.Extension):
         for key, value in configs:
             self.setConfig(key, value)
 
-    def extendMarkdown(self, md, md_globals):
+    def extendMarkdown(self, md):
         self.md = md
 
         # append to end of inline patterns
         WIKI_RE = r'\[(?P<label>[^\]]+?)\]\(wiki:(?P<wikipath>[a-zA-Z0-9\./_-]*?)(?P<fragment>#[a-zA-Z0-9\./_-]*)?\)'
-        wikiPathPattern = WikiPath(WIKI_RE, self.config, markdown_instance=md)
+        wikiPathPattern = WikiPath(WIKI_RE, self.config, md=md)
         wikiPathPattern.md = md
         md.inlinePatterns.add('djangowikipath', wikiPathPattern, "<reference")
 
@@ -131,5 +131,5 @@ class WikiPath(markdown.inlinepatterns.Pattern):
         return base_url, html_class
 
 
-def makeExtension(configs=None):
-    return WikiPathExtension(configs=configs)
+def makeExtension(**kwargs):
+    return WikiPathExtension(**kwargs)
