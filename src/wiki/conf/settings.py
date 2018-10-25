@@ -160,16 +160,16 @@ LOG_IPS_ANONYMOUS = getattr(django_settings, 'WIKI_LOG_IPS_ANONYMOUS', True)
 #: Do we want to log IPs of logged in users?
 LOG_IPS_USERS = getattr(django_settings, 'WIKI_LOG_IPS_USERS', False)
 
-#: Mapping from message.tag to bootstrap class names.
+#: Mapping from message.level to bootstrap class names.
 MESSAGE_TAG_CSS_CLASS = getattr(
     django_settings,
     'WIKI_MESSAGE_TAG_CSS_CLASS',
     {
-        messages.DEFAULT_TAGS[messages.DEBUG]: "alert alert-info",
-        messages.DEFAULT_TAGS[messages.ERROR]: "alert alert-danger",
-        messages.DEFAULT_TAGS[messages.INFO]: "alert alert-info",
-        messages.DEFAULT_TAGS[messages.SUCCESS]: "alert alert-success",
-        messages.DEFAULT_TAGS[messages.WARNING]: "alert alert-warning",
+        messages.DEBUG: "alert alert-info",
+        messages.ERROR: "alert alert-danger",
+        messages.INFO: "alert alert-info",
+        messages.SUCCESS: "alert alert-success",
+        messages.WARNING: "alert alert-warning",
     }
 )
 
