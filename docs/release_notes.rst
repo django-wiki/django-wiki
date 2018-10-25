@@ -11,6 +11,15 @@ Release plan
 * **0.5** should remove Django 1.11 support and target Bootstrap v4, if you are interested in this work, please get in touch on Github!
 
 
+0.4.2
+-----
+
+Security
+~~~~~~~~
+
+* Using customized ``MESSAGE_TAGS`` setting caused ``KEY_ERROR`` :url-issue:`922` (Benjamin Bach)
+
+
 0.4.1
 -----
 
