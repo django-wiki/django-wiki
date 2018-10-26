@@ -20,6 +20,15 @@ Changed
 * Update to Markdown >= 3 :url-issue:`920` (Don Bowman)
 
 
+0.4.2
+-----
+
+Security
+~~~~~~~~
+
+* Using customized ``MESSAGE_TAGS`` setting caused ``KEY_ERROR`` :url-issue:`922` (Benjamin Bach)
+
+
 0.4.1
 -----
 
