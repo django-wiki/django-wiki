@@ -78,8 +78,8 @@ URLIZE_RE = (
     r'([A-F0-9]{1,4}:){1,6}:([A-F0-9]{1,4}){1,6}|'  # IPv6, zeros in middle removed.
     r'\[?([A-F0-9]{1,4}:){1,6}:\]?|'  # IPv6, trailing zeros removed
     r'\[?::\]?|'  # IPv6, just "empty" address
-    r'([A-Z0-9]([A-Z0-9-]{0,61}[A-Z0-9])?\.)+([A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'  # FQDN
-    r'localhost'  # localhost
+    r'([A-Z0-9]([A-Z0-9-]{0,61}[A-Z0-9])?\.)+([A-Z]{2,6}\.?|[A-Z]{2,}\.?)|'  # FQDN
+    #r'localhost'  # localhost
     r')'  # end host identifier group
 
     # Optional port
