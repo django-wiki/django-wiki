@@ -207,9 +207,9 @@ class Article(models.Model):
 
     def get_cache_content_key(self, user=None):
         """Returns per-article-user cache key."""
-        return "{key}:{user!s}".format(
+        return "{key}:{user}".format(
             key=self.get_cache_key(),
-            user=user if user else "")
+            user=user.get_username() if user else "")
 
     def get_cached_content(self, user=None):
         """Returns cached version of rendered article.
