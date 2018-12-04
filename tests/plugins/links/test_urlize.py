@@ -104,14 +104,11 @@ FIXTURE_POSITIVE_MATCHES = [
     ),
     (
         'localhost',
-        EXPECTED_PARAGRAPH_TEMPLATE % ('http://localhost', 'localhost')
+        '<p>localhosts</p>',
     ),
 
     # Test port section.
-    (
-        'localhost:8000',
-        EXPECTED_PARAGRAPH_TEMPLATE % ('http://localhost:8000', 'localhost:8000')
-    ),
+
     (
         '10.1.1.1:8000',
         EXPECTED_PARAGRAPH_TEMPLATE % ('http://10.1.1.1:8000', '10.1.1.1:8000')
@@ -165,7 +162,7 @@ FIXTURE_NEGATIVE_MATCHES = [
     # localhost as part of another word.
     (
         'localhosts',
-        '<p>localhosts</p>'
+        EXPECTED_PARAGRAPH_TEMPLATE % ('http://localhost', 'localhost') 
     ),
 
     # Invalid FQDNs.
