@@ -10,6 +10,7 @@ class ArticleMixin(TemplateResponseMixin):
     
     def dispatch(self, request, article, *args, **kwargs):
         self.urlpath = kwargs.pop('urlpath', None)
+        article.clean_data()
         self.article = article        
         self.children_slice = []
         if settings.SHOW_MAX_CHILDREN > 0:
@@ -20,6 +21,7 @@ class ArticleMixin(TemplateResponseMixin):
         return super(ArticleMixin, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
+
         kwargs['urlpath'] = self.urlpath
         kwargs['article'] = self.article
         kwargs['article_tabs'] = registry.get_article_tabs()
