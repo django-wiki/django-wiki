@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import bleach
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import fields
 from django.contrib.auth.models import User, Group
@@ -130,6 +131,9 @@ class Article(models.Model):
             if descendant.INHERIT_PERMISSIONS:
                 descendant.owner = self.owner
                 descendant.save()
+
+    def clean_data(self):
+        self.current_revision.clean_data()
 
     def add_revision(self, new_revision, save=True):
         """
@@ -308,12 +312,20 @@ class ArticleRevision(BaseRevisionMixin, models.Model):
             except ArticleRevision.DoesNotExist:
                 self.revision_number = 1
 
+        self.clean_data()
         super(ArticleRevision, self).save(*args, **kwargs)
 
         if not self.article.current_revision:
             # If I'm saved from Django admin, then article.current_revision is me!
             self.article.current_revision = self
             self.article.save()
+
+    def clean_data(self):
+        """
+        Clean the content to escape the tags
+        """
+        self.content = bleach.clean(self.content, strip=True)
+
 
     @classmethod
     def retire_user(cls, user):
