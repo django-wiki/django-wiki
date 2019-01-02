@@ -102,6 +102,7 @@ for tag in MARKDOWN_HTML_WHITELIST:
     if tag not in _default_attribute_whitelist:
         _default_attribute_whitelist[tag] = []
     _default_attribute_whitelist[tag].append('class')
+    _default_attribute_whitelist[tag].append('id')
     _default_attribute_whitelist[tag].append('target')
     _default_attribute_whitelist[tag].append('rel')
 
