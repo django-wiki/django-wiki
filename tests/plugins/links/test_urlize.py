@@ -1,11 +1,9 @@
 import html
-import markdown
 from unittest import mock
 
+import markdown
 import pytest
-
-from wiki.plugins.links.mdx.urlize import makeExtension, UrlizeExtension
-
+from wiki.plugins.links.mdx.urlize import UrlizeExtension, makeExtension
 
 # Template accepts two strings - href value and link text value.
 EXPECTED_LINK_TEMPLATE = (
@@ -254,11 +252,3 @@ def test_makeExtension_return_value():
     extension = makeExtension()
 
     assert isinstance(extension, UrlizeExtension)
-
-
-@mock.patch('wiki.plugins.links.mdx.urlize.UrlizeExtension')
-def test_makeExtension_initialises_using_passed_in_configuration(mock_UrlizeExtension):
-    my_config = mock.Mock()
-    makeExtension(my_config)
-
-    mock_UrlizeExtension.assert_called_once_with(configs=my_config)

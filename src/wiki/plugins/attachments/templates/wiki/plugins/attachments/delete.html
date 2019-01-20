@@ -37,7 +37,7 @@
 {% else %}
   <h2>{% trans "Remove" %} "{{ attachment.current_revision.get_filename }}"?</h2>
   <p class="lead">
-    {% blocktrans with attachment.original_filename as filename %}
+    {% blocktrans with attachment.original_filename as filename trimmed %}
     You can remove a reference to a file, but it will retain its references on other articles.
     {% endblocktrans %}
   </p>

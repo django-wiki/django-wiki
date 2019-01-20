@@ -162,16 +162,16 @@ class UrlizePattern(markdown.inlinepatterns.Pattern):
         return el
 
 
-class UrlizeExtension(markdown.Extension):
-
+class UrlizeExtension(markdown.extensions.Extension):
     """ Urlize Extension for Python-Markdown. """
 
-    def extendMarkdown(self, md, md_globals):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def extendMarkdown(self, md):
         """ Replace autolink with UrlizePattern """
         md.inlinePatterns['autolink'] = UrlizePattern(URLIZE_RE, md)
 
 
-def makeExtension(configs=None):
-    if configs is None:
-        configs = {}
-    return UrlizeExtension(configs=configs)
+def makeExtension(*args, **kwargs):
+    return UrlizeExtension(*args, **kwargs)

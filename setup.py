@@ -24,14 +24,14 @@ def get_path(fname):
 
 
 install_requirements = [
-    "Django>=1.11,<2.1",
+    "Django>=1.11,<2.2",
     "bleach>=2.1,<2.2",
     "Pillow",
-    "django-nyt>=1.1b1,<1.2",
+    "django-nyt>=1.1.1,<1.2",
     "django-mptt>=0.9,<0.10",
     "django-sekizai>=0.10",
     "sorl-thumbnail>=12,<13",
-    "Markdown>=2.6,<2.7",
+    "Markdown>=3.0.0,<3.1.0"
 ]
 
 test_requirements = [
@@ -44,13 +44,16 @@ test_requirements = [
 
 test_lint_requirements = [
     'flake8>=3.5,<3.6',
+    'flake8-isort',
 ]
 
 setup_requirements = [
     'pytest-runner',
 ]
 
-development_requirements = test_requirements + test_lint_requirements
+development_requirements = test_requirements + test_lint_requirements + [
+    'pre-commit',
+]
 
 extras_requirements = {
     'devel': development_requirements,

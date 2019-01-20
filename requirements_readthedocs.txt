@@ -2,10 +2,10 @@
 # that somehow doesn't like prerelease versions in the
 # dependency expressions (>=1.0b1 failes to find dist)
 Django>=1.8,<1.12
+django_nyt
+django-mptt>=0.9.1,<0.10
 Pillow
-django-nyt>=1.0b1
-django-mptt>=0.8.6,<0.9
 django-sekizai>=0.10
 sorl-thumbnail>=12,<13
-Markdown>=2.6,<2.7
+Markdown>=3.0.0,<3.1.0
 bleach>=2.1,<2.2

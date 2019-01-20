@@ -80,11 +80,7 @@ def wiki_messages(context):
 
     messages = context.get('messages', [])
     for message in messages:
-        message.css_class = ""
-        for tag in message.tags.split(" "):
-            # Drop KeyError if MESSAGE_TAG_CSS_CLASS doesn't have the tag,
-            # that seems valuable.
-            message.css_class += " " + settings.MESSAGE_TAG_CSS_CLASS[tag]
+        message.css_class = settings.MESSAGE_TAG_CSS_CLASS[message.level]
     context.update({
         'messages': messages
     })
@@ -109,31 +105,33 @@ def get_content_snippet(content, keyword, max_words=30):
 
         # remove html tags
         content = striptags(content)
-        # remove newlines
-        content = content.replace("\n", " ").split(" ")
+        # remove whitespace
+        words = content.split()
 
-        return list(filter(lambda x: x != "", content))
+        return words
 
     max_words = int(max_words)
 
-    pattern = re.compile(
-        r'(?P<before>.*)%s(?P<after>.*)' % re.escape(keyword),
-        re.MULTILINE | re.IGNORECASE | re.DOTALL
-    )
+    match_position = content.lower().find(keyword.lower())
 
-    match = pattern.search(content)
-
-    if match:
-        words = clean_text(match.group("before"))
-        before_words = words[-max_words // 2:]
-        words = clean_text(match.group("after"))
-
-        after = " ".join(words[:max_words - len(before_words)])
+    if match_position != -1:
+        try:
+            match_start = content.rindex(' ', 0, match_position) + 1
+        except ValueError:
+            match_start = 0
+        try:
+            match_end = content.index(' ', match_position + len(keyword))
+        except ValueError:
+            match_end = len(content)
+        all_before = clean_text(content[:match_start])
+        match = content[match_start:match_end]
+        all_after = clean_text(content[match_end:])
+        before_words = all_before[-max_words // 2:]
+        after_words = all_after[:max_words - len(before_words)]
         before = " ".join(before_words)
-
-        html = "%s %s %s" % (before, striptags(keyword), after)
-
-        kw_p = re.compile(r'(%s)' % keyword, re.IGNORECASE)
+        after = " ".join(after_words)
+        html = ("%s %s %s" % (before, striptags(match), after)).strip()
+        kw_p = re.compile(r'(\S*%s\S*)' % keyword, re.IGNORECASE)
         html = kw_p.sub(r"<strong>\1</strong>", html)
 
         return mark_safe(html)

@@ -1,4 +1,5 @@
 import base64
+import os
 from io import BytesIO
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -9,10 +10,7 @@ from wiki.models import URLPath
 from wiki.plugins.images import models
 from wiki.plugins.images.wiki_plugin import ImagePlugin
 
-from ...base import (
-    ArticleWebTestUtils, DjangoClientTestBase, RequireRootArticleMixin,
-    wiki_override_settings,
-)
+from ...base import ArticleWebTestUtils, DjangoClientTestBase, RequireRootArticleMixin, wiki_override_settings
 
 
 class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
@@ -168,6 +166,62 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         image = models.Image.objects.get()
         self.assertEqual(models.Image.objects.count(), 1)
         self.assertEqual(image.current_revision.previous_revision.revision_number, before_edit_rev)
+
+    def test_delete_restore_revision(self):
+        self._create_test_image(path='')
+        image = models.Image.objects.get()
+        before_edit_rev = image.current_revision.revision_number
+
+        response = self.client.get(
+            reverse('wiki:images_delete', kwargs={
+                'article_id': self.root_article, 'image_id': image.pk, 'path': '',
+            }),
+        )
+        self.assertRedirects(
+            response, reverse('wiki:images_index', kwargs={'path': ''})
+        )
+        image = models.Image.objects.get()
+        self.assertEqual(models.Image.objects.count(), 1)
+        self.assertEqual(image.current_revision.previous_revision.revision_number, before_edit_rev)
+        self.assertTrue(image.current_revision.deleted)
+
+        # RESTORE
+        before_edit_rev = image.current_revision.revision_number
+        response = self.client.get(
+            reverse('wiki:images_restore', kwargs={
+                'article_id': self.root_article, 'image_id': image.pk, 'path': '',
+            }),
+        )
+        self.assertRedirects(
+            response, reverse('wiki:images_index', kwargs={'path': ''})
+        )
+        image = models.Image.objects.get()
+        self.assertEqual(models.Image.objects.count(), 1)
+        self.assertEqual(image.current_revision.previous_revision.revision_number, before_edit_rev)
+        self.assertFalse(image.current_revision.deleted)
+
+    def test_purge(self):
+        """
+        Tests that an image is really purged
+        """
+        self._create_test_image(path='')
+        image = models.Image.objects.get()
+        image_revision = image.current_revision.imagerevision
+        f_path = image_revision.image.file.name
+
+        self.assertTrue(os.path.exists(f_path))
+
+        response = self.client.post(
+            reverse('wiki:images_purge', kwargs={
+                'article_id': self.root_article, 'image_id': image.pk, 'path': '',
+            }),
+            data={'confirm': True}
+        )
+        self.assertRedirects(
+            response, reverse('wiki:images_index', kwargs={'path': ''})
+        )
+        self.assertEqual(models.Image.objects.count(), 0)
+        self.assertFalse(os.path.exists(f_path))
 
     @wiki_override_settings(ACCOUNT_HANDLING=True)
     def test_login_on_revision_add(self):

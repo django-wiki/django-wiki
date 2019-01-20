@@ -1,7 +1,6 @@
 import re
 
-from markdown.extensions.toc import TocTreeprocessor, TocExtension, slugify
-from markdown.util import etree
+from markdown.extensions.toc import TocExtension, TocTreeprocessor, slugify
 from wiki.plugins.macros import settings
 
 HEADER_ID_PREFIX = "wiki-toc-"
@@ -29,9 +28,9 @@ class WikiTocExtension(TocExtension):
         kwargs.setdefault('slugify', wiki_slugify)
         super().__init__(**kwargs)
 
-    def extendMarkdown(self, md, md_globals):
+    def extendMarkdown(self, md):
         if 'toc' in settings.METHODS:
-            TocExtension.extendMarkdown(self, md, md_globals)
+            TocExtension.extendMarkdown(self, md)
 
 
 def makeExtension(*args, **kwargs):

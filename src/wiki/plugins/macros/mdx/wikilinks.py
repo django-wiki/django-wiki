@@ -34,7 +34,7 @@ class WikiLinkExtension(Extension):
         }
         super().__init__(**kwargs)
 
-    def extendMarkdown(self, md, md_globals):
+    def extendMarkdown(self, md):
         self.md = md
 
         # append to end of inline patterns
@@ -44,22 +44,18 @@ class WikiLinkExtension(Extension):
         md.inlinePatterns.add('wikilink', wikilinkPattern, "<not_strong")
 
 
-class WikiLinks(wikilinks.WikiLinks):
+class WikiLinks(wikilinks.WikiLinksInlineProcessor):
 
-    def handleMatch(self, m):
-        if m.group(2).strip():
-            base_url, end_url, html_class = self._getMeta()
-            label = m.group(2).strip()
-            url = self.config['build_url'](label, base_url, end_url, self.md)
-            a = markdown.util.etree.Element('a')
-            a.text = label
-            a.set('href', url)
-            if html_class:
-                a.set('class', html_class)
-        else:
-            a = ''
-        return a
-
+    def handleMatch(self, m, data):
+        base_url, end_url, html_class = self._getMeta()
+        label = m.group(1).strip()
+        url = self.config['build_url'](label, base_url, end_url, self.md)
+        a = markdown.util.etree.Element('a')
+        a.text = label
+        a.set('href', url)
+        if html_class:
+            a.set('class', html_class)
+        return a, m.start(0), m.end(0)
 
 def makeExtension(*args, **kwargs):
     """Return an instance of the extension."""

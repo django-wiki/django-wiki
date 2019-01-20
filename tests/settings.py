@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'wiki.plugins.images.apps.ImagesConfig',
     'wiki.plugins.macros.apps.MacrosConfig',
     'wiki.plugins.globalhistory.apps.GlobalHistoryConfig',
+    "wiki.plugins.redlinks.apps.RedlinksConfig",
 ]
 MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',

@@ -1,6 +1,6 @@
 {% load sekizai_tags static %}
 {% addtoblock "js" %}
-<script type="text/javascript" src="{% static "wiki/js/jqueryui/jquery-ui-1.10.0.custom.min.js" %}"></script>
+<script type="text/javascript" src="{% static "wiki/js/jquery-ui-1.12.1.custom/jquery-ui.min.js" %}"></script>
 <script type="text/javascript">
 $(document).ready(function() {
   $(".modal-content").on("resizestart", function(event, ui) {
@@ -27,5 +27,5 @@ $(document).ready(function() {
 </script>
 {% endaddtoblock %}
 {% addtoblock "css" %}
-<link rel="stylesheet" href="{% static "wiki/js/jqueryui/jquery-ui-1.10.0.custom.min.css" %}" type="text/css" />
+<link rel="stylesheet" href="{% static "wiki/js/jquery-ui-1.12.1.custom/jquery-ui.min.css" %}" type="text/css" />
 {% endaddtoblock %}

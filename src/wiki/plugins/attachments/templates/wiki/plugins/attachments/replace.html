@@ -9,12 +9,12 @@
 <h2>{% trans "Replace" %} "{{ attachment.current_revision.get_filename }}"</h2>
 {% if attachment.articles.count > 1 %}
 <p class="lead">
-  {% blocktrans with attachment.original_filename as filename %}
+  {% blocktrans with attachment.original_filename as filename trimmed %}
   Replacing an attachment means adding a new file that will be used in its place. All references to the file will be replaced by the one you upload and the file will be downloaded as <strong>{{ filename }}</strong>. Please note that this attachment is in use on other articles, you may distort contents. However, do not hestitate to take advantage of this and make replacements for the listed articles where necessary. This way of working is more efficient....
   {% endblocktrans %}
 </p>
 <h3>
-  {% blocktrans with attachment.current_revision.get_filename as filename %}
+  {% blocktrans with attachment.current_revision.get_filename as filename trimmed %}
   Articles using {{ filename }}
   {% endblocktrans %}</h3>
 <ul>
@@ -23,7 +23,7 @@
 <hr />
 {% else %}
 <p class="lead">
-  {% blocktrans with attachment.original_filename as filename %}
+  {% blocktrans with attachment.original_filename as filename trimmed %}
   Replacing an attachment means adding a new file that will be used in its place. All references to the file will be replaced by the one you upload and the file will be downloaded as <strong>{{ filename }}</strong>.
   {% endblocktrans %}
 </p>
