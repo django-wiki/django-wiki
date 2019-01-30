@@ -54,7 +54,7 @@ class CheckTests(TestCase):
         from django.core.exceptions import FieldError
         from django import forms
         from ..testdata.models import VeryCustomUser
-        with self.assertRaisesRegex(FieldError, 'Unknown field\(s\) \((email|username|, )+\) specified for VeryCustomUser'):
+        with self.assertRaisesRegex(FieldError, 'Unknown field\\(s\\) \\((email|username|, )+\\) specified for VeryCustomUser'):
             class UserUpdateForm(forms.ModelForm):
                 class Meta:
                     model = VeryCustomUser

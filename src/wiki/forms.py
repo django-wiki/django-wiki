@@ -1,3 +1,21 @@
+
+__all__ = [
+    'UserCreationForm',
+    'UserUpdateForm',
+    'WikiSlugField',
+    'SpamProtectionMixin',
+    'CreateRootForm',
+    'MoveForm',
+    'EditForm',
+    'SelectWidgetBootstrap',
+    'TextInputPrepend',
+    'CreateForm',
+    'DeleteForm',
+    'PermissionsForm',
+    'DirFilterForm',
+    'SearchForm',
+]
+
 from datetime import timedelta
 
 from django import forms
