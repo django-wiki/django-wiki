@@ -21,18 +21,18 @@ def _get_field(model, field):
 User = get_user_model()
 
 
-def check_user_field(user_model=User):
+def check_user_field(user_model):
     return isinstance(_get_field(user_model, user_model.USERNAME_FIELD), CharField)
 
 
-def check_email_field(user_model=User):
+def check_email_field(user_model):
     return isinstance(_get_field(user_model, user_model.get_email_field_name()), EmailField)
 
 
 # django parses the ModelForm (and Meta classes) on class creation, which fails with custom models without expected fields.
 # We need to check this here, because if this module can't load then system checks can't run.
 CustomUser = User \
-    if (settings.ACCOUNT_HANDLING and check_user_field() and check_email_field()) \
+    if (settings.ACCOUNT_HANDLING and check_user_field(User) and check_email_field(User)) \
     else django.contrib.auth.models.User
 
 

@@ -1,3 +1,21 @@
+
+__all__ = [
+    'UserCreationForm',
+    'UserUpdateForm',
+    'WikiSlugField',
+    'SpamProtectionMixin',
+    'CreateRootForm',
+    'MoveForm',
+    'EditForm',
+    'SelectWidgetBootstrap',
+    'TextInputPrepend',
+    'CreateForm',
+    'DeleteForm',
+    'PermissionsForm',
+    'DirFilterForm',
+    'SearchForm',
+]
+
 from datetime import timedelta
 
 from django import forms
@@ -18,9 +36,7 @@ from wiki.core.diff import simple_merge
 from wiki.core.plugins.base import PluginSettingsFormMixin
 from wiki.editors import getEditor
 
-from .forms_account_handling import (  # noqa: ignore=F401 importing additional forms here as a convenience for other modules expecting them here
-    UserCreationForm, UserUpdateForm,
-)
+from .forms_account_handling import UserCreationForm, UserUpdateForm
 
 validate_slug_numbers = RegexValidator(
     r'^[0-9]+$',
