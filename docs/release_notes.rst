@@ -20,13 +20,22 @@ Changed
 * Update to Markdown >= 3 :url-issue:`920` (Don Bowman)
 
 
-0.4.3
+0.4.4
 -----
 
 Fixed
 ~~~~~
 
 * Projects fail to load with custom ``User`` models without a ``username`` field :url-issue:`865` (trevorpeacock)
+* Use ``User.get_username()`` for article cache instead of ``User.__str__`` :url-issue:`931` (Ole Anders Stokker)
+
+
+0.4.3
+-----
+
+Discarded release due to git errors (the actual fixes were not merged in).
+
+* Automated language updates from Transifex
 
 
 0.4.2
