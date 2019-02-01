@@ -1,11 +1,26 @@
-import random
-import string
+
+__all__ = [
+    'UserCreationForm',
+    'UserUpdateForm',
+    'WikiSlugField',
+    'SpamProtectionMixin',
+    'CreateRootForm',
+    'MoveForm',
+    'EditForm',
+    'SelectWidgetBootstrap',
+    'TextInputPrepend',
+    'CreateForm',
+    'DeleteForm',
+    'PermissionsForm',
+    'DirFilterForm',
+    'SearchForm',
+]
+
 from datetime import timedelta
 
 from django import forms
 from django.apps import apps
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm
 from django.core import validators
 from django.core.validators import RegexValidator
 from django.forms.widgets import HiddenInput
@@ -20,6 +35,8 @@ from wiki.core import permissions
 from wiki.core.diff import simple_merge
 from wiki.core.plugins.base import PluginSettingsFormMixin
 from wiki.editors import getEditor
+
+from .forms_account_handling import UserCreationForm, UserUpdateForm
 
 validate_slug_numbers = RegexValidator(
     r'^[0-9]+$',
@@ -565,56 +582,3 @@ class SearchForm(forms.Form):
                 'placeholder': _('Search...'),
                 'class': 'search-query'}),
         required=False)
-
-
-class UserCreationForm(UserCreationForm):
-    email = forms.EmailField(required=True)
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        # Add honeypots
-        self.honeypot_fieldnames = "address", "phone"
-        self.honeypot_class = ''.join(
-            random.choice(string.ascii_uppercase + string.digits)
-            for __ in range(10))
-        self.honeypot_jsfunction = 'f' + ''.join(
-            random.choice(string.ascii_uppercase + string.digits)
-            for __ in range(10))
-
-        for fieldname in self.honeypot_fieldnames:
-            self.fields[fieldname] = forms.CharField(
-                widget=forms.TextInput(attrs={'class': self.honeypot_class}),
-                required=False,
-            )
-
-    def clean(self):
-        cd = super().clean()
-        for fieldname in self.honeypot_fieldnames:
-            if cd[fieldname]:
-                raise forms.ValidationError(
-                    "Thank you, non-human visitor. Please keep trying to fill in the form.")
-        return cd
-
-    class Meta:
-        model = User
-        fields = ("username", "email")
-
-
-class UserUpdateForm(forms.ModelForm):
-    password1 = forms.CharField(label="New password", widget=forms.PasswordInput(), required=False)
-    password2 = forms.CharField(label="Confirm password", widget=forms.PasswordInput(), required=False)
-
-    def clean(self):
-        cd = super().clean()
-        password1 = cd.get('password1')
-        password2 = cd.get('password2')
-
-        if password1 and password1 != password2:
-            raise forms.ValidationError(_("Passwords don't match"))
-
-        return cd
-
-    class Meta:
-        model = User
-        fields = ['email']
