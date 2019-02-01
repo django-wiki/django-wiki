@@ -11,11 +11,20 @@ Release plan
 * **0.5** should remove Django 1.11 support and target Bootstrap v4, if you are interested in this work, please get in touch on Github!
 
 
+0.4.3
+-----
+
+Fixed
+~~~~~
+
+* Projects fail to load with custom ``User`` models without a ``username`` field :url-issue:`865` (trevorpeacock)
+
+
 0.4.2
 -----
 
-Security
-~~~~~~~~
+Fixed
+~~~~~
 
 * Using customized ``MESSAGE_TAGS`` setting caused ``KEY_ERROR`` :url-issue:`922` (Benjamin Bach)
 

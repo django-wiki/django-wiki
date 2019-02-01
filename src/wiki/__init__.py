@@ -19,5 +19,5 @@ from wiki.core.version import get_version
 
 default_app_config = 'wiki.apps.WikiConfig'
 
-VERSION = (0, 4, 2, 'final', 0)
+VERSION = (0, 4, 3, 'final', 0)
 __version__ = get_version(VERSION)
