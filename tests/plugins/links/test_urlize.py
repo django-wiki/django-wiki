@@ -102,10 +102,6 @@ FIXTURE_POSITIVE_MATCHES = [
         'my.long.domain.example.com',
         EXPECTED_PARAGRAPH_TEMPLATE % ('http://my.long.domain.example.com', 'my.long.domain.example.com')
     ),
-    (
-        'localhost',
-        '<p>localhosts</p>',
-    ),
 
     # Test port section.
 
@@ -157,12 +153,6 @@ FIXTURE_NEGATIVE_MATCHES = [
     (
         '.example .com',
         '<p>.example .com</p>'
-    ),
-
-    # localhost as part of another word.
-    (
-        'localhosts',
-        EXPECTED_PARAGRAPH_TEMPLATE % ('http://localhost', 'localhost') 
     ),
 
     # Invalid FQDNs.
