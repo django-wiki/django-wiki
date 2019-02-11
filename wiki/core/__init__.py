@@ -1,6 +1,7 @@
 import markdown
 import bleach
 
+
 class ArticleMarkdown(markdown.Markdown):
 
     def __init__(self, article, *args, **kwargs):
