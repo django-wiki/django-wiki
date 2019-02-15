@@ -5,8 +5,7 @@ from wiki.core.plugins.loader import load_wiki_plugins
 
 from . import checks
 
-# THIS IS A TEST LINE
-# THIS IS A NEW TEST LINE
+
 class WikiConfig(AppConfig):
     default_site = 'wiki.sites.WikiSite'
     name = "wiki"
