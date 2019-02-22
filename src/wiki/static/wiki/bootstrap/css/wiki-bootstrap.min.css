@@ -1,3 +1,17 @@
+#article-container .pull-right a{
+	color: #ababab;
+}
+
+#article-container .pull-right.active a{
+	background-color: #ababab;
+	color: white;
+}
+
+/*#article-container .wiki-article a {
+	color: #334b62;
+}
+*/
+
 /*!
  * This is django-wiki's LESS rules built on top of
  * Bootstrap. Please do not modify the original Bootstrap

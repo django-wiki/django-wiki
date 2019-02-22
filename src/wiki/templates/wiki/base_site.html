@@ -2,12 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>{% block wiki_pagetitle %}{% endblock %}{% block wiki_site_title %} - Sixcycle{% endblock %}</title>
+    <title>Sixcycle Resources</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="author" content="www.django-wiki.org">
-
+    <link rel="shortcut icon" href="https://app.sixcycle.com/favicon.ico">
     <!-- Le styles -->
     <link href="{% static "wiki/bootstrap/css/wiki-bootstrap.min.css" %}" rel="stylesheet">
 
@@ -35,7 +35,7 @@
             <span class="icon-bar"></span>
           </button>
           {% block wiki_header_branding %}
-          <a class="navbar-brand" href="{% url 'wiki:root' %}"><img style='width: 110px; margin-top: -5px;' src="https://app.sixcycle.com/static/media/sixcycle_logo_written.be5568c2.svg" /></a>
+          <a class="navbar-brand" href="{% url 'wiki:root' %}"><img style='width: 85px; margin-top: -3px;' src="https://app.sixcycle.com/static/media/sixcycle_logo_written.be5568c2.svg" /></a>
           {% endblock %}
         </div>
         <div class="navbar-collapse collapse">
@@ -66,20 +66,22 @@
             {% if user.is_authenticated %}
             <ul class="nav navbar-nav">
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" style='color: white'>
-                  <span class="badge notification-cnt">0</span>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" style='color: white; background-color: #162a3d'>
+                  <!--<span class="badge notification-cnt">0</span>-->
                   {{ user }}
                   <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                  {% if "ACCOUNT_HANDLING"|wiki_settings %}
-                  <li>
-                    <a href="{% url 'wiki:profile_update' %}">
-                      <i class="fa fa-gear"></i>
-                      {% trans "Account Settings" %}
-                    </a>
-                  </li>
-                  {% endif %}
+                  <!--
+                    {% if "ACCOUNT_HANDLING"|wiki_settings %}
+                    <li>
+                      <a href="{% url 'wiki:profile_update' %}">
+                        <i class="fa fa-gear"></i>
+                        {% trans "Account Settings" %}
+                      </a>
+                    </li>
+                    {% endif %}
+                  -->
                   <li>
                     <a href="{{ "LOGOUT_URL"|wiki_settings }}">
                       <i class="fa fa-power-off"></i>
@@ -113,7 +115,7 @@
           </div>
           {% block wiki_header_navlinks %}
           <ul class="nav navbar-nav">
-            <li class="active"><a href="/" style='background-color: #162a3d'>{% trans "Home" %}</a></li>
+            <!--<li class="active"><a href="/" style='background-color: #162a3d'>{% trans "Home" %}</a></li>-->
           </ul>
           {% endblock %}
         </div>
