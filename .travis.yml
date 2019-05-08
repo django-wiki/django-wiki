@@ -30,7 +30,7 @@ matrix:
     sudo: false
     env: DJANGO="2.1"
   - python: 3.5
-    dist: trusty
+    dist: xenial
     sudo: false
     env: DJANGO="2.2"
 
@@ -47,7 +47,7 @@ matrix:
     sudo: false
     env: DJANGO="2.1"
   - python: 3.6
-    dist: trusty
+    dist: xenial
     sudo: false
     env: DJANGO="2.2"
 
