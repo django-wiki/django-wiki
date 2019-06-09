@@ -66,6 +66,7 @@ install:
   - pip install tox tox-travis codecov
 
 script:
+  - python3 -c "import sqlite3;print(sqlite3.sqlite_version)"
   - tox
 
 notifications:
