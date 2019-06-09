@@ -4,19 +4,6 @@ language: python
 
 matrix:
   include:
-  - python: 3.4
-    dist: trusty
-    sudo: false
-    env: LINT="yes"
-  - python: 3.4
-    dist: trusty
-    sudo: false
-    env: DJANGO="1.11"
-  - python: 3.4
-    dist: trusty
-    sudo: false
-    env: DJANGO="2.0"
-
   - python: 3.5
     dist: trusty
     sudo: false
