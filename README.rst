@@ -58,7 +58,7 @@ Demo
 A demo running the latest ``master`` is available here, sign up for an
 account to see the notification system.
 
-https://demo.django.wiki
+https://demo.django-wiki.org
 
 Community
 ---------
