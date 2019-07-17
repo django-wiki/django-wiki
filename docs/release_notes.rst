@@ -20,6 +20,12 @@ Fixed
 * Django admin error when uploading images: Column 'revision_number' cannot be null :url-issue:`950` (Benjamin Bach)
 
 
+Translations
+~~~~~~~~~~~~
+
+* Added: Romanian ``ro``
+
+
 0.4.4
 -----
 
