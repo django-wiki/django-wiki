@@ -101,7 +101,10 @@ class ImageRevision(RevisionPluginRevision):
         ordering = ('-created',)
 
     def __str__(self):
-        return gettext('Image Revision: %d') % self.revision_number
+        if self.revision_number:
+            return gettext('Image Revision: %d') % self.revision_number
+        else:
+            return gettext('Current revision not set!!')
 
 
 def on_image_revision_delete(instance, *args, **kwargs):
