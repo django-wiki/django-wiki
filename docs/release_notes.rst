@@ -11,6 +11,15 @@ Release plan
 * **0.5** should remove Django 1.11 support and target Bootstrap v4, if you are interested in this work, please get in touch on Github!
 
 
+0.4.5
+-----
+
+Fixed
+~~~~~
+
+* Django admin error when uploading images: Column 'revision_number' cannot be null :url-issue:`950` (Benjamin Bach)
+
+
 0.4.4
 -----
 
