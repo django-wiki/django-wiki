@@ -1,12 +1,15 @@
-import markdown
+from __future__ import absolute_import
+
 import re
 
+import markdown
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 
+from wiki.plugins.attachments import models
+
 ATTACHMENT_RE = re.compile(r'.*(\[attachment\:(?P<id>\d+)\]).*', re.IGNORECASE)
 
-from wiki.plugins.attachments import models
 
 class AttachmentExtension(markdown.Extension):
     """ Abbreviation Extension for Python-Markdown. """
@@ -35,4 +38,3 @@ class AttachmentPreprocessor(markdown.preprocessors.Preprocessor):
                     line = line.replace(m.group(1), u"""<span class="attachment attachment-deleted">Attachment with ID #%s is deleted.</span>""" % attachment_id)                    
             new_text.append(line)
         return new_text
-    

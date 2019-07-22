@@ -1,7 +1,10 @@
+from __future__ import absolute_import
+
 from django.db import models
 from django.db.models import Q
-from django.db.models.query import QuerySet, EmptyQuerySet
+from django.db.models.query import EmptyQuerySet, QuerySet
 from mptt.managers import TreeManager
+
 
 class ArticleEmptyQuerySet(QuerySet):
     def can_read(self, user):

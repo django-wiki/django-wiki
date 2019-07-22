@@ -1,14 +1,19 @@
 # -*- coding: utf-8 -*-
-from django.conf import settings as django_settings
-from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseNotFound, \
-    HttpResponseForbidden
-from django.shortcuts import redirect, get_object_or_404
-from django.template.context import RequestContext
-from django.template.loader import render_to_string
+from __future__ import absolute_import
+
 import json
 
+from django.conf import settings as django_settings
+from django.core.urlresolvers import reverse
+from django.http import (HttpResponse, HttpResponseForbidden,
+                         HttpResponseNotFound)
+from django.shortcuts import get_object_or_404, redirect
+from django.template.context import RequestContext
+from django.template.loader import render_to_string
+from six.moves import filter
+
 from wiki.core.exceptions import NoRootURL
+
 
 def json_view(func):
     def wrap(request, *args, **kwargs):
@@ -20,6 +25,7 @@ def json_view(func):
         return response
     return wrap
 
+
 def response_forbidden(request, article, urlpath):
     if request.user.is_anonymous():
         return redirect(django_settings.LOGIN_URL)
@@ -27,6 +33,7 @@ def response_forbidden(request, article, urlpath):
         return HttpResponseForbidden(
             render_to_string("wiki/permission_denied.html", context={'article': article, 'urlpath': urlpath},
                              request=request))
+
 
 def get_article(func=None, can_read=True, can_write=False, 
                  deleted_contents=False, not_locked=False,
@@ -55,7 +62,7 @@ def get_article(func=None, can_read=True, can_write=False,
     """
     
     def wrapper(request, *args, **kwargs):
-        import models
+        from wiki import models
 
         path = kwargs.pop('path', None)
         article_id = kwargs.pop('article_id', None)
@@ -70,7 +77,7 @@ def get_article(func=None, can_read=True, can_write=False,
                 return redirect('wiki:root_create')
             except models.URLPath.DoesNotExist:
                 try:
-                    pathlist = filter(lambda x: x!="", path.split("/"),)
+                    pathlist = list(filter(lambda x: x!="", path.split("/"),))
                     path = "/".join(pathlist[:-1])
                     parent = models.URLPath.get_by_path(path)
                     return redirect(reverse("wiki:create", kwargs={'path': parent.path,}) + "?slug=%s" % pathlist[-1])
@@ -96,7 +103,7 @@ def get_article(func=None, can_read=True, can_write=False,
             article = get_object_or_404(articles, id=article_id)
             try:
                 urlpath = models.URLPath.objects.get(articles__article=article)
-            except models.URLPath.DoesNotExist, models.URLPath.MultipleObjectsReturned:
+            except (models.URLPath.DoesNotExist, models.URLPath.MultipleObjectsReturned):
                 urlpath = None
         
         
@@ -139,4 +146,3 @@ def get_article(func=None, can_read=True, can_write=False,
                                         deleted_contents=deleted_contents,
                                         not_locked=not_locked,can_delete=can_delete,
                                         can_moderate=can_moderate)
-

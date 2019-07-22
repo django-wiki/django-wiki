@@ -1,22 +1,25 @@
 # -*- coding: utf-8 -*-
-from django import forms
-from django.utils.translation import ugettext_lazy as _
-from django.utils.safestring import mark_safe
-from django.forms.utils import flatatt
-from django.utils.encoding import force_unicode
-from django.utils.html import escape, conditional_escape, strip_tags
+from __future__ import absolute_import, print_function
 
 from itertools import chain
 
+from django import forms
+from django.contrib.auth.models import User
+from django.forms.utils import flatatt
+from django.forms.widgets import HiddenInput
+from django.utils.encoding import force_text
+from django.utils.html import conditional_escape, escape, strip_tags
+from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext_lazy as _
+
 from wiki import models
 from wiki.conf import settings
-from wiki.editors import getEditor
-from wiki.core.diff import simple_merge
-from django.forms.widgets import HiddenInput
-from wiki.core.plugins.base import PluginSettingsFormMixin
-from django.contrib.auth.models import User
 from wiki.core import permissions
 from wiki.core.compat import BuildAttrsCompat
+from wiki.core.diff import simple_merge
+from wiki.core.plugins.base import PluginSettingsFormMixin
+from wiki.editors import getEditor
+
 
 class SpamProtectionMixin():
     
@@ -166,19 +169,19 @@ class SelectWidgetBootstrap(BuildAttrsCompat, forms.Select):
         return mark_safe(u'\n'.join(output))
 
     def render_option(self, selected_choices, option_value, option_label):
-        option_value = force_unicode(option_value)
+        option_value = force_text(option_value)
         selected_html = (option_value in selected_choices) and u' selected="selected"' or ''
         return u'<li><a href="javascript:void(0)" data-value="%s"%s>%s</a></li>' % (
             escape(option_value), selected_html,
-            conditional_escape(force_unicode(option_label)))
+            conditional_escape(force_text(option_label)))
 
     def render_options(self, choices, selected_choices):
         # Normalize to strings.
-        selected_choices = set([force_unicode(v) for v in selected_choices])
+        selected_choices = set([force_text(v) for v in selected_choices])
         output = []
         for option_value, option_label in chain(self.choices, choices):
             if isinstance(option_label, (list, tuple)):
-                output.append(u'<li class="divider" label="%s"></li>' % escape(force_unicode(option_value)))
+                output.append(u'<li class="divider" label="%s"></li>' % escape(force_text(option_value)))
                 for option in option_label:
                     output.append(self.render_option(selected_choices, *option))
             else:
@@ -295,7 +298,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
         self.can_change_groups = False
         self.can_assign = False
         
-        print "checking can_assing", permissions.can_assign(article, request.user), request.user.is_staff
+        print("checking can_assing", permissions.can_assign(article, request.user), request.user.is_staff)
         if permissions.can_assign(article, request.user):
             self.can_assign = True
             self.fields['group'].queryset = models.Group.objects.all()

@@ -1,5 +1,8 @@
-from wiki.conf import settings
+from __future__ import absolute_import
+
 from django.core.urlresolvers import get_callable
+
+from wiki.conf import settings
 
 _EditorClass = None
 _editor = None

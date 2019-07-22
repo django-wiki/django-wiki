@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
+
 from django.contrib import messages
 from django.db import transaction
 from django.db.models import Q
 from django.http import Http404
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.views.generic.base import TemplateView, View
@@ -12,7 +14,7 @@ from django.views.generic.list import ListView
 
 from wiki.core.http import send_file
 from wiki.decorators import get_article, response_forbidden
-from wiki.plugins.attachments import models, settings, forms
+from wiki.plugins.attachments import forms, models, settings
 from wiki.views.mixins import ArticleMixin
 
 
@@ -47,7 +49,7 @@ class AttachmentView(ArticleMixin, FormView):
                 attachment_revision.set_from_request(self.request)
                 attachment_revision.save()
                 messages.success(self.request, _(u'%s was successfully added.') % attachment_revision.get_filename())
-        except models.IllegalFileExtension, e:
+        except models.IllegalFileExtension as e:
             messages.error(self.request, _(u'Your file could not be saved: %s') % e)
         except Exception:
             messages.error(self.request, _(u'Your file could not be saved, probably because of a permission error on the web server.'))
@@ -112,7 +114,7 @@ class AttachmentReplaceView(ArticleMixin, FormView):
             self.attachment.current_revision = attachment_revision
             self.attachment.save()
             messages.success(self.request, _(u'%s uploaded and replaces old attachment.') % attachment_revision.get_filename())
-        except models.IllegalFileExtension, e:
+        except models.IllegalFileExtension as e:
             messages.error(self.request, _(u'Your file could not be saved: %s') % e)
             return redirect("wiki:attachments_replace", attachment_id=self.attachment.id,
                             path=self.urlpath.path, article_id=self.article.id)

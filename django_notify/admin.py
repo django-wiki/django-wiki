@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 from django.contrib import admin
 
 from django_notify import models

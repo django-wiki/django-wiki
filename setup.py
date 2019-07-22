@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
+
 import os
-from setuptools import setup, find_packages
+
+from setuptools import find_packages, setup
+from six.moves import range
 
 
 def read(fname):
@@ -17,12 +21,15 @@ def read(fname):
 def build_media_pattern(base_folder, file_extension):
     return ["%s/%s*.%s" % (base_folder, "*/"*x, file_extension) for x in range(10)]
 
-template_patterns = ( build_media_pattern("templates", "html") +
-                      build_media_pattern("static", "js") +
-                      build_media_pattern("static", "css") +
-                      build_media_pattern("static", "png") +
-                      build_media_pattern("static", "jpeg") +
-                      build_media_pattern("static", "gif"))
+
+template_patterns = (
+    build_media_pattern("templates", "html") +
+    build_media_pattern("static", "js") +
+    build_media_pattern("static", "css") +
+    build_media_pattern("static", "png") +
+    build_media_pattern("static", "jpeg") +
+    build_media_pattern("static", "gif")
+)
 
 packages = find_packages()
 
@@ -33,7 +40,7 @@ package_data = dict(
 
 setup(
     name = "django-wiki",
-    version="0.0.20",
+    version="0.0.22",
     author="Benjamin Bach",
     author_email="benjamin@overtag.dk",
     description=("A wiki system written for the Django framework."),
@@ -55,7 +62,10 @@ setup(
         'Framework :: Django',
         'Intended Audience :: Developers',
         'Operating System :: OS Independent',
-        'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.6',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development',
         'Topic :: Software Development :: Libraries :: Application Frameworks',

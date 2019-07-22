@@ -43,6 +43,21 @@ options:
     -e, --inheritance
     show inheritance arrows.
 """
+from __future__ import absolute_import, print_function
+
+import os
+import sys
+from optparse import make_option
+
+from django.core.management.base import BaseCommand
+from django.db import models
+from django.db.models import get_models
+from django.db.models.fields.related import (ForeignKey, ManyToManyField,
+                                             OneToOneField, RelatedField)
+from django.template import Context, loader
+from django.utils.safestring import mark_safe
+from django.utils.translation import activate as activate_language
+
 __version__ = "0.99"
 __svnid__ = "$Id$"
 __license__ = "Python"
@@ -59,17 +74,7 @@ __contributors__ = [
    "Benjamin Bach <benjamin@overtag.dk>",
 ]
 
-import sys, os
-from django.core.management.base import BaseCommand
-from optparse import make_option
 
-from django.utils.translation import activate as activate_language
-from django.utils.safestring import mark_safe
-from django.template import Context, loader
-from django.db import models
-from django.db.models import get_models
-from django.db.models.fields.related import \
-    ForeignKey, OneToOneField, ManyToManyField, RelatedField
 
 try:
     from django.db.models.fields.generic import GenericRelation
@@ -406,8 +411,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         if not args and not options.get('all_applications', False):
-            print __doc__
+            print(__doc__)
             sys.exit()
     
-        print generate_dot(args, **options)
-
+        print(generate_dot(args, **options))

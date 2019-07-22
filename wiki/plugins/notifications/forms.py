@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
@@ -7,6 +8,7 @@ from django.utils.safestring import mark_safe
 
 from wiki.plugins.notifications import ARTICLE_EDIT
 from wiki.core.plugins.base import PluginSettingsFormMixin
+
 
 class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
     
@@ -43,7 +45,8 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
             return _('Your notification settings were unchanged, so nothing saved.')
     
     def save(self, *args, **kwargs):
-        import models
+        from wiki.plugins.notifications import models
+
         cd = self.cleaned_data
         if not self.changed_data:
             return

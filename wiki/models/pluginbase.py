@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
+
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
 from django.db.models import signals
+from django.utils.translation import ugettext_lazy as _
+
 from wiki.models.article import BaseRevisionMixin
+
 
 """
 There are three kinds of plugin base models:
@@ -25,7 +29,7 @@ There are three kinds of plugin base models:
 
 """
 
-from article import Article, ArticleRevision
+from .article import Article, ArticleRevision
 
 
 class ArticlePlugin(models.Model):

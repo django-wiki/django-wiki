@@ -1,7 +1,10 @@
+from __future__ import absolute_import
+
 from django.views.generic.base import TemplateResponseMixin
 
-from wiki.core.plugins import registry
 from wiki.conf import settings
+from wiki.core.plugins import registry
+
 
 class ArticleMixin(TemplateResponseMixin):
     """A mixin that receives an article object as a parameter (usually from a wiki

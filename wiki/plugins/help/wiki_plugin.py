@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
+
 from django.utils.translation import ugettext_lazy as _
 
 from wiki.core.plugins import registry
 from wiki.core.plugins.base import BasePlugin
+
 
 class HelpPlugin(BasePlugin):
     
@@ -19,6 +22,6 @@ class HelpPlugin(BasePlugin):
     
     def __init__(self):
         pass
-    
-registry.register(HelpPlugin)
 
+
+registry.register(HelpPlugin)

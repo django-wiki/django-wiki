@@ -1,19 +1,21 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
+
 import bleach
-from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import Group, User
 from django.contrib.contenttypes import fields
-from django.contrib.auth.models import User, Group
-from django.db.models.fields import GenericIPAddressField
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.db.models.fields import GenericIPAddressField
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
+from mptt.models import MPTTModel
 
+from wiki import managers
 from wiki.conf import settings
 from wiki.core import article_markdown, permissions
 from wiki.core.extensions import AnchorTagExtension
 from wiki.core.plugins import registry as plugin_registry
-from wiki import managers
-from mptt.models import MPTTModel
 
 
 class Article(models.Model):

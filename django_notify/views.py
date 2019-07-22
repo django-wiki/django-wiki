@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from django_notify.decorators import json_view, login_required_ajax
-from django_notify import models
+from __future__ import absolute_import
+
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
+
+from django_notify import models
+from django_notify.decorators import json_view, login_required_ajax
+
 
 @login_required_ajax
 @json_view

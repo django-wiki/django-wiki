@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 
-from django.db import models, migrations
-import wiki.plugins.attachments.models
 from django.conf import settings
+from django.db import migrations, models
+
+import wiki.plugins.attachments.models
 
 
 class Migration(migrations.Migration):

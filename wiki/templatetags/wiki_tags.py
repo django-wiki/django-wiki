@@ -1,13 +1,16 @@
-from django.conf import settings as django_settings
+from __future__ import absolute_import
+
 from django import template
+from django.conf import settings as django_settings
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model
 from django.forms import BaseForm
 
-register = template.Library()
-
 from wiki import models
 from wiki.core.plugins import registry as plugin_registry
+
+register = template.Library()
+
 
 # Cache for looking up objects for articles... article_for_object is
 # called more than once per page in multiple template blocks.
@@ -22,7 +25,7 @@ def article_for_object(context, obj):
     
     # TODO: This is disabled for now, as it should only fire once per request
     # Maybe store cache in the request object?
-    if True or not obj in _cache.keys():
+    if True or not obj in list(_cache.keys()):
         try:
             article = models.ArticleForObject.objects.get(content_type=content_type, object_id=obj.pk).article
         except models.ArticleForObject.DoesNotExist:

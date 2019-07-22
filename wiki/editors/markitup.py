@@ -1,6 +1,8 @@
+from __future__ import absolute_import
+
 from django import forms
 from django.forms.utils import flatatt
-from django.utils.encoding import force_unicode
+from django.utils.encoding import force_text
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 
@@ -22,7 +24,7 @@ class MarkItUpAdminWidget(BuildAttrsCompat, forms.Widget):
         if value is None: value = ''
         final_attrs = self.build_attrs_compat(attrs, name=name)
         return mark_safe(u'<textarea%s>%s</textarea>' % (flatatt(final_attrs),
-                conditional_escape(force_unicode(value))))
+                conditional_escape(force_text(value))))
 
 
 class MarkItUpWidget(BuildAttrsCompat, forms.Widget):
@@ -38,7 +40,7 @@ class MarkItUpWidget(BuildAttrsCompat, forms.Widget):
         if value is None: value = ''
         final_attrs = self.build_attrs_compat(attrs, name=name)
         return mark_safe(u'<div><textarea%s>%s</textarea></div>' % (flatatt(final_attrs),
-                conditional_escape(force_unicode(value))))
+                conditional_escape(force_text(value))))
 
 class MarkItUp(BaseEditor):
     editor_id = 'markitup'
@@ -68,4 +70,3 @@ class MarkItUp(BaseEditor):
               "wiki/markitup/jquery.markitup.js",
               "wiki/markitup/sets/frontend/set.js",
               )
-

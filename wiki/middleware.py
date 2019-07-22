@@ -1,5 +1,7 @@
-import threading
+from __future__ import absolute_import
+
 import importlib
+import threading
 
 from django.conf import settings
 

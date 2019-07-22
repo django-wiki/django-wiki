@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import signals
@@ -11,6 +12,7 @@ from wiki.core.plugins import registry
 from wiki.plugins.notifications import ARTICLE_EDIT #TODO: Is this bad practice?
 from wiki.plugins.notifications import settings
 
+
 class ArticleSubscription(ArticlePlugin, Subscription):
     
     def __unicode__(self):
@@ -22,6 +24,7 @@ class ArticleSubscription(ArticlePlugin, Subscription):
     class Meta:
         db_table = 'wiki_notifications_articlesubscription'
 
+
 def default_url(article, urlpath=None):
     try:
         if not urlpath:
@@ -30,6 +33,7 @@ def default_url(article, urlpath=None):
     except wiki_models.URLPath.DoesNotExist:
         url = reverse('wiki:get', kwargs={'article_id': article.id})
     return url
+
 
 def post_article_revision_save(instance, **kwargs):
     if kwargs.get('created', False):
@@ -43,7 +47,8 @@ def post_article_revision_save(instance, **kwargs):
         else:
             notify(_(u'New article created: %s') % instance.title, ARTICLE_EDIT,
                    target_object=instance, url=url)
-            
+
+
 # Whenever a new revision is created, we notifý users that an article
 # was edited
 signals.post_save.connect(post_article_revision_save, sender=wiki_models.ArticleRevision,)
@@ -63,7 +68,7 @@ for plugin in registry.get_plugins():
                 return
             if kwargs.get('created', False) == notification_dict.get('created', True):
                 url = None
-                if notification_dict.has_key('get_url'):
+                if 'get_url' in notification_dict:
                     url = notification_dict['get_url'](instance)
                 else:
                     url = default_url(notification_dict['get_article'](instance))

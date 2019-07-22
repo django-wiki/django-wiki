@@ -1,5 +1,7 @@
-import markdown
+from __future__ import absolute_import
+
 import bleach
+import markdown
 
 
 class ArticleMarkdown(markdown.Markdown):
