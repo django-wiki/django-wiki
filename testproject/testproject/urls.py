@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 from django.conf.urls import include, url
 from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns

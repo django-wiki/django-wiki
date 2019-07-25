@@ -2,9 +2,12 @@
 """This is nothing but the usual handling of django user accounts, so
 go ahead and replace it or disable it!"""
 
+from __future__ import absolute_import
+
 from django.conf import settings as django_settings
 from django.contrib import messages
-from django.contrib.auth import logout as auth_logout, login as auth_login
+from django.contrib.auth import login as auth_login
+from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
@@ -63,4 +66,3 @@ class Login(FormView):
             if not self.referer:
                 return redirect('wiki:get', path='')
             return redirect(self.referer)
-    

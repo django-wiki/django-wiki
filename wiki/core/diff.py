@@ -1,4 +1,7 @@
+from __future__ import absolute_import
+
 import difflib
+
 
 def simple_merge(txt1, txt2):
     """Merges two texts"""

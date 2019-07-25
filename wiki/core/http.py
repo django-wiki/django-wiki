@@ -1,10 +1,13 @@
-import os
+from __future__ import absolute_import
+
 import mimetypes
+import os
 from datetime import datetime
 
 from django.http import HttpResponse
-from django.utils.http import http_date
 from django.utils import dateformat
+from django.utils.http import http_date
+
 
 def send_file(request, filepath, last_modified=None, filename=None):
     fullpath = filepath

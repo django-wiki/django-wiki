@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls import url, include
+from __future__ import absolute_import
 
-from wiki.views import article, accounts
+from django.conf.urls import include, url
+
 from wiki.conf import settings
 from wiki.core.plugins import registry
+from wiki.views import accounts, article
 
 urlpatterns = [
     url(r'^$', article.ArticleView.as_view(), name='root', kwargs={'path': ''}),

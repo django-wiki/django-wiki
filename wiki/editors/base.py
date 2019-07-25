@@ -1,4 +1,7 @@
+from __future__ import absolute_import
+
 from django import forms
+
 
 class BaseEditor():
     """Editors should inherit from this. See wiki.editors for examples."""
@@ -22,5 +25,3 @@ class BaseEditor():
     class Media:
         css = {}
         js = ()
-
-

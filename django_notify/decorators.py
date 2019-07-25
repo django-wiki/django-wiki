@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
+
 import json
-from django.http import HttpResponse
+
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 
 import django_notify
+
 
 def disable_notify(func):
     """Disable notifications. Example:
@@ -41,4 +45,3 @@ def json_view(func):
         response.write(data)
         return response
     return wrap
-

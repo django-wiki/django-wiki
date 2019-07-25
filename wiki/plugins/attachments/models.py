@@ -1,11 +1,14 @@
+from __future__ import absolute_import
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from wiki import managers
+from wiki.models.article import BaseRevisionMixin
+from wiki.models.pluginbase import ReusablePlugin
+
 from . import settings
 
-from wiki import managers
-from wiki.models.pluginbase import ReusablePlugin
-from wiki.models.article import BaseRevisionMixin
 
 class IllegalFileExtension(Exception):
     """File extension on upload is not allowed"""
@@ -49,7 +52,7 @@ def upload_path(instance, filename):
         raise IllegalFileExtension("No file extension found in filename. That's not okay!")
     
     # Must be an allowed extension
-    if not extension.lower() in map(lambda x: x.lower(), settings.FILE_EXTENSIONS):
+    if not extension.lower() in [x.lower() for x in settings.FILE_EXTENSIONS]:
         raise IllegalFileExtension("The following filename is illegal: %s. Extension has to be one of %s" % 
                                    (filename, ", ".join(settings.FILE_EXTENSIONS)))
 
@@ -121,7 +124,7 @@ class AttachmentRevision(BaseRevisionMixin, models.Model):
                 previous_revision = self.attachment.attachmentrevision_set.latest()
                 self.revision_number = previous_revision.revision_number + 1
             # NB! The above should not raise the below exception, but somehow it does.
-            except AttachmentRevision.DoesNotExist, Attachment.DoesNotExist:
+            except (AttachmentRevision.DoesNotExist, Attachment.DoesNotExist):
                 self.revision_number = 1
         
         super(AttachmentRevision, self).save(*args, **kwargs)

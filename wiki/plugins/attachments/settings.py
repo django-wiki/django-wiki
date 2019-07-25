@@ -1,4 +1,7 @@
+from __future__ import absolute_import
+
 from django.conf import settings as django_settings
+from django.core.files.storage import default_storage
 
 SLUG = "attachments"
 
@@ -28,5 +31,4 @@ UPLOAD_PATH_OBSCURIFY = getattr(django_settings, 'WIKI_UPLOAD_PATH_OBSCURIFY', T
 # to allow. For your own safety.
 FILE_EXTENSIONS = getattr(django_settings, 'WIKI_FILE_EXTENSIONS', ['pdf', 'doc', 'odt', 'docx', 'txt'])
 
-from django.core.files.storage import default_storage
 STORAGE_BACKEND = getattr(django_settings, 'WIKI_STORAGE_BACKEND', default_storage)

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import, print_function
+
 import logging
 
 from django.contrib.contenttypes import fields
@@ -8,17 +10,17 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models, transaction
-from django.db.models.signals import pre_delete, post_save
-from django.utils.translation import ugettext_lazy as _, ugettext
-
+from django.db.models.signals import post_save, pre_delete
+from django.utils.translation import ugettext
+from django.utils.translation import ugettext_lazy as _
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
 
 from wiki import managers
 from wiki.conf import settings
-from wiki.core.exceptions import NoRootURL, MultipleRootURLs
+from wiki.core.exceptions import MultipleRootURLs, NoRootURL
 from wiki.middleware import get_current_request
-from wiki.models.article import ArticleRevision, ArticleForObject, Article
+from wiki.models.article import Article, ArticleForObject, ArticleRevision
 
 log = logging.getLogger(__name__)
 
@@ -82,7 +84,7 @@ class URLPath(MPTTModel):
     def path(self):
         if not self.parent: return ""
         
-        ancestors = filter(lambda ancestor: ancestor.parent is not None, self.cached_ancestors)
+        ancestors = [ancestor for ancestor in self.cached_ancestors if ancestor.parent is not None]
         slugs = [obj.slug if obj.slug else "" for obj in ancestors + [self] ]
         
         return "/".join(slugs) + "/"
@@ -107,7 +109,7 @@ class URLPath(MPTTModel):
         try:
             with transaction.atomic():
                 for descendant in self.get_descendants(include_self=True).order_by("-level"):
-                    print "deleting " , descendant
+                    print("deleting " , descendant)
                     descendant.article.delete()
         except:
             log.exception("Exception deleting article subtree.")

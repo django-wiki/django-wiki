@@ -1,27 +1,31 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
+
 import difflib
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
+from django.db import transaction
 from django.db.models import Q
-from django.shortcuts import render_to_response, redirect, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.template.context import RequestContext
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.views.generic.base import TemplateView, View
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
+from six.moves import range
 
-from wiki.views.mixins import ArticleMixin
 from wiki import editors, forms, models
 from wiki.conf import settings
-from wiki.core.plugins import registry as plugin_registry
-from wiki.core.diff import simple_merge
-from wiki.decorators import get_article, json_view
-from django.core.urlresolvers import reverse
-from django.db import transaction
-from wiki.core.exceptions import NoRootURL
 from wiki.core import permissions
+from wiki.core.diff import simple_merge
+from wiki.core.exceptions import NoRootURL
+from wiki.core.plugins import registry as plugin_registry
+from wiki.decorators import get_article, json_view
+from wiki.views.mixins import ArticleMixin
+
 
 class ArticleView(ArticleMixin, TemplateView):
 
@@ -34,6 +38,7 @@ class ArticleView(ArticleMixin, TemplateView):
     def get_context_data(self, **kwargs):
         kwargs['selected_tab'] = 'view'
         return ArticleMixin.get_context_data(self, **kwargs)
+
 
 class Create(FormView, ArticleMixin):
     
@@ -87,7 +92,7 @@ class Create(FormView, ArticleMixin):
                 messages.success(self.request, _(u"New article '%s' created.") % self.newpath.article.current_revision.title)
 
         # TODO: Handle individual exceptions better and give good feedback.
-        except Exception, e:
+        except Exception as e:
             if self.request.user.is_superuser:
                 messages.error(self.request, _(u"There was an error creating this article: %s") % str(e))
             else:
@@ -676,4 +681,3 @@ def root_create(request):
     c = RequestContext(request, {'create_form': create_form,
                                  'editor': editors.getEditor(),})
     return render_to_response("wiki/article/create_root.html", context_instance=c)
-

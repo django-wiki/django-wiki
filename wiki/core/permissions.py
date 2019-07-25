@@ -1,4 +1,7 @@
+from __future__ import absolute_import
+
 from wiki.conf import settings
+
 
 # Article settings.
 def can_assign(article, user):

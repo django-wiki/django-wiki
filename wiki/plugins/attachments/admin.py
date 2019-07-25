@@ -1,11 +1,15 @@
+from __future__ import absolute_import
+
 from django.contrib import admin
 
-import models
+from wiki.plugins.attachments import models
+
 
 class AttachmentRevisionAdmin(admin.TabularInline):
     model = models.AttachmentRevision
     extra = 1
     fields = ('file', 'user', 'user_message')
+
 
 class AttachmentAdmin(admin.ModelAdmin):
     
@@ -15,5 +19,6 @@ class AttachmentAdmin(admin.ModelAdmin):
     # from the article admin due to the automatic revision system.
     #def has_add_permission(self, request):
     #    return False
+
 
 admin.site.register(models.Attachment, AttachmentAdmin)

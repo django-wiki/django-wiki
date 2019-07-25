@@ -1,14 +1,17 @@
+from __future__ import absolute_import
 from django.conf import settings as django_settings
 from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-import settings
+from wiki.plugins.images import settings
 
 from wiki.models.pluginbase import RevisionPlugin, RevisionPluginRevision
 
+
 if not "sorl.thumbnail" in django_settings.INSTALLED_APPS:
     raise ImproperlyConfigured('wiki.plugins.images: needs sorl.thumbnail in INSTALLED_APPS')
+
 
 def upload_path(instance, filename):
     from os import path
@@ -21,6 +24,7 @@ def upload_path(instance, filename):
         m=hashlib.md5(str(random.randint(0,100000000000000)))
         upload_path = path.join(upload_path, m.hexdigest())
     return path.join(upload_path, filename)
+
 
 class Image(RevisionPlugin):
     
@@ -44,6 +48,7 @@ class Image(RevisionPlugin):
     def __unicode__(self):
         title = (_(u'Image: %s') % self.current_revision.imagerevision.get_filename()) if self.current_revision else _(u'Current revision not set!!')
         return title
+
 
 class ImageRevision(RevisionPluginRevision):
     

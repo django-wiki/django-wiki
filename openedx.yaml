@@ -1,0 +1,11 @@
+# This file describes this Open edX repo, as described in OEP-2:
+# https://open-edx-proposals.readthedocs.io/en/latest/oep-0002-bp-repo-metadata.html#specification:
+
+nick: django-wiki
+supporting_teams:
+    - platform-core
+tags:
+    - core
+    - library
+oeps:
+    oep-7: True
