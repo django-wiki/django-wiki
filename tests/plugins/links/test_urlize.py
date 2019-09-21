@@ -145,6 +145,21 @@ FIXTURE_POSITIVE_MATCHES = [
 
 
 FIXTURE_NEGATIVE_MATCHES = [
+    # localhost as part of another word.
+    (
+        'localhosts',
+        '<p>localhosts</p>'
+    ),
+    (
+        'localhost', 
+        '<p>localhost</p>'
+
+    ),
+    (
+        'localhost:8000', 
+        '<p>localhost:8000</p>'
+    ),
+   
     # Incomplete FQDNs.
     (
         'example.',
@@ -154,7 +169,6 @@ FIXTURE_NEGATIVE_MATCHES = [
         '.example .com',
         '<p>.example .com</p>'
     ),
-
     # Invalid FQDNs.
     (
         'example-.com',
