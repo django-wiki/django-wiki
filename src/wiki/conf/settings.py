@@ -103,6 +103,8 @@ for tag in MARKDOWN_HTML_WHITELIST:
         _default_attribute_whitelist[tag] = []
     _default_attribute_whitelist[tag].append('class')
     _default_attribute_whitelist[tag].append('id')
+    _default_attribute_whitelist[tag].append('target')
+    _default_attribute_whitelist[tag].append('rel')
 
 _default_attribute_whitelist['img'].append('src')
 _default_attribute_whitelist['img'].append('alt')

@@ -7,7 +7,7 @@ from wiki.plugins.links.mdx.urlize import UrlizeExtension, makeExtension
 
 # Template accepts two strings - href value and link text value.
 EXPECTED_LINK_TEMPLATE = (
-    '<a href="%s" target="_blank">'
+    '<a href="%s" rel="nofollow" target="_blank">'
     '<span class="fa fa-external-link">'
     '</span>'
     '<span>'
@@ -102,16 +102,9 @@ FIXTURE_POSITIVE_MATCHES = [
         'my.long.domain.example.com',
         EXPECTED_PARAGRAPH_TEMPLATE % ('http://my.long.domain.example.com', 'my.long.domain.example.com')
     ),
-    (
-        'localhost',
-        EXPECTED_PARAGRAPH_TEMPLATE % ('http://localhost', 'localhost')
-    ),
 
     # Test port section.
-    (
-        'localhost:8000',
-        EXPECTED_PARAGRAPH_TEMPLATE % ('http://localhost:8000', 'localhost:8000')
-    ),
+
     (
         '10.1.1.1:8000',
         EXPECTED_PARAGRAPH_TEMPLATE % ('http://10.1.1.1:8000', '10.1.1.1:8000')
@@ -152,6 +145,21 @@ FIXTURE_POSITIVE_MATCHES = [
 
 
 FIXTURE_NEGATIVE_MATCHES = [
+    # localhost as part of another word.
+    (
+        'localhosts',
+        '<p>localhosts</p>'
+    ),
+    (
+        'localhost', 
+        '<p>localhost</p>'
+
+    ),
+    (
+        'localhost:8000', 
+        '<p>localhost:8000</p>'
+    ),
+   
     # Incomplete FQDNs.
     (
         'example.',
@@ -161,13 +169,6 @@ FIXTURE_NEGATIVE_MATCHES = [
         '.example .com',
         '<p>.example .com</p>'
     ),
-
-    # localhost as part of another word.
-    (
-        'localhosts',
-        '<p>localhosts</p>'
-    ),
-
     # Invalid FQDNs.
     (
         'example-.com',
