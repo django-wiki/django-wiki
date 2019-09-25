@@ -5,9 +5,7 @@ from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext as _
-from django.views.generic.base import TemplateView, View
-from django.views.generic.edit import FormView
-from django.views.generic.list import ListView
+from django.views.generic import FormView, ListView, TemplateView, View
 from wiki.core.http import send_file
 from wiki.core.paginator import WikiPaginator
 from wiki.decorators import get_article, response_forbidden

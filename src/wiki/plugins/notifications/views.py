@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext as _
-from django.views.generic.edit import FormView
+from django.views.generic import FormView
 
 from . import forms, models
 
@@ -40,12 +40,12 @@ class NotificationSettings(FormView):
         ).distinct()
 
     def get_form_kwargs(self):
-        kwargs = FormView.get_form_kwargs(self)
+        kwargs = super().get_form_kwargs(self)
         kwargs['user'] = self.request.user
         return kwargs
 
     def get_context_data(self, **kwargs):
-        context = FormView.get_context_data(self, **kwargs)
+        context = super().get_context_data(self, **kwargs)
         if 'form' not in context:
             context['form'] = self.get_form()
         context['formset'] = context['form']
