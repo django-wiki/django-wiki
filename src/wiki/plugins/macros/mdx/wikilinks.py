@@ -57,6 +57,7 @@ class WikiLinks(wikilinks.WikiLinksInlineProcessor):
             a.set('class', html_class)
         return a, m.start(0), m.end(0)
 
+
 def makeExtension(*args, **kwargs):
     """Return an instance of the extension."""
     return WikiLinkExtension(*args, **kwargs)

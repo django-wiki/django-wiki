@@ -1,5 +1,4 @@
 import html
-from unittest import mock
 
 import markdown
 import pytest
@@ -151,15 +150,15 @@ FIXTURE_NEGATIVE_MATCHES = [
         '<p>localhosts</p>'
     ),
     (
-        'localhost', 
+        'localhost',
         '<p>localhost</p>'
 
     ),
     (
-        'localhost:8000', 
+        'localhost:8000',
         '<p>localhost:8000</p>'
     ),
-   
+
     # Incomplete FQDNs.
     (
         'example.',
