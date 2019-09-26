@@ -193,7 +193,7 @@ class CanRead(TemplateTestCase):
         u = User.objects.create(username='Nobody', password='pass')
 
         output = can_read(a, u)
-        self.assertTrue(output)
+        self.assertIs(output, True)
 
         output = self.render({'article': a, 'user': u})
         self.assertIn('True', output)
@@ -205,7 +205,7 @@ class CanRead(TemplateTestCase):
         u = User.objects.create(username='Noman', password='pass')
 
         output = can_read(a, u)
-        self.assertFalse(output)
+        self.assertIs(output, False)
 
         output = self.render({'article': a, 'user': u})
         self.assertIn('False', output)
@@ -226,7 +226,7 @@ class CanWrite(TemplateTestCase):
         u = User.objects.create(username='Nobody', password='pass')
 
         output = can_write(a, u)
-        self.assertTrue(output)
+        self.assertIs(output, True)
 
         output = self.render({'article': a, 'user': u})
         self.assertIn('True', output)
@@ -238,7 +238,7 @@ class CanWrite(TemplateTestCase):
         u = User.objects.create(username='Noman', password='pass')
 
         output = can_write(a, u)
-        self.assertFalse(output)
+        self.assertIs(output, False)
 
         output = self.render({'article': a, 'user': u})
         self.assertIn('False', output)
@@ -259,7 +259,7 @@ class CanDelete(TemplateTestCase):
         u = User.objects.create(username='Nobody', password='pass')
 
         output = can_delete(a, u)
-        self.assertTrue(output)
+        self.assertIs(output, True)
 
         output = self.render({'article': a, 'user': u})
         self.assertIn('True', output)
@@ -271,7 +271,7 @@ class CanDelete(TemplateTestCase):
         u = User.objects.create(username='Noman', password='pass')
 
         output = can_delete(a, u)
-        self.assertFalse(output)
+        self.assertIs(output, False)
 
         output = self.render({'article': a, 'user': u})
         self.assertIn('False', output)
@@ -292,7 +292,7 @@ class CanModerate(TemplateTestCase):
         u = User.objects.create(username='Nobody', password='pass')
 
         output = can_moderate(a, u)
-        self.assertTrue(output)
+        self.assertIs(output, True)
 
         output = self.render({'article': a, 'user': u})
         self.assertIn('True', output)
@@ -303,7 +303,7 @@ class CanModerate(TemplateTestCase):
         u = User.objects.create(username='Noman', password='pass')
 
         output = can_moderate(a, u)
-        self.assertFalse(output)
+        self.assertIs(output, False)
 
         output = self.render({'article': a, 'user': u})
         self.assertIn('False', output)
@@ -321,7 +321,7 @@ class IsLocked(TemplateTestCase):
         a = Article.objects.create()
 
         output = is_locked(a)
-        self.assertFalse(output)
+        self.assertIsNone(output)
 
         output = self.render({'article': a})
         self.assertIn('None', output)
@@ -335,10 +335,10 @@ class IsLocked(TemplateTestCase):
         ArticleRevision.objects.create(article=b)
 
         output = is_locked(a)
-        self.assertFalse(output)
+        self.assertIs(output, False)
 
         output = is_locked(b)
-        self.assertFalse(output)
+        self.assertIs(output, False)
 
         output = self.render({'article': a})
         self.assertIn('False', output)
@@ -349,7 +349,7 @@ class IsLocked(TemplateTestCase):
         ArticleRevision.objects.create(article=a, locked=True)
 
         output = is_locked(a)
-        self.assertTrue(output)
+        self.assertIs(output, True)
 
         output = self.render({'article': a})
         self.assertIn('True', output)

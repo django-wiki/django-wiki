@@ -51,7 +51,7 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
             if isinstance(plugin_instance, ImagePlugin):
                 plugin_index = cnt
                 break
-        self.assertTrue(plugin_index >= 0, "Image plugin not activated")
+        self.assertGreaterEqual(plugin_index, 0, msg="Image plugin not activated")
         base_edit_url = reverse('wiki:edit', kwargs={'path': path})
         url = base_edit_url + '?f=form{0:d}'.format(plugin_index)
         filestream = self._create_gif_filestream_from_base64(self.test_data)
@@ -183,7 +183,7 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         image = models.Image.objects.get()
         self.assertEqual(models.Image.objects.count(), 1)
         self.assertEqual(image.current_revision.previous_revision.revision_number, before_edit_rev)
-        self.assertTrue(image.current_revision.deleted)
+        self.assertIs(image.current_revision.deleted, True)
 
         # RESTORE
         before_edit_rev = image.current_revision.revision_number
@@ -209,7 +209,7 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         image_revision = image.current_revision.imagerevision
         f_path = image_revision.image.file.name
 
-        self.assertTrue(os.path.exists(f_path))
+        self.assertIs(os.path.exists(f_path), True)
 
         response = self.client.post(
             reverse('wiki:images_purge', kwargs={
@@ -221,7 +221,7 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
             response, reverse('wiki:images_index', kwargs={'path': ''})
         )
         self.assertEqual(models.Image.objects.count(), 0)
-        self.assertFalse(os.path.exists(f_path))
+        self.assertIs(os.path.exists(f_path), False)
 
     @wiki_override_settings(ACCOUNT_HANDLING=True)
     def test_login_on_revision_add(self):

@@ -38,17 +38,17 @@ class ArticleModelTest(TestCase):
 
         a = Article.objects.create()
 
-        self.assertFalse(a.current_revision)
-        self.assertFalse(a.owner)
-        self.assertFalse(a.group)
+        self.assertIsNone(a.current_revision)
+        self.assertIsNone(a.owner)
+        self.assertIsNone(a.group)
 
-        self.assertTrue(a.created)
-        self.assertTrue(a.modified)
+        self.assertIsNotNone(a.created)
+        self.assertIsNotNone(a.modified)
 
-        self.assertTrue(a.group_read)
-        self.assertTrue(a.group_write)
-        self.assertTrue(a.other_read)
-        self.assertTrue(a.other_write)
+        self.assertIsNotNone(a.group_read)
+        self.assertIsNotNone(a.group_write)
+        self.assertIsNotNone(a.other_read)
+        self.assertIsNotNone(a.other_write)
 
     # XXX maybe redundant test
     def test_model_manager_class(self):
