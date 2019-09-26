@@ -46,7 +46,7 @@ function add_image(form) {
       {% with image.current_revision.imagerevision as revision %}
       {% thumbnail revision.image "50x50" crop="center" as thumb %}
         <tr>
-          <td style="white-space: nowrap;">
+          <td class="text-nowrap">
             <p>{% trans "Image id" %}: {{ image.id }}</p>
             <p>
               <a href="javascript:void(insert_image({{ image.id }}))"><span class="fa fa-edit"></span> {% trans "Insert" %}</a><br />
@@ -98,11 +98,6 @@ function add_image(form) {
   <p>
   {% for field in form.visible_fields %}
     <fieldset id="div_{{ field.auto_id }}" class="control-group fields {% if field.errors %} error{% endif %}">
-      {% if field.label %}
-        <!--<label for="{{ field.id_for_label }}" class="{% if field.field.required %}requiredField{% endif %}">
-        {{ field.label|safe }}
-        </label>-->
-      {% endif %}
       {{ field }}
       {% if field.errors %}
       <div id="error_{{ forloop.counter }}_{{ field.auto_id }}" class="help-block">

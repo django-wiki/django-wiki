@@ -12,12 +12,6 @@
     <link href="{% static "wiki/bootstrap/css/wiki-bootstrap.min.css" %}" rel="stylesheet">
 
     {% render_block "css" %}
-
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
   </head>
 
   <body>
@@ -145,7 +139,7 @@
         {% block wiki_footer_prepend %}
         {% endblock %}
         <p>{% blocktrans %}Powered by <a href="http://www.django-wiki.org">django-wiki</a>, an open source application under the <a href="http://www.gnu.org/licenses/quick-guide-gplv3.html">GPLv3</a> license. Let knowledge be the cure.{% endblocktrans %}</p>
-        <div style="clear: both"></div>
+        <div class="clearfix"></div>
       </footer>
       </div>
 

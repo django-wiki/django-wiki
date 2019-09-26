@@ -71,8 +71,7 @@ class WebTestCommonMixin(RequireBasicData, django_functest.ShortcutLoginMixin):
     def setUp(self):
         super().setUp()
 
-        self.shortcut_login(username=SUPERUSER1_USERNAME,
-                            password=SUPERUSER1_PASSWORD)
+        self.shortcut_login(username=SUPERUSER1_USERNAME, password=SUPERUSER1_PASSWORD)
 
 
 class WebTestBase(WebTestCommonMixin, django_functest.FuncWebTestMixin, TestCase):
@@ -88,7 +87,7 @@ class SeleniumBase(WebTestCommonMixin, django_functest.FuncSeleniumMixin, Static
     display = os.environ.get('SELENIUM_SHOW_BROWSER', '0') == '1'
 
     if not INCLUDE_SELENIUM_TESTS:
-        # Don't call super() in setUpClass(), it will attempt to instatiate
+        # Don't call super() in setUpClass(), it will attempt to instantiate
         # a browser instance which is slow and might fail
         @classmethod
         def setUpClass(cls):
@@ -106,7 +105,6 @@ class ArticleWebTestUtils:
         Get the article response for the path.
         Example:  self.get_by_path("Level1/Slug2/").title
         """
-
         return self.client.get(reverse('wiki:get', kwargs={'path': path}))
 
 
@@ -125,11 +123,11 @@ class TemplateTestCase(TestCase):
 class wiki_override_settings(override_settings):
 
     def enable(self):
-        super(wiki_override_settings, self).enable()
+        super().enable()
         self.reload_wiki_settings()
 
     def disable(self):
-        super(wiki_override_settings, self).disable()
+        super().disable()
         self.reload_wiki_settings()
 
     def reload_wiki_settings(self):

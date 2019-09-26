@@ -133,8 +133,7 @@ class AttachmentArchiveForm(AttachmentForm):
                         attachment.articles.add(self.article)
                         attachment_revision = models.AttachmentRevision()
                         attachment_revision.file = f
-                        attachment_revision.description = self.cleaned_data[
-                            'description']
+                        attachment_revision.description = self.cleaned_data['description']
                         attachment_revision.attachment = attachment
                         attachment_revision.set_from_request(self.request)
                         attachment_revision.save()
@@ -153,10 +152,8 @@ class AttachmentArchiveForm(AttachmentForm):
 
 
 class DeleteForm(forms.Form):
-
     """This form is both used for dereferencing and deleting attachments"""
-    confirm = forms.BooleanField(label=_('Yes I am sure...'),
-                                 required=False)
+    confirm = forms.BooleanField(label=_('Yes I am sure...'), required=False)
 
     def clean_confirm(self):
         if not self.cleaned_data['confirm']:
@@ -168,7 +165,5 @@ class SearchForm(forms.Form):
 
     query = forms.CharField(
         label="",
-        widget=forms.TextInput(
-            attrs={
-                'class': 'search-query form-control'}),
+        widget=forms.TextInput(attrs={'class': 'search-query form-control'}),
     )
