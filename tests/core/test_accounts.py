@@ -86,9 +86,7 @@ class LogoutViewTests(RequireRootArticleMixin, DjangoClientTestBase):
     def test_logout_account_handling(self):
         self.client.get(wiki_settings.LOGOUT_URL)
         user = auth.get_user(self.client)
-        # Can be changed to assertIs(... False) when Django 1.11 is dropped
-        # Django 1.11 returns CallableBoolean
-        self.assertFalse(auth.get_user(self.client).is_authenticated)
+        self.assertIs(auth.get_user(self.client).is_authenticated, False)
         self.assertIsInstance(user, AnonymousUser)
 
 
@@ -104,9 +102,7 @@ class LoginTestViews(RequireRootArticleMixin, TestBase):
             wiki_settings.LOGIN_URL,
             {'username': SUPERUSER1_USERNAME, 'password': SUPERUSER1_PASSWORD}
         )
-        # Can be changed to assertIs(... False) when Django 1.11 is dropped
-        # Django 1.11 returns CallableBoolean
-        self.assertTrue(self.superuser1.is_authenticated)
+        self.assertIs(self.superuser1.is_authenticated, True)
         self.assertEqual(auth.get_user(self.client), self.superuser1)
 
 
