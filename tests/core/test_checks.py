@@ -45,10 +45,10 @@ class CheckTests(TestCase):
 
     def test_custom_user_model_mitigation_required(self):
         """
-        Django & six check django.forms.ModelForm.Meta on definition, and raises an error if Meta.fields don't exist in Meta.model.
+        Django check django.forms.ModelForm.Meta on definition, and raises an error if Meta.fields don't exist in Meta.model.
         This causes problems in wiki.forms.UserCreationForm and wiki.forms.UserUpdateForm when a custom user model doesn't have fields django-wiki assumes.
         There is some code in wiki.forms that detects this situation.
-        This check asserts that Django/six are still raising an exception on definition, and asserts the mitigation code in wiki.forms,
+        This check asserts that Django are still raising an exception on definition, and asserts the mitigation code in wiki.forms,
         and that test_check_for_fields_in_custom_user_model below are required.
         """
         from django.core.exceptions import FieldError

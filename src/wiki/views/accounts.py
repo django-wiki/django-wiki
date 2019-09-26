@@ -131,7 +131,7 @@ class Update(UpdateView):
 
     def form_valid(self, form):
         pw = form.cleaned_data["password1"]
-        if pw is not "":
+        if pw != "":
             self.object.set_password(pw)
         self.object.save()
 

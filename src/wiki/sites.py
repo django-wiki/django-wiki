@@ -7,7 +7,6 @@ from wiki.core.plugins import registry
 
 
 class WikiSite:
-
     """
     Wiki site configurator.
 

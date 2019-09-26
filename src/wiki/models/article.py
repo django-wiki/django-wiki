@@ -171,7 +171,8 @@ class Article(models.Model):
     def get_for_object(cls, obj):
         return ArticleForObject.objects.get(
             object_id=obj.id,
-            content_type=ContentType.objects.get_for_model(obj)).article
+            content_type=ContentType.objects.get_for_model(obj),
+        ).article
 
     def __str__(self):
         if self.current_revision:
@@ -193,9 +194,11 @@ class Article(models.Model):
             content = preview_content
         else:
             content = self.current_revision.content
-        return mark_safe(article_markdown(content, self,
-                                          preview=preview_content is not None,
-                                          user=user))
+        return mark_safe(article_markdown(
+            content, self,
+            preview=preview_content is not None,
+            user=user)
+        )
 
     def get_cache_key(self):
         """Returns per-article cache key."""

@@ -27,7 +27,7 @@ class RootArticleViewTestsBase(FuncBaseMixin):
             '#id_content': 'test heading h1\n====\n',
             '#id_title': 'Wiki Test',
         })
-        self.submit('input[name="save_changes"]')
+        self.submit('button[name="save_changes"]')
         self.assertUrlsEqual('/')
         self.assertTextPresent('test heading h1')
         article = URLPath.root().article

@@ -16,7 +16,7 @@
     {% endif %}
     <p class="muted"><small>{{ article.render|get_content_snippet:search_query }}</small></p>
   </td>
-  <td style="white-space: nowrap">
+  <td class="text-nowrap">
     {{ article.current_revision.created|naturaltime }}
   </td>
 </tr>
