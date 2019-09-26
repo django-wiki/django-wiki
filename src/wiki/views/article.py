@@ -11,11 +11,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext as _, ngettext
-from django.views.generic import DetailView
-from django.views.generic.base import RedirectView, TemplateView, View
-from django.views.generic.edit import FormView
-from django.views.generic.list import ListView
 from django.views.decorators.clickjacking import xframe_options_sameorigin
+from django.views.generic import DetailView, FormView, ListView, RedirectView, TemplateView, View
 from wiki import editors, forms, models
 from wiki.conf import settings
 from wiki.core import permissions

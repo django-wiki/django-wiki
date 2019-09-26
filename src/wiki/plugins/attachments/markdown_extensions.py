@@ -88,7 +88,7 @@ class AttachmentPreprocessor(markdown.preprocessors.Preprocessor):
                 ).format(attachment_id)
                 line = line.replace(
                     '[' + m.group(2) + ']',
-                        self.markdown.htmlStash.store(html)
+                    self.markdown.htmlStash.store(html)
                 )
             new_text.append(before + line + after)
         return new_text

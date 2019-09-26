@@ -155,7 +155,7 @@ class UrlizePattern(markdown.inlinepatterns.Pattern):
         el = markdown.util.etree.Element("a")
         el.set('href', url)
         el.set('target', '_blank')
-        el.set('rel', 'nofollow')     
+        el.set('rel', 'nofollow')
         el.append(icon)
         el.append(span_text)
 

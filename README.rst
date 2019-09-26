@@ -26,6 +26,8 @@ The below table explains which Django versions are supported.
 +------------------+----------------+--------------+
 | Release          | Django         | Upgrade from |
 +==================+================+==============+
+| 0.5.x (DEV)      | 2.1, 2.2, 3.0  | 0.4          |
++------------------+----------------+--------------+
 | 0.4.x            | 1.11, 2.0, 2.1 | 0.3          |
 +------------------+----------------+--------------+
 | 0.3.x            | 1.8, 1.9,      | 0.2          |
@@ -128,7 +130,7 @@ Docs
 
 See the docs/ folder, or read them at:
 
-http://django-wiki.readthedocs.io/en/latest/
+https://django-wiki.readthedocs.io/en/latest/
 
 If you wish to add something, please ask in the google group or raise an
 issue if you're in doubt about whether something might change.
@@ -183,7 +185,7 @@ on your host system.
 -  `django-sekizai <https://github.com/ojii/django-sekizai/>`__
 -  `sorl-thumbnail <https://github.com/mariocesar/sorl-thumbnail>`__
 -  `Pillow (Python Imaging Library) <https://pillow.readthedocs.io/en/latest/installation.html>`__
--  Python>=3.4
+-  Python>=3.5
 
 
 

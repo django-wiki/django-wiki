@@ -5,9 +5,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext as _
-from django.views.generic.base import RedirectView
-from django.views.generic.edit import FormView
-from django.views.generic.list import ListView
+from django.views.generic import FormView, ListView, RedirectView
 from wiki.conf import settings as wiki_settings
 from wiki.core.paginator import WikiPaginator
 from wiki.decorators import get_article
