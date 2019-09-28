@@ -121,11 +121,7 @@ class Delete(FormView, ArticleMixin):
     form_class = forms.DeleteForm
     template_name = "wiki/delete.html"
 
-    @method_decorator(
-        get_article(
-            can_write=True,
-            not_locked=True,
-            can_delete=True))
+    @method_decorator(get_article(can_write=True, not_locked=True, can_delete=True))
     def dispatch(self, request, article, *args, **kwargs):
         return self.dispatch1(request, article, *args, **kwargs)
 
@@ -149,8 +145,8 @@ class Delete(FormView, ArticleMixin):
             for art_obj in article.articleforobject_set.filter(is_mptt=True):
                 if art_obj.content_object.parent:
                     self.next = reverse(
-                        'wiki:get', kwargs={
-                            'article_id': art_obj.content_object.parent.article.id})
+                        'wiki:get', kwargs={'article_id': art_obj.content_object.parent.article.id}
+                    )
                 else:
                     self.cannot_delete_root = True
 
@@ -166,7 +162,7 @@ class Delete(FormView, ArticleMixin):
         return form
 
     def get_form_kwargs(self):
-        kwargs = FormView.get_form_kwargs(self)
+        kwargs = super().get_form_kwargs()
         kwargs['article'] = self.article
         kwargs['has_children'] = bool(self.children_slice)
         return kwargs
@@ -217,10 +213,6 @@ class Delete(FormView, ArticleMixin):
                 self.request.user):
             cannot_delete_children = True
 
-        # Needed since Django 1.9 because get_context_data is no longer called
-        # with the form instance
-        if 'form' not in kwargs:
-            kwargs['form'] = self.get_form()
         kwargs['delete_form'] = kwargs.pop('form', None)
         kwargs['cannot_delete_root'] = self.cannot_delete_root
         kwargs['delete_children'] = self.children_slice[:20]
@@ -967,7 +959,6 @@ class CreateRootView(FormView):
     template_name = 'wiki/create_root.html'
 
     def dispatch(self, request, *args, **kwargs):
-
         if not request.user.is_superuser:
             return redirect("wiki:root_missing")
 
@@ -996,10 +987,6 @@ class CreateRootView(FormView):
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data(**kwargs)
         kwargs['editor'] = editors.getEditor()
-        # Needed since Django 1.9 because get_context_data is no longer called
-        # with the form instance
-        if 'form' not in kwargs:
-            kwargs['form'] = self.get_form()
         return kwargs
 
 
