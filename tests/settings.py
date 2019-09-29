@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.admin.apps.AdminConfig',
     'django.contrib.humanize.apps.HumanizeConfig',
     'django.contrib.sites.apps.SitesConfig',
+    'django.contrib.messages',
     'django_nyt.apps.DjangoNytConfig',
     'mptt',
     'sekizai',

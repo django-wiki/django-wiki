@@ -41,7 +41,6 @@ class ArticleView(ArticleMixin, TemplateView):
 
 
 class Create(FormView, ArticleMixin):
-
     form_class = forms.CreateForm
     template_name = "wiki/create.html"
 
@@ -209,8 +208,7 @@ class Delete(FormView, ArticleMixin):
 
     def get_context_data(self, **kwargs):
         cannot_delete_children = False
-        if self.children_slice and not self.article.can_moderate(
-                self.request.user):
+        if self.children_slice and not self.article.can_moderate(self.request.user):
             cannot_delete_children = True
 
         kwargs['delete_form'] = kwargs.pop('form', None)
@@ -224,7 +222,6 @@ class Delete(FormView, ArticleMixin):
 class Edit(ArticleMixin, FormView):
 
     """Edit an article and process sidebar plugins."""
-
     form_class = forms.EditForm
     template_name = "wiki/edit.html"
 
@@ -254,9 +251,7 @@ class Edit(ArticleMixin, FormView):
         if form_class is None:
             form_class = self.get_form_class()
         kwargs = self.get_form_kwargs()
-        if self.request.POST.get(
-                'save',
-                '') != '1' and self.request.POST.get('preview') != '1':
+        if self.request.POST.get('save', '') != '1' and self.request.POST.get('preview') != '1':
             kwargs['data'] = None
             kwargs['files'] = None
             kwargs['no_clean'] = True
@@ -268,13 +263,9 @@ class Edit(ArticleMixin, FormView):
         to identify which form is being saved."""
         form_classes = {}
         for cnt, plugin in enumerate(self.sidebar_plugins):
-            form_classes[
-                'form%d' %
-                cnt] = (
-                plugin,
-                plugin.sidebar.get(
-                    'form_class',
-                    None))
+            form_classes['form%d' % cnt] = (
+                plugin, plugin.sidebar.get('form_class', None)
+            )
         return form_classes
 
     def get(self, request, *args, **kwargs):
@@ -314,23 +305,15 @@ class Edit(ArticleMixin, FormView):
                         content = form.cleaned_data['unsaved_article_content']
 
                         if title != self.article.current_revision.title or content != self.article.current_revision.content:
-                            request.session[
-                                'unsaved_article_title_%d' %
-                                self.article.id] = title
-                            request.session[
-                                'unsaved_article_content_%d' %
-                                self.article.id] = content
+                            request.session['unsaved_article_title_%d' % self.article.id] = title
+                            request.session['unsaved_article_content_%d' % self.article.id] = content
                             messages.warning(
                                 request,
                                 _('Please note that your article text has not yet been saved!'))
 
                         if self.urlpath:
-                            return redirect(
-                                'wiki:edit',
-                                path=self.urlpath.path)
-                        return redirect(
-                            'wiki:edit',
-                            article_id=self.article.id)
+                            return redirect('wiki:edit', path=self.urlpath.path)
+                        return redirect('wiki:edit', article_id=self.article.id)
 
                 else:
                     form = Form(self.article, self.request)
@@ -394,7 +377,6 @@ class Move(ArticleMixin, FormView):
         if 'form' not in kwargs:
             kwargs['form'] = self.get_form()
         kwargs['root_path'] = models.URLPath.root()
-
         return super().get_context_data(**kwargs)
 
     @transaction.atomic
@@ -544,20 +526,17 @@ class Deleted(Delete):
         return super().dispatch1(request, article, *args, **kwargs)
 
     def get_initial(self):
-        return {'revision': self.article.current_revision,
-                'purge': True}
+        return {
+            'revision': self.article.current_revision,
+            'purge': True,
+        }
 
     def get_context_data(self, **kwargs):
-        # Needed since Django 1.9 because get_context_data is no longer called
-        # with the form instance
-        if 'form' not in kwargs:
-            kwargs['form'] = self.get_form()
         kwargs['purge_form'] = kwargs.pop('form', None)
-        return super(Delete, self).get_context_data(**kwargs)
+        return super().get_context_data(**kwargs)
 
 
 class Source(ArticleMixin, TemplateView):
-
     template_name = "wiki/source.html"
 
     @method_decorator(get_article(can_read=True))
@@ -566,7 +545,7 @@ class Source(ArticleMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         kwargs['selected_tab'] = 'source'
-        return ArticleMixin.get_context_data(self, **kwargs)
+        return super().get_context_data(**kwargs)
 
 
 class History(ListView, ArticleMixin):
@@ -712,7 +691,7 @@ class Settings(ArticleMixin, TemplateView):
     def dispatch(self, request, article, *args, **kwargs):
         return super().dispatch(request, article, *args, **kwargs)
 
-    def get_form_classes(self,):
+    def get_form_classes(self):
         """
         Return all settings forms that can be filled in
         """
@@ -732,23 +711,19 @@ class Settings(ArticleMixin, TemplateView):
 
     def post(self, *args, **kwargs):
         self.forms = []
-        for Form in self.get_form_classes():
-            if Form.action == self.request.GET.get('f', None):
-                form = Form(self.article, self.request, self.request.POST)
+        for form_class in self.get_form_classes():
+            if form_class.action == self.request.GET.get('f', None):
+                form = form_class(self.article, self.request, self.request.POST)
                 if form.is_valid():
                     form.save()
                     usermessage = form.get_usermessage()
                     if usermessage:
                         messages.success(self.request, usermessage)
                     if self.urlpath:
-                        return redirect(
-                            'wiki:settings',
-                            path=self.urlpath.path)
-                    return redirect(
-                        'wiki:settings',
-                        article_id=self.article.id)
+                        return redirect('wiki:settings', path=self.urlpath.path)
+                    return redirect('wiki:settings', article_id=self.article.id)
             else:
-                form = Form(self.article, self.request)
+                form = form_class(self.article, self.request)
             self.forms.append(form)
         return super().get(*args, **kwargs)
 

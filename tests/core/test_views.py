@@ -1,15 +1,18 @@
 import pprint
 
+from django.contrib.messages import constants
 from django.http import JsonResponse
 from django.shortcuts import resolve_url
+from django.test import override_settings
 from django.utils import translation
 from django.utils.html import escape
 from django_functest import FuncBaseMixin
+from tests.testdata.models import CustomGroup
 from wiki import models
 from wiki.forms import validate_slug_numbers
 from wiki.models import ArticleRevision, URLPath, reverse
 
-from ..base import ArticleWebTestUtils, DjangoClientTestBase, RequireRootArticleMixin, SeleniumBase, WebTestBase
+from ..base import SUPERUSER1_USERNAME, ArticleWebTestUtils, DjangoClientTestBase, RequireRootArticleMixin, SeleniumBase, WebTestBase
 
 
 class RootArticleViewTestsBase(FuncBaseMixin):
@@ -343,6 +346,9 @@ class DeleteViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientT
         # test the cache
         self.assertContains(self.get_by_path('TestCache/'), 'Content 2')
 
+    # def test_dont_delete_children(self):
+    #    Article.objects.create()
+
 
 class EditViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
@@ -594,3 +600,94 @@ class MergeViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTe
             response,
             '#{rev_number}'.format(rev_number=new_revision.revision_number)
         )
+
+
+class SourceViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
+    def test_template_used(self):
+        response = self.client.get(reverse('wiki:source', kwargs={
+            'article_id': self.root_article.pk,
+        }))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, template_name='wiki/source.html')
+
+    def test_can_read_permission(self):
+        # everybody can see the source of an article
+        self.client.logout()
+        response = self.client.get(reverse('wiki:source', kwargs={
+            'article_id': self.root_article.pk,
+        }))
+        self.assertEqual(response.status_code, 200)
+
+    def test_content(self):
+        response = self.client.get(reverse('wiki:source', kwargs={
+            'article_id': self.root_article.pk,
+        }))
+        self.assertIn('Source of ', str(response.content))
+        self.assertEqual(response.context['selected_tab'], 'source')
+
+
+class HistoryViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
+    def test_can_read_permission(self):
+        response = self.client.get(reverse('wiki:history', kwargs={
+            'article_id': self.root_article.pk,
+        }))
+        self.assertEqual(response.status_code, 200)
+
+    def test_content(self):
+        response = self.client.get(reverse('wiki:history', kwargs={
+            'article_id': self.root_article.pk,
+        }))
+        self.assertIn('History:', str(response.content))
+        self.assertEqual(response.context['selected_tab'], 'history')
+
+
+class SettingsViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
+    def test_change_group(self):
+        group = CustomGroup.objects.create()
+        response = self.client.post(resolve_url('wiki:settings', article_id=self.root_article.pk) + "?f=form0", {
+            'group': group.pk,
+            'owner_username': SUPERUSER1_USERNAME,
+        }, follow=True)
+        self.root_article.refresh_from_db()
+        self.assertEqual(self.root_article.group, group)
+        self.assertEqual(self.root_article.owner, self.superuser1)
+        self.assertEqual(len(response.context.get('messages')), 1)
+        message = response.context.get('messages')._loaded_messages[0]
+        self.assertEqual(message.level, constants.SUCCESS)
+        self.assertEqual(message.message, 'Permission settings for the article were updated.')
+
+    def test_change_invalid_owner(self):
+        self.assertIsNone(self.root_article.owner)
+        response = self.client.post(resolve_url('wiki:settings', article_id=self.root_article.pk) + "?f=form0", {
+            'owner_username': 'invalid'
+        }, follow=True)
+        self.assertEqual(response.context['forms'][0].errors['owner_username'], ['No user with that username'])
+
+    def test_unchanged_message(self):
+        response = self.client.post(
+            resolve_url(
+                'wiki:settings', article_id=self.root_article.pk
+            ) + "?f=form0", {}, follow=True
+        )
+        # FIXME get the correct message
+        self.assertEqual(len(response.context.get('messages')), 1)
+        message = response.context.get('messages')._loaded_messages[0]
+        self.assertEqual(message.level, constants.SUCCESS)
+        self.assertEqual(message.message, 'Your permission settings were unchanged, so nothing saved.')
+
+    @override_settings(ACCOUNT_HANDLING=True)
+    def test_login_required(self):
+        self.client.logout()
+        response = self.client.get(reverse('wiki:settings', kwargs={'article_id': self.root_article.pk}))
+        # it's redirecting
+        self.assertEqual(response.status_code, 302)
+
+    def test_auth_user(self):
+        response = self.client.get(reverse('wiki:settings', kwargs={'article_id': self.root_article.pk}))
+        self.assertEqual(response.status_code, 200)
+
+    def test_content(self):
+        response = self.client.get(reverse('wiki:settings', kwargs={
+            'article_id': self.root_article.pk,
+        }))
+        self.assertEqual(response.context['selected_tab'], 'settings')
