@@ -43,6 +43,7 @@ pip-log.txt
 htmlcov
 .tox
 .cache
+htmlcov
 
 #Eclipse
 .project

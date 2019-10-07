@@ -1,3 +1,5 @@
+import pdb
+
 from django import forms
 from django.contrib.contenttypes.models import ContentType
 from django.forms.models import BaseModelFormSet, modelformset_factory
@@ -38,8 +40,7 @@ class SettingsModelForm(forms.ModelForm):
         if instance:
             self.__editing_instance = True
             self.fields['delete_subscriptions'] = ArticleSubscriptionModelMultipleChoiceField(
-                models.ArticleSubscription.objects.filter(
-                    subscription__settings=instance),
+                models.ArticleSubscription.objects.filter(subscription__settings=instance),
                 label=gettext("Remove subscriptions"),
                 required=False,
                 help_text=gettext("Select article subscriptions to remove from notifications"),
@@ -117,11 +118,12 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
         widget=forms.CheckboxInput(
             attrs={
                 'onclick':
-                mark_safe(
-                    "$('#id_edit').attr('checked', $(this).is(':checked'));")}))
+                mark_safe("$('#id_edit').attr('checked', $(this).is(':checked'));")
+            }
+        )
+    )
 
     def __init__(self, article, request, *args, **kwargs):
-
         self.article = article
         self.user = request.user
         initial = kwargs.pop('initial', None)
@@ -140,11 +142,8 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
                 0].subscription.settings
         if not initial:
             initial = {
-                'edit': bool(
-                    self.edit_notifications),
-                'edit_email': bool(
-                    self.edit_notifications.filter(
-                        subscription__send_emails=True)),
+                'edit': bool(self.edit_notifications),
+                'edit_email': bool(self.edit_notifications.filter(subscription__send_emails=True)),
                 'settings': self.default_settings,
             }
         kwargs['initial'] = initial
@@ -161,30 +160,28 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
                 'Your notification settings were unchanged, so nothing saved.')
 
     def save(self, *args, **kwargs):
-
-        cd = self.cleaned_data
         if not self.changed_data:
             return
-        if cd['edit']:
+        if self.cleaned_data['edit']:
             try:
                 edit_notification = models.ArticleSubscription.objects.get(
                     subscription__notification_type=self.notification_type,
                     article=self.article,
-                    subscription__settings=cd['settings'],
+                    subscription__settings=self.cleaned_data['settings'],
                 )
-                edit_notification.subscription.send_emails = cd['edit_email']
+                edit_notification.subscription.send_emails = self.cleaned_data['edit_email']
                 edit_notification.subscription.save()
             except models.ArticleSubscription.DoesNotExist:
                 subscription, __ = Subscription.objects.get_or_create(
-                    settings=cd['settings'],
+                    settings=self.cleaned_data['settings'],
                     notification_type=self.notification_type,
                     object_id=self.article.id,
                 )
-                edit_notification = models.ArticleSubscription.objects.create(
+                models.ArticleSubscription.objects.create(
                     subscription=subscription,
                     article=self.article,
                 )
-                subscription.send_emails = cd['edit_email']
+                subscription.send_emails = self.cleaned_data['edit_email']
                 subscription.save()
 
         else:

@@ -46,14 +46,8 @@ class NotificationSettings(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if 'form' not in context:
-            context['form'] = self.get_form()
         context['formset'] = context['form']
         for form in context['formset']:
             if form.instance:
-                setattr(
-                    form.instance,
-                    'articlesubscriptions',
-                    self.get_article_subscriptions(form.instance)
-                )
+                form.instance.articlesubscriptions = self.get_article_subscriptions(form.instance)
         return context
