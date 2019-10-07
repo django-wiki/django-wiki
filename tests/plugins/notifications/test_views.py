@@ -1,9 +1,16 @@
+import pdb
+
 from django.shortcuts import resolve_url
+from django_nyt.models import Settings
 
 from tests.base import RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase
 
 
 class NotificationSettingsTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
+
+    def setUp(self):
+        super().setUp()
+        self.settings = Settings.objects.get_or_create(user=self.superuser1, is_default=True)
 
     def test_login_required(self):
         self.client.logout()
