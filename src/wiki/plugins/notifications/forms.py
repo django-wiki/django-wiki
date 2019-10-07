@@ -66,7 +66,7 @@ class SettingsModelForm(forms.ModelForm):
                 instance.subscription_set.all().update(
                     send_emails=False,
                 )
-            if self.cleaned_data['email'] == 2:
+            elif self.cleaned_data['email'] == 2:
                 instance.subscription_set.all().update(
                     send_emails=True,
                 )
