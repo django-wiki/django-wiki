@@ -36,14 +36,14 @@ install_requirements = [
 
 test_requirements = [
     'django-functest>=1.0.3,<1.1',
-    'pytest>=3.4,<3.5',
-    'pytest-django>=3.1,<3.2',
-    'pytest-cov>=2.4,<2.5',
-    'pytest-pythonpath>=0.7,<0.8',
+    'pytest>=5.2,<5.3',
+    'pytest-django',
+    'pytest-cov',
+    'pytest-pythonpath',
 ]
 
 test_lint_requirements = [
-    'flake8>=3.5,<3.6',
+    'flake8>=3.7,<3.8',
     'flake8-isort',
 ]
 
