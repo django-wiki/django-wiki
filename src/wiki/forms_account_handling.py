@@ -58,12 +58,11 @@ class UserCreationForm(UserCreationForm):
             )
 
     def clean(self):
-        cd = super().clean()
         for fieldname in self.honeypot_fieldnames:
-            if cd[fieldname]:
+            if self.cleaned_data[fieldname]:
                 raise forms.ValidationError(
                     "Thank you, non-human visitor. Please keep trying to fill in the form.")
-        return cd
+        return self.cleaned_data
 
     class Meta:
         model = CustomUser
@@ -75,14 +74,13 @@ class UserUpdateForm(forms.ModelForm):
     password2 = forms.CharField(label="Confirm password", widget=forms.PasswordInput(), required=False)
 
     def clean(self):
-        cd = super().clean()
-        password1 = cd.get('password1')
-        password2 = cd.get('password2')
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
 
         if password1 and password1 != password2:
             raise forms.ValidationError(_("Passwords don't match"))
 
-        return cd
+        return self.cleaned_data
 
     class Meta:
         model = CustomUser
