@@ -2,7 +2,7 @@ from django.apps import apps
 from django.contrib.auth import get_user_model
 from django.contrib.sites.models import Site
 from django.test.testcases import TestCase
-from wiki.compat import url
+from django.urls import re_path as url
 from wiki.conf import settings
 from wiki.managers import ArticleManager
 from wiki.models import Article, ArticleRevision, URLPath

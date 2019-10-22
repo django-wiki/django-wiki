@@ -1,7 +1,7 @@
 from django.apps import apps
+from django.urls import include, re_path as url
 from django.utils.functional import LazyObject
 from django.utils.module_loading import import_string
-from wiki.compat import include, url
 from wiki.conf import settings
 from wiki.core.plugins import registry
 

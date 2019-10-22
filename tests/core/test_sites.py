@@ -2,9 +2,9 @@ from importlib import reload
 
 from django.contrib.sites.models import Site
 from django.test.testcases import TestCase
+from django.urls import include, re_path as url
 from wiki import sites, urls
 from wiki.apps import WikiConfig
-from wiki.compat import include, url
 from wiki.models import Article, URLPath
 
 from ..base import wiki_override_settings
