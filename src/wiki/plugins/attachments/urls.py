@@ -1,4 +1,4 @@
-from wiki.compat import url
+from django.urls import re_path as url
 from wiki.plugins.attachments import views
 
 urlpatterns = [

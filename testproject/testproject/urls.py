@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.http.response import HttpResponse
 from django.views.static import serve as static_serve
-from wiki.compat import include, url
+from django.urls import include, re_path as url
 
 admin.autodiscover()
 

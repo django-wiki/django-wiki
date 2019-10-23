@@ -1,6 +1,6 @@
 from django.contrib.sites.models import Site
 from django.test.testcases import TestCase
-from wiki.compat import include, url
+from django.urls import include, re_path as url
 from wiki.models import Article, URLPath
 from wiki.urls import WikiURLPatterns, get_pattern as get_wiki_pattern
 
