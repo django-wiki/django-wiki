@@ -1,6 +1,6 @@
 from django.apps import apps
 from django.core.checks import Error
-from wiki.compat import get_default_engine
+from django.template import Engine
 
 
 class Tags:
@@ -66,7 +66,7 @@ def check_for_obsolete_installed_apps(app_configs, **kwargs):
 
 def check_for_context_processors(app_configs, **kwargs):
     errors = []
-    context_processors = get_default_engine().context_processors
+    context_processors = Engine.get_default().context_processors
     for context_processor in REQUIRED_CONTEXT_PROCESSORS:
         if context_processor[0] not in context_processors:
             errors.append(
