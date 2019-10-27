@@ -1,4 +1,4 @@
-from django.urls import re_path as url, reverse_lazy
+from django.urls import re_path, reverse_lazy
 from django.utils.translation import gettext as _
 from wiki.core.plugins import registry
 from wiki.core.plugins.base import BasePlugin
@@ -11,7 +11,7 @@ class LinkPlugin(BasePlugin):
 
     slug = 'links'
     urlpatterns = {'article': [
-        url(r'^json/query-urlpath/$',
+        re_path(r'^json/query-urlpath/$',
             views.QueryUrlPath.as_view(),
             name='links_query_urlpath'),
     ]}
