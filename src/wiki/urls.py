@@ -174,7 +174,7 @@ class WikiURLPatterns:
 
     def get_article_path_urls(self):
         urlpatterns = [
-            # Paths decided by re_paths
+            # Paths decided by URLs
             re_path(r'^(?P<path>.+/|)_create/$',
                 self.article_create_view_class.as_view(),
                 name='create'),
