@@ -2,7 +2,7 @@ from importlib import reload
 
 from django.contrib.sites.models import Site
 from django.test.testcases import TestCase
-from django.urls import include, re_path as url
+from django.urls import include, re_path
 from wiki import sites, urls
 from wiki.apps import WikiConfig
 from wiki.models import Article, URLPath
@@ -13,13 +13,13 @@ from ..base import wiki_override_settings
 class WikiCustomSite(sites.WikiSite):
     def get_article_urls(self):
         urlpatterns = [
-            url('^some-prefix/(?P<article_id>[0-9]+)/$', self.article_view, name='get'),
+            re_path('^some-prefix/(?P<article_id>[0-9]+)/$', self.article_view, name='get'),
         ]
         return urlpatterns
 
     def get_article_path_urls(self):
         urlpatterns = [
-            url('^some-other-prefix/(?P<path>.+/|)$', self.article_view, name='get'),
+            re_path('^some-other-prefix/(?P<path>.+/|)$', self.article_view, name='get'),
         ]
         return urlpatterns
 
@@ -29,8 +29,8 @@ class WikiCustomConfig(WikiConfig):
 
 
 urlpatterns = [
-    url(r'^notify/', include('django_nyt.urls')),
-    url(r'', include('wiki.urls')),
+    re_path(r'^notify/', include('django_nyt.urls')),
+    re_path(r'', include('wiki.urls')),
 ]
 
 
