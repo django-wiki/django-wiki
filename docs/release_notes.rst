@@ -17,7 +17,7 @@ Release plan
 Changed
 ~~~~~~~
 
-* Update to Markdown >= 3 :url-issue:`920` (Don Bowman)
+* Update to Markdown >= 3.1 :url-issue:`920` (Don Bowman, Benjamin Bach)
 
 
 0.4.5
