@@ -4,22 +4,22 @@ django-wiki
 |Docs| |Build Status| |Coverage Status| |PyPi| |Dependency Status| |IRC|
 
 .. |Docs| image:: https://readthedocs.org/projects/django-wiki/badge/?version=latest
-   :target: http://django-wiki.readthedocs.io/
+   :target: https://django-wiki.readthedocs.io/
 .. |Build Status| image:: https://travis-ci.org/django-wiki/django-wiki.png?branch=master
    :target: https://travis-ci.org/django-wiki/django-wiki
 .. |Coverage Status| image:: https://codecov.io/github/django-wiki/django-wiki/coverage.svg?branch=master
    :target: https://codecov.io/github/django-wiki/django-wiki?branch=master
 .. |PyPi| image:: https://badge.fury.io/py/wiki.svg
-   :target: https://pypi.python.org/pypi/wiki/
+   :target: https://pypi.org/project/wiki/
 .. |Downloads| image:: https://img.shields.io/pypi/dm/wiki.svg
-   :target: https://pypi.python.org/pypi/wiki/
-.. |Dependency Status| image:: https://gemnasium.com/django-wiki/django-wiki.svg
-   :target: https://gemnasium.com/django-wiki/django-wiki
+   :target: https://pypi.org/project/wiki/
 .. |IRC| image:: https://img.shields.io/badge/irc-%23django--wiki%20on%20freenode-blue.svg
-   :target: http://webchat.freenode.net?channels=%23django-wiki
+   :target: https://webchat.freenode.net?channels=%23django-wiki
 
 Django support
 --------------
+
+**NB! Django 3.0 support is pending support in various dependencies.**
 
 The below table explains which Django versions are supported.
 
@@ -42,7 +42,7 @@ The below table explains which Django versions are supported.
 +------------------+----------------+--------------+
 
 For upgrade instructions, please refer to the `Release
-Notes <http://django-wiki.readthedocs.io/en/latest/release_notes.html>`__
+Notes <https://django-wiki.readthedocs.io/en/latest/release_notes.html>`__
 
 
 Translations (Transifex)
@@ -96,7 +96,7 @@ Contributing
 ------------
 
 Please read our
-`Developer Guide <http://django-wiki.readthedocs.io/en/latest/development/index.html>`__
+`Developer Guide <https://django-wiki.readthedocs.io/en/latest/development/index.html>`__
 
 Manifesto
 ---------
