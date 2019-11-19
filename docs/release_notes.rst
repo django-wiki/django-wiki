@@ -6,18 +6,37 @@ Release plan
 ------------
 
 
-* **0.3** series supported Django 1.11. As with the upstream Django release, 0.3 was be the last series with Python 2.7 support.
-* **0.4+** supports Django 1.11 and Django 2.x and Python 3.4+.
-* **0.5** should remove Django 1.11 support and target Bootstrap v4, if you are interested in this work, please get in touch on Github!
+* **0.3.x** series suppors Django 1.11. As with the upstream Django release, 0.3 was be the last series with Python 2.7 support.
+* **0.4.x** supports Django 1.11 and Django 2.1 and Python 3.4+.
+* **0.5.x** Remove Django 1.11 support, adds Django 2.2 and 3.x support.
+* **0.6.x (unreleased)** Targets Bootstrap v4, if you are interested in this work, please get in touch on Github!
 
 
-0.5.dev (unreleased)
---------------------
+0.5
+---
 
 Changed
 ~~~~~~~
 
 * Update to Markdown >= 3.1 :url-issue:`920` (Don Bowman, Benjamin Bach)
+* Several code-cleanups, test improvements and test
+
+Added
+~~~~~
+
+* Django 2.2, 3.0 support
+
+Removed
+~~~~~~~
+
+* Django 1.1 support
+
+Translations
+~~~~~~~~~~~~
+
+We need help to complete translations. It's done easily by creating a profile and joining
+`the django-wiki project on Transifex <https://www.transifex.com/django-wiki/django-wiki/>`__. You are also
+encouraged to create new languages if you would like to translate to a language that doesn't yet exist.
 
 
 0.4.5
