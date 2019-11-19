@@ -1,7 +1,7 @@
 # This is because readthedocs has an old version of pip
 # that somehow doesn't like prerelease versions in the
 # dependency expressions (>=1.0b1 failes to find dist)
-Django>=3.0a1,<3.1
+Django>=2.2,<3.0
 bleach>=2.1,<2.2
 sphinx>=2.2,<2.3
 sphinx_rtd_theme
