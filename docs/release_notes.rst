@@ -29,7 +29,7 @@ Added
 Removed
 ~~~~~~~
 
-* Django 1.1 support
+* Django 1.11 support
 
 Translations
 ~~~~~~~~~~~~
