@@ -48,11 +48,17 @@ Notes <https://django-wiki.readthedocs.io/en/latest/release_notes.html>`__
 Translations (Transifex)
 ------------------------
 
-Django-wiki has almost fully translated into 7 languages, apart from the
+Django-wiki has almost fully translated into 12 languages, apart from the
 default (English). But please help out in adding more languages! It's
 very easy, you don't even need to be a programmer.
 
-https://www.transifex.com/django-wiki/django-wiki/
+Some languages...
+
+* Just need a little push, as they are almost fully complete
+* Got initiatied and need a new instigator to carry on the ambitions
+* Do not exist yet - but you can request them and become the coordinator.
+
+`Visit the django-wiki project on Transifex <https://www.transifex.com/django-wiki/django-wiki/>`__
 
 Demo
 ----
