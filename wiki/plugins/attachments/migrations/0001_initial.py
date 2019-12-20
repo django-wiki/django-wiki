@@ -42,7 +42,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Attachment',
             fields=[
-                ('reusableplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.ReusablePlugin')),
+                ('reusableplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.ReusablePlugin', on_delete=models.CASCADE)),
                 ('original_filename', models.CharField(max_length=256, null=True, verbose_name='original filename', blank=True)),
             ],
             options={
@@ -55,25 +55,25 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='attachmentrevision',
             name='attachment',
-            field=models.ForeignKey(to='wiki_attachments.Attachment'),
+            field=models.ForeignKey(to='wiki_attachments.Attachment', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='attachmentrevision',
             name='previous_revision',
-            field=models.ForeignKey(blank=True, to='wiki_attachments.AttachmentRevision', null=True),
+            field=models.ForeignKey(blank=True, to='wiki_attachments.AttachmentRevision', null=True, on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='attachmentrevision',
             name='user',
-            field=models.ForeignKey(verbose_name='user', blank=True, to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(verbose_name='user', blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='attachment',
             name='current_revision',
-            field=models.OneToOneField(related_name='current_set', null=True, to='wiki_attachments.AttachmentRevision', blank=True, help_text='The revision of this attachment currently in use (on all articles using the attachment)', verbose_name='current revision'),
+            field=models.OneToOneField(related_name='current_set', null=True, to='wiki_attachments.AttachmentRevision', blank=True, help_text='The revision of this attachment currently in use (on all articles using the attachment)', verbose_name='current revision', on_delete=models.CASCADE),
             preserve_default=True,
         ),
     ]

@@ -19,7 +19,7 @@ class NotificationType(models.Model):
                            unique=True)
     label = models.CharField(max_length=128, verbose_name=_(u'verbose name'),
                              blank=True, null=True)
-    content_type = models.ForeignKey(ContentType, blank=True, null=True)
+    content_type = models.ForeignKey(ContentType, blank=True, null=True, on_delete=models.CASCADE)
     
     def __unicode__(self):
         return self.key
@@ -32,7 +32,7 @@ class NotificationType(models.Model):
     
 class Settings(models.Model):
     
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     interval = models.SmallIntegerField(choices=settings.INTERVALS, verbose_name=_(u'interval'),
                                         default=settings.INTERVALS_DEFAULT)
     
@@ -48,8 +48,8 @@ class Settings(models.Model):
 class Subscription(models.Model):
     
     subscription_id = models.AutoField(primary_key=True)
-    settings = models.ForeignKey(Settings)
-    notification_type = models.ForeignKey(NotificationType)
+    settings = models.ForeignKey(Settings, on_delete=models.CASCADE)
+    notification_type = models.ForeignKey(NotificationType, on_delete=models.CASCADE)
     object_id = models.CharField(max_length=64, null=True, blank=True, 
                                  help_text=_(u'Leave this blank to subscribe to any kind of object'))
     send_emails = models.BooleanField(default=True)

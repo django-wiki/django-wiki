@@ -39,8 +39,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('object_id', models.PositiveIntegerField(verbose_name='object ID')),
                 ('is_mptt', models.BooleanField(default=False, editable=False)),
-                ('article', models.ForeignKey(to='wiki.Article')),
-                ('content_type', models.ForeignKey(related_name='content_type_set_for_articleforobject', verbose_name='content type', to='contenttypes.ContentType')),
+                ('article', models.ForeignKey(to='wiki.Article', on_delete=models.CASCADE)),
+                ('content_type', models.ForeignKey(related_name='content_type_set_for_articleforobject', verbose_name='content type', to='contenttypes.ContentType', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'Article for object',
@@ -73,9 +73,9 @@ class Migration(migrations.Migration):
                 ('locked', models.BooleanField(default=False, verbose_name='locked')),
                 ('content', models.TextField(verbose_name='article contents', blank=True)),
                 ('title', models.CharField(help_text='Each revision contains a title field that must be filled out, even if the title has not changed', max_length=512, verbose_name='article title')),
-                ('article', models.ForeignKey(verbose_name='article', to='wiki.Article')),
-                ('previous_revision', models.ForeignKey(blank=True, to='wiki.ArticleRevision', null=True)),
-                ('user', models.ForeignKey(verbose_name='user', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('article', models.ForeignKey(verbose_name='article', to='wiki.Article', on_delete=models.CASCADE)),
+                ('previous_revision', models.ForeignKey(blank=True, to='wiki.ArticleRevision', null=True, on_delete=models.CASCADE)),
+                ('user', models.ForeignKey(verbose_name='user', blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ('created',),
@@ -86,8 +86,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ArticleSubscription',
             fields=[
-                ('subscription_ptr', models.OneToOneField(parent_link=True, auto_created=True, to='django_notify.Subscription')),
-                ('articleplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.ArticlePlugin')),
+                ('subscription_ptr', models.OneToOneField(parent_link=True, auto_created=True, to='django_notify.Subscription', on_delete=models.CASCADE)),
+                ('articleplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.ArticlePlugin', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -119,7 +119,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ReusablePlugin',
             fields=[
-                ('articleplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.ArticlePlugin')),
+                ('articleplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.ArticlePlugin', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -128,7 +128,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Attachment',
             fields=[
-                ('reusableplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.ReusablePlugin')),
+                ('reusableplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.ReusablePlugin', on_delete=models.CASCADE)),
                 ('original_filename', models.CharField(max_length=256, null=True, verbose_name='original filename', blank=True)),
             ],
             options={
@@ -140,7 +140,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='RevisionPlugin',
             fields=[
-                ('articleplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.ArticlePlugin')),
+                ('articleplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.ArticlePlugin', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -149,7 +149,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Image',
             fields=[
-                ('revisionplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.RevisionPlugin')),
+                ('revisionplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.RevisionPlugin', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'image',
@@ -179,7 +179,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ImageRevision',
             fields=[
-                ('revisionpluginrevision_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.RevisionPluginRevision')),
+                ('revisionpluginrevision_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.RevisionPluginRevision', on_delete=models.CASCADE)),
                 ('image', models.ImageField(upload_to='wiki/uploads/', width_field=b'width', height_field=b'height', max_length=2000, blank=True, null=True)),
                 ('width', models.SmallIntegerField(null=True, blank=True)),
                 ('height', models.SmallIntegerField(null=True, blank=True)),
@@ -194,8 +194,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SimplePlugin',
             fields=[
-                ('articleplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.ArticlePlugin')),
-                ('article_revision', models.ForeignKey(to='wiki.ArticleRevision')),
+                ('articleplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.ArticlePlugin', on_delete=models.CASCADE)),
+                ('article_revision', models.ForeignKey(to='wiki.ArticleRevision', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -210,9 +210,9 @@ class Migration(migrations.Migration):
                 ('rght', models.PositiveIntegerField(editable=False, db_index=True)),
                 ('tree_id', models.PositiveIntegerField(editable=False, db_index=True)),
                 ('level', models.PositiveIntegerField(editable=False, db_index=True)),
-                ('article', models.ForeignKey(editable=False, to='wiki.Article', verbose_name='Cache lookup value for articles')),
+                ('article', models.ForeignKey(editable=False, to='wiki.Article', verbose_name='Cache lookup value for articles', on_delete=models.CASCADE)),
                 ('parent', mptt.fields.TreeForeignKey(related_name='children', blank=True, to='wiki.URLPath', null=True)),
-                ('site', models.ForeignKey(to='sites.Site')),
+                ('site', models.ForeignKey(to='sites.Site', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'URL path',
@@ -227,25 +227,25 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='revisionpluginrevision',
             name='plugin',
-            field=models.ForeignKey(related_name='revision_set', to='wiki.RevisionPlugin'),
+            field=models.ForeignKey(related_name='revision_set', to='wiki.RevisionPlugin', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='revisionpluginrevision',
             name='previous_revision',
-            field=models.ForeignKey(blank=True, to='wiki.RevisionPluginRevision', null=True),
+            field=models.ForeignKey(blank=True, to='wiki.RevisionPluginRevision', null=True, on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='revisionpluginrevision',
             name='user',
-            field=models.ForeignKey(verbose_name='user', blank=True, to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(verbose_name='user', blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='revisionplugin',
             name='current_revision',
-            field=models.OneToOneField(related_name='plugin_set', null=True, to='wiki.RevisionPluginRevision', blank=True, help_text='The revision being displayed for this plugin.If you need to do a roll-back, simply change the value of this field.', verbose_name='current revision'),
+            field=models.OneToOneField(related_name='plugin_set', null=True, to='wiki.RevisionPluginRevision', blank=True, help_text='The revision being displayed for this plugin.If you need to do a roll-back, simply change the value of this field.', verbose_name='current revision', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
@@ -257,25 +257,25 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='attachmentrevision',
             name='attachment',
-            field=models.ForeignKey(to='wiki.Attachment'),
+            field=models.ForeignKey(to='wiki.Attachment', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='attachmentrevision',
             name='previous_revision',
-            field=models.ForeignKey(blank=True, to='wiki.AttachmentRevision', null=True),
+            field=models.ForeignKey(blank=True, to='wiki.AttachmentRevision', null=True, on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='attachmentrevision',
             name='user',
-            field=models.ForeignKey(verbose_name='user', blank=True, to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(verbose_name='user', blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='attachment',
             name='current_revision',
-            field=models.OneToOneField(related_name='current_set', null=True, to='wiki.AttachmentRevision', blank=True, help_text='The revision of this attachment currently in use (on all articles using the attachment)', verbose_name='current revision'),
+            field=models.OneToOneField(related_name='current_set', null=True, to='wiki.AttachmentRevision', blank=True, help_text='The revision of this attachment currently in use (on all articles using the attachment)', verbose_name='current revision', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(
@@ -285,7 +285,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='articleplugin',
             name='article',
-            field=models.ForeignKey(verbose_name='article', to='wiki.Article'),
+            field=models.ForeignKey(verbose_name='article', to='wiki.Article', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(
@@ -295,19 +295,19 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='article',
             name='current_revision',
-            field=models.OneToOneField(related_name='current_set', null=True, to='wiki.ArticleRevision', blank=True, help_text='The revision being displayed for this article. If you need to do a roll-back, simply change the value of this field.', verbose_name='current revision'),
+            field=models.OneToOneField(related_name='current_set', null=True, to='wiki.ArticleRevision', blank=True, help_text='The revision being displayed for this article. If you need to do a roll-back, simply change the value of this field.', verbose_name='current revision', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='article',
             name='group',
-            field=models.ForeignKey(blank=True, to='auth.Group', help_text='Like in a UNIX file system, permissions can be given to a user according to group membership. Groups are handled through the Django auth system.', null=True, verbose_name='group'),
+            field=models.ForeignKey(blank=True, to='auth.Group', help_text='Like in a UNIX file system, permissions can be given to a user according to group membership. Groups are handled through the Django auth system.', null=True, verbose_name='group', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='article',
             name='owner',
-            field=models.ForeignKey(related_name='owned_articles', blank=True, to=settings.AUTH_USER_MODEL, help_text='The owner of the article, usually the creator. The owner always has both read and write access.', null=True, verbose_name='owner'),
+            field=models.ForeignKey(related_name='owned_articles', blank=True, to=settings.AUTH_USER_MODEL, help_text='The owner of the article, usually the creator. The owner always has both read and write access.', null=True, verbose_name='owner', on_delete=models.CASCADE),
             preserve_default=True,
         ),
     ]

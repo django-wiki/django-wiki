@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Image',
             fields=[
-                ('revisionplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.RevisionPlugin')),
+                ('revisionplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.RevisionPlugin', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'image',
@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ImageRevision',
             fields=[
-                ('revisionpluginrevision_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.RevisionPluginRevision')),
+                ('revisionpluginrevision_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wiki.RevisionPluginRevision', on_delete=models.CASCADE)),
                 ('image', models.ImageField(upload_to=wiki.plugins.images.models.upload_path, width_field=b'width', height_field=b'height', max_length=2000, blank=True, null=True)),
                 ('width', models.SmallIntegerField(null=True, blank=True)),
                 ('height', models.SmallIntegerField(null=True, blank=True)),
