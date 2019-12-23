@@ -49,7 +49,7 @@ class URLPath(MPTTModel):
     slug = models.SlugField(verbose_name=_(u'slug'), null=True, blank=True,
                             max_length=SLUG_MAX_LENGTH)
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
-    parent = TreeForeignKey('self', null=True, blank=True, related_name='children')    
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='children', on_delete=models.CASCADE)
     
     def __init__(self, *args, **kwargs):
         pass
