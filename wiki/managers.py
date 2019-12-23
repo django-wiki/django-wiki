@@ -21,7 +21,7 @@ class ArticleQuerySet(QuerySet):
         are included"""
         if user.has_perm('wiki.moderator'):
             return self
-        if user.is_anonymous():
+        if user.is_anonymous:
             q = self.filter(other_read=True)
         else:
             q = self.filter(Q(other_read=True) |
@@ -35,7 +35,7 @@ class ArticleQuerySet(QuerySet):
         are included"""
         if user.has_perm('wiki.moderator'):
             return self
-        if user.is_anonymous():
+        if user.is_anonymous:
             q = self.filter(other_write=True)
         else:
             q = self.filter(Q(other_write=True) |
@@ -54,7 +54,7 @@ class ArticleFkQuerySetMixin():
         are included"""
         if user.has_perm('wiki.moderate'):
             return self
-        if user.is_anonymous():
+        if user.is_anonymous:
             q = self.filter(article__other_read=True)
         else:
             q = self.filter(Q(article__other_read=True) |
@@ -68,7 +68,7 @@ class ArticleFkQuerySetMixin():
         are included"""
         if user.has_perm('wiki.moderate'):
             return self
-        if user.is_anonymous():
+        if user.is_anonymous:
             q = self.filter(article__other_write=True)
         else:
             q = self.filter(Q(article__other_write=True) |

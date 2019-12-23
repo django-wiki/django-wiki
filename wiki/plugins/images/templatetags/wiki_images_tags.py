@@ -12,6 +12,6 @@ def images_for_article(article):
 
 @register.filter
 def images_can_add(article, user):
-    if not settings.ANONYMOUS and (not user or user.is_anonymous()):
+    if not settings.ANONYMOUS and (not user or user.is_anonymous):
         return False
     return article.can_write(user)

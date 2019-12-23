@@ -27,7 +27,7 @@ def json_view(func):
 
 
 def response_forbidden(request, article, urlpath):
-    if request.user.is_anonymous():
+    if request.user.is_anonymous:
         return redirect(django_settings.LOGIN_URL)
     else:
         return HttpResponseForbidden(

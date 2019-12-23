@@ -33,7 +33,7 @@ class Image(RevisionPlugin):
     
     def can_write(self, **kwargs):
         user = kwargs.get('user', None)
-        if not settings.ANONYMOUS and (not user or user.is_anonymous()):
+        if not settings.ANONYMOUS and (not user or user.is_anonymous):
             return False
         return RevisionPlugin.can_write(self, **kwargs)
 

@@ -66,7 +66,7 @@ class Create(FormView, ArticleMixin):
     def form_valid(self, form):
         user=None
         ip_address = None
-        if not self.request.user.is_anonymous():
+        if not self.request.user.is_anonymous:
             user = self.request.user
             if settings.LOG_IPS_USERS:
                 ip_address = self.request.META.get('REMOTE_ADDR', None)
