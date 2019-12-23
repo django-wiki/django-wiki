@@ -25,20 +25,20 @@ class Article(models.Model):
     current_revision = models.OneToOneField('ArticleRevision',
                                             verbose_name=_(u'current revision'),
                                             blank=True, null=True, related_name='current_set',
-                                            help_text=_(u'The revision being displayed for this article. If you need to do a roll-back, simply change the value of this field.'),
+                                            help_text=_(u'The revision being displayed for this article. If you need to do a roll-back, simply change the value of this field.'), on_delete=models.CASCADE
                                             )
 
-    created = models.DateTimeField(auto_now_add=True, verbose_name=_(u'created'),)
+    created = models.DateTimeField(auto_now_add=True, verbose_name=_(u'created'))
     modified = models.DateTimeField(auto_now=True, verbose_name=_(u'modified'),
                                     help_text=_(u'Article properties last modified'))
 
     owner = models.ForeignKey(User, verbose_name=_('owner'),
                               blank=True, null=True, related_name='owned_articles',
-                              help_text=_(u'The owner of the article, usually the creator. The owner always has both read and write access.'),)
+                              help_text=_(u'The owner of the article, usually the creator. The owner always has both read and write access.'), on_delete=models.CASCADE)
 
     group = models.ForeignKey(Group, verbose_name=_('group'),
                               blank=True, null=True,
-                              help_text=_(u'Like in a UNIX file system, permissions can be given to a user according to group membership. Groups are handled through the Django auth system.'),)
+                              help_text=_(u'Like in a UNIX file system, permissions can be given to a user according to group membership. Groups are handled through the Django auth system.'), on_delete=models.CASCADE)
 
     group_read = models.BooleanField(default=True, verbose_name=_(u'group read access'))
     group_write = models.BooleanField(default=True, verbose_name=_(u'group write access'))
@@ -203,7 +203,7 @@ class ArticleForObject(models.Model):
     # Same as django.contrib.comments
     content_type   = models.ForeignKey(ContentType,
                                        verbose_name=_('content type'),
-                                       related_name="content_type_set_for_%(class)s")
+                                       related_name="content_type_set_for_%(class)s", on_delete=models.CASCADE)
     object_id      = models.PositiveIntegerField(_('object ID'))
     content_object = fields.GenericForeignKey(ct_field="content_type", fk_field="object_id")
 
@@ -222,8 +222,8 @@ class BaseRevisionMixin(models.Model):
 
     revision_number = models.IntegerField(editable=False, verbose_name=_(u'revision number'))
 
-    user_message = models.TextField(blank=True,)
-    automatic_log = models.TextField(blank=True, editable=False,)
+    user_message = models.TextField(blank=True)
+    automatic_log = models.TextField(blank=True, editable=False)
 
     ip_address = models.GenericIPAddressField(
         _('IP address'),
@@ -235,13 +235,13 @@ class BaseRevisionMixin(models.Model):
         User,
         verbose_name=_('user'),
         blank=True,
-        null=True
+        null=True, on_delete=models.CASCADE
     )
 
     modified = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
-    previous_revision = models.ForeignKey('self', blank=True, null=True)
+    previous_revision = models.ForeignKey('self', blank=True, null=True, on_delete=models.CASCADE)
 
     # NOTE! The semantics of these fields are not related to the revision itself
     # but the actual related object. If the latest revision says "deleted=True" then

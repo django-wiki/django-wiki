@@ -22,6 +22,7 @@ class Attachment(ReusablePlugin):
                                             verbose_name=_(u'current revision'),
                                             blank=True, null=True, related_name='current_set',
                                             help_text=_(u'The revision of this attachment currently in use (on all articles using the attachment)'),
+                                            on_delete=models.CASCADE
                                             )
     
     original_filename = models.CharField(max_length=256, verbose_name=_(u'original filename'), blank=True, null=True)
@@ -76,7 +77,7 @@ def upload_path(instance, filename):
 
 class AttachmentRevision(BaseRevisionMixin, models.Model):
     
-    attachment = models.ForeignKey('Attachment')
+    attachment = models.ForeignKey('Attachment', on_delete=models.CASCADE)
 
     file = models.FileField(upload_to=upload_path, #@ReservedAssignment
                             verbose_name=_(u'file'),

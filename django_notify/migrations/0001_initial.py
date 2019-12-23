@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('key', models.CharField(max_length=128, unique=True, serialize=False, verbose_name='unique key', primary_key=True)),
                 ('label', models.CharField(max_length=128, null=True, verbose_name='verbose name', blank=True)),
-                ('content_type', models.ForeignKey(blank=True, to='contenttypes.ContentType', null=True)),
+                ('content_type', models.ForeignKey(blank=True, to='contenttypes.ContentType', null=True, on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'notify_notificationtype',
@@ -50,7 +50,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('interval', models.SmallIntegerField(default=0, verbose_name='interval', choices=[(0, 'instantly'), (23, 'daily'), (167, 'weekly')])),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'notify_settings',
@@ -65,8 +65,8 @@ class Migration(migrations.Migration):
                 ('subscription_id', models.AutoField(serialize=False, primary_key=True)),
                 ('object_id', models.CharField(help_text='Leave this blank to subscribe to any kind of object', max_length=64, null=True, blank=True)),
                 ('send_emails', models.BooleanField(default=True)),
-                ('notification_type', models.ForeignKey(to='django_notify.NotificationType')),
-                ('settings', models.ForeignKey(to='django_notify.Settings')),
+                ('notification_type', models.ForeignKey(to='django_notify.NotificationType', on_delete=models.CASCADE)),
+                ('settings', models.ForeignKey(to='django_notify.Settings', on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'notify_subscription',
