@@ -54,11 +54,11 @@ class Article(models.Model):
             return False
 
         # Check access for other users...
-        if user.is_anonymous() and not settings.ANONYMOUS:
+        if user.is_anonymous and not settings.ANONYMOUS:
             return False
         elif self.other_read:
             return True
-        elif user.is_anonymous():
+        elif user.is_anonymous:
             return  False
         if user == self.owner:
             return True
@@ -71,11 +71,11 @@ class Article(models.Model):
 
     def can_write(self, user=None):
         # Check access for other users...
-        if user.is_anonymous() and not settings.ANONYMOUS_WRITE:
+        if user.is_anonymous and not settings.ANONYMOUS_WRITE:
             return False
         elif self.other_write:
             return True
-        elif user.is_anonymous():
+        elif user.is_anonymous:
             return  False
         if user == self.owner:
             return True
@@ -250,7 +250,7 @@ class BaseRevisionMixin(models.Model):
     locked = models.BooleanField(verbose_name=_(u'locked'), default=False)
 
     def set_from_request(self, request):
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             self.user = request.user
             if settings.LOG_IPS_USERS:
                 self.ip_address = request.META.get('REMOTE_ADDR', None)

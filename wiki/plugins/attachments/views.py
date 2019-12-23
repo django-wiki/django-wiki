@@ -34,7 +34,7 @@ class AttachmentView(ArticleMixin, FormView):
         return super(AttachmentView, self).dispatch(request, article, *args, **kwargs)
     
     def form_valid(self, form):
-        if (self.request.user.is_anonymous() and not settings.ANONYMOUS or 
+        if (self.request.user.is_anonymous and not settings.ANONYMOUS or 
             not self.article.can_write(self.request.user)):
             return response_forbidden(self.request, self.article, self.urlpath)
         try:
@@ -65,7 +65,7 @@ class AttachmentView(ArticleMixin, FormView):
         kwargs['attachments'] = self.attachments
         kwargs['search_form'] = forms.SearchForm()
         kwargs['selected_tab'] = 'attachments'
-        kwargs['anonymous_disallowed'] = self.request.user.is_anonymous() and not settings.ANONYMOUS
+        kwargs['anonymous_disallowed'] = self.request.user.is_anonymous and not settings.ANONYMOUS
         return super(AttachmentView, self).get_context_data(**kwargs)
 
 
@@ -95,7 +95,7 @@ class AttachmentReplaceView(ArticleMixin, FormView):
     
     @method_decorator(get_article(can_write=True))
     def dispatch(self, request, article, attachment_id, *args, **kwargs):
-        if self.request.user.is_anonymous() and not settings.ANONYMOUS:
+        if self.request.user.is_anonymous and not settings.ANONYMOUS:
             return response_forbidden(request, article, kwargs.get('urlpath', None))
         if article.can_moderate(request.user):
             self.attachment = get_object_or_404(models.Attachment, id=attachment_id, articles=article)
