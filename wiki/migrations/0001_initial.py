@@ -211,7 +211,7 @@ class Migration(migrations.Migration):
                 ('tree_id', models.PositiveIntegerField(editable=False, db_index=True)),
                 ('level', models.PositiveIntegerField(editable=False, db_index=True)),
                 ('article', models.ForeignKey(editable=False, to='wiki.Article', verbose_name='Cache lookup value for articles', on_delete=models.CASCADE)),
-                ('parent', mptt.fields.TreeForeignKey(related_name='children', blank=True, to='wiki.URLPath', null=True)),
+                ('parent', mptt.fields.TreeForeignKey(related_name='children', blank=True, to='wiki.URLPath', null=True, on_delete=models.CASCADE)),
                 ('site', models.ForeignKey(to='sites.Site', on_delete=models.CASCADE)),
             ],
             options={
