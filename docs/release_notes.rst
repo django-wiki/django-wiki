@@ -12,6 +12,15 @@ Release plan
 * **0.6.x (unreleased)** Targets Bootstrap v4, if you are interested in this work, please get in touch on Github!
 
 
+0.5.1.dev
+---------
+
+Fixed
+~~~~~
+
+* Python 3.7 issue with notifications plugin main view ``/_plugin/notifications/`` :url-issue:`1000` (Mads Jensen)
+
+
 0.5
 ---
 
