@@ -2,7 +2,7 @@ from django.apps import apps
 from django.contrib.auth import get_user_model
 from django.contrib.sites.models import Site
 from django.test.testcases import TestCase
-from wiki.compat import url
+from django.urls import re_path
 from wiki.conf import settings
 from wiki.managers import ArticleManager
 from wiki.models import Article, ArticleRevision, URLPath
@@ -16,7 +16,7 @@ class WikiCustomUrlPatterns(WikiURLPatterns):
 
     def get_article_urls(self):
         urlpatterns = [
-            url('^my-wiki/(?P<article_id>[0-9]+)/$',
+            re_path('^my-wiki/(?P<article_id>[0-9]+)/$',
                 self.article_view_class.as_view(),
                 name='get'
                 ),
@@ -25,7 +25,7 @@ class WikiCustomUrlPatterns(WikiURLPatterns):
 
     def get_article_path_urls(self):
         urlpatterns = [
-            url('^my-wiki/(?P<path>.+/|)$',
+            re_path('^my-wiki/(?P<path>.+/|)$',
                 self.article_view_class.as_view(),
                 name='get'),
         ]

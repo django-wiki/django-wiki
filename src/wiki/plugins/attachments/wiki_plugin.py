@@ -1,5 +1,5 @@
+from django.urls import include, re_path
 from django.utils.translation import gettext as _
-from wiki.compat import include, url
 from wiki.core.plugins import registry
 from wiki.core.plugins.base import BasePlugin
 from wiki.plugins.attachments import models, settings, views
@@ -12,7 +12,7 @@ class AttachmentPlugin(BasePlugin):
 
     slug = settings.SLUG
     urlpatterns = {
-        'article': [url('', include('wiki.plugins.attachments.urls'))]
+        'article': [re_path('', include('wiki.plugins.attachments.urls'))]
     }
 
     article_tab = (_('Attachments'), "fa fa-file")

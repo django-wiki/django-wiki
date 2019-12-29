@@ -283,18 +283,18 @@ class EditForm(forms.Form, SpamProtectionMixin):
         No new revisions have been created since user attempted to edit
         Revision title or content has changed
         """
-        cd = super().clean()
         if self.no_clean or self.preview:
-            return cd
+            return self.cleaned_data
         if not str(self.initial_revision.id) == str(self.presumed_revision):
             raise forms.ValidationError(
                 gettext(
                     'While you were editing, someone else changed the revision. Your contents have been automatically merged with the new contents. Please review the text below.'))
-        if ('title' in cd) and cd['title'] == self.initial_revision.title and cd[
-                'content'] == self.initial_revision.content:
+        if ('title' in self.cleaned_data and
+                self.cleaned_data['title'] == self.initial_revision.title and
+                self.cleaned_data['content'] == self.initial_revision.content):
             raise forms.ValidationError(gettext('No changes made. Nothing to save.'))
         self.check_spam()
-        return cd
+        return self.cleaned_data
 
 
 class SelectWidgetBootstrap(forms.Select):
@@ -369,7 +369,6 @@ class CreateForm(forms.Form, SpamProtectionMixin):
         return _clean_slug(self.cleaned_data['slug'], self.urlpath_parent)
 
     def clean(self):
-        super().clean()
         self.check_spam()
         return self.cleaned_data
 
@@ -391,13 +390,12 @@ class DeleteForm(forms.Form):
                                       widget=HiddenInput(), required=False)
 
     def clean(self):
-        cd = super().clean()
-        if not cd['confirm']:
+        if not self.cleaned_data['confirm']:
             raise forms.ValidationError(gettext('You are not sure enough!'))
-        if cd['revision'] != self.article.current_revision:
+        if self.cleaned_data['revision'] != self.article.current_revision:
             raise forms.ValidationError(
                 gettext('While you tried to delete this article, it was modified. TAKE CARE!'))
-        return cd
+        return self.cleaned_data
 
 
 class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
