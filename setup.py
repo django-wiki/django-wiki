@@ -36,7 +36,7 @@ install_requirements = [
 
 test_requirements = [
     'django-functest>=1.0.3,<1.1',
-    'pytest>=5.2,<5.3',
+    'pytest>=5.3,<5.4',
     'pytest-django',
     'pytest-cov',
     'pytest-pythonpath',
@@ -84,7 +84,6 @@ setup(
         'Intended Audience :: Developers',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: Implementation :: CPython',
