@@ -40,7 +40,7 @@ def get_article(func=None, can_read=True, can_write=False,  # noqa: max-complexi
     keyword args path or article_id and looks up an article, calling the decorated
     func with this ID.
 
-    Will accept a func(request, article, *args, **kwargs)
+    Will accept a ``func(request, article, *args, **kwargs)``
 
     NB! This function will redirect if an article does not exist, permissions
     are missing or the article is deleted.
@@ -84,8 +84,7 @@ def get_article(func=None, can_read=True, can_write=False,  # noqa: max-complexi
                     parent = models.URLPath.get_by_path(path)
                     return HttpResponseRedirect(
                         reverse(
-                            "wiki:create", kwargs={'path': parent.path, }) +
-                        "?slug=%s" % pathlist[-1].lower())
+                            "wiki:create", kwargs={'path': parent.path, }) + "?slug=%s" % pathlist[-1].lower())
                 except models.URLPath.DoesNotExist:
                     return HttpResponseNotFound(
                         render_to_string(

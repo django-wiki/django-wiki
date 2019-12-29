@@ -1,5 +1,5 @@
+from django.urls import re_path
 from django.utils.translation import gettext as _
-from wiki.compat import url
 from wiki.core.plugins import registry
 from wiki.core.plugins.base import BasePlugin
 from wiki.plugins.images import forms, models, settings, views
@@ -42,23 +42,23 @@ class ImagePlugin(BasePlugin):
         }
 
     urlpatterns = {'article': [
-        url('^$',
+        re_path('^$',
             views.ImageView.as_view(),
             name='images_index'),
-        url('^delete/(?P<image_id>[0-9]+)/$',
+        re_path('^delete/(?P<image_id>[0-9]+)/$',
             views.DeleteView.as_view(),
             name='images_delete'),
-        url('^restore/(?P<image_id>[0-9]+)/$',
+        re_path('^restore/(?P<image_id>[0-9]+)/$',
             views.DeleteView.as_view(),
             name='images_restore',
             kwargs={'restore': True}),
-        url('^purge/(?P<image_id>[0-9]+)/$',
+        re_path('^purge/(?P<image_id>[0-9]+)/$',
             views.PurgeView.as_view(),
             name='images_purge'),
-        url('^(?P<image_id>[0-9]+)/revision/change/(?P<rev_id>[0-9]+)/$',
+        re_path('^(?P<image_id>[0-9]+)/revision/change/(?P<rev_id>[0-9]+)/$',
             views.RevisionChangeView.as_view(),
             name='images_set_revision'),
-        url('^(?P<image_id>[0-9]+)/revision/add/$',
+        re_path('^(?P<image_id>[0-9]+)/revision/add/$',
             views.RevisionAddView.as_view(),
             name='images_add_revision'),
     ]}
