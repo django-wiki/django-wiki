@@ -9,7 +9,7 @@ from django.utils.html import escape
 from django_functest import FuncBaseMixin
 from tests.testdata.models import CustomGroup
 from wiki import models
-from wiki.forms import validate_slug_numbers
+from wiki.forms import PermissionsForm, validate_slug_numbers
 from wiki.models import ArticleRevision, URLPath, reverse
 
 from ..base import SUPERUSER1_USERNAME, ArticleWebTestUtils, DjangoClientTestBase, RequireRootArticleMixin, SeleniumBase, WebTestBase
@@ -644,10 +644,14 @@ class HistoryViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClien
 class SettingsViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
     def test_change_group(self):
         group = CustomGroup.objects.create()
-        response = self.client.post(resolve_url('wiki:settings', article_id=self.root_article.pk) + "?f=form0", {
-            'group': group.pk,
-            'owner_username': SUPERUSER1_USERNAME,
-        }, follow=True)
+        response = self.client.post(
+            resolve_url('wiki:settings', article_id=self.root_article.pk) + "?f=form0",
+            {
+                'group': group.pk,
+                'owner_username': SUPERUSER1_USERNAME,
+            },
+            follow=True
+        )
         self.root_article.refresh_from_db()
         self.assertEqual(self.root_article.group, group)
         self.assertEqual(self.root_article.owner, self.superuser1)
@@ -664,12 +668,29 @@ class SettingsViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClie
         self.assertEqual(response.context['forms'][0].errors['owner_username'], ['No user with that username'])
 
     def test_unchanged_message(self):
+        # 1. This is not pretty: Constructs a request object to use to construct
+        # the PermissionForm
+        get_response = self.client.get(
+            resolve_url(
+                'wiki:settings',
+                article_id=self.root_article.pk
+            )
+        )
+        # 2. Construct a PermissionForm
+        form = PermissionsForm(self.root_article, get_response.wsgi_request)
+        # 3. ...in order to get the POST form values that will be transmitted
+        form_values = {
+            field.html_name: field.value() or "" for field in form
+        }
+        # 4. Send an unchanged form
         response = self.client.post(
             resolve_url(
-                'wiki:settings', article_id=self.root_article.pk
-            ) + "?f=form0", {}, follow=True
+                'wiki:settings',
+                article_id=self.root_article.pk
+            ) + "?f=form0",
+            form_values,
+            follow=True
         )
-        # FIXME get the correct message
         self.assertEqual(len(response.context.get('messages')), 1)
         message = response.context.get('messages')._loaded_messages[0]
         self.assertEqual(message.level, constants.SUCCESS)
