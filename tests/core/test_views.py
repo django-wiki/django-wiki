@@ -684,6 +684,7 @@ class SourceViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClient
 
 
 class HistoryViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
+
     def test_can_read_permission(self):
         response = self.client.get(reverse('wiki:history', kwargs={
             'article_id': self.root_article.pk,
@@ -694,11 +695,50 @@ class HistoryViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClien
         response = self.client.get(reverse('wiki:history', kwargs={
             'article_id': self.root_article.pk,
         }))
-        self.assertIn('History:', str(response.content))
+        self.assertContains(response, 'History:')
         self.assertEqual(response.context['selected_tab'], 'history')
 
 
+class DirViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
+
+    def test_browse_root(self):
+        response = self.client.get(
+            reverse('wiki:dir', kwargs={'path': ''}),
+        )
+        self.assertRegex(
+            response.rendered_content,
+            r'Browsing\s+<strong><a href=".+">/</a></strong>'
+        )
+
+    def test_browse_root_query(self):
+        self.client.post(
+            resolve_url('wiki:create', path=''),
+            {'title': 'Test', 'slug': 'test0', 'content': 'Content .0.'}
+        )
+        self.client.post(
+            resolve_url('wiki:create', path='test0/'),
+            {'title': 'Test00', 'slug': 'test00', 'content': 'Content .00.'}
+        )
+        response = self.client.get(
+            reverse('wiki:dir', kwargs={'path': ''}),
+            {'query': "Test"},
+        )
+        self.assertRegex(
+            response.rendered_content,
+            r'1 article'
+        )
+        response = self.client.get(
+            reverse('wiki:dir', kwargs={'path': 'test0/'}),
+            {'query': "Test00"},
+        )
+        self.assertRegex(
+            response.rendered_content,
+            r'1 article'
+        )
+
+
 class SettingsViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
+
     def test_change_group(self):
         group = CustomGroup.objects.create()
         response = self.client.post(
