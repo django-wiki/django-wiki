@@ -5,7 +5,6 @@ from django.utils.translation import gettext_lazy as _
 from django_nyt.models import Subscription
 from django_nyt.utils import notify
 from wiki import models as wiki_models
-from wiki.core.plugins import registry
 from wiki.decorators import disable_signal_for_loaddata
 from wiki.models.pluginbase import ArticlePlugin
 from wiki.plugins.notifications import settings
@@ -76,32 +75,3 @@ signals.post_save.connect(
 
 # TODO: We should notify users when the current_revision of an article is
 # changed...
-
-##################################################
-# NOTIFICATIONS FOR PLUGINS
-##################################################
-for plugin in registry.get_plugins():
-
-    notifications = getattr(plugin, 'notifications', [])
-    for notification_dict in notifications:
-        @disable_signal_for_loaddata
-        def plugin_notification(instance, **kwargs):
-            if notification_dict.get('ignore', lambda x: False)(instance):
-                return
-            if kwargs.get('created', False) == notification_dict.get('created', True):
-                if 'get_url' in notification_dict:
-                    url = notification_dict['get_url'](instance)
-                else:
-                    url = default_url(notification_dict['get_article'](instance))
-
-                message = notification_dict['message'](instance)
-                notify(
-                    message,
-                    notification_dict['key'],
-                    target_object=notification_dict['get_article'](instance),
-                    url=url,
-                )
-
-        signals.post_save.connect(
-            plugin_notification,
-            sender=notification_dict['model'])
