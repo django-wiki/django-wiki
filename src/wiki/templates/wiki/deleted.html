@@ -20,9 +20,9 @@
   <div class="row">
 
   {% if not article.current_revision.locked or article|can_delete:user %}
-    <div class="col-lg-6">
+    <div class="col-lg-4">
+      <h2>{% trans "Restore" %}</h2>
       <div class="well">
-        <h2>{% trans "Restore" %}</h2>
         <p>{% trans "You may restore this article and its children by clicking restore." %}</p>
         <p>
           <a href="?restore=1" class="btn btn-default">
@@ -35,11 +35,11 @@
   {% endif %}
 
   {% if article|can_moderate:user %}
-    <div class="col-lg-6">
+    <div class="col-lg-8">
+      <h2>{% trans "Purge deletion" %}</h2>
       <div class="well">
-        <h2>{% trans "Purge deletion" %}</h2>
         <p>{% trans "You may remove this article and any children permanently and free their slugs by clicking the below button. This action cannot be undone." %}</p>
-        <form method="POST" class="form form-inline">
+        <form method="POST" class="form form-vertical">
           {% csrf_token %}
           {% wiki_form purge_form %}
             <button class="btn btn-default">
