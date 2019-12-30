@@ -204,7 +204,7 @@ class Article(models.Model):
         """Returns per-article cache key."""
         lang = translation.get_language()
 
-        return "wiki:article:{id:d}:{lang:s}".format(
+        return "wiki:article:{id}:{lang}".format(
             id=self.current_revision.id if self.current_revision else self.id,
             lang=lang)
 
