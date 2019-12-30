@@ -209,6 +209,7 @@ class Delete(FormView, ArticleMixin):
             cannot_delete_children = True
 
         kwargs['delete_form'] = self.get_form()
+        kwargs['form'] = kwargs['delete_form']
         kwargs['cannot_delete_root'] = self.cannot_delete_root
         kwargs['delete_children'] = self.children_slice[:20]
         kwargs['delete_children_more'] = len(self.children_slice) > 20
@@ -368,8 +369,7 @@ class Move(ArticleMixin, FormView):
         return form_class(**kwargs)
 
     def get_context_data(self, **kwargs):
-        if 'form' not in kwargs:
-            kwargs['form'] = self.get_form()
+        kwargs['form'] = self.get_form()
         kwargs['root_path'] = models.URLPath.root()
         return super().get_context_data(**kwargs)
 
