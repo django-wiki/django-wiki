@@ -309,6 +309,20 @@ class MoveViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
 
 class DeleteViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
+    def test_render_delete_view(self):
+        """
+        Other tests do not render the delete view but just sends a POST
+        """
+        self.client.post(
+            resolve_url('wiki:create', path=''),
+            {'title': 'Test delete', 'slug': 'testdelete', 'content': 'To be deleted'}
+        )
+        response = self.client.get(
+            resolve_url('wiki:delete', path='testdelete/'),
+        )
+        # test the cache
+        self.assertContains(response, 'Delete article')
+
     def test_articles_cache_is_cleared_after_deleting(self):
 
         # That bug is tested by one individual test, otherwise it could be
@@ -345,6 +359,13 @@ class DeleteViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientT
         )
         # test the cache
         self.assertContains(self.get_by_path('TestCache/'), 'Content 2')
+
+    # def test_delete_article_without_urlpath(self):
+    #     """
+    #     We need a test that tests that articles without URLpaths are correctly
+    #     deleted.
+    #     """
+    #     pass
 
     # def test_dont_delete_children(self):
     #    Article.objects.create()
