@@ -43,8 +43,13 @@ class NotificationSettingsTests(RequireRootArticleMixin, ArticleWebTestUtils, Dj
 
         data['form-TOTAL_FORMS'] = 1
         data['form-0-email'] = 2
+        data['form-0-interval'] = 0
         # post the request without any change
-        response = self.client.post(url, data)
+        response = self.client.post(url, data, follow=True)
+
+        self.assertEqual(len(response.context.get('messages')), 1)
+        message = response.context.get('messages')._loaded_messages[0]
+        self.assertIn(message.message, 'Your notification settings were unchanged')
 
         # Ensure we didn't create redundant Settings objects
         assert self.superuser1.nyt_settings.all().count() == 1
