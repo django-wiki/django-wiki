@@ -104,10 +104,7 @@ class Create(FormView, ArticleMixin):
 
     def get_context_data(self, **kwargs):
         c = ArticleMixin.get_context_data(self, **kwargs)
-        # Needed since Django 1.9 because get_context_data is no longer called
-        # with the form instance
-        if 'form' not in c:
-            c['form'] = self.get_form()
+        c['form'] = self.get_form()
         c['parent_urlpath'] = self.urlpath
         c['parent_article'] = self.article
         c['create_form'] = c.pop('form', None)
@@ -211,7 +208,7 @@ class Delete(FormView, ArticleMixin):
         if self.children_slice and not self.article.can_moderate(self.request.user):
             cannot_delete_children = True
 
-        kwargs['delete_form'] = kwargs.pop('form', None)
+        kwargs['delete_form'] = self.get_form()
         kwargs['cannot_delete_root'] = self.cannot_delete_root
         kwargs['delete_children'] = self.children_slice[:20]
         kwargs['delete_children_more'] = len(self.children_slice) > 20
@@ -346,10 +343,7 @@ class Edit(ArticleMixin, FormView):
         return redirect('wiki:get', article_id=self.article.id)
 
     def get_context_data(self, **kwargs):
-        # Needed for Django 1.9 because get_context_data is no longer called
-        # with the form instance
-        if 'form' not in kwargs:
-            kwargs['form'] = self.get_form()
+        kwargs['form'] = self.get_form()
         kwargs['edit_form'] = kwargs['form']
         kwargs['editor'] = editors.getEditor()
         kwargs['selected_tab'] = 'edit'
@@ -596,8 +590,8 @@ class Dir(ListView, ArticleMixin):
         children = self.urlpath.get_children().can_read(self.request.user)
         if self.query:
             children = children.filter(
-                Q(article__current_revision__title__contains=self.query) |
-                Q(slug__contains=self.query))
+                Q(article__current_revision__title__contains=self.query) | Q(slug__contains=self.query)
+            )
         if not self.article.can_moderate(self.request.user):
             children = children.active()
         children = children.select_related_common().order_by(
@@ -655,8 +649,8 @@ class SearchView(ListView):
             except (NoRootURL, models.URLPath.DoesNotExist):
                 raise Http404
         articles = articles.filter(
-            Q(current_revision__title__icontains=self.query) |
-            Q(current_revision__content__icontains=self.query))
+            Q(current_revision__title__icontains=self.query) | Q(current_revision__content__icontains=self.query)
+        )
         if not permissions.can_moderate(
                 models.URLPath.root().article,
                 self.request.user):
