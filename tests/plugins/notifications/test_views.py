@@ -1,16 +1,12 @@
-import pdb
-
 from django.shortcuts import resolve_url
 from django_nyt.models import Settings
-
-from tests.base import RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase
+from tests.base import ArticleWebTestUtils, DjangoClientTestBase, RequireRootArticleMixin
 
 
 class NotificationSettingsTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
 
     def setUp(self):
         super().setUp()
-        self.settings = Settings.objects.get_or_create(user=self.superuser1, is_default=True)
 
     def test_login_required(self):
         self.client.logout()
@@ -23,6 +19,8 @@ class NotificationSettingsTests(RequireRootArticleMixin, ArticleWebTestUtils, Dj
         self.assertTemplateUsed(response, 'wiki/plugins/notifications/settings.html')
 
     def test_change_settings(self):
+        self.settings, __ = Settings.objects.get_or_create(user=self.superuser1, is_default=True)
+
         url = resolve_url('wiki:notification_settings')
 
         response = self.client.get(url)
@@ -47,4 +45,6 @@ class NotificationSettingsTests(RequireRootArticleMixin, ArticleWebTestUtils, Dj
         data['form-0-email'] = 2
         # post the request without any change
         response = self.client.post(url, data)
-        self.root_article.refresh_from_db()
+
+        # Ensure we didn't create redundant Settings objects
+        assert self.superuser1.nyt_settings.all().count() == 1
