@@ -22,6 +22,15 @@ class ArticleManagerTests(ArticleTestBase):
         )
         self.assertEqual(Article.objects.active().count(), 1)
 
+    def test_mass_deletion(self):
+        """
+        https://github.com/django-wiki/django-wiki/issues/857
+        """
+        Article.objects.all().delete()
+        self.assertEqual(
+            Article.objects.all().count(), 0
+        )
+
     def test_queryset_methods_on_querysets(self):
 
         self.assertEqual(
