@@ -526,7 +526,8 @@ class Deleted(Delete):
         }
 
     def get_context_data(self, **kwargs):
-        kwargs['purge_form'] = kwargs.pop('form', None)
+        kwargs['purge_form'] = self.get_form()
+        kwargs['form'] = kwargs['purge_form']
         return super().get_context_data(**kwargs)
 
 

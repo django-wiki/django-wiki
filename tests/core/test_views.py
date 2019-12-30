@@ -357,8 +357,44 @@ class DeleteViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientT
             response,
             resolve_url('wiki:get', path='testcache/')
         )
-        # test the cache
         self.assertContains(self.get_by_path('TestCache/'), 'Content 2')
+
+    def test_deleted_view(self):
+        """
+        Test that a special page is shown for restoring/purging a deleted
+        article.
+        """
+        # 1. Create the article
+        self.client.post(
+            resolve_url('wiki:create', path=''),
+            {'title': 'Test delete', 'slug': 'testdelete', 'content': 'To be deleted'}
+        )
+        # 2. Soft delete it
+        self.client.post(
+            resolve_url('wiki:delete', path='testdelete/'),
+            {'confirm': 'on', 'purge': '',
+             'revision': str(URLPath.objects.get(slug='testdelete').article.current_revision.id)}
+        )
+        # 3. Get and test that it redirects to the deleted page
+        response = self.client.get(
+            resolve_url('wiki:get', path='testdelete/'),
+            follow=True,
+        )
+        # test that it's the Deleted page
+        self.assertContains(response, 'Article deleted')
+
+        # 4. Test that we can purge the page now
+        self.client.post(
+            resolve_url('wiki:deleted', path='testdelete/'),
+            {'confirm': 'on', 'purge': 'on',
+             'revision': str(URLPath.objects.get(slug='testdelete').article.current_revision.id)}
+        )
+        # 5. Test that it's not found anymore
+        response = self.client.get(
+            resolve_url('wiki:get', path='testdelete/'),
+            follow=True,
+        )
+        self.assertContains(response, "Add new article")
 
     # def test_delete_article_without_urlpath(self):
     #     """
