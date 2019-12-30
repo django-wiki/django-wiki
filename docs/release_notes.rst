@@ -8,7 +8,7 @@ Release plan
 
 * **0.3.x** series suppors Django 1.11. As with the upstream Django release, 0.3 was be the last series with Python 2.7 support.
 * **0.4.x** supports Django 1.11 and Django 2.1 and Python 3.4+.
-* **0.5.x** Remove Django 1.11 support, adds Django 2.2 and 3.x support.
+* **0.5.x** Remove Django 1.11 support, adds Django 2.2 and 3.x support. Python 3.5+.
 * **0.6.x (unreleased)** Targets Bootstrap v4, if you are interested in this work, please get in touch on Github!
 
 
@@ -19,6 +19,19 @@ Fixed
 ~~~~~
 
 * Python 3.7 issue with notifications plugin main view ``/_plugin/notifications/`` :url-issue:`1000` (Mads Jensen)
+* Broken Delete and Deleted pages :url-issue:`976` (Benjamin Bach)
+
+
+Changed
+~~~~~~~
+
+* Test coverage upped from 75 to 78+% :url-issue:`976` (Mads Jensen, Benjamin Bach)
+* PyTest upgraded to latest 5.3
+
+Removed
+~~~~~~~
+
+* Python 3.4 support more or less definitively removed (no longer supported by test suite PyTest)
 
 
 0.5
