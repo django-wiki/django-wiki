@@ -591,7 +591,7 @@ class Dir(ListView, ArticleMixin):
         children = self.urlpath.get_children().can_read(self.request.user)
         if self.query:
             children = children.filter(
-                Q(article__current_revision__title__contains=self.query) | Q(slug__contains=self.query)
+                Q(article__current_revision__title__icontains=self.query) | Q(slug__icontains=self.query)
             )
         if not self.article.can_moderate(self.request.user):
             children = children.active()
