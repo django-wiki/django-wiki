@@ -5,8 +5,6 @@ from wiki.plugins.macros import settings
 
 HEADER_ID_PREFIX = "wiki-toc-"
 
-IDCOUNT_RE = re.compile(r'^(.*)_([0-9]+)$')
-
 
 def wiki_slugify(*args, **kwargs):
     return HEADER_ID_PREFIX + slugify(*args, **kwargs)
