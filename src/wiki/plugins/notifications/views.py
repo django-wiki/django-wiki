@@ -42,6 +42,7 @@ class NotificationSettings(FormView):
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user
+        kwargs['form_kwargs'] = {'user': self.request.user}
         return kwargs
 
     def get_context_data(self, **kwargs):

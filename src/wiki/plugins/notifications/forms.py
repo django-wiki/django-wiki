@@ -32,13 +32,17 @@ class ArticleSubscriptionModelMultipleChoiceField(
 class SettingsModelForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
         super().__init__(*args, **kwargs)
         instance = kwargs.get('instance', None)
         self.__editing_instance = False
         if instance:
             self.__editing_instance = True
             self.fields['delete_subscriptions'] = ArticleSubscriptionModelMultipleChoiceField(
-                models.ArticleSubscription.objects.filter(subscription__settings=instance),
+                models.ArticleSubscription.objects.filter(
+                    subscription__settings=instance,
+                    article__current_revision__deleted=False,
+                ),
                 label=gettext("Remove subscriptions"),
                 required=False,
                 help_text=gettext("Select article subscriptions to remove from notifications"),
@@ -58,7 +62,8 @@ class SettingsModelForm(forms.ModelForm):
             )
 
     def save(self, *args, **kwargs):
-        instance = super().save(*args, **kwargs)
+        instance = super().save(*args, commit=False, **kwargs)
+        instance.user = self.user
         if self.__editing_instance:
             self.cleaned_data['delete_subscriptions'].delete()
             if self.cleaned_data['email'] == 1:
@@ -69,6 +74,7 @@ class SettingsModelForm(forms.ModelForm):
                 instance.subscription_set.all().update(
                     send_emails=True,
                 )
+        instance.save()
         return instance
 
 
@@ -76,6 +82,16 @@ class BaseSettingsFormSet(BaseModelFormSet):
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
+
+        # Ensure that at least 1 default settings object exists
+        all_settings = Settings.objects.filter(user=self.user).order_by('is_default')
+        if not all_settings.exists():
+            Settings.objects.create(user=self.user, is_default=True)
+        else:
+            to_update = all_settings.first()
+            if not to_update.is_default:
+                to_update.is_default = True
+                to_update.save()
         super().__init__(*args, **kwargs)
 
     def get_queryset(self):
@@ -84,7 +100,7 @@ class BaseSettingsFormSet(BaseModelFormSet):
             subscription__articlesubscription__article__current_revision__deleted=False,
         ).prefetch_related(
             'subscription_set__articlesubscription',
-        ).distinct()
+        ).order_by('is_default').distinct()
 
 
 SettingsFormSet = modelformset_factory(
