@@ -36,7 +36,7 @@ class EditSectionTests(RequireRootArticleMixin, DjangoClientTestBase):
             'Title 5<a class="article-edit-title-link" href="/testedit/_plugin/editsection/1-3-0/header/T5/">\[edit\]</a>.*'
             'Title 6<a class="article-edit-title-link" href="/testedit/_plugin/editsection/2-0-0/header/T6/">\[edit\]</a>.*'
         )
-        self.assertRegexpMatches(output, expected)
+        self.assertRegex(output, expected)
 
         # Test wrong header text. Editing should fail with a redirect.
         url = reverse('wiki:editsection', kwargs={'path': 'testedit/', 'location': '1-2-1', 'header': 'Test'})
@@ -47,23 +47,23 @@ class EditSectionTests(RequireRootArticleMixin, DjangoClientTestBase):
         url = reverse('wiki:editsection', kwargs={'path': 'testedit/', 'location': '1-2-1', 'header': 'T4'})
         response = self.client.get(url)
         expected = (
-            '>### Title 4\n'
+            '>### Title 4[\r\n]*'
             '<'
         )
-        self.assertContains(response, expected)
+        self.assertRegex(response.rendered_content, expected)
 
         url = reverse('wiki:editsection', kwargs={'path': 'testedit/', 'location': '1-2-0', 'header': 'T3'})
         response = self.client.get(url)
         expected = (
-            '>Title 3\n'
-            '-------\n'
-            'a\n'
-            'Paragraph\n'
-            '-------\n'
-            '### Title 4\n'
+            '>Title 3[\r\n]*'
+            '-------[\r\n]*'
+            'a[\r\n]*'
+            'Paragraph[\r\n]*'
+            '-------[\r\n]*'
+            '### Title 4[\r\n]*'
             '<'
         )
-        self.assertContains(response, expected)
+        self.assertRegex(response.rendered_content, expected)
 
 
 class EditSectionEditBase(RequireRootArticleMixin, FuncBaseMixin):
@@ -91,7 +91,7 @@ class EditSectionEditTests(EditSectionEditBase, WebTestBase):
             'Title 5<a class="article-edit-title-link" href="/testedit/_plugin/editsection/2-1-0/header/T5/">\[edit\]</a>.*'
             'Title 6<a class="article-edit-title-link" href="/testedit/_plugin/editsection/3-0-0/header/T6/">\[edit\]</a>.*'
         )
-        self.assertRegexpMatches(self.last_response.content.decode('utf-8'), expected)
+        self.assertRegex(self.last_response.content.decode('utf-8'), expected)
 
         new_number = URLPath.objects.get(slug='testedit').article.current_revision.revision_number
         self.assertEqual(new_number, old_number + 1)
