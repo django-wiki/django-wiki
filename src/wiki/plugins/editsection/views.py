@@ -3,7 +3,7 @@ import re
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect
 from django.utils.decorators import method_decorator
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext_lazy
 from wiki import models
 from wiki.core.markdown import article_markdown
 from wiki.core.plugins.registry import get_markdown_extensions
@@ -12,6 +12,20 @@ from wiki.plugins.editsection.markdown_extensions import EditSectionExtension
 from wiki.views.article import Edit as EditView
 
 from . import settings
+
+ERROR_SECTION_CHANGED = gettext_lazy(
+    "Unable to find the selected section. The article was modified meanwhile."
+)
+ERROR_SECTION_UNSAVED = gettext_lazy(
+    "Your changes must be re-applied in the new section structure of the "
+    "article."
+)
+ERROR_ARTICLE_CHANGED = gettext_lazy(
+    "Unable to find the selected section in the current article. The article "
+    "was changed in between. Your changed section is still available as the "
+    "last now inactive revision of this article."
+)
+ERROR_TRY_AGAIN = gettext_lazy("Please try again.")
 
 
 class FindHeader:
@@ -111,8 +125,7 @@ class EditSection(EditView):
             else:
                 messages.error(
                     request,
-                    _("Unable to find the selected section in the current article."
-                      " The article was changed in between. Please try again.")
+                    " ".format(ERROR_SECTION_CHANGED, ERROR_TRY_AGAIN)
                 )
                 return redirect('wiki:get', path=self.urlpath.path)
         else:
@@ -138,9 +151,7 @@ class EditSection(EditView):
                 list(messages.get_messages(self.request))
                 messages.warning(
                     self.request,
-                    _("The selected text section was changed in between."
-                      " Please check the history of the article and reinclude"
-                      " required changes from the intermediate versions.")
+                    " ".format(ERROR_SECTION_CHANGED, ERROR_SECTION_UNSAVED, ERROR_TRY_AGAIN)
                 )
             # Include the edited section into the complete previous article
             self.article.current_revision.content = text[0:location[0]] + section + text[location[1]:]
@@ -152,9 +163,7 @@ class EditSection(EditView):
             list(messages.get_messages(self.request))
             messages.error(
                 self.request,
-                _("Unable to find the selected section in the current article. The article"
-                  " was changed in between. Your changed section is still available as the"
-                  " last now inactive revision of this article. Please try again.")
+                " ".format(ERROR_ARTICLE_CHANGED, ERROR_TRY_AGAIN)
             )
 
         return redirect('wiki:get', path=self.urlpath.path)
