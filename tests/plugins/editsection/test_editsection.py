@@ -1,10 +1,8 @@
-from __future__ import print_function, unicode_literals
-
 from django.urls import reverse
 from django_functest import FuncBaseMixin
 from wiki.models import URLPath
 
-from ...base import (DjangoClientTestBase, RequireRootArticleMixin, WebTestBase)
+from ...base import DjangoClientTestBase, RequireRootArticleMixin, WebTestBase
 
 TEST_CONTENT = (
     'Title 1\n'
@@ -39,12 +37,14 @@ class EditSectionTests(RequireRootArticleMixin, DjangoClientTestBase):
         self.assertRegex(output, expected)
 
         # Test wrong header text. Editing should fail with a redirect.
-        url = reverse('wiki:editsection', kwargs={'path': 'testedit/', 'location': '1-2-1', 'header': 'Test'})
+        url = reverse('wiki:editsection',
+                      kwargs={'path': 'testedit/', 'location': '1-2-1', 'header': 'Test'})
         response = self.client.get(url)
         self.assertRedirects(response, reverse('wiki:get', kwargs={'path': 'testedit/'}))
 
         # Test extracting sections for editing
-        url = reverse('wiki:editsection', kwargs={'path': 'testedit/', 'location': '1-2-1', 'header': 'T4'})
+        url = reverse('wiki:editsection',
+                      kwargs={'path': 'testedit/', 'location': '1-2-1', 'header': 'T4'})
         response = self.client.get(url)
         expected = (
             '>### Title 4[\r\n]*'
@@ -52,7 +52,8 @@ class EditSectionTests(RequireRootArticleMixin, DjangoClientTestBase):
         )
         self.assertRegex(response.rendered_content, expected)
 
-        url = reverse('wiki:editsection', kwargs={'path': 'testedit/', 'location': '1-2-0', 'header': 'T3'})
+        url = reverse('wiki:editsection',
+                      kwargs={'path': 'testedit/', 'location': '1-2-0', 'header': 'T3'})
         response = self.client.get(url)
         expected = (
             '>Title 3[\r\n]*'
@@ -77,7 +78,8 @@ class EditSectionEditTests(EditSectionEditBase, WebTestBase):
                                          title="TestEdit", content=TEST_CONTENT)
         old_number = urlpath.article.current_revision.revision_number
 
-        self.get_literal_url(reverse('wiki:editsection', kwargs={'path': 'testedit/', 'location': '1-2-0', 'header': 'T3'}))
+        self.get_literal_url(reverse('wiki:editsection',
+                                     kwargs={'path': 'testedit/', 'location': '1-2-0', 'header': 'T3'}))
         self.fill({
             '#id_content': '# Header 1\nContent of the new section'
         })
