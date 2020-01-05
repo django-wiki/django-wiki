@@ -148,7 +148,6 @@ class EditSection(EditView):
         location = self.locate_section(self.article, text)
         if location:
             if self.orig_section != text[location[0]:location[1]]:
-                list(messages.get_messages(self.request))
                 messages.warning(
                     self.request,
                     " ".format(ERROR_SECTION_CHANGED, ERROR_SECTION_UNSAVED, ERROR_TRY_AGAIN)
@@ -160,7 +159,6 @@ class EditSection(EditView):
             # Back to the version before replacing the article with the section
             self.article.current_revision = self.article.current_revision.previous_revision
             self.article.save()
-            list(messages.get_messages(self.request))
             messages.error(
                 self.request,
                 " ".format(ERROR_ARTICLE_CHANGED, ERROR_TRY_AGAIN)
