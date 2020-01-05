@@ -1,5 +1,6 @@
 import re
 
+from django.urls import reverse
 from markdown import Extension
 from markdown.treeprocessors import Treeprocessor
 from markdown.util import etree
@@ -99,9 +100,12 @@ class EditSectionProcessor(Treeprocessor):
             link = etree.SubElement(child, 'a')
             link.text = settings.LINK_TEXT
             link.attrib["class"] = "article-edit-title-link"
-            link.attrib["href"] = self.markdown.article.get_absolute_url() \
-                + "_plugin/editsection/" + location \
-                + "/header/" + header_id + "/"
+
+            # Build the URL
+            url_kwargs = self.md.article.get_url_kwargs()
+            url_kwargs['location'] = location
+            url_kwargs['header'] = header_id
+            link.attrib["href"] = reverse('wiki:editsection', kwargs=url_kwargs)
 
     def run(self, root):
         self.level = self.config.get('level')[0]

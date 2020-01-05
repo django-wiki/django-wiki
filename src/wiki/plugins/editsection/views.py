@@ -106,6 +106,11 @@ class EditSection(EditView):
                 return e.config['location']
         return None
 
+    def _redirect_to_article(self):
+        if self.urlpath:
+            return redirect('wiki:get', path=self.urlpath.path)
+        return redirect('wiki:get', article_id=self.article.id)
+
     @method_decorator(get_article(can_write=True, not_locked=True))
     def dispatch(self, request, article, *args, **kwargs):
         self.location = kwargs.pop('location', 0)
@@ -127,7 +132,7 @@ class EditSection(EditView):
                     request,
                     " ".format(ERROR_SECTION_CHANGED, ERROR_TRY_AGAIN)
                 )
-                return redirect('wiki:get', path=self.urlpath.path)
+                return self._redirect_to_article()
         else:
             kwargs['content'] = request.session.get('editsection_content')
             self.orig_section = kwargs.get('content')
@@ -164,4 +169,4 @@ class EditSection(EditView):
                 " ".format(ERROR_ARTICLE_CHANGED, ERROR_TRY_AGAIN)
             )
 
-        return redirect('wiki:get', path=self.urlpath.path)
+        return self._redirect_to_article()

@@ -10,7 +10,7 @@ class EditSectionPlugin(BasePlugin):
 
     slug = settings.SLUG
     urlpatterns = {'article': [
-        url('^(?P<location>[0-9-]+)/header/(?P<header>\w+)/$',
+        url(r'^(?P<location>[0-9-]+)/header/(?P<header>\w+)/$',
             views.EditSection.as_view(),
             name='editsection'),
     ]}

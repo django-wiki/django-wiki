@@ -244,12 +244,14 @@ class Article(models.Model):
     def clear_cache(self):
         cache.delete(self.get_cache_key())
 
-    def get_absolute_url(self):
+    def get_url_kwargs(self):
         urlpaths = self.urlpath_set.all()
         if urlpaths.exists():
-            return urlpaths[0].get_absolute_url()
-        else:
-            return reverse('wiki:get', kwargs={'article_id': self.id})
+            return {'path': urlpaths[0].path}
+        return {'article_id': self.id}
+
+    def get_absolute_url(self):
+        return reverse('wiki:get', kwargs=self.get_url_kwargs())
 
 
 class ArticleForObject(models.Model):
