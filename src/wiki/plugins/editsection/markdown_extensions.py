@@ -1,14 +1,16 @@
 import re
+
 from markdown import Extension
 from markdown.treeprocessors import Treeprocessor
 from markdown.util import etree
+
 from . import settings
 
 
 class EditSectionExtension(Extension):
     def __init__(self, *args, **kwargs):
         self.config = {
-            'level': [settings.MAX_LEVEL, 'Allow to edit sections till this level'],
+            'level': [settings.MAX_LEVEL, 'Allow to edit sections until this level'],
             'headers': None,     # List of FindHeader, all headers with there positions
             'location': None,    # To be extracted header
             'header_id': None,   # Header text ID of the to be extracted header
@@ -22,7 +24,7 @@ class EditSectionExtension(Extension):
 
 
 def get_header_id(header):
-    header_id = ''.join(w[0] for w in re.findall("\w+", header))
+    header_id = ''.join(w[0] for w in re.findall(r"\w+", header))
     if not len(header_id):
         return '_'
     return header_id
