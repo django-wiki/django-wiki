@@ -11,9 +11,9 @@ class EditSectionExtension(Extension):
             'level': [settings.MAX_LEVEL, 'Allow to edit sections till this level'],
             'headers': None,     # List of FindHeader, all headers with there positions
             'location': None,    # To be extracted header
-            'header_id': None    # Header text ID of the to be extracted header
+            'header_id': None,   # Header text ID of the to be extracted header
         }
-        super(EditSectionExtension, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def extendMarkdown(self, md, md_globals):
         ext = EditSectionProcessor(md)
