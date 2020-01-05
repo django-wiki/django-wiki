@@ -13,7 +13,7 @@ class PreviewLinksExtension(markdown.Extension):
 class PreviewLinksTree(Treeprocessor):
 
     def run(self, root):
-        if self.markdown.preview:
+        if self.md.preview:
             for a in root.findall('.//a'):
                 # Do not set target for links like href='#markdown'
                 if not a.get('href').startswith('#'):
