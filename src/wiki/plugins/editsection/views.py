@@ -1,4 +1,5 @@
 import re
+
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect
 from django.utils.decorators import method_decorator
@@ -7,8 +8,9 @@ from wiki import models
 from wiki.core.markdown import article_markdown
 from wiki.core.plugins.registry import get_markdown_extensions
 from wiki.decorators import get_article
-from wiki.views.article import Edit as EditView
 from wiki.plugins.editsection.markdown_extensions import EditSectionExtension
+from wiki.views.article import Edit as EditView
+
 from . import settings
 
 
@@ -21,7 +23,7 @@ class FindHeader:
     SETEXT_RE_TEXT = r'(?P<header1>.*?)\n(?P<level1>[=-])+[ ]*(\n|$)'
     SETEXT_RE = re.compile(r'\n%s' % SETEXT_RE_TEXT, re.MULTILINE)
     HEADER_RE = re.compile(r'((\A ?\n?|\n(?![^\n]{0,3}\w).*?\n)%s'
-                           '|(\A|\n)(?P<level2>#{1,6})(?P<header2>.*?)#*(\n|$))' % SETEXT_RE_TEXT, re.MULTILINE)
+                           r'|(\A|\n)(?P<level2>#{1,6})(?P<header2>.*?)#*(\n|$))' % SETEXT_RE_TEXT, re.MULTILINE)
     ATTR_RE = re.compile(r'[ ]+\{\:?([^\}\n]*)\}[ ]*$')
 
     def __init__(self, text, pos):
@@ -105,7 +107,7 @@ class EditSection(EditView):
                 self.orig_section = text[location[0]:location[1]]
                 # Pass the to be used content to EditSection
                 kwargs['content'] = self.orig_section
-                request.session['editSection_content'] = self.orig_section
+                request.session['editsection_content'] = self.orig_section
             else:
                 messages.error(
                     request,
@@ -114,7 +116,7 @@ class EditSection(EditView):
                 )
                 return redirect('wiki:get', path=self.urlpath.path)
         else:
-            kwargs['content'] = request.session.get('editSection_content')
+            kwargs['content'] = request.session.get('editsection_content')
             self.orig_section = kwargs.get('content')
 
         return super().dispatch(request, article, *args, **kwargs)

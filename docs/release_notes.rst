@@ -15,6 +15,11 @@ Release plan
 0.5.1.dev
 ---------
 
+Added
+~~~~~
+
+* New plugin ``wiki.plugins.editsection`` displays an ``[edit]`` link next to section headers (Frank Loemker) :url-issue:`652`
+
 Fixed
 ~~~~~
 
