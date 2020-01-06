@@ -29,6 +29,7 @@ class NotificationSettingsTests(RequireRootArticleMixin, ArticleWebTestUtils, Dj
 
         # management form information, needed because of the formset
         management_form = response.context['form'].management_form
+
         for i in 'TOTAL_FORMS', 'INITIAL_FORMS', 'MIN_NUM_FORMS', 'MAX_NUM_FORMS':
             data['%s-%s' % (management_form.prefix, i)] = management_form[i].value()
 
@@ -45,11 +46,13 @@ class NotificationSettingsTests(RequireRootArticleMixin, ArticleWebTestUtils, Dj
         data['form-0-email'] = 2
         data['form-0-interval'] = 0
         # post the request without any change
+
         response = self.client.post(url, data, follow=True)
 
         self.assertEqual(len(response.context.get('messages')), 1)
+
         message = response.context.get('messages')._loaded_messages[0]
-        self.assertIn(message.message, 'Your notification settings were unchanged')
+        self.assertIn(message.message, 'You will receive notifications instantly for 0 articles')
 
         # Ensure we didn't create redundant Settings objects
         assert self.superuser1.nyt_settings.all().count() == 1
