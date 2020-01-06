@@ -97,7 +97,8 @@ class BaseSettingsFormSet(BaseModelFormSet):
     def get_queryset(self):
         return Settings.objects.filter(
             user=self.user,
-            subscription__articlesubscription__article__current_revision__deleted=False,
+        ).exclude(
+            subscription__articlesubscription__article__current_revision__deleted=True,
         ).prefetch_related(
             'subscription_set__articlesubscription',
         ).order_by('is_default').distinct()
