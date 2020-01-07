@@ -1,2 +1,0 @@
-{{ object.current_revision.title }}
-{{ object.render|striptags }}
