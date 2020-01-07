@@ -16,18 +16,21 @@ class WikiCustomUrlPatterns(WikiURLPatterns):
 
     def get_article_urls(self):
         urlpatterns = [
-            re_path('^my-wiki/(?P<article_id>[0-9]+)/$',
+            re_path(
+                '^my-wiki/(?P<article_id>[0-9]+)/$',
                 self.article_view_class.as_view(),
-                name='get'
-                ),
+                name='get',
+            ),
         ]
         return urlpatterns
 
     def get_article_path_urls(self):
         urlpatterns = [
-            re_path('^my-wiki/(?P<path>.+/|)$',
+            re_path(
+                '^my-wiki/(?P<path>.+/|)$',
                 self.article_view_class.as_view(),
-                name='get'),
+                name='get',
+            ),
         ]
         return urlpatterns
 

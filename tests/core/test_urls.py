@@ -2,7 +2,7 @@ from django.contrib.sites.models import Site
 from django.test.testcases import TestCase
 from django.urls import include, re_path
 from wiki.models import Article, URLPath
-from wiki.urls import WikiURLPatterns, get_pattern as get_wiki_pattern
+from wiki.urls import WikiURLPatterns
 
 from ..base import wiki_override_settings
 
@@ -11,25 +11,28 @@ class WikiCustomUrlPatterns(WikiURLPatterns):
 
     def get_article_urls(self):
         urlpatterns = [
-            re_path('^some-prefix/(?P<article_id>[0-9]+)/$',
+            re_path(
+                '^some-prefix/(?P<article_id>[0-9]+)/$',
                 self.article_view_class.as_view(),
-                name='get'
-                ),
+                name='get',
+            ),
         ]
         return urlpatterns
 
     def get_article_path_urls(self):
         urlpatterns = [
-            re_path('^some-other-prefix/(?P<path>.+/|)$',
+            re_path(
+                '^some-other-prefix/(?P<path>.+/|)$',
                 self.article_view_class.as_view(),
-                name='get'),
+                name='get',
+            ),
         ]
         return urlpatterns
 
 
 urlpatterns = [
     re_path(r'^notify/', include('django_nyt.urls')),
-    re_path(r'', get_wiki_pattern(url_config_class=WikiCustomUrlPatterns))
+    re_path(r'', include(WikiCustomUrlPatterns))
 ]
 
 

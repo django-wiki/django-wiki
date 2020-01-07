@@ -11,16 +11,19 @@ class LinkPlugin(BasePlugin):
 
     slug = 'links'
     urlpatterns = {'article': [
-        re_path(r'^json/query-urlpath/$',
+        re_path(
+            r'^json/query-urlpath/$',
             views.QueryUrlPath.as_view(),
             name='links_query_urlpath'),
     ]}
 
-    sidebar = {'headline': _('Links'),
-               'icon_class': 'fa-bookmark',
-               'template': 'wiki/plugins/links/sidebar.html',
-               'form_class': None,
-               'get_form_kwargs': (lambda a: {})}
+    sidebar = {
+        'headline': _('Links'),
+        'icon_class': 'fa-bookmark',
+        'template': 'wiki/plugins/links/sidebar.html',
+        'form_class': None,
+        'get_form_kwargs': (lambda a: {})
+    }
 
     wikipath_config = [
         ('base_url', reverse_lazy('wiki:get', kwargs={'path': ''})),

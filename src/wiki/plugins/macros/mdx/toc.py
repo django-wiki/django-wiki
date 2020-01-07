@@ -1,5 +1,3 @@
-import re
-
 from markdown.extensions.toc import TocExtension, TocTreeprocessor, slugify
 from wiki.plugins.macros import settings
 
@@ -33,4 +31,4 @@ class WikiTocExtension(TocExtension):
 
 def makeExtension(*args, **kwargs):
     """Return an instance of the extension."""
-    return WikiTocExtension(*args, **kwargs)
+    return WikiTocExtension(**kwargs)
