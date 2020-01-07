@@ -37,7 +37,7 @@ Removed
 ~~~~~~~
 
 * Python 3.4 support more or less definitively removed (no longer supported by test suite PyTest)
-
+* Removed unmaintained plugin ``wiki.plugins.haystack``
 
 0.5
 ---
