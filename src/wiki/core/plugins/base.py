@@ -1,7 +1,3 @@
-from django import forms
-from django.utils.translation import gettext as _
-
-
 """Base classes for different plugin objects.
 
  * BasePlugin: Create a wiki_plugin.py with a class that inherits from BasePlugin.
@@ -12,8 +8,22 @@ Please have a look in wiki.models.pluginbase to see where to inherit your
 plugin's models.
 """
 
+from __future__ import absolute_import, unicode_literals
+
+import logging
+
+from django import forms
+from django.http.response import Http404
+from django.utils.translation import ugettext as _
+
+logger = logging.getLogger(__name__)
+
 
 class BasePlugin:
+
+    def undefined_view(self, request, *args, **kwargs):
+        logger.error("Undefined plugin view got called: {}".format(request.path))
+        raise Http404
 
     """Plugins should inherit from this"""
     # Must fill in!
@@ -29,7 +39,7 @@ class BasePlugin:
         'article': [],
     }
     article_tab = None  # (_('Attachments'), "fa fa-file")
-    article_view = None  # A view for article_id/plugin/slug/
+    article_view = undefined_view  # A view for article_id/plugin/slug/
     # A list of notification handlers to be subscribed if the notification
     # system is active
     notifications = []

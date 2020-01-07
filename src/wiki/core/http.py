@@ -10,7 +10,7 @@ from wiki.conf import settings
 
 
 def django_sendfile_response(request, filepath):
-    from sendfile import sendfile
+    from sendfile import sendfile  # @UnresolvedImport
     return sendfile(request, filepath)
 
 
