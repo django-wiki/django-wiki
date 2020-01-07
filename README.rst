@@ -157,6 +157,7 @@ application. The dream of django-wiki is to become a contestant
 alongside Mediawiki, so that Django developers can stick to the Django
 platform even when facing tough challenges such as implementing a wiki.
 
+
 Q&A
 ---
 
@@ -193,6 +194,11 @@ on your host system.
 -  `Pillow (Python Imaging Library) <https://pillow.readthedocs.io/en/latest/installation.html>`__
 -  Python>=3.5
 
+
+Docker tl;dr
+------------
+
+There is a docker container available here: https://github.com/riotkit-org/docker-django-wiki
 
 
 Acknowledgements
