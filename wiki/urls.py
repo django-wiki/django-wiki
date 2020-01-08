@@ -21,13 +21,13 @@ if settings.ACCOUNT_HANDLING:
     ]
 
 urlpatterns += [
-    # This one doesn't work because it don't know where to redirect after...   
+    # This one doesn't work because it don't know where to redirect after...
     url(r'^_revision/change/(?P<article_id>\d+)/(?P<revision_id>\d+)/$', article.change_revision,
         name='change_revision'),
     url(r'^_revision/preview/(?P<article_id>\d+)/$', article.Preview.as_view(), name='preview_revision'),
     url(r'^_revision/merge/(?P<article_id>\d+)/(?P<revision_id>\d+)/preview/$', article.merge,
         name='merge_revision_preview', kwargs={'preview': True}),
-    
+
     # Paths decided by article_ids
     url(r'^(?P<article_id>\d+)/$', article.ArticleView.as_view(), name='get'),
     url(r'^(?P<article_id>\d+)/delete/$', article.Delete.as_view(), name='delete'),
@@ -69,10 +69,10 @@ urlpatterns += [
     url(r'^(?P<path>.+/|)$', article.ArticleView.as_view(), name='get'),
 ]
 
-def get_pattern(app_name="wiki", namespace="wiki"):
+def get_pattern(app_name="wiki"):
     """Every url resolution takes place as "wiki:view_name".
        You should not attempt to have multiple deployments of the wiki in a
        single Django project.
        https://docs.djangoproject.com/en/dev/topics/http/urls/#topics-http-reversing-url-namespaces
     """
-    return urlpatterns, app_name, namespace
+    return urlpatterns, app_name

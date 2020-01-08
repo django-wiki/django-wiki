@@ -16,13 +16,13 @@ register = template.Library()
 # called more than once per page in multiple template blocks.
 _cache = {}
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def article_for_object(context, obj):
     if not isinstance(obj, Model):
         raise TypeError("A Wiki article can only be associated to a Django Model instance, not %s" % type(obj))
-    
+
     content_type = ContentType.objects.get_for_model(obj)
-    
+
     # TODO: This is disabled for now, as it should only fire once per request
     # Maybe store cache in the request object?
     if True or not obj in list(_cache.keys()):
@@ -35,7 +35,7 @@ def article_for_object(context, obj):
 
 @register.inclusion_tag('wiki/includes/render.html')
 def wiki_render(article, preview_content=None):
-    
+
     if preview_content:
         content = article.render(preview_content=preview_content)
     else:
@@ -50,10 +50,10 @@ def wiki_render(article, preview_content=None):
 
 @register.inclusion_tag('wiki/includes/form.html', takes_context=True)
 def wiki_form(context, form_obj):
-    
+
     if not isinstance(form_obj, BaseForm):
         raise TypeError("Error including form, it's not a form, it's a %s" % type(form_obj))
-    
+
     return {
         'form': form_obj,
     }
