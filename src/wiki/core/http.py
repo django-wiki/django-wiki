@@ -44,6 +44,9 @@ def send_file(request, filepath, last_modified=None, filename=None):
 
     if filename:
         filename_escaped = filepath_to_uri(filename)
-        response["Content-Disposition"] = "attachment; filename=%s" % filename_escaped
+        if 'pdf' in mimetype.lower():
+            response["Content-Disposition"] = "inline; filename=%s" % filename_escaped
+        else:
+            response["Content-Disposition"] = "attachment; filename=%s" % filename_escaped
 
     return response

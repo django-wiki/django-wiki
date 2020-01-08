@@ -30,7 +30,8 @@ Fixed
 Changed
 ~~~~~~~
 
-* Test coverage upped from 75 to 78+% :url-issue:`976` (Mads Jensen, Benjamin Bach)
+* Test coverage upped from 75 to 80+% :url-issue:`976` (Mads Jensen, Benjamin Bach)
+* PDF attachment Content-Disposition header changed to ``inline`` for browser previewing :url-issue:`1010` (nicolazilio)
 * PyTest upgraded to latest 5.3
 
 Removed
