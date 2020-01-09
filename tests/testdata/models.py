@@ -14,4 +14,4 @@ class CustomGroup(models.Model):
 # user with invalid renamed identifier, and no email field
 class VeryCustomUser(AbstractBaseUser):
     identifier = models.IntegerField()
-    USERNAME_FIELD = 'identifier'
+    USERNAME_FIELD = "identifier"

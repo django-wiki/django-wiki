@@ -8,9 +8,9 @@ class MarkItUpWidget(forms.Widget):
     def __init__(self, attrs=None):
         # The 'rows' and 'cols' attributes are required for HTML correctness.
         default_attrs = {
-            'class': 'markItUp',
-            'rows': '10',
-            'cols': '40',
+            "class": "markItUp",
+            "rows": "10",
+            "cols": "40",
         }
         if attrs:
             default_attrs.update(attrs)
@@ -24,7 +24,7 @@ class MarkItUpAdminWidget(MarkItUpWidget):
 
 
 class MarkItUp(BaseEditor):
-    editor_id = 'markitup'
+    editor_id = "markitup"
 
     def get_admin_widget(self, instance=None):
         return MarkItUpAdminWidget()
@@ -34,20 +34,26 @@ class MarkItUp(BaseEditor):
 
     class AdminMedia:
         css = {
-            'all': ("wiki/markitup/skins/simple/style.css",
-                    "wiki/markitup/sets/admin/style.css",)
+            "all": (
+                "wiki/markitup/skins/simple/style.css",
+                "wiki/markitup/sets/admin/style.css",
+            )
         }
-        js = ("wiki/markitup/admin.init.js",
-              "wiki/markitup/jquery.markitup.js",
-              "wiki/markitup/sets/admin/set.js",
-              )
+        js = (
+            "wiki/markitup/admin.init.js",
+            "wiki/markitup/jquery.markitup.js",
+            "wiki/markitup/sets/admin/set.js",
+        )
 
     class Media:
         css = {
-            'all': ("wiki/markitup/skins/simple/style.css",
-                    "wiki/markitup/sets/frontend/style.css",)
+            "all": (
+                "wiki/markitup/skins/simple/style.css",
+                "wiki/markitup/sets/frontend/style.css",
+            )
         }
-        js = ("wiki/markitup/frontend.init.js",
-              "wiki/markitup/jquery.markitup.js",
-              "wiki/markitup/sets/frontend/set.js",
-              )
+        js = (
+            "wiki/markitup/frontend.init.js",
+            "wiki/markitup/jquery.markitup.js",
+            "wiki/markitup/sets/frontend/set.js",
+        )

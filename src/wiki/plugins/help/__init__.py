@@ -1,1 +1,1 @@
-default_app_config = 'wiki.plugins.help.apps.HelpConfig'
+default_app_config = "wiki.plugins.help.apps.HelpConfig"

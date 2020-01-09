@@ -3,17 +3,22 @@ from django.template.loader import render_to_string
 from wiki.plugins.images import models, settings
 
 IMAGE_RE = (
-    r"(?:(?im)" +
+    r"(?:(?im)"
+    +
     # Match '[image:N'
-    r"\[image\:(?P<id>[0-9]+)" +
+    r"\[image\:(?P<id>[0-9]+)"
+    +
     # Match optional 'align'
-    r"(?:\s+align\:(?P<align>right|left))?" +
+    r"(?:\s+align\:(?P<align>right|left))?"
+    +
     # Match optional 'size'
-    r"(?:\s+size\:(?P<size>default|small|medium|large|orig))?" +
+    r"(?:\s+size\:(?P<size>default|small|medium|large|orig))?"
+    +
     # Match ']' and rest of line.
     # Normally [^\n] could be replaced with a dot '.', since '.'
     # does not match newlines, but inline processors run with re.DOTALL.
-    r"\s*\](?P<trailer>[^\n]*)$" +
+    r"\s*\](?P<trailer>[^\n]*)$"
+    +
     # Match zero or more caption lines, each indented by four spaces.
     r"(?P<caption>(?:\n    [^\n]*)*))"
 )
@@ -24,8 +29,8 @@ class ImageExtension(markdown.Extension):
     """ Images plugin markdown extension for django-wiki. """
 
     def extendMarkdown(self, md):
-        md.inlinePatterns.add('dw-images', ImagePattern(IMAGE_RE, md), '>link')
-        md.postprocessors.add('dw-images-cleanup', ImagePostprocessor(md), '>raw_html')
+        md.inlinePatterns.add("dw-images", ImagePattern(IMAGE_RE, md), ">link")
+        md.postprocessors.add("dw-images-cleanup", ImagePostprocessor(md), ">raw_html")
 
 
 class ImagePattern(markdown.inlinepatterns.Pattern):
@@ -61,7 +66,7 @@ class ImagePattern(markdown.inlinepatterns.Pattern):
             pass
 
         caption = m.group("caption")
-        trailer = m.group('trailer')
+        trailer = m.group("trailer")
 
         caption_placeholder = "{{{IMAGECAPTION}}}"
         width = size.split("x")[0] if size else None
@@ -82,7 +87,6 @@ class ImagePattern(markdown.inlinepatterns.Pattern):
 
 
 class ImagePostprocessor(markdown.postprocessors.Postprocessor):
-
     def run(self, text):
         """
         This cleans up after Markdown's well-intended placing of image tags

@@ -11,9 +11,8 @@ re_sq_short = r"'([^'\\]*(?:\\.[^'\\]*)*)'"
 
 MACRO_RE = r"((?i)\[(?P<macro>\w+)(?P<kwargs>\s\w+\:.+)*\])"
 KWARG_RE = re.compile(
-    r'\s*(?P<arg>\w+)(:(?P<value>([^\']+|%s)))?' %
-    re_sq_short,
-    re.IGNORECASE)
+    r"\s*(?P<arg>\w+)(:(?P<value>([^\']+|%s)))?" % re_sq_short, re.IGNORECASE
+)
 
 
 class MacroExtension(markdown.Extension):
@@ -21,7 +20,7 @@ class MacroExtension(markdown.Extension):
     """ Macro plugin markdown extension for django-wiki. """
 
     def extendMarkdown(self, md):
-        md.inlinePatterns.add('dw-macros', MacroPattern(MACRO_RE, md), '>link')
+        md.inlinePatterns.add("dw-macros", MacroPattern(MACRO_RE, md), ">link")
 
 
 class MacroPattern(markdown.inlinepatterns.Pattern):
@@ -30,17 +29,17 @@ class MacroPattern(markdown.inlinepatterns.Pattern):
     [some_macro (kw:arg)*] references. """
 
     def handleMatch(self, m):
-        macro = m.group('macro').strip()
+        macro = m.group("macro").strip()
         if macro not in settings.METHODS or not hasattr(self, macro):
             return m.group(2)
 
-        kwargs = m.group('kwargs')
+        kwargs = m.group("kwargs")
         if not kwargs:
             return getattr(self, macro)()
         kwargs_dict = {}
         for kwarg in KWARG_RE.finditer(kwargs):
-            arg = kwarg.group('arg')
-            value = kwarg.group('value')
+            arg = kwarg.group("arg")
+            value = kwarg.group("value")
             if value is None:
                 value = True
             if isinstance(value, str):
@@ -58,35 +57,40 @@ class MacroPattern(markdown.inlinepatterns.Pattern):
         html = render_to_string(
             "wiki/plugins/macros/article_list.html",
             context={
-                'article_children': self.markdown.article.get_children(
-                    article__current_revision__deleted=False),
-                'depth': int(depth) + 1,
-            })
+                "article_children": self.markdown.article.get_children(
+                    article__current_revision__deleted=False
+                ),
+                "depth": int(depth) + 1,
+            },
+        )
         return self.markdown.htmlStash.store(html)
+
     article_list.meta = dict(
-        short_description=_('Article list'),
-        help_text=_('Insert a list of articles in this level.'),
-        example_code='[article_list depth:2]',
-        args={'depth': _('Maximum depth to show levels for.')}
+        short_description=_("Article list"),
+        help_text=_("Insert a list of articles in this level."),
+        example_code="[article_list depth:2]",
+        args={"depth": _("Maximum depth to show levels for.")},
     )
 
     def toc(self):
         return "[TOC]"
+
     toc.meta = dict(
-        short_description=_('Table of contents'),
-        help_text=_('Insert a table of contents matching the headings.'),
-        example_code='[TOC]',
-        args={}
+        short_description=_("Table of contents"),
+        help_text=_("Insert a table of contents matching the headings."),
+        example_code="[TOC]",
+        args={},
     )
 
     def wikilink(self):
         return ""
+
     wikilink.meta = dict(
-        short_description=_('WikiLinks'),
-        help_text=_(
-            'Insert a link to another wiki page with a short notation.'),
-        example_code='[[WikiLink]]',
-        args={})
+        short_description=_("WikiLinks"),
+        help_text=_("Insert a link to another wiki page with a short notation."),
+        example_code="[[WikiLink]]",
+        args={},
+    )
 
 
 def makeExtension(*args, **kwargs):

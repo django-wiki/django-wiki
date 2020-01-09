@@ -11,23 +11,23 @@ from . import settings
 class EditSectionExtension(Extension):
     def __init__(self, *args, **kwargs):
         self.config = {
-            'level': [settings.MAX_LEVEL, 'Allow to edit sections until this level'],
-            'headers': None,     # List of FindHeader, all headers with there positions
-            'location': None,    # To be extracted header
-            'header_id': None,   # Header text ID of the to be extracted header
+            "level": [settings.MAX_LEVEL, "Allow to edit sections until this level"],
+            "headers": None,  # List of FindHeader, all headers with there positions
+            "location": None,  # To be extracted header
+            "header_id": None,  # Header text ID of the to be extracted header
         }
         super().__init__(**kwargs)
 
     def extendMarkdown(self, md, md_globals):
         ext = EditSectionProcessor(md)
         ext.config = self.config
-        md.treeprocessors.add('editsection', ext, '_end')
+        md.treeprocessors.add("editsection", ext, "_end")
 
 
 def get_header_id(header):
-    header_id = ''.join(w[0] for w in re.findall(r"\w+", header))
+    header_id = "".join(w[0] for w in re.findall(r"\w+", header))
     if not len(header_id):
-        return '_'
+        return "_"
     return header_id
 
 
@@ -48,8 +48,11 @@ class EditSectionProcessor(Treeprocessor):
 
             # Find current position in headers
             cur_header += 1
-            while (cur_header < len(self.headers) and
-                   not self.headers[cur_header].sure_header and child.text != self.headers[cur_header].header):
+            while (
+                cur_header < len(self.headers)
+                and not self.headers[cur_header].sure_header
+                and child.text != self.headers[cur_header].header
+            ):
                 cur_header += 1
             if cur_header >= len(self.headers):
                 return None
@@ -63,7 +66,7 @@ class EditSectionProcessor(Treeprocessor):
             cur_pos[level - 1] += 1
             last_level = level
 
-            location = '-'.join(map(str, cur_pos))
+            location = "-".join(map(str, cur_pos))
             if location != self.location:
                 continue
 
@@ -93,29 +96,31 @@ class EditSectionProcessor(Treeprocessor):
                 cur_pos[l] = 0
             cur_pos[level - 1] += 1
             last_level = level
-            location = '-'.join(map(str, cur_pos))
+            location = "-".join(map(str, cur_pos))
             header_id = get_header_id(child.text)
 
             # Insert link to allow editing this section
-            link = etree.SubElement(child, 'a')
+            link = etree.SubElement(child, "a")
             link.text = settings.LINK_TEXT
             link.attrib["class"] = "article-edit-title-link"
 
             # Build the URL
             url_kwargs = self.md.article.get_url_kwargs()
-            url_kwargs['location'] = location
-            url_kwargs['header'] = header_id
-            link.attrib["href"] = reverse('wiki:editsection', kwargs=url_kwargs)
+            url_kwargs["location"] = location
+            url_kwargs["header"] = header_id
+            link.attrib["href"] = reverse("wiki:editsection", kwargs=url_kwargs)
 
     def run(self, root):
-        self.level = self.config.get('level')[0]
-        self.HEADER_RE = re.compile('^h([' + ''.join(map(str, range(1, self.level + 1))) + '])')
-        self.headers = self.config.get('headers')
+        self.level = self.config.get("level")[0]
+        self.HEADER_RE = re.compile(
+            "^h([" + "".join(map(str, range(1, self.level + 1))) + "])"
+        )
+        self.headers = self.config.get("headers")
         if self.headers:
-            self.location = self.config.get('location')
-            self.header_id = self.config.get('header_id')
-            self.config['location'] = self.locate_section(root)
-            self.config['headers'] = None
+            self.location = self.config.get("location")
+            self.header_id = self.config.get("header_id")
+            self.config["location"] = self.locate_section(root)
+            self.config["headers"] = None
         else:
             self.add_links(root)
         return root

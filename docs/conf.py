@@ -37,8 +37,8 @@ import django
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 
-sys.path.insert(0, os.path.abspath('../src'))
-sys.path.insert(0, os.path.abspath('../testproject'))
+sys.path.insert(0, os.path.abspath("../src"))
+sys.path.insert(0, os.path.abspath("../testproject"))
 
 # -- General configuration ------------------------------------------------
 
@@ -62,7 +62,7 @@ def process_docstring(app, what, name, obj, options, lines):
 
         for field in fields:
             # Skip ManyToOneRel and ManyToManyRel fields which have no 'verbose_name' or 'help_text'
-            if not hasattr(field, 'verbose_name'):
+            if not hasattr(field, "verbose_name"):
                 continue
 
             # Decode and strip any html out of the field's help text
@@ -75,62 +75,65 @@ def process_docstring(app, what, name, obj, options, lines):
             if help_text:
                 # Add the model field to the end of the docstring as a param
                 # using the help text as the description
-                lines.append(u':param %s: %s' % (field.attname, help_text))
+                lines.append(u":param %s: %s" % (field.attname, help_text))
             else:
                 # Add the model field to the end of the docstring as a param
                 # using the verbose name as the description
-                lines.append(u':param %s: %s' % (field.attname, verbose_name))
+                lines.append(u":param %s: %s" % (field.attname, verbose_name))
 
             # Add the field's type to the docstring
             if isinstance(field, models.ForeignKey):
                 for to in field.to_fields:
-                    lines.append(u':type %s: %s to :class:`~%s`' % (field.attname, type(field).__name__, to))
+                    lines.append(
+                        u":type %s: %s to :class:`~%s`"
+                        % (field.attname, type(field).__name__, to)
+                    )
             else:
-                lines.append(u':type %s: %s' % (field.attname, type(field).__name__))
+                lines.append(u":type %s: %s" % (field.attname, type(field).__name__))
 
     return lines
 
 
 extlinks = {
-    'url-issue': ('https://github.com/django-wiki/django-wiki/issues/%s', '#'),
+    "url-issue": ("https://github.com/django-wiki/django-wiki/issues/%s", "#"),
 }
 
 
 def setup(app):
     # Register the docstring processor with sphinx
-    app.connect('autodoc-process-docstring', process_docstring)
+    app.connect("autodoc-process-docstring", process_docstring)
 
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.extlinks',
-    'sphinx.ext.todo',
-    'sphinx.ext.viewcode',
+    "sphinx.ext.autodoc",
+    "sphinx.ext.extlinks",
+    "sphinx.ext.todo",
+    "sphinx.ext.viewcode",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # The suffix of source filenames.
-source_suffix = '.rst'
+source_suffix = ".rst"
 
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'
 
 # The master toctree document.
-master_doc = 'index'
+master_doc = "index"
 
 # General information about the project.
-project = 'django-wiki'
-copyright = '{}, Benjamin Bach'.format(datetime.now().year)  # noqa
+project = "django-wiki"
+copyright = "{}, Benjamin Bach".format(datetime.now().year)  # noqa
 
 
 path = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 sys.path = [path] + sys.path
-sys.path = [os.path.join(path, 'wiki')] + sys.path
+sys.path = [os.path.join(path, "wiki")] + sys.path
 
 
 import wiki  # noqa
@@ -157,7 +160,7 @@ release = wiki.__version__
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build']
+exclude_patterns = ["_build"]
 
 # The reST default role (used for this markup: `text`) to use for all documents.
 # default_role = None
@@ -174,25 +177,25 @@ exclude_patterns = ['_build']
 # show_authors = False
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = "sphinx"
 
 # A list of ignored prefixes for module index sorting.
 # modindex_common_prefix = []
 
 linkcheck_ignore = [
-    r'wiki.+',
+    r"wiki.+",
 ]
 
 
 # -- Options for HTML output ---------------------------------------------------
 
-on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
+on_rtd = os.environ.get("READTHEDOCS", None) == "True"
 if on_rtd:
     os.system("sphinx-apidoc --doc-project='Python Reference' -f -o . ../wiki")
 if on_rtd:
-    html_theme = 'default'
+    html_theme = "default"
 else:
-    html_theme = 'sphinx_rtd_theme'
+    html_theme = "sphinx_rtd_theme"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -265,7 +268,7 @@ html_static_path = []
 # html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'django-wikidoc'
+htmlhelp_basename = "django-wikidoc"
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -273,10 +276,8 @@ htmlhelp_basename = 'django-wikidoc'
 latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
     # 'papersize': 'letterpaper',
-
     # The font size ('10pt', '11pt' or '12pt').
     # 'pointsize': '10pt',
-
     # Additional stuff for the LaTeX preamble.
     # 'preamble': '',
 }
@@ -285,8 +286,11 @@ latex_elements = {
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
     (
-        'index', 'django-wiki.tex', 'django-wiki Documentation',
-        'Benjamin Bach', 'manual'
+        "index",
+        "django-wiki.tex",
+        "django-wiki Documentation",
+        "Benjamin Bach",
+        "manual",
     ),
 ]
 
@@ -316,8 +320,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'django-wiki', 'django-wiki Documentation',
-     ['Benjamin Bach'], 1)
+    ("index", "django-wiki", "django-wiki Documentation", ["Benjamin Bach"], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -331,9 +334,13 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (
-        'index', 'django-wiki', 'django-wiki Documentation',
-        'Benjamin Bach', 'django-wiki', 'Wiki engine for Django - with real data models!',
-        'Miscellaneous'
+        "index",
+        "django-wiki",
+        "django-wiki Documentation",
+        "Benjamin Bach",
+        "django-wiki",
+        "Wiki engine for Django - with real data models!",
+        "Miscellaneous",
     ),
 ]
 

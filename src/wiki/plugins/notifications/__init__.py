@@ -1,1 +1,1 @@
-default_app_config = 'wiki.plugins.notifications.apps.NotificationsConfig'
+default_app_config = "wiki.plugins.notifications.apps.NotificationsConfig"

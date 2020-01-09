@@ -5,22 +5,25 @@ from wiki.plugins.images import models
 
 
 class SidebarForm(PluginSidebarFormMixin):
-
     def __init__(self, article, request, *args, **kwargs):
         self.article = article
         self.request = request
         super().__init__(*args, **kwargs)
-        self.fields['image'].required = True
+        self.fields["image"].required = True
 
     def get_usermessage(self):
-        return gettext(
-            "New image %s was successfully uploaded. You can use it by selecting it from the list of available images.") % self.instance.get_filename()
+        return (
+            gettext(
+                "New image %s was successfully uploaded. You can use it by selecting it from the list of available images."
+            )
+            % self.instance.get_filename()
+        )
 
     def save(self, *args, **kwargs):
         if not self.instance.id:
             image = models.Image()
             image.article = self.article
-            kwargs['commit'] = False
+            kwargs["commit"] = False
             revision = super().save(*args, **kwargs)
             revision.set_from_request(self.request)
             image.add_revision(self.instance, save=True)
@@ -29,20 +32,19 @@ class SidebarForm(PluginSidebarFormMixin):
 
     class Meta:
         model = models.ImageRevision
-        fields = ('image',)
+        fields = ("image",)
 
 
 class RevisionForm(forms.ModelForm):
-
     def __init__(self, *args, **kwargs):
-        self.image = kwargs.pop('image')
-        self.request = kwargs.pop('request')
+        self.image = kwargs.pop("image")
+        self.request = kwargs.pop("request")
         super().__init__(*args, **kwargs)
-        self.fields['image'].required = True
+        self.fields["image"].required = True
 
     def save(self, *args, **kwargs):
         if not self.instance.id:
-            kwargs['commit'] = False
+            kwargs["commit"] = False
             revision = super().save(*args, **kwargs)
             revision.inherit_predecessor(self.image, skip_image_file=True)
             revision.deleted = False  # Restore automatically if deleted
@@ -53,15 +55,15 @@ class RevisionForm(forms.ModelForm):
 
     class Meta:
         model = models.ImageRevision
-        fields = ('image',)
+        fields = ("image",)
 
 
 class PurgeForm(forms.Form):
 
-    confirm = forms.BooleanField(label=_('Are you sure?'), required=False)
+    confirm = forms.BooleanField(label=_("Are you sure?"), required=False)
 
     def clean_confirm(self):
-        confirm = self.cleaned_data['confirm']
+        confirm = self.cleaned_data["confirm"]
         if not confirm:
-            raise forms.ValidationError(gettext('You are not sure enough!'))
+            raise forms.ValidationError(gettext("You are not sure enough!"))
         return confirm

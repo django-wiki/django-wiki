@@ -11,6 +11,7 @@ from wiki.conf import settings
 
 def django_sendfile_response(request, filepath):
     from sendfile import sendfile
+
     return sendfile(request, filepath)
 
 
@@ -23,18 +24,18 @@ def send_file(request, filepath, last_modified=None, filename=None):
     else:
         mimetype, encoding = mimetypes.guess_type(fullpath)
 
-    mimetype = mimetype or 'application/octet-stream'
+    mimetype = mimetype or "application/octet-stream"
 
     if settings.USE_SENDFILE:
         response = django_sendfile_response(request, filepath)
     else:
-        response = HttpResponse(open(fullpath, 'rb').read(), content_type=mimetype)
+        response = HttpResponse(open(fullpath, "rb").read(), content_type=mimetype)
 
     if not last_modified:
         response["Last-Modified"] = http_date(statobj.st_mtime)
     else:
         if isinstance(last_modified, datetime):
-            last_modified = float(dateformat.format(last_modified, 'U'))
+            last_modified = float(dateformat.format(last_modified, "U"))
         response["Last-Modified"] = http_date(epoch_seconds=last_modified)
 
     response["Content-Length"] = statobj.st_size
@@ -44,9 +45,11 @@ def send_file(request, filepath, last_modified=None, filename=None):
 
     if filename:
         filename_escaped = filepath_to_uri(filename)
-        if 'pdf' in mimetype.lower():
+        if "pdf" in mimetype.lower():
             response["Content-Disposition"] = "inline; filename=%s" % filename_escaped
         else:
-            response["Content-Disposition"] = "attachment; filename=%s" % filename_escaped
+            response["Content-Disposition"] = (
+                "attachment; filename=%s" % filename_escaped
+            )
 
     return response

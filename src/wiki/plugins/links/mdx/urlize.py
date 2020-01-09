@@ -62,40 +62,31 @@ import markdown
 URLIZE_RE = (
     # Links must start at beginning of string, or be preceded with
     # whitespace, '(', or '<'.
-    r'^(?P<begin>|.*?[\s\(\<])'
-
-    r'(?P<url>'  # begin url group
-
+    r"^(?P<begin>|.*?[\s\(\<])"
+    r"(?P<url>"  # begin url group
     # Leading protocol specification.
-    r'(?P<protocol>([A-Z][A-Z0-9+.-]*://|))'
-
+    r"(?P<protocol>([A-Z][A-Z0-9+.-]*://|))"
     # Host identifier
-    r'(?P<host>'  # begin host identifier group
-
-    r'[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}|'  # IPv4, match before FQDN
-    r'\[?([A-F0-9]{1,4}:){7}([A-F0-9]{1,4})\]?|'  # IPv6, full form
-    r'\[?:(:[A-F0-9]{1,4}){1,6}\]?|'  # IPv6, leading zeros removed
-    r'([A-F0-9]{1,4}:){1,6}:([A-F0-9]{1,4}){1,6}|'  # IPv6, zeros in middle removed.
-    r'\[?([A-F0-9]{1,4}:){1,6}:\]?|'  # IPv6, trailing zeros removed
-    r'\[?::\]?|'  # IPv6, just "empty" address
-    r'([A-Z0-9]([A-Z0-9-]{0,61}[A-Z0-9])?\.)+([A-Z]{2,6}\.?|[A-Z]{2,}\.?)'  # FQDN
-    r')'  # end host identifier group
-
+    r"(?P<host>"  # begin host identifier group
+    r"[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}|"  # IPv4, match before FQDN
+    r"\[?([A-F0-9]{1,4}:){7}([A-F0-9]{1,4})\]?|"  # IPv6, full form
+    r"\[?:(:[A-F0-9]{1,4}){1,6}\]?|"  # IPv6, leading zeros removed
+    r"([A-F0-9]{1,4}:){1,6}:([A-F0-9]{1,4}){1,6}|"  # IPv6, zeros in middle removed.
+    r"\[?([A-F0-9]{1,4}:){1,6}:\]?|"  # IPv6, trailing zeros removed
+    r"\[?::\]?|"  # IPv6, just "empty" address
+    r"([A-Z0-9]([A-Z0-9-]{0,61}[A-Z0-9])?\.)+([A-Z]{2,6}\.?|[A-Z]{2,}\.?)"  # FQDN
+    r")"  # end host identifier group
     # Optional port
-    r'(:(?P<port>[0-9]+))?'
-
+    r"(:(?P<port>[0-9]+))?"
     # Optional trailing slash with path and GET parameters.
-    r'(/(?P<path>[^\s\[\(\]\)\<\>]*))?'
-
-    r')'  # end url group
-
+    r"(/(?P<path>[^\s\[\(\]\)\<\>]*))?"
+    r")"  # end url group
     # Links must stop at end of string, or be followed by a whitespace, ')', or '>'.
-    r'(?P<end>[\s\)\>].*?|)$'
+    r"(?P<end>[\s\)\>].*?|)$"
 )
 
 
 class UrlizePattern(markdown.inlinepatterns.Pattern):
-
     def getCompiledRegExp(self):
         """
         Return compiled regular expression for matching the URL
@@ -111,41 +102,45 @@ class UrlizePattern(markdown.inlinepatterns.Pattern):
         Processes match found within the text.
         """
 
-        protocol = m.group('protocol')
+        protocol = m.group("protocol")
 
-        url = m.group('url')
+        url = m.group("url")
         text = url
 
-        begin_url = m.group('begin')
-        end_url = m.group('end')
+        begin_url = m.group("begin")
+        end_url = m.group("end")
 
         # If opening and ending character for URL are not the same,
         # return text unchanged.
         if begin_url:
             begin_delimeter = begin_url[-1]
         else:
-            begin_delimeter = ''
+            begin_delimeter = ""
         if end_url:
             end_delimeter = end_url[0]
         else:
-            end_delimeter = ''
+            end_delimeter = ""
 
         if (
-                begin_delimeter == '<' and end_delimeter != '>' or
-                begin_delimeter == '(' and end_delimeter != ')' or
-                end_delimeter == ')' and begin_delimeter != '(' or
-                end_delimeter == '>' and begin_delimeter != '<'
+            begin_delimeter == "<"
+            and end_delimeter != ">"
+            or begin_delimeter == "("
+            and end_delimeter != ")"
+            or end_delimeter == ")"
+            and begin_delimeter != "("
+            or end_delimeter == ">"
+            and begin_delimeter != "<"
         ):
             return url
 
         # If no supported protocol is specified, assume plaintext http
         # and add it to the url.
-        if protocol == '':
-            url = 'http://' + url
+        if protocol == "":
+            url = "http://" + url
 
         # Convenience link to distinguish external links more easily.
         icon = markdown.util.etree.Element("span")
-        icon.set('class', 'fa fa-external-link')
+        icon.set("class", "fa fa-external-link")
 
         # Link text.
         span_text = markdown.util.etree.Element("span")
@@ -153,9 +148,9 @@ class UrlizePattern(markdown.inlinepatterns.Pattern):
 
         # Set-up link itself.
         el = markdown.util.etree.Element("a")
-        el.set('href', url)
-        el.set('target', '_blank')
-        el.set('rel', 'nofollow')
+        el.set("href", url)
+        el.set("target", "_blank")
+        el.set("rel", "nofollow")
         el.append(icon)
         el.append(span_text)
 
@@ -170,7 +165,7 @@ class UrlizeExtension(markdown.extensions.Extension):
 
     def extendMarkdown(self, md):
         """ Replace autolink with UrlizePattern """
-        md.inlinePatterns['autolink'] = UrlizePattern(URLIZE_RE, md)
+        md.inlinePatterns["autolink"] = UrlizePattern(URLIZE_RE, md)
 
 
 def makeExtension(*args, **kwargs):

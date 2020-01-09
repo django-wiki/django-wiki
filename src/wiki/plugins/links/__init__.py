@@ -1,1 +1,1 @@
-default_app_config = 'wiki.plugins.links.apps.LinksConfig'
+default_app_config = "wiki.plugins.links.apps.LinksConfig"

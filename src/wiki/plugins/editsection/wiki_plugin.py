@@ -9,11 +9,15 @@ from . import settings, views
 class EditSectionPlugin(BasePlugin):
 
     slug = settings.SLUG
-    urlpatterns = {'article': [
-        url(r'^(?P<location>[0-9-]+)/header/(?P<header>\w+)/$',
-            views.EditSection.as_view(),
-            name='editsection'),
-    ]}
+    urlpatterns = {
+        "article": [
+            url(
+                r"^(?P<location>[0-9-]+)/header/(?P<header>\w+)/$",
+                views.EditSection.as_view(),
+                name="editsection",
+            ),
+        ]
+    }
 
     markdown_extensions = [EditSectionExtension()]
 

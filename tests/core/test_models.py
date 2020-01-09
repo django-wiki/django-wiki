@@ -13,27 +13,28 @@ Group = apps.get_model(settings.GROUP_MODEL)
 
 
 class WikiCustomUrlPatterns(WikiURLPatterns):
-
     def get_article_urls(self):
         urlpatterns = [
-            re_path('^my-wiki/(?P<article_id>[0-9]+)/$',
+            re_path(
+                "^my-wiki/(?P<article_id>[0-9]+)/$",
                 self.article_view_class.as_view(),
-                name='get'
-                ),
+                name="get",
+            ),
         ]
         return urlpatterns
 
     def get_article_path_urls(self):
         urlpatterns = [
-            re_path('^my-wiki/(?P<path>.+/|)$',
+            re_path(
+                "^my-wiki/(?P<path>.+/|)$",
                 self.article_view_class.as_view(),
-                name='get'),
+                name="get",
+            ),
         ]
         return urlpatterns
 
 
 class ArticleModelTest(TestCase):
-
     def test_default_fields_of_empty_article(self):
 
         a = Article.objects.create()
@@ -57,7 +58,7 @@ class ArticleModelTest(TestCase):
 
     def test_str_method_if_have_current_revision(self):
 
-        title = 'Test title'
+        title = "Test title"
 
         a = Article.objects.create()
         ArticleRevision.objects.create(article=a, title=title)
@@ -68,7 +69,7 @@ class ArticleModelTest(TestCase):
 
         a = Article.objects.create()
 
-        expected = 'Article without content (1)'
+        expected = "Article without content (1)"
 
         self.assertEqual(str(a), expected)
 
@@ -80,16 +81,11 @@ class ArticleModelTest(TestCase):
 
         a2 = Article.objects.create()
         s2 = Site.objects.create(domain="somethingelse.com", name="somethingelse.com")
-        URLPath.objects.create(
-            article=a2,
-            site=s2,
-            parent=u1,
-            slug='test_slug'
-        )
+        URLPath.objects.create(article=a2, site=s2, parent=u1, slug="test_slug")
 
         url = a2.get_absolute_url()
 
-        expected = '/test_slug/'
+        expected = "/test_slug/"
 
         self.assertEqual(url, expected)
 
@@ -99,13 +95,13 @@ class ArticleModelTest(TestCase):
 
         url = a.get_absolute_url()
 
-        expected = '/1/'
+        expected = "/1/"
 
         self.assertEqual(url, expected)
 
     def test_article_is_related_to_articlerevision(self):
 
-        title = 'Test title'
+        title = "Test title"
 
         a = Article.objects.create()
         r = ArticleRevision.objects.create(article=a, title=title)
@@ -115,7 +111,7 @@ class ArticleModelTest(TestCase):
 
     def test_article_is_related_to_owner(self):
 
-        u = User.objects.create(username='Noman', password='pass')
+        u = User.objects.create(username="Noman", password="pass")
         a = Article.objects.create(owner=u)
 
         self.assertEqual(a.owner, u)
@@ -131,11 +127,6 @@ class ArticleModelTest(TestCase):
 
     def test_cache(self):
         a = Article.objects.create()
-        ArticleRevision.objects.create(
-            article=a, title="test", content="# header"
-        )
-        expected = (
-            """<h1 id="wiki-toc-header">header"""
-            """.*</h1>"""
-        )
+        ArticleRevision.objects.create(article=a, title="test", content="# header")
+        expected = """<h1 id="wiki-toc-header">header""" """.*</h1>"""
         self.assertRegexpMatches(a.get_cached_content(), expected)

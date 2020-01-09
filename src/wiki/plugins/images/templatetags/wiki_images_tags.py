@@ -7,8 +7,8 @@ register = template.Library()
 @register.filter
 def images_for_article(article):
     return models.Image.objects.filter(
-        article=article, current_revision__deleted=False).order_by(
-        '-current_revision__created')
+        article=article, current_revision__deleted=False
+    ).order_by("-current_revision__created")
 
 
 @register.filter

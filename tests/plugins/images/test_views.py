@@ -10,11 +10,15 @@ from wiki.models import URLPath
 from wiki.plugins.images import models
 from wiki.plugins.images.wiki_plugin import ImagePlugin
 
-from ...base import ArticleWebTestUtils, DjangoClientTestBase, RequireRootArticleMixin, wiki_override_settings
+from ...base import (
+    ArticleWebTestUtils,
+    DjangoClientTestBase,
+    RequireRootArticleMixin,
+    wiki_override_settings,
+)
 
 
 class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
-
     def setUp(self):
         super().setUp()
         self.article = self.root_article
@@ -31,16 +35,11 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         Optional Arguments :
         filename : str, Defaults to 'test.txt'
         """
-        filename = kwargs.get('filename', 'test.gif')
+        filename = kwargs.get("filename", "test.gif")
         data = base64.b64decode(str_base64)
         filedata = BytesIO(data)
         filestream = InMemoryUploadedFile(
-            filedata,
-            None,
-            filename,
-            'image',
-            len(data),
-            None
+            filedata, None, filename, "image", len(data), None
         )
         return filestream
 
@@ -52,24 +51,24 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
                 plugin_index = cnt
                 break
         self.assertGreaterEqual(plugin_index, 0, msg="Image plugin not activated")
-        base_edit_url = reverse('wiki:edit', kwargs={'path': path})
-        url = base_edit_url + '?f=form{0:d}'.format(plugin_index)
+        base_edit_url = reverse("wiki:edit", kwargs={"path": path})
+        url = base_edit_url + "?f=form{0:d}".format(plugin_index)
         filestream = self._create_gif_filestream_from_base64(self.test_data)
         response = self.client.post(
             url,
             {
-                'unsaved_article_title': self.article.current_revision.title,
-                'unsaved_article_content': self.article.current_revision.content,
-                'image': filestream,
-                'images_save': '1',
+                "unsaved_article_title": self.article.current_revision.title,
+                "unsaved_article_content": self.article.current_revision.content,
+                "image": filestream,
+                "images_save": "1",
             },
         )
         self.assertRedirects(response, base_edit_url)
 
     def test_index(self):
-        url = reverse('wiki:images_index', kwargs={'path': ''})
+        url = reverse("wiki:images_index", kwargs={"path": ""})
         response = self.client.get(url,)
-        self.assertContains(response, 'Images')
+        self.assertContains(response, "Images")
 
     def test_upload(self):
         """
@@ -77,22 +76,18 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         Uploading a file should preserve the original filename.
         Uploading should not modify file in any way.
         """
-        self._create_test_image('')
+        self._create_test_image("")
         # Check the object was created.
         image = models.Image.objects.get()
         image_revision = image.current_revision.imagerevision
-        self.assertEqual(image_revision.get_filename(), 'test.gif')
+        self.assertEqual(image_revision.get_filename(), "test.gif")
         self.assertEqual(
-            image_revision.image.file.read(),
-            base64.b64decode(self.test_data)
+            image_revision.image.file.read(), base64.b64decode(self.test_data)
         )
 
     def get_article(self, cont, image):
         urlpath = URLPath.create_urlpath(
-            URLPath.root(),
-            "html_image",
-            title="TestImage",
-            content=cont
+            URLPath.root(), "html_image", title="TestImage", content=cont
         )
         if image:
             self._create_test_image(urlpath.path)
@@ -143,68 +138,87 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
     # https://gist.github.com/guillaumepiot/817a70706587da3bd862835c59ef584e
     def generate_photo_file(self):
         file = BytesIO()
-        image = Image.new('RGBA', size=(100, 100), color=(155, 0, 0))
-        image.save(file, 'gif')
-        file.name = 'test.gif'
+        image = Image.new("RGBA", size=(100, 100), color=(155, 0, 0))
+        image.save(file, "gif")
+        file.name = "test.gif"
         file.seek(0)
         return file
 
     def test_add_revision(self):
-        self._create_test_image(path='')
+        self._create_test_image(path="")
         image = models.Image.objects.get()
         before_edit_rev = image.current_revision.revision_number
 
         response = self.client.post(
-            reverse('wiki:images_add_revision', kwargs={
-                'article_id': self.root_article, 'image_id': image.pk, 'path': '',
-            }),
-            data={'image': self.generate_photo_file()}
+            reverse(
+                "wiki:images_add_revision",
+                kwargs={
+                    "article_id": self.root_article,
+                    "image_id": image.pk,
+                    "path": "",
+                },
+            ),
+            data={"image": self.generate_photo_file()},
         )
-        self.assertRedirects(
-            response, reverse('wiki:edit', kwargs={'path': ''})
-        )
+        self.assertRedirects(response, reverse("wiki:edit", kwargs={"path": ""}))
         image = models.Image.objects.get()
         self.assertEqual(models.Image.objects.count(), 1)
-        self.assertEqual(image.current_revision.previous_revision.revision_number, before_edit_rev)
+        self.assertEqual(
+            image.current_revision.previous_revision.revision_number, before_edit_rev
+        )
 
     def test_delete_restore_revision(self):
-        self._create_test_image(path='')
+        self._create_test_image(path="")
         image = models.Image.objects.get()
         before_edit_rev = image.current_revision.revision_number
 
         response = self.client.get(
-            reverse('wiki:images_delete', kwargs={
-                'article_id': self.root_article, 'image_id': image.pk, 'path': '',
-            }),
+            reverse(
+                "wiki:images_delete",
+                kwargs={
+                    "article_id": self.root_article,
+                    "image_id": image.pk,
+                    "path": "",
+                },
+            ),
         )
         self.assertRedirects(
-            response, reverse('wiki:images_index', kwargs={'path': ''})
+            response, reverse("wiki:images_index", kwargs={"path": ""})
         )
         image = models.Image.objects.get()
         self.assertEqual(models.Image.objects.count(), 1)
-        self.assertEqual(image.current_revision.previous_revision.revision_number, before_edit_rev)
+        self.assertEqual(
+            image.current_revision.previous_revision.revision_number, before_edit_rev
+        )
         self.assertIs(image.current_revision.deleted, True)
 
         # RESTORE
         before_edit_rev = image.current_revision.revision_number
         response = self.client.get(
-            reverse('wiki:images_restore', kwargs={
-                'article_id': self.root_article, 'image_id': image.pk, 'path': '',
-            }),
+            reverse(
+                "wiki:images_restore",
+                kwargs={
+                    "article_id": self.root_article,
+                    "image_id": image.pk,
+                    "path": "",
+                },
+            ),
         )
         self.assertRedirects(
-            response, reverse('wiki:images_index', kwargs={'path': ''})
+            response, reverse("wiki:images_index", kwargs={"path": ""})
         )
         image = models.Image.objects.get()
         self.assertEqual(models.Image.objects.count(), 1)
-        self.assertEqual(image.current_revision.previous_revision.revision_number, before_edit_rev)
+        self.assertEqual(
+            image.current_revision.previous_revision.revision_number, before_edit_rev
+        )
         self.assertFalse(image.current_revision.deleted)
 
     def test_purge(self):
         """
         Tests that an image is really purged
         """
-        self._create_test_image(path='')
+        self._create_test_image(path="")
         image = models.Image.objects.get()
         image_revision = image.current_revision.imagerevision
         f_path = image_revision.image.file.name
@@ -212,24 +226,30 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         self.assertIs(os.path.exists(f_path), True)
 
         response = self.client.post(
-            reverse('wiki:images_purge', kwargs={
-                'article_id': self.root_article, 'image_id': image.pk, 'path': '',
-            }),
-            data={'confirm': True}
+            reverse(
+                "wiki:images_purge",
+                kwargs={
+                    "article_id": self.root_article,
+                    "image_id": image.pk,
+                    "path": "",
+                },
+            ),
+            data={"confirm": True},
         )
         self.assertRedirects(
-            response, reverse('wiki:images_index', kwargs={'path': ''})
+            response, reverse("wiki:images_index", kwargs={"path": ""})
         )
         self.assertEqual(models.Image.objects.count(), 0)
         self.assertIs(os.path.exists(f_path), False)
 
     @wiki_override_settings(ACCOUNT_HANDLING=True)
     def test_login_on_revision_add(self):
-        self._create_test_image(path='')
+        self._create_test_image(path="")
         self.client.logout()
         image = models.Image.objects.get()
-        url = reverse('wiki:images_add_revision', kwargs={
-            'article_id': self.root_article, 'image_id': image.pk, 'path': '',
-        })
-        response = self.client.post(url, data={'image': self.generate_photo_file()})
-        self.assertRedirects(response, '{}?next={}'.format(reverse('wiki:login'), url))
+        url = reverse(
+            "wiki:images_add_revision",
+            kwargs={"article_id": self.root_article, "image_id": image.pk, "path": "",},
+        )
+        response = self.client.post(url, data={"image": self.generate_photo_file()})
+        self.assertRedirects(response, "{}?next={}".format(reverse("wiki:login"), url))

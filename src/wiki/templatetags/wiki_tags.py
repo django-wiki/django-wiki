@@ -36,54 +36,54 @@ def article_for_object(context, obj):
     if True or obj not in _cache:
         try:
             article = models.ArticleForObject.objects.get(
-                content_type=content_type,
-                object_id=obj.pk).article
+                content_type=content_type, object_id=obj.pk
+            ).article
         except models.ArticleForObject.DoesNotExist:
             article = None
         _cache[obj] = article
     return _cache[obj]
 
 
-@register.inclusion_tag('wiki/includes/render.html', takes_context=True)
+@register.inclusion_tag("wiki/includes/render.html", takes_context=True)
 def wiki_render(context, article, preview_content=None):
 
     if preview_content:
         content = article.render(preview_content=preview_content)
     elif article.current_revision:
-        content = article.get_cached_content(user=context.get('user'))
+        content = article.get_cached_content(user=context.get("user"))
     else:
         content = None
 
-    context.update({
-        'article': article,
-        'content': content,
-        'preview': preview_content is not None,
-        'plugins': plugin_registry.get_plugins(),
-        'STATIC_URL': django_settings.STATIC_URL,
-        'CACHE_TIMEOUT': settings.CACHE_TIMEOUT,
-    })
+    context.update(
+        {
+            "article": article,
+            "content": content,
+            "preview": preview_content is not None,
+            "plugins": plugin_registry.get_plugins(),
+            "STATIC_URL": django_settings.STATIC_URL,
+            "CACHE_TIMEOUT": settings.CACHE_TIMEOUT,
+        }
+    )
     return context
 
 
-@register.inclusion_tag('wiki/includes/form.html', takes_context=True)
+@register.inclusion_tag("wiki/includes/form.html", takes_context=True)
 def wiki_form(context, form_obj):
     if not isinstance(form_obj, BaseForm):
         raise TypeError(
-            "Error including form, it's not a form, it's a %s" %
-            type(form_obj))
-    context.update({'form': form_obj})
+            "Error including form, it's not a form, it's a %s" % type(form_obj)
+        )
+    context.update({"form": form_obj})
     return context
 
 
-@register.inclusion_tag('wiki/includes/messages.html', takes_context=True)
+@register.inclusion_tag("wiki/includes/messages.html", takes_context=True)
 def wiki_messages(context):
 
-    messages = context.get('messages', [])
+    messages = context.get("messages", [])
     for message in messages:
         message.css_class = settings.MESSAGE_TAG_CSS_CLASS[message.level]
-    context.update({
-        'messages': messages
-    })
+    context.update({"messages": messages})
     return context
 
 
@@ -116,22 +116,22 @@ def get_content_snippet(content, keyword, max_words=30):
 
     if match_position != -1:
         try:
-            match_start = content.rindex(' ', 0, match_position) + 1
+            match_start = content.rindex(" ", 0, match_position) + 1
         except ValueError:
             match_start = 0
         try:
-            match_end = content.index(' ', match_position + len(keyword))
+            match_end = content.index(" ", match_position + len(keyword))
         except ValueError:
             match_end = len(content)
         all_before = clean_text(content[:match_start])
         match = content[match_start:match_end]
         all_after = clean_text(content[match_end:])
-        before_words = all_before[-max_words // 2:]
-        after_words = all_after[:max_words - len(before_words)]
+        before_words = all_before[-max_words // 2 :]
+        after_words = all_after[: max_words - len(before_words)]
         before = " ".join(before_words)
         after = " ".join(after_words)
         html = ("%s %s %s" % (before, striptags(match), after)).strip()
-        kw_p = re.compile(r'(\S*%s\S*)' % keyword, re.IGNORECASE)
+        kw_p = re.compile(r"(\S*%s\S*)" % keyword, re.IGNORECASE)
         html = kw_p.sub(r"<strong>\1</strong>", html)
 
         return mark_safe(html)
@@ -185,12 +185,12 @@ def is_locked(model):
 
 @register.simple_tag(takes_context=True)
 def login_url(context):
-    request = context['request']
-    qs = request.META.get('QUERY_STRING', '')
+    request = context["request"]
+    qs = request.META.get("QUERY_STRING", "")
     if qs:
-        qs = urlquote('?' + qs)
+        qs = urlquote("?" + qs)
     else:
-        qs = ''
+        qs = ""
     return settings.LOGIN_URL + "?next=" + request.path + qs
 
 

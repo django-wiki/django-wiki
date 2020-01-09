@@ -26,14 +26,20 @@ def check_user_field(user_model):
 
 
 def check_email_field(user_model):
-    return isinstance(_get_field(user_model, user_model.get_email_field_name()), EmailField)
+    return isinstance(
+        _get_field(user_model, user_model.get_email_field_name()), EmailField
+    )
 
 
 # django parses the ModelForm (and Meta classes) on class creation, which fails with custom models without expected fields.
 # We need to check this here, because if this module can't load then system checks can't run.
-CustomUser = User \
-    if (settings.ACCOUNT_HANDLING and check_user_field(User) and check_email_field(User)) \
+CustomUser = (
+    User
+    if (
+        settings.ACCOUNT_HANDLING and check_user_field(User) and check_email_field(User)
+    )
     else django.contrib.auth.models.User
+)
 
 
 class UserCreationForm(UserCreationForm):
@@ -44,16 +50,16 @@ class UserCreationForm(UserCreationForm):
 
         # Add honeypots
         self.honeypot_fieldnames = "address", "phone"
-        self.honeypot_class = ''.join(
-            random.choice(string.ascii_uppercase + string.digits)
-            for __ in range(10))
-        self.honeypot_jsfunction = 'f' + ''.join(
-            random.choice(string.ascii_uppercase + string.digits)
-            for __ in range(10))
+        self.honeypot_class = "".join(
+            random.choice(string.ascii_uppercase + string.digits) for __ in range(10)
+        )
+        self.honeypot_jsfunction = "f" + "".join(
+            random.choice(string.ascii_uppercase + string.digits) for __ in range(10)
+        )
 
         for fieldname in self.honeypot_fieldnames:
             self.fields[fieldname] = forms.CharField(
-                widget=forms.TextInput(attrs={'class': self.honeypot_class}),
+                widget=forms.TextInput(attrs={"class": self.honeypot_class}),
                 required=False,
             )
 
@@ -61,7 +67,8 @@ class UserCreationForm(UserCreationForm):
         for fieldname in self.honeypot_fieldnames:
             if self.cleaned_data[fieldname]:
                 raise forms.ValidationError(
-                    "Thank you, non-human visitor. Please keep trying to fill in the form.")
+                    "Thank you, non-human visitor. Please keep trying to fill in the form."
+                )
         return self.cleaned_data
 
     class Meta:
@@ -70,12 +77,16 @@ class UserCreationForm(UserCreationForm):
 
 
 class UserUpdateForm(forms.ModelForm):
-    password1 = forms.CharField(label="New password", widget=forms.PasswordInput(), required=False)
-    password2 = forms.CharField(label="Confirm password", widget=forms.PasswordInput(), required=False)
+    password1 = forms.CharField(
+        label="New password", widget=forms.PasswordInput(), required=False
+    )
+    password2 = forms.CharField(
+        label="Confirm password", widget=forms.PasswordInput(), required=False
+    )
 
     def clean(self):
-        password1 = self.cleaned_data.get('password1')
-        password2 = self.cleaned_data.get('password2')
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
 
         if password1 and password1 != password2:
             raise forms.ValidationError(_("Passwords don't match"))

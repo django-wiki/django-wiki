@@ -6,4 +6,4 @@ from django.conf import settings as django_settings
 #: can be done by following the link. This link will be relative to
 #: ``LOOKUP_LEVEL``. This should be the level that most articles are
 #: created at.
-LOOKUP_LEVEL = getattr(django_settings, 'WIKI_LINKS_LOOKUP_LEVEL', 2)
+LOOKUP_LEVEL = getattr(django_settings, "WIKI_LINKS_LOOKUP_LEVEL", 2)

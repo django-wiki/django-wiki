@@ -11,7 +11,11 @@ SETTINGS.LOGOUT_URL
 
 from django.conf import settings as django_settings
 from django.contrib import messages
-from django.contrib.auth import get_user_model, login as auth_login, logout as auth_logout
+from django.contrib.auth import (
+    get_user_model,
+    login as auth_login,
+    logout as auth_logout,
+)
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -31,32 +35,31 @@ class Signup(CreateView):
     def dispatch(self, request, *args, **kwargs):
         # Let logged in super users continue
         if not request.user.is_anonymous and not request.user.is_superuser:
-            return redirect('wiki:root')
+            return redirect("wiki:root")
         # If account handling is disabled, don't go here
         if not settings.ACCOUNT_HANDLING:
             return redirect(settings.SIGNUP_URL)
         # Allow superusers to use signup page...
         if not request.user.is_superuser and not settings.ACCOUNT_SIGNUP_ALLOWED:
-            c = {'error_msg': _('Account signup is only allowed for administrators.')}
+            c = {"error_msg": _("Account signup is only allowed for administrators.")}
             return render(request, "wiki/error.html", context=c)
 
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['honeypot_class'] = context['form'].honeypot_class
-        context['honeypot_jsfunction'] = context['form'].honeypot_jsfunction
+        context["honeypot_class"] = context["form"].honeypot_class
+        context["honeypot_jsfunction"] = context["form"].honeypot_jsfunction
         return context
 
     def get_success_url(self, *args):
         messages.success(
-            self.request,
-            _('You are now signed up... and now you can sign in!'))
+            self.request, _("You are now signed up... and now you can sign in!")
+        )
         return reverse("wiki:login")
 
 
 class Logout(View):
-
     def dispatch(self, request, *args, **kwargs):
         if not settings.ACCOUNT_HANDLING:
             return redirect(settings.LOGOUT_URL)
@@ -75,7 +78,7 @@ class Login(FormView):
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_anonymous:
-            return redirect('wiki:root')
+            return redirect("wiki:root")
         if not settings.ACCOUNT_HANDLING:
             return redirect(settings.LOGIN_URL)
         return super().dispatch(request, *args, **kwargs)
@@ -83,23 +86,23 @@ class Login(FormView):
     def get_form_kwargs(self):
         self.request.session.set_test_cookie()
         kwargs = super().get_form_kwargs()
-        kwargs['request'] = self.request
+        kwargs["request"] = self.request
         return kwargs
 
     def post(self, request, *args, **kwargs):
-        self.referer = request.session.get('login_referer', '')
+        self.referer = request.session.get("login_referer", "")
         return super().post(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        self.referer = request.META.get('HTTP_REFERER', '')
-        request.session['login_referer'] = self.referer
+        self.referer = request.META.get("HTTP_REFERER", "")
+        request.session["login_referer"] = self.referer
         return super().get(request, *args, **kwargs)
 
     def form_valid(self, form, *args, **kwargs):
         auth_login(self.request, form.get_user())
         messages.info(self.request, _("You are now logged in! Have fun!"))
         if self.request.GET.get("next", None):
-            return redirect(self.request.GET['next'])
+            return redirect(self.request.GET["next"])
         if django_settings.LOGIN_REDIRECT_URL:
             return redirect(django_settings.LOGIN_REDIRECT_URL)
         else:
@@ -120,12 +123,12 @@ class Update(UpdateView):
         """
         Save the initial referer
         """
-        self.referer = request.META.get('HTTP_REFERER', '')
-        request.session['login_referer'] = self.referer
+        self.referer = request.META.get("HTTP_REFERER", "")
+        request.session["login_referer"] = self.referer
         return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        self.referer = request.session.get('login_referer', '')
+        self.referer = request.session.get("login_referer", "")
         return super().post(request, *args, **kwargs)
 
     def form_valid(self, form):

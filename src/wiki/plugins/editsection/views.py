@@ -17,8 +17,7 @@ ERROR_SECTION_CHANGED = gettext_lazy(
     "Unable to find the selected section. The article was modified meanwhile."
 )
 ERROR_SECTION_UNSAVED = gettext_lazy(
-    "Your changes must be re-applied in the new section structure of the "
-    "article."
+    "Your changes must be re-applied in the new section structure of the " "article."
 )
 ERROR_ARTICLE_CHANGED = gettext_lazy(
     "Unable to find the selected section in the current article. The article "
@@ -34,11 +33,14 @@ class FindHeader:
     headers which are filtered out later in the markdown extension.
     Returns: start pos header sure_header level"""
 
-    SETEXT_RE_TEXT = r'(?P<header1>.*?)\n(?P<level1>[=-])+[ ]*(\n|$)'
-    SETEXT_RE = re.compile(r'\n%s' % SETEXT_RE_TEXT, re.MULTILINE)
-    HEADER_RE = re.compile(r'((\A ?\n?|\n(?![^\n]{0,3}\w).*?\n)%s'
-                           r'|(\A|\n)(?P<level2>#{1,6})(?P<header2>.*?)#*(\n|$))' % SETEXT_RE_TEXT, re.MULTILINE)
-    ATTR_RE = re.compile(r'[ ]+\{\:?([^\}\n]*)\}[ ]*$')
+    SETEXT_RE_TEXT = r"(?P<header1>.*?)\n(?P<level1>[=-])+[ ]*(\n|$)"
+    SETEXT_RE = re.compile(r"\n%s" % SETEXT_RE_TEXT, re.MULTILINE)
+    HEADER_RE = re.compile(
+        r"((\A ?\n?|\n(?![^\n]{0,3}\w).*?\n)%s"
+        r"|(\A|\n)(?P<level2>#{1,6})(?P<header2>.*?)#*(\n|$))" % SETEXT_RE_TEXT,
+        re.MULTILINE,
+    )
+    ATTR_RE = re.compile(r"[ ]+\{\:?([^\}\n]*)\}[ ]*$")
 
     def __init__(self, text, pos):
         self.sure_header = False
@@ -54,23 +56,23 @@ class FindHeader:
         self.pos = match.end() - 1
 
         # Get level and header text of the section
-        token = match.group('level1')
+        token = match.group("level1")
         if token:
-            self.header = match.group('header1').strip()
-            self.start = match.start('header1')
+            self.header = match.group("header1").strip()
+            self.start = match.start("header1")
         else:
-            token = match.group('level2')
-            self.header = match.group('header2').strip()
-            self.start = match.start('level2')
+            token = match.group("level2")
+            self.header = match.group("header2").strip()
+            self.start = match.start("level2")
             self.sure_header = True
         # Remove attribute definitions from the header text
         match = self.ATTR_RE.search(self.header)
         if match:
-            self.header = self.header[:match.start()].rstrip('#').rstrip()
+            self.header = self.header[: match.start()].rstrip("#").rstrip()
         # Get level of the section
-        if token[0] == '=':
+        if token[0] == "=":
             self.level = 1
-        elif token[0] == '-':
+        elif token[0] == "-":
             self.level = 2
         else:
             self.level = len(token)
@@ -99,43 +101,42 @@ class EditSection(EditView):
 
         for e in get_markdown_extensions():
             if isinstance(e, EditSectionExtension):
-                e.config['headers'] = headers
-                e.config['location'] = self.location
-                e.config['header_id'] = self.header_id
+                e.config["headers"] = headers
+                e.config["location"] = self.location
+                e.config["header_id"] = self.header_id
                 article_markdown(text, article)
-                return e.config['location']
+                return e.config["location"]
         return None
 
     def _redirect_to_article(self):
         if self.urlpath:
-            return redirect('wiki:get', path=self.urlpath.path)
-        return redirect('wiki:get', article_id=self.article.id)
+            return redirect("wiki:get", path=self.urlpath.path)
+        return redirect("wiki:get", article_id=self.article.id)
 
     @method_decorator(get_article(can_write=True, not_locked=True))
     def dispatch(self, request, article, *args, **kwargs):
-        self.location = kwargs.pop('location', 0)
-        self.header_id = kwargs.pop('header', 0)
+        self.location = kwargs.pop("location", 0)
+        self.header_id = kwargs.pop("header", 0)
 
-        self.urlpath = kwargs.get('urlpath')
-        kwargs['path'] = self.urlpath.path
+        self.urlpath = kwargs.get("urlpath")
+        kwargs["path"] = self.urlpath.path
 
-        if request.method == 'GET':
+        if request.method == "GET":
             text = article.current_revision.content
             location = self.locate_section(article, text)
             if location:
-                self.orig_section = text[location[0]:location[1]]
+                self.orig_section = text[location[0] : location[1]]
                 # Pass the to be used content to EditSection
-                kwargs['content'] = self.orig_section
-                request.session['editsection_content'] = self.orig_section
+                kwargs["content"] = self.orig_section
+                request.session["editsection_content"] = self.orig_section
             else:
                 messages.error(
-                    request,
-                    " ".format(ERROR_SECTION_CHANGED, ERROR_TRY_AGAIN)
+                    request, " ".format(ERROR_SECTION_CHANGED, ERROR_TRY_AGAIN)
                 )
                 return self._redirect_to_article()
         else:
-            kwargs['content'] = request.session.get('editsection_content')
-            self.orig_section = kwargs.get('content')
+            kwargs["content"] = request.session.get("editsection_content")
+            self.orig_section = kwargs.get("content")
 
         return super().dispatch(request, article, *args, **kwargs)
 
@@ -148,25 +149,31 @@ class EditSection(EditView):
         text = get_object_or_404(
             models.ArticleRevision,
             article=self.article,
-            id=self.article.current_revision.previous_revision.id).content
+            id=self.article.current_revision.previous_revision.id,
+        ).content
 
         location = self.locate_section(self.article, text)
         if location:
-            if self.orig_section != text[location[0]:location[1]]:
+            if self.orig_section != text[location[0] : location[1]]:
                 messages.warning(
                     self.request,
-                    " ".format(ERROR_SECTION_CHANGED, ERROR_SECTION_UNSAVED, ERROR_TRY_AGAIN)
+                    " ".format(
+                        ERROR_SECTION_CHANGED, ERROR_SECTION_UNSAVED, ERROR_TRY_AGAIN
+                    ),
                 )
             # Include the edited section into the complete previous article
-            self.article.current_revision.content = text[0:location[0]] + section + text[location[1]:]
+            self.article.current_revision.content = (
+                text[0 : location[0]] + section + text[location[1] :]
+            )
             self.article.current_revision.save()
         else:
             # Back to the version before replacing the article with the section
-            self.article.current_revision = self.article.current_revision.previous_revision
+            self.article.current_revision = (
+                self.article.current_revision.previous_revision
+            )
             self.article.save()
             messages.error(
-                self.request,
-                " ".format(ERROR_ARTICLE_CHANGED, ERROR_TRY_AGAIN)
+                self.request, " ".format(ERROR_ARTICLE_CHANGED, ERROR_TRY_AGAIN)
             )
 
         return self._redirect_to_article()

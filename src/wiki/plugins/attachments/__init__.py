@@ -1,1 +1,1 @@
-default_app_config = 'wiki.plugins.attachments.apps.AttachmentsConfig'
+default_app_config = "wiki.plugins.attachments.apps.AttachmentsConfig"

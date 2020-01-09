@@ -16,6 +16,7 @@ plugin's models.
 class BasePlugin:
 
     """Plugins should inherit from this"""
+
     # Must fill in!
     slug = None
 
@@ -23,10 +24,10 @@ class BasePlugin:
     settings_form = None  # A form class to add to the settings tab
     urlpatterns = {
         # General urlpatterns that will reside in /wiki/plugins/plugin-slug/...
-        'root': [],
+        "root": [],
         # urlpatterns that receive article_id or urlpath, i.e.
         # /wiki/ArticleName/plugin/plugin-slug/...
-        'article': [],
+        "article": [],
     }
     article_tab = None  # (_('Attachments'), "fa fa-file")
     article_view = None  # A view for article_id/plugin/slug/
@@ -50,17 +51,17 @@ class BasePlugin:
 
 class PluginSidebarFormMixin(forms.ModelForm):
 
-    unsaved_article_title = forms.CharField(widget=forms.HiddenInput(),
-                                            required=True)
-    unsaved_article_content = forms.CharField(widget=forms.HiddenInput(),
-                                              required=False)
+    unsaved_article_title = forms.CharField(widget=forms.HiddenInput(), required=True)
+    unsaved_article_content = forms.CharField(
+        widget=forms.HiddenInput(), required=False
+    )
 
     def get_usermessage(self):
         pass
 
 
 class PluginSettingsFormMixin:
-    settings_form_headline = _('Settings for plugin')
+    settings_form_headline = _("Settings for plugin")
     settings_order = 1
     settings_write_access = False
 

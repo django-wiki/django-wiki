@@ -5,7 +5,7 @@ from wiki.core.plugins.base import BasePlugin
 class Plugin(BasePlugin):
 
     markdown_extensions = [
-        'wiki.plugins.redlinks.mdx.redlinks',
+        "wiki.plugins.redlinks.mdx.redlinks",
     ]
 
 

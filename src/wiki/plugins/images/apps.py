@@ -6,9 +6,12 @@ from . import checks
 
 
 class ImagesConfig(AppConfig):
-    name = 'wiki.plugins.images'
+    name = "wiki.plugins.images"
     verbose_name = _("Wiki images")
-    label = 'wiki_images'
+    label = "wiki_images"
 
     def ready(self):
-        register(checks.check_for_required_installed_apps, checks.Tags.required_installed_apps)
+        register(
+            checks.check_for_required_installed_apps,
+            checks.Tags.required_installed_apps,
+        )
