@@ -1,0 +1,8 @@
+tests/**/*
+tests
+docs/**/*
+docs
+.tx/**/*
+.tx
+.eggs/**/*
+.eggs
