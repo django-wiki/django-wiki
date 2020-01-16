@@ -26,10 +26,12 @@ from wiki.decorators import disable_signal_for_loaddata
 from .article import ArticleRevision, BaseRevisionMixin
 
 __all__ = [
-    'ArticlePlugin',
-    'SimplePlugin', 'SimplePluginCreateError',
-    'ReusablePlugin',
-    'RevisionPlugin', 'RevisionPluginRevision',
+    "ArticlePlugin",
+    "SimplePlugin",
+    "SimplePluginCreateError",
+    "ReusablePlugin",
+    "RevisionPlugin",
+    "RevisionPluginRevision",
 ]
 
 
@@ -40,8 +42,9 @@ class ArticlePlugin(models.Model):
     clean. Furthermore, it's possible to list all plugins and maintain generic
     properties in the future..."""
 
-    article = models.ForeignKey('wiki.Article', on_delete=models.CASCADE,
-                                verbose_name=_("article"))
+    article = models.ForeignKey(
+        "wiki.Article", on_delete=models.CASCADE, verbose_name=_("article")
+    )
 
     deleted = models.BooleanField(default=False)
 
@@ -79,18 +82,16 @@ class ReusablePlugin(ArticlePlugin):
     You might have to override the permission methods (can_read, can_write etc.)
     if you have certain needs for logic in your reusable plugin.
     """
+
     # The article on which the plugin was originally created.
     # Used to apply permissions.
     ArticlePlugin.article.on_delete = models.SET_NULL
-    ArticlePlugin.article.verbose_name = _('original article')
-    ArticlePlugin.article.help_text = _(
-        'Permissions are inherited from this article')
+    ArticlePlugin.article.verbose_name = _("original article")
+    ArticlePlugin.article.help_text = _("Permissions are inherited from this article")
     ArticlePlugin.article.null = True
     ArticlePlugin.article.blank = True
 
-    articles = models.ManyToManyField(
-        'wiki.Article',
-        related_name='shared_plugins_set')
+    articles = models.ManyToManyField("wiki.Article", related_name="shared_plugins_set")
 
     # Since the article relation may be None, we have to check for this
     # before handling permissions....
@@ -130,17 +131,17 @@ class SimplePlugin(ArticlePlugin):
     YourPlugin(article=article_instance, ...) or
     YourPlugin.objects.create(article=article_instance, ...)
     """
+
     # The article revision that this plugin is attached to
     article_revision = models.ForeignKey(
-        'wiki.ArticleRevision',
-        on_delete=models.CASCADE)
+        "wiki.ArticleRevision", on_delete=models.CASCADE
+    )
 
     def __init__(self, *args, **kwargs):
-        article = kwargs.pop('article', None)
+        article = kwargs.pop("article", None)
         super().__init__(*args, **kwargs)
         if not self.pk and not article:
-            raise SimplePluginCreateError(
-                "Keyword argument 'article' expected.")
+            raise SimplePluginCreateError("Keyword argument 'article' expected.")
         elif self.pk:
             self.article = self.article_revision.article
         else:
@@ -159,17 +160,19 @@ class RevisionPlugin(ArticlePlugin):
     This kind of plugin is not attached to article plugins so rolling articles
     back and forth does not affect it.
     """
+
     # The current revision of this plugin, if any!
     current_revision = models.OneToOneField(
-        'RevisionPluginRevision',
-        verbose_name=_('current revision'),
+        "RevisionPluginRevision",
+        verbose_name=_("current revision"),
         blank=True,
         null=True,
         on_delete=models.CASCADE,
-        related_name='plugin_set',
+        related_name="plugin_set",
         help_text=_(
-            'The revision being displayed for this plugin. '
-            'If you need to do a roll-back, simply change the value of this field.'),
+            "The revision being displayed for this plugin. "
+            "If you need to do a roll-back, simply change the value of this field."
+        ),
     )
 
     def add_revision(self, new_revision, save=True):
@@ -178,15 +181,15 @@ class RevisionPlugin(ArticlePlugin):
         revision.
         """
         assert self.id or save, (
-            'RevisionPluginRevision.add_revision: Sorry, you cannot add a'
-            'revision to a plugin that has not been saved '
-            'without using save=True')
+            "RevisionPluginRevision.add_revision: Sorry, you cannot add a"
+            "revision to a plugin that has not been saved "
+            "without using save=True"
+        )
         if not self.id:
             self.save()
         revisions = self.revision_set.all()
         try:
-            new_revision.revision_number = revisions.latest(
-            ).revision_number + 1
+            new_revision.revision_number = revisions.latest().revision_number + 1
         except RevisionPluginRevision.DoesNotExist:
             new_revision.revision_number = 0
         new_revision.plugin = self
@@ -207,13 +210,15 @@ class RevisionPluginRevision(BaseRevisionMixin, models.Model):
     (this class is very much copied from wiki.models.article.ArticleRevision
     """
 
-    plugin = models.ForeignKey(RevisionPlugin, on_delete=models.CASCADE, related_name='revision_set')
+    plugin = models.ForeignKey(
+        RevisionPlugin, on_delete=models.CASCADE, related_name="revision_set"
+    )
 
     class Meta:
         # Override this setting with app_label = '' in your extended model
         # if it lives outside the wiki app.
-        get_latest_by = 'revision_number'
-        ordering = ('-created',)
+        get_latest_by = "revision_number"
+        ordering = ("-created",)
 
 
 ######################################################
@@ -230,22 +235,23 @@ class RevisionPluginRevision(BaseRevisionMixin, models.Model):
 def update_simple_plugins(**kwargs):
     """Every time a new article revision is created, we update all active
     plugins to match this article revision"""
-    instance = kwargs['instance']
-    if kwargs.get('created', False):
+    instance = kwargs["instance"]
+    if kwargs.get("created", False):
         p_revisions = SimplePlugin.objects.filter(
-            article=instance.article,
-            deleted=False)
+            article=instance.article, deleted=False
+        )
         # TODO: This was breaking things. SimplePlugin doesn't have a revision?
         p_revisions.update(article_revision=instance)
 
 
 @disable_signal_for_loaddata
 def on_simple_plugins_pre_save(**kwargs):
-    instance = kwargs['instance']
-    if kwargs.get('created', False):
+    instance = kwargs["instance"]
+    if kwargs.get("created", False):
         if not instance.article.current_revision:
             raise SimplePluginCreateError(
-                "Article does not have a current_revision set.")
+                "Article does not have a current_revision set."
+            )
         new_revision = ArticleRevision()
         new_revision.inherit_predecessor(instance.article)
         new_revision.automatic_log = instance.get_logmessage()
@@ -256,7 +262,7 @@ def on_simple_plugins_pre_save(**kwargs):
 
 @disable_signal_for_loaddata
 def on_article_plugin_post_save(**kwargs):
-    articleplugin = kwargs['instance']
+    articleplugin = kwargs["instance"]
     articleplugin.article.clear_cache()
 
 
@@ -264,7 +270,7 @@ def on_article_plugin_post_save(**kwargs):
 def on_reusable_plugin_pre_save(**kwargs):
     # Automatically make the original article the first one in the added
     # set
-    instance = kwargs['instance']
+    instance = kwargs["instance"]
     if not instance.article:
         articles = instance.articles.all()
         if articles.exists():
@@ -275,7 +281,7 @@ def on_reusable_plugin_pre_save(**kwargs):
 def on_revision_plugin_revision_post_save(**kwargs):
     # Automatically make the original article the first one in the added
     # set
-    instance = kwargs['instance']
+    instance = kwargs["instance"]
     if not instance.plugin.current_revision:
         # If I'm saved from Django admin, then plugin.current_revision is
         # me!
@@ -288,13 +294,13 @@ def on_revision_plugin_revision_post_save(**kwargs):
 
 @disable_signal_for_loaddata
 def on_revision_plugin_revision_pre_save(**kwargs):
-    instance = kwargs['instance']
-    if kwargs.get('created', False):
+    instance = kwargs["instance"]
+    if kwargs.get("created", False):
         update_previous_revision = (
-            not instance.previous_revision and
-            instance.plugin and
-            instance.plugin.current_revision and
-            instance.plugin.current_revision != instance
+            not instance.previous_revision
+            and instance.plugin
+            and instance.plugin.current_revision
+            and instance.plugin.current_revision != instance
         )
         if update_previous_revision:
             instance.previous_revision = instance.plugin.current_revision
@@ -309,7 +315,7 @@ def on_revision_plugin_revision_pre_save(**kwargs):
 
 @disable_signal_for_loaddata
 def on_reusable_plugin_post_save(**kwargs):
-    reusableplugin = kwargs['instance']
+    reusableplugin = kwargs["instance"]
     for article in reusableplugin.articles.all():
         article.clear_cache()
 

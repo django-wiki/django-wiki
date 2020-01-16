@@ -25,7 +25,7 @@ def urljoin_internal(base, url):
     res1 = urljoin(canary1 + base, url)
     res2 = urljoin(canary2 + base, url)
     if res1.startswith(canary1) and res2.startswith(canary2):
-        return res1[len(canary1):]
+        return res1[len(canary1) :]
 
 
 class LinkTreeprocessor(Treeprocessor):

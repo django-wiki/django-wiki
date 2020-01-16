@@ -1,1 +1,1 @@
-SLUG = 'globalhistory'
+SLUG = "globalhistory"

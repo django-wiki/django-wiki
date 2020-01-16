@@ -7,7 +7,7 @@ class BaseEditor:
 
     # The editor id can be used for conditional testing. If you write your
     # own editor class, you can use the same editor_id as some editor
-    editor_id = 'plaintext'
+    editor_id = "plaintext"
     media_admin = ()
     media_frontend = ()
 

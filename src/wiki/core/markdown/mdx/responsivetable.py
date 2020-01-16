@@ -7,12 +7,12 @@ class ResponsiveTableExtension(markdown.Extension):
     """Wraps all tables with Bootstrap's table-responsive class"""
 
     def extendMarkdown(self, md):
-        md.treeprocessors.add('responsivetable', ResponsiveTableTree(md), "_end")
+        md.treeprocessors.add("responsivetable", ResponsiveTableTree(md), "_end")
 
 
 class ResponsiveTableTree(Treeprocessor):
     def run(self, root):
-        for table_wrapper in list(root.getiterator('table')):
+        for table_wrapper in list(root.getiterator("table")):
             table_new = self.create_table_element()
             self.convert_to_wrapper(table_wrapper)
             self.move_children(table_wrapper, table_new)
@@ -21,9 +21,9 @@ class ResponsiveTableTree(Treeprocessor):
 
     def create_table_element(self):
         """Create table element with text and tail"""
-        element = etree.Element('table')
-        element.text = '\n'
-        element.tail = '\n'
+        element = etree.Element("table")
+        element.text = "\n"
+        element.tail = "\n"
         return element
 
     def move_children(self, element1, element2):
@@ -35,8 +35,8 @@ class ResponsiveTableTree(Treeprocessor):
             element1.remove(child)
 
     def convert_to_wrapper(self, element):
-        element.tag = 'div'
-        element.set('class', 'table-responsive')
+        element.tag = "div"
+        element.set("class", "table-responsive")
 
 
 def makeExtension(*args, **kwargs):

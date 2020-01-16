@@ -11,7 +11,6 @@ def wiki_slugify(*args, **kwargs):
 
 
 class WikiTreeProcessorClass(TocTreeprocessor):
-
     def run(self, doc):
         # Necessary because self.title is set to a LazyObject via gettext_lazy
         if self.title:
@@ -23,11 +22,11 @@ class WikiTocExtension(TocExtension):
     TreeProcessorClass = WikiTreeProcessorClass
 
     def __init__(self, **kwargs):
-        kwargs.setdefault('slugify', wiki_slugify)
+        kwargs.setdefault("slugify", wiki_slugify)
         super().__init__(**kwargs)
 
     def extendMarkdown(self, md):
-        if 'toc' in settings.METHODS:
+        if "toc" in settings.METHODS:
             TocExtension.extendMarkdown(self, md)
 
 

@@ -11,13 +11,13 @@ logger = logging.getLogger(__name__)
 def highlight(code, config, tab_length, lang=None):
     code = CodeHilite(
         code,
-        linenums=config['linenums'],
-        guess_lang=config['guess_lang'],
-        css_class=config['css_class'],
-        style=config['pygments_style'],
-        noclasses=config['noclasses'],
+        linenums=config["linenums"],
+        guess_lang=config["guess_lang"],
+        css_class=config["css_class"],
+        style=config["pygments_style"],
+        noclasses=config["noclasses"],
         tab_length=tab_length,
-        use_pygments=config['use_pygments'],
+        use_pygments=config["use_pygments"],
         lang=lang,
     )
     html = code.hilite()
@@ -31,15 +31,19 @@ class WikiFencedBlockPreprocessor(Preprocessor):
     directly and without configuration options invoke the vanilla CodeHilite
     extension.
     """
-    FENCED_BLOCK_RE = re.compile(r'''
+
+    FENCED_BLOCK_RE = re.compile(
+        r"""
 (?P<fence>^(?:~{3,}|`{3,}))[ ]*         # Opening ``` or ~~~
 (\{?\.?(?P<lang>[a-zA-Z0-9_+-]*))?[ ]*  # Optional {, and lang
 # Optional highlight lines, single- or double-quote-delimited
 (hl_lines=(?P<quot>"|')(?P<hl_lines>.*?)(?P=quot))?[ ]*
 }?[ ]*\n                                # Optional closing }
 (?P<code>.*?)(?<=\n)
-(?P=fence)[ ]*$''', re.MULTILINE | re.DOTALL | re.VERBOSE)
-    CODE_WRAP = '<pre>%s</pre>'
+(?P=fence)[ ]*$""",
+        re.MULTILINE | re.DOTALL | re.VERBOSE,
+    )
+    CODE_WRAP = "<pre>%s</pre>"
 
     def __init__(self, md):
         super().__init__(md)
@@ -54,14 +58,14 @@ class WikiFencedBlockPreprocessor(Preprocessor):
         while 1:
             m = self.FENCED_BLOCK_RE.search(text)
             if m:
-                lang = ''
-                if m.group('lang'):
-                    lang = m.group('lang')
-                html = highlight(m.group('code'), self.config, self.markdown.tab_length, lang=lang)
+                lang = ""
+                if m.group("lang"):
+                    lang = m.group("lang")
+                html = highlight(
+                    m.group("code"), self.config, self.markdown.tab_length, lang=lang
+                )
                 placeholder = self.markdown.htmlStash.store(html)
-                text = '%s\n%s\n%s' % (text[:m.start()],
-                                       placeholder,
-                                       text[m.end():])
+                text = "%s\n%s\n%s" % (text[: m.start()], placeholder, text[m.end() :])
             else:
                 break
         return text.split("\n")
@@ -72,16 +76,16 @@ class HiliteTreeprocessor(Treeprocessor):
 
     def run(self, root):
         """ Find code blocks and store in htmlStash. """
-        blocks = root.iter('pre')
+        blocks = root.iter("pre")
         for block in blocks:
-            if len(block) == 1 and block[0].tag == 'code':
+            if len(block) == 1 and block[0].tag == "code":
                 html = highlight(block[0].text, self.config, self.markdown.tab_length)
                 placeholder = self.markdown.htmlStash.store(html)
                 # Clear codeblock in etree instance
                 block.clear()
                 # Change to p element which will later
                 # be removed when inserting raw html
-                block.tag = 'p'
+                block.tag = "p"
                 block.text = placeholder
 
 
@@ -112,9 +116,7 @@ class WikiCodeHiliteExtension(CodeHiliteExtension):
             del md.preprocessors["fenced_code_block"]
         hiliter = WikiFencedBlockPreprocessor(md)
         hiliter.config = self.getConfigs()
-        md.preprocessors.add('fenced_code_block',
-                             hiliter,
-                             ">normalize_whitespace")
+        md.preprocessors.add("fenced_code_block", hiliter, ">normalize_whitespace")
 
         md.registerExtension(self)
 

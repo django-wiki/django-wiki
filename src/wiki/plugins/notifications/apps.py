@@ -4,9 +4,9 @@ from django.utils.translation import gettext_lazy as _
 
 
 class NotificationsConfig(AppConfig):
-    name = 'wiki.plugins.notifications'
+    name = "wiki.plugins.notifications"
     verbose_name = _("Wiki notifications")
-    label = 'wiki_notifications'
+    label = "wiki_notifications"
 
     def ready(self):
         """
@@ -19,27 +19,31 @@ class NotificationsConfig(AppConfig):
 
         for plugin in registry.get_plugins():
 
-            notifications = getattr(plugin, 'notifications', [])
+            notifications = getattr(plugin, "notifications", [])
             for notification_dict in notifications:
+
                 @disable_signal_for_loaddata
                 def plugin_notification(instance, **kwargs):
-                    if notification_dict.get('ignore', lambda x: False)(instance):
+                    if notification_dict.get("ignore", lambda x: False)(instance):
                         return
-                    if kwargs.get('created', False) == notification_dict.get('created', True):
-                        if 'get_url' in notification_dict:
-                            url = notification_dict['get_url'](instance)
+                    if kwargs.get("created", False) == notification_dict.get(
+                        "created", True
+                    ):
+                        if "get_url" in notification_dict:
+                            url = notification_dict["get_url"](instance)
                         else:
-                            url = models.default_url(notification_dict['get_article'](instance))
+                            url = models.default_url(
+                                notification_dict["get_article"](instance)
+                            )
 
-                        message = notification_dict['message'](instance)
+                        message = notification_dict["message"](instance)
                         notify(
                             message,
-                            notification_dict['key'],
-                            target_object=notification_dict['get_article'](instance),
+                            notification_dict["key"],
+                            target_object=notification_dict["get_article"](instance),
                             url=url,
                         )
 
                 signals.post_save.connect(
-                    plugin_notification,
-                    sender=notification_dict['model']
+                    plugin_notification, sender=notification_dict["model"]
                 )

@@ -7,9 +7,7 @@ class TocMacroTests(TestCase):
     def test_toc_renders_table_of_content(self):
         """ Verifies that the [TOC] wiki code renders a Table of Content
         """
-        md = markdown.Markdown(
-            extensions=['extra', WikiTocExtension()]
-        )
+        md = markdown.Markdown(extensions=["extra", WikiTocExtension()])
         text = (
             "[TOC]\n"
             "\n"
@@ -23,16 +21,16 @@ class TocMacroTests(TestCase):
         )
         expected_output = (
             '<div class="toc">\n'
-            '<ul>\n'
+            "<ul>\n"
             '<li><a href="#wiki-toc-first-title">First title.</a><ul>\n'
             '<li><a href="#wiki-toc-subsection">Subsection</a></li>\n'
-            '</ul>\n'
-            '</li>\n'
-            '</ul>\n'
-            '</div>\n'
+            "</ul>\n"
+            "</li>\n"
+            "</ul>\n"
+            "</div>\n"
             '<h1 id="wiki-toc-first-title">First title.</h1>\n'
-            '<p>Paragraph 1</p>\n'
+            "<p>Paragraph 1</p>\n"
             '<h2 id="wiki-toc-subsection">Subsection</h2>\n'
-            '<p>Paragraph 2</p>'
+            "<p>Paragraph 2</p>"
         )
         self.assertEqual(md.convert(text), expected_output)

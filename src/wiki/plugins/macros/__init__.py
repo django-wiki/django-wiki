@@ -1,1 +1,1 @@
-default_app_config = 'wiki.plugins.macros.apps.MacrosConfig'
+default_app_config = "wiki.plugins.macros.apps.MacrosConfig"

@@ -8,4 +8,3 @@ from wiki.plugins.notifications.forms import SettingsFormSet
 class SettingsFormTests(RequireSuperuserMixin, TestCase):
     def test_formset(self):
         formset = SettingsFormSet(user=self.superuser1)
-

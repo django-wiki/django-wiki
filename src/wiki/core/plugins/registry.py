@@ -19,7 +19,7 @@ def register(PluginClass):
     plugin = PluginClass()
     _cache[PluginClass] = plugin
 
-    settings_form = getattr(PluginClass, 'settings_form', None)
+    settings_form = getattr(PluginClass, "settings_form", None)
     if settings_form:
         if isinstance(settings_form, str):
             klassname = settings_form.split(".")[-1]
@@ -28,29 +28,17 @@ def register(PluginClass):
             settings_form = getattr(form_module, klassname)
         _settings_forms.append(settings_form)
 
-    if getattr(PluginClass, 'article_tab', None):
+    if getattr(PluginClass, "article_tab", None):
         _article_tabs.append(plugin)
 
-    if getattr(PluginClass, 'sidebar', None):
+    if getattr(PluginClass, "sidebar", None):
         _sidebar.append(plugin)
 
-    _markdown_extensions.extend(
-        getattr(
-            PluginClass,
-            'markdown_extensions',
-            []))
+    _markdown_extensions.extend(getattr(PluginClass, "markdown_extensions", []))
 
-    _html_whitelist.extend(
-        getattr(
-            PluginClass,
-            'html_whitelist',
-            []))
+    _html_whitelist.extend(getattr(PluginClass, "html_whitelist", []))
 
-    _html_attributes.update(
-        getattr(
-            PluginClass,
-            'html_attributes',
-            dict()))
+    _html_attributes.update(getattr(PluginClass, "html_attributes", dict()))
 
 
 def get_plugins():

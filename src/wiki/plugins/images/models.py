@@ -13,10 +13,10 @@ def upload_path(instance, filename):
     # Has to match original extension filename
 
     upload_path = settings.IMAGE_PATH
-    upload_path = upload_path.replace(
-        '%aid', str(instance.plugin.image.article.id))
+    upload_path = upload_path.replace("%aid", str(instance.plugin.image.article.id))
     if settings.IMAGE_PATH_OBSCURIFY:
         import uuid
+
         upload_path = os.path.join(upload_path, uuid.uuid4().hex)
     return os.path.join(upload_path, filename)
 
@@ -35,23 +35,31 @@ class Image(RevisionPlugin):
         return self.can_write(user)
 
     class Meta:
-        verbose_name = _('image')
-        verbose_name_plural = _('images')
-        db_table = 'wiki_images_image'  # Matches label of upcoming 0.1 release
+        verbose_name = _("image")
+        verbose_name_plural = _("images")
+        db_table = "wiki_images_image"  # Matches label of upcoming 0.1 release
 
     def __str__(self):
         if self.current_revision:
-            return gettext('Image: %s') % self.current_revision.imagerevision.get_filename()
+            return (
+                gettext("Image: %s")
+                % self.current_revision.imagerevision.get_filename()
+            )
         else:
-            return gettext('Current revision not set!!')
+            return gettext("Current revision not set!!")
 
 
 class ImageRevision(RevisionPluginRevision):
 
-    image = models.ImageField(upload_to=upload_path,
-                              max_length=2000, height_field='height',
-                              width_field='width', blank=True, null=True,
-                              storage=settings.STORAGE_BACKEND)
+    image = models.ImageField(
+        upload_to=upload_path,
+        max_length=2000,
+        height_field="height",
+        width_field="width",
+        blank=True,
+        null=True,
+        storage=settings.STORAGE_BACKEND,
+    )
 
     width = models.SmallIntegerField(blank=True, null=True)
     height = models.SmallIntegerField(blank=True, null=True)
@@ -59,7 +67,7 @@ class ImageRevision(RevisionPluginRevision):
     def get_filename(self):
         if self.image:
             try:
-                return self.image.name.split('/')[-1]
+                return self.image.name.split("/")[-1]
             except OSError:
                 pass
         return None
@@ -94,17 +102,17 @@ class ImageRevision(RevisionPluginRevision):
                 self.image = None
 
     class Meta:
-        verbose_name = _('image revision')
-        verbose_name_plural = _('image revisions')
+        verbose_name = _("image revision")
+        verbose_name_plural = _("image revisions")
         # Matches label of upcoming 0.1 release
-        db_table = 'wiki_images_imagerevision'
-        ordering = ('-created',)
+        db_table = "wiki_images_imagerevision"
+        ordering = ("-created",)
 
     def __str__(self):
         if self.revision_number:
-            return gettext('Image Revision: %d') % self.revision_number
+            return gettext("Image Revision: %d") % self.revision_number
         else:
-            return gettext('Current revision not set!!')
+            return gettext("Current revision not set!!")
 
 
 def on_image_revision_delete(instance, *args, **kwargs):
@@ -117,7 +125,7 @@ def on_image_revision_delete(instance, *args, **kwargs):
     try:
         path = instance.image.path.split("/")[:-1]
     except NotImplementedError:
-            # This backend storage doesn't implement 'path' so there is no path to delete
+        # This backend storage doesn't implement 'path' so there is no path to delete
         return
 
     # Clean up empty directories
@@ -131,8 +139,7 @@ def on_image_revision_delete(instance, *args, **kwargs):
     for depth in range(0, max_depth):
         delete_path = "/".join(path[:-depth] if depth > 0 else path)
         try:
-            dir_list = os.listdir(
-                os.path.join(django_settings.MEDIA_ROOT, delete_path))
+            dir_list = os.listdir(os.path.join(django_settings.MEDIA_ROOT, delete_path))
         except OSError:
             # Path does not exist, so let's not try to remove it...
             dir_list = None

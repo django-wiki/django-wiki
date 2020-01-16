@@ -1,1 +1,1 @@
-default_app_config = 'wiki.plugins.images.apps.ImagesConfig'
+default_app_config = "wiki.plugins.images.apps.ImagesConfig"

@@ -10,7 +10,7 @@ class DeletedListView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         # Let logged in super users continue
         if not request.user.is_superuser:
-            return redirect('wiki:root')
+            return redirect("wiki:root")
 
         return super().dispatch(request, *args, **kwargs)
 
@@ -20,5 +20,5 @@ class DeletedListView(TemplateView):
         for article in article_list:
             if article.current_revision.deleted:
                 deleted_articles.append(article)
-        kwargs['deleted_articles'] = deleted_articles
+        kwargs["deleted_articles"] = deleted_articles
         return super().get_context_data(**kwargs)

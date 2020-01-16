@@ -8,22 +8,20 @@ from django.test import TestCase, override_settings
 from django.urls import reverse
 from wiki.models import URLPath
 
-SUPERUSER1_USERNAME = 'admin'
-SUPERUSER1_PASSWORD = 'secret'
+SUPERUSER1_USERNAME = "admin"
+SUPERUSER1_PASSWORD = "secret"
 
 
 class RequireSuperuserMixin:
-
     def setUp(self):
         super().setUp()
 
         from django.contrib.auth import get_user_model
+
         User = get_user_model()
 
         self.superuser1 = User.objects.create_superuser(
-            SUPERUSER1_USERNAME,
-            'nobody@example.com',
-            SUPERUSER1_PASSWORD
+            SUPERUSER1_USERNAME, "nobody@example.com", SUPERUSER1_PASSWORD
         )
 
 
@@ -31,6 +29,7 @@ class RequireBasicData(RequireSuperuserMixin):
     """
     Mixin that creates common data required for all tests.
     """
+
     pass
 
 
@@ -39,7 +38,6 @@ class TestBase(RequireBasicData, TestCase):
 
 
 class RequireRootArticleMixin:
-
     def setUp(self):
         super().setUp()
         self.root = URLPath.create_root()
@@ -54,6 +52,7 @@ class ArticleTestBase(RequireRootArticleMixin, TestBase):
     """
     Sets up basic data for testing with an article and some revisions
     """
+
     pass
 
 
@@ -68,6 +67,7 @@ class WebTestCommonMixin(RequireBasicData, django_functest.ShortcutLoginMixin):
     """
     Common setup required for WebTest and Selenium tests
     """
+
     def setUp(self):
         super().setUp()
 
@@ -78,13 +78,15 @@ class WebTestBase(WebTestCommonMixin, django_functest.FuncWebTestMixin, TestCase
     pass
 
 
-INCLUDE_SELENIUM_TESTS = os.environ.get('INCLUDE_SELENIUM_TESTS', '0') == '1'
+INCLUDE_SELENIUM_TESTS = os.environ.get("INCLUDE_SELENIUM_TESTS", "0") == "1"
 
 
 @unittest.skipUnless(INCLUDE_SELENIUM_TESTS, "Skipping Selenium tests")
-class SeleniumBase(WebTestCommonMixin, django_functest.FuncSeleniumMixin, StaticLiveServerTestCase):
+class SeleniumBase(
+    WebTestCommonMixin, django_functest.FuncSeleniumMixin, StaticLiveServerTestCase
+):
     driver_name = "Chrome"
-    display = os.environ.get('SELENIUM_SHOW_BROWSER', '0') == '1'
+    display = os.environ.get("SELENIUM_SHOW_BROWSER", "0") == "1"
 
     if not INCLUDE_SELENIUM_TESTS:
         # Don't call super() in setUpClass(), it will attempt to instantiate
@@ -99,17 +101,15 @@ class SeleniumBase(WebTestCommonMixin, django_functest.FuncSeleniumMixin, Static
 
 
 class ArticleWebTestUtils:
-
     def get_by_path(self, path):
         """
         Get the article response for the path.
         Example:  self.get_by_path("Level1/Slug2/").title
         """
-        return self.client.get(reverse('wiki:get', kwargs={'path': path}))
+        return self.client.get(reverse("wiki:get", kwargs={"path": path}))
 
 
 class TemplateTestCase(TestCase):
-
     @property
     def template(self):
         raise NotImplementedError("Subclasses must implement this")
@@ -121,7 +121,6 @@ class TemplateTestCase(TestCase):
 # See
 # https://github.com/django-wiki/django-wiki/pull/382
 class wiki_override_settings(override_settings):
-
     def enable(self):
         super().enable()
         self.reload_wiki_settings()
@@ -133,4 +132,5 @@ class wiki_override_settings(override_settings):
     def reload_wiki_settings(self):
         from importlib import reload
         from wiki.conf import settings
+
         reload(settings)

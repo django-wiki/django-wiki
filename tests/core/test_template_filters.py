@@ -1,6 +1,13 @@
 from django.contrib.auth import get_user_model
 from wiki.models import Article, ArticleRevision
-from wiki.templatetags.wiki_tags import can_delete, can_moderate, can_read, can_write, get_content_snippet, is_locked
+from wiki.templatetags.wiki_tags import (
+    can_delete,
+    can_moderate,
+    can_read,
+    can_write,
+    get_content_snippet,
+    is_locked,
+)
 
 from ..base import TemplateTestCase, wiki_override_settings
 
@@ -15,121 +22,121 @@ class GetContentSnippet(TemplateTestCase):
     """
 
     def test_keyword_at_the_end_of_the_content(self):
-        text = 'lorem ' * 80
-        content = text + ' list'
+        text = "lorem " * 80
+        content = text + " list"
         expected = (
-            'lorem lorem lorem lorem lorem lorem lorem lorem lorem '
-            'lorem lorem lorem lorem lorem lorem <strong>list</strong>'
+            "lorem lorem lorem lorem lorem lorem lorem lorem lorem "
+            "lorem lorem lorem lorem lorem lorem <strong>list</strong>"
         )
 
-        output = get_content_snippet(content, 'list')
+        output = get_content_snippet(content, "list")
 
         self.assertEqual(output, expected)
 
     def test_keyword_at_the_beginning_of_the_content(self):
-        text = 'lorem ' * 80
-        content = 'list ' + text
+        text = "lorem " * 80
+        content = "list " + text
         expected = (
-            '<strong>list</strong> lorem lorem lorem lorem lorem '
-            'lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem '
-            'lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem '
-            'lorem lorem lorem'
+            "<strong>list</strong> lorem lorem lorem lorem lorem "
+            "lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem "
+            "lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem "
+            "lorem lorem lorem"
         )
 
-        output = get_content_snippet(content, 'list')
+        output = get_content_snippet(content, "list")
 
         self.assertEqual(output, expected)
 
     def test_whole_content_consists_of_keywords(self):
-        content = 'lorem ' * 80
-        expected = '<strong>lorem</strong>' + 30 * ' <strong>lorem</strong>'
+        content = "lorem " * 80
+        expected = "<strong>lorem</strong>" + 30 * " <strong>lorem</strong>"
 
-        output = get_content_snippet(content, 'lorem')
+        output = get_content_snippet(content, "lorem")
 
         self.assertEqual(output, expected)
 
     def test_keyword_is_not_in_a_content(self):
-        content = 'lorem ' * 80
+        content = "lorem " * 80
         expected = (
-            'lorem lorem lorem lorem lorem lorem lorem lorem lorem '
-            'lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem '
-            'lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem'
+            "lorem lorem lorem lorem lorem lorem lorem lorem lorem "
+            "lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem "
+            "lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem"
         )
 
-        output = get_content_snippet(content, 'list')
+        output = get_content_snippet(content, "list")
 
         self.assertEqual(output, expected)
 
     def test_a_few_keywords_in_content(self):
-        text = 'lorem ' * 80
-        content = 'list ' + text
+        text = "lorem " * 80
+        content = "list " + text
 
-        text = 'ipsum ' * 80
-        content += text + ' list '
+        text = "ipsum " * 80
+        content += text + " list "
 
-        text = 'dolorum ' * 80
-        content += text + ' list'
+        text = "dolorum " * 80
+        content += text + " list"
 
-        expected = '<strong>list</strong>' + 30 * ' lorem'
+        expected = "<strong>list</strong>" + 30 * " lorem"
 
-        output = get_content_snippet(content, 'list')
+        output = get_content_snippet(content, "list")
 
         self.assertEqual(output, expected)
 
     # XXX bug or feature?
     def test_keyword_is_in_content_and_max_words_is_zero(self):
-        text = 'spam ' * 800
-        content = text + ' list'
+        text = "spam " * 800
+        content = text + " list"
 
-        output = get_content_snippet(content, 'list', 0)
-        expected = 'spam ' * 800 + '<strong>list</strong>'
+        output = get_content_snippet(content, "list", 0)
+        expected = "spam " * 800 + "<strong>list</strong>"
 
         self.assertEqual(output, expected)
 
     # XXX bug or feature?
     def test_keyword_is_in_content_and_max_words_is_negative(self):
-        text = 'spam ' * 80
-        content = text + ' list'
+        text = "spam " * 80
+        content = text + " list"
 
-        output = get_content_snippet(content, 'list', -10)
-        expected = 'spam ' * 75 + '<strong>list</strong>'
+        output = get_content_snippet(content, "list", -10)
+        expected = "spam " * 75 + "<strong>list</strong>"
 
         self.assertEqual(output, expected)
 
     # XXX bug or feature?
     def test_keyword_is_not_in_content_and_max_words_is_zero(self):
-        content = 'spam ' * 15
+        content = "spam " * 15
 
-        output = get_content_snippet(content, 'list', 0)
-        expected = ''
+        output = get_content_snippet(content, "list", 0)
+        expected = ""
 
         self.assertEqual(output, expected)
 
     # XXX bug or feature?
     def test_keyword_is_not_in_content_and_max_words_is_negative(self):
-        content = 'spam ' * 15
+        content = "spam " * 15
 
-        output = get_content_snippet(content, 'list', -10)
-        expected = 'spam spam spam spam spam'
+        output = get_content_snippet(content, "list", -10)
+        expected = "spam spam spam spam spam"
 
         self.assertEqual(output, expected)
 
     def test_no_content(self):
-        content = ''
+        content = ""
 
-        output = get_content_snippet(content, 'list')
+        output = get_content_snippet(content, "list")
 
-        self.assertEqual(output, '')
+        self.assertEqual(output, "")
 
-        content = ' '
+        content = " "
 
-        output = get_content_snippet(content, 'list')
+        output = get_content_snippet(content, "list")
 
-        self.assertEqual(output, '')
+        self.assertEqual(output, "")
 
     def test_strip_tags(self):
 
-        keyword = 'maybe'
+        keyword = "maybe"
 
         content = """
         I should citate Shakespeare or Byron.
@@ -138,9 +145,9 @@ class GetContentSnippet(TemplateTestCase):
         """
 
         expected = (
-            'I should citate Shakespeare or Byron. '
-            'Or <strong>maybe</strong> copy paste from python '
-            'or django documentation. <strong>Maybe.</strong>'
+            "I should citate Shakespeare or Byron. "
+            "Or <strong>maybe</strong> copy paste from python "
+            "or django documentation. <strong>Maybe.</strong>"
         )
 
         output = get_content_snippet(content, keyword, 30)
@@ -149,13 +156,14 @@ class GetContentSnippet(TemplateTestCase):
 
     def test_max_words_arg(self):
 
-        keyword = 'eggs'
+        keyword = "eggs"
 
         content = """
         knight eggs spam ham eggs guido python eggs circus
         """
-        expected = ('knight <strong>eggs</strong> spam ham '
-                    '<strong>eggs</strong> guido')
+        expected = (
+            "knight <strong>eggs</strong> spam ham " "<strong>eggs</strong> guido"
+        )
 
         output = get_content_snippet(content, keyword, 5)
 
@@ -164,15 +172,15 @@ class GetContentSnippet(TemplateTestCase):
         output = get_content_snippet(content, keyword, 0)
 
         expected = (
-            'knight <strong>eggs</strong> spam ham '
-            '<strong>eggs</strong> guido python <strong>eggs</strong>'
+            "knight <strong>eggs</strong> spam ham "
+            "<strong>eggs</strong> guido python <strong>eggs</strong>"
         )
         self.assertEqual(output, expected)
 
     def test_content_case_preserved(self):
-        keyword = 'DOlOr'
-        match = 'DoLoR'
-        content = 'lorem ipsum %s sit amet' % match
+        keyword = "DOlOr"
+        match = "DoLoR"
+        content = "lorem ipsum %s sit amet" % match
         output = get_content_snippet(content, keyword)
         self.assertIn(match, output)
         self.assertNotIn(keyword, output)
@@ -190,25 +198,25 @@ class CanRead(TemplateTestCase):
 
         a = Article.objects.create()
 
-        u = User.objects.create(username='Nobody', password='pass')
+        u = User.objects.create(username="Nobody", password="pass")
 
         output = can_read(a, u)
         self.assertIs(output, True)
 
-        output = self.render({'article': a, 'user': u})
-        self.assertIn('True', output)
+        output = self.render({"article": a, "user": u})
+        self.assertIn("True", output)
 
     @wiki_override_settings(WIKI_CAN_READ=lambda *args: False)
     def test_user_dont_have_permission(self):
 
         a = Article.objects.create()
-        u = User.objects.create(username='Noman', password='pass')
+        u = User.objects.create(username="Noman", password="pass")
 
         output = can_read(a, u)
         self.assertIs(output, False)
 
-        output = self.render({'article': a, 'user': u})
-        self.assertIn('False', output)
+        output = self.render({"article": a, "user": u})
+        self.assertIn("False", output)
 
 
 class CanWrite(TemplateTestCase):
@@ -223,25 +231,25 @@ class CanWrite(TemplateTestCase):
 
         a = Article.objects.create()
 
-        u = User.objects.create(username='Nobody', password='pass')
+        u = User.objects.create(username="Nobody", password="pass")
 
         output = can_write(a, u)
         self.assertIs(output, True)
 
-        output = self.render({'article': a, 'user': u})
-        self.assertIn('True', output)
+        output = self.render({"article": a, "user": u})
+        self.assertIn("True", output)
 
     @wiki_override_settings(WIKI_CAN_WRITE=lambda *args: False)
     def test_user_dont_have_permission(self):
 
         a = Article.objects.create()
-        u = User.objects.create(username='Noman', password='pass')
+        u = User.objects.create(username="Noman", password="pass")
 
         output = can_write(a, u)
         self.assertIs(output, False)
 
-        output = self.render({'article': a, 'user': u})
-        self.assertIn('False', output)
+        output = self.render({"article": a, "user": u})
+        self.assertIn("False", output)
 
 
 class CanDelete(TemplateTestCase):
@@ -256,25 +264,25 @@ class CanDelete(TemplateTestCase):
 
         a = Article.objects.create()
 
-        u = User.objects.create(username='Nobody', password='pass')
+        u = User.objects.create(username="Nobody", password="pass")
 
         output = can_delete(a, u)
         self.assertIs(output, True)
 
-        output = self.render({'article': a, 'user': u})
-        self.assertIn('True', output)
+        output = self.render({"article": a, "user": u})
+        self.assertIn("True", output)
 
     @wiki_override_settings(WIKI_CAN_WRITE=lambda *args: False)
     def test_user_dont_have_permission(self):
 
         a = Article.objects.create()
-        u = User.objects.create(username='Noman', password='pass')
+        u = User.objects.create(username="Noman", password="pass")
 
         output = can_delete(a, u)
         self.assertIs(output, False)
 
-        output = self.render({'article': a, 'user': u})
-        self.assertIn('False', output)
+        output = self.render({"article": a, "user": u})
+        self.assertIn("False", output)
 
 
 class CanModerate(TemplateTestCase):
@@ -289,24 +297,24 @@ class CanModerate(TemplateTestCase):
 
         a = Article.objects.create()
 
-        u = User.objects.create(username='Nobody', password='pass')
+        u = User.objects.create(username="Nobody", password="pass")
 
         output = can_moderate(a, u)
         self.assertIs(output, True)
 
-        output = self.render({'article': a, 'user': u})
-        self.assertIn('True', output)
+        output = self.render({"article": a, "user": u})
+        self.assertIn("True", output)
 
     def test_user_dont_have_permission(self):
 
         a = Article.objects.create()
-        u = User.objects.create(username='Noman', password='pass')
+        u = User.objects.create(username="Noman", password="pass")
 
         output = can_moderate(a, u)
         self.assertIs(output, False)
 
-        output = self.render({'article': a, 'user': u})
-        self.assertIn('False', output)
+        output = self.render({"article": a, "user": u})
+        self.assertIn("False", output)
 
 
 class IsLocked(TemplateTestCase):
@@ -323,8 +331,8 @@ class IsLocked(TemplateTestCase):
         output = is_locked(a)
         self.assertIsNone(output)
 
-        output = self.render({'article': a})
-        self.assertIn('None', output)
+        output = self.render({"article": a})
+        self.assertIn("None", output)
 
     def test_have_current_revision_and_not_locked(self):
 
@@ -340,8 +348,8 @@ class IsLocked(TemplateTestCase):
         output = is_locked(b)
         self.assertIs(output, False)
 
-        output = self.render({'article': a})
-        self.assertIn('False', output)
+        output = self.render({"article": a})
+        self.assertIn("False", output)
 
     def test_have_current_revision_and_locked(self):
 
@@ -351,8 +359,8 @@ class IsLocked(TemplateTestCase):
         output = is_locked(a)
         self.assertIs(output, True)
 
-        output = self.render({'article': a})
-        self.assertIn('True', output)
+        output = self.render({"article": a})
+        self.assertIn("True", output)
 
 
 class PluginEnabled(TemplateTestCase):
@@ -364,7 +372,7 @@ class PluginEnabled(TemplateTestCase):
 
     def test_true(self):
         output = self.render({})
-        self.assertIn('It is enabled', output)
+        self.assertIn("It is enabled", output)
 
 
 class WikiSettings(TemplateTestCase):
@@ -377,4 +385,4 @@ class WikiSettings(TemplateTestCase):
     @wiki_override_settings(WIKI_ACCOUNT_HANDLING=lambda *args: True)
     def test_setting(self):
         output = self.render({})
-        self.assertIn('It is enabled', output)
+        self.assertIn("It is enabled", output)

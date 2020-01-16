@@ -17,12 +17,12 @@ class TestManagementCommands(ArticleTestBase):
     def test_dumpdata_loaddata(self):
 
         sysout = sys.stdout
-        fixtures_file = tempfile.NamedTemporaryFile('w', delete=False, suffix=".json")
+        fixtures_file = tempfile.NamedTemporaryFile("w", delete=False, suffix=".json")
         sys.stdout = fixtures_file
-        call_command('dumpdata', 'wiki')
+        call_command("dumpdata", "wiki")
         fixtures_file.file.flush()
         fixtures_file.file.close()
-        sys.stdout = open(os.devnull, 'w')
-        call_command('loaddata', fixtures_file.name)
+        sys.stdout = open(os.devnull, "w")
+        call_command("loaddata", fixtures_file.name)
         sys.stdout = sysout
         os.unlink(fixtures_file.name)
