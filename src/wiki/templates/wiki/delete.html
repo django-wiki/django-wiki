@@ -60,7 +60,7 @@
 
 {% addtoblock "js" %}
 <script type="text/javascript">
-  $('#id_revision').val('{{ article.current_revision.id }}');
+  $('#id_revision').val('{{ article.current_revision.id|safe }}');
 </script>
 {% endaddtoblock %}
 
