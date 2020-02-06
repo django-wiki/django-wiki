@@ -87,13 +87,6 @@ class AttachmentArchiveForm(AttachmentForm):
         required=False,
     )
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        ordered_fields = ["unzip_archive", "file"]
-        self.fields.keyOrder = ordered_fields + [
-            k for k in self.fields.keys() if k not in ordered_fields
-        ]
-
     def clean_file(self):
         uploaded_file = self.cleaned_data.get("file", None)
         if uploaded_file and self.cleaned_data.get("unzip_archive", False):

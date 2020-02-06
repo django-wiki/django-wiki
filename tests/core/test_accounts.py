@@ -38,7 +38,7 @@ class AccountUpdateTest(
 
         # save a new revision
         response = self.client.post(resolve_url("wiki:profile_update"), example_data)
-        self.assertContains(response, "Passwords don&#39;t match", status_code=200)
+        self.assertContains(response, "Passwords don", status_code=200)  # Django 2/3 output different escaped versions of single quote in don't
 
         # Now check that we don't succeed with unmatching passwords
         example_data = {
