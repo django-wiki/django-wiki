@@ -18,6 +18,7 @@ Release plan
 Added
 ~~~~~
 
+* Django 3.0 support :url-issue:`1019` (Benjamin Bach, slinkymanbyday)
 * New plugin ``wiki.plugins.editsection`` displays an ``[edit]`` link next to section headers (Frank Loemker) :url-issue:`652`
 
 Fixed
@@ -34,6 +35,8 @@ Changed
 * Test coverage upped from 75 to 80+% :url-issue:`976` (Mads Jensen, Benjamin Bach)
 * PDF attachment Content-Disposition header changed to ``inline`` for browser previewing :url-issue:`1010` (nicolazilio)
 * PyTest upgraded to latest 5.3
+* django-mptt updated from 0.9 to 0.11.0 :url-issue:`1019` (Benjamin Bach, slinkymanbyday)
+* sorl-thumbnail bumped to 12.6.2 :url-issue:`1019` (Benjamin Bach, slinkymanbyday)
 * Upgrade bleach from 2.1 to 3.1 :url-issue:`1020` (slinkymanbyday)
 
 Removed
