@@ -34,6 +34,7 @@ Changed
 * Test coverage upped from 75 to 80+% :url-issue:`976` (Mads Jensen, Benjamin Bach)
 * PDF attachment Content-Disposition header changed to ``inline`` for browser previewing :url-issue:`1010` (nicolazilio)
 * PyTest upgraded to latest 5.3
+* Upgrade bleach from 2.1 to 3.1 :url-issue:`1020` (slinkymanbyday)
 
 Removed
 ~~~~~~~
