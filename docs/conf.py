@@ -66,7 +66,7 @@ def process_docstring(app, what, name, obj, options, lines):
                 continue
 
             # Decode and strip any html out of the field's help text
-            help_text = bleach.clean(force_text(field.help_text))
+            help_text = bleach.clean(force_text(field.help_text), strip=True)
 
             # Decode and capitalize the verbose name, for use if there isn't
             # any help text
