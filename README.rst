@@ -19,14 +19,12 @@ django-wiki
 Django support
 --------------
 
-**NB! Django 3.0 support is pending support in various dependencies.**
-
 The below table explains which Django versions are supported.
 
 +------------------+----------------+--------------+
 | Release          | Django         | Upgrade from |
 +==================+================+==============+
-| 0.6.dev          | 2.2, 3.0       | 0.5          |
+| 0.6.dev          | 2.1, 2.2, 3.0  | 0.5          |
 +------------------+----------------+--------------+
 | 0.5.x            | 2.1, 2.2, 3.0  | 0.4          |
 +------------------+----------------+--------------+
