@@ -331,7 +331,7 @@ class SelectWidgetBootstrap(forms.Select):
     option_template_name = "wiki/forms/select_option.html"
 
     def __init__(self, attrs={}, choices=(), disabled=False):
-        attrs["class"] = "btn-group pull-left btn-group-form"
+        attrs["class"] = "btn-group float-left btn-group-form"
         self.disabled = disabled
         self.noscript_widget = forms.Select(attrs={}, choices=choices)
         super().__init__(attrs, choices)
@@ -607,7 +607,7 @@ class DirFilterForm(forms.Form):
 
     query = forms.CharField(
         widget=forms.TextInput(
-            attrs={"placeholder": _("Filter..."), "class": "search-query form-control"}
+            attrs={"placeholder": _("Filter..."), "class": "search-query"}
         ),
         required=False,
     )

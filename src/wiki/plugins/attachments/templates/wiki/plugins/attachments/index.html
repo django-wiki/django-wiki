@@ -47,7 +47,7 @@
           {% endif %}
           <p style="margin-top: 10px; margin-bottom:0;">
           <a href="{% url 'wiki:attachments_history' path=urlpath.path article_id=article.id attachment_id=attachment.id %}">
-            <span class="fa fa-clock-o"></span>
+            <span class="fa fa-clock"></span>
             {% trans "File history" %} ({{ attachment.attachmentrevision_set.all.count }} {% trans "revisions" %})
           </a>
           </p>
@@ -69,16 +69,15 @@
   </div>
   <div class="col-lg-4" style="min-width: 330px;">
   {% if article|can_write:user and not article|is_locked %}
-    <div class="panel-group">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <a class="panel-toggle" href="#collapse_upload" data-toggle="collapse">
-            <h4 class="panel-title"><span class="fa fa-fw fa-upload"></span> {% trans "Upload new file" %}</h4>
+      <div class="card">
+        <div class="card-header pb-0">
+          <a class="card-toggle" href="#collapse_upload" data-toggle="collapse">
+            <p class="card-title"><span class="fa fa-fw fa-upload"></span> {% trans "Upload new file" %}</p>
           </a>
         </div>
 
-        <div id="collapse_upload" class="panel-collapse collapse{% if form.errors %} in{% endif %}">
-          <div class="panel-body">
+        <div id="collapse_upload" class="card-collapse collapse{% if form.errors %} in{% endif %}">
+          <div class="card-body">
             {% if anonymous_disallowed %}
               {% include "wiki/includes/anonymous_blocked.html" %}
             {% else %}
@@ -93,15 +92,15 @@
         </div>
       </div>
 
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <a class="panel-toggle" data-toggle="collapse" href="#collapse_add">
-            <h4 class="panel-title"><span class="fa fa-fw fa-plus-circle"></span> {% trans "Search and add file" %}</h4>
+      <div class="card">
+        <div class="card-header pb-0">
+          <a class="card-toggle" data-toggle="collapse" href="#collapse_add">
+            <p class="card-title"><span class="fa fa-fw fa-plus-circle"></span> {% trans "Search and add file" %}</p>
           </a>
         </div>
 
-        <div id="collapse_add" class="panel-collapse collapse">
-          <div class="panel-body">
+        <div id="collapse_add" class="card-collapse collapse">
+          <div class="card-body">
             <p>{% trans "You can reuse files from other articles. These files are subject to updates on other articles which may or may not be a good thing." %}</p>
             <form method="GET" action="{% url 'wiki:attachments_search' path=urlpath.path article_id=article.id %}" class="wiki-form-block">
               <div class="input-group">
@@ -118,14 +117,14 @@
       </div>
 
       {% if article|can_write:user %}
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <a class="panel-toggle" data-toggle="collapse" href="#collapse_restore">
-              <h4 class="panel-title"><span class="fa fa-fw fa-trash"></span> {% trans "Restore attachments" %}</h4>
+        <div class="card">
+          <div class="card-header pb-0">
+            <a class="card-toggle" data-toggle="collapse" href="#collapse_restore">
+              <p class="card-title"><span class="fa fa-fw fa-trash"></span> {% trans "Restore attachments" %}</p>
             </a>
           </div>
-          <div id="collapse_restore" class="panel-collapse collapse">
-            <div class="panel-body">
+          <div id="collapse_restore" class="card-collapse collapse">
+            <div class="card-body">
 
             {% for attachment in deleted_attachments %}
             <p>
@@ -151,7 +150,6 @@
       {% endif %}
 
 
-    </div>
   {% else %}
 
     {% if article|is_locked %}

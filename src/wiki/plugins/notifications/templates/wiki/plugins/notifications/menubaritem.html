@@ -1,20 +1,16 @@
 {% load i18n sekizai_tags static %}
 
-  <li class="divider notification-before-list"></li>
-  <li class="notifications-empty"><a href="#"><em>{% trans "No notifications" %}</em></a></li>
-  <li class="divider"></li>
-  <li>
-    <a href="#" onclick="notify_mark_read()">
-      <i class="fa fa-check-square-o"></i>
+  <div class="dropdown-divider"></div>
+  <a class="dropdown-item notifications-empty" href="#"><em>{% trans "No notifications" %}</em></a>
+  <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="#" onclick="notify_mark_read()">
+      <i class="fa fa-check-square"></i>
       {% trans "Clear notifications list" %}
     </a>
-  </li>
-  <li>
-    <a href="{% url 'wiki:notification_settings' %}">
+    <a class="dropdown-item" href="{% url 'wiki:notification_settings' %}">
       <i class="fa fa-wrench"></i>
       {% trans "Notification settings" %}
     </a>
-  </li>
 {% addtoblock "js" %}
 <script type="text/javascript">
   URL_NOTIFY_GET_NEW = "{% url "nyt:json_get" %}";
