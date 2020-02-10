@@ -228,6 +228,7 @@ input[type=file] {float: none; width: auto;}
   border-bottom: 1px solid #EEE;
   padding-bottom: 0;
   margin-bottom: 20px;
+  padding-left: 0;
 }
 
 #article-container
@@ -383,6 +384,11 @@ input[type=file] {float: none; width: auto;}
     }
 }
 
+.wiki-modal .modal-dialog
+    {
+        max-width: unset;
+    }
+
 
 /******************************
  RESPONSIVE STUFF
@@ -414,6 +420,9 @@ input[type=file] {float: none; width: auto;}
     }
     #wiki-search-form {
         width: 170px;
+    }
+    .markItUpContainer{
+        margin-right: 10em;
     }
 }
 

@@ -3,6 +3,7 @@
 <script type="text/javascript">
   function resize_modal() {
     $(".wiki-modal .modal-body iframe").css("height", $(window).height() * 0.8 - $(".modal-footer").height() + "px");
+    $(".wiki-modal .modal-dialog").css("width", $(window).width() * 0.8 + "px");
   };
 $(document).ready(function() {
   resize_modal();
