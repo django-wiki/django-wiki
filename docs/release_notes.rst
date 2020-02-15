@@ -12,8 +12,8 @@ Release plan
 * **0.6.x (unreleased)** Targets Bootstrap v4, if you are interested in this work, please get in touch on Github!
 
 
-0.6.dev
--------
+0.6b1
+-----
 
 Added
 ~~~~~
