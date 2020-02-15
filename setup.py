@@ -55,6 +55,7 @@ extras_requirements = {
     "devel": development_requirements,
     "test": test_requirements,
     "testlint": test_lint_requirements,
+    "transifex": ["transifex-client"],
 }
 
 setup(
