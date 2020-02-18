@@ -48,6 +48,8 @@ Removed
 0.5
 ---
 
+**Compatibility note, 2020-02-18**: Django 3.0 support was scheduled but never completed, as dependencies lacked the support. It was completed in 0.6.
+
 Changed
 ~~~~~~~
 
@@ -57,7 +59,7 @@ Changed
 Added
 ~~~~~
 
-* Django 2.2, 3.0 support
+* Django 2.2
 
 Removed
 ~~~~~~~
