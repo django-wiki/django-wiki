@@ -2,7 +2,7 @@
 from __future__ import absolute_import
 
 from django.conf import settings as django_settings
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 
 # Should urls be case sensitive?
 URL_CASE_SENSITIVE = getattr(django_settings, 'WIKI_URL_CASE_SENSITIVE', False)

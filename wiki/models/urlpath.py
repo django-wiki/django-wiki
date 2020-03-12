@@ -8,9 +8,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ValidationError
-from django.core.urlresolvers import reverse
 from django.db import models, transaction
 from django.db.models.signals import post_save, pre_delete
+from django.urls import reverse
 from django.utils.translation import ugettext
 from django.utils.translation import ugettext_lazy as _
 from mptt.fields import TreeForeignKey
