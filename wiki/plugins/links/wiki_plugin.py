@@ -9,7 +9,7 @@ from wiki.core.plugins.base import BasePlugin
 from wiki.plugins.links import views
 from wiki.plugins.links.mdx.urlize import makeExtension
 from wiki.plugins.links.mdx.djangowikilinks import WikiPathExtension
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 
 
 class LinkPlugin(BasePlugin):

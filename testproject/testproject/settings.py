@@ -11,7 +11,7 @@ ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
-#from django.core.urlresolvers import reverse_lazy
+#from django.urls import reverse_lazy
 #LOGIN_REDIRECT_URL = reverse_lazy('wiki:get', kwargs={'path': ''})
 
 # This forces the wiki login view to redirect to the referer...

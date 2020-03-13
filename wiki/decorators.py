@@ -4,12 +4,12 @@ from __future__ import absolute_import
 import json
 
 from django.conf import settings as django_settings
-from django.core.urlresolvers import reverse
 from django.http import (HttpResponse, HttpResponseForbidden,
                          HttpResponseNotFound)
 from django.shortcuts import get_object_or_404, redirect
 from django.template.context import RequestContext
 from django.template.loader import render_to_string
+from django.urls import reverse
 from six.moves import filter
 
 from wiki.core.exceptions import NoRootURL
