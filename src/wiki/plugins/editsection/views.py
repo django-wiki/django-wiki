@@ -29,7 +29,7 @@ ERROR_TRY_AGAIN = gettext_lazy("Please try again.")
 
 class FindHeader:
     """Locate the start, header text, and end of the header text of the next
-    possible section starting from pos. Finds too many occurances for SeText
+    possible section starting from pos. Finds too many occurrences for SeText
     headers which are filtered out later in the markdown extension.
     Returns: start pos header sure_header level"""
 
