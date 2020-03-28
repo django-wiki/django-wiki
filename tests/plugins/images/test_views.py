@@ -246,8 +246,8 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         """
         Tests that an image with more than one revision is really purged
         """
-        # use other test to stage this one
-        self.test_add_revision() # use other test to stage this one
+        # use another test to stage this one
+        self.test_add_revision()
 
         image = models.Image.objects.get()
         image_revision = image.current_revision.imagerevision
