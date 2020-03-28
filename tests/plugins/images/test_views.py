@@ -246,9 +246,9 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         """
         Tests that an image with more than one revision is really purged
         """
-        self.test_add_revision()
+        # use other test to stage this one
+        self.test_add_revision() # use other test to stage this one
 
-        # self._create_test_image(path="")
         image = models.Image.objects.get()
         image_revision = image.current_revision.imagerevision
         f_path = image_revision.image.file.name
@@ -271,9 +271,6 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         )
         self.assertEqual(models.Image.objects.count(), 0)
         self.assertIs(os.path.exists(f_path), False)
-
-
-
 
     @wiki_override_settings(ACCOUNT_HANDLING=True)
     def test_login_on_revision_add(self):
