@@ -12,20 +12,18 @@
 </script>
 {% endaddtoblock %}
 
-<div class="panel-group" id="accordion_{{ plugin.slug }}">
-
 {% for plugin, plugin_form in sidebar %}
 
-  <div class="panel panel-default">
+  <div class="card">
 
-    <div class="panel-heading">
-      <a class="panel-toggle" href="#collapse_{{ plugin.slug }}" data-toggle="collapse">
-        <h3 class="panel-title"><span class="fa fa-fw {{ plugin.sidebar.icon_class }}"></span> {{ plugin.sidebar.headline }}</h3>
+    <div class="card-header pb-0">
+      <a class="card-toggle" href="#collapse_{{ plugin.slug }}" data-toggle="collapse">
+        <p class="card-title"><span class="fa fa-fw {{ plugin.sidebar.icon_class }}"></span> {{ plugin.sidebar.headline }}</p>
       </a>
     </div>
 
-    <div id="collapse_{{ plugin.slug }}" class="panel-collapse collapse{% if plugin_form.errors %} in{% endif %}">
-      <div class="panel-body form-vertical">
+    <div id="collapse_{{ plugin.slug }}" class="card-collapse collapse{% if plugin_form.errors %} in{% endif %}">
+      <div class="card-body form-vertical">
         {% if plugin.sidebar.template %}
           {% with plugin_form as form and plugin as plugin %}
             <form method="POST" class="form-horizontal sidebar-form" action="?f={{ plugin_form.form_id }}" enctype="multipart/form-data">
@@ -39,4 +37,3 @@
 
   </div>
 {% endfor %}
-</div>

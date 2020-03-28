@@ -6,7 +6,7 @@
 
 {% block wiki_contents_tab %}
   {% thumbnail image.current_revision.imagerevision.image "250x250" as thumb %}
-    <p class="thumbnail pull-right">
+    <p class="thumbnail float-right">
       <img src="{{ thumb.url }}" alt="{{ revision.get_filename }}" />
     </p>
   {% endthumbnail %}

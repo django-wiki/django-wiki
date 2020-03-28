@@ -13,7 +13,7 @@ class ImagePlugin(BasePlugin):
     slug = settings.SLUG
     sidebar = {
         "headline": _("Images"),
-        "icon_class": "fa-picture-o",
+        "icon_class": "fa-image",
         "template": "wiki/plugins/images/sidebar.html",
         "form_class": forms.SidebarForm,
         "get_form_kwargs": (lambda a: {"instance": models.Image(article=a)}),
