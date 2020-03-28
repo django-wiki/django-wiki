@@ -61,47 +61,52 @@ Get Started!
 
 Ready to contribute? Here's how to set up `django-wiki` for local development.
 
-1. Fork the `django-wiki` repo on GitHub.
-2. Clone your fork locally::
+#. Fork the `django-wiki` repo on GitHub.
+#. Clone your fork locally::
 
     $ git clone git@github.com:your_name_here/django-wiki.git
 
-3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
+#. Go to your fork and install our pre-commit hooks which verify the code for errors::
+
+    $ pip install pre-commit
+    $ pre-commit install
+
+#. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
 
     $ mkvirtualenv django-wiki
     $ cd django-wiki/
     $ pip install -e '.[devel]'
 
-4. Create a branch for local development::
+#. Create a branch for local development::
 
     $ git checkout -b name-of-your-bugfix-or-feature
 
    Now you can make your changes locally.
 
-5. As you are making changes you may want to verify that changes are
-   passing all the relevant styling and functional/unit tests::
+#. As you are making changes you may want to verify that changes are
+   passing all the relevant functional/unit tests::
 
-    $ flake8
     $ pytest
 
-6. When you're done making changes, perform one final round of
+#. If you made changes related to the style sheets (SCSS), you need to install `sassc <https://sass-lang.com/libsass>`__ (``sudo apt install sassc``) and run this to compile css::
+
+    $ make assets
+
+#. When you're done making changes, perform one final round of
    testing, and also ensure relevant tests pass with all supported
    Python versions with tox::
 
-    $ flake8
     $ pytest
-    $ tox -e lint # Runs linter within isolated environment
+    $ # Necessary to run "pip install tox" firstly
     $ tox # Runs all tests that pytest would run, just with various Python/Django combinations
 
-   To get flake8 and tox, just pip install them into your virtualenv.
-
-7. Commit your changes and push your branch to GitHub::
+#. Commit your changes and push your branch to GitHub::
 
     $ git add .
     $ git commit -m "Your detailed description of your changes."
     $ git push origin name-of-your-bugfix-or-feature
 
-8. Submit a pull request through the GitHub website.
+#. Submit a pull request through the GitHub website.
 
 Pull Request Guidelines
 -----------------------
