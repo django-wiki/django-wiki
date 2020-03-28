@@ -119,16 +119,23 @@ def on_image_revision_delete(instance, *args, **kwargs):
     if not instance.image:
         return
 
+    # from attachments.models.py (line 166) :
+    # Remove file
+    path = instance.image.path.split("/")[:-1]
+    instance.image.delete(save=False)
+
+    '''
+    # if backendstorage capabillity checking is required, this should be used.
+    # (in attachments also)
     path = None
     try:
         path = instance.image.path.split("/")[:-1]
     except NotImplementedError:
         # This backend storage doesn't implement 'path' so there is no path to delete
-        # return
         pass
-    except Exception:
-        # in case of other errors
-        # return
+    except ValueError:
+        # in case of Value error
+        # https://github.com/django-wiki/django-wiki/issues/936
         pass
     finally:
         # Remove image file
@@ -138,6 +145,8 @@ def on_image_revision_delete(instance, *args, **kwargs):
         # This backend storage doesn't implement 'path' so there is no path to delete
         # or some other error
         return
+
+    '''
 
     # Clean up empty directories
 
