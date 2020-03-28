@@ -242,6 +242,39 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         self.assertEqual(models.Image.objects.count(), 0)
         self.assertIs(os.path.exists(f_path), False)
 
+    def test_add_revision_purge_image(self):
+        """
+        Tests that an image with more than one revision is really purged
+        """
+        self.test_add_revision()
+
+        # self._create_test_image(path="")
+        image = models.Image.objects.get()
+        image_revision = image.current_revision.imagerevision
+        f_path = image_revision.image.file.name
+
+        self.assertIs(os.path.exists(f_path), True)
+
+        response = self.client.post(
+            reverse(
+                "wiki:images_purge",
+                kwargs={
+                    "article_id": self.root_article,
+                    "image_id": image.pk,
+                    "path": "",
+                },
+            ),
+            data={"confirm": True},
+        )
+        self.assertRedirects(
+            response, reverse("wiki:images_index", kwargs={"path": ""})
+        )
+        self.assertEqual(models.Image.objects.count(), 0)
+        self.assertIs(os.path.exists(f_path), False)
+
+
+
+
     @wiki_override_settings(ACCOUNT_HANDLING=True)
     def test_login_on_revision_add(self):
         self._create_test_image(path="")
