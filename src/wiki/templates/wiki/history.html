@@ -54,8 +54,8 @@
     {% for revision in revisions %}
       <div class="" id="accordion{{ revision.revision_number }}">
         <div class="card bg-light">
-          <div class="card-title">
-            <a class="card-toggle" style="float: left;" href="#collapse{{ revision.revision_number }}" onclick="get_diff_json('{% url 'wiki:diff' revision.id %}', $('#collapse{{ revision.revision_number }}'))">
+          <div class="card-body">
+            <a class="wiki-card-toggle" style="float: left;" href="#collapse{{ revision.revision_number }}" onclick="get_diff_json('{% url 'wiki:diff' revision.id %}', $('#collapse{{ revision.revision_number }}'))">
               {% if revision == article.current_revision %}
                 <i class="fa fa-flag"></i>
               {% else %}
@@ -98,8 +98,8 @@
             <div class="clearfix"></div>
           </div>
           <div id="collapse{{ revision.revision_number }}" class="card-collapse collapse">
-            <div class="card-body diff-container" style="padding: 0;">
-              <dl class="dl-horizontal">
+            <div class="card-body diff-container">
+              <dl class="dl-horizontal wiki-card-toggle">
                 <dt>{% trans "Auto log:" %}</dt>
                 <dd>{{ revision.automatic_log|default:"-"|linebreaksbr }}</dd>
               </dl>
