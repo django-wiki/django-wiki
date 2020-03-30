@@ -121,7 +121,7 @@ def on_image_revision_delete(instance, *args, **kwargs):
 
     # from attachments.models.py (line 166) :
     # Remove file
-    path = instance.image.path.split("/")[:-1]
+    path = os.path.dirname(instance.image.path)
     instance.image.delete(save=False)
 
     '''
