@@ -119,17 +119,10 @@ def on_image_revision_delete(instance, *args, **kwargs):
     if not instance.image:
         return
 
-    # from attachments.models.py (line 166) :
-    # Remove file
-    path = os.path.dirname(instance.image.path)
-    instance.image.delete(save=False)
-
-    '''
-    # if backendstorage capabillity checking is required, this should be used.
-    # (in attachments also)
     path = None
     try:
         path = instance.image.path.split("/")[:-1]
+        path = os.path.dirname(instance.image.path)
     except NotImplementedError:
         # This backend storage doesn't implement 'path' so there is no path to delete
         pass
@@ -143,10 +136,8 @@ def on_image_revision_delete(instance, *args, **kwargs):
 
     if path is None:
         # This backend storage doesn't implement 'path' so there is no path to delete
-        # or some other error
+        # or some other error (ValueError)
         return
-
-    '''
 
     # Clean up empty directories
 
