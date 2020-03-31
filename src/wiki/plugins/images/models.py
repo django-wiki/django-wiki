@@ -119,13 +119,23 @@ def on_image_revision_delete(instance, *args, **kwargs):
     if not instance.image:
         return
 
-    # Remove image file
-    instance.image.delete(save=False)
-
+    path = None
     try:
-        path = instance.image.path.split("/")[:-1]
+        path = os.path.dirname(instance.image.path)
     except NotImplementedError:
         # This backend storage doesn't implement 'path' so there is no path to delete
+        pass
+    except ValueError:
+        # in case of Value error
+        # https://github.com/django-wiki/django-wiki/issues/936
+        pass
+    finally:
+        # Remove image file
+        instance.image.delete(save=False)
+
+    if path is None:
+        # This backend storage doesn't implement 'path' so there is no path to delete
+        # or some other error (ValueError)
         return
 
     # Clean up empty directories

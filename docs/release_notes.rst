@@ -27,7 +27,7 @@ Fixed
 * Python 3.7 issue with notifications plugin main view ``/_plugin/notifications/`` :url-issue:`1000` (Mads Jensen)
 * Broken Delete and Deleted pages :url-issue:`976` (Benjamin Bach)
 * Can't delete article with ``USE_THOUSAND_SEPARATOR = True`` :url-issue:`1014` (tim3towers)
-
+* Deleting images fails :url-issue:'936' (Gert-Jan Braas, Steckelfisch)
 
 Changed
 ~~~~~~~

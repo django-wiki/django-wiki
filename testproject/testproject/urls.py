@@ -22,6 +22,18 @@ if settings.DEBUG:
         ),
     ]
 
+if settings.DEBUG:
+    try:
+        import debug_toolbar
+        urlpatterns = [
+            re_path('__debug__/', include(debug_toolbar.urls)),
+
+            # For django versions before 2.0:
+            # url(r'^__debug__/', include(debug_toolbar.urls)),
+
+        ] + urlpatterns
+    except ImportError as ie:
+        pass
 
 urlpatterns += [
     re_path(r"^notify/", include("django_nyt.urls")),
