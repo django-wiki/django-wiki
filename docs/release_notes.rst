@@ -45,6 +45,12 @@ Removed
 * Python 3.4 support more or less definitively removed (no longer supported by test suite PyTest)
 * Removed unmaintained plugin ``wiki.plugins.haystack``
 
+Translations
+~~~~~~~~~~~~
+
+* Dutch translation 100% completed :url-issue:`1037` (Gert-Jan Braas)
+* Polish 99.55% completed
+
 0.5
 ---
 
