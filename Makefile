@@ -96,7 +96,6 @@ release: dist  ## Generate and upload release to PyPi
 	twine upload -s dist/*
 
 assets:  ## Build CSS files
-	sassc src/wiki/static/wiki/bootstrap/scss/wiki/wiki-bootstrap.scss src/wiki/static/wiki/bootstrap/css/wiki-bootstrap.css
 	sassc --style compressed src/wiki/static/wiki/bootstrap/scss/wiki/wiki-bootstrap.scss src/wiki/static/wiki/bootstrap/css/wiki-bootstrap.min.css
 
 dist: clean assets  ## Generate wheels distribution
