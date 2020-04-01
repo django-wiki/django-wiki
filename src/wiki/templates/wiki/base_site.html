@@ -95,14 +95,16 @@
             {% endspaceless %}"
       >
       <div class="input-group">
-        <input type="search" class="form-control mr-sm-2" aria-label="Search" name="q" placeholder="{% spaceless %}
+        <input type="search" class="form-control" aria-label="Search" name="q" placeholder="{% spaceless %}
                 {% if article or urlpath %}
                    {% trans "Search from current article..." %}
                 {% else %}
                   {% trans "Search whole wiki..." %}
                 {% endif %}
               {% endspaceless %}" />
-        <button class="btn btn-outline-light my-sm-0" type="submit"><span class="fa fa-search"></span></button>
+        <div class="input-group-append">
+          <button class="btn btn-outline-light my-sm-0" type="submit"><span class="fa fa-search"></span></button>
+        </div>
         </div>
       </form>
     </div>
