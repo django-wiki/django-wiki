@@ -12,7 +12,7 @@
   <div class="input-group">
     {{ search_form.query }}
     <span class="input-group-btn">
-      <button class="btn btn-default">
+      <button class="btn btn-secondary">
         <span class="fa fa-search"></span>
         {% trans "Search files and articles" %}
       </button>
@@ -50,7 +50,7 @@
     <td style="text-align: right">
       <form method="POST" action="{% url 'wiki:attachments_add' path=urlpath.path article_id=article.id attachment_id=attachment.id %}">
         {% csrf_token %}
-        <a href="{% url 'wiki:attachments_download' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-default">
+        <a href="{% url 'wiki:attachments_download' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-secondary">
           <span class="fa fa-download"></span>
           {% trans "Download" %}
         </a>

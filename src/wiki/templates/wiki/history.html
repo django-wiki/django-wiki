@@ -52,10 +52,10 @@
 <form method="GET">
   <div class="tab-content" style="overflow: visible;">
     {% for revision in revisions %}
-      <div class="panel-group" id="accordion{{ revision.revision_number }}">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <a class="panel-toggle" style="float: left;" href="#collapse{{ revision.revision_number }}" onclick="get_diff_json('{% url 'wiki:diff' revision.id %}', $('#collapse{{ revision.revision_number }}'))">
+      <div class="" id="accordion{{ revision.revision_number }}">
+        <div class="card bg-light">
+          <div class="card-body">
+            <a class="wiki-card-toggle" data-revision="{{ revision.revision_number }}" data-json-url="{% url 'wiki:diff' revision.id %}"  style="float: left;" href="#collapse{{ revision.revision_number }}">
               {% if revision == article.current_revision %}
                 <i class="fa fa-flag"></i>
               {% else %}
@@ -77,14 +77,14 @@
             <div class="progress progress-striped active" style="display: none; width: 40px; float: left; margin-top: 7px; margin-bottom: -7px;">
               <div class="bar" style="width: 100%;"></div>
             </div>
-            <div class="pull-right" style="vertical-align: middle; margin: 8px 8px;">
+            <div class="float-right" style="vertical-align: middle; margin: 8px 8px;">
               {% if revision == article.current_revision %}
-              <a href="#" class="btn btn-default disabled">
+              <a href="#" class="btn btn-secondary disabled">
                 <span class="fa fa-lock fa-fw"></span>
                 {% trans "Preview this revision" %}
               </a>
               {% else %}
-              <button type="submit" class="btn btn-default" onclick="$('#previewModal').modal('show'); this.form.target='previewWindow'; this.form.r.value='{{ revision.id }}'; this.form.action='{% url 'wiki:preview_revision' article.id %}'; $('#previewModal .switch-to-revision').attr('href', '{% url 'wiki:change_revision' path=urlpath.path article_id=article.id revision_id=revision.id %}')">
+              <button type="submit" class="btn btn-secondary" onclick="$('#previewModal').modal('show'); this.form.target='previewWindow'; this.form.r.value='{{ revision.id }}'; this.form.action='{% url 'wiki:preview_revision' article.id %}'; $('#previewModal .switch-to-revision').attr('href', '{% url 'wiki:change_revision' path=urlpath.path article_id=article.id revision_id=revision.id %}')">
                 <span class="fa fa-eye fa-fw"></span>
                 {% trans "Preview this revision" %}
               </button>
@@ -97,9 +97,9 @@
             </div>
             <div class="clearfix"></div>
           </div>
-          <div id="collapse{{ revision.revision_number }}" class="panel-collapse collapse">
-            <div class="panel-body diff-container" style="padding: 0;">
-              <dl class="dl-horizontal">
+          <div id="collapse{{ revision.revision_number }}" class="card-collapse collapse">
+            <div class="card-body diff-container">
+              <dl class="dl-horizontal wiki-card-toggle">
                 <dt>{% trans "Auto log:" %}</dt>
                 <dd>{{ revision.automatic_log|default:"-"|linebreaksbr }}</dd>
               </dl>
@@ -123,8 +123,8 @@
     {% if revisions.count > 1 and article|can_write:user and not article.current_revision.locked %}
 
     <div class="form-group form-actions">
-      <div class="pull-right">
-        <button type="submit" name="preview" value="1" class="btn btn-default" onclick="$('#mergeModal').modal('show'); this.form.target='mergeWindow'; this.form.action=$('input[type=radio]:checked').attr('merge-button-href'); $('.merge-revision-commit').attr('href', $('input[type=radio]:checked').attr('merge-button-commit-href'))">
+      <div class="float-right">
+        <button type="submit" name="preview" value="1" class="btn btn-secondary" onclick="$('#mergeModal').modal('show'); this.form.target='mergeWindow'; this.form.action=$('input[type=radio]:checked').attr('merge-button-href'); $('.merge-revision-commit').attr('href', $('input[type=radio]:checked').attr('merge-button-commit-href'))">
           <span class="fa fa-random"></span>
           {% trans "Merge selected with current..." %}
         </button>
@@ -147,7 +147,7 @@
           <iframe name="previewWindow" frameborder="0"></iframe>
         </div>
         <div class="modal-footer">
-          <a href="#" class="btn btn-default btn-lg" data-dismiss="modal">
+          <a href="#" class="btn btn-secondary btn-lg" data-dismiss="modal">
             <span class="fa fa-arrow-circle-left"></span>
             {% trans "Back to history view" %}
           </a>
@@ -178,7 +178,7 @@
           <iframe name="mergeWindow" frameborder="0" style="min-height: 0;"></iframe>
         </div>
         <div class="modal-footer">
-          <a href="#" class="btn btn-default btn-lg" data-dismiss="modal">
+          <a href="#" class="btn btn-secondary btn-lg" data-dismiss="modal">
             <span class="fa fa-arrow-circle-left"></span>
             {% trans "Back to history view" %}
           </a>

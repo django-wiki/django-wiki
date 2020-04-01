@@ -20,7 +20,7 @@
         <th colspan="4">
           <h4 style="margin-top:0;">
             <a href="{% url 'wiki:attachments_download' path=urlpath.path article_id=article.id attachment_id=attachment.id %}">{{ attachment.current_revision.get_filename }}</a>
-            <span class="badge">{{ attachment.current_revision.created|naturaltime }}</span>
+            <span class="badge badge-dark">{{ attachment.current_revision.created|naturaltime }}</span>
             {% if attachment.current_revision.deleted %}
             <span class="badge badge-important">{% trans "deleted" %}</span>
             {% endif %}
@@ -35,11 +35,11 @@
         <td style="width: 25%; text-align: right; white-space: nowrap;" rowspan="2">
           {% if attachment|can_write:user %}
             {% if not attachment.current_revision.deleted %}
-              <a href="{% url 'wiki:attachments_replace' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-default btn-sm">{% trans "Replace" %}</a>
+              <a href="{% url 'wiki:attachments_replace' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-secondary btn-sm">{% trans "Replace" %}</a>
               {% if attachment.article == article %}
-                <a href="{% url 'wiki:attachments_delete' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-default btn-sm">{% trans "Delete" %}</a>
+                <a href="{% url 'wiki:attachments_delete' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-secondary btn-sm">{% trans "Delete" %}</a>
               {% else %}
-                <a href="{% url 'wiki:attachments_delete' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-default btn-sm">{% trans "Detach" %}</a>
+                <a href="{% url 'wiki:attachments_delete' path=urlpath.path article_id=article.id attachment_id=attachment.id %}" class="btn btn-secondary btn-sm">{% trans "Detach" %}</a>
               {% endif %}
             {% else %}
                Deleted
@@ -47,7 +47,7 @@
           {% endif %}
           <p style="margin-top: 10px; margin-bottom:0;">
           <a href="{% url 'wiki:attachments_history' path=urlpath.path article_id=article.id attachment_id=attachment.id %}">
-            <span class="fa fa-clock-o"></span>
+            <span class="fa fa-clock"></span>
             {% trans "File history" %} ({{ attachment.attachmentrevision_set.all.count }} {% trans "revisions" %})
           </a>
           </p>
@@ -69,16 +69,15 @@
   </div>
   <div class="col-lg-4" style="min-width: 330px;">
   {% if article|can_write:user and not article|is_locked %}
-    <div class="panel-group">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <a class="panel-toggle" href="#collapse_upload" data-toggle="collapse">
-            <h4 class="panel-title"><span class="fa fa-fw fa-upload"></span> {% trans "Upload new file" %}</h4>
+      <div class="card">
+        <div class="card-header pb-0">
+          <a class="card-toggle" href="#collapse_upload" data-toggle="collapse">
+            <p class="card-title"><span class="fa fa-fw fa-upload"></span> {% trans "Upload new file" %}</p>
           </a>
         </div>
 
-        <div id="collapse_upload" class="panel-collapse collapse{% if form.errors %} in{% endif %}">
-          <div class="panel-body">
+        <div id="collapse_upload" class="card-collapse collapse{% if form.errors %} in{% endif %}">
+          <div class="card-body">
             {% if anonymous_disallowed %}
               {% include "wiki/includes/anonymous_blocked.html" %}
             {% else %}
@@ -93,21 +92,21 @@
         </div>
       </div>
 
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <a class="panel-toggle" data-toggle="collapse" href="#collapse_add">
-            <h4 class="panel-title"><span class="fa fa-fw fa-plus-circle"></span> {% trans "Search and add file" %}</h4>
+      <div class="card">
+        <div class="card-header pb-0">
+          <a class="card-toggle" data-toggle="collapse" href="#collapse_add">
+            <p class="card-title"><span class="fa fa-fw fa-plus-circle"></span> {% trans "Search and add file" %}</p>
           </a>
         </div>
 
-        <div id="collapse_add" class="panel-collapse collapse">
-          <div class="panel-body">
+        <div id="collapse_add" class="card-collapse collapse">
+          <div class="card-body">
             <p>{% trans "You can reuse files from other articles. These files are subject to updates on other articles which may or may not be a good thing." %}</p>
             <form method="GET" action="{% url 'wiki:attachments_search' path=urlpath.path article_id=article.id %}" class="wiki-form-block">
               <div class="input-group">
                 {{ search_form.query }}
                 <span class="input-group-btn">
-                  <button class="btn btn-default" type="submit">
+                  <button class="btn btn-secondary" type="submit">
                     <span class="fa fa-search"></span>
                   </button>
                 </span>
@@ -118,14 +117,14 @@
       </div>
 
       {% if article|can_write:user %}
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <a class="panel-toggle" data-toggle="collapse" href="#collapse_restore">
-              <h4 class="panel-title"><span class="fa fa-fw fa-trash"></span> {% trans "Restore attachments" %}</h4>
+        <div class="card">
+          <div class="card-header pb-0">
+            <a class="card-toggle" data-toggle="collapse" href="#collapse_restore">
+              <p class="card-title"><span class="fa fa-fw fa-trash"></span> {% trans "Restore attachments" %}</p>
             </a>
           </div>
-          <div id="collapse_restore" class="panel-collapse collapse">
-            <div class="panel-body">
+          <div id="collapse_restore" class="card-collapse collapse">
+            <div class="card-body">
 
             {% for attachment in deleted_attachments %}
             <p>
@@ -133,7 +132,7 @@
               {% if attachment.current_revision.previous_revision.id %}
               <form method="POST" action="{% url 'wiki:attachments_revision_change' path=urlpath.path article_id=article.id attachment_id=attachment.id revision_id=attachment.current_revision.previous_revision.id %}" style="margin:0; padding:0;">
                 {% csrf_token %}
-                <button class="btn btn-default">
+                <button class="btn btn-secondary">
                   {% trans "Restore" %}
                 </button>
               </form>
@@ -151,7 +150,6 @@
       {% endif %}
 
 
-    </div>
   {% else %}
 
     {% if article|is_locked %}

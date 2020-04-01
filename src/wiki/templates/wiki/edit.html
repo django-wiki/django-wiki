@@ -24,7 +24,7 @@
       <div class="form-group form-actions">
         <div class="col-lg-12">
           <div class="col-lg-offset-2">
-            <button class="btn btn-default" type="submit" name="preview" value="1" id="id_preview"
+            <button class="btn btn-secondary" type="submit" name="preview" value="1" id="id_preview"
                     formaction="{% url 'wiki:preview' path=urlpath.path article_id=article.id %}"
                     formtarget="previewWindow"
                     >
@@ -36,7 +36,7 @@
               {% trans "Save changes" %}
             </button>
 
-            <div class="btn-toolbar pull-right">
+            <div class="float-right">
               {% if user.is_authenticated and urlpath.path %}
               <a href="{% url 'wiki:move' path=urlpath.path article_id=article.id %}" class="btn btn-warning ">
                 <span class="fa fa-random"></span>
@@ -74,7 +74,7 @@
         <iframe name="previewWindow" frameborder="0"></iframe>
       </div>
       <div class="modal-footer">
-        <a href="#" class="btn btn-default btn-lg" data-dismiss="modal">
+        <a href="#" class="btn btn-secondary btn-lg" data-dismiss="modal">
           <span class="fa fa-arrow-circle-left"></span>
           {% trans "Back to editor" %}
         </a>

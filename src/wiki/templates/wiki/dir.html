@@ -8,40 +8,43 @@
 
 {% url 'wiki:dir' urlpath.path as self_url %}
 
-<form class="form-search directory-toolbar">
-<div class="well well-small">
-  <div class="btn-group pull-left">
-    {% if urlpath.parent %}
-    <a href="{% url 'wiki:dir' path=urlpath.parent.path %}" class="btn btn-default">
-      <span class="fa fa-arrow-up"></span>
-      {% trans "Up one level" %}
-    </a>
+  <div class="card">
+    <div class="card-header">
+      <form class="form-search directory-toolbar">
+      <div class="btn-group">
+        {% if urlpath.parent %}
+        <a href="{% url 'wiki:dir' path=urlpath.parent.path %}" class="btn btn-secondary">
+          <span class="fa fa-arrow-up"></span>
+          {% trans "Up one level" %}
+        </a>
+        {% endif %}
+        <a href="{% url 'wiki:create' path=urlpath.path %}" class="btn btn-secondary">
+          <span class="fa fa-plus"></span>
+          {% trans "Add article" %}
+        </a>
+        </div>
+        <div class="float-right">
+      {{ filter_form.query }}
+          </div>
+
+    {% if filter_query %}
+      <div class="card filter-clear">
+        <a href="{{ self_url }}">({% trans "clear" %})</a>
+      </div>
     {% endif %}
-    <a href="{% url 'wiki:create' path=urlpath.path %}" class="btn btn-default">
-      <span class="fa fa-plus"></span>
-      {% trans "Add article" %}
-    </a>
-  </div>
-  <div class="pull-right">
-    {{ filter_form.query }}
-  </div>
-  {% if filter_query %}
-    <div class="pull-right filter-clear">
-      <a href="{{ self_url }}">({% trans "clear" %})</a>
-    </div>
-  {% endif %}
 
-  <div class="clearfix"></div>
+    <div class="clearfix"></div>
+  </form>
+  </div>
 </div>
-</form>
 
-<p>
+<div class="py-3">
   {% with paginator.object_list.count as cnt %}
     {% blocktrans with urlpath.path as path and cnt|pluralize:_("article,articles") as articles_plur and cnt|pluralize:_("is,are") as articles_plur_verb trimmed %}
       Browsing <strong><a href="{{ self_url }}">/{{ path }}</a></strong>. There {{ articles_plur_verb }} <strong>{{ cnt }} {{ articles_plur }}</strong> in this level.
     {% endblocktrans %}
   {% endwith %}
-</p>
+</div>
 
 <table class="table table-striped">
   <tr>

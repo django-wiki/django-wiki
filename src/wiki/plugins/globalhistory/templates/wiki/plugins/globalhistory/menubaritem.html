@@ -1,9 +1,7 @@
 {% load i18n sekizai_tags %}
 
-<li class="divider"></li>
-<li>
-  <a href="{% url 'wiki:globalhistory' %}">
-    <i class="fa fa-clock-o"></i>
+<div class="dropdown-divider"></div>
+  <a class="dropdown-item" href="{% url 'wiki:globalhistory' %}">
+    <i class="fa fa-clock"></i>
     {% trans "Global history" %}
   </a>
-</li>

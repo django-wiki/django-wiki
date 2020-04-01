@@ -149,7 +149,7 @@ class SpamProtectionMixin:
                     gettext(
                         "Spam protection: You are only allowed to create or edit %(revisions)d article(s) per %(interval_name)s."
                     )
-                    % {"revisions": max_count, "interval_name": interval_name,}
+                    % {"revisions": max_count, "interval_name": interval_name}
                 )
 
         if not settings.LOG_IPS_ANONYMOUS:
@@ -323,34 +323,21 @@ class EditForm(forms.Form, SpamProtectionMixin):
 
 class SelectWidgetBootstrap(forms.Select):
     """
-    http://twitter.github.com/bootstrap/components.html#buttonDropdowns
-    Needs bootstrap and jquery
+    Formerly, we used Bootstrap 3's dropdowns. They look nice. But to
+    reduce bugs and reliance on JavaScript, it's now been replaced by
+    a conventional system platform drop-down.
+
+    https://getbootstrap.com/docs/4.4/components/dropdowns/
     """
 
-    template_name = "wiki/forms/select.html"
-    option_template_name = "wiki/forms/select_option.html"
+    def __init__(self, attrs=None, choices=()):
+        if attrs is None:
+            attrs = {"class": ""}
+        elif "class" not in attrs:
+            attrs["class"] = ""
+        attrs["class"] += " form-control"
 
-    def __init__(self, attrs={}, choices=(), disabled=False):
-        attrs["class"] = "btn-group pull-left btn-group-form"
-        self.disabled = disabled
-        self.noscript_widget = forms.Select(attrs={}, choices=choices)
         super().__init__(attrs, choices)
-
-    def __setattr__(self, k, value):
-        super().__setattr__(k, value)
-        if k not in ("attrs", "disabled"):
-            self.noscript_widget.__setattr__(k, value)
-
-    def get_context(self, name, value, attrs):
-        context = super().get_context(name, value, attrs)
-        context["label"] = _("Select an option")
-        context["noscript"] = self.noscript_widget.render(name, value, {})
-        context["disabled"] = " disabled" if self.disabled else ""
-        return context
-
-    class Media(forms.Media):
-
-        js = ("wiki/js/forms.js",)
 
 
 class TextInputPrepend(forms.TextInput):
@@ -447,7 +434,11 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
         help_text=_("Enter the username of the owner."),
     )
     group = forms.ModelChoiceField(
-        Group.objects.all(), empty_label=_("(none)"), label=_("Group"), required=False
+        Group.objects.all(),
+        empty_label=_("(none)"),
+        label=_("Group"),
+        required=False,
+        widget=forms.Select(attrs={"class": "form-control"}),
     )
     if settings.USE_BOOTSTRAP_SELECT_WIDGET:
         group.widget = SelectWidgetBootstrap()
@@ -607,7 +598,7 @@ class DirFilterForm(forms.Form):
 
     query = forms.CharField(
         widget=forms.TextInput(
-            attrs={"placeholder": _("Filter..."), "class": "search-query form-control"}
+            attrs={"placeholder": _("Filter..."), "class": "search-query"}
         ),
         required=False,
     )

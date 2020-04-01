@@ -3,7 +3,7 @@
 
   NB! Watch out for line breaks, markdown might add <br />s and <p>s.
 {% endcomment %}{% with image.current_revision.imagerevision as revision %}{% spaceless %}
-<figure class="thumbnail{% if align %} pull-{{ align }}{% endif %}" {% if width %} style="width: {{ width }}px;" {% endif %}>
+<figure class="thumbnail{% if align %} float-{{ align }}{% endif %}" {% if width %} style="width: {{ width }}px;" {% endif %}>
     <a href="{{ revision.image.url }}">
 {% if size %}
   {% thumbnail revision.image size upscale=False as thumb %}

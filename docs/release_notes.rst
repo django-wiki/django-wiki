@@ -15,9 +15,16 @@ Release plan
 0.6b1
 -----
 
+.. warning::
+
+  These release contains Bootstrap v4. If you have overridden django-wiki's templates but rely on
+  the distributed Bootstrap CSS, then a lot of CSS class names have changed. Please refer to
+  the `Bootstrap Documentation <https://getbootstrap.com/docs/4.4/getting-started/introduction/>`__.
+
 Added
 ~~~~~
 
+* Bootstrap 4 replaces Bootstrap 3: Improved default theming. :url-issue:`1035` (slinkymanbyday, Benjamin Bach)
 * Django 3.0 support :url-issue:`1019` (Benjamin Bach, slinkymanbyday)
 * New plugin ``wiki.plugins.editsection`` displays an ``[edit]`` link next to section headers (Frank Loemker) :url-issue:`652`
 
@@ -32,6 +39,8 @@ Fixed
 Changed
 ~~~~~~~
 
+* Use SASS instead of LESS for Stylesheets. The compiler in ``Makefile`` is ``lessc``. :url-issue:`1035` (Benjamin Bach)
+* Removed ``src/wiki/static/wiki/css/wiki-bootstrap.css`` - Only distribute a minified CSS version. :url-issue:`1035` (Benjamin Bach)
 * Test coverage upped from 75 to 80+% :url-issue:`976` (Mads Jensen, Benjamin Bach)
 * PDF attachment Content-Disposition header changed to ``inline`` for browser previewing :url-issue:`1010` (nicolazilio)
 * PyTest upgraded to latest 5.3

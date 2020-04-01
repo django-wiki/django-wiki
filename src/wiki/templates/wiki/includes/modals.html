@@ -1,31 +1,15 @@
 {% load sekizai_tags static %}
 {% addtoblock "js" %}
-<script type="text/javascript" src="{% static "wiki/js/jquery-ui-1.12.1.custom/jquery-ui.min.js" %}"></script>
 <script type="text/javascript">
+  function resize_modal() {
+    $(".wiki-modal .modal-body iframe").css("height", $(window).height() * 0.8 - $(".modal-footer").height() + "px");
+    $(".wiki-modal .modal-dialog").css("width", $(window).width() * 0.8 + "px");
+  };
 $(document).ready(function() {
-  $(".modal-content").on("resizestart", function(event, ui) {
-    $(ui.element).find(".modal-body, iframe").each(function() {
-      elem = $(this);
-      elem.data("resizeoriginalheight", elem.height());
-    });
-  });
-
-  $(".modal-content").on("resize", function(event, ui) {
-      ui.element.parents('.modal-dialog').css("margin-left", -ui.size.width/2);
-      ui.element.parents('.modal-dialog').css("margin-top", -ui.size.height/2);
-      ui.element.parents('.modal-dialog').css("top", "50%");
-      ui.element.parents('.modal-dialog').css("left", "50%");
-
-      $(ui.element).find(".modal-body,iframe").each(function() {
-        elem = $(this);
-        $(this).css("min-height", elem.data("resizeoriginalheight") + ui.size.height - ui.originalSize.height);
-      });
-  });
-
-  $(".modal-content").resizable();
+  resize_modal();
+});
+$(window).resize(function() {
+  resize_modal();
 });
 </script>
-{% endaddtoblock %}
-{% addtoblock "css" %}
-<link rel="stylesheet" href="{% static "wiki/js/jquery-ui-1.12.1.custom/jquery-ui.min.css" %}" type="text/css" />
 {% endaddtoblock %}

@@ -18,8 +18,8 @@
 <span class="badge badge-success">{% trans "restored" %}</span>
 {% endif %}
 {% if revision.locked %}
-<span class="badge">{% trans "locked" %}</span>
+<span class="badge badge-dark">{% trans "locked" %}</span>
 {% endif %}
 {% if revision.previous_revision.locked and not revision.locked %}
-<span class="badge">{% trans "unlocked" %}</span>
+<span class="badge badge-dark">{% trans "unlocked" %}</span>
 {% endif %}

@@ -1,61 +1,57 @@
 {% load i18n %}
 {% if urlpath %}
-<div id="article-breadcrumbs">
-
-<ul class="breadcrumb pull-left">
+<div id="article-breadcrumbs" class="row">
+<nav aria-label="breadcrumb">
+<ol class="breadcrumb my-0">
   {% for ancestor in urlpath.cached_ancestors %}
-    <li><a href="{% url 'wiki:get' path=ancestor.path %}">{{ ancestor.article.current_revision.title|truncatechars:25 }}</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'wiki:get' path=ancestor.path %}">{{ ancestor.article.current_revision.title|truncatechars:25 }}</a></li>
   {% endfor %}
-  <li class="active">{{ article.current_revision.title|truncatechars:25 }}</li>
-</ul>
-<div class="pull-left" style="margin-left: 10px;">
-  <div class="btn-group">
-    <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#" style="padding: 7px;" title="{% trans "Sub-articles for" %} {{ article.current_revision.title }}">
+  <li class="breadcrumb-item active">{{ article.current_revision.title|truncatechars:25 }}</li>
+</ol>
+</nav>
+  <div class="btn-group" style="margin-left: 10px;">
+    <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#" style="padding: 7px;" type="button"
+            title="{% trans "Sub-articles for" %} {{ article.current_revision.title }}"
+            aria-haspopup="true" aria-expanded="false">
       <span class="fa fa-sitemap"></span>
       <span class="caret"></span>
-    </a>
-    <ul class="dropdown-menu">
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
       {% for child in children_slice %}
-        <li>
-          <a href="{% url 'wiki:get' path=child.path %}">
+          <a class="dropdown-item" href="{% url 'wiki:get' path=child.path %}">
             {{ child.article.current_revision.title }}
           </a>
-        </li>
         {% empty %}
-        <li><a href="#"><em>{% trans "No sub-articles" %}</em></a></li>
+        <a class="dropdown-item" href="#"><em>{% trans "No sub-articles" %}</em></a>
       {% endfor %}
       {% if children_slice_more %}
-      <li><a href="#"><em>{% trans "...and more" %}</em></a></li>
+      <a class="dropdown-item" href="#"><em>{% trans "...and more" %}</em></a>
       {% endif %}
-      <li class="divider"></li>
-      <li>
-        <a href="{% url 'wiki:dir' path=urlpath.path %}">{% trans "Browse articles in this level" %} &raquo;</a>
-      </li>
-    </ul>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" href="{% url 'wiki:dir' path=urlpath.path %}">{% trans "Browse articles in this level" %} &raquo;</a>
+    </div>
   </div>
-</div>
-<div class="pull-left" style="margin-left: 10px;">
-  <div class="btn-group">
-    <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#" style="padding: 7px;" title="{% trans "Sub-articles for" %} {{ article.current_revision.title }}">
+  <div class="btn-group" style="margin-left: 10px;">
+    <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#" style="padding: 7px;" type="button"
+            title="{% trans "Sub-articles for" %} {{ article.current_revision.title }}"
+            aria-haspopup="true" aria-expanded="false">
       <span class="fa fa-file"></span>
       <span class="caret"></span>
-    </a>
-    <ul class="dropdown-menu">
-      <li>
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         {% if urlpath.parent %}
-        <a href="{% url 'wiki:create' path=urlpath.parent.path %}" style="padding: 7px;">
+        <a class="dropdown-item" href="{% url 'wiki:create' path=urlpath.parent.path %}" style="padding: 7px;">
           <span class="fa fa-arrow-right"></span>
           {% blocktrans with article.current_revision.title as title %}New article next to {{ title }}{% endblocktrans %}
         </a>
         {% endif %}
-        <a href="{% url 'wiki:create' path=urlpath.path %}" style="padding: 7px;">
+        <a class="dropdown-item" href="{% url 'wiki:create' path=urlpath.path %}" style="padding: 7px;">
           <span class="fa fa-arrow-down"></span>
           {% blocktrans with article.current_revision.title as title %}New article below {{ title }}{% endblocktrans %}
         </a>
-      </li>
-    </ul>
+    </div>
   </div>
-</div>
+
 <div class="clearfix"></div>
 </div>
 {% endif %}

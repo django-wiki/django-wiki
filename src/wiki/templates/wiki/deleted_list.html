@@ -20,7 +20,7 @@
       <tr>
         <td><a href="{{article.get_absolute_url}}">{{ article }}</a></td>
         <td> {{article.modified}} </td>
-        <td><a href="{% url 'wiki:deleted' article_id=article.id %}?restore=1" class="btn btn-default"><span class="fa fa-repeat"></span>
+        <td><a href="{% url 'wiki:deleted' article_id=article.id %}?restore=1" class="btn btn-secondary"><span class="fa fa-repeat"></span>
             {% trans "Restore" %}</a></td>
       </tr>
     {% endfor %}

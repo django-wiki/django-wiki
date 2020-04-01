@@ -117,7 +117,7 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         output = self.get_article("[image:1 align:right size:large]", True)
         image_rev = models.Image.objects.get().current_revision.imagerevision
         expected = (
-            '<figure class="thumbnail pull-right">'
+            '<figure class="thumbnail float-right">'
             '<a href="' + image_rev.image.name + '">'
             '<img alt="test\.gif" src="cache/.*\.jpg"></a>'
             '<figcaption class="caption"></figcaption></figure>'

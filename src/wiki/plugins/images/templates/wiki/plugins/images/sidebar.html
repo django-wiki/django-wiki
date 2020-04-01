@@ -41,26 +41,24 @@ function add_image(form) {
   #image-list tr:first-child td {border:0;}
 </style>
 <div style="max-height: 300px; overflow: auto;">
-  <table class="table table-responsive table-bordered" id="image-list">
+  <div class="card">
     {% for image in images %}
       {% with image.current_revision.imagerevision as revision %}
       {% thumbnail revision.image "50x50" crop="center" as thumb %}
-        <tr>
-          <td class="text-nowrap">
-            <p>{% trans "Image id" %}: {{ image.id }}</p>
-            <p>
+        <p class="card-header">{% trans "Image id" %}: {{ image.id }}</p>
+        <div class="card-body">
+            <div class="d-flex flex-wrap">
+            <div class="img-thumbnail">
+              <img src="{{ thumb.url }}" alt="{{ revision.get_filename }}" />
+            </div>
+           <p class="ml-4">
               <a href="javascript:void(insert_image({{ image.id }}))"><span class="fa fa-edit"></span> {% trans "Insert" %}</a><br />
               {% if image|can_write:user %}
               <a href="{% url 'wiki:images_add_revision' path=urlpath.path article_id=article.id image_id=image.id %}"><span class="fa fa-upload"></span> {% trans "Replace" %}</a>
               {% endif %}
             </p>
-          </td>
-          <td>
-            <div class="thumbnail">
-              <img src="{{ thumb.url }}" alt="{{ revision.get_filename }}" />
-            </div>
-          </td>
-        </tr>
+          </div>
+        </div>
       {% endthumbnail %}
       {% endwith %}
     {% empty %}
@@ -68,7 +66,7 @@ function add_image(form) {
       <td><em>{% trans "No images found for this article" %}</em></td>
     </tr>
     {% endfor %}
-  </table>
+  </div>
 </div>
 
 <p>
@@ -114,7 +112,7 @@ function add_image(form) {
   </p>
 
   <p>
-    <button type="button" onClick="add_image(this.form)" name="{{ plugin.slug }}_save" value="1" class="btn btn-default btn-md">
+    <button type="button" onClick="add_image(this.form)" name="{{ plugin.slug }}_save" value="1" class="btn btn-secondary btn-md">
       <span class="fa fa-upload"></span>
       {% trans "Add image" %}
     </button>
@@ -175,7 +173,7 @@ function add_image(form) {
         </form>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-success btn-default" data-dismiss="modal" onClick="insert_image(this.form)"> {% trans "Insert image" %} </button>
+        <button class="btn btn-success btn-secondary" data-dismiss="modal" onClick="insert_image(this.form)"> {% trans "Insert image" %} </button>
         <button class="btn btn-danger" data-dismiss="modal"> {% trans "Cancel" %} </button>
       </div>
     </div>

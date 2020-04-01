@@ -27,7 +27,7 @@
         {% trans "But since you're logged in as a superuser, we should really get started..." %}
       </p>
       <a href="{% url 'wiki:root_create' %}" class="btn btn-primary btn-lg">{% trans "Yes, I'll go and create the first article" %}</a>
-      <a href="http://django-wiki.readthedocs.org/" class="btn btn-default">{% trans "No thanks, I'd rather read the documentation" %}</a>
+      <a href="http://django-wiki.readthedocs.org/" class="btn btn-secondary">{% trans "No thanks, I'd rather read the documentation" %}</a>
 
       {% endif %}
   </div>

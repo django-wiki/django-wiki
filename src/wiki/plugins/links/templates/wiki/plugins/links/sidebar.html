@@ -7,14 +7,12 @@
 </p>
 
 <pre>[Title of link](wiki:ArticleSlug)</pre>
-
 <div class="input-group">
-  <input type="text" class="page_title_query form-control" id="links_page_title_query" value="" placeholder="Type to search..." />
-  <span class="input-group-btn">
-    <button type="button" class="btn btn-default" onclick="wikiInsertLink()">
-      {% trans "Insert" %}
-    </button>
-  </span>
+  <select id="links_page_title_query"></select>
+
+  <div class="input-group-append">
+    <button class="btn btn-outline-secondary" type="button" id="link_insert_button">Insert</button>
+  </div>
 </div>
 
 <hr />
@@ -26,19 +24,35 @@
 </p>
 <pre>[Clickable text](http://example.com)</pre>
 
-{% addtoblock "js" %}<script type="text/javascript" src="{% static "wiki/js/typeahead.min.js" %}"></script>{% endaddtoblock %}
+{% addtoblock "js" %}<script type="text/javascript" src="{% static "wiki/select2/js/select2.min.js" %}"></script>{% endaddtoblock %}
 {% addtoblock "js" %}
-<script type="text/javascript">
-  $(document).ready(function() {
-      $('.page_title_query').typeahead({
-        remote: "{% url 'wiki:links_query_urlpath' path=urlpath.path article_id=article.id %}?query=%QUERY",
-        dataType: String
-      });
+<script
+type = "text/javascript" >
+  $(document).ready(function () {
+    $('#links_page_title_query').select2({
+      dropdownAutoWidth: true,
+      placeholder: "Type to search...",
+      ajax: {
+        url: function (params) {
+          return "{% url 'wiki:links_query_urlpath' path=urlpath.path article_id=article.id %}?query=" + params.term
+        },
+        processResults: function (data) {
+          let ret = [];
+          data.forEach(function (val) {
+            ret.push({"id": val, "text": val})
+          });
+          return {results: ret};
+        },
+      },
+    });
+
+    $("#link_insert_button").on("click", function () {
+      $('#id_content').insertAtCaret($('#links_page_title_query').val());
+    });
   });
 
-function wikiInsertLink() {
-  $('#id_content').insertAtCaret($('#links_page_title_query').val());
-}
-
 </script>
+{% endaddtoblock %}
+{% addtoblock "css" %}
+<link rel="stylesheet" href="{% static "wiki/select2/css/select2.min.css" %}" type="text/css" />
 {% endaddtoblock %}

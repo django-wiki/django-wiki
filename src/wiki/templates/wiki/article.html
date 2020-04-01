@@ -11,13 +11,14 @@
 {% block wiki_contents %}
 
   <div id="article-container">
-    <ul class="nav nav-pills" id="article-menu">
-      <li class="pull-left" id="article-title-li">
+   <nav id="article-menu" class="navbar navbar-expand-md nav-pills">
+    <ul class="navbar-nav w-75">
+    <li class="float-left nav-item" id="article-title-li">
         <h1 id="article-title">
           {{ article.current_revision.title }}
           <small style="font-size: 14px;">
             {% if urlpath.parent %}
-            <a href="{% url 'wiki:get' path=urlpath.path %}"><span class="fa fa-bookmark"></span> {{ urlpath.slug }}</a>
+            <a href="{% url 'wiki:get' path=urlpath.path %}" class="nav-link"><span class="fa fa-bookmark"></span> {{ urlpath.slug }}</a>
             {% endif %}
             {% if article.current_revision.locked %}
               <span class="fa fa-lock"></span> {% trans "locked" %}
@@ -25,8 +26,11 @@
           </small>
         </h1>
       </li>
+    </ul>
+     <ul class="nav navbar-nav ml-auto w-100 justify-content-end">
       {% include "wiki/includes/article_menu.html" %}
     </ul>
+   </nav>
     <div>
       {% block wiki_contents_tab %}
       {% endblock %}

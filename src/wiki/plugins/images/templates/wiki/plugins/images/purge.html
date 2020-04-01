@@ -6,7 +6,7 @@
 
 {% block wiki_contents_tab %}
   {% thumbnail image.current_revision.imagerevision.image "250x250" as thumb %}
-    <p class="thumbnail pull-right">
+    <p class="thumbnail float-right">
       <img src="{{ thumb.url }}" alt="{{ revision.get_filename }}" />
     </p>
   {% endthumbnail %}
@@ -18,7 +18,7 @@
     <div class="form-group form-actions">
       <div class="col-lg-2"></div>
       <div class="col-lg-10">
-        <a href="{% url 'wiki:images_index' path=urlpath.path article_id=article.id %}" class="btn btn-default">
+        <a href="{% url 'wiki:images_index' path=urlpath.path article_id=article.id %}" class="btn btn-secondary">
           <span class="fa fa-arrow-left"></span>
           {% trans "Go back" %}
         </a>

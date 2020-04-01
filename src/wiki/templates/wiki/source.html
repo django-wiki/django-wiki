@@ -10,8 +10,9 @@
 <p class="lead">{% trans "This article is currently locked for editing." %}</p>
 {% endif %}
 
-<pre class="pre-scrollable">
+<pre class="pre-scrollable highlight"><code>
   {{ article.current_revision.content }}
+</code>
 </pre>
 
 {% endblock %}
