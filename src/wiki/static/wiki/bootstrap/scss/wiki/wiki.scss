@@ -196,6 +196,17 @@ h1#article-title {font-size: 2.5em; margin-top: 0;}
     font-size: $font-size-base;
 }
 
+#wiki-edit-sidebar
+{
+    .card {
+        margin-bottom: 5px;
+    }
+    .card-body
+    {
+        font-size: $font-size-base*0.8;
+    }
+}
+
 
 input[type=file] {float: none; width: auto;}
 .asteriskField { font-size: 20px; margin-left: 5px;}
@@ -235,6 +246,10 @@ input[type=file] {float: none; width: auto;}
 #article-container
 {
   margin-top: 20px;
+}
+
+#article-breadcrumbs {
+    margin: 0;
 }
 
 #wiki-footer

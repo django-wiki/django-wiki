@@ -19,7 +19,8 @@
     {% block wiki_body %}
 
     {% block wiki_navbar %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
     {% block wiki_header_branding %}
           <a class="navbar-brand" href="{% url 'wiki:root' %}">django-\/\/ i K |</a>
     {% endblock %}
@@ -108,6 +109,8 @@
         </div>
       </form>
     </div>
+
+  </div>
   </nav>
     {% endblock %}
 
