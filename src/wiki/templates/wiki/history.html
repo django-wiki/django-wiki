@@ -55,7 +55,7 @@
       <div class="" id="accordion{{ revision.revision_number }}">
         <div class="card bg-light">
           <div class="card-body">
-            <a class="wiki-card-toggle" style="float: left;" href="#collapse{{ revision.revision_number }}" onclick="get_diff_json('{% url 'wiki:diff' revision.id %}', $('#collapse{{ revision.revision_number }}'))">
+            <a class="wiki-card-toggle" data-revision="{{ revision.revision_number }}" data-json-url="{% url 'wiki:diff' revision.id %}"  style="float: left;" href="#collapse{{ revision.revision_number }}">
               {% if revision == article.current_revision %}
                 <i class="fa fa-flag"></i>
               {% else %}
