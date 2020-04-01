@@ -45,7 +45,7 @@ h1#article-title {font-size: 2.5em; margin-top: 0;}
 
 .article-edit-title-link {font-size: $font-size-base; padding-left: 8px}
 
-.wiki-label label { font-size: 16px; font-weight: normal; color: #777;}
+.wiki-label label { font-size: 16px; font-weight: normal; color: $info;}
 
 .controls ul
 {
@@ -63,7 +63,7 @@ h1#article-title {font-size: 2.5em; margin-top: 0;}
     display: inline-block; /* Fix height problem when next to floating elements */
     .nav-header {
         padding: 3px 10px;
-        border-bottom: 1px solid #DDD;
+        border-bottom: 1px solid $gray-200;
         font-weight: bold;
     }
 }
@@ -76,7 +76,7 @@ h1#article-title {font-size: 2.5em; margin-top: 0;}
 .wiki-article div.toc > ul,
 .wiki-article div.article-list > ul {
     border-radius: 5px;
-    background-color: #f6f6f6;
+    background-color: $gray-100;
     padding-top: 5px;
 }
 
@@ -88,7 +88,7 @@ h1#article-title {font-size: 2.5em; margin-top: 0;}
 .wiki-article div.article-list ul li a {
     padding: 5px 10px;
     display: block;
-    border-bottom: 1px solid #DDD;
+    border-bottom: 1px solid $gray-200;
 }
 
 .wiki-article div.toc ul li:last-child,
@@ -101,10 +101,10 @@ h1#article-title {font-size: 2.5em; margin-top: 0;}
      @extend .dropdown-toggle;
 }
 
-.wiki-article a.linknotfound {color: #C87;}
+.wiki-article a.linknotfound {color: $warning;}
 
 .wiki-broken {
-  color: #ba0000;
+  color: darken($danger, 20%);
 }
 
 .wiki-article pre {
