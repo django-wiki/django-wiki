@@ -1,8 +1,16 @@
-@import "../variables";
-@import "../mixins/lists";
-@import "../mixins/breakpoints";
-@import "../mixins/grid";
-@import "../mixins/float";
+$primary:             #0F9B8E;
+$secondary:           #343837;
+$success:             #19647e;
+$info:                #03719C;
+$warning:             #fa9f42; //#1f271b;
+$danger:              #721817;
+
+@import '../bootstrap';
+
+.bg-dark
+{
+    background: $info;
+}
 
 @mixin wiki-page-header{
     @extend .pb-2;
