@@ -36,7 +36,7 @@
               {% trans "Save changes" %}
             </button>
 
-            <div class="btn-toolbar float-right">
+            <div class="float-right">
               {% if user.is_authenticated and urlpath.path %}
               <a href="{% url 'wiki:move' path=urlpath.path article_id=article.id %}" class="btn btn-warning ">
                 <span class="fa fa-random"></span>
