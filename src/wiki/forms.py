@@ -447,10 +447,9 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
         help_text=_("Enter the username of the owner."),
     )
     group = forms.ModelChoiceField(
-        Group.objects.all(), empty_label=_("(none)"), label=_("Group"), required=False
+        Group.objects.all(), empty_label=_("(none)"), label=_("Group"), required=False,
+        widget=forms.Select(attrs={"class": "form-control"})
     )
-    if settings.USE_BOOTSTRAP_SELECT_WIDGET:
-        group.widget = SelectWidgetBootstrap()
 
     recursive = forms.BooleanField(
         label=_("Inherit permissions"),
@@ -511,9 +510,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
                 else Group.objects.none(),
                 empty_label=_("(none)"),
                 required=False,
-                widget=SelectWidgetBootstrap(disabled=True)
-                if settings.USE_BOOTSTRAP_SELECT_WIDGET
-                else forms.Select(attrs={"disabled": True}),
+                widget=forms.Select(attrs={"disabled": True}),
             )
             self.fields["group_read"].widget = forms.HiddenInput()
             self.fields["group_write"].widget = forms.HiddenInput()
