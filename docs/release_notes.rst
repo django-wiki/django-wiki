@@ -47,6 +47,7 @@ Changed
 * django-mptt updated from 0.9 to 0.11.0 :url-issue:`1019` (Benjamin Bach, slinkymanbyday)
 * sorl-thumbnail bumped to 12.6.2 :url-issue:`1019` (Benjamin Bach, slinkymanbyday)
 * Upgrade bleach from 2.1 to 3.1 :url-issue:`1020` (slinkymanbyday)
+* Python-Markdown 3.2 compatibility (Benjamin Bach)
 
 Removed
 ~~~~~~~

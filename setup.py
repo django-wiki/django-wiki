@@ -29,7 +29,7 @@ install_requirements = [
     "django-mptt>=0.11,<0.12",
     "django-sekizai>=0.10",
     "sorl-thumbnail>=12.6.2,<13",
-    "Markdown>=3.1,<3.2.0",
+    "Markdown>=3.1,<3.3",
 ]
 
 test_requirements = [
