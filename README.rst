@@ -64,7 +64,8 @@ Demo
 ----
 
 A demo running the latest ``master`` is available here, sign up for an
-account to see the notification system.
+account to see the notification system, or you can log in with
+user:``test`` and password:``test``.
 
 https://demo.django-wiki.org
 
