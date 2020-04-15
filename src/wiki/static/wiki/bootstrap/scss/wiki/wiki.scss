@@ -440,7 +440,7 @@ input[type=file] {float: none; width: auto;}
 }
 @include media-breakpoint-up(lg) {
     .pull-right-block-on-responsive {
-        @include float-right;
+        float: right;
     }
     #wiki-search-form {
         width: 170px;
