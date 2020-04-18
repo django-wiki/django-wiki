@@ -143,12 +143,12 @@ handling entirely, set ``WIKI_ACCOUNT_HANDLING = False``.
     WIKI_ACCOUNT_SIGNUP_ALLOWED = True
 
 After a user is logged in, they will be redirected to the value of
-``LOGIN_REDIRECT_URL``, which you can configure in your project settings to
+``LOGIN_REDIRECT_URL``, which you can configure in your project's settings.py to
 point to the root article:
 
 .. code-block:: python
 
-    from django.core.urlresolvers import reverse_lazy
+    from django.urls import reverse_lazy
     LOGIN_REDIRECT_URL = reverse_lazy('wiki:get', kwargs={'path': ''})
 
 
