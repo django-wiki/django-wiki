@@ -77,15 +77,6 @@ maintain the order due to database relational constraints:
     'wiki.plugins.macros.apps.MacrosConfig',
 
 
-Database
-~~~~~~~~
-
-To sync and create tables, do:
-
-::
-
-    python manage.py migrate
-
 Configure ``context_processors``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -117,6 +108,16 @@ to see the current default setting for this variable.
             },
         },
     ]
+
+Database
+~~~~~~~~
+
+To sync and create tables, do:
+
+::
+
+    python manage.py migrate
+
 
 
 Set ``SITE_ID``
