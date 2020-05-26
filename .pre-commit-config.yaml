@@ -3,12 +3,14 @@ repos:
     sha: v1.2.0
     hooks:
     -   id: trailing-whitespace
+        exclude: ".tx/config"
     -   id: flake8
         args:
         - --exclude=*/*migrations/*, testproject/testproject/settings/*
     -   id: check-added-large-files
     -   id: debug-statements
     -   id: end-of-file-fixer
+        exclude: ".tx/config"
   - repo: https://github.com/psf/black
     rev: stable
     hooks:
