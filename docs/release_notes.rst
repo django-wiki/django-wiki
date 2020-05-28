@@ -59,7 +59,7 @@ Translations
 ~~~~~~~~~~~~
 
 * Dutch translation 100% completed :url-issue:`1037` (Gert-Jan Braas)
-* Polish 99.55% completed
+* Polish 100% completed
 
 0.5
 ---
