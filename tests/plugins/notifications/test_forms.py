@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django_nyt.forms import SettingsForm
+from wiki.plugins.notifications.forms import SettingsFormSet
 
 from tests.base import RequireSuperuserMixin
-from wiki.plugins.notifications.forms import SettingsFormSet
 
 
 class SettingsFormTests(RequireSuperuserMixin, TestCase):

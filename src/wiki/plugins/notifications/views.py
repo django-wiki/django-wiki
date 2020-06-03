@@ -5,7 +5,8 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import gettext as _
 from django.views.generic import FormView
 
-from . import forms, models
+from . import forms
+from . import models
 
 
 class NotificationSettings(FormView):

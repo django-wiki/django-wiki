@@ -7,19 +7,20 @@ from django.test import override_settings
 from django.utils import translation
 from django.utils.html import escape
 from django_functest import FuncBaseMixin
-from tests.testdata.models import CustomGroup
 from wiki import models
-from wiki.forms import PermissionsForm, validate_slug_numbers
-from wiki.models import ArticleRevision, URLPath, reverse
+from wiki.forms import PermissionsForm
+from wiki.forms import validate_slug_numbers
+from wiki.models import ArticleRevision
+from wiki.models import reverse
+from wiki.models import URLPath
 
-from ..base import (
-    SUPERUSER1_USERNAME,
-    ArticleWebTestUtils,
-    DjangoClientTestBase,
-    RequireRootArticleMixin,
-    SeleniumBase,
-    WebTestBase,
-)
+from ..base import ArticleWebTestUtils
+from ..base import DjangoClientTestBase
+from ..base import RequireRootArticleMixin
+from ..base import SeleniumBase
+from ..base import SUPERUSER1_USERNAME
+from ..base import WebTestBase
+from tests.testdata.models import CustomGroup
 
 
 class RootArticleViewTestsBase(FuncBaseMixin):

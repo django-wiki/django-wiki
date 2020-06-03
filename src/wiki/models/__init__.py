@@ -1,4 +1,5 @@
-from django import shortcuts, urls
+from django import shortcuts
+from django import urls
 from django.urls import base
 from django.utils.functional import lazy
 

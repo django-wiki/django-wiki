@@ -1,11 +1,10 @@
 from functools import wraps
 
-from django.http import (
-    HttpResponseForbidden,
-    HttpResponseNotFound,
-    HttpResponseRedirect,
-)
-from django.shortcuts import get_object_or_404, redirect
+from django.http import HttpResponseForbidden
+from django.http import HttpResponseNotFound
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.http import urlquote

@@ -1,6 +1,7 @@
 import markdown
 from django.template.loader import render_to_string
-from wiki.plugins.images import models, settings
+from wiki.plugins.images import models
+from wiki.plugins.images import settings
 
 IMAGE_RE = (
     r"(?:(?im)"

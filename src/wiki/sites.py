@@ -1,5 +1,6 @@
 from django.apps import apps
-from django.urls import include, re_path
+from django.urls import include
+from django.urls import re_path
 from django.utils.functional import LazyObject
 from django.utils.module_loading import import_string
 from wiki.conf import settings

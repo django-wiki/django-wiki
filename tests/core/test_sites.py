@@ -2,10 +2,13 @@ from importlib import reload
 
 from django.contrib.sites.models import Site
 from django.test.testcases import TestCase
-from django.urls import include, re_path
-from wiki import sites, urls
+from django.urls import include
+from django.urls import re_path
+from wiki import sites
+from wiki import urls
 from wiki.apps import WikiConfig
-from wiki.models import Article, URLPath
+from wiki.models import Article
+from wiki.models import URLPath
 
 from ..base import wiki_override_settings
 

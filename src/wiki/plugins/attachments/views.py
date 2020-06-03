@@ -1,15 +1,23 @@
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
-from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, redirect
+from django.http import Http404
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext as _
-from django.views.generic import FormView, ListView, TemplateView, View
+from django.views.generic import FormView
+from django.views.generic import ListView
+from django.views.generic import TemplateView
+from django.views.generic import View
 from wiki.core.http import send_file
 from wiki.core.paginator import WikiPaginator
-from wiki.decorators import get_article, response_forbidden
-from wiki.plugins.attachments import forms, models, settings
+from wiki.decorators import get_article
+from wiki.decorators import response_forbidden
+from wiki.plugins.attachments import forms
+from wiki.plugins.attachments import models
+from wiki.plugins.attachments import settings
 from wiki.views.mixins import ArticleMixin
 
 

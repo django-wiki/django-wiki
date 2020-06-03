@@ -1,5 +1,7 @@
-from tests.base import RequireRootArticleMixin, TestBase
 from wiki.core import markdown
+
+from tests.base import RequireRootArticleMixin
+from tests.base import TestBase
 
 
 class MacroTests(RequireRootArticleMixin, TestBase):

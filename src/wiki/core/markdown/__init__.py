@@ -39,7 +39,11 @@ class ArticleMarkdown(markdown.Markdown):
             attrs.update(plugin_registry.get_html_attributes().items())
 
             html = bleach.clean(
-                html, tags=tags, attributes=attrs, styles=settings.MARKDOWN_HTML_STYLES, strip=True
+                html,
+                tags=tags,
+                attributes=attrs,
+                styles=settings.MARKDOWN_HTML_STYLES,
+                strip=True,
             )
         return html
 

@@ -5,7 +5,9 @@ from django.test import TestCase
 from wiki.conf import settings as wiki_settings
 from wiki.core.http import send_file
 from wiki.forms import Group
-from wiki.models import Article, ArticleRevision, URLPath
+from wiki.models import Article
+from wiki.models import ArticleRevision
+from wiki.models import URLPath
 
 from ..base import wiki_override_settings
 from ..testdata.models import CustomGroup

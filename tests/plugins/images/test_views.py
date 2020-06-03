@@ -10,12 +10,10 @@ from wiki.models import URLPath
 from wiki.plugins.images import models
 from wiki.plugins.images.wiki_plugin import ImagePlugin
 
-from ...base import (
-    ArticleWebTestUtils,
-    DjangoClientTestBase,
-    RequireRootArticleMixin,
-    wiki_override_settings,
-)
+from ...base import ArticleWebTestUtils
+from ...base import DjangoClientTestBase
+from ...base import RequireRootArticleMixin
+from ...base import wiki_override_settings
 
 
 class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):

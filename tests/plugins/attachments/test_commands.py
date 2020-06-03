@@ -1,9 +1,10 @@
 import os
 import tempfile
 
-from tests.core.test_commands import TestManagementCommands
 from wiki.models import URLPath
 from wiki.plugins.attachments import models
+
+from tests.core.test_commands import TestManagementCommands
 
 
 class TestAttachmentManagementCommands(TestManagementCommands):

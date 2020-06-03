@@ -8,19 +8,21 @@ settings.WIKI_SIGNUP_URL = '/your/signup/url'
 SETTINGS.LOGIN_URL
 SETTINGS.LOGOUT_URL
 """
-
 from django.conf import settings as django_settings
 from django.contrib import messages
-from django.contrib.auth import (
-    get_user_model,
-    login as auth_login,
-    logout as auth_logout,
-)
+from django.contrib.auth import get_user_model
+from django.contrib.auth import login as auth_login
+from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
+from django.shortcuts import render
 from django.urls import reverse
 from django.utils.translation import gettext as _
-from django.views.generic import CreateView, FormView, UpdateView, View
+from django.views.generic import CreateView
+from django.views.generic import FormView
+from django.views.generic import UpdateView
+from django.views.generic import View
 from wiki import forms
 from wiki.conf import settings
 

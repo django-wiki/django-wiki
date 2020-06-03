@@ -2,7 +2,9 @@ from django.urls import reverse
 from django.utils import translation
 from wiki.models import URLPath
 
-from ...base import ArticleWebTestUtils, DjangoClientTestBase, RequireRootArticleMixin
+from ...base import ArticleWebTestUtils
+from ...base import DjangoClientTestBase
+from ...base import RequireRootArticleMixin
 
 
 class GlobalhistoryTests(

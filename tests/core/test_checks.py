@@ -1,14 +1,13 @@
 import copy
 
 from django.conf import settings
-from django.core.checks import Error, registry
+from django.core.checks import Error
+from django.core.checks import registry
 from django.test import TestCase
-from wiki.checks import (
-    FIELDS_IN_CUSTOM_USER_MODEL,
-    REQUIRED_CONTEXT_PROCESSORS,
-    REQUIRED_INSTALLED_APPS,
-    Tags,
-)
+from wiki.checks import FIELDS_IN_CUSTOM_USER_MODEL
+from wiki.checks import REQUIRED_CONTEXT_PROCESSORS
+from wiki.checks import REQUIRED_INSTALLED_APPS
+from wiki.checks import Tags
 
 from ..base import wiki_override_settings
 

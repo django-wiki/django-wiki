@@ -3,8 +3,10 @@ import unittest
 
 import django_functest
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from django.template import Context, Template
-from django.test import TestCase, override_settings
+from django.template import Context
+from django.template import Template
+from django.test import override_settings
+from django.test import TestCase
 from django.urls import reverse
 from wiki.models import URLPath
 

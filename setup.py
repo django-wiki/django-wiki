@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 import os
 import sys
 from glob import glob
 
-from setuptools import find_packages, setup
+from setuptools import find_packages
+from setuptools import setup
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
 

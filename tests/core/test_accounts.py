@@ -6,15 +6,13 @@ from django.shortcuts import resolve_url
 from wiki.conf import settings as wiki_settings
 from wiki.models import reverse
 
-from ..base import (
-    SUPERUSER1_PASSWORD,
-    SUPERUSER1_USERNAME,
-    ArticleWebTestUtils,
-    DjangoClientTestBase,
-    RequireRootArticleMixin,
-    TestBase,
-    wiki_override_settings,
-)
+from ..base import ArticleWebTestUtils
+from ..base import DjangoClientTestBase
+from ..base import RequireRootArticleMixin
+from ..base import SUPERUSER1_PASSWORD
+from ..base import SUPERUSER1_USERNAME
+from ..base import TestBase
+from ..base import wiki_override_settings
 from ..testdata.models import CustomUser
 
 
@@ -38,7 +36,9 @@ class AccountUpdateTest(
 
         # save a new revision
         response = self.client.post(resolve_url("wiki:profile_update"), example_data)
-        self.assertContains(response, "Passwords don", status_code=200)  # Django 2/3 output different escaped versions of single quote in don't
+        self.assertContains(
+            response, "Passwords don", status_code=200
+        )  # Django 2/3 output different escaped versions of single quote in don't
 
         # Now check that we don't succeed with unmatching passwords
         example_data = {

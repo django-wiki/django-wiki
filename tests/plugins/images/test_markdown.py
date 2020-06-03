@@ -2,9 +2,11 @@ import base64
 from io import BytesIO
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
-from tests.base import RequireRootArticleMixin, TestBase
 from wiki.core import markdown
 from wiki.plugins.images import models
+
+from tests.base import RequireRootArticleMixin
+from tests.base import TestBase
 
 
 class ImageMarkdownTests(RequireRootArticleMixin, TestBase):

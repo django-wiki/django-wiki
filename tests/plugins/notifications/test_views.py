@@ -1,10 +1,9 @@
 from django.shortcuts import resolve_url
 from django_nyt.models import Settings
-from tests.base import (
-    ArticleWebTestUtils,
-    DjangoClientTestBase,
-    RequireRootArticleMixin,
-)
+
+from tests.base import ArticleWebTestUtils
+from tests.base import DjangoClientTestBase
+from tests.base import RequireRootArticleMixin
 
 
 class NotificationSettingsTests(

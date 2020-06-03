@@ -4,7 +4,8 @@ from django.contrib.contenttypes.admin import GenericTabularInline
 from django.utils.translation import gettext_lazy as _
 from mptt.admin import MPTTModelAdmin
 
-from . import editors, models
+from . import editors
+from . import models
 
 
 class ArticleObjectAdmin(GenericTabularInline):
