@@ -117,7 +117,7 @@ class ImageRevision(RevisionPluginRevision):
             return gettext("Current revision not set!!")
 
 
-def on_image_revision_delete(instance, *args, **kwargs):
+def on_image_revision_delete(instance, *args, **kwargs):  # noqa: max-complexity=11
     if not instance.image:
         return
 

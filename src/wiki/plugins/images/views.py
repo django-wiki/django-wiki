@@ -196,7 +196,7 @@ class RevisionAddView(ArticleMixin, FormView):
         messages.info(
             self.request,
             _("%(file)s has been saved.")
-            % {"file": self.image.current_revision.imagerevision.get_filename(),},
+            % {"file": self.image.current_revision.imagerevision.get_filename()},
         )
         if self.urlpath:
             return redirect("wiki:edit", path=self.urlpath.path)

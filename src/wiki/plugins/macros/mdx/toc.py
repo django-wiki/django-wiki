@@ -1,5 +1,3 @@
-import re
-
 from markdown.extensions.toc import slugify
 from markdown.extensions.toc import TocExtension
 from markdown.extensions.toc import TocTreeprocessor
