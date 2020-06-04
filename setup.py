@@ -42,15 +42,15 @@ test_requirements = [
 
 test_lint_requirements = [
     "flake8>=3.7,<3.8",
-    "flake8-isort",
     "black",  # Just use the latest
+    "pre-commit",
 ]
 
 setup_requirements = [
     "pytest-runner",
 ]
 
-development_requirements = test_requirements + test_lint_requirements + ["pre-commit"]
+development_requirements = test_requirements + test_lint_requirements
 
 extras_requirements = {
     "devel": development_requirements,

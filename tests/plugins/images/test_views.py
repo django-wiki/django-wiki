@@ -104,10 +104,10 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         output = self.get_article("[image:1]", True)
         image_rev = models.Image.objects.get().current_revision.imagerevision
         expected = (
-            '<figure class="thumbnail">'
-            '<a href="' + image_rev.image.name + '">'
-            '<img alt="test\.gif" src="cache/.*\.jpg">'
-            '</a><figcaption class="caption"></figcaption></figure>'
+            r'<figure class="thumbnail">'
+            r'<a href="' + image_rev.image.name + '">'
+            r'<img alt="test\.gif" src="cache/.*\.jpg">'
+            r'</a><figcaption class="caption"></figcaption></figure>'
         )
         self.assertRegexpMatches(output, expected)
 
@@ -115,10 +115,10 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         output = self.get_article("[image:1 align:right size:large]", True)
         image_rev = models.Image.objects.get().current_revision.imagerevision
         expected = (
-            '<figure class="thumbnail float-right">'
-            '<a href="' + image_rev.image.name + '">'
-            '<img alt="test\.gif" src="cache/.*\.jpg"></a>'
-            '<figcaption class="caption"></figcaption></figure>'
+            r'<figure class="thumbnail float-right">'
+            r'<a href="' + image_rev.image.name + '">'
+            r'<img alt="test\.gif" src="cache/.*\.jpg"></a>'
+            r'<figcaption class="caption"></figcaption></figure>'
         )
         self.assertRegexpMatches(output, expected)
 
@@ -277,7 +277,7 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         image = models.Image.objects.get()
         url = reverse(
             "wiki:images_add_revision",
-            kwargs={"article_id": self.root_article, "image_id": image.pk, "path": "",},
+            kwargs={"article_id": self.root_article, "image_id": image.pk, "path": ""},
         )
         response = self.client.post(url, data={"image": self.generate_photo_file()})
         self.assertRedirects(response, "{}?next={}".format(reverse("wiki:login"), url))

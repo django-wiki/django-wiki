@@ -823,7 +823,7 @@ class ChangeRevisionView(RedirectView):
             _(
                 "The article %(title)s is now set to display revision #%(revision_number)d"
             )
-            % {"title": revision.title, "revision_number": revision.revision_number,},
+            % {"title": revision.title, "revision_number": revision.revision_number},
         )
 
 
