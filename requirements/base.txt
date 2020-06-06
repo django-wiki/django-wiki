@@ -9,7 +9,7 @@ django-classy-tags==1.0.0  # via django-sekizai
 django-js-asset==1.2.2    # via django-mptt
 django-mptt==0.11.0       # via -r requirements/base.in
 django-sekizai==1.1.0     # via -r requirements/base.in
-django==2.2.13            # via -c requirements/constraints.txt, -r requirements/base.in, django-classy-tags, django-mptt, django-sekizai
+django==2.2.14            # via -c requirements/constraints.txt, -r requirements/base.in, django-classy-tags, django-mptt, django-sekizai
 markdown==2.6.11          # via -c requirements/constraints.txt, -r requirements/base.in
 packaging==20.4           # via bleach
 pyparsing==2.4.7          # via packaging

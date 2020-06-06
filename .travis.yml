@@ -1,0 +1,13 @@
+language: python
+python:
+  - 3.5
+  - 3.8
+install:
+  - pip install -r requirements/travis.txt
+matrix:
+  - python: 3.5
+    env: TOXENV=py35-django22
+  - python: 3.8
+    env: TOXENV=py38-django22
+script:
+  - tox
