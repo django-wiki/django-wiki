@@ -5,17 +5,23 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
 from django.core.exceptions import ValidationError
-from django.db import models, transaction
-from django.db.models.signals import post_save, pre_delete
+from django.db import models
+from django.db import transaction
+from django.db.models.signals import post_save
+from django.db.models.signals import pre_delete
 from django.urls import reverse
-from django.utils.translation import gettext, gettext_lazy as _
+from django.utils.translation import gettext
+from django.utils.translation import gettext_lazy as _
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
 from wiki import managers
 from wiki.conf import settings
-from wiki.core.exceptions import MultipleRootURLs, NoRootURL
+from wiki.core.exceptions import MultipleRootURLs
+from wiki.core.exceptions import NoRootURL
 from wiki.decorators import disable_signal_for_loaddata
-from wiki.models.article import Article, ArticleForObject, ArticleRevision
+from wiki.models.article import Article
+from wiki.models.article import ArticleForObject
+from wiki.models.article import ArticleRevision
 
 __all__ = [
     "URLPath",

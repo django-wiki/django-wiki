@@ -1,8 +1,11 @@
-from django.urls import include, re_path
+from django.urls import include
+from django.urls import re_path
 from django.utils.translation import gettext as _
 from wiki.core.plugins import registry
 from wiki.core.plugins.base import BasePlugin
-from wiki.plugins.attachments import models, settings, views
+from wiki.plugins.attachments import models
+from wiki.plugins.attachments import settings
+from wiki.plugins.attachments import views
 from wiki.plugins.attachments.markdown_extensions import AttachmentExtension
 from wiki.plugins.notifications.settings import ARTICLE_EDIT
 from wiki.plugins.notifications.util import truncate_title

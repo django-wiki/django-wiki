@@ -1,7 +1,8 @@
 import logging
 import re
 
-from markdown.extensions.codehilite import CodeHilite, CodeHiliteExtension
+from markdown.extensions.codehilite import CodeHilite
+from markdown.extensions.codehilite import CodeHiliteExtension
 from markdown.preprocessors import Preprocessor
 from markdown.treeprocessors import Treeprocessor
 

@@ -2,7 +2,9 @@ from django.urls import reverse
 from django_functest import FuncBaseMixin
 from wiki.models import URLPath
 
-from ...base import DjangoClientTestBase, RequireRootArticleMixin, WebTestBase
+from ...base import DjangoClientTestBase
+from ...base import RequireRootArticleMixin
+from ...base import WebTestBase
 
 TEST_CONTENT = (
     "Title 1\n"

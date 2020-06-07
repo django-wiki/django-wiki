@@ -1,6 +1,8 @@
 from django.db import models
-from django.db.models import Count, Q
-from django.db.models.query import EmptyQuerySet, QuerySet
+from django.db.models import Count
+from django.db.models import Q
+from django.db.models.query import EmptyQuerySet
+from django.db.models.query import QuerySet
 from mptt.managers import TreeManager
 
 

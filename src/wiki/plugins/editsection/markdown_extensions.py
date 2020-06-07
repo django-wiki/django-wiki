@@ -61,8 +61,8 @@ class EditSectionProcessor(Treeprocessor):
             if level <= sec_level:
                 return sec_start, self.headers[cur_header].start
 
-            for l in range(level, last_level):
-                cur_pos[l] = 0
+            for _l in range(level, last_level):
+                cur_pos[_l] = 0
             cur_pos[level - 1] += 1
             last_level = level
 
@@ -92,8 +92,8 @@ class EditSectionProcessor(Treeprocessor):
                 continue
 
             level = int(match.group(1))
-            for l in range(level, last_level):
-                cur_pos[l] = 0
+            for _l in range(level, last_level):
+                cur_pos[_l] = 0
             cur_pos[level - 1] += 1
             last_level = level
             location = "-".join(map(str, cur_pos))

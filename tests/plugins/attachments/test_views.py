@@ -4,7 +4,9 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.urls import reverse
 from wiki.models import URLPath
 
-from ...base import ArticleWebTestUtils, DjangoClientTestBase, RequireRootArticleMixin
+from ...base import ArticleWebTestUtils
+from ...base import DjangoClientTestBase
+from ...base import RequireRootArticleMixin
 
 
 class AttachmentTests(
@@ -39,7 +41,7 @@ class AttachmentTests(
         filestream = self._createTxtFilestream(self.test_data)
         response = self.client.post(
             url,
-            {"description": self.test_description, "file": filestream, "save": "1",},
+            {"description": self.test_description, "file": filestream, "save": "1"},
         )
         self.assertRedirects(response, url)
 
@@ -68,7 +70,7 @@ class AttachmentTests(
         data = "This is a plain text file"
         filestream = self._createTxtFilestream(data)
         self.client.post(
-            url, {"description": "My file", "file": filestream, "save": "1",}
+            url, {"description": "My file", "file": filestream, "save": "1"}
         )
         attachment = self.article.shared_plugins_set.all()[0].attachment
 
@@ -85,7 +87,7 @@ class AttachmentTests(
         replacement_data = data + " And this is my edit"
         replacement_filestream = self._createTxtFilestream(replacement_data)
         self.client.post(
-            url, {"description": "Replacement upload", "file": replacement_filestream,}
+            url, {"description": "Replacement upload", "file": replacement_filestream}
         )
         attachment = self.article.shared_plugins_set.all()[0].attachment
         # Revision count should be two
@@ -140,28 +142,28 @@ class AttachmentTests(
     def test_render(self):
         output = self.get_article("[attachment:1]")
         expected = (
-            '<span class="attachment"><a href=".*attachments/download/1/"'
-            ' title="Click to download test\.txt">\s*test\.txt\s*</a>'
+            r'<span class="attachment"><a href=".*attachments/download/1/"'
+            r' title="Click to download test\.txt">\s*test\.txt\s*</a>'
         )
         self.assertRegexpMatches(output, expected)
 
     def test_render_missing(self):
         output = self.get_article("[attachment:2]")
-        expected = '<span class="attachment attachment-deleted">\s*Attachment with ID #2 is deleted.\s*</span>'
+        expected = r'<span class="attachment attachment-deleted">\s*Attachment with ID #2 is deleted.\s*</span>'
         self.assertRegexpMatches(output, expected)
 
     def test_render_title(self):
         output = self.get_article('[attachment:1 title:"Test title"]')
         expected = (
-            '<span class="attachment"><a href=".*attachments/download/1/"'
-            ' title="Click to download test\.txt">\s*Test title\s*</a>'
+            r'<span class="attachment"><a href=".*attachments/download/1/"'
+            r' title="Click to download test\.txt">\s*Test title\s*</a>'
         )
         self.assertRegexpMatches(output, expected)
 
     def test_render_title_size(self):
         output = self.get_article('[attachment:1 title:"Test title 2" size]')
         expected = (
-            '<span class="attachment"><a href=".*attachments/download/1/"'
-            ' title="Click to download test\.txt">\s*Test title 2 \[25[^b]bytes\]\s*</a>'
+            r'<span class="attachment"><a href=".*attachments/download/1/"'
+            r' title="Click to download test\.txt">\s*Test title 2 \[25[^b]bytes\]\s*</a>'
         )
         self.assertRegexpMatches(output, expected)

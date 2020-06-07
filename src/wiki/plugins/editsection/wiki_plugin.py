@@ -3,7 +3,8 @@ from wiki.core.plugins import registry
 from wiki.core.plugins.base import BasePlugin
 from wiki.plugins.editsection.markdown_extensions import EditSectionExtension
 
-from . import settings, views
+from . import settings
+from . import views
 
 
 class EditSectionPlugin(BasePlugin):

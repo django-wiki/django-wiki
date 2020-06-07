@@ -1,9 +1,12 @@
-from django.urls import include, re_path
+from django.urls import include
+from django.urls import re_path
 from django.utils.module_loading import import_string
 from wiki import sites
 from wiki.conf import settings
 from wiki.core.plugins import registry
-from wiki.views import accounts, article, deleted_list
+from wiki.views import accounts
+from wiki.views import article
+from wiki.views import deleted_list
 
 urlpatterns = [
     re_path(r"^", sites.site.urls),

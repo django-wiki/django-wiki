@@ -1,8 +1,11 @@
 from django.contrib.sites.models import Site
 from django.test.testcases import TestCase
-from django.urls import include, re_path
-from wiki.models import Article, URLPath
-from wiki.urls import WikiURLPatterns, get_pattern as get_wiki_pattern
+from django.urls import include
+from django.urls import re_path
+from wiki.models import Article
+from wiki.models import URLPath
+from wiki.urls import get_pattern as get_wiki_pattern
+from wiki.urls import WikiURLPatterns
 
 from ..base import wiki_override_settings
 

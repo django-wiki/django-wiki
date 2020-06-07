@@ -1,7 +1,8 @@
 import django.db.models.deletion
 import mptt.fields
 from django.conf import settings
-from django.db import migrations, models
+from django.db import migrations
+from django.db import models
 from django.db.models.fields import GenericIPAddressField as IPAddressField
 from wiki.conf.settings import GROUP_MODEL
 

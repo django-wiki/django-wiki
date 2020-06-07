@@ -3,8 +3,10 @@ import os.path
 from django.conf import settings as django_settings
 from django.db import models
 from django.db.models import signals
-from django.utils.translation import gettext, gettext_lazy as _
-from wiki.models.pluginbase import RevisionPlugin, RevisionPluginRevision
+from django.utils.translation import gettext
+from django.utils.translation import gettext_lazy as _
+from wiki.models.pluginbase import RevisionPlugin
+from wiki.models.pluginbase import RevisionPluginRevision
 
 from . import settings
 
@@ -115,7 +117,7 @@ class ImageRevision(RevisionPluginRevision):
             return gettext("Current revision not set!!")
 
 
-def on_image_revision_delete(instance, *args, **kwargs):
+def on_image_revision_delete(instance, *args, **kwargs):  # noqa: max-complexity=11
     if not instance.image:
         return
 

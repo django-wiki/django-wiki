@@ -4,7 +4,8 @@ because the pattern of building them is different from Django
 1.5 to 1.6 to 1.7 so there will be 3 patterns in play at the
 same time.
 """
-from wiki.models import Article, URLPath
+from wiki.models import Article
+from wiki.models import URLPath
 from wiki.plugins.attachments.models import Attachment
 
 from ..base import ArticleTestBase

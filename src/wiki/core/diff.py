@@ -6,6 +6,6 @@ def simple_merge(txt1, txt2):
     differ = difflib.Differ(charjunk=difflib.IS_CHARACTER_JUNK)
     diff = differ.compare(txt1.splitlines(1), txt2.splitlines(1))
 
-    content = "".join([l[2:] for l in diff])
+    content = "".join([_l[2:] for _l in diff])
 
     return content

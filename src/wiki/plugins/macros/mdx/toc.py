@@ -1,6 +1,6 @@
-import re
-
-from markdown.extensions.toc import TocExtension, TocTreeprocessor, slugify
+from markdown.extensions.toc import slugify
+from markdown.extensions.toc import TocExtension
+from markdown.extensions.toc import TocTreeprocessor
 from wiki.plugins.macros import settings
 
 HEADER_ID_PREFIX = "wiki-toc-"

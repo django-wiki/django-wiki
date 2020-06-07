@@ -1,9 +1,13 @@
 from django import forms
 from django.contrib.contenttypes.models import ContentType
-from django.forms.models import BaseModelFormSet, modelformset_factory
+from django.forms.models import BaseModelFormSet
+from django.forms.models import modelformset_factory
 from django.utils.safestring import mark_safe
-from django.utils.translation import gettext, gettext_lazy as _
-from django_nyt.models import NotificationType, Settings, Subscription
+from django.utils.translation import gettext
+from django.utils.translation import gettext_lazy as _
+from django_nyt.models import NotificationType
+from django_nyt.models import Settings
+from django_nyt.models import Subscription
 from wiki.core.plugins.base import PluginSettingsFormMixin
 from wiki.plugins.notifications import models
 from wiki.plugins.notifications.settings import ARTICLE_EDIT

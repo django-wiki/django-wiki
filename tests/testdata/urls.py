@@ -1,7 +1,8 @@
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.urls import include, re_path
+from django.urls import include
+from django.urls import re_path
 
 urlpatterns = [
     re_path(r"^admin/doc/", include("django.contrib.admindocs.urls")),
@@ -14,7 +15,7 @@ if settings.DEBUG:
         re_path(
             r"^media/(?P<path>.*)$",
             "django.views.static.serve",
-            {"document_root": settings.MEDIA_ROOT,},
+            {"document_root": settings.MEDIA_ROOT},
         ),
     ]
 

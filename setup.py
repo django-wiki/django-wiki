@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 import os
 import sys
 from glob import glob
 
-from setuptools import find_packages, setup
+from setuptools import find_packages
+from setuptools import setup
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
 
@@ -42,14 +42,15 @@ test_requirements = [
 
 test_lint_requirements = [
     "flake8>=3.7,<3.8",
-    "flake8-isort",
+    "black",  # Just use the latest
+    "pre-commit",
 ]
 
 setup_requirements = [
     "pytest-runner",
 ]
 
-development_requirements = test_requirements + test_lint_requirements + ["pre-commit"]
+development_requirements = test_requirements + test_lint_requirements
 
 extras_requirements = {
     "devel": development_requirements,

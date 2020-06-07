@@ -1,11 +1,10 @@
 from functools import wraps
 
-from django.http import (
-    HttpResponseForbidden,
-    HttpResponseNotFound,
-    HttpResponseRedirect,
-)
-from django.shortcuts import get_object_or_404, redirect
+from django.http import HttpResponseForbidden
+from django.http import HttpResponseNotFound
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.http import urlquote
@@ -36,10 +35,10 @@ def response_forbidden(request, article, urlpath, read_denied=False):
 
 
 # TODO: This decorator is too complex (C901)
-def get_article(
+def get_article(  # noqa: max-complexity=23
     func=None,
     can_read=True,
-    can_write=False,  # noqa: max-complexity=13
+    can_write=False,
     deleted_contents=False,
     not_locked=False,
     can_delete=False,
@@ -89,7 +88,7 @@ def get_article(
                     path = "/".join(pathlist[:-1])
                     parent = models.URLPath.get_by_path(path)
                     return HttpResponseRedirect(
-                        reverse("wiki:create", kwargs={"path": parent.path,})
+                        reverse("wiki:create", kwargs={"path": parent.path})
                         + "?slug=%s" % pathlist[-1].lower()
                     )
                 except models.URLPath.DoesNotExist:

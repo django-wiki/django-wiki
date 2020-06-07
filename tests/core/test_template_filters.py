@@ -1,15 +1,15 @@
 from django.contrib.auth import get_user_model
-from wiki.models import Article, ArticleRevision
-from wiki.templatetags.wiki_tags import (
-    can_delete,
-    can_moderate,
-    can_read,
-    can_write,
-    get_content_snippet,
-    is_locked,
-)
+from wiki.models import Article
+from wiki.models import ArticleRevision
+from wiki.templatetags.wiki_tags import can_delete
+from wiki.templatetags.wiki_tags import can_moderate
+from wiki.templatetags.wiki_tags import can_read
+from wiki.templatetags.wiki_tags import can_write
+from wiki.templatetags.wiki_tags import get_content_snippet
+from wiki.templatetags.wiki_tags import is_locked
 
-from ..base import TemplateTestCase, wiki_override_settings
+from ..base import TemplateTestCase
+from ..base import wiki_override_settings
 
 User = get_user_model()
 

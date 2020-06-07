@@ -1,6 +1,8 @@
-from tests.base import RequireRootArticleMixin, TestBase
 from wiki.core import markdown
 from wiki.models import URLPath
+
+from tests.base import RequireRootArticleMixin
+from tests.base import TestBase
 
 
 class RedlinksTests(RequireRootArticleMixin, TestBase):

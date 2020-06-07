@@ -16,10 +16,11 @@ framework.
 import os
 import sys
 
+from django.core.wsgi import get_wsgi_application
+
 # This application object is used by any WSGI server configured to use this
 # file. This includes Django's development server, if the WSGI_APPLICATION
 # setting points here.
-from django.core.wsgi import get_wsgi_application
 
 PROJECT_PATH = os.path.abspath(os.path.split(__file__)[0])
 PROJECT_PARENT = os.path.abspath(os.path.split(PROJECT_PATH)[0])

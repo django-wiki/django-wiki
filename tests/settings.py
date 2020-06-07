@@ -6,7 +6,7 @@ TESTS_DATA_ROOT = os.path.dirname(__file__)
 
 MEDIA_ROOT = os.path.join(TESTS_DATA_ROOT, "media")
 
-DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3",}}
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3"}}
 
 DEBUG = True
 AUTH_USER_MODEL = "testdata.CustomUser"

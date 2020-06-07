@@ -7,20 +7,23 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.db.models import Q
 from django.http import Http404
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
+from django.shortcuts import render
 from django.urls import reverse
 from django.utils.decorators import method_decorator
-from django.utils.translation import gettext as _, ngettext
+from django.utils.translation import gettext as _
+from django.utils.translation import ngettext
 from django.views.decorators.clickjacking import xframe_options_sameorigin
-from django.views.generic import (
-    DetailView,
-    FormView,
-    ListView,
-    RedirectView,
-    TemplateView,
-    View,
-)
-from wiki import editors, forms, models
+from django.views.generic import DetailView
+from django.views.generic import FormView
+from django.views.generic import ListView
+from django.views.generic import RedirectView
+from django.views.generic import TemplateView
+from django.views.generic import View
+from wiki import editors
+from wiki import forms
+from wiki import models
 from wiki.conf import settings
 from wiki.core import permissions
 from wiki.core.diff import simple_merge
@@ -820,7 +823,7 @@ class ChangeRevisionView(RedirectView):
             _(
                 "The article %(title)s is now set to display revision #%(revision_number)d"
             )
-            % {"title": revision.title, "revision_number": revision.revision_number,},
+            % {"title": revision.title, "revision_number": revision.revision_number},
         )
 
 

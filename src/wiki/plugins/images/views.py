@@ -1,16 +1,20 @@
 import logging
 
 from django.contrib import messages
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext as _
-from django.views.generic import FormView, ListView, RedirectView
+from django.views.generic import FormView
+from django.views.generic import ListView
+from django.views.generic import RedirectView
 from wiki.conf import settings as wiki_settings
 from wiki.core.paginator import WikiPaginator
 from wiki.decorators import get_article
 from wiki.models.pluginbase import RevisionPluginRevision
-from wiki.plugins.images import forms, models
+from wiki.plugins.images import forms
+from wiki.plugins.images import models
 from wiki.views.mixins import ArticleMixin
 
 logger = logging.getLogger(__name__)
@@ -192,7 +196,7 @@ class RevisionAddView(ArticleMixin, FormView):
         messages.info(
             self.request,
             _("%(file)s has been saved.")
-            % {"file": self.image.current_revision.imagerevision.get_filename(),},
+            % {"file": self.image.current_revision.imagerevision.get_filename()},
         )
         if self.urlpath:
             return redirect("wiki:edit", path=self.urlpath.path)

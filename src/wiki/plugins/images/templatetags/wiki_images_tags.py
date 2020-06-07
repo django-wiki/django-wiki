@@ -1,5 +1,6 @@
 from django import template
-from wiki.plugins.images import models, settings
+from wiki.plugins.images import models
+from wiki.plugins.images import settings
 
 register = template.Library()
 

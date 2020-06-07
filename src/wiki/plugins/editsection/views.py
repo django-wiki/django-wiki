@@ -1,7 +1,8 @@
 import re
 
 from django.contrib import messages
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy
 from wiki import models
@@ -131,7 +132,7 @@ class EditSection(EditView):
                 request.session["editsection_content"] = self.orig_section
             else:
                 messages.error(
-                    request, " ".format(ERROR_SECTION_CHANGED, ERROR_TRY_AGAIN)
+                    request, "{} {}".format(ERROR_SECTION_CHANGED, ERROR_TRY_AGAIN)
                 )
                 return self._redirect_to_article()
         else:
@@ -157,7 +158,7 @@ class EditSection(EditView):
             if self.orig_section != text[location[0] : location[1]]:
                 messages.warning(
                     self.request,
-                    " ".format(
+                    "{} {} {}".format(
                         ERROR_SECTION_CHANGED, ERROR_SECTION_UNSAVED, ERROR_TRY_AGAIN
                     ),
                 )
@@ -173,7 +174,7 @@ class EditSection(EditView):
             )
             self.article.save()
             messages.error(
-                self.request, " ".format(ERROR_ARTICLE_CHANGED, ERROR_TRY_AGAIN)
+                self.request, "{} {}".format(ERROR_ARTICLE_CHANGED, ERROR_TRY_AGAIN)
             )
 
         return self._redirect_to_article()

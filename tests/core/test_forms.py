@@ -1,7 +1,10 @@
 from django.test import TestCase
 from django.utils.translation import gettext
-from tests.base import DjangoClientTestBase, RequireRootArticleMixin
-from wiki.forms import DeleteForm, UserCreationForm
+from wiki.forms import DeleteForm
+from wiki.forms import UserCreationForm
+
+from tests.base import DjangoClientTestBase
+from tests.base import RequireRootArticleMixin
 
 
 class DeleteFormTests(RequireRootArticleMixin, DjangoClientTestBase):

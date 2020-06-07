@@ -1,5 +1,8 @@
-from tests.base import RequireRootArticleMixin, TestBase
-from wiki.plugins.attachments.models import Attachment, AttachmentRevision
+from wiki.plugins.attachments.models import Attachment
+from wiki.plugins.attachments.models import AttachmentRevision
+
+from tests.base import RequireRootArticleMixin
+from tests.base import TestBase
 
 
 class AttachmentRevisionTests(RequireRootArticleMixin, TestBase):

@@ -5,7 +5,9 @@ from django.test.testcases import TestCase
 from django.urls import re_path
 from wiki.conf import settings
 from wiki.managers import ArticleManager
-from wiki.models import Article, ArticleRevision, URLPath
+from wiki.models import Article
+from wiki.models import ArticleRevision
+from wiki.models import URLPath
 from wiki.urls import WikiURLPatterns
 
 User = get_user_model()

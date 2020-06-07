@@ -2,8 +2,9 @@ from django.conf import settings
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.http.response import HttpResponse
+from django.urls import include
+from django.urls import re_path
 from django.views.static import serve as static_serve
-from django.urls import include, re_path
 
 admin.autodiscover()
 
@@ -25,14 +26,13 @@ if settings.DEBUG:
 if settings.DEBUG:
     try:
         import debug_toolbar
-        urlpatterns = [
-            re_path('__debug__/', include(debug_toolbar.urls)),
 
+        urlpatterns = [
+            re_path("__debug__/", include(debug_toolbar.urls)),
             # For django versions before 2.0:
             # url(r'^__debug__/', include(debug_toolbar.urls)),
-
         ] + urlpatterns
-    except ImportError as ie:
+    except ImportError:
         pass
 
 urlpatterns += [

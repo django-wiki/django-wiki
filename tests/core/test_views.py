@@ -7,19 +7,20 @@ from django.test import override_settings
 from django.utils import translation
 from django.utils.html import escape
 from django_functest import FuncBaseMixin
-from tests.testdata.models import CustomGroup
 from wiki import models
-from wiki.forms import PermissionsForm, validate_slug_numbers
-from wiki.models import ArticleRevision, URLPath, reverse
+from wiki.forms import PermissionsForm
+from wiki.forms import validate_slug_numbers
+from wiki.models import ArticleRevision
+from wiki.models import reverse
+from wiki.models import URLPath
 
-from ..base import (
-    SUPERUSER1_USERNAME,
-    ArticleWebTestUtils,
-    DjangoClientTestBase,
-    RequireRootArticleMixin,
-    SeleniumBase,
-    WebTestBase,
-)
+from ..base import ArticleWebTestUtils
+from ..base import DjangoClientTestBase
+from ..base import RequireRootArticleMixin
+from ..base import SeleniumBase
+from ..base import SUPERUSER1_USERNAME
+from ..base import WebTestBase
+from tests.testdata.models import CustomGroup
 
 
 class RootArticleViewTestsBase(FuncBaseMixin):
@@ -33,9 +34,7 @@ class RootArticleViewTestsBase(FuncBaseMixin):
         """
         self.get_url("wiki:root")
         self.assertUrlsEqual(resolve_url("wiki:root_create"))
-        self.fill(
-            {"#id_content": "test heading h1\n====\n", "#id_title": "Wiki Test",}
-        )
+        self.fill({"#id_content": "test heading h1\n====\n", "#id_title": "Wiki Test"})
         self.submit('button[name="save_changes"]')
         self.assertUrlsEqual("/")
         self.assertTextPresent("test heading h1")
@@ -629,7 +628,7 @@ class SourceViewTests(
 ):
     def test_template_used(self):
         response = self.client.get(
-            reverse("wiki:source", kwargs={"article_id": self.root_article.pk,})
+            reverse("wiki:source", kwargs={"article_id": self.root_article.pk})
         )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, template_name="wiki/source.html")
@@ -638,13 +637,13 @@ class SourceViewTests(
         # everybody can see the source of an article
         self.client.logout()
         response = self.client.get(
-            reverse("wiki:source", kwargs={"article_id": self.root_article.pk,})
+            reverse("wiki:source", kwargs={"article_id": self.root_article.pk})
         )
         self.assertEqual(response.status_code, 200)
 
     def test_content(self):
         response = self.client.get(
-            reverse("wiki:source", kwargs={"article_id": self.root_article.pk,})
+            reverse("wiki:source", kwargs={"article_id": self.root_article.pk})
         )
         self.assertIn("Source of ", str(response.content))
         self.assertEqual(response.context["selected_tab"], "source")
@@ -655,13 +654,13 @@ class HistoryViewTests(
 ):
     def test_can_read_permission(self):
         response = self.client.get(
-            reverse("wiki:history", kwargs={"article_id": self.root_article.pk,})
+            reverse("wiki:history", kwargs={"article_id": self.root_article.pk})
         )
         self.assertEqual(response.status_code, 200)
 
     def test_content(self):
         response = self.client.get(
-            reverse("wiki:history", kwargs={"article_id": self.root_article.pk,})
+            reverse("wiki:history", kwargs={"article_id": self.root_article.pk})
         )
         self.assertContains(response, "History:")
         self.assertEqual(response.context["selected_tab"], "history")
@@ -700,7 +699,7 @@ class SettingsViewTests(
         group = CustomGroup.objects.create()
         response = self.client.post(
             resolve_url("wiki:settings", article_id=self.root_article.pk) + "?f=form0",
-            {"group": group.pk, "owner_username": SUPERUSER1_USERNAME,},
+            {"group": group.pk, "owner_username": SUPERUSER1_USERNAME},
             follow=True,
         )
         self.root_article.refresh_from_db()
@@ -766,6 +765,6 @@ class SettingsViewTests(
 
     def test_content(self):
         response = self.client.get(
-            reverse("wiki:settings", kwargs={"article_id": self.root_article.pk,})
+            reverse("wiki:settings", kwargs={"article_id": self.root_article.pk})
         )
         self.assertEqual(response.context["selected_tab"], "settings")

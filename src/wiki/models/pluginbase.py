@@ -23,7 +23,8 @@ from django.db.models import signals
 from django.utils.translation import gettext_lazy as _
 from wiki.decorators import disable_signal_for_loaddata
 
-from .article import ArticleRevision, BaseRevisionMixin
+from .article import ArticleRevision
+from .article import BaseRevisionMixin
 
 __all__ = [
     "ArticlePlugin",

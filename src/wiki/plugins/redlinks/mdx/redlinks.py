@@ -1,5 +1,6 @@
 import html
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urljoin
+from urllib.parse import urlparse
 
 from markdown.extensions import Extension
 from markdown.postprocessors import AndSubstitutePostprocessor
