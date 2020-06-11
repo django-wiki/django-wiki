@@ -4,6 +4,7 @@ import importlib
 import threading
 
 from django.conf import settings
+from django.utils.deprecation import MiddlewareMixin
 
 # Take WIKI_REQUEST_CACHE_MIDDLEWARE_CLASS from django settings, if settings is not configured or of
 # WIKI_REQUEST_CACHE_MIDDLEWARE_CLASS setting is not defined then use custom middleware from django-wiki
@@ -30,7 +31,7 @@ else:
     REQUEST_CACHE = _RequestCache()
 
 
-    class RequestCache(object):
+    class RequestCache(MiddlewareMixin):
         @classmethod
         def get_request_cache(cls, name=None):
             """

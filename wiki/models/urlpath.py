@@ -198,14 +198,15 @@ class URLPath(MPTTModel):
         return reverse('wiki:get', kwargs={'path': self.path})
     
     @classmethod
-    def create_root(cls, site=None, title="Root", **kwargs):
+    def create_root(cls, site=None, title="Root", request=None, **kwargs):
         if not site: site = get_current_site(get_current_request())
         root_nodes = cls.objects.root_nodes().filter(site=site)
         if not root_nodes:
             # (get_or_create does not work for MPTT models??)
             article = Article()
-            article.add_revision(ArticleRevision(title=title, **kwargs),
-                                 save=True)
+            revision = ArticleRevision(title=title, **kwargs)
+            if request: revision.set_from_request(request)
+            article.add_revision(revision, save=True)
             article.save()
             root = cls.objects.create(site=site, article=article)
             article.add_object_relation(root)

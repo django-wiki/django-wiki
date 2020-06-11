@@ -36,7 +36,7 @@ class MarkItUpWidget(BuildAttrsCompat, forms.Widget):
             default_attrs.update(attrs)
         super(MarkItUpWidget, self).__init__(default_attrs)
     
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         if value is None: value = ''
         final_attrs = self.build_attrs_compat(attrs, name=name)
         return mark_safe(u'<div><textarea%s>%s</textarea></div>' % (flatatt(final_attrs),
