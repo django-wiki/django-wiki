@@ -9,7 +9,7 @@ from wiki.views import accounts, article
 
 urlpatterns = [
     url(r'^$', article.ArticleView.as_view(), name='root', kwargs={'path': ''}),
-    url(r'^create-root/$', article.root_create, name='root_create'),
+    url(r'^create-root/$', article.CreateRootView.as_view(), name='root_create'),
     url(r'^_revision/diff/(?P<revision_id>\d+)/$', article.diff, name='diff'),
 ]
 
@@ -68,6 +68,8 @@ urlpatterns += [
     url(r'^(?P<path>.+/|)_plugin/(?P<slug>\w+)/$', article.Plugin.as_view(), name='plugin'),
     url(r'^(?P<path>.+/|)$', article.ArticleView.as_view(), name='get'),
 ]
+
+app_name = 'wiki'
 
 def get_pattern(app_name="wiki"):
     """Every url resolution takes place as "wiki:view_name".

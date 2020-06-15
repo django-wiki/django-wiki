@@ -9,7 +9,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
 ]
 
 if settings.DEBUG:
@@ -18,11 +18,11 @@ if settings.DEBUG:
         url(r'^media/(?P<path>.*)$', static_serve, {'document_root': settings.MEDIA_ROOT}),
     ]
 
-    
+
 from wiki.urls import get_pattern as get_wiki_pattern
 from django_notify.urls import get_pattern as get_notify_pattern
 
 urlpatterns += [
-    url(r'^notify/', get_notify_pattern()),
-    url(r'', get_wiki_pattern()),
+    url(r'^notify/', include('django_notify.urls', namespace='notify')),
+    url(r'', include('wiki.urls', namespace='wiki')),
 ]

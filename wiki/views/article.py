@@ -7,8 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.db.models import Q
-from django.shortcuts import get_object_or_404, redirect, render_to_response
-from django.template.context import RequestContext
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
@@ -34,14 +33,14 @@ class ArticleView(ArticleMixin, TemplateView):
     @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, *args, **kwargs):
         return super(ArticleView, self).dispatch(request, article, *args, **kwargs)
-    
+
     def get_context_data(self, **kwargs):
         kwargs['selected_tab'] = 'view'
         return ArticleMixin.get_context_data(self, **kwargs)
 
 
 class Create(FormView, ArticleMixin):
-    
+
     form_class = forms.CreateForm
     template_name="wiki/create.html"
     
@@ -98,13 +97,13 @@ class Create(FormView, ArticleMixin):
             else:
                 messages.error(self.request, _(u"There was an error creating this article."))
             return redirect('wiki:get', '')
-            
+
         url = self.get_success_url()
         return url
-    
+
     def get_success_url(self):
         return redirect('wiki:get', self.newpath.path)
-    
+
     def get_context_data(self, **kwargs):
         c = ArticleMixin.get_context_data(self, **kwargs)
         # Needed since Django 1.9 because get_context_data is no longer called
@@ -119,14 +118,14 @@ class Create(FormView, ArticleMixin):
     
 
 class Delete(FormView, ArticleMixin):
-    
+
     form_class = forms.DeleteForm
     template_name="wiki/delete.html"
-    
+
     @method_decorator(get_article(can_write=True, not_locked=True, can_delete=True))
     def dispatch(self, request, article, *args, **kwargs):
         return self.dispatch1(request, article, *args, **kwargs)
-        
+
     def dispatch1(self, request, article, *args, **kwargs):
         """Deleted view needs to access this method without a decorator,
         therefore it is separate."""
@@ -149,7 +148,7 @@ class Delete(FormView, ArticleMixin):
                         self.cannot_delete_root = True
         
         return super(Delete, self).dispatch(request, article, *args, **kwargs)
-    
+
     def get_initial(self):
         return {'revision': self.article.current_revision}
 
@@ -158,18 +157,18 @@ class Delete(FormView, ArticleMixin):
         if self.article.can_moderate(self.request.user):
             form.fields['purge'].widget = forms.forms.CheckboxInput()
         return form
-    
+
     def get_form_kwargs(self):
         kwargs = FormView.get_form_kwargs(self)
         kwargs['article'] = self.article
         kwargs['has_children'] = bool(self.children_slice)
         return kwargs
-        
+
     def form_valid(self, form):
         cd = form.cleaned_data
-        
+
         purge = cd['purge']
-        
+
         #If we are purging, only moderators can delete articles with children
         cannot_delete_children = False
         can_moderate = self.article.can_moderate(self.request.user)
@@ -179,7 +178,7 @@ class Delete(FormView, ArticleMixin):
         if self.cannot_delete_root or cannot_delete_children:
             messages.error(self.request, _(u'This article cannot be deleted because it has children or is a root article.'))
             return redirect('wiki:get', article_id=self.article.id)
-        
+
 
         if can_moderate and purge:
             # First, remove children
@@ -197,10 +196,10 @@ class Delete(FormView, ArticleMixin):
             self.article.add_revision(revision)
             messages.success(self.request, _(u'The article "%s" is now marked as deleted! Thanks for keeping the site free from unwanted material!') % revision.title)
         return self.get_success_url()
-        
+
     def get_success_url(self):
         return redirect(self.next)
-    
+
     def get_context_data(self, **kwargs):
         cannot_delete_children = False
         if self.children_slice and not self.article.can_moderate(self.request.user):
@@ -220,10 +219,10 @@ class Delete(FormView, ArticleMixin):
 
 class Edit(ArticleMixin, FormView):
     """Edit an article and process sidebar plugins."""
-    
+
     form_class = forms.EditForm
     template_name="wiki/edit.html"
-    
+
     @method_decorator(get_article(can_write=True, not_locked=True))
     def dispatch(self, request, article, *args, **kwargs):
         self.sidebar_plugins = plugin_registry.get_sidebar()
@@ -252,7 +251,7 @@ class Edit(ArticleMixin, FormView):
         for cnt, plugin in enumerate(self.sidebar_plugins):
             form_classes['form%d' % cnt] = (plugin, plugin.sidebar.get('form_class', None))
         return form_classes
-    
+
     def get(self, request, *args, **kwargs):
         # Generate sidebar forms
         self.sidebar_forms = []
@@ -264,7 +263,7 @@ class Edit(ArticleMixin, FormView):
                 form = None
             self.sidebar.append((plugin, form))
         return super(Edit, self).get(request, *args, **kwargs)
-    
+
     def post(self, request, *args, **kwargs):
         # Generate sidebar forms
         self.sidebar_forms = []
@@ -289,9 +288,9 @@ class Edit(ArticleMixin, FormView):
                 form = None
             self.sidebar.append((plugin, form))
         return super(Edit, self).post(request, *args, **kwargs)
-    
+
     def form_valid(self, form):
-        """Create a new article revision when the edit form is valid 
+        """Create a new article revision when the edit form is valid
         (does not concern any sidebar forms!)."""
         revision = models.ArticleRevision()
         revision.inherit_predecessor(self.article)
@@ -303,13 +302,13 @@ class Edit(ArticleMixin, FormView):
         self.article.add_revision(revision)
         messages.success(self.request, _(u'A new revision of the article was successfully added.'))
         return self.get_success_url()
-    
+
     def get_success_url(self):
         """Go to the article view page when the article has been saved"""
         if self.urlpath:
             return redirect("wiki:get", path=self.urlpath.path)
         return redirect('wiki:get', article_id=self.article.id)
-        
+
     def get_context_data(self, **kwargs):
         # Needed for Django 1.9 because get_context_data is no longer called
         # with the form instance
@@ -325,16 +324,16 @@ class Edit(ArticleMixin, FormView):
 class Deleted(Delete):
     """Tell a user that an article has been deleted. If user has permissions,
     let user restore and possibly purge the deleted article and children."""
-    
+
     template_name="wiki/deleted.html"
     form_class = forms.DeleteForm
-    
+
     @method_decorator(get_article(can_read=True, deleted_contents=True))
     def dispatch(self, request, article, *args, **kwargs):
-        
+
         self.urlpath = kwargs.get('urlpath', None)
         self.article = article
-        
+
         if self.urlpath:
             deleted_ancestor = self.urlpath.first_deleted_ancestor()
             if deleted_ancestor is None:
@@ -343,16 +342,16 @@ class Deleted(Delete):
             elif deleted_ancestor != self.urlpath:
                 # An ancestor was deleted, so redirect to that deleted page
                 return redirect('wiki:deleted', path=deleted_ancestor.path)
-                
+
         else:
             if not article.current_revision.deleted:
                 return redirect('wiki:get', article_id=article.id)
-        
+
         # Restore
         if request.GET.get('restore', False):
             can_restore = not article.current_revision.locked and article.can_delete(request.user)
             can_restore = can_restore or article.can_moderate(request.user)
-            
+
             if can_restore:
                 revision = models.ArticleRevision()
                 revision.inherit_predecessor(self.article)
@@ -365,9 +364,9 @@ class Deleted(Delete):
                     return redirect('wiki:get', path=self.urlpath.path)
                 else:
                     return redirect('wiki:get', article_id=article.id)
-        
+
         return super(Deleted, self).dispatch1(request, article, *args, **kwargs)
-    
+
     def get_initial(self):
         return {'revision': self.article.current_revision,
                 'purge': True}
@@ -379,30 +378,30 @@ class Deleted(Delete):
             kwargs['form'] = self.get_form()
         kwargs['purge_form'] = kwargs.pop('form', None)
         return super(Delete, self).get_context_data(**kwargs)
-    
+
 class Source(ArticleMixin, TemplateView):
 
     template_name="wiki/source.html"
-    
+
     @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, *args, **kwargs):
         return super(Source, self).dispatch(request, article, *args, **kwargs)
-    
+
     def get_context_data(self, **kwargs):
         kwargs['selected_tab'] = 'source'
         return ArticleMixin.get_context_data(self, **kwargs)
 
 
 class History(ListView, ArticleMixin):
-    
+
     template_name="wiki/history.html"
     allow_empty = True
     context_object_name = 'revisions'
     paginate_by = 10
-    
+
     def get_queryset(self):
         return models.ArticleRevision.objects.filter(article=self.article).order_by('-created')
-    
+
     def get_context_data(self, **kwargs):
         # Is this a bit of a hack? Use better inheritance?
         kwargs_article = ArticleMixin.get_context_data(self, **kwargs)
@@ -411,20 +410,20 @@ class History(ListView, ArticleMixin):
         kwargs.update(kwargs_listview)
         kwargs['selected_tab'] = 'history'
         return kwargs
-    
+
     @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, *args, **kwargs):
         return super(History, self).dispatch(request, article, *args, **kwargs)
 
 
 class Dir(ListView, ArticleMixin):
-    
+
     template_name="wiki/dir.html"
     allow_empty = True
     context_object_name = 'directory'
     model = models.URLPath
     paginate_by = 30
-    
+
     @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, *args, **kwargs):
         self.filter_form = forms.DirFilterForm(request.GET)
@@ -443,7 +442,7 @@ class Dir(ListView, ArticleMixin):
             children = children.active()
         children = children.select_related_common().order_by('article__current_revision__title')
         return children
-    
+
     def get_context_data(self, **kwargs):
         kwargs_article = ArticleMixin.get_context_data(self, **kwargs)
         kwargs_listview = ListView.get_context_data(self, **kwargs)
@@ -451,7 +450,7 @@ class Dir(ListView, ArticleMixin):
         kwargs.update(kwargs_listview)
         kwargs['filter_query'] = self.query
         kwargs['filter_form'] = self.filter_form
-        
+
         # Update each child's ancestor cache so the lookups don't have
         # to be repeated.
         updated_children = kwargs[self.context_object_name]
@@ -463,7 +462,7 @@ class Dir(ListView, ArticleMixin):
     
 
 class Plugin(View):
-    
+
     def dispatch(self, request, path=None, slug=None, **kwargs):
         kwargs['path'] = path
         for plugin in plugin_registry.get_plugins().values():
@@ -472,15 +471,15 @@ class Plugin(View):
 
 
 class Settings(ArticleMixin, TemplateView):
-    
+
     permission_form_class = forms.PermissionsForm
     template_name="wiki/settings.html"
-    
+
     @method_decorator(login_required)
     @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, *args, **kwargs):
         return super(Settings, self).dispatch(request, article, *args, **kwargs)
-    
+
     def get_form_classes(self,):
         """
         Return all settings forms that can be filled in
@@ -494,9 +493,9 @@ class Settings(ArticleMixin, TemplateView):
             # could be mixed up with a different instance
             # Use strategy from Edit view...
             setattr(settings_forms[i], 'action', 'form%d' % i)
-        
+
         return settings_forms
-    
+
     def post(self, *args, **kwargs):
         self.forms = []
         for Form in self.get_form_classes():
@@ -514,24 +513,24 @@ class Settings(ArticleMixin, TemplateView):
                 form = Form(self.article, self.request)
             self.forms.append(form)
         return super(Settings, self).get(*args, **kwargs)
-    
+
     def get(self, *args, **kwargs):
         self.forms = []
-        
+
         # There is a bug where articles fetched with select_related have bad boolean field https://code.djangoproject.com/ticket/15040
         # We fetch a fresh new article for this reason
         new_article = models.Article.objects.get(id=self.article.id)
-        
+
         for Form in self.get_form_classes():
             self.forms.append(Form(new_article, self.request))
-        
+
         return super(Settings, self).get(*args, **kwargs)
 
     def get_success_url(self):
         if self.urlpath:
             return redirect('wiki:settings', path=self.urlpath.path)
         return redirect('wiki:settings', article_id=self.article.id)
-    
+
     def get_context_data(self, **kwargs):
         kwargs['selected_tab'] = 'settings'
         kwargs['forms'] = self.forms
@@ -554,9 +553,9 @@ def change_revision(request, article, revision_id=None, urlpath=None):
         return redirect('wiki:history', article_id=article.id)
 
 class Preview(ArticleMixin, TemplateView):
-    
+
     template_name="wiki/preview_inline.html"
-    
+
     @method_decorator(get_article(can_read=True, deleted_contents=True))
     def dispatch(self, request, article, *args, **kwargs):
         revision_id = request.GET.get('r', None)
@@ -568,7 +567,7 @@ class Preview(ArticleMixin, TemplateView):
         else:
             self.revision = None
         return super(Preview, self).dispatch(request, article, *args, **kwargs)
-    
+
     def post(self, request, *args, **kwargs):
         edit_form = forms.EditForm(self.article.current_revision, request.POST, preview=True)
         if edit_form.is_valid():
@@ -576,54 +575,54 @@ class Preview(ArticleMixin, TemplateView):
             self.content = edit_form.cleaned_data['content']
             self.preview = True
         return super(Preview, self).get(request, *args, **kwargs)
-        
+
     def get(self, request, *args, **kwargs):
         if self.revision and not self.title:
             self.title = self.revision.title
         if self.revision and not self.content:
             self.content = self.revision.content
         return super(Preview, self).get( request, *args, **kwargs)
-    
+
     def get_context_data(self, **kwargs):
         kwargs['title'] = self.title
         kwargs['revision'] = self.revision
         kwargs['content'] = self.content
         kwargs['preview'] = self.preview
         return ArticleMixin.get_context_data(self, **kwargs)
-    
+
 
 @json_view
 def diff(request, revision_id, other_revision_id=None):
-    
+
     revision = get_object_or_404(models.ArticleRevision, id=revision_id)
-    
+
     if not other_revision_id:
         other_revision = revision.previous_revision
-    
+
     baseText = other_revision.content if other_revision else ""
     newText = revision.content
-    
+
     differ = difflib.Differ(charjunk=difflib.IS_CHARACTER_JUNK)
     diff = differ.compare(baseText.splitlines(1), newText.splitlines(1))
-    
+
     other_changes = []
-    
+
     if not other_revision or other_revision.title != revision.title:
         other_changes.append((_(u'New title'), revision.title))
-    
+
     return dict(diff=list(diff), other_changes=other_changes)
 
 # TODO: Throw in a class-based view
 @get_article(can_write=True)
 def merge(request, article, revision_id, urlpath=None, template_file="wiki/preview_inline.html", preview=False):
-    
+
     revision = get_object_or_404(models.ArticleRevision, article=article, id=revision_id)
-    
+
     current_text = article.current_revision.content if article.current_revision else ""
     new_text = revision.content
-    
+
     content = simple_merge(current_text, new_text)
-    
+
     # Save new revision
     if not preview:
         old_revision = article.current_revision
@@ -646,38 +645,46 @@ def merge(request, article, revision_id, urlpath=None, template_file="wiki/previ
             return redirect('wiki:edit', article_id=article.id)
         
     
-    c = RequestContext(request, {'article': article,
-                                 'title': article.current_revision.title,
-                                 'revision': None,
-                                 'merge1': revision,
-                                 'merge2': article.current_revision,
-                                 'merge': True,
-                                 'content': content})
-    return render_to_response(template_file, context_instance=c)
+    c = {'article': article,
+         'title': article.current_revision.title,
+         'revision': None,
+         'merge1': revision,
+         'merge2': article.current_revision,
+         'merge': True,
+         'content': content}
+    return render(request, template_file, c)
 
-# TODO: Should be a class-based view
-def root_create(request):
-    try:
-        root = models.URLPath.root()
-        if not root.article:
+
+class CreateRootView(FormView):
+    form_class = forms.CreateRootForm
+    template_name = 'wiki/article/create_root.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect(settings.LOGIN_URL + "?next=" + reverse("wiki:root_create"))
+
+        try:
+            root = models.URLPath.root()
+        except NoRootURL:
+            pass
+        else:
+            if root.article:
+                return redirect('wiki:get', path=root.path)
+
             # TODO: This is too dangerous... let's say there is no root.article and we end up here,
             # then it might cascade to delete a lot of things on an existing installation.... / benjaoming
             root.delete()
-            raise NoRootURL
-        return redirect('wiki:get', path=root.path)
-    except NoRootURL:
-        pass
-    if not request.user.is_superuser:
-        return redirect(settings.LOGIN_URL + "?next=" + reverse("wiki:root_create"))
-    if request.method == 'POST':
-        create_form = forms.CreateRootForm(request.POST)
-        if create_form.is_valid():
-            models.URLPath.create_root(title=create_form.cleaned_data["title"],
-                                       content=create_form.cleaned_data["content"])
-            return redirect("wiki:root")
-    else:
-        create_form = forms.CreateRootForm()
-    
-    c = RequestContext(request, {'create_form': create_form,
-                                 'editor': editors.getEditor(),})
-    return render_to_response("wiki/article/create_root.html", context_instance=c)
+        return super(CreateRootView, self).dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        models.URLPath.create_root(
+            title=form.cleaned_data["title"],
+            content=form.cleaned_data["content"],
+            request=self.request
+        )
+        return redirect("wiki:root")
+
+    def get_context_data(self, **kwargs):
+        data = super(CreateRootView, self).get_context_data(**kwargs)
+        data['editor'] = editors.getEditor()
+        return data

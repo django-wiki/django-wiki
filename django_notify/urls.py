@@ -13,6 +13,8 @@ urlpatterns = [
     url('^goto/$', views.goto, name='goto_base', kwargs={}),
 ]
 
+app_name = 'notify'
+
 def get_pattern(app_name="notify"):
     """Every url resolution takes place as "notify:view_name".
        https://docs.djangoproject.com/en/dev/topics/http/urls/#topics-http-reversing-url-namespaces
