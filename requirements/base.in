@@ -1,0 +1,11 @@
+# Core requirements for using this package
+-c constraints.txt
+
+django
+Markdown
+django-sekizai
+django-mptt
+Pillow
+sorl-thumbnail
+six
+bleach
