@@ -13,6 +13,15 @@ Release plan
 * **0.7.x** Milestone TBA
 
 
+0.6.1.dev
+---------
+
+Fixed
+~~~~~
+
+* Do not fail prematurely during Django checks framework (rare issue) :url-issue:`1059` (Benjamin Bach)
+
+
 0.6
 ---
 
