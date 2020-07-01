@@ -12,7 +12,6 @@ django-sekizai==1.1.0     # via -r requirements/base.in
 django==2.2.13            # via -c requirements/constraints.txt, -r requirements/base.in, django-classy-tags, django-mptt, django-sekizai
 markdown==2.6.11          # via -c requirements/constraints.txt, -r requirements/base.in
 packaging==20.4           # via bleach
-pillow==7.1.2             # via -r requirements/base.in
 pyparsing==2.4.7          # via packaging
 pytz==2020.1              # via django
 six==1.15.0               # via -r requirements/base.in, bleach, django-classy-tags, django-sekizai, packaging

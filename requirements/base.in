@@ -1,11 +1,10 @@
 # Core requirements for using this package
 -c constraints.txt
 
+bleach				# Use for sanitizing HTML content in wiki articles
 django
-Markdown
-django-sekizai
 django-mptt
-Pillow
-sorl-thumbnail
-six
-bleach
+django-sekizai
+Markdown
+six					# Use for strings and unicode compatibility
+sorl-thumbnail     	# Required by wiki.plugins.images
