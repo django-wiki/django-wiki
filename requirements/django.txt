@@ -1,0 +1,1 @@
+django==2.2.14            # via -c requirements/constraints.txt, -r requirements/base.in, django-classy-tags, django-mptt, django-sekizai

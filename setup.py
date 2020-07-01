@@ -62,7 +62,7 @@ package_data = dict(
 
 setup(
     name="django-wiki",
-    version="0.0.27",
+    version="0.1.0",
     author="Benjamin Bach",
     author_email="benjamin@overtag.dk",
     description=("A wiki system written for the Django framework."),
@@ -79,10 +79,8 @@ setup(
         'Framework :: Django',
         'Intended Audience :: Developers',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.8',
         'Framework :: Django',
         'Framework :: Django :: 2.2',

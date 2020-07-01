@@ -1,0 +1,4 @@
+# Requirements for running tests in Travis
+-c constraints.txt
+
+-r tox.txt
