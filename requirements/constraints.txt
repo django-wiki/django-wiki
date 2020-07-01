@@ -1,0 +1,17 @@
+# Version constraints for pip-installation.
+#
+# This file doesn't install any packages. It specifies version constraints
+# that will be applied if a package is needed.
+#
+# When pinning something here, please provide an explanation of why.  Ideally,
+# link to other information that will help people in the future to remove the
+# pin when possible.  Writing an issue against the offending project and
+# linking to it here is good.
+
+# TODO: Many pinned dependencies should be unpinned and/or moved to this constraints file.
+
+# Use latest Django LTS version
+Django<2.3.0
+
+# Use version 2.6 to avoid markdown errors
+Markdown<2.7
