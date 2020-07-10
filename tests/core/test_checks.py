@@ -38,7 +38,7 @@ class CheckTests(TestCase):
                 errors = registry.run_checks(tags=[Tags.context_processors])
                 expected_errors = [
                     Error(
-                        "needs %s in TEMPLATE['OPTIONS']['context_processors']"
+                        "needs %s in TEMPLATES[*]['OPTIONS']['context_processors']"
                         % context_processor[0],
                         id="wiki.%s" % context_processor[1],
                     )

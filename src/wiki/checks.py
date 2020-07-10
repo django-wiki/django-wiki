@@ -64,16 +64,29 @@ def check_for_obsolete_installed_apps(app_configs, **kwargs):
 
 def check_for_context_processors(app_configs, **kwargs):
     errors = []
-    context_processors = Engine.get_default().context_processors
-    for context_processor in REQUIRED_CONTEXT_PROCESSORS:
-        if context_processor[0] not in context_processors:
-            errors.append(
-                Error(
-                    "needs %s in TEMPLATE['OPTIONS']['context_processors']"
-                    % context_processor[0],
-                    id="wiki.%s" % context_processor[1],
+    # Pattern from django.contrib.admin.checks
+    try:
+        default_template_engine = Engine.get_default()
+    except Exception:
+        # Skip this non-critical check:
+        # 1. if the user has a non-trivial TEMPLATES setting and Django
+        #    can't find a default template engine
+        # 2. if anything goes wrong while loading template engines, in
+        #    order to avoid raising an exception from a confusing location
+        # Catching ImproperlyConfigured suffices for 1. but 2. requires
+        # catching all exceptions.
+        pass
+    else:
+        context_processors = default_template_engine.context_processors
+        for context_processor in REQUIRED_CONTEXT_PROCESSORS:
+            if context_processor[0] not in context_processors:
+                errors.append(
+                    Error(
+                        "needs %s in TEMPLATES[*]['OPTIONS']['context_processors']"
+                        % context_processor[0],
+                        id="wiki.%s" % context_processor[1],
+                    )
                 )
-            )
     return errors
 
 
