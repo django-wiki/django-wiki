@@ -1,4 +1,5 @@
 from functools import wraps
+from urllib.parse import quote as urlquote
 
 from django.http import HttpResponseForbidden
 from django.http import HttpResponseNotFound
@@ -7,7 +8,6 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.urls import reverse
-from django.utils.http import urlquote
 from wiki.conf import settings
 from wiki.core.exceptions import NoRootURL
 
