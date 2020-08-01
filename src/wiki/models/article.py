@@ -10,6 +10,7 @@ from django.db.models.signals import pre_save
 from django.urls import reverse
 from django.utils import translation
 from django.utils.safestring import mark_safe
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from mptt.models import MPTTModel
 from wiki import managers
@@ -219,15 +220,19 @@ class Article(models.Model):
         """Returns per-article cache key."""
         lang = translation.get_language()
 
-        return "wiki:article:{id}:{lang}".format(
+        key_raw = "wiki:article:{id}:{lang}".format(
             id=self.current_revision.id if self.current_revision else self.id, lang=lang
         )
+        # https://github.com/django-wiki/django-wiki/issues/1065
+        return slugify(key_raw, allow_unicode=True)
 
     def get_cache_content_key(self, user=None):
         """Returns per-article-user cache key."""
-        return "{key}:{user}".format(
+        key_raw = "{key}:{user}".format(
             key=self.get_cache_key(), user=user.get_username() if user else ""
         )
+        # https://github.com/django-wiki/django-wiki/issues/1065
+        return slugify(key_raw, allow_unicode=True)
 
     def get_cached_content(self, user=None):
         """Returns cached version of rendered article.

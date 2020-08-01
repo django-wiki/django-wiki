@@ -20,6 +20,7 @@ Fixed
 ~~~~~
 
 * Do not fail prematurely during Django checks framework (rare issue) :url-issue:`1059` (Benjamin Bach)
+* Cache keys failing in memcached if username contains space characters (rare) :url-issue:`1065` (Benjamin Bach)
 
 
 0.6
