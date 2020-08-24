@@ -2,11 +2,9 @@
 # https://open-edx-proposals.readthedocs.io/en/latest/oep-0002-bp-repo-metadata.html#specification:
 
 nick: django-wiki
-supporting_teams:
-    - platform-core
 tags:
     - core
     - library
 oeps:
-    oep-7: True
-    oep-18: True
+    oep-7: true
+    oep-18: true
