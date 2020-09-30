@@ -32,6 +32,11 @@ Removed
 
 * Django 2.1 support removed :url-issue:`1061` (Mads Jensen)
 
+Translations
+~~~~~~~~~~~~
+
+* Japanese (ja): 100% translated
+* Brazilian Portuguese (pt_BR): 100% translated
 
 
 0.6
