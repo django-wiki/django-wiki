@@ -50,7 +50,9 @@ class Migration(migrations.Migration):
                 ),
                 ("identifier", models.IntegerField()),
             ],
-            options={"abstract": False,},
+            options={
+                "abstract": False,
+            },
         ),
         migrations.CreateModel(
             name="CustomUser",
@@ -163,6 +165,8 @@ class Migration(migrations.Migration):
                 "verbose_name_plural": "users",
                 "abstract": False,
             },
-            managers=[("objects", django.contrib.auth.models.UserManager()),],
+            managers=[
+                ("objects", django.contrib.auth.models.UserManager()),
+            ],
         ),
     ]

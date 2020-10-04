@@ -293,7 +293,9 @@ class DeleteViewTest(
             resolve_url("wiki:create", path=""),
             {"title": "Test delete", "slug": "testdelete", "content": "To be deleted"},
         )
-        response = self.client.get(resolve_url("wiki:delete", path="testdelete/"),)
+        response = self.client.get(
+            resolve_url("wiki:delete", path="testdelete/"),
+        )
         # test the cache
         self.assertContains(response, "Delete article")
 
@@ -352,7 +354,8 @@ class DeleteViewTest(
         )
         # 3. Get and test that it redirects to the deleted page
         response = self.client.get(
-            resolve_url("wiki:get", path="testdelete/"), follow=True,
+            resolve_url("wiki:get", path="testdelete/"),
+            follow=True,
         )
         # test that it's the Deleted page
         self.assertContains(response, "Article deleted")
@@ -370,7 +373,8 @@ class DeleteViewTest(
         )
         # 5. Test that it's not found anymore
         response = self.client.get(
-            resolve_url("wiki:get", path="testdelete/"), follow=True,
+            resolve_url("wiki:get", path="testdelete/"),
+            follow=True,
         )
         self.assertContains(response, "Add new article")
 
@@ -668,7 +672,9 @@ class HistoryViewTests(
 
 class DirViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
     def test_browse_root(self):
-        response = self.client.get(reverse("wiki:dir", kwargs={"path": ""}),)
+        response = self.client.get(
+            reverse("wiki:dir", kwargs={"path": ""}),
+        )
         self.assertRegex(
             response.rendered_content, r'Browsing\s+<strong><a href=".+">/</a></strong>'
         )
@@ -683,11 +689,13 @@ class DirViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
             {"title": "Test00", "slug": "test00", "content": "Content .00."},
         )
         response = self.client.get(
-            reverse("wiki:dir", kwargs={"path": ""}), {"query": "Test"},
+            reverse("wiki:dir", kwargs={"path": ""}),
+            {"query": "Test"},
         )
         self.assertRegex(response.rendered_content, r"1 article")
         response = self.client.get(
-            reverse("wiki:dir", kwargs={"path": "test0/"}), {"query": "Test00"},
+            reverse("wiki:dir", kwargs={"path": "test0/"}),
+            {"query": "Test00"},
         )
         self.assertRegex(response.rendered_content, r"1 article")
 

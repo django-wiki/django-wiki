@@ -22,7 +22,10 @@ class CheckTests(TestCase):
             with self.settings(INSTALLED_APPS=_remove(settings.INSTALLED_APPS, app[0])):
                 errors = registry.run_checks(tags=[Tags.required_installed_apps])
                 expected_errors = [
-                    Error("needs %s in INSTALLED_APPS" % app[1], id="wiki.%s" % app[2],)
+                    Error(
+                        "needs %s in INSTALLED_APPS" % app[1],
+                        id="wiki.%s" % app[2],
+                    )
                 ]
                 self.assertEqual(errors, expected_errors)
 

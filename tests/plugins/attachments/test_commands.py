@@ -23,7 +23,8 @@ class TestAttachmentManagementCommands(TestManagementCommands):
         self.attachment1 = models.Attachment.objects.create(article=self.child1.article)
 
         self.attachment1_revision1 = models.AttachmentRevision.objects.create(
-            attachment=self.attachment1, file=self.test_file.name,
+            attachment=self.attachment1,
+            file=self.test_file.name,
         )
 
     def tearDown(self):

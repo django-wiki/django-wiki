@@ -65,7 +65,9 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
 
     def test_index(self):
         url = reverse("wiki:images_index", kwargs={"path": ""})
-        response = self.client.get(url,)
+        response = self.client.get(
+            url,
+        )
         self.assertContains(response, "Images")
 
     def test_upload(self):
