@@ -43,7 +43,10 @@ def check_for_required_installed_apps(app_configs, **kwargs):
     for app in REQUIRED_INSTALLED_APPS:
         if not apps.is_installed(app[0]):
             errors.append(
-                Error("needs %s in INSTALLED_APPS" % app[1], id="wiki.%s" % app[2],)
+                Error(
+                    "needs %s in INSTALLED_APPS" % app[1],
+                    id="wiki.%s" % app[2],
+                )
             )
     return errors
 

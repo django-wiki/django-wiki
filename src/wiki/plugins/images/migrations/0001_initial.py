@@ -25,7 +25,10 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"verbose_name": "image", "verbose_name_plural": "images",},
+            options={
+                "verbose_name": "image",
+                "verbose_name_plural": "images",
+            },
             bases=("wiki.revisionplugin",),
         ),
         migrations.CreateModel(

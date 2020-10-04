@@ -193,7 +193,10 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"get_latest_by": "revision_number", "ordering": ("created",),},
+            options={
+                "get_latest_by": "revision_number",
+                "ordering": ("created",),
+            },
             bases=(models.Model,),
         ),
         migrations.CreateModel(
@@ -294,7 +297,10 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"get_latest_by": "revision_number", "ordering": ("-created",),},
+            options={
+                "get_latest_by": "revision_number",
+                "ordering": ("-created",),
+            },
             bases=(models.Model,),
         ),
         migrations.CreateModel(
@@ -365,11 +371,15 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"verbose_name_plural": "URL paths", "verbose_name": "URL path",},
+            options={
+                "verbose_name_plural": "URL paths",
+                "verbose_name": "URL path",
+            },
             bases=(models.Model,),
         ),
         migrations.AlterUniqueTogether(
-            name="urlpath", unique_together=set([("site", "parent", "slug")]),
+            name="urlpath",
+            unique_together=set([("site", "parent", "slug")]),
         ),
         migrations.AddField(
             model_name="revisionplugin",

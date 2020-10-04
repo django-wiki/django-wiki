@@ -12,9 +12,11 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterModelTable(
-            name="attachment", table="wiki_attachments_attachment",
+            name="attachment",
+            table="wiki_attachments_attachment",
         ),
         migrations.AlterModelTable(
-            name="attachmentrevision", table="wiki_attachments_attachmentrevision",
+            name="attachmentrevision",
+            table="wiki_attachments_attachmentrevision",
         ),
     ]

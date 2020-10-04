@@ -84,7 +84,12 @@ def get_article(  # noqa: max-complexity=23
                 return redirect("wiki:root_create")
             except models.URLPath.DoesNotExist:
                 try:
-                    pathlist = list(filter(lambda x: x != "", path.split("/"),))
+                    pathlist = list(
+                        filter(
+                            lambda x: x != "",
+                            path.split("/"),
+                        )
+                    )
                     path = "/".join(pathlist[:-1])
                     parent = models.URLPath.get_by_path(path)
                     return HttpResponseRedirect(
