@@ -1,4 +1,5 @@
 import re
+from urllib.parse import quote as urlquote
 
 from django import template
 from django.apps import apps
@@ -7,7 +8,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model
 from django.forms import BaseForm
 from django.template.defaultfilters import striptags
-from django.utils.http import urlquote
 from django.utils.safestring import mark_safe
 from wiki import models
 from wiki.conf import settings
