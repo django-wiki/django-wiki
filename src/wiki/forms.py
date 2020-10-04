@@ -138,7 +138,9 @@ class SpamProtectionMixin:
             from_time = timezone.now() - timedelta(
                 minutes=settings.REVISIONS_MINUTES_LOOKBACK
             )
-            revisions = self.revision_model.objects.filter(created__gte=from_time,)
+            revisions = self.revision_model.objects.filter(
+                created__gte=from_time,
+            )
             if user:
                 revisions = revisions.filter(user=user)
             if ip_address:
@@ -220,7 +222,9 @@ class MoveForm(forms.Form):
 
 class EditForm(forms.Form, SpamProtectionMixin):
 
-    title = forms.CharField(label=_("Title"),)
+    title = forms.CharField(
+        label=_("Title"),
+    )
     content = forms.CharField(
         label=_("Contents"), required=False, widget=getEditor().get_widget()
     )  # @UndefinedVariable
@@ -359,7 +363,9 @@ class CreateForm(forms.Form, SpamProtectionMixin):
         self.request = request
         self.urlpath_parent = urlpath_parent
 
-    title = forms.CharField(label=_("Title"),)
+    title = forms.CharField(
+        label=_("Title"),
+    )
     slug = WikiSlugField(
         label=_("Slug"),
         help_text=_(

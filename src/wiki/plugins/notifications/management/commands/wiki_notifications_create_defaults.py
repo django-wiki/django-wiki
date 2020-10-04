@@ -57,7 +57,8 @@ class Command(BaseCommand):
 
             self.stdout.write(
                 "Created {subs:d} subscriptions on  {arts:d} articles".format(
-                    subs=subs, arts=articles.count(),
+                    subs=subs,
+                    arts=articles.count(),
                 ),
                 ending="\n",
             )

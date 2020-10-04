@@ -1,23 +1,25 @@
 repos:
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: ''  # pick a git hash / tag to point to
+    hooks:
+    -   id: flake8
+        exclude: "^(.*/migrations/|testproject/testproject/settings/)"
   - repo: git://github.com/pre-commit/pre-commit-hooks
-    sha: v1.2.0
+    rev: v3.2.0
     hooks:
     -   id: trailing-whitespace
         exclude: ".tx/config"
-    -   id: flake8
-        args:
-        - --exclude=*/*migrations/*, testproject/testproject/settings/*
     -   id: check-added-large-files
     -   id: debug-statements
     -   id: end-of-file-fixer
         exclude: ".tx/config"
   - repo: https://github.com/psf/black
-    rev: stable
+    rev: 20.8b1
     hooks:
     - id: black
       language_version: python3
 
   - repo: https://github.com/asottile/reorder_python_imports
-    rev: v2.3.0
+    rev: v2.3.5
     hooks:
     -   id: reorder-python-imports

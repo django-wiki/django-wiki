@@ -43,7 +43,10 @@ class Article(models.Model):
         ),
     )
 
-    created = models.DateTimeField(auto_now_add=True, verbose_name=_("created"),)
+    created = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_("created"),
+    )
     modified = models.DateTimeField(
         auto_now=True,
         verbose_name=_("modified"),
@@ -187,7 +190,8 @@ class Article(models.Model):
     @classmethod
     def get_for_object(cls, obj):
         return ArticleForObject.objects.get(
-            object_id=obj.id, content_type=ContentType.objects.get_for_model(obj),
+            object_id=obj.id,
+            content_type=ContentType.objects.get_for_model(obj),
         ).article
 
     def __str__(self):
@@ -310,8 +314,13 @@ class BaseRevisionMixin(models.Model):
         editable=False, verbose_name=_("revision number")
     )
 
-    user_message = models.TextField(blank=True,)
-    automatic_log = models.TextField(blank=True, editable=False,)
+    user_message = models.TextField(
+        blank=True,
+    )
+    automatic_log = models.TextField(
+        blank=True,
+        editable=False,
+    )
 
     ip_address = IPAddressField(_("IP address"), blank=True, null=True, editable=False)
     user = models.ForeignKey(
@@ -332,8 +341,14 @@ class BaseRevisionMixin(models.Model):
     # NOTE! The semantics of these fields are not related to the revision itself
     # but the actual related object. If the latest revision says "deleted=True" then
     # the related object should be regarded as deleted.
-    deleted = models.BooleanField(verbose_name=_("deleted"), default=False,)
-    locked = models.BooleanField(verbose_name=_("locked"), default=False,)
+    deleted = models.BooleanField(
+        verbose_name=_("deleted"),
+        default=False,
+    )
+    locked = models.BooleanField(
+        verbose_name=_("locked"),
+        default=False,
+    )
 
     def set_from_request(self, request):
         if request.user.is_authenticated:

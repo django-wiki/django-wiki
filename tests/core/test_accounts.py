@@ -25,7 +25,11 @@ class AccountUpdateTest(
         """
         # Check out that it works as expected, notice that there is no referrer
         # on this GET request.
-        self.client.get(resolve_url("wiki:profile_update",))
+        self.client.get(
+            resolve_url(
+                "wiki:profile_update",
+            )
+        )
 
         # Now check that we don't succeed with unmatching passwords
         example_data = {
