@@ -1,4 +1,5 @@
 from functools import wraps
+from urllib.parse import quote as urlquote
 
 from django.http import HttpResponseForbidden
 from django.http import HttpResponseNotFound
@@ -7,7 +8,6 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.urls import reverse
-from django.utils.http import urlquote
 from wiki.conf import settings
 from wiki.core.exceptions import NoRootURL
 
@@ -84,7 +84,12 @@ def get_article(  # noqa: max-complexity=23
                 return redirect("wiki:root_create")
             except models.URLPath.DoesNotExist:
                 try:
-                    pathlist = list(filter(lambda x: x != "", path.split("/"),))
+                    pathlist = list(
+                        filter(
+                            lambda x: x != "",
+                            path.split("/"),
+                        )
+                    )
                     path = "/".join(pathlist[:-1])
                     parent = models.URLPath.get_by_path(path)
                     return HttpResponseRedirect(

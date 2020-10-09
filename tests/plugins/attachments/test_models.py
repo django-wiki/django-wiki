@@ -9,10 +9,14 @@ class AttachmentRevisionTests(RequireRootArticleMixin, TestBase):
     def setUp(self):
         super().setUp()
         self.attachment = Attachment.objects.create(
-            article=self.root_article, original_filename="blah.txt",
+            article=self.root_article,
+            original_filename="blah.txt",
         )
         self.revision = AttachmentRevision.objects.create(
-            attachment=self.attachment, file=None, description="muh", revision_number=1,
+            attachment=self.attachment,
+            file=None,
+            description="muh",
+            revision_number=1,
         )
 
     def test_revision_no_file(self):
@@ -28,5 +32,11 @@ class AttachmentRevisionTests(RequireRootArticleMixin, TestBase):
 
     def test_str(self):
         self.assertEqual(
-            str(self.revision), "%s: %s (r%d)" % ("Root Article", "blah.txt", 1,)
+            str(self.revision),
+            "%s: %s (r%d)"
+            % (
+                "Root Article",
+                "blah.txt",
+                1,
+            ),
         )

@@ -169,5 +169,6 @@ class DeleteForm(forms.Form):
 class SearchForm(forms.Form):
 
     query = forms.CharField(
-        label="", widget=forms.TextInput(attrs={"class": "search-query form-control"}),
+        label="",
+        widget=forms.TextInput(attrs={"class": "search-query form-control"}),
     )

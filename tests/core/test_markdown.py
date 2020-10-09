@@ -72,7 +72,8 @@ class CodehiliteTests(TestCase):
             )
         )
         self.assertEqual(
-            md.convert(text), result,
+            md.convert(text),
+            result,
         )
 
     def test_indented_code(self):
@@ -110,5 +111,6 @@ class CodehiliteTests(TestCase):
             )
         )
         self.assertEqual(
-            md.convert(text), result,
+            md.convert(text),
+            result,
         )

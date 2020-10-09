@@ -12,6 +12,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterModelTable(
-            name="articlesubscription", table="wiki_notifications_articlesubscription",
+            name="articlesubscription",
+            table="wiki_notifications_articlesubscription",
         ),
     ]

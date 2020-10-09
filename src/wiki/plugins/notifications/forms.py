@@ -69,9 +69,13 @@ class SettingsModelForm(forms.ModelForm):
         if self.__editing_instance:
             self.cleaned_data["delete_subscriptions"].delete()
             if self.cleaned_data["email"] == 1:
-                instance.subscription_set.all().update(send_emails=False,)
+                instance.subscription_set.all().update(
+                    send_emails=False,
+                )
             elif self.cleaned_data["email"] == 2:
-                instance.subscription_set.all().update(send_emails=True,)
+                instance.subscription_set.all().update(
+                    send_emails=True,
+                )
         instance.save()
         return instance
 
@@ -93,11 +97,15 @@ class BaseSettingsFormSet(BaseModelFormSet):
 
     def get_queryset(self):
         return (
-            Settings.objects.filter(user=self.user,)
+            Settings.objects.filter(
+                user=self.user,
+            )
             .exclude(
                 subscription__articlesubscription__article__current_revision__deleted=True,
             )
-            .prefetch_related("subscription_set__articlesubscription",)
+            .prefetch_related(
+                "subscription_set__articlesubscription",
+            )
             .order_by("is_default")
             .distinct()
         )
@@ -157,7 +165,9 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
             }
         kwargs["initial"] = initial
         super().__init__(*args, **kwargs)
-        self.fields["settings"].queryset = Settings.objects.filter(user=request.user,)
+        self.fields["settings"].queryset = Settings.objects.filter(
+            user=request.user,
+        )
 
     def get_usermessage(self):
         if self.changed_data:
@@ -186,7 +196,8 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
                     object_id=self.article.id,
                 )
                 models.ArticleSubscription.objects.create(
-                    subscription=subscription, article=self.article,
+                    subscription=subscription,
+                    article=self.article,
                 )
                 subscription.send_emails = self.cleaned_data["edit_email"]
                 subscription.save()

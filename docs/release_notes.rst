@@ -13,14 +13,30 @@ Release plan
 * **0.7.x** Milestone TBA
 
 
-0.6.1.dev
----------
+0.7.dev
+-------
+
+Added
+~~~~~
+
+* Django 3.1 support :url-issue:`1061` (Mads Jensen)
 
 Fixed
 ~~~~~
 
 * Do not fail prematurely during Django checks framework (rare issue) :url-issue:`1059` (Benjamin Bach)
 * Cache keys failing in memcached if username contains space characters (rare) :url-issue:`1065` (Benjamin Bach)
+
+Removed
+~~~~~~~
+
+* Django 2.1 support removed :url-issue:`1061` (Mads Jensen)
+
+Translations
+~~~~~~~~~~~~
+
+* Japanese (ja): 100% translated
+* Brazilian Portuguese (pt_BR): 100% translated
 
 
 0.6

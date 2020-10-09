@@ -26,7 +26,7 @@ class MacroExtension(markdown.Extension):
 class MacroPattern(markdown.inlinepatterns.Pattern):
 
     """django-wiki macro preprocessor - parse text for various [some_macro] and
-    [some_macro (kw:arg)*] references. """
+    [some_macro (kw:arg)*] references."""
 
     def handleMatch(self, m):
         macro = m.group("macro").strip()

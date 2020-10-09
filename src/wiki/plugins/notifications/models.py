@@ -70,7 +70,8 @@ def post_article_revision_save(**kwargs):
 # Whenever a new revision is created, we notifý users that an article
 # was edited
 signals.post_save.connect(
-    post_article_revision_save, sender=wiki_models.ArticleRevision,
+    post_article_revision_save,
+    sender=wiki_models.ArticleRevision,
 )
 
 # TODO: We should notify users when the current_revision of an article is

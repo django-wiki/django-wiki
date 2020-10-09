@@ -11,8 +11,12 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterModelTable(name="image", table="wiki_images_image",),
         migrations.AlterModelTable(
-            name="imagerevision", table="wiki_images_imagerevision",
+            name="image",
+            table="wiki_images_image",
+        ),
+        migrations.AlterModelTable(
+            name="imagerevision",
+            table="wiki_images_imagerevision",
         ),
     ]
