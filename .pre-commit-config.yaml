@@ -8,11 +8,11 @@ repos:
     rev: v3.2.0
     hooks:
     -   id: trailing-whitespace
-        exclude: ".tx/config"
+        exclude: "^.tx/"
     -   id: check-added-large-files
     -   id: debug-statements
     -   id: end-of-file-fixer
-        exclude: ".tx/config"
+        exclude: "^(.tx/.*|.*\\.map)$"
   - repo: https://github.com/psf/black
     rev: 20.8b1
     hooks:
