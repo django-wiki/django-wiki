@@ -50,7 +50,7 @@ def wiki_render(context, article, preview_content=None):
     if preview_content:
         content = article.render(preview_content=preview_content)
     elif article.current_revision:
-        content = article.get_cached_content(user=context.get("user"))
+        content = article.get_cached_content()
     else:
         content = None
 
