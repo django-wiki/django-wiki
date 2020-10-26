@@ -215,9 +215,7 @@ class Article(models.Model):
         else:
             content = self.current_revision.content
         return mark_safe(
-            article_markdown(
-                content, self, preview=preview_content is not None
-            )
+            article_markdown(content, self, preview=preview_content is not None)
         )
 
     def get_cache_key(self):
