@@ -1,5 +1,6 @@
 import base64
 import os
+import re
 from io import BytesIO
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -105,32 +106,32 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
     def test_image_default(self):
         output = self.get_article("[image:1]", True)
         image_rev = models.Image.objects.get().current_revision.imagerevision
-        expected = (
+        expected = re.compile(
             r'<figure class="thumbnail">'
-            r'<a href="' + image_rev.image.name + '">'
-            r'<img alt="test\.gif" src="cache/.*\.jpg">'
+            r'<a href="' + re.escape(image_rev.image.url) + '">'
+            r'<img alt="test\.gif" src="/?cache/.*\.jpg">'
             r'</a><figcaption class="caption"></figcaption></figure>'
         )
-        self.assertRegexpMatches(output, expected)
+        self.assertRegex(output, expected)
 
     def test_image_large_right(self):
         output = self.get_article("[image:1 align:right size:large]", True)
         image_rev = models.Image.objects.get().current_revision.imagerevision
-        expected = (
+        expected = re.compile(
             r'<figure class="thumbnail float-right">'
-            r'<a href="' + image_rev.image.name + '">'
-            r'<img alt="test\.gif" src="cache/.*\.jpg"></a>'
+            r'<a href="' + re.escape(image_rev.image.url) + '">'
+            r'<img alt="test\.gif" src="/?cache/.*\.jpg"></a>'
             r'<figcaption class="caption"></figcaption></figure>'
         )
-        self.assertRegexpMatches(output, expected)
+        self.assertRegex(output, expected)
 
     def test_image_orig(self):
         output = self.get_article("[image:1 size:orig]", True)
         image_rev = models.Image.objects.get().current_revision.imagerevision
         expected = (
             '<figure class="thumbnail">'
-            '<a href="' + image_rev.image.name + '">'
-            '<img alt="test.gif" src="' + image_rev.image.name + '"></a>'
+            '<a href="' + image_rev.image.url + '">'
+            '<img alt="test.gif" src="' + image_rev.image.url + '"></a>'
             '<figcaption class="caption"></figcaption></figure>'
         )
         self.assertEqual(output, expected)
