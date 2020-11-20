@@ -224,7 +224,7 @@ class Article(models.Model):
         """Returns per-article cache key."""
         lang = translation.get_language()
 
-        key_raw = "wiki:article:{id}:{lang}".format(
+        key_raw = "wiki-article-{id}-{lang}".format(
             id=self.current_revision.id if self.current_revision else self.id, lang=lang
         )
         # https://github.com/django-wiki/django-wiki/issues/1065
@@ -232,7 +232,7 @@ class Article(models.Model):
 
     def get_cache_content_key(self, user=None):
         """Returns per-article-user cache key."""
-        key_raw = "{key}:{user}".format(
+        key_raw = "{key}-{user}".format(
             key=self.get_cache_key(), user=user.get_username() if user else ""
         )
         # https://github.com/django-wiki/django-wiki/issues/1065
