@@ -13,25 +13,15 @@ Release plan
 * **0.7.x** Removes Django 2.1 support, adds Django 3.1
 
 
-0.7.1.dev
----------
+0.7.1
+-----
 
-Unreleased, current master
-
-Added
-~~~~~
-
-* ...
+Released on 2020-12-28.
 
 Fixed
 ~~~~~
 
-* ...
-
-Removed
-~~~~~~~
-
-* ...
+* Fixed cache key exceptions for `SafeString` objects `no attribute append` :url-issue:`1072` (Gert-Jan Braas)
 
 
 0.7
