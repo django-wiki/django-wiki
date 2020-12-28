@@ -11,8 +11,14 @@ class ResponsiveTableExtension(markdown.Extension):
 
 
 class ResponsiveTableTree(Treeprocessor):
+    """
+    NOTE: If you allow inputting of raw <table> tags rather than Markdown code
+    for tables, this tree processor will not affect the table, as it gets
+    stashed and not managed by a Treeprocessor type extension.
+    """
+
     def run(self, root):
-        for table_wrapper in list(root.getiterator("table")):
+        for table_wrapper in list(root.iter("table")):
             table_new = self.create_table_element()
             self.convert_to_wrapper(table_wrapper)
             self.move_children(table_wrapper, table_new)
