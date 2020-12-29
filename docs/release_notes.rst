@@ -13,6 +13,15 @@ Release plan
 * **0.7.x** Removes Django 2.1 support, adds Django 3.1
 
 
+0.7.2.dev
+---------
+
+Fixed
+~~~~~
+
+* User ``.iter()`` instead of long deprecated and removed method ``.getiterator`` :url-issue:`1083` (Teury Diaz, Benjamin Balder Bach)
+
+
 0.7.1
 -----
 
@@ -21,7 +30,7 @@ Released on 2020-12-28.
 Fixed
 ~~~~~
 
-* Fixed cache key exceptions for `SafeString` objects `no attribute append` :url-issue:`1072` (Gert-Jan Braas)
+* Fixed cache key exceptions for ``SafeString` objects ``no attribute append`` :url-issue:`1072` (Gert-Jan Braas)
 
 
 0.7
