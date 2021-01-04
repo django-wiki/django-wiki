@@ -43,7 +43,7 @@ UPLOAD_PATH_OBSCURIFY = getattr(
 #: some script. The extensions are case insensitive.
 #: You are asked to explicitly enter all file extensions that you want
 #: to allow. For your own safety.
-#: Note: this setting is called WIKI_ATTACHMENTS_EXTENTIONS not WIKI_ATTACHMENTS_FILE_EXTENTIONS
+#: Note: this setting is called WIKI_ATTACHMENTS_EXTENSIONS not WIKI_ATTACHMENTS_FILE_EXTENTIONS
 FILE_EXTENSIONS = getattr(
     django_settings, "WIKI_ATTACHMENTS_EXTENSIONS", ["pdf", "doc", "odt", "docx", "txt"]
 )
