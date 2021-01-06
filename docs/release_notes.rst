@@ -19,7 +19,7 @@ Release plan
 Fixed
 ~~~~~
 
-* User ``.iter()`` instead of long deprecated and removed method ``.getiterator`` :url-issue:`1083` (Teury Diaz, Benjamin Balder Bach)
+* Use ``.iter()`` instead of long deprecated and removed method ``.getiterator`` :url-issue:`1083` (Teury Diaz, Benjamin Balder Bach)
 
 
 0.7.1
