@@ -16,6 +16,8 @@ Release plan
 0.7.2
 -----
 
+Released on 2021-01-08.
+
 Fixed
 ~~~~~
 
