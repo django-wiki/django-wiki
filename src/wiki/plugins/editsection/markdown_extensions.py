@@ -25,7 +25,7 @@ class EditSectionExtension(Extension):
 
 
 def get_header_id(header):
-    header_id = "".join(w[0] for w in re.findall(r"\w+", header))
+    header_id = "".join(w[0] for w in re.findall(r"\w+", str(header)))
     if not len(header_id):
         return "_"
     return header_id
@@ -39,7 +39,7 @@ class EditSectionProcessor(Treeprocessor):
         sec_level = -1
         sec_start = -1
 
-        for child in node.getchildren():
+        for child in list(node):
             match = self.HEADER_RE.match(child.tag.lower())
             if not match:
                 continue
@@ -86,7 +86,7 @@ class EditSectionProcessor(Treeprocessor):
         cur_pos = [0] * self.level
         last_level = 0
 
-        for child in node.getchildren():
+        for child in list(node):
             match = self.HEADER_RE.match(child.tag.lower())
             if not match:
                 continue
