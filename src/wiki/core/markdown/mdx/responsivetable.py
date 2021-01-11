@@ -34,10 +34,10 @@ class ResponsiveTableTree(Treeprocessor):
 
     def move_children(self, element1, element2):
         """Moves children from element1 to element2"""
-        for child in element1.getchildren():
+        for child in list(element1):
             element2.append(child)
         # reversed is needed to safely remove items while iterating
-        for child in reversed(element1.getchildren()):
+        for child in reversed(list(element1)):
             element1.remove(child)
 
     def convert_to_wrapper(self, element):
