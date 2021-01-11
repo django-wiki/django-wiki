@@ -74,6 +74,15 @@ class EditSectionTests(RequireRootArticleMixin, DjangoClientTestBase):
         )
         self.assertRegex(response.rendered_content, expected)
 
+    def test_broken_content(self):
+        # Regression test for https://github.com/django-wiki/django-wiki/issues/1094
+        TEST_CONTENT = "### [Here we go](#anchor)"
+        urlpath = URLPath.create_urlpath(
+            URLPath.root(), "testedit", title="TestEdit", content=TEST_CONTENT
+        )
+        output = urlpath.article.render()
+        print(output)
+
 
 class EditSectionEditBase(RequireRootArticleMixin, FuncBaseMixin):
     pass
