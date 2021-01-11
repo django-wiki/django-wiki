@@ -13,6 +13,17 @@ Release plan
 * **0.7.x** Removes Django 2.1 support, adds Django 3.1
 
 
+0.7.3
+-----
+
+Released on 2021-01-11.
+
+Fixed
+~~~~~
+
+* Plugin ``editsection`` failing with unexpected contents :url-issue:`1094` (Teury Diaz, Benjamin Balder Bach, OTR)
+
+
 0.7.2
 -----
 
