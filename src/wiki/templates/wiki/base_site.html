@@ -78,7 +78,7 @@
         <li class="nav-item">
         <a class="nav-link" href="{% login_url as wiki_login_url %}{{ wiki_login_url }}">{% trans "Log in" %}</a>
         </li>
-        {% if "ACCOUNT_SIGNUP_ALLOWED"|wiki_settings %}
+        {% if "ACCOUNT_HANDLING"|wiki_settings and "ACCOUNT_SIGNUP_ALLOWED"|wiki_settings %}
         <li class="nav-item">
         <a class="nav-link" href="{% url 'wiki:signup' %}">{% trans "Sign up" %}</a>
         </li>
