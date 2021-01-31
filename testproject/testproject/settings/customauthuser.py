@@ -1,6 +1,12 @@
 import os  # noqa @UnusedImport
+import sys
 
 from .base import *  # noqa @UnusedWildImport
+from .dev import *
+
+# Append testdata path
+
+sys.path.append(os.path.join(os.path.dirname(os.path.dirname(PROJECT_DIR)), "tests"))
 
 DATABASES = {
     "default": {
@@ -11,9 +17,9 @@ DATABASES = {
     }
 }
 
-INSTALLED_APPS = PROJECT_DIR + [
+INSTALLED_APPS = INSTALLED_APPS + [
     # Test application for testing custom users
-    "wiki.tests.testdata",
+    "testdata",
 ]
 
 AUTH_USER_MODEL = "testdata.CustomUser"
