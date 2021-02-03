@@ -19,6 +19,7 @@ Translations
 ~~~~~~~~~~~~
 
 * Czech: 100% translated
+* Turkish: 100% translated
 * French: Some syntax fixes, remains 100% translated
 * Dutch: 100% reviewed
 
