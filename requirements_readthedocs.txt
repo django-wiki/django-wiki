@@ -2,6 +2,6 @@
 # that somehow doesn't like prerelease versions in the
 # dependency expressions (>=1.0b1 failes to find dist)
 Django>=2.2,<3.0
-bleach>=3.1.1,<3.2
+bleach>=3.3.0,<3.4
 sphinx
 sphinx_rtd_theme

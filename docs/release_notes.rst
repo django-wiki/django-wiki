@@ -15,6 +15,12 @@ Release plan
 0.7.4.dev
 ---------
 
+Fixed
+~~~~~
+
+* Dependency ``bleach`` is bumped to ``>=3.3.0,<3.4`` after security advisory :url-issue:`1109` (Benjamin Balder Bach)
+
+
 Translations
 ~~~~~~~~~~~~
 
