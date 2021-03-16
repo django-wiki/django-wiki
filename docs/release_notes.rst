@@ -649,15 +649,15 @@ News archive
 April 15, 2017
 ~~~~~~~~~~~~~~
 
-0.2.3 released: `Release notes <http://django-wiki.readthedocs.io/en/master/release_notes.html#django-wiki-0-2-3>`__
+0.2.3 released: `Release notes <http://django-wiki.readthedocs.io/en/main/release_notes.html#django-wiki-0-2-3>`__
 
-0.2.2 released: `Release notes <http://django-wiki.readthedocs.io/en/master/release_notes.html#django-wiki-0-2-2>`__
+0.2.2 released: `Release notes <http://django-wiki.readthedocs.io/en/main/release_notes.html#django-wiki-0-2-2>`__
 
 
 February 27, 2017
 ~~~~~~~~~~~~~~~~~
 
-0.2.1 released: `Release notes <http://django-wiki.readthedocs.io/en/master/release_notes.html#django-wiki-0-2-1>`__
+0.2.1 released: `Release notes <http://django-wiki.readthedocs.io/en/main/release_notes.html#django-wiki-0-2-1>`__
 
 
 December 27, 2016
