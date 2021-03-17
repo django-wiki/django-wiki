@@ -2,9 +2,11 @@ import html
 from urllib.parse import urljoin
 from urllib.parse import urlparse
 
+import wiki
 from markdown.extensions import Extension
 from markdown.postprocessors import AndSubstitutePostprocessor
 from markdown.treeprocessors import Treeprocessor
+from wiki import models as wiki_models
 from wiki.models import URLPath
 
 
@@ -43,12 +45,12 @@ class LinkTreeprocessor(Treeprocessor):
             return self._my_urlpath
         except AttributeError:
             pass
-        urlpaths = self.md.article.urlpath_set.all()
-        if urlpaths.exists():
-            self._my_urlpath = urlpaths[0]
-        else:
-            self._my_urlpath = None
-        return self._my_urlpath
+        try:
+            self._my_urlpath = self.md.article.urlpath_set.first().path or "/"
+            return self._my_urlpath
+        except AttributeError:
+            # first() may return None, which has no .path
+            return None
 
     def get_class(self, el):
         href = el.get("href")
@@ -65,17 +67,24 @@ class LinkTreeprocessor(Treeprocessor):
             return
         if url.scheme == "mailto":
             return
-        if url.scheme or url.netloc or url.path.startswith("/"):
-            # Contains a hostname or is an absolute link => external
+        if url.scheme or url.netloc:
+            # Contains a hostname or url schema ⇒ External link
             return self.external_class
         # Ensure that path ends with a slash
         relpath = url.path.rstrip("/") + "/"
-        target = urljoin_internal(self.my_urlpath.path, relpath)
-        if target is None:
-            # Relative path goes outside wiki URL space => external
-            return self.external_class
+        target = urljoin(self.my_urlpath, relpath)
+        print(self.my_urlpath, relpath, target)
+
         try:
+            if not target.startswith(wiki_models.URLPath.get_by_path("").path):
+                # Relative path goes outside wiki URL space => external
+                return self.external_class
             URLPath.get_by_path(target)
+        except wiki.core.exceptions.NoRootURL:
+            # The article being parsed is the first commit of the root article.
+            # It's not saved yet, there is no wiki root URL yet. Assume all
+            # links are external.
+            return self.external_class
         except URLPath.DoesNotExist:
             return self.broken_class
         return self.internal_class

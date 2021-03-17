@@ -10,5 +10,5 @@ class WikiLinksTests(RequireRootArticleMixin, TestBase):
         md_text = md.convert("[[Root Article]]")
         self.assertEqual(
             md_text,
-            '<p><a class="wiki_wikilink wiki-external" href="/Root_Article/">Root Article</a></p>',
+            '<p><a class="wiki_wikilink wiki-broken" href="/Root_Article/">Root Article</a></p>',
         )

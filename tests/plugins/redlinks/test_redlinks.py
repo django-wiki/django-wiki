@@ -1,3 +1,4 @@
+from django.urls import reverse
 from wiki.core import markdown
 from wiki.models import URLPath
 
@@ -23,10 +24,17 @@ class RedlinksTests(RequireRootArticleMixin, TestBase):
         self.assert_internal(self.child, "[Child](../child)")
 
     def test_root_to_outside(self):
-        self.assert_external(self.root, "[Outside](../test/)")
+        self.assert_external(self.root, "[Outside](http://outside.example.org/)")
 
-    def test_external(self):
-        self.assert_external(self.root, "[External](/)")
+    def test_absolute_external(self):
+        if reverse("wiki:get", kwargs={"path": ""}) == "/":
+            # All absolute paths could be wiki-internal, and the server root is
+            # the the wiki root, which is bound to exist.
+            self.assert_internal(self.root, "[Server Root](/)")
+        else:
+            # The wiki root is below the server root, so the server root is an
+            # external link.
+            self.assert_external(self.root, "[Server Root](/)")
 
     def test_child_to_broken(self):
         self.assert_broken(self.child, "[Broken](../broken/)")
