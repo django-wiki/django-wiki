@@ -18,7 +18,5 @@ class WhatLinksWherePlugin(BasePlugin):
         ]
     }
 
-    markdown_extensions = ["wiki.plugins.whatlinkswhere.markdown_extensions"]
-
 
 registry.register(WhatLinksWherePlugin)

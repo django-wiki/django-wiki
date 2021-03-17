@@ -34,13 +34,13 @@
         {% for internal_link in whatlinkswhere %}
           <tr>
             <td>
-                <a href="{% url 'wiki:get' internal_link.from_article.pk %}">
-                    {{ internal_link.from_article }}
+                <a href="{% url 'wiki:get' internal_link.to_url.article.pk %}">
+                    {{ internal_link.from_url.article }}
                 </a>
             </td>
             <td>
-              <a href="{% url 'wiki:get' internal_link.to_article.pk %}">
-                {{ internal_link.to_article }}
+              <a href="{% url 'wiki:get' internal_link.to_url.article.pk %}">
+                {{ internal_link.to_url.article }}
               </a>
             </td>
           </tr>

@@ -54,7 +54,13 @@ class WhatLinksHere(ListView, ArticleMixin):
         return super().dispatch(request, article, *args, **kwargs)
 
     def get_queryset(self):
-        return self.model.objects.filter(to_article=self.article)
+        return [
+            link
+            for link in self.model.objects.filter(
+                to_url__in=self.article.urlpath_set.all()
+            ).all()
+            if link.from_url.article.can_read(self.request.user)
+        ]
 
     def get_context_data(self, **kwargs):
         # Apparently a standard hack for (ListView, ArticleMixin) classes
@@ -65,7 +71,7 @@ class WhatLinksHere(ListView, ArticleMixin):
         return kwargs
 
 
-class WhatLinksWhere(ListView):
+class WhatLinksWhere(ListView, ArticleMixin):
     template_name = "wiki/plugins/whatlinkswhere/whatlinkswhere.html"
     allow_empty = True
     context_object_name = "whatlinkswhere"
@@ -73,12 +79,32 @@ class WhatLinksWhere(ListView):
     paginate_by = 50
     model = models.InternalLink
 
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
+    @method_decorator(get_article(can_read=True))
+    def dispatch(self, request, article, *args, **kwargs):
+        if not article.can_read(request.user):
+            return response_forbidden(request, article, read_denied=True)
+        return super().dispatch(request, article, *args, **kwargs)
 
     def get_queryset(self):
-        return self.model.objects.filter()
+        # TODO: This filter should use query logic, instead of python filtering, as much as possible.
+        links = [
+            link
+            for link in self.model.objects.all()
+            if link.from_url.article.get_absolute_url().startswith(
+                self.article.get_absolute_url()
+            )
+            if link.from_url.article.can_read(self.request.user)
+            if link.to_url.article.get_absolute_url().startswith(
+                self.article.get_absolute_url()
+            )
+            if link.to_url.article.can_read(self.request.user)
+        ]
+        return links
 
     def get_context_data(self, **kwargs):
-        # Is this a bit of a hack? Use better inheritance?
-        return super().get_context_data(**kwargs)
+        # Apparently a standard hack for (ListView, ArticleMixin) classes
+        kwargs_article = ArticleMixin.get_context_data(self, **kwargs)
+        kwargs_listview = ListView.get_context_data(self, **kwargs)
+        kwargs.update(kwargs_article)
+        kwargs.update(kwargs_listview)
+        return kwargs
