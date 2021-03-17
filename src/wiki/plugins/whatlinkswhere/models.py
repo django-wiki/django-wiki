@@ -86,16 +86,36 @@ def store_link(from_urls, el, root):
 
 
 def store_links(instance, *args, **kwargs):
-    html = ET.fromstring(
-        "<body>{:s}</body>".format(
-            article_markdown(instance.content, instance.article, False)
+    try:
+        html = ET.fromstring(
+            "<body>{:s}</body>".format(
+                article_markdown(instance.content, instance.article, False)
+            )
         )
-    )
+    except ET.ParseError:
+        # There are some cases where markdown doesn't evaluate to clean html.
+        # It would probably be worth checking *how* they fail, but for now we
+        # should at least not DIE due to them.
+        return
+
     from_urls = instance.article.urlpath_set.all()
+
+    if not from_urls:
+        # I have seen this happen in test cases made for the edit section and
+        # the wiki path extension components. I don't know what causes those
+        # errors there, but we cannot have that an empty from_urls be passed to
+        # store_link.
+        return
 
     for url in from_urls:
         InternalLink.objects.filter(from_url=url).delete()
-    wiki_root = wiki_models.URLPath.get_by_path("")
+    try:
+        wiki_root = wiki_models.URLPath.get_by_path("")
+    except wiki_models.urlpath.NoRootURL:
+        # This is the very first commit to the root URL, there can be no
+        # existing wiki links yet. TODO: Once we can deal with non-existent
+        # links, we need to figure out how to handle this case, too.
+        return
 
     for el in html.iter():
         if el.tag != "a":
