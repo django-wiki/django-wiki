@@ -1,7 +1,7 @@
 {% extends "wiki/base.html" %}
 {% load wiki_tags i18n humanize %}
 
-{% block wiki_pagetitle %}{% trans "What links where" %}{% endblock %}
+{% block wiki_pagetitle %}{% trans "What links here" %}{% endblock %}
 
 {% block wiki_contents %}
 
@@ -12,9 +12,9 @@
   <div class="lead col-xs-8">
     {% with paginator.object_list.count as cnt %}
       {% blocktrans count cnt=cnt trimmed %}
-        List of <strong>{{ cnt }} internal link</strong> in the wiki.
+        List of <strong>{{ cnt }} link</strong> to this wiki article.
         {% plural %}
-        List of <strong>{{ cnt }} internal links</strong> in the wiki.
+        List of <strong>{{ cnt }} links</strong> to this wiki article.
       {% endblocktrans %}
     {% endwith %}
   </div>

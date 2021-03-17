@@ -81,7 +81,7 @@ def store_link(from_urls, el, root):
     # All other cases have been handled: We have an internal link, which
     # should be reflected in the database.
     for from_url in from_urls:
-        models.InternalLink.objects.create(from_url=from_url, to_url=to_url).save()
+        InternalLink.objects.create(from_url=from_url, to_url=to_url).save()
     return
 
 
