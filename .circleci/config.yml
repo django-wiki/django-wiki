@@ -1,0 +1,52 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@0.2.1
+
+jobs:
+  tox:
+    parameters:
+      tox_env:
+        description: "Name of Tox environment to run"
+        default: "py38"
+        type: string
+      python_version:
+        description: "Python version string"
+        default: "3.8"
+        type: string
+    description: "Reusable job for invoking tox"
+    docker:
+    - image: circleci/python:<<parameters.python_version>>
+    steps:
+      - checkout
+      - run: pip install tox && tox -e <<parameters.tox_env>>
+workflows:
+  main:
+    jobs:
+      - tox:
+          tox_env: "py36-django22"
+          python_version: "3.6"
+      - tox:
+          tox_env: "py36-django30"
+          python_version: "3.6"
+      - tox:
+          tox_env: "py36-django31"
+          python_version: "3.6"
+      - tox:
+          tox_env: "py37-django22"
+          python_version: "3.7"
+      - tox:
+          tox_env: "py37-django30"
+          python_version: "3.7"
+      - tox:
+          tox_env: "py37-django31"
+          python_version: "3.7"
+      - tox:
+          tox_env: "py38-django30"
+          python_version: "3.8"
+      - tox:
+          tox_env: "py38-django31"
+          python_version: "3.8"
+      - tox:
+          tox_env: "lint"
+          python_version: "3.8"
