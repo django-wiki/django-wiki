@@ -29,22 +29,31 @@ class InternalLink(models.Model):
     )
     to_url = models.ForeignKey(
         "wiki.URLPath",
+        null=True,
         on_delete=models.CASCADE,
         verbose_name=_("to_url"),
         related_name="links_to",
+    )
+    to_nonexistant_url = models.CharField(
+        max_length=512,
+        null=True,
+        verbose_name=_("nonexistant_url"),
+        help_text=_("The target of this link is not in the wiki [yet]"),
     )
 
     # Permission methods - you should override these, if they don't fit your
     # logic.
     def can_read(self, user):
-        return self.from_url.article.can_read(user) and self.to_url.article.can_read(
-            user
+        return self.from_url.article.can_read(user) and (
+            not self.to_url or self.to_url.article.can_read(user)
         )
 
     def __str__(self):
         title = _("Article {:s} links to {:s}").format(
             self.from_url.article.current_revision.title,
-            self.to_url.article.current_revision.title,
+            self.to_url.article.current_revision.title
+            if self.to_url
+            else self.to_nonexistant_url,
         )
         return str(title)
 
@@ -75,7 +84,11 @@ def store_link(from_urls, el, root):
     try:
         to_url = wiki_models.URLPath.get_by_path(target)
     except wiki_models.URLPath.DoesNotExist:
-        # ‘red’ link to unwritten article. (maybe it's worth tracking those in principle)
+        # ‘red’ link to unwritten article.
+        for from_url in from_urls:
+            InternalLink.objects.create(
+                from_url=from_url, to_nonexistant_url=target
+            ).save()
         return
 
     # All other cases have been handled: We have an internal link, which
@@ -102,20 +115,22 @@ def store_links(instance, *args, **kwargs):
 
     if not from_urls:
         # I have seen this happen in test cases made for the edit section and
-        # the wiki path extension components. I don't know what causes those
-        # errors there, but we cannot have that an empty from_urls be passed to
-        # store_link.
+        # the wiki path extension components. I think it was caused by the fact
+        # that article revisions were created before their URLPath objects,
+        # which I changed.
         return
 
     for url in from_urls:
+        for link in InternalLink.objects.filter(
+            to_nonexistant_url="/" + url.path
+        ).all():
+            link.to_nonexistant_url = None
+            link.to_url = url
+            link.save()
+
+    for url in from_urls:
         InternalLink.objects.filter(from_url=url).delete()
-    try:
-        wiki_root = wiki_models.URLPath.get_by_path("")
-    except wiki_models.urlpath.NoRootURL:
-        # This is the very first commit to the root URL, there can be no
-        # existing wiki links yet. TODO: Once we can deal with non-existent
-        # links, we need to figure out how to handle this case, too.
-        return
+    wiki_root = wiki_models.URLPath.get_by_path("")
 
     for el in html.iter():
         if el.tag != "a":

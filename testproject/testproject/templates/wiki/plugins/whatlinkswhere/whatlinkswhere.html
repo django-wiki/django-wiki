@@ -36,8 +36,8 @@
 <script type="text/javascript">
 var articles = [
     {% for internal_link in whatlinkswhere %}
-    { id: "{{ internal_link.from_url.article.get_absolute_url }}", label: "{{ internal_link.from_url.article }}" },
-    { id: "{{ internal_link.to_url.article.get_absolute_url }}" , label: "{{ internal_link.to_url.article }}" },
+    { id: "{{ internal_link.from_url.path }}", label: "{{ internal_link.from_url.article }}" },
+    { id: "{{ internal_link.to_url.path }}" , label: "{{ internal_link.to_url.article }}" },
     {% endfor %}
 ];
 var unique_articles = articles.sort(function(a, b) {if (a.id < b.id) {return -1} else {return 1} }).filter(function(value, index, array) {return (index === 0) || (value.id !== array[index-1].id);});
@@ -47,8 +47,8 @@ var nodes = new vis.DataSet(unique_articles);
 // create an array with edges
 var edges = new vis.DataSet([
     {% for internal_link in whatlinkswhere %}
-    { from: "{{ internal_link.from_url.article.get_absolute_url }}",
-      to: "{{ internal_link.to_url.article.get_absolute_url }}" },
+    { from: "{{ internal_link.from_url.path }}",
+      to: "{{ internal_link.to_url.path }}" },
     {% endfor %}
 ]);
 

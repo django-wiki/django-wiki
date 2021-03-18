@@ -281,12 +281,12 @@ class URLPath(MPTTModel):
         if not site:
             site = Site.objects.get_current()
         article = Article(**article_kwargs)
-        article.add_revision(ArticleRevision(title=title, **revision_kwargs), save=True)
         article.save()
         newpath = cls.objects.create(
             site=site, parent=parent, slug=slug, article=article
         )
         article.add_object_relation(newpath)
+        article.add_revision(ArticleRevision(title=title, **revision_kwargs), save=True)
         return newpath
 
     @classmethod
