@@ -5,8 +5,8 @@ django-wiki
 
 .. |Docs| image:: https://readthedocs.org/projects/django-wiki/badge/?version=latest
    :target: https://django-wiki.readthedocs.io/
-.. |Build Status| image:: https://travis-ci.org/django-wiki/django-wiki.png?branch=master
-   :target: https://travis-ci.org/django-wiki/django-wiki
+.. |Build status| image:: https://circleci.com/gh/django-wiki/django-wiki.svg?style=shield
+   :target: https://circleci.com/gh/django-wiki/django-wiki
 .. |Coverage Status| image:: https://codecov.io/github/django-wiki/django-wiki/coverage.svg?branch=master
    :target: https://codecov.io/github/django-wiki/django-wiki?branch=master
 .. |PyPi| image:: https://badge.fury.io/py/wiki.svg
