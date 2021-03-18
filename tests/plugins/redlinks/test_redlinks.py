@@ -2,6 +2,7 @@ from django.urls import reverse
 from wiki.core import markdown
 from wiki.models import URLPath
 
+from ...base import wiki_override_settings
 from tests.base import RequireRootArticleMixin
 from tests.base import TestBase
 
@@ -71,3 +72,11 @@ class RedlinksTests(RequireRootArticleMixin, TestBase):
         self.assertNotIn("wiki-external", html)
         self.assertNotIn("wiki-broken", html)
         self.assertIn("<a ", html)
+
+
+@wiki_override_settings(
+    WIKI_URL_CONFIG_CLASS="tests.core.test_models.WikiCustomUrlPatterns",
+    ROOT_URLCONF="tests.core.test_urls",
+)
+class RedLinksWithChangedBaseURL(RedlinksTests):
+    pass
