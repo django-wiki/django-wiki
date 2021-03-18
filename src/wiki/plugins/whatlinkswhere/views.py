@@ -1,5 +1,6 @@
 from urllib.parse import quote as urlquote
 
+from django.db.models import Q
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
@@ -99,7 +100,13 @@ class WhatLinksWhere(ListView, ArticleMixin):
         # For network display of the namespace, it would be nice to also pass
         # the isolated nodes, with no outgoing and no incoming edges. That
         # would probably also require de-activating the paginator.
-        return self.model.objects.filter(from_url__in=self.nodes, to_url__in=self.nodes)
+        return self.model.objects.filter(
+            Q(from_url__in=self.nodes)
+            & (
+                Q(to_url__in=self.nodes)
+                | Q(to_nonexistant_url__startswith=self.article.get_absolute_url())
+            )
+        )
 
     def get_context_data(self, **kwargs):
         # Apparently a standard hack for (ListView, ArticleMixin) classes
