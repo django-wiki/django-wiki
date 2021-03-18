@@ -5,6 +5,7 @@ from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
+from wiki import models as wiki_models
 from wiki.conf import settings
 from wiki.core.paginator import WikiPaginator
 from wiki.decorators import get_article
@@ -54,6 +55,7 @@ class WhatLinksHere(ListView, ArticleMixin):
         return super().dispatch(request, article, *args, **kwargs)
 
     def get_queryset(self):
+        # TODO: This filter should use query logic, instead of python filtering, as much as possible.
         return [
             link
             for link in self.model.objects.filter(
@@ -86,20 +88,18 @@ class WhatLinksWhere(ListView, ArticleMixin):
         return super().dispatch(request, article, *args, **kwargs)
 
     def get_queryset(self):
-        # TODO: This filter should use query logic, instead of python filtering, as much as possible.
-        links = [
-            link
-            for link in self.model.objects.all()
-            if link.from_url.article.get_absolute_url().startswith(
+        self.nodes = [
+            url
+            for url in wiki_models.URLPath.objects.all()
+            if url.article.get_absolute_url().startswith(
                 self.article.get_absolute_url()
             )
-            if link.from_url.article.can_read(self.request.user)
-            if link.to_url.article.get_absolute_url().startswith(
-                self.article.get_absolute_url()
-            )
-            if link.to_url.article.can_read(self.request.user)
+            if url.article.can_read(self.request.user)
         ]
-        return links
+        # For network display of the namespace, it would be nice to also pass
+        # the isolated nodes, with no outgoing and no incoming edges. That
+        # would probably also require de-activating the paginator.
+        return self.model.objects.filter(from_url__in=self.nodes, to_url__in=self.nodes)
 
     def get_context_data(self, **kwargs):
         # Apparently a standard hack for (ListView, ArticleMixin) classes
