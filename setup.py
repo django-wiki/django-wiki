@@ -37,6 +37,8 @@ test_requirements = [
     "pytest>=5.3,<5.4",
     "pytest-django",
     "pytest-cov",
+    "coverage",
+    "codecov",
     "pytest-pythonpath",
 ]
 
