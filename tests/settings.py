@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "wiki.plugins.macros.apps.MacrosConfig",
     "wiki.plugins.globalhistory.apps.GlobalHistoryConfig",
     "wiki.plugins.redlinks.apps.RedlinksConfig",
+    "wiki.plugins.whatlinkswhere.apps.WhatLinksWhereConfig",
 ]
 MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
