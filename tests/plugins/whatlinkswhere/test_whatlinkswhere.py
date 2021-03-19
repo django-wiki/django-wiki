@@ -48,9 +48,9 @@ class WhatLinksWhereTests(
             url = reverse("wiki:whatlinkshere", kwargs={"path": ""})
         response = self.client.get(url)
         if network:
-            self.assertRegexpMatches(response.rendered_content, ("What links here"))
-        else:
             self.assertRegexpMatches(response.rendered_content, ("What links where"))
+        else:
+            self.assertRegexpMatches(response.rendered_content, ("What links here"))
         # The different link pairs are expected to be in a table, one row per link.
         rows = response.rendered_content.split("tr>")
         for origin, target in itertools.product(self.pages, repeat=2):
