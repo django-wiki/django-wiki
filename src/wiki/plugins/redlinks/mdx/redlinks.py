@@ -3,10 +3,13 @@ from urllib.parse import urljoin
 from urllib.parse import urlparse
 
 import wiki
+from django.urls import resolve
+from django.urls.exceptions import Resolver404
 from markdown.extensions import Extension
 from markdown.postprocessors import AndSubstitutePostprocessor
 from markdown.treeprocessors import Treeprocessor
-from wiki import models as wiki_models
+from wiki.decorators import which_article
+from wiki.models import Article
 from wiki.models import URLPath
 
 
@@ -46,13 +49,13 @@ class LinkTreeprocessor(Treeprocessor):
         except AttributeError:
             pass
         try:
-            self._my_urlpath = self.md.article.urlpath_set.first().path or "/"
+            self._my_urlpath = self.md.article.get_absolute_url()
             return self._my_urlpath
         except AttributeError:
             # first() may return None, which has no .path
             return None
 
-    def get_class(self, el):
+    def get_class(self, el):  # noqa: max-complexity 11
         href = el.get("href")
         if not href:
             return
@@ -72,21 +75,25 @@ class LinkTreeprocessor(Treeprocessor):
             return self.external_class
         # Ensure that path ends with a slash
         relpath = url.path.rstrip("/") + "/"
-        target = urljoin(self.my_urlpath, relpath)
-        print(self.my_urlpath, relpath, target)
+        try:
+            target = resolve(urljoin(self.my_urlpath, relpath))
+        except Resolver404:
+            # Broken absolute link
+            return self.external_class
+
+        if target.app_names != ["wiki"]:
+            # Links outside wiki
+            return self.external_class
 
         try:
-            if not target.startswith(wiki_models.URLPath.get_by_path("").path):
-                # Relative path goes outside wiki URL space => external
-                return self.external_class
-            URLPath.get_by_path(target)
-        except wiki.core.exceptions.NoRootURL:
-            # The article being parsed is the first commit of the root article.
-            # It's not saved yet, there is no wiki root URL yet. Assume all
-            # links are external.
-            return self.external_class
-        except URLPath.DoesNotExist:
+            article, urlpath = which_article(**target.kwargs)
+        except (
+            wiki.core.exceptions.NoRootURL,
+            URLPath.DoesNotExist,
+            Article.DoesNotExist,
+        ):
             return self.broken_class
+
         return self.internal_class
 
     def run(self, doc):

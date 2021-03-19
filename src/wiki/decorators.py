@@ -1,15 +1,17 @@
 from functools import wraps
 from urllib.parse import quote as urlquote
 
+from django.http import Http404
 from django.http import HttpResponseForbidden
 from django.http import HttpResponseNotFound
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.urls import reverse
 from wiki.conf import settings
 from wiki.core.exceptions import NoRootURL
+
+from . import models
 
 
 def response_forbidden(request, article, urlpath, read_denied=False):
@@ -34,8 +36,41 @@ def response_forbidden(request, article, urlpath, read_denied=False):
         )
 
 
+def which_article(path=None, article_id=None, **kwargs):
+    # fetch by path
+    if path is not None:
+        urlpath = models.URLPath.get_by_path(path, select_related=True)
+        if urlpath.article:
+            # urlpath is already smart about prefetching items on article
+            # (like current_revision), so we don't have to
+            article = urlpath.article
+        else:
+            # Be robust: Somehow article is gone but urlpath exists...
+            # clean up
+            urlpath.delete()
+            raise models.URLPath.DoesNotExist()
+
+    # fetch by article.id
+    elif article_id is not None:
+        # TODO We should try to grab the article from URLPath so the
+        # caching is good, and fall back to grabbing it from
+        # Article.objects if not
+        article = models.Article.objects.get(id=article_id)
+        try:
+            urlpath = models.URLPath.objects.get(articles__article=article)
+        except (
+            models.URLPath.DoesNotExist,
+            models.URLPath.MultipleObjectsReturned,
+        ):
+            urlpath = None
+
+    else:
+        raise TypeError("You should specify either article_id or path")
+    return article, urlpath
+
+
 # TODO: This decorator is too complex (C901)
-def get_article(  # noqa: max-complexity=23
+def get_article(  # noqa: max-complexity 19
     func=None,
     can_read=True,
     can_write=False,
@@ -71,68 +106,36 @@ def get_article(  # noqa: max-complexity=23
     """
 
     def wrapper(request, *args, **kwargs):
-        from . import models
-
         path = kwargs.pop("path", None)
         article_id = kwargs.pop("article_id", None)
-
-        # fetch by urlpath.path
-        if path is not None:
+        try:
+            article, urlpath = which_article(path, article_id)
+        except NoRootURL:
+            return redirect("wiki:root_create")
+        except models.Article.DoesNotExist:
+            raise Http404("Article id {:} not found".format(article_id))
+        except models.URLPath.DoesNotExist:
             try:
-                urlpath = models.URLPath.get_by_path(path, select_related=True)
-            except NoRootURL:
-                return redirect("wiki:root_create")
+                pathlist = list(
+                    filter(
+                        lambda x: x != "",
+                        path.split("/"),
+                    )
+                )
+                path = "/".join(pathlist[:-1])
+                parent = models.URLPath.get_by_path(path)
+                return HttpResponseRedirect(
+                    reverse("wiki:create", kwargs={"path": parent.path})
+                    + "?slug=%s" % pathlist[-1].lower()
+                )
             except models.URLPath.DoesNotExist:
-                try:
-                    pathlist = list(
-                        filter(
-                            lambda x: x != "",
-                            path.split("/"),
-                        )
+                return HttpResponseNotFound(
+                    render_to_string(
+                        "wiki/error.html",
+                        context={"error_type": "ancestors_missing"},
+                        request=request,
                     )
-                    path = "/".join(pathlist[:-1])
-                    parent = models.URLPath.get_by_path(path)
-                    return HttpResponseRedirect(
-                        reverse("wiki:create", kwargs={"path": parent.path})
-                        + "?slug=%s" % pathlist[-1].lower()
-                    )
-                except models.URLPath.DoesNotExist:
-                    return HttpResponseNotFound(
-                        render_to_string(
-                            "wiki/error.html",
-                            context={"error_type": "ancestors_missing"},
-                            request=request,
-                        )
-                    )
-            if urlpath.article:
-                # urlpath is already smart about prefetching items on article
-                # (like current_revision), so we don't have to
-                article = urlpath.article
-            else:
-                # Be robust: Somehow article is gone but urlpath exists...
-                # clean up
-                return_url = reverse("wiki:get", kwargs={"path": urlpath.parent.path})
-                urlpath.delete()
-                return HttpResponseRedirect(return_url)
-
-        # fetch by article.id
-        elif article_id:
-            # TODO We should try to grab the article form URLPath so the
-            # caching is good, and fall back to grabbing it from
-            # Article.objects if not
-            articles = models.Article.objects
-
-            article = get_object_or_404(articles, id=article_id)
-            try:
-                urlpath = models.URLPath.objects.get(articles__article=article)
-            except (
-                models.URLPath.DoesNotExist,
-                models.URLPath.MultipleObjectsReturned,
-            ):
-                urlpath = None
-
-        else:
-            raise TypeError("You should specify either article_id or path")
+                )
 
         if not deleted_contents:
             # If the article has been deleted, show a special page.

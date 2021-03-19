@@ -37,6 +37,10 @@ class RedlinksTests(RequireRootArticleMixin, TestBase):
             # external link.
             self.assert_external(self.root, "[Server Root](/)")
 
+    def test_absolute_internal(self):
+        wiki_root = reverse("wiki:get", kwargs={"path": ""})
+        self.assert_internal(self.root, "[Server Root]({:})".format(wiki_root))
+
     def test_child_to_broken(self):
         self.assert_broken(self.child, "[Broken](../broken/)")
 

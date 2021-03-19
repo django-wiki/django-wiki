@@ -34,7 +34,7 @@ class WikiCustomUrlPatterns(WikiURLPatterns):
 
 urlpatterns = [
     re_path(r"^notify/", include("django_nyt.urls")),
-    re_path(r"", get_wiki_pattern(url_config_class=WikiCustomUrlPatterns)),
+    re_path(r"elsewhere/", get_wiki_pattern(url_config_class=WikiCustomUrlPatterns)),
 ]
 
 
@@ -48,7 +48,7 @@ class ArticleModelReverseMethodTest(TestCase):
 
         url = a.get_absolute_url()
 
-        expected = "/some-prefix/1/"
+        expected = "/elsewhere/some-prefix/1/"
 
         self.assertEqual(url, expected)
 
@@ -64,6 +64,6 @@ class ArticleModelReverseMethodTest(TestCase):
 
         url = a2.get_absolute_url()
 
-        expected = "/some-other-prefix/test_slug/"
+        expected = "/elsewhere/some-other-prefix/test_slug/"
 
         self.assertEqual(url, expected)
