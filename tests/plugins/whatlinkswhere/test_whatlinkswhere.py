@@ -1,3 +1,4 @@
+import itertools
 import re
 
 from django.urls import reverse
@@ -38,92 +39,70 @@ class WhatLinksWhereTests(
         url3.article.current_revision.save()
         url3a.article.current_revision.save()
         url3b.article.current_revision.save()
+        self.pages = ["Page 1", "Page 2", "Page 3", "Page A", "Page B"]
 
-    # All these tests are very similar, with more similar tests to come for
-    # different user permissions, etc.. TODO: Tie them all together in a common
-    # function that only takes the 'here' vs. 'there', the anchor article, and
-    # the list of links expected to be present (and tests the product for
-    # absence).
-    def test_whatlinkswhere_global(self):
-        url = reverse("wiki:whatlinkswhere", kwargs={"path": ""})
+    def assert_link_counts(self, path, pages, network=True):
+        if network:
+            url = reverse("wiki:whatlinkswhere", kwargs={"path": ""})
+        else:
+            url = reverse("wiki:whatlinkshere", kwargs={"path": ""})
         response = self.client.get(url)
-        self.assertRegexpMatches(response.rendered_content, ("What links where"))
+        if network:
+            self.assertRegexpMatches(response.rendered_content, ("What links here"))
+        else:
+            self.assertRegexpMatches(response.rendered_content, ("What links where"))
         # The different link pairs are expected to be in a table, one row per link.
         rows = response.rendered_content.split("tr>")
-        for pages in [
-            ("Page 1", "Page 2"),
-            ("Page 1", "Page 3"),
-            ("Page 1", "Page B"),
-            ("Page 2", "Page 3"),
-            ("Page 3", "Page 1"),
-            ("Page 3", "Page A"),
-            ("Page 3", "Page B"),
-            ("Page A", "Page 1"),
-            ("Page A", "Page B"),
-        ]:
+        for (origin, target), count in itertools.product(self.pages):
             found = [
-                re.search(f"{pages[0]}.*{pages[1]}", row, re.DOTALL) is not None
+                re.search("{}.*{}".format(origin, target), row, re.DOTALL) is not None
                 for row in rows
             ]
-            assert sum(found) == 1
-            del rows[found.index(True)]
+            assert sum(found) == 1 if (origin, target) in pages else 0
+
+    def test_whatlinkswhere_global(self):
+        self.assert_link_counts(
+            "",
+            {
+                ("Page 1", "Page 2"),
+                ("Page 1", "Page 3"),
+                ("Page 1", "Page B"),
+                ("Page 2", "Page 3"),
+                ("Page 3", "Page 1"),
+                ("Page 3", "Page A"),
+                ("Page 3", "Page B"),
+                ("Page A", "Page 1"),
+                ("Page A", "Page B"),
+            },
+        )
 
     def test_whatlinkswhere_subwiki(self):
-        url = reverse("wiki:whatlinkswhere", kwargs={"path": "page3/"})
-        response = self.client.get(url)
-        self.assertRegexpMatches(response.rendered_content, ("What links where"))
-        # The different link pairs are expected to be in a table, one row per link.
-        rows = response.rendered_content.split("tr>")
-        for pages in [
-            ("Page 1", "Page 2", 0),
-            ("Page 1", "Page 3", 0),
-            ("Page 1", "Page B", 0),
-            ("Page 2", "Page 3", 0),
-            ("Page 3", "Page 1", 0),
-            ("Page 3", "Page A", 1),
-            ("Page 3", "Page B", 1),
-            ("Page A", "Page 1", 0),
-            ("Page A", "Page B", 1),
-        ]:
-            found = [
-                re.search(f"{pages[0]}.*{pages[1]}", row, re.DOTALL) is not None
-                for row in rows
-            ]
-            assert sum(found) == pages[2]
-            if sum(found):
-                del rows[found.index(True)]
+        self.assert_link_counts(
+            "page3/",
+            {
+                ("Page 3", "Page A", 1),
+                ("Page 3", "Page B", 1),
+                ("Page A", "Page B", 1),
+            },
+        )
 
     def test_whatlinkshere_niece(self):
-        url = reverse("wiki:whatlinkshere", kwargs={"path": "page1/"})
-        response = self.client.get(url)
-        self.assertRegexpMatches(response.rendered_content, ("What links here"))
-        # The different link pairs are expected to be in a table, one row per link.
-        rows = response.rendered_content.split("tr>")
-        for pages in [
-            ("Page 3", "Page 1"),
-            ("Page A", "Page 1"),
-        ]:
-            found = [
-                re.search(f"{pages[0]}.*{pages[1]}", row, re.DOTALL) is not None
-                for row in rows
-            ]
-            assert sum(found) == 1
-            del rows[found.index(True)]
+        self.assert_link_counts(
+            "page1/",
+            {
+                ("Page 3", "Page 1"),
+                ("Page A", "Page 1"),
+            },
+            network=False,
+        )
 
     def test_whatlinkshere_aunt(self):
-        url = reverse("wiki:whatlinkshere", kwargs={"path": "page3/b/"})
-        response = self.client.get(url)
-        self.assertRegexpMatches(response.rendered_content, ("What links here"))
-        # The different link pairs are expected to be in a table, one row per link.
-        rows = response.rendered_content.split("tr>")
-        for pages in [
-            ("Page 1", "Page B"),
-            ("Page 3", "Page B"),
-            ("Page A", "Page B"),
-        ]:
-            found = [
-                re.search(f"{pages[0]}.*{pages[1]}", row, re.DOTALL) is not None
-                for row in rows
-            ]
-            assert sum(found) == 1
-            del rows[found.index(True)]
+        self.assert_link_counts(
+            "page3/b/",
+            {
+                ("Page 1", "Page B"),
+                ("Page 3", "Page B"),
+                ("Page A", "Page B"),
+            },
+            network=False,
+        )
