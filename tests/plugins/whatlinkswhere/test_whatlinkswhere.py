@@ -32,7 +32,7 @@ class WhatLinksWhereTests(
             "[page1](/page1) [page3A](a) [page3B](b)"
         )
         url3a.article.current_revision.content = "[page1](/page1) [page3B](../b)"
-        url3b.article.current_revision.content = "No links"
+        url3b.article.current_revision.content = "[missing](/missing)"
 
         url1.article.current_revision.save()
         url2.article.current_revision.save()
@@ -53,12 +53,20 @@ class WhatLinksWhereTests(
             self.assertRegexpMatches(response.rendered_content, ("What links where"))
         # The different link pairs are expected to be in a table, one row per link.
         rows = response.rendered_content.split("tr>")
-        for (origin, target), count in itertools.product(self.pages):
+        for origin, target in itertools.product(self.pages, repeat=2):
             found = [
                 re.search("{}.*{}".format(origin, target), row, re.DOTALL) is not None
                 for row in rows
             ]
             assert sum(found) == 1 if (origin, target) in pages else 0
+        for (origin, target) in set.difference(
+            pages, itertools.product(self.pages, repeat=2)
+        ):
+            found = [
+                re.search("{}.*{}".format(origin, target), row, re.DOTALL) is not None
+                for row in rows
+            ]
+            assert sum(found) == 1
 
     def test_whatlinkswhere_global(self):
         self.assert_link_counts(
@@ -73,6 +81,7 @@ class WhatLinksWhereTests(
                 ("Page 3", "Page B"),
                 ("Page A", "Page 1"),
                 ("Page A", "Page B"),
+                ("Page B", "missing"),
             },
         )
 
@@ -80,9 +89,10 @@ class WhatLinksWhereTests(
         self.assert_link_counts(
             "page3/",
             {
-                ("Page 3", "Page A", 1),
-                ("Page 3", "Page B", 1),
-                ("Page A", "Page B", 1),
+                ("Page 3", "Page A"),
+                ("Page 3", "Page B"),
+                ("Page A", "Page B"),
+                ("Page B", "missing"),
             },
         )
 
