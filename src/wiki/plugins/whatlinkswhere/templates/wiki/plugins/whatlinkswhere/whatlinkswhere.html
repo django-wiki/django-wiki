@@ -34,14 +34,14 @@
         {% for internal_link in whatlinkswhere %}
           <tr>
             <td>
-              <a href="{{ internal_link.from_url.article.get_absolute_url }}">
-                {{ internal_link.from_url.article }}
+              <a href="{{ internal_link.from_article.get_absolute_url }}">
+                {{ internal_link.from_article }}
               </a>
             </td>
             <td>
-              {% if internal_link.to_url %}
-                <a href="{{ internal_link.to_url.article.get_absolute_url }}">
-                {{ internal_link.to_url.article }}
+              {% if internal_link.to_article %}
+                <a href="{{ internal_link.to_article.get_absolute_url }}">
+                {{ internal_link.to_article }}
                 </a>
               {% else %}
                 <a href="{{ internal_link.to_nonexistant_url }}">

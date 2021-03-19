@@ -10,9 +10,13 @@ from urllib.parse import urlparse
 from xml.etree import ElementTree as ET
 
 from django.db import models
+from django.urls import resolve
+from django.urls.exceptions import Resolver404
 from django.utils.translation import gettext_lazy as _
 from wiki import models as wiki_models
+from wiki.core.exceptions import NoRootURL
 from wiki.core.markdown import article_markdown
+from wiki.decorators import which_article
 
 
 __all__ = ["InternalLink", "store_links"]
@@ -21,18 +25,18 @@ __all__ = ["InternalLink", "store_links"]
 class InternalLink(models.Model):
     """This model describes links between articles."""
 
-    from_url = models.ForeignKey(
-        "wiki.URLPath",
+    from_article = models.ForeignKey(
+        "wiki.Article",
         on_delete=models.CASCADE,
-        verbose_name=_("from_url"),
-        related_name="links_from",
+        verbose_name=_("from_article"),
+        related_name="links",
     )
-    to_url = models.ForeignKey(
-        "wiki.URLPath",
+    to_article = models.ForeignKey(
+        "wiki.Article",
         null=True,
         on_delete=models.CASCADE,
-        verbose_name=_("to_url"),
-        related_name="links_to",
+        verbose_name=_("to_article"),
+        related_name="incoming_links",
     )
     to_nonexistant_url = models.CharField(
         max_length=512,
@@ -41,21 +45,13 @@ class InternalLink(models.Model):
         help_text=_("The target of this link is not in the wiki [yet]"),
     )
 
-    # Permission methods - you should override these, if they don't fit your
-    # logic.
-    def can_read(self, user):
-        return self.from_url.article.can_read(user) and (
-            not self.to_url or self.to_url.article.can_read(user)
-        )
-
     def __str__(self):
-        title = _("Article {:s} links to {:s}").format(
-            self.from_url.article.current_revision.title,
-            self.to_url.article.current_revision.title
-            if self.to_url
+        return _("Article {:s} links to {:s}").format(
+            self.from_article.current_revision.title,
+            self.to_article.current_revision.title
+            if self.to_article
             else self.to_nonexistant_url,
         )
-        return str(title)
 
     class Meta:
         verbose_name = _("link")
@@ -64,38 +60,33 @@ class InternalLink(models.Model):
         db_table = "wiki_whatlinkswhere_internallink"
 
 
-def store_link(from_urls, el, root):
+def store_link(from_url, from_article, el):
     href = el.get("href")
-    if not href:
-        # Anchor, not link
-        return
-
     try:
+        assert href
         url = urlparse(href)
-    except ValueError:
+        # Ensure that path ends with a slash
+        assert not url.scheme
+        assert not url.netloc
+        target = resolve(urljoin(from_url, url.path.rstrip("/") + "/"))
+        assert target.app_names == ["wiki"]
+        article, destination = which_article(**target.kwargs)
+        # All other cases have raised exceptions: We have an internal link,
+        # which should be reflected in the database.
+        InternalLink.objects.create(
+            from_article=from_article, to_article=article
+        ).save()
+    except (AssertionError, TypeError, ValueError, Resolver404, NoRootURL):
+        # No wiki-internal link
         return
-    if url.scheme or url.netloc:
-        # External link
-        return
-
-    # Ensure that path ends with a slash
-    target = urljoin(from_urls[0].path, url.path.rstrip("/") + "/")
-
-    try:
-        to_url = wiki_models.URLPath.get_by_path(target)
-    except wiki_models.URLPath.DoesNotExist:
+    except (
+        wiki_models.URLPath.DoesNotExist,
+        wiki_models.Article.DoesNotExist,
+    ):
         # ‘red’ link to unwritten article.
-        for from_url in from_urls:
-            InternalLink.objects.create(
-                from_url=from_url, to_nonexistant_url=target
-            ).save()
-        return
-
-    # All other cases have been handled: We have an internal link, which
-    # should be reflected in the database.
-    for from_url in from_urls:
-        InternalLink.objects.create(from_url=from_url, to_url=to_url).save()
-    return
+        InternalLink.objects.create(
+            from_article=from_article, to_nonexistant_url=target
+        ).save()
 
 
 def store_links(instance, *args, **kwargs):
@@ -111,31 +102,20 @@ def store_links(instance, *args, **kwargs):
         # should at least not DIE due to them.
         return
 
-    from_urls = instance.article.urlpath_set.all()
+    url = instance.article.get_absolute_url()
+    article = instance.article
 
-    if not from_urls:
-        # I have seen this happen in test cases made for the edit section and
-        # the wiki path extension components. I think it was caused by the fact
-        # that article revisions were created before their URLPath objects,
-        # which I changed.
-        return
+    for link in InternalLink.objects.filter(to_nonexistant_url=url).all():
+        link.to_nonexistant_url = None
+        link.to_article = article
+        link.save()
 
-    for url in from_urls:
-        for link in InternalLink.objects.filter(
-            to_nonexistant_url="/" + url.path
-        ).all():
-            link.to_nonexistant_url = None
-            link.to_url = url
-            link.save()
-
-    for url in from_urls:
-        InternalLink.objects.filter(from_url=url).delete()
-    wiki_root = wiki_models.URLPath.get_by_path("")
+    InternalLink.objects.filter(from_article=article).delete()
 
     for el in html.iter():
         if el.tag != "a":
             continue
-        store_link(from_urls, el, wiki_root)
+        store_link(url, article, el)
 
 
 # Whenever a new revision is created, update all links in there

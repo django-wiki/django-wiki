@@ -59,10 +59,8 @@ class WhatLinksHere(ListView, ArticleMixin):
         # TODO: This filter should use query logic, instead of python filtering, as much as possible.
         return [
             link
-            for link in self.model.objects.filter(
-                to_url__in=self.article.urlpath_set.all()
-            ).all()
-            if link.from_url.article.can_read(self.request.user)
+            for link in self.model.objects.filter(to_article=self.article).all()
+            if link.from_article.can_read(self.request.user)
         ]
 
     def get_context_data(self, **kwargs):
@@ -90,20 +88,18 @@ class WhatLinksWhere(ListView, ArticleMixin):
 
     def get_queryset(self):
         self.nodes = [
-            url
-            for url in wiki_models.URLPath.objects.all()
-            if url.article.get_absolute_url().startswith(
-                self.article.get_absolute_url()
-            )
-            if url.article.can_read(self.request.user)
+            article
+            for article in wiki_models.Article.objects.all()
+            if article.get_absolute_url().startswith(self.article.get_absolute_url())
+            if article.can_read(self.request.user)
         ]
         # For network display of the namespace, it would be nice to also pass
         # the isolated nodes, with no outgoing and no incoming edges. That
         # would probably also require de-activating the paginator.
         return self.model.objects.filter(
-            Q(from_url__in=self.nodes)
+            Q(from_article__in=self.nodes)
             & (
-                Q(to_url__in=self.nodes)
+                Q(to_article__in=self.nodes)
                 | Q(to_nonexistant_url__startswith=self.article.get_absolute_url())
             )
         )
