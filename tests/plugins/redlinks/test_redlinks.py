@@ -36,7 +36,7 @@ class RedlinksTests(RequireRootArticleMixin, TestBase):
             # The wiki root is below the server root, so the server root is an
             # external link.
             self.assert_external(self.root, "[Server Root](/)")
-            self.assert_external(self.root, "[Notifications](/notify/)")
+            self.assert_external(self.root, "[Static File](/static/)")
 
     def test_absolute_internal(self):
         wiki_root = reverse("wiki:get", kwargs={"path": ""})

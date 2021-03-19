@@ -26,13 +26,8 @@ class LinkTreeprocessor(Treeprocessor):
         try:
             return self._my_urlpath
         except AttributeError:
-            pass
-        try:
             self._my_urlpath = self.md.article.get_absolute_url()
             return self._my_urlpath
-        except AttributeError:
-            # first() may return None, which has no .path
-            return None
 
     def get_class(self, el):  # noqa: max-complexity 11
         href = el.get("href")
