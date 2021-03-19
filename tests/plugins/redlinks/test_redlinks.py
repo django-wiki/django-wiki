@@ -36,6 +36,7 @@ class RedlinksTests(RequireRootArticleMixin, TestBase):
             # The wiki root is below the server root, so the server root is an
             # external link.
             self.assert_external(self.root, "[Server Root](/)")
+            self.assert_external(self.root, "[Notifications](/notify/)")
 
     def test_absolute_internal(self):
         wiki_root = reverse("wiki:get", kwargs={"path": ""})
@@ -46,6 +47,23 @@ class RedlinksTests(RequireRootArticleMixin, TestBase):
 
     def test_root_to_broken(self):
         self.assert_broken(self.root, "[Broken](broken/)")
+
+    def test_not_a_link(self):
+        self.assert_none(self.root, '<a id="anchor">old-style anchor</a>')
+
+    def test_invalid_url(self):
+        self.assert_none(self.root, "[Invalid](http://127[.500.20.1/)")
+
+    def test_mailto(self):
+        self.assert_none(self.root, "<foo@example.com>")
+
+    def assert_none(self, urlpath, md_text):
+        md = markdown.ArticleMarkdown(article=urlpath.article)
+        html = md.convert(md_text)
+        self.assertNotIn("wiki-internal", html)
+        self.assertNotIn("wiki-external", html)
+        self.assertNotIn("wiki-broken", html)
+        self.assertIn("<a", html)
 
     def assert_internal(self, urlpath, md_text):
         md = markdown.ArticleMarkdown(article=urlpath.article)
@@ -67,15 +85,6 @@ class RedlinksTests(RequireRootArticleMixin, TestBase):
         self.assertNotIn("wiki-internal", html)
         self.assertNotIn("wiki-external", html)
         self.assertIn("wiki-broken", html)
-
-    def test_mailto(self):
-        md = markdown.ArticleMarkdown(article=self.root.article)
-        md_text = "<foo@example.com>"
-        html = md.convert(md_text)
-        self.assertNotIn("wiki-internal", html)
-        self.assertNotIn("wiki-external", html)
-        self.assertNotIn("wiki-broken", html)
-        self.assertIn("<a ", html)
 
 
 @wiki_override_settings(

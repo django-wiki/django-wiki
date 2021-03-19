@@ -13,27 +13,6 @@ from wiki.models import Article
 from wiki.models import URLPath
 
 
-def urljoin_internal(base, url):
-    """
-    Combine a base URL with a relative URL while ensuring that the relative
-    URL does not go outside the hierarchy containing the base URL.
-
-    >>> print(urljoin_internal("foo/bar/", "../baz/"))
-    foo/baz/
-    >>> print(urljoin_internal("foo/bar/", "../../baz/"))
-    baz/
-    >>> print(urljoin_internal("foo/bar/", "../../../baz/"))
-    None
-    """
-
-    canary1 = "//a/a/"
-    canary2 = "//a/b/"
-    res1 = urljoin(canary1 + base, url)
-    res2 = urljoin(canary2 + base, url)
-    if res1.startswith(canary1) and res2.startswith(canary2):
-        return res1[len(canary1) :]
-
-
 class LinkTreeprocessor(Treeprocessor):
     def __init__(self, md, config):
         super().__init__(md)
