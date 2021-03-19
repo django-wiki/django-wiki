@@ -59,35 +59,35 @@ class InternalLink(models.Model):
         # Matches label of upcoming 0.1 release
         db_table = "wiki_whatlinkswhere_internallink"
 
-
-def store_link(from_url, from_article, el):
-    href = el.get("href")
-    try:
-        assert href
-        url = urlparse(href)
-        # Ensure that path ends with a slash
-        assert not url.scheme
-        assert not url.netloc
-        target = urljoin(from_url, url.path.rstrip("/") + "/")
-        resolution = resolve(target)
-        assert resolution.app_names == ["wiki"]
-        article, destination = which_article(**resolution.kwargs)
-        # All other cases have raised exceptions: We have an internal link,
-        # which should be reflected in the database.
-        InternalLink.objects.create(
-            from_article=from_article, to_article=article
-        ).save()
-    except (AssertionError, TypeError, ValueError, Resolver404, NoRootURL):
-        # No wiki-internal link
-        return
-    except (
-        wiki_models.URLPath.DoesNotExist,
-        wiki_models.Article.DoesNotExist,
-    ):
-        # ‘red’ link to unwritten article.
-        InternalLink.objects.create(
-            from_article=from_article, to_nonexistant_url=target
-        ).save()
+    @classmethod
+    def store_link(cls, from_url, from_article, el):
+        href = el.get("href")
+        try:
+            assert href
+            url = urlparse(href)
+            # Ensure that path ends with a slash
+            assert not url.scheme
+            assert not url.netloc
+            target = urljoin(from_url, url.path.rstrip("/") + "/")
+            resolution = resolve(target)
+            assert resolution.app_names == ["wiki"]
+            article, destination = which_article(**resolution.kwargs)
+            # All other cases have raised exceptions: We have an internal link,
+            # which should be reflected in the database.
+            return cls.objects.create(
+                from_article=from_article, to_article=article
+            ).save()
+        except (AssertionError, TypeError, ValueError, Resolver404, NoRootURL):
+            # No wiki-internal link
+            return
+        except (
+            wiki_models.URLPath.DoesNotExist,
+            wiki_models.Article.DoesNotExist,
+        ):
+            # ‘red’ link to unwritten article.
+            return cls.objects.create(
+                from_article=from_article, to_nonexistant_url=target
+            ).save()
 
 
 def store_links(instance, *args, **kwargs):
@@ -116,7 +116,7 @@ def store_links(instance, *args, **kwargs):
     for el in html.iter():
         if el.tag != "a":
             continue
-        store_link(url, article, el)
+        InternalLink.store_link(url, article, el)
 
 
 # Whenever a new revision is created, update all links in there
