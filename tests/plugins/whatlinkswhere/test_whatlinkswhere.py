@@ -43,9 +43,9 @@ class WhatLinksWhereTests(
 
     def assert_link_counts(self, path, pages, network=True):
         if network:
-            url = reverse("wiki:whatlinkswhere", kwargs={"path": ""})
+            url = reverse("wiki:whatlinkswhere", kwargs={"path": path})
         else:
-            url = reverse("wiki:whatlinkshere", kwargs={"path": ""})
+            url = reverse("wiki:whatlinkshere", kwargs={"path": path})
         response = self.client.get(url)
         if network:
             self.assertRegexpMatches(response.rendered_content, ("What links where"))
@@ -58,7 +58,7 @@ class WhatLinksWhereTests(
                 re.search("{}.*{}".format(origin, target), row, re.DOTALL) is not None
                 for row in rows
             ]
-            assert sum(found) == 1 if (origin, target) in pages else 0
+            assert sum(found) == (1 if (origin, target) in pages else 0)
         for (origin, target) in set.difference(
             pages, itertools.product(self.pages, repeat=2)
         ):
@@ -92,7 +92,9 @@ class WhatLinksWhereTests(
                 ("Page 3", "Page A"),
                 ("Page 3", "Page B"),
                 ("Page A", "Page B"),
-                ("Page B", "missing"),
+                # NB: The link from Page B to /missing links above Page 3, so
+                # it's not part of the hierarchy of /page3 and should not
+                # appear here.
             },
         )
 

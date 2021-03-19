@@ -68,9 +68,10 @@ def store_link(from_url, from_article, el):
         # Ensure that path ends with a slash
         assert not url.scheme
         assert not url.netloc
-        target = resolve(urljoin(from_url, url.path.rstrip("/") + "/"))
-        assert target.app_names == ["wiki"]
-        article, destination = which_article(**target.kwargs)
+        target = urljoin(from_url, url.path.rstrip("/") + "/")
+        resolution = resolve(target)
+        assert resolution.app_names == ["wiki"]
+        article, destination = which_article(**resolution.kwargs)
         # All other cases have raised exceptions: We have an internal link,
         # which should be reflected in the database.
         InternalLink.objects.create(
