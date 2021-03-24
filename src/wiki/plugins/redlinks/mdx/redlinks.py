@@ -2,31 +2,15 @@ import html
 from urllib.parse import urljoin
 from urllib.parse import urlparse
 
+import wiki
+from django.urls import resolve
+from django.urls.exceptions import Resolver404
 from markdown.extensions import Extension
 from markdown.postprocessors import AndSubstitutePostprocessor
 from markdown.treeprocessors import Treeprocessor
+from wiki.decorators import which_article
+from wiki.models import Article
 from wiki.models import URLPath
-
-
-def urljoin_internal(base, url):
-    """
-    Combine a base URL with a relative URL while ensuring that the relative
-    URL does not go outside the hierarchy containing the base URL.
-
-    >>> print(urljoin_internal("foo/bar/", "../baz/"))
-    foo/baz/
-    >>> print(urljoin_internal("foo/bar/", "../../baz/"))
-    baz/
-    >>> print(urljoin_internal("foo/bar/", "../../../baz/"))
-    None
-    """
-
-    canary1 = "//a/a/"
-    canary2 = "//a/b/"
-    res1 = urljoin(canary1 + base, url)
-    res2 = urljoin(canary2 + base, url)
-    if res1.startswith(canary1) and res2.startswith(canary2):
-        return res1[len(canary1) :]
 
 
 class LinkTreeprocessor(Treeprocessor):
@@ -42,15 +26,10 @@ class LinkTreeprocessor(Treeprocessor):
         try:
             return self._my_urlpath
         except AttributeError:
-            pass
-        urlpaths = self.md.article.urlpath_set.all()
-        if urlpaths.exists():
-            self._my_urlpath = urlpaths[0]
-        else:
-            self._my_urlpath = None
-        return self._my_urlpath
+            self._my_urlpath = self.md.article.get_absolute_url()
+            return self._my_urlpath
 
-    def get_class(self, el):
+    def get_class(self, el):  # noqa: max-complexity 11
         href = el.get("href")
         if not href:
             return
@@ -65,19 +44,30 @@ class LinkTreeprocessor(Treeprocessor):
             return
         if url.scheme == "mailto":
             return
-        if url.scheme or url.netloc or url.path.startswith("/"):
-            # Contains a hostname or is an absolute link => external
+        if url.scheme or url.netloc:
+            # Contains a hostname or url schema ⇒ External link
             return self.external_class
         # Ensure that path ends with a slash
         relpath = url.path.rstrip("/") + "/"
-        target = urljoin_internal(self.my_urlpath.path, relpath)
-        if target is None:
-            # Relative path goes outside wiki URL space => external
-            return self.external_class
         try:
-            URLPath.get_by_path(target)
-        except URLPath.DoesNotExist:
+            target = resolve(urljoin(self.my_urlpath, relpath))
+        except Resolver404:
+            # Broken absolute link
+            return self.external_class
+
+        if target.app_names != ["wiki"]:
+            # Links outside wiki
+            return self.external_class
+
+        try:
+            article, urlpath = which_article(**target.kwargs)
+        except (
+            wiki.core.exceptions.NoRootURL,
+            URLPath.DoesNotExist,
+            Article.DoesNotExist,
+        ):
             return self.broken_class
+
         return self.internal_class
 
     def run(self, doc):
