@@ -8,7 +8,7 @@ from wiki.plugins.links.mdx.urlize import UrlizeExtension
 # Template accepts two strings - href value and link text value.
 EXPECTED_LINK_TEMPLATE = (
     '<a href="%s" rel="nofollow" target="_blank">'
-    '<span class="fa fa-external-link">'
+    '<span class="fa fa-external-link-alt">'
     "</span>"
     "<span>"
     " %s"

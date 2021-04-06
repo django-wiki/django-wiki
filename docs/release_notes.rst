@@ -19,6 +19,8 @@ Fixed
 ~~~~~
 
 * Dependency ``bleach`` is bumped to ``>=3.3.0,<3.4`` after security advisory :url-issue:`1109` (Benjamin Balder Bach)
+* Font-awesome icon on external links was not showing :url-issue:`1111` (Benjamin Balder Bach)
+* Red links were not correctly displaying in some cases :url-issue:`1114` (Gereon Kaiping)
 
 
 Translations

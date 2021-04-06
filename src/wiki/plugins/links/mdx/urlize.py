@@ -140,7 +140,7 @@ class UrlizePattern(markdown.inlinepatterns.Pattern):
 
         # Convenience link to distinguish external links more easily.
         icon = markdown.util.etree.Element("span")
-        icon.set("class", "fa fa-external-link")
+        icon.set("class", "fa fa-external-link-alt")
 
         # Link text.
         span_text = markdown.util.etree.Element("span")
