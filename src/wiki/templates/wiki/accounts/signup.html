@@ -19,7 +19,7 @@
 {% addtoblock "js" %}
 <script type="text/javascript">
   function {{ honeypot_jsfunction }}() {
-    $('.{{ honeypot_class }}').parent().parent().hide();
+    $('.{{ honeypot_class }}').parent().parent().parent().hide();
   }
   $(document).ready({{ honeypot_jsfunction }});
 </script>
