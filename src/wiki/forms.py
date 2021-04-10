@@ -508,7 +508,7 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
                 else Group.objects.none(),
                 empty_label=_("(none)"),
                 required=False,
-                widget=SelectWidgetBootstrap(disabled=True)
+                widget=SelectWidgetBootstrap(attrs={"disabled": True})
                 if settings.USE_BOOTSTRAP_SELECT_WIDGET
                 else forms.Select(attrs={"disabled": True}),
             )
