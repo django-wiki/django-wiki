@@ -12,8 +12,11 @@ Release plan
 * **0.6.x** Targets Bootstrap v4, if you are interested in this work, please get in touch on Github!
 * **0.7.x** Removes Django 2.1 support, adds Django 3.1
 
-0.7.4.dev
----------
+
+0.7.4
+-----
+
+Released on 2021-04-10.
 
 Fixed
 ~~~~~
@@ -24,13 +27,17 @@ Fixed
 * Red links were not correctly displaying in some cases :url-issue:`1114` (Gereon Kaiping)
 
 
-Translations
-~~~~~~~~~~~~
+Translation updates
+~~~~~~~~~~~~~~~~~~~
 
+* Chinese: 100% translated, 100% reviewed
 * Czech: 100% translated
-* Turkish: 100% translated
+* Dutch: 100% translated, 100% reviewed
 * French: Some syntax fixes, remains 100% translated
-* Dutch: 100% reviewed
+* Hungarian: 100% translated
+* Korean: 100% translated, 96% reviewed
+* Russian: 100% translated
+* Turkish: 100% translated
 
 
 0.7.3
