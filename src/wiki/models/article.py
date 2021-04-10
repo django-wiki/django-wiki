@@ -248,6 +248,9 @@ class Article(models.Model):
         is used only if the key is in the per-article entry. To delete
         per-article invalidates all article cache entries."""
 
+        if user and user.is_anonymous:
+            user = None
+
         cache_key = self.get_cache_key()
         cache_content_key = self.get_cache_content_key(user)
 
