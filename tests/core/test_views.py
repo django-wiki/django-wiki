@@ -16,6 +16,8 @@ from wiki.models import URLPath
 
 from ..base import ArticleWebTestUtils
 from ..base import DjangoClientTestBase
+from ..base import NORMALUSER1_PASSWORD
+from ..base import NORMALUSER1_USERNAME
 from ..base import RequireRootArticleMixin
 from ..base import SeleniumBase
 from ..base import SUPERUSER1_USERNAME
@@ -769,6 +771,19 @@ class SettingsViewTests(
         response = self.client.get(
             reverse("wiki:settings", kwargs={"article_id": self.root_article.pk})
         )
+        self.assertEqual(response.status_code, 200)
+
+    def test_normal_user(self):
+        """
+        Tests that the settings view page renders for a normal user
+        Regression test: https://github.com/django-wiki/django-wiki/issues/1058
+        """
+        response = self.client.post(
+            resolve_url("wiki:create", path=""),
+            {"title": "Level 1", "slug": "Level1", "content": "Content level 1"},
+        )
+        self.client.login(username=NORMALUSER1_USERNAME, password=NORMALUSER1_PASSWORD)
+        response = self.client.get(reverse("wiki:settings", kwargs={"path": "level1/"}))
         self.assertEqual(response.status_code, 200)
 
     def test_content(self):

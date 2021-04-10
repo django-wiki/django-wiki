@@ -13,6 +13,9 @@ from wiki.models import URLPath
 SUPERUSER1_USERNAME = "admin"
 SUPERUSER1_PASSWORD = "secret"
 
+NORMALUSER1_USERNAME = "normaluser"
+NORMALUSER1_PASSWORD = "secret"
+
 
 class RequireSuperuserMixin:
     def setUp(self):
@@ -32,7 +35,16 @@ class RequireBasicData(RequireSuperuserMixin):
     Mixin that creates common data required for all tests.
     """
 
-    pass
+    def setUp(self):
+        super().setUp()
+
+        from django.contrib.auth import get_user_model
+
+        User = get_user_model()
+
+        self.normaluser1 = User.objects.create_user(
+            NORMALUSER1_USERNAME, "nobody@example.com", NORMALUSER1_PASSWORD
+        )
 
 
 class TestBase(RequireBasicData, TestCase):
