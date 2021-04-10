@@ -48,7 +48,7 @@ class LinkNetworkTests(
             url = reverse("wiki:whatlinkshere", kwargs={"path": path})
         response = self.client.get(url)
         if network:
-            self.assertRegexpMatches(response.rendered_content, ("What links where"))
+            self.assertRegexpMatches(response.rendered_content, ("Link Network"))
         else:
             self.assertRegexpMatches(response.rendered_content, ("What links here"))
         # The different link pairs are expected to be in a table, one row per link.
