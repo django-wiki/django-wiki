@@ -233,7 +233,7 @@ class Article(models.Model):
     def get_cache_content_key(self, user=None):
         """Returns per-article-user cache key."""
         key_raw = "{key}-{user}".format(
-            key=self.get_cache_key(), user=user.get_username() if user else ""
+            key=self.get_cache_key(), user=user.get_username() if user else "-anonymous"
         )
         # https://github.com/django-wiki/django-wiki/issues/1065
         return slugify(key_raw, allow_unicode=True)
