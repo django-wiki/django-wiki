@@ -25,7 +25,7 @@ install_requirements = [
     "Django>=2.1,<3.3",
     "bleach>=3.3.0,<3.4",
     "Pillow",
-    "django-nyt>=1.1.5,<1.2",
+    "django-nyt>=1.2,<1.3",
     "django-mptt>=0.11,<0.12",
     "django-sekizai>=0.10",
     "sorl-thumbnail>=12.6.2,<13",
