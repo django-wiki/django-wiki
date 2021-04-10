@@ -12,7 +12,7 @@ class LinkNetworkPlugin(BasePlugin):
     urlpatterns = {
         "article": [
             re_path(r"^$", views.WhatLinksHere.as_view(), name="linknetwork"),
-            re_path(r"^network/$", views.WhatLinksWhere.as_view(), name="linknetwork"),
+            re_path(r"^network/$", views.LinkNetwork.as_view(), name="linknetwork"),
         ]
     }
 
