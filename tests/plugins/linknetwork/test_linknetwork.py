@@ -9,7 +9,7 @@ from ...base import DjangoClientTestBase
 from ...base import RequireRootArticleMixin
 
 
-class WhatLinksWhereTests(
+class LinkNetworkTests(
     RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase
 ):
     def setUp(self):
@@ -43,7 +43,7 @@ class WhatLinksWhereTests(
 
     def assert_link_counts(self, path, pages, network=True):
         if network:
-            url = reverse("wiki:whatlinkswhere", kwargs={"path": path})
+            url = reverse("wiki:linknetwork", kwargs={"path": path})
         else:
             url = reverse("wiki:whatlinkshere", kwargs={"path": path})
         response = self.client.get(url)
@@ -68,7 +68,7 @@ class WhatLinksWhereTests(
             ]
             assert sum(found) == 1
 
-    def test_whatlinkswhere_global(self):
+    def test_linknetwork_global(self):
         self.assert_link_counts(
             "",
             {
@@ -85,7 +85,7 @@ class WhatLinksWhereTests(
             },
         )
 
-    def test_whatlinkswhere_subwiki(self):
+    def test_linknetwork_subwiki(self):
         self.assert_link_counts(
             "page3/",
             {
@@ -98,7 +98,7 @@ class WhatLinksWhereTests(
             },
         )
 
-    def test_whatlinkshere_niece(self):
+    def test_linknetwork_niece(self):
         self.assert_link_counts(
             "page1/",
             {
@@ -108,7 +108,7 @@ class WhatLinksWhereTests(
             network=False,
         )
 
-    def test_whatlinkshere_aunt(self):
+    def test_linknetwork_aunt(self):
         self.assert_link_counts(
             "page3/b/",
             {

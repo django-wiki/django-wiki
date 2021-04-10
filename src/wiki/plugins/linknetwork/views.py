@@ -37,9 +37,9 @@ def response_forbidden(request, article, urlpath, read_denied=False):
 
 
 class WhatLinksHere(ListView, ArticleMixin):
-    template_name = "wiki/plugins/whatlinkswhere/whatlinkshere.html"
+    template_name = "wiki/plugins/linknetwork/whatlinkshere.html"
     allow_empty = True
-    context_object_name = "whatlinkswhere"
+    context_object_name = "linknetwork"
     paginator_class = WikiPaginator
     paginate_by = 50
     model = models.InternalLink
@@ -72,10 +72,10 @@ class WhatLinksHere(ListView, ArticleMixin):
         return kwargs
 
 
-class WhatLinksWhere(ListView, ArticleMixin):
-    template_name = "wiki/plugins/whatlinkswhere/whatlinkswhere.html"
+class LinkNetwork(ListView, ArticleMixin):
+    template_name = "wiki/plugins/linknetwork/linknetwork.html"
     allow_empty = True
-    context_object_name = "whatlinkswhere"
+    context_object_name = "linknetwork"
     paginator_class = WikiPaginator
     paginate_by = 50
     model = models.InternalLink

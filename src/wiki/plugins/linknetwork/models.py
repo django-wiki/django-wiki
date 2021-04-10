@@ -57,7 +57,7 @@ class InternalLink(models.Model):
         verbose_name = _("link")
         verbose_name_plural = _("links")
         # Matches label of upcoming 0.1 release
-        db_table = "wiki_whatlinkswhere_internallink"
+        db_table = "wiki_linknetwork_internallink"
 
     @classmethod
     def store_link(cls, from_url, from_article, el):

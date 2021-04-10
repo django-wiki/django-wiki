@@ -286,6 +286,9 @@ class URLPath(MPTTModel):
             site=site, parent=parent, slug=slug, article=article
         )
         article.add_object_relation(newpath)
+        # Now the urlpath object has an article it points to, which means that
+        # hooks – which sensibly run upon creation of a new article revision –
+        # can rely on that fact.
         article.add_revision(ArticleRevision(title=title, **revision_kwargs), save=True)
         return newpath
 
