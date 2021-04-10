@@ -233,7 +233,7 @@ class Article(models.Model):
     def get_cache_content_key(self, user=None):
         """Returns per-article-user cache key."""
         key_raw = "{key}-{user}".format(
-            key=self.get_cache_key(), user=user.get_username() if user else ""
+            key=self.get_cache_key(), user=user.get_username() if user else "-anonymous"
         )
         # https://github.com/django-wiki/django-wiki/issues/1065
         return slugify(key_raw, allow_unicode=True)
@@ -247,6 +247,9 @@ class Article(models.Model):
         per-article-user keys. The rendered article in cache (per-article-user)
         is used only if the key is in the per-article entry. To delete
         per-article invalidates all article cache entries."""
+
+        if user and user.is_anonymous:
+            user = None
 
         cache_key = self.get_cache_key()
         cache_content_key = self.get_cache_content_key(user)

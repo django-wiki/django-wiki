@@ -33,6 +33,9 @@ workflows:
           tox_env: "py36-django31"
           python_version: "3.6"
       - tox:
+          tox_env: "py36-django32"
+          python_version: "3.6"
+      - tox:
           tox_env: "py37-django22"
           python_version: "3.7"
       - tox:
@@ -42,11 +45,20 @@ workflows:
           tox_env: "py37-django31"
           python_version: "3.7"
       - tox:
+          tox_env: "py37-django32"
+          python_version: "3.7"
+      - tox:
           tox_env: "py38-django30"
           python_version: "3.8"
       - tox:
           tox_env: "py38-django31"
           python_version: "3.8"
+      - tox:
+          tox_env: "py38-django32"
+          python_version: "3.8"
+      - tox:
+          tox_env: "py39-django32"
+          python_version: "3.9"
       - tox:
           tox_env: "lint"
           python_version: "3.8"

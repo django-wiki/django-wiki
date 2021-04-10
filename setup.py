@@ -22,10 +22,10 @@ def get_path(fname):
 
 
 install_requirements = [
-    "Django>=2.1,<3.2",
+    "Django>=2.1,<3.3",
     "bleach>=3.3.0,<3.4",
     "Pillow",
-    "django-nyt>=1.1.5,<1.2",
+    "django-nyt>=1.2,<1.3",
     "django-mptt>=0.11,<0.12",
     "django-sekizai>=0.10",
     "sorl-thumbnail>=12.6.2,<13",
@@ -93,6 +93,7 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
         "Topic :: Internet :: WWW/HTTP :: Dynamic Content",

@@ -10,7 +10,18 @@ Release plan
 * **0.4.x** supports Django 1.11 and Django 2.1 and Python 3.4+.
 * **0.5.x** Remove Django 1.11 support, adds Django 2.2 and 3.x support. Python 3.5+.
 * **0.6.x** Targets Bootstrap v4, if you are interested in this work, please get in touch on Github!
-* **0.7.x** Removes Django 2.1 support, adds Django 3.1
+* **0.7.x** Removes Django 2.1 support, adds Django 3.1, 3.2
+
+
+0.7.5
+-----
+
+Released on 2021-04-10.
+
+Added
+~~~~~
+
+* Django 3.2 support :url-issue:`1121` (Benjamin Bach)
 
 
 0.7.4

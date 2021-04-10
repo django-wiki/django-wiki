@@ -1,6 +1,7 @@
 import pprint
 
 from django.contrib.messages import constants
+from django.contrib.messages import get_messages
 from django.http import JsonResponse
 from django.shortcuts import resolve_url
 from django.test import override_settings
@@ -122,12 +123,11 @@ class ArticleViewViewTests(
             },
         )
 
-        message = getattr(self.client.cookies["messages"], "value")
-
         self.assertRedirects(response, resolve_url("wiki:get", path=""))
+        messages = [m.message for m in get_messages(response.wsgi_request)]
         self.assertIn(
-            "This article together with all " "its contents are now completely gone",
-            message,
+            "This article together with all its contents are now completely gone",
+            messages[0],
         )
         self.assertNotContains(self.get_by_path(""), "Sub Article 1")
 
@@ -733,8 +733,9 @@ class SettingsViewTests(
         self.root_article.refresh_from_db()
         self.assertEqual(self.root_article.group, group)
         self.assertEqual(self.root_article.owner, self.superuser1)
-        self.assertEqual(len(response.context.get("messages")), 1)
-        message = response.context.get("messages")._loaded_messages[0]
+        messages = [m for m in get_messages(response.wsgi_request)]
+        self.assertEqual(len(messages), 1)
+        message = messages[0]
         self.assertEqual(message.level, constants.SUCCESS)
         self.assertEqual(
             message.message, "Permission settings for the article were updated."
@@ -768,8 +769,9 @@ class SettingsViewTests(
             form_values,
             follow=True,
         )
-        self.assertEqual(len(response.context.get("messages")), 1)
-        message = response.context.get("messages")._loaded_messages[0]
+        messages = [m for m in get_messages(response.wsgi_request)]
+        self.assertEqual(len(messages), 1)
+        message = messages[0]
         self.assertEqual(message.level, constants.SUCCESS)
         self.assertEqual(
             message.message,
