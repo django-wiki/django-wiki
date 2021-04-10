@@ -131,6 +131,24 @@ class ArticleViewViewTests(
         )
         self.assertNotContains(self.get_by_path(""), "Sub Article 1")
 
+    def test_anonymous_root(self):
+        self.client.logout()
+        response = self.client.get(
+            reverse("wiki:get", kwargs={"article_id": self.root_article.pk})
+        )
+        self.assertEqual(response.status_code, 200)
+        response = self.client.get(reverse("wiki:get", kwargs={"path": ""}))
+        self.assertEqual(response.status_code, 200)
+
+    def test_normaluser_root(self):
+        self.client.login(username=NORMALUSER1_USERNAME, password=NORMALUSER1_PASSWORD)
+        response = self.client.get(
+            reverse("wiki:get", kwargs={"article_id": self.root_article.pk})
+        )
+        self.assertEqual(response.status_code, 200)
+        response = self.client.get(reverse("wiki:get", kwargs={"path": ""}))
+        self.assertEqual(response.status_code, 200)
+
 
 class CreateViewTest(
     RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase
