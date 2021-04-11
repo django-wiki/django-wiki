@@ -13,7 +13,7 @@ class LinkNetworkPlugin(BasePlugin):
         "article": [
             re_path(r"^$", views.LinkNetwork.as_view(), name="linknetwork"),
             re_path(
-                r"^whatlinkshere$", views.WhatLinksHere.as_view(), name="whatlinkshere"
+                r"^whatlinkshere/$", views.WhatLinksHere.as_view(), name="whatlinkshere"
             ),
         ]
     }

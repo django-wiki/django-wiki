@@ -2,7 +2,7 @@
 {% extends "wiki/base.html" %}
 {% load wiki_tags i18n humanize %}
 
-{% block wiki_pagetitle %}{% trans "What links where" %}{% endblock %}
+{% block wiki_pagetitle %}{% trans "Link Network" %}{% endblock %}
 
 {% block wiki_contents %}
 <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
@@ -21,7 +21,7 @@
 {% spaceless %}
 <div class="row">
   <div class="lead col-xs-8">
-    {% with whatlinkswhere.count as cnt %}
+    {% with linknetwork.count as cnt %}
       {% blocktrans count cnt=cnt trimmed %}
         Network of <strong>{{ cnt }} internal link</strong> in the wiki.
         {% plural %}
@@ -35,7 +35,7 @@
 
 <script type="text/javascript">
 var articles = [
-    {% for internal_link in whatlinkswhere %}
+    {% for internal_link in linknetwork %}
     { id: "{{ internal_link.from_article.get_absolute_url }}", label: "{{ internal_link.from_article }}" },
      { id: "{% firstof internal_link.to_article.get_absolute_url internal_link.to_nonexistant_url %}" , label: "{% firstof internal_link.to_article internal_link.to_nonexistant_url %}" },
     {% endfor %}
@@ -46,7 +46,7 @@ var nodes = new vis.DataSet(unique_articles);
 
 // create an array with edges
 var edges = new vis.DataSet([
-    {% for internal_link in whatlinkswhere %}
+    {% for internal_link in linknetwork %}
     { from: "{{ internal_link.from_article.get_absolute_url }}",
       to: "{% firstof internal_link.to_article.get_absolute_url internal_link.to_nonexistant_url %}" },
     {% endfor %}
