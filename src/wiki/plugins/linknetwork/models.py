@@ -106,6 +106,8 @@ def store_links(instance, *args, **kwargs):
     url = instance.article.get_absolute_url()
     article = instance.article
 
+    # If the article is new, there may be redlinks that linked to it. Update
+    # those.
     for link in InternalLink.objects.filter(to_nonexistant_url=url).all():
         link.to_nonexistant_url = None
         link.to_article = article
@@ -119,7 +121,8 @@ def store_links(instance, *args, **kwargs):
         InternalLink.store_link(url, article, el)
 
 
-# Whenever a new revision is created, update all links in there
+# Whenever a new revision is created, update all links in there. (There may be
+# some other times when updates are warranted, check those.)
 models.signals.post_save.connect(
     store_links,
     sender=wiki_models.ArticleRevision,

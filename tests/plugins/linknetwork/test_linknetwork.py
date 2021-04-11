@@ -2,11 +2,14 @@ import itertools
 import re
 
 from django.urls import reverse
+from wiki.conf import settings as wiki_settings
 from wiki.models import URLPath
 
 from ...base import ArticleWebTestUtils
 from ...base import DjangoClientTestBase
 from ...base import RequireRootArticleMixin
+from ...base import wiki_override_settings
+from ...core.test_basic import CustomGroup
 
 
 class LinkNetworkTests(
@@ -14,11 +17,7 @@ class LinkNetworkTests(
 ):
     def setUp(self):
         super().setUp()
-        url1 = URLPath.create_urlpath(
-            URLPath.root(),
-            "page1",
-            title="Page 1",
-        )
+        url1 = URLPath.create_urlpath(URLPath.root(), "page1", title="Page 1")
         url2 = URLPath.create_urlpath(URLPath.root(), "page2", title="Page 2")
         url3 = URLPath.create_urlpath(URLPath.root(), "page3", title="Page 3")
         url3a = URLPath.create_urlpath(url3, "a", title="Page A")
@@ -118,3 +117,51 @@ class LinkNetworkTests(
             },
             network=False,
         )
+
+
+@wiki_override_settings(ACCOUNT_HANDLING=True)
+class LinkNetworkPrivilegeTest(LinkNetworkTests):
+    def setUp(self):
+        super().setUp()
+
+        group = CustomGroup(id=123)
+        group.save()
+
+        self.hidden = URLPath.create_urlpath(
+            URLPath.root(), "hidden", title="Hidden Page"
+        )
+        self.hidden.article.other_read = False
+        self.hidden.article.owner = self.superuser1
+        self.hidden.article.group = group
+        self.hidden.article.save()
+
+        self.hidden.article.current_revision.content = (
+            "[page2](/page2)[page3](/page3)[page3B](/page3/b)"
+        )
+        self.hidden.article.current_revision.save()
+
+        self.pages.append("Hidden Page")
+
+        self.client.get(wiki_settings.LOGOUT_URL)
+
+    def test_logged_in_as_superuser(self):
+        self.client.force_login(self.superuser1)
+        self.assert_link_counts(
+            "",
+            {
+                ("Page 1", "Page 2"),
+                ("Page 1", "Page 3"),
+                ("Page 1", "Page B"),
+                ("Page 2", "Page 3"),
+                ("Page 3", "Page 1"),
+                ("Page 3", "Page A"),
+                ("Page 3", "Page B"),
+                ("Page A", "Page 1"),
+                ("Page A", "Page B"),
+                ("Page B", "missing"),
+                ("Hidden Page", "Page 2"),
+                ("Hidden Page", "Page 3"),
+                ("Hidden Page", "Page B"),
+            },
+        )
+        self.client.get(wiki_settings.LOGOUT_URL)
