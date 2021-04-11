@@ -1,2 +1,1 @@
-NW_SLUG = "linknetwork"
-SLUG = "whatlinkshere"
+SLUG = "linknetwork"
