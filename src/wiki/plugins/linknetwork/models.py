@@ -74,9 +74,9 @@ class InternalLink(models.Model):
             article, destination = which_article(**resolution.kwargs)
             # All other cases have raised exceptions: We have an internal link,
             # which should be reflected in the database.
-            return cls.objects.create(
-                from_article=from_article, to_article=article
-            ).save()
+            new_link = cls.objects.create(from_article=from_article, to_article=article)
+            new_link.save()
+            return new_link
         except (AssertionError, TypeError, ValueError, Resolver404, NoRootURL):
             # No wiki-internal link
             return

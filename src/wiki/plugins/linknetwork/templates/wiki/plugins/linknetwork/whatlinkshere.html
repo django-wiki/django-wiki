@@ -34,7 +34,7 @@
         {% for internal_link in linknetwork %}
           <tr>
             <td>
-                <a href="{% url 'wiki:get' internal_link.to_article.pk %}">
+                <a href="{% url 'wiki:get' internal_link.from_article.pk %}">
                     {{ internal_link.from_article }}
                 </a>
             </td>
