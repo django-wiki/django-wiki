@@ -1,11 +1,14 @@
 from urllib.parse import quote as urlquote
 
+from django.contrib import messages
 from django.db.models import Q
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.utils.decorators import method_decorator
+from django.utils.translation import gettext as _
 from django.views.generic import ListView
+from django.views.generic import View
 from wiki import models as wiki_models
 from wiki.conf import settings
 from wiki.core.paginator import WikiPaginator
@@ -111,3 +114,14 @@ class LinkNetwork(ListView, ArticleMixin):
         kwargs.update(kwargs_article)
         kwargs.update(kwargs_listview)
         return kwargs
+
+
+class GlobalUpdate(View):
+    def dispatch(self, request, *args, **kwargs):
+        for article in wiki_models.Article.objects.all():
+            models.store_links(article.current_revision)
+        messages.info(request, _("All internal links have been updated."))
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        return redirect("wiki:root")
