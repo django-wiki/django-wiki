@@ -1,6 +1,8 @@
 django-wiki
 ===========
 
+Test
+
 |Docs| |Build Status| |Coverage Status| |PyPi| |Downloads| |IRC|
 
 .. |Docs| image:: https://readthedocs.org/projects/django-wiki/badge/?version=latest
