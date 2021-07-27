@@ -41,7 +41,15 @@ class WikiLinkExtension(Extension):
         WIKILINK_RE = r"\[\[([\w0-9_ -]+)\]\]"
         wikilinkPattern = WikiLinks(WIKILINK_RE, self.getConfigs())
         wikilinkPattern.md = md
-        md.inlinePatterns.add("wikilink", wikilinkPattern, "<not_strong")
+
+        i = md.inlinePatterns.get_index_for_name("not_strong")
+        after = md.inlinePatterns._priority[i].priority
+        if i > 0:
+            before = md.inlinePatterns._priority[i-1].priority
+        else:
+            before = after + 10
+        priority = before - ((before - after) / 2)
+        md.inlinePatterns.register(wikilinkPattern, "wikilink", priority)
 
 
 class WikiLinks(wikilinks.WikiLinksInlineProcessor):

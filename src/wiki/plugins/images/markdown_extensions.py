@@ -30,8 +30,24 @@ class ImageExtension(markdown.Extension):
     """ Images plugin markdown extension for django-wiki. """
 
     def extendMarkdown(self, md):
-        md.inlinePatterns.add("dw-images", ImagePattern(IMAGE_RE, md), ">link")
-        md.postprocessors.add("dw-images-cleanup", ImagePostprocessor(md), ">raw_html")
+
+        i = md.inlinePatterns.get_index_for_name("link")
+        before = md.inlinePatterns._priority[i].priority
+        if i < len(md.inlinePatterns) - 1:
+            after = md.inlinePatterns._priority[i+1].priority
+        else:
+            after = before - 10
+        priority = before - ((before - after) / 2)
+        md.inlinePatterns.register(ImagePattern(IMAGE_RE, md), "dw-images", priority)
+
+        i = md.postprocessors.get_index_for_name("raw_html")
+        before = md.postprocessors._priority[i].priority
+        if i < len(md.postprocessors) - 1:
+            after = md.postprocessors._priority[i+1].priority
+        else:
+            after = before - 10
+        priority = before - ((before - after) / 2)
+        md.postprocessors.register(ImagePostprocessor(md), "dw-images-cleanup", priority)
 
 
 class ImagePattern(markdown.inlinepatterns.Pattern):

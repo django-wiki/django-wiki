@@ -7,7 +7,10 @@ class PreviewLinksExtension(markdown.Extension):
     """Markdown Extension that sets all anchor targets to _blank when in preview mode"""
 
     def extendMarkdown(self, md):
-        md.treeprocessors.add("previewlinks", PreviewLinksTree(md), "_end")
+
+        md.treeprocessors._sort()
+        priority = md.treeprocessors._priority[-1].priority - 5
+        md.treeprocessors.register(PreviewLinksTree(md), "previewlinks", priority)
 
 
 class PreviewLinksTree(Treeprocessor):
