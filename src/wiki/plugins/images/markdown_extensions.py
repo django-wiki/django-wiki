@@ -47,7 +47,9 @@ class ImageExtension(markdown.Extension):
         else:
             after = before - 10
         priority = before - ((before - after) / 2)
-        md.postprocessors.register(ImagePostprocessor(md), "dw-images-cleanup", priority)
+        md.postprocessors.register(
+            ImagePostprocessor(md), "dw-images-cleanup", priority
+        )
 
 
 class ImagePattern(markdown.inlinepatterns.Pattern):

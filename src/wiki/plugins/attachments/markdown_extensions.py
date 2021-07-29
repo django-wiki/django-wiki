@@ -27,7 +27,9 @@ class AttachmentExtension(markdown.Extension):
         else:
             after = before - 10
         priority = before - ((before - after) / 2)
-        md.preprocessors.register(AttachmentPreprocessor(md), "dw-attachments", priority)
+        md.preprocessors.register(
+            AttachmentPreprocessor(md), "dw-attachments", priority
+        )
 
 
 class AttachmentPreprocessor(markdown.preprocessors.Preprocessor):
