@@ -24,7 +24,7 @@ class MacroExtension(markdown.Extension):
         i = md.inlinePatterns.get_index_for_name("link")
         before = md.inlinePatterns._priority[i].priority
         if i < len(md.inlinePatterns) - 1:
-            after = md.inlinePatterns._priority[i+1].priority
+            after = md.inlinePatterns._priority[i + 1].priority
         else:
             after = before - 10
         priority = before - ((before - after) / 2)

@@ -101,7 +101,7 @@ class LinkExtension(Extension):
         i = md.treeprocessors.get_index_for_name("inline")
         before = md.treeprocessors._priority[i].priority
         if i < len(md.treeprocessors) - 1:
-            after = md.treeprocessors._priority[i+1].priority
+            after = md.treeprocessors._priority[i + 1].priority
         else:
             after = before - 10
         priority = before - ((before - after) / 2)

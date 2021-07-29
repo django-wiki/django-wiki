@@ -45,7 +45,7 @@ class WikiLinkExtension(Extension):
         i = md.inlinePatterns.get_index_for_name("not_strong")
         after = md.inlinePatterns._priority[i].priority
         if i > 0:
-            before = md.inlinePatterns._priority[i-1].priority
+            before = md.inlinePatterns._priority[i - 1].priority
         else:
             before = after + 10
         priority = before - ((before - after) / 2)

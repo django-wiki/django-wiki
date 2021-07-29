@@ -23,7 +23,7 @@ class AttachmentExtension(markdown.Extension):
         i = md.preprocessors.get_index_for_name("html_block")
         before = md.preprocessors._priority[i].priority
         if i < len(md.preprocessors) - 1:
-            after = md.preprocessors._priority[i+1].priority
+            after = md.preprocessors._priority[i + 1].priority
         else:
             after = before - 10
         priority = before - ((before - after) / 2)

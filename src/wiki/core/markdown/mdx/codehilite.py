@@ -111,7 +111,7 @@ class WikiCodeHiliteExtension(CodeHiliteExtension):
         i = md.treeprocessors.get_index_for_name("inline")
         after = md.treeprocessors._priority[i].priority
         if i > 0:
-            before = md.treeprocessors._priority[i-1].priority
+            before = md.treeprocessors._priority[i - 1].priority
         else:
             before = after + 10
         priority = before - ((before - after) / 2)
@@ -129,7 +129,7 @@ class WikiCodeHiliteExtension(CodeHiliteExtension):
         i = md.preprocessors.get_index_for_name("normalize_whitespace")
         before = md.preprocessors._priority[i].priority
         if i < len(md.preprocessors) - 1:
-            after = md.preprocessors._priority[i+1].priority
+            after = md.preprocessors._priority[i + 1].priority
         else:
             after = before - 10
         priority = before - ((before - after) / 2)

@@ -34,7 +34,7 @@ class ImageExtension(markdown.Extension):
         i = md.inlinePatterns.get_index_for_name("link")
         before = md.inlinePatterns._priority[i].priority
         if i < len(md.inlinePatterns) - 1:
-            after = md.inlinePatterns._priority[i+1].priority
+            after = md.inlinePatterns._priority[i + 1].priority
         else:
             after = before - 10
         priority = before - ((before - after) / 2)
@@ -43,7 +43,7 @@ class ImageExtension(markdown.Extension):
         i = md.postprocessors.get_index_for_name("raw_html")
         before = md.postprocessors._priority[i].priority
         if i < len(md.postprocessors) - 1:
-            after = md.postprocessors._priority[i+1].priority
+            after = md.postprocessors._priority[i + 1].priority
         else:
             after = before - 10
         priority = before - ((before - after) / 2)
