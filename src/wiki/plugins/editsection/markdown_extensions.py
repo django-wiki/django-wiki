@@ -21,7 +21,10 @@ class EditSectionExtension(Extension):
     def extendMarkdown(self, md, md_globals):
         ext = EditSectionProcessor(md)
         ext.config = self.config
-        md.treeprocessors.add("editsection", ext, "_end")
+
+        md.treeprocessors._sort()
+        priority = md.treeprocessors._priority[-1].priority - 5
+        md.treeprocessors.register(ext, "editsection", priority)
 
 
 def get_header_id(header):

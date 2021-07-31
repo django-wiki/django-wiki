@@ -97,7 +97,15 @@ class LinkExtension(Extension):
         md.registerExtension(self)
         self.md = md
         ext = self.TreeProcessorClass(md, self.getConfigs())
-        md.treeprocessors.add("redlinks", ext, ">inline")
+
+        i = md.treeprocessors.get_index_for_name("inline")
+        before = md.treeprocessors._priority[i].priority
+        if i < len(md.treeprocessors) - 1:
+            after = md.treeprocessors._priority[i + 1].priority
+        else:
+            after = before - 10
+        priority = before - ((before - after) / 2)
+        md.treeprocessors.register(ext, "redlinks", priority)
 
 
 def makeExtension(*args, **kwargs):

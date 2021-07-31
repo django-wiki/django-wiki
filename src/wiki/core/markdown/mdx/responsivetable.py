@@ -7,7 +7,10 @@ class ResponsiveTableExtension(markdown.Extension):
     """Wraps all tables with Bootstrap's table-responsive class"""
 
     def extendMarkdown(self, md):
-        md.treeprocessors.add("responsivetable", ResponsiveTableTree(md), "_end")
+
+        md.treeprocessors._sort()
+        priority = md.treeprocessors._priority[-1].priority - 5
+        md.treeprocessors.register(ResponsiveTableTree(md), "responsivetable", priority)
 
 
 class ResponsiveTableTree(Treeprocessor):

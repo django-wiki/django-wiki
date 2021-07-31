@@ -107,7 +107,15 @@ class WikiCodeHiliteExtension(CodeHiliteExtension):
                 "'codehilite' from WIKI_MARKDOWN_KWARGS"
             )
             del md.treeprocessors["hilite"]
-        md.treeprocessors.add("hilite", hiliter, "<inline")
+
+        i = md.treeprocessors.get_index_for_name("inline")
+        after = md.treeprocessors._priority[i].priority
+        if i > 0:
+            before = md.treeprocessors._priority[i - 1].priority
+        else:
+            before = after + 10
+        priority = before - ((before - after) / 2)
+        md.treeprocessors.register(hiliter, "hilite", priority)
 
         if "fenced_code_block" in md.preprocessors:
             logger.warning(
@@ -117,7 +125,15 @@ class WikiCodeHiliteExtension(CodeHiliteExtension):
             del md.preprocessors["fenced_code_block"]
         hiliter = WikiFencedBlockPreprocessor(md)
         hiliter.config = self.getConfigs()
-        md.preprocessors.add("fenced_code_block", hiliter, ">normalize_whitespace")
+
+        i = md.preprocessors.get_index_for_name("normalize_whitespace")
+        before = md.preprocessors._priority[i].priority
+        if i < len(md.preprocessors) - 1:
+            after = md.preprocessors._priority[i + 1].priority
+        else:
+            after = before - 10
+        priority = before - ((before - after) / 2)
+        md.preprocessors.register(hiliter, "fenced_code_block", priority)
 
         md.registerExtension(self)
 

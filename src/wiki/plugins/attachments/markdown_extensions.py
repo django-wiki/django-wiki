@@ -19,8 +19,16 @@ class AttachmentExtension(markdown.Extension):
 
     def extendMarkdown(self, md):
         """ Insert AbbrPreprocessor before ReferencePreprocessor. """
-        md.preprocessors.add(
-            "dw-attachments", AttachmentPreprocessor(md), ">html_block"
+
+        i = md.preprocessors.get_index_for_name("html_block")
+        before = md.preprocessors._priority[i].priority
+        if i < len(md.preprocessors) - 1:
+            after = md.preprocessors._priority[i + 1].priority
+        else:
+            after = before - 10
+        priority = before - ((before - after) / 2)
+        md.preprocessors.register(
+            AttachmentPreprocessor(md), "dw-attachments", priority
         )
 
 
