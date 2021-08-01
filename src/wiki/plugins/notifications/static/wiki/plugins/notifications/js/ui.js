@@ -20,11 +20,11 @@ function notify_update() {
         notify_latest_id = n.pk>notify_latest_id ? n.pk:notify_latest_id;
         notify_oldest_id = (n.pk<notify_oldest_id || notify_oldest_id==0) ? n.pk:notify_oldest_id;
         if (n.occurrences > 1) {
-          element = $('<li><a href="'+URL_NOTIFY_GOTO+n.pk+'/"><div>'+n.message+'</div><div class="since">'+n.occurrences_msg+' - ' + n.since + '</div></a></li>')
+          element = $('<div><a href="'+URL_NOTIFY_GOTO+n.pk+'/"><div>'+n.message+'</div><div class="since">'+n.occurrences_msg+' - ' + n.since + '</div></a></div>')
         } else {
-          element = $('<li><a href="'+URL_NOTIFY_GOTO+n.pk+'/"><div>'+n.message+'</div><div class="since">'+n.since+'</div></a></li>');
+          element = $('<div><a href="'+URL_NOTIFY_GOTO+n.pk+'/"><div>'+n.message+'</div><div class="since">'+n.since+'</div></a></div>');
         }
-        element.addClass('notification-li');
+        element.addClass('dropdown-item notification-item');
         element.insertAfter('.notification-before-list');
       }
     }
@@ -32,7 +32,8 @@ function notify_update() {
 }
 
 function notify_mark_read() {
-  $('.notification-li-container').empty();
+  $('.notification-item').remove();
+  $('.notifications-empty').show();
   url = URL_NOTIFY_MARK_READ+notify_latest_id+'/'+notify_oldest_id+'/';
   notify_oldest_id = 0;
   notify_latest_id = 0;
