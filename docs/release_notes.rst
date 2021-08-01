@@ -13,6 +13,18 @@ Release plan
 * **0.7.x** Removes Django 2.1 support, adds Django 3.1, 3.2
 
 
+0.7.6
+-----
+
+Released on 2021-08-01.
+
+Fixed
+~~~~~
+
+* Notification menu bug after Bootstrap upgrades :url-issue:`1097` (SlyPerdix)
+* Compatibility with future python-markdown, use ``register`` instead of ``add`` :url-issue:`1099` (Iqbal Abdullah)
+
+
 0.7.5
 -----
 
