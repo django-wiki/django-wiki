@@ -4,6 +4,7 @@ import markdown
 from django.template.loader import render_to_string
 from django.utils.translation import gettext as _
 from wiki.plugins.macros import settings
+from wiki.core.markdown import add_to_registry
 
 # See:
 # http://stackoverflow.com/questions/430759/regex-for-managing-escaped-characters-for-items-like-string-literals
@@ -21,14 +22,7 @@ class MacroExtension(markdown.Extension):
 
     def extendMarkdown(self, md):
 
-        i = md.inlinePatterns.get_index_for_name("link")
-        before = md.inlinePatterns._priority[i].priority
-        if i < len(md.inlinePatterns) - 1:
-            after = md.inlinePatterns._priority[i + 1].priority
-        else:
-            after = before - 10
-        priority = before - ((before - after) / 2)
-        md.inlinePatterns.register(MacroPattern(MACRO_RE, md), "dw-macros", priority)
+        add_to_registry(md.inlinePatterns, "dw-macros", MacroPattern(MACRO_RE, md), ">link")
 
 
 class MacroPattern(markdown.inlinepatterns.Pattern):

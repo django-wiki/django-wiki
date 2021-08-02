@@ -7,6 +7,7 @@ import markdown
 from django.urls import reverse
 from markdown.extensions import Extension
 from markdown.extensions import wikilinks
+from wiki.core.markdown import add_to_registry
 
 
 def build_url(label, base, end, md):
@@ -42,14 +43,7 @@ class WikiLinkExtension(Extension):
         wikilinkPattern = WikiLinks(WIKILINK_RE, self.getConfigs())
         wikilinkPattern.md = md
 
-        i = md.inlinePatterns.get_index_for_name("not_strong")
-        after = md.inlinePatterns._priority[i].priority
-        if i > 0:
-            before = md.inlinePatterns._priority[i - 1].priority
-        else:
-            before = after + 10
-        priority = before - ((before - after) / 2)
-        md.inlinePatterns.register(wikilinkPattern, "wikilink", priority)
+        add_to_registry(md.inlinePatterns, "wikilink", wikilinkPattern, "<not_strong")
 
 
 class WikiLinks(wikilinks.WikiLinksInlineProcessor):

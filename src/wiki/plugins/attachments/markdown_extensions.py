@@ -6,6 +6,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from wiki.core.permissions import can_read
 from wiki.plugins.attachments import models
+from wiki.core.markdown import add_to_registry
 
 ATTACHMENT_RE = re.compile(
     r"(?P<before>.*)\[( *((attachment\:(?P<id>[0-9]+))|(title\:\"(?P<title>[^\"]+)\")|(?P<size>size)))+\](?P<after>.*)",
@@ -20,16 +21,7 @@ class AttachmentExtension(markdown.Extension):
     def extendMarkdown(self, md):
         """ Insert AbbrPreprocessor before ReferencePreprocessor. """
 
-        i = md.preprocessors.get_index_for_name("html_block")
-        before = md.preprocessors._priority[i].priority
-        if i < len(md.preprocessors) - 1:
-            after = md.preprocessors._priority[i + 1].priority
-        else:
-            after = before - 10
-        priority = before - ((before - after) / 2)
-        md.preprocessors.register(
-            AttachmentPreprocessor(md), "dw-attachments", priority
-        )
+        add_to_registry(md.preprocessors, "dw-attachments", AttachmentPreprocessor(md), ">html_block")
 
 
 class AttachmentPreprocessor(markdown.preprocessors.Preprocessor):

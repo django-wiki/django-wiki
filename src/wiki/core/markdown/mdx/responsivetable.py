@@ -1,6 +1,7 @@
 import markdown
 from markdown.treeprocessors import Treeprocessor
 from markdown.util import etree
+from wiki.core.markdown import add_to_registry
 
 
 class ResponsiveTableExtension(markdown.Extension):
@@ -8,9 +9,7 @@ class ResponsiveTableExtension(markdown.Extension):
 
     def extendMarkdown(self, md):
 
-        md.treeprocessors._sort()
-        priority = md.treeprocessors._priority[-1].priority - 5
-        md.treeprocessors.register(ResponsiveTableTree(md), "responsivetable", priority)
+        add_to_registry(md.treeprocessors, "responsivetable", ResponsiveTableTree(md), "_end")
 
 
 class ResponsiveTableTree(Treeprocessor):

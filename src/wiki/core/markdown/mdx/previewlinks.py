@@ -1,5 +1,6 @@
 import markdown
 from markdown.treeprocessors import Treeprocessor
+from wiki.core.markdown import add_to_registry
 
 
 class PreviewLinksExtension(markdown.Extension):
@@ -8,9 +9,7 @@ class PreviewLinksExtension(markdown.Extension):
 
     def extendMarkdown(self, md):
 
-        md.treeprocessors._sort()
-        priority = md.treeprocessors._priority[-1].priority - 5
-        md.treeprocessors.register(PreviewLinksTree(md), "previewlinks", priority)
+        add_to_registry(md.treeprocessors, "previewlinks", PreviewLinksTree(md), "_end")
 
 
 class PreviewLinksTree(Treeprocessor):

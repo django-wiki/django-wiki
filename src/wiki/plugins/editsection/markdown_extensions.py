@@ -4,6 +4,7 @@ from django.urls import reverse
 from markdown import Extension
 from markdown.treeprocessors import Treeprocessor
 from markdown.util import etree
+from wiki.core.markdown import add_to_registry
 
 from . import settings
 
@@ -22,9 +23,7 @@ class EditSectionExtension(Extension):
         ext = EditSectionProcessor(md)
         ext.config = self.config
 
-        md.treeprocessors._sort()
-        priority = md.treeprocessors._priority[-1].priority - 5
-        md.treeprocessors.register(ext, "editsection", priority)
+        add_to_registry(md.treeprocessors, "editsection", ext, "_end")
 
 
 def get_header_id(header):

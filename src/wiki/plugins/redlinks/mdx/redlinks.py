@@ -11,6 +11,7 @@ from markdown.treeprocessors import Treeprocessor
 from wiki.decorators import which_article
 from wiki.models import Article
 from wiki.models import URLPath
+from wiki.core.markdown import add_to_registry
 
 
 class LinkTreeprocessor(Treeprocessor):
@@ -98,14 +99,7 @@ class LinkExtension(Extension):
         self.md = md
         ext = self.TreeProcessorClass(md, self.getConfigs())
 
-        i = md.treeprocessors.get_index_for_name("inline")
-        before = md.treeprocessors._priority[i].priority
-        if i < len(md.treeprocessors) - 1:
-            after = md.treeprocessors._priority[i + 1].priority
-        else:
-            after = before - 10
-        priority = before - ((before - after) / 2)
-        md.treeprocessors.register(ext, "redlinks", priority)
+        add_to_registry(md.treeprocessors, "redlinks", ext, ">inline")
 
 
 def makeExtension(*args, **kwargs):
