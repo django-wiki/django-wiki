@@ -50,6 +50,9 @@ htmlcov
 .pydevproject
 .settings
 
+#Visual Studio Code
+.vscode
+
 #Virtualenv
 virtualenv
 .venv
