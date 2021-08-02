@@ -17,7 +17,6 @@ class NotificationsConfig(AppConfig):
         from wiki.decorators import disable_signal_for_loaddata
         from . import models
 
-
         def get_receiver(notification_dict):
             @disable_signal_for_loaddata
             def plugin_notification(instance, **kwargs):
