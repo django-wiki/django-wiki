@@ -9,7 +9,9 @@ class ResponsiveTableExtension(markdown.Extension):
 
     def extendMarkdown(self, md):
 
-        add_to_registry(md.treeprocessors, "responsivetable", ResponsiveTableTree(md), "_end")
+        add_to_registry(
+            md.treeprocessors, "responsivetable", ResponsiveTableTree(md), "_end"
+        )
 
 
 class ResponsiveTableTree(Treeprocessor):

@@ -54,7 +54,7 @@ class WikiFencedBlockPreprocessor(Preprocessor):
         self.codehilite_conf = {}
 
     def run(self, lines):
-        """ Match and store Fenced Code Blocks in the HtmlStash. """
+        """Match and store Fenced Code Blocks in the HtmlStash."""
 
         text = "\n".join(lines)
         while 1:
@@ -74,10 +74,10 @@ class WikiFencedBlockPreprocessor(Preprocessor):
 
 
 class HiliteTreeprocessor(Treeprocessor):
-    """ Hilight source code in code blocks. """
+    """Hilight source code in code blocks."""
 
     def run(self, root):
-        """ Find code blocks and store in htmlStash. """
+        """Find code blocks and store in htmlStash."""
         blocks = root.iter("pre")
         for block in blocks:
             if len(block) == 1 and block[0].tag == "code":
@@ -99,7 +99,7 @@ class WikiCodeHiliteExtension(CodeHiliteExtension):
     """
 
     def extendMarkdown(self, md):
-        """ Add HilitePostprocessor to Markdown instance. """
+        """Add HilitePostprocessor to Markdown instance."""
         hiliter = HiliteTreeprocessor(md)
         hiliter.config = self.getConfigs()
         if "hilite" in md.treeprocessors:
@@ -120,7 +120,9 @@ class WikiCodeHiliteExtension(CodeHiliteExtension):
         hiliter = WikiFencedBlockPreprocessor(md)
         hiliter.config = self.getConfigs()
 
-        add_to_registry(md.preprocessors, "fenced_code_block", hiliter, ">normalize_whitespace")
+        add_to_registry(
+            md.preprocessors, "fenced_code_block", hiliter, ">normalize_whitespace"
+        )
 
         md.registerExtension(self)
 

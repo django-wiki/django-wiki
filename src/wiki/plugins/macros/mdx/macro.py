@@ -18,11 +18,13 @@ KWARG_RE = re.compile(
 
 class MacroExtension(markdown.Extension):
 
-    """ Macro plugin markdown extension for django-wiki. """
+    """Macro plugin markdown extension for django-wiki."""
 
     def extendMarkdown(self, md):
 
-        add_to_registry(md.inlinePatterns, "dw-macros", MacroPattern(MACRO_RE, md), ">link")
+        add_to_registry(
+            md.inlinePatterns, "dw-macros", MacroPattern(MACRO_RE, md), ">link"
+        )
 
 
 class MacroPattern(markdown.inlinepatterns.Pattern):

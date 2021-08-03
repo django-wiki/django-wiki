@@ -11,7 +11,7 @@ from wiki.core.markdown import add_to_registry
 
 
 def build_url(label, base, end, md):
-    """ Build a url from the label, a base, and an end. """
+    """Build a url from the label, a base, and an end."""
     clean_label = re.sub(r"([ ]+_)|(_[ ]+)|([ ]+)", "_", label)
     urlpaths = md.article.urlpath_set.all()
     # Nevermind about the base we are fed, just keep the original
