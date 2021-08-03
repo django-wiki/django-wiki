@@ -4,9 +4,10 @@ import markdown
 from django.contrib.auth.models import AnonymousUser
 from django.template.loader import render_to_string
 from django.urls import reverse
+
+from wiki.core.markdown import add_to_registry
 from wiki.core.permissions import can_read
 from wiki.plugins.attachments import models
-from wiki.core.markdown import add_to_registry
 
 ATTACHMENT_RE = re.compile(
     r"(?P<before>.*)\[( *((attachment\:(?P<id>[0-9]+))|(title\:\"(?P<title>[^\"]+)\")|(?P<size>size)))+\](?P<after>.*)",

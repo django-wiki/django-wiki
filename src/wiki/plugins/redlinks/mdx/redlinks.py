@@ -2,16 +2,17 @@ import html
 from urllib.parse import urljoin
 from urllib.parse import urlparse
 
-import wiki
 from django.urls import resolve
 from django.urls.exceptions import Resolver404
 from markdown.extensions import Extension
 from markdown.postprocessors import AndSubstitutePostprocessor
 from markdown.treeprocessors import Treeprocessor
+
+import wiki
+from wiki.core.markdown import add_to_registry
 from wiki.decorators import which_article
 from wiki.models import Article
 from wiki.models import URLPath
-from wiki.core.markdown import add_to_registry
 
 
 class LinkTreeprocessor(Treeprocessor):

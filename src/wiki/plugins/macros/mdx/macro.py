@@ -3,8 +3,9 @@ import re
 import markdown
 from django.template.loader import render_to_string
 from django.utils.translation import gettext as _
-from wiki.plugins.macros import settings
+
 from wiki.core.markdown import add_to_registry
+from wiki.plugins.macros import settings
 
 # See:
 # http://stackoverflow.com/questions/430759/regex-for-managing-escaped-characters-for-items-like-string-literals

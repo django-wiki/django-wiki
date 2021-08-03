@@ -1,8 +1,9 @@
 import markdown
 from django.template.loader import render_to_string
+
+from wiki.core.markdown import add_to_registry
 from wiki.plugins.images import models
 from wiki.plugins.images import settings
-from wiki.core.markdown import add_to_registry
 
 IMAGE_RE = (
     r"(?:(?im)"
