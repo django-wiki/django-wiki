@@ -13,6 +13,15 @@ Release plan
 * **0.7.x** Removes Django 2.1 support, adds Django 3.1, 3.2
 
 
+0.7.7 (unreleased)
+------------------
+
+Fixed
+~~~~~
+
+* Small notification plugin registration bug introduced in 0.7.6 :url-issue:`1132` (SlyPerdix)
+
+
 0.7.6
 -----
 
