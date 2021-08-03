@@ -39,6 +39,7 @@ class NotificationsConfig(AppConfig):
                         target_object=notification_dict["get_article"](instance),
                         url=url,
                     )
+
             return plugin_notification
 
         for plugin in registry.get_plugins():
@@ -47,6 +48,5 @@ class NotificationsConfig(AppConfig):
             for notification_dict in notifications:
 
                 signals.post_save.connect(
-                    get_receiver(notification_dict),
-                    sender=notification_dict["model"]
+                    get_receiver(notification_dict), sender=notification_dict["model"]
                 )
