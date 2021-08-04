@@ -7,7 +7,6 @@ from django.urls.exceptions import Resolver404
 from markdown.extensions import Extension
 from markdown.postprocessors import AndSubstitutePostprocessor
 from markdown.treeprocessors import Treeprocessor
-
 import wiki
 from wiki.core.markdown import add_to_registry
 from wiki.decorators import which_article

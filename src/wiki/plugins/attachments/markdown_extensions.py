@@ -4,7 +4,6 @@ import markdown
 from django.contrib.auth.models import AnonymousUser
 from django.template.loader import render_to_string
 from django.urls import reverse
-
 from wiki.core.markdown import add_to_registry
 from wiki.core.permissions import can_read
 from wiki.plugins.attachments import models
