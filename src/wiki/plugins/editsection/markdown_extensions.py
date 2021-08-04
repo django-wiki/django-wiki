@@ -19,7 +19,7 @@ class EditSectionExtension(Extension):
         }
         super().__init__(**kwargs)
 
-    def extendMarkdown(self, md, md_globals):
+    def extendMarkdown(self, md):
         ext = EditSectionProcessor(md)
         ext.config = self.config
 
