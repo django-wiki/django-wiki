@@ -3,7 +3,6 @@ import re
 import markdown
 from django.template.loader import render_to_string
 from django.utils.translation import gettext as _
-
 from wiki.core.markdown import add_to_registry
 from wiki.plugins.macros import settings
 
