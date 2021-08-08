@@ -465,7 +465,7 @@ def on_article_delete_clear_cache(instance, **kwargs):
 @disable_signal_for_loaddata
 def on_article_revision_pre_save(**kwargs):
     instance = kwargs["instance"]
-    if kwargs.get("created", False):
+    if instance._state.adding:
         revision_changed = (
             not instance.previous_revision
             and instance.article

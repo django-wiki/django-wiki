@@ -248,7 +248,7 @@ def update_simple_plugins(**kwargs):
 @disable_signal_for_loaddata
 def on_simple_plugins_pre_save(**kwargs):
     instance = kwargs["instance"]
-    if kwargs.get("created", False):
+    if instance._state.adding:
         if not instance.article.current_revision:
             raise SimplePluginCreateError(
                 "Article does not have a current_revision set."
@@ -296,7 +296,7 @@ def on_revision_plugin_revision_post_save(**kwargs):
 @disable_signal_for_loaddata
 def on_revision_plugin_revision_pre_save(**kwargs):
     instance = kwargs["instance"]
-    if kwargs.get("created", False):
+    if instance._state.adding:
         update_previous_revision = (
             not instance.previous_revision
             and instance.plugin
