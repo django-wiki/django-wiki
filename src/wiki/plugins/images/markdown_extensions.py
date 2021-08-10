@@ -1,5 +1,6 @@
 import markdown
 from django.template.loader import render_to_string
+from wiki.core.markdown import add_to_registry
 from wiki.plugins.images import models
 from wiki.plugins.images import settings
 
@@ -27,28 +28,15 @@ IMAGE_RE = (
 
 class ImageExtension(markdown.Extension):
 
-    """ Images plugin markdown extension for django-wiki. """
+    """Images plugin markdown extension for django-wiki."""
 
     def extendMarkdown(self, md):
 
-        i = md.inlinePatterns.get_index_for_name("link")
-        before = md.inlinePatterns._priority[i].priority
-        if i < len(md.inlinePatterns) - 1:
-            after = md.inlinePatterns._priority[i + 1].priority
-        else:
-            after = before - 10
-        priority = before - ((before - after) / 2)
-        md.inlinePatterns.register(ImagePattern(IMAGE_RE, md), "dw-images", priority)
-
-        i = md.postprocessors.get_index_for_name("raw_html")
-        before = md.postprocessors._priority[i].priority
-        if i < len(md.postprocessors) - 1:
-            after = md.postprocessors._priority[i + 1].priority
-        else:
-            after = before - 10
-        priority = before - ((before - after) / 2)
-        md.postprocessors.register(
-            ImagePostprocessor(md), "dw-images-cleanup", priority
+        add_to_registry(
+            md.inlinePatterns, "dw-images", ImagePattern(IMAGE_RE, md), ">link"
+        )
+        add_to_registry(
+            md.postprocessors, "dw-images-cleanup", ImagePostprocessor(md), ">raw_html"
         )
 
 

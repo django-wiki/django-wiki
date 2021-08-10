@@ -51,3 +51,59 @@ class ArticleMarkdown(markdown.Markdown):
 def article_markdown(text, article, *args, **kwargs):
     md = ArticleMarkdown(article, *args, **kwargs)
     return md.convert(text)
+
+
+def add_to_registry(processor, key, value, location):
+    """Utility function to register a key by location to Markdown's registry.
+
+    Parameters:
+    * `processor`: Markdown Registry instance
+    * `key`: A string used to reference the item.
+    * `value`: The item being registered.
+    * `location`: Where to register the new key
+
+    location can be one of the strings below:
+    * _begin (registers the key as the highest priority)
+    * _end (registers the key as the lowest priority)
+    * a string that starts with `<` or `>` (sets priority halfway between existing priorities)
+
+    Returns: None
+    Raises: ValueError if location is an invalid string.
+    """
+
+    if len(processor) == 0:
+        # This is the first item. Set priority to 50.
+        priority = 50
+    elif location == "_begin":
+        processor._sort()
+        # Set priority 5 greater than highest existing priority
+        priority = processor._priority[0].priority + 5
+    elif location == "_end":
+        processor._sort()
+        # Set priority 5 less than lowest existing priority
+        priority = processor._priority[-1].priority - 5
+    elif location.startswith("<") or location.startswith(">"):
+        # Set priority halfway between existing priorities.
+        i = processor.get_index_for_name(location[1:])
+        if location.startswith("<"):
+            after = processor._priority[i].priority
+            if i > 0:
+                before = processor._priority[i - 1].priority
+            else:
+                # Location is first item`
+                before = after + 10
+        else:
+            # location.startswith('>')
+            before = processor._priority[i].priority
+            if i < len(processor) - 1:
+                after = processor._priority[i + 1].priority
+            else:
+                # location is last item
+                after = before - 10
+        priority = before - ((before - after) / 2)
+    else:
+        raise ValueError(
+            'Not a valid location: "%s". Location key '
+            'must start with a ">" or "<".' % location
+        )
+    processor.register(value, key, priority)

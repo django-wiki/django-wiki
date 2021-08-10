@@ -5,6 +5,7 @@ from markdown.extensions.codehilite import CodeHilite
 from markdown.extensions.codehilite import CodeHiliteExtension
 from markdown.preprocessors import Preprocessor
 from markdown.treeprocessors import Treeprocessor
+from wiki.core.markdown import add_to_registry
 
 logger = logging.getLogger(__name__)
 
@@ -53,7 +54,7 @@ class WikiFencedBlockPreprocessor(Preprocessor):
         self.codehilite_conf = {}
 
     def run(self, lines):
-        """ Match and store Fenced Code Blocks in the HtmlStash. """
+        """Match and store Fenced Code Blocks in the HtmlStash."""
 
         text = "\n".join(lines)
         while 1:
@@ -73,10 +74,10 @@ class WikiFencedBlockPreprocessor(Preprocessor):
 
 
 class HiliteTreeprocessor(Treeprocessor):
-    """ Hilight source code in code blocks. """
+    """Hilight source code in code blocks."""
 
     def run(self, root):
-        """ Find code blocks and store in htmlStash. """
+        """Find code blocks and store in htmlStash."""
         blocks = root.iter("pre")
         for block in blocks:
             if len(block) == 1 and block[0].tag == "code":
@@ -98,7 +99,7 @@ class WikiCodeHiliteExtension(CodeHiliteExtension):
     """
 
     def extendMarkdown(self, md):
-        """ Add HilitePostprocessor to Markdown instance. """
+        """Add HilitePostprocessor to Markdown instance."""
         hiliter = HiliteTreeprocessor(md)
         hiliter.config = self.getConfigs()
         if "hilite" in md.treeprocessors:
@@ -108,14 +109,7 @@ class WikiCodeHiliteExtension(CodeHiliteExtension):
             )
             del md.treeprocessors["hilite"]
 
-        i = md.treeprocessors.get_index_for_name("inline")
-        after = md.treeprocessors._priority[i].priority
-        if i > 0:
-            before = md.treeprocessors._priority[i - 1].priority
-        else:
-            before = after + 10
-        priority = before - ((before - after) / 2)
-        md.treeprocessors.register(hiliter, "hilite", priority)
+        add_to_registry(md.treeprocessors, "hilite", hiliter, "<inline")
 
         if "fenced_code_block" in md.preprocessors:
             logger.warning(
@@ -126,14 +120,9 @@ class WikiCodeHiliteExtension(CodeHiliteExtension):
         hiliter = WikiFencedBlockPreprocessor(md)
         hiliter.config = self.getConfigs()
 
-        i = md.preprocessors.get_index_for_name("normalize_whitespace")
-        before = md.preprocessors._priority[i].priority
-        if i < len(md.preprocessors) - 1:
-            after = md.preprocessors._priority[i + 1].priority
-        else:
-            after = before - 10
-        priority = before - ((before - after) / 2)
-        md.preprocessors.register(hiliter, "fenced_code_block", priority)
+        add_to_registry(
+            md.preprocessors, "fenced_code_block", hiliter, ">normalize_whitespace"
+        )
 
         md.registerExtension(self)
 

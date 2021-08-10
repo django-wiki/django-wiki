@@ -3,6 +3,7 @@ import re
 import markdown
 from django.template.loader import render_to_string
 from django.utils.translation import gettext as _
+from wiki.core.markdown import add_to_registry
 from wiki.plugins.macros import settings
 
 # See:
@@ -17,18 +18,13 @@ KWARG_RE = re.compile(
 
 class MacroExtension(markdown.Extension):
 
-    """ Macro plugin markdown extension for django-wiki. """
+    """Macro plugin markdown extension for django-wiki."""
 
     def extendMarkdown(self, md):
 
-        i = md.inlinePatterns.get_index_for_name("link")
-        before = md.inlinePatterns._priority[i].priority
-        if i < len(md.inlinePatterns) - 1:
-            after = md.inlinePatterns._priority[i + 1].priority
-        else:
-            after = before - 10
-        priority = before - ((before - after) / 2)
-        md.inlinePatterns.register(MacroPattern(MACRO_RE, md), "dw-macros", priority)
+        add_to_registry(
+            md.inlinePatterns, "dw-macros", MacroPattern(MACRO_RE, md), ">link"
+        )
 
 
 class MacroPattern(markdown.inlinepatterns.Pattern):
