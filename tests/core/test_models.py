@@ -135,3 +135,16 @@ class ArticleModelTest(TestCase):
         self.assertRegexpMatches(a.get_cached_content(), expected)
         # actual cached content test
         self.assertRegexpMatches(a.get_cached_content(), expected)
+
+    def test_articlerevision_presave_signals(self):
+        a = Article.objects.create()
+        ar1 = ArticleRevision(article=a, title="revision1")
+
+        a.add_revision(ar1)
+        self.assertEqual(ar1, a.current_revision)
+
+        ar2 = ArticleRevision(article=a, title="revision2")
+
+        ar2.save()
+
+        self.assertEqual(ar2.previous_revision, ar1)
