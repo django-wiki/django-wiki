@@ -16,6 +16,11 @@ Release plan
 0.7.7 (unreleased)
 ------------------
 
+Changed
+~~~~~~~
+
+* Bundled JQuery upgraded from 3.4.1 to 3.6.0 :url-issue:`1138` (Benjamin Balder Bach)
+
 Fixed
 ~~~~~
 
@@ -53,7 +58,7 @@ Released on 2021-04-10.
 Fixed
 ~~~~~
 
-* Settings page on article broken for non-superusers :url-issue:`1058` (Benjamin Bach)
+* Settings page on article broken for non-superusers :url-issue:`1058` (Benjamin Balder Bach)
 * Dependency ``bleach`` is bumped to ``>=3.3.0,<3.4`` after security advisory :url-issue:`1109` (Benjamin Balder Bach)
 * Font-awesome icon on external links was not showing :url-issue:`1111` (Benjamin Balder Bach)
 * Red links were not correctly displaying in some cases :url-issue:`1114` (Gereon Kaiping)
