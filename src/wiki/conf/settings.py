@@ -255,6 +255,9 @@ CACHE_TIMEOUT = getattr(django_settings, "WIKI_CACHE_TIMEOUT", 600)
 #: Choose the Group model to use for permission handling. Defaults to django's auth.Group.
 GROUP_MODEL = getattr(django_settings, "WIKI_GROUP_MODEL", "auth.Group")
 
+#: Weather to append a trailing slash to URLPath.path property. Defaults to True
+URLPATH_TRAILING_SLASH = getattr(django_settings, "WIKI_URLPATH_TRAILING_SLASH", True)
+
 ###################
 # SPAM PROTECTION #
 ###################
