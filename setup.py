@@ -39,6 +39,7 @@ test_requirements = [
     "pytest-cov",
     "coverage",
     "codecov",
+    "ddt",
     "pytest-pythonpath",
 ]
 
