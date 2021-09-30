@@ -8,65 +8,59 @@ from wiki.models import URLPath
 from wiki.plugins.links.mdx.djangowikilinks import WikiPathExtension
 
 FIXTURE_POSITIVE_MATCHES_TRAILING_SLASH = [
-    (
-        '[Français](wiki:/fr)',
-        '<p><a class="wikipath linknotfound" href="/fr/">Français</a></p>'
-    ),
+    ("[Français](wiki:/fr)", '<p><a class="wikipath linknotfound" href="/fr/">Français</a></p>'),
     (
         # Link to an existing page
-        '[Test link](wiki:/linktest)',
-        '<p><a class="wikipath" href="/linktest/">Test link</a></p>'
+        "[Test link](wiki:/linktest)",
+        '<p><a class="wikipath" href="/linktest/">Test link</a></p>',
     ),
     (
         # Link with an empty fragment
-        '[Test link](wiki:/linktest#)',
-        '<p><a class="wikipath" href="/linktest/#/">Test link</a></p>'
+        "[Test link](wiki:/linktest#)",
+        '<p><a class="wikipath" href="/linktest/#/">Test link</a></p>',
     ),
     (
         # Link to a header in an existing page
-        '[Test head](wiki:/linktest#wiki-toc-a-section)',
-        '<p><a class="wikipath" href="/linktest/#wiki-toc-a-section/">Test head</a></p>'
+        "[Test head](wiki:/linktest#wiki-toc-a-section)",
+        '<p><a class="wikipath" href="/linktest/#wiki-toc-a-section/">Test head</a></p>',
     ),
     (
         # Link to a header in a non existing page
-        '[Test head nonExist](wiki:/linktesterr#wiki-toc-a-section)',
-        '<p><a class="wikipath linknotfound" href="/linktesterr#wiki-toc-a-section/">Test head nonExist</a></p>'
+        "[Test head nonExist](wiki:/linktesterr#wiki-toc-a-section)",
+        '<p><a class="wikipath linknotfound" href="/linktesterr#wiki-toc-a-section/">Test head nonExist</a></p>',
     ),
     (
         # Invalid Wiki link: The default markdown link parser takes over
-        '[Test head err](wiki:/linktest#wiki-toc-a-section#err)',
-        '<p><a href="wiki:/linktest#wiki-toc-a-section#err">Test head err</a></p>'
+        "[Test head err](wiki:/linktest#wiki-toc-a-section#err)",
+        '<p><a href="wiki:/linktest#wiki-toc-a-section#err">Test head err</a></p>',
     ),
 ]
 FIXTURE_POSITIVE_MATCHES_NO_TRAILING_SLASH = [
-    (
-        '[Français](wiki:/fr)',
-        '<p><a class="wikipath linknotfound" href="/fr">Français</a></p>'
-    ),
+    ("[Français](wiki:/fr)", '<p><a class="wikipath linknotfound" href="/fr">Français</a></p>'),
     (
         # Link to an existing page
-        '[Test link](wiki:/linktest)',
-        '<p><a class="wikipath" href="/linktest">Test link</a></p>'
+        "[Test link](wiki:/linktest)",
+        '<p><a class="wikipath" href="/linktest">Test link</a></p>',
     ),
     (
         # Link with an empty fragment
-        '[Test link](wiki:/linktest#)',
-        '<p><a class="wikipath" href="/linktest/#">Test link</a></p>'
+        "[Test link](wiki:/linktest#)",
+        '<p><a class="wikipath" href="/linktest/#">Test link</a></p>',
     ),
     (
         # Link to a header in an existing page
-        '[Test head](wiki:/linktest#wiki-toc-a-section)',
-        '<p><a class="wikipath" href="/linktest/#wiki-toc-a-section">Test head</a></p>'
+        "[Test head](wiki:/linktest#wiki-toc-a-section)",
+        '<p><a class="wikipath" href="/linktest/#wiki-toc-a-section">Test head</a></p>',
     ),
     (
         # Link to a header in a non existing page
-        '[Test head nonExist](wiki:/linktesterr#wiki-toc-a-section)',
-        '<p><a class="wikipath linknotfound" href="/linktesterr#wiki-toc-a-section">Test head nonExist</a></p>'
+        "[Test head nonExist](wiki:/linktesterr#wiki-toc-a-section)",
+        '<p><a class="wikipath linknotfound" href="/linktesterr#wiki-toc-a-section">Test head nonExist</a></p>',
     ),
     (
         # Invalid Wiki link: The default markdown link parser takes over
-        '[Test head err](wiki:/linktest#wiki-toc-a-section#err)',
-        '<p><a href="wiki:/linktest#wiki-toc-a-section#err">Test head err</a></p>'
+        "[Test head err](wiki:/linktest#wiki-toc-a-section#err)",
+        '<p><a href="wiki:/linktest#wiki-toc-a-section#err">Test head err</a></p>',
     ),
 ]
 
@@ -77,6 +71,7 @@ class WikiPathExtensionTests(TestCase):
     Test the wikilinks markdown plugin.
     I could not get it to work with `@pytest.mark.parametrize` so using `ddt` instead
     """
+
     def setUp(self):
         config = (("base_url", reverse_lazy("wiki:get", kwargs={"path": ""})),)
         self.md = markdown.Markdown(extensions=["extra", WikiPathExtension(config)])

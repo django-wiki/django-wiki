@@ -111,7 +111,7 @@ class WikiPath(markdown.inlinepatterns.Pattern):
             if href and not href.endswith("/"):
                 href = href + "/"
         else:
-            if href.endswith("/"):
+            if href.endswith("/") and len(href) > 1:
                 href = href[:-1]
 
         a = etree.Element("a")

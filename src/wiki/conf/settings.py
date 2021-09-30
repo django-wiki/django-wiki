@@ -101,17 +101,13 @@ _default_attribute_whitelist["img"].append("alt")
 
 #: Dictionary of allowed attributes in Markdown article contents.
 MARKDOWN_HTML_ATTRIBUTES = _default_attribute_whitelist
-MARKDOWN_HTML_ATTRIBUTES.update(
-    getattr(django_settings, "WIKI_MARKDOWN_HTML_ATTRIBUTES", {})
-)
+MARKDOWN_HTML_ATTRIBUTES.update(getattr(django_settings, "WIKI_MARKDOWN_HTML_ATTRIBUTES", {}))
 
 #: Allowed inline styles in Markdown article contents, default is no styles
 #: (empty list).
 MARKDOWN_HTML_STYLES = getattr(django_settings, "WIKI_MARKDOWN_HTML_STYLES", [])
 
-_project_defined_attrs = getattr(
-    django_settings, "WIKI_MARKDOWN_HTML_ATTRIBUTE_WHITELIST", False
-)
+_project_defined_attrs = getattr(django_settings, "WIKI_MARKDOWN_HTML_ATTRIBUTE_WHITELIST", False)
 
 # If styles are allowed but no custom attributes are defined, we allow styles
 # for all kinds of tags.
@@ -122,15 +118,11 @@ if MARKDOWN_HTML_STYLES and not _project_defined_attrs:
 #: This slug is used in URLPath if an article has been deleted. The children of the
 #: URLPath of that article are moved to lost and found. They keep their permissions
 #: and all their content.
-LOST_AND_FOUND_SLUG = getattr(
-    django_settings, "WIKI_LOST_AND_FOUND_SLUG", "lost-and-found"
-)
+LOST_AND_FOUND_SLUG = getattr(django_settings, "WIKI_LOST_AND_FOUND_SLUG", "lost-and-found")
 
 #: When True, this blocks new slugs that resolve to non-wiki views, stopping
 #: users creating articles that conflict with overlapping URLs from other apps.
-CHECK_SLUG_URL_AVAILABLE = getattr(
-    django_settings, "WIKI_CHECK_SLUG_URL_AVAILABLE", True
-)
+CHECK_SLUG_URL_AVAILABLE = getattr(django_settings, "WIKI_CHECK_SLUG_URL_AVAILABLE", True)
 
 #: Do we want to log IPs of anonymous users?
 LOG_IPS_ANONYMOUS = getattr(django_settings, "WIKI_LOG_IPS_ANONYMOUS", True)
@@ -238,9 +230,7 @@ else:
 SHOW_MAX_CHILDREN = getattr(django_settings, "WIKI_SHOW_MAX_CHILDREN", 20)
 
 #: User Bootstrap's select widget. Switch off if you're not using Bootstrap!
-USE_BOOTSTRAP_SELECT_WIDGET = getattr(
-    django_settings, "WIKI_USE_BOOTSTRAP_SELECT_WIDGET", True
-)
+USE_BOOTSTRAP_SELECT_WIDGET = getattr(django_settings, "WIKI_USE_BOOTSTRAP_SELECT_WIDGET", True)
 
 #: Dotted name of the class used to construct urlpatterns for the wiki.
 #: Default is wiki.urls.WikiURLPatterns. To customize urls or view handlers,
@@ -269,9 +259,7 @@ REVISIONS_PER_HOUR = getattr(django_settings, "WIKI_REVISIONS_PER_HOUR", 60)
 REVISIONS_PER_MINUTES = getattr(django_settings, "WIKI_REVISIONS_PER_MINUTES", 5)
 
 #: Maximum allowed revisions per hour for any anonymous user and any IP.
-REVISIONS_PER_HOUR_ANONYMOUS = getattr(
-    django_settings, "WIKI_REVISIONS_PER_HOUR_ANONYMOUS", 10
-)
+REVISIONS_PER_HOUR_ANONYMOUS = getattr(django_settings, "WIKI_REVISIONS_PER_HOUR_ANONYMOUS", 10)
 
 #: Maximum allowed revisions per minute for any anonymous user and any IP.
 REVISIONS_PER_MINUTES_ANONYMOUS = getattr(
@@ -280,9 +268,7 @@ REVISIONS_PER_MINUTES_ANONYMOUS = getattr(
 
 #: Number of minutes to look back for looking up ``REVISIONS_PER_MINUTES``
 #: and ``REVISIONS_PER_MINUTES_ANONYMOUS``.
-REVISIONS_MINUTES_LOOKBACK = getattr(
-    django_settings, "WIKI_REVISIONS_MINUTES_LOOKBACK", 2
-)
+REVISIONS_MINUTES_LOOKBACK = getattr(django_settings, "WIKI_REVISIONS_MINUTES_LOOKBACK", 2)
 
 ###########
 # STORAGE #
