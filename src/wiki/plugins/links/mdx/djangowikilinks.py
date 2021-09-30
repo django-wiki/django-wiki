@@ -21,6 +21,7 @@ from os import path as os_path
 import markdown
 from markdown.util import etree
 from wiki import models
+from wiki.conf import settings
 
 
 class WikiPathExtension(markdown.extensions.Extension):
@@ -104,8 +105,16 @@ class WikiPath(markdown.inlinepatterns.Pattern):
         label = m.group("label")
         fragment = m.group("fragment") or ""
 
+        href = path + fragment
+        if settings.WIKILINKS_TRAILING_SLASH:
+            if href and not href.endswith("/"):
+                href = href + "/"
+        else:
+            if href.endswith("/"):
+                href = href[:-1]
+
         a = etree.Element("a")
-        a.set("href", path + fragment)
+        a.set("href", href)
         if not urlpath:
             a.set("class", self.config["html_class"][0] + " linknotfound")
         else:

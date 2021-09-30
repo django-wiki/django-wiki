@@ -131,11 +131,7 @@ class URLPath(MPTTModel):
         )
         slugs = [obj.slug if obj.slug else "" for obj in ancestors + [self]]
 
-        output = "/".join(slugs)
-        if settings.URLPATH_TRAILING_SLASH:
-            return output + "/"
-        else:
-            return output
+        return "/".join(slugs) + "/"
 
     def is_deleted(self):
         """

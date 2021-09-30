@@ -13,7 +13,7 @@ class WikiPathExtensionTests(TestCase):
         text = "[Français](wiki:/fr)"
         self.assertEqual(
             md.convert(text),
-            '<p><a class="wikipath linknotfound" href="/fr">Français</a></p>',
+            '<p><a class="wikipath linknotfound" href="/fr/">Français</a></p>',
         )
 
         URLPath.create_urlpath(
@@ -35,21 +35,21 @@ class WikiPathExtensionTests(TestCase):
         text = "[Test link](wiki:/linktest#)"
         self.assertEqual(
             md.convert(text),
-            '<p><a class="wikipath" href="/linktest/#">Test link</a></p>',
+            '<p><a class="wikipath" href="/linktest/#/">Test link</a></p>',
         )
 
         # Link to a header in an existing page
         text = "[Test head](wiki:/linktest#wiki-toc-a-section)"
         self.assertEqual(
             md.convert(text),
-            '<p><a class="wikipath" href="/linktest/#wiki-toc-a-section">Test head</a></p>',
+            '<p><a class="wikipath" href="/linktest/#wiki-toc-a-section/">Test head</a></p>',
         )
 
         # Link to a header in a non existing page
         text = "[Test head nonExist](wiki:/linktesterr#wiki-toc-a-section)"
         self.assertEqual(
             md.convert(text),
-            '<p><a class="wikipath linknotfound" href="/linktesterr#wiki-toc-a-section">Test head nonExist</a></p>',
+            '<p><a class="wikipath linknotfound" href="/linktesterr#wiki-toc-a-section/">Test head nonExist</a></p>',
         )
 
         # Invalid Wiki link: The default markdown link parser takes over
