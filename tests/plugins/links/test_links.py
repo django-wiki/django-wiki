@@ -1,14 +1,19 @@
 import markdown
-from ddt import data, ddt, unpack
+from ddt import data
+from ddt import ddt
+from ddt import unpack
 from django.test import TestCase
 from django.urls import reverse_lazy
-
-from tests.base import wiki_override_settings
 from wiki.models import URLPath
 from wiki.plugins.links.mdx.djangowikilinks import WikiPathExtension
 
+from tests.base import wiki_override_settings
+
 FIXTURE_POSITIVE_MATCHES_TRAILING_SLASH = [
-    ("[Français](wiki:/fr)", '<p><a class="wikipath linknotfound" href="/fr/">Français</a></p>'),
+    (
+        "[Français](wiki:/fr)",
+        '<p><a class="wikipath linknotfound" href="/fr/">Français</a></p>',
+    ),
     (
         # Link to an existing page
         "[Test link](wiki:/linktest)",
@@ -36,7 +41,10 @@ FIXTURE_POSITIVE_MATCHES_TRAILING_SLASH = [
     ),
 ]
 FIXTURE_POSITIVE_MATCHES_NO_TRAILING_SLASH = [
-    ("[Français](wiki:/fr)", '<p><a class="wikipath linknotfound" href="/fr">Français</a></p>'),
+    (
+        "[Français](wiki:/fr)",
+        '<p><a class="wikipath linknotfound" href="/fr">Français</a></p>',
+    ),
     (
         # Link to an existing page
         "[Test link](wiki:/linktest)",
@@ -96,7 +104,9 @@ class WikiPathExtensionTests(TestCase):
     @wiki_override_settings(WIKI_WIKILINKS_TRAILING_SLASH=False)
     @data(*FIXTURE_POSITIVE_MATCHES_NO_TRAILING_SLASH)
     @unpack
-    def test_works_with_lazy_functions_no_slashes(self, markdown_input, expected_output):
+    def test_works_with_lazy_functions_no_slashes(
+        self, markdown_input, expected_output
+    ):
         self.assertEqual(
             self.md.convert(markdown_input),
             expected_output,
