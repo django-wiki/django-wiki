@@ -255,6 +255,7 @@ URL_CONFIG_CLASS = getattr(django_settings, "WIKI_URL_CONFIG_CLASS", None)
 #: Seconds of timeout before renewing the article cache. Articles are automatically
 #: renewed whenever an edit occurs but article content may be generated from
 #: other objects that are changed.
+CACHE_TIMEOUT = getattr(django_settings, "WIKI_CACHE_TIMEOUT", 600)
 
 #: Choose the Group model to use for permission handling. Defaults to django's auth.Group.
 GROUP_MODEL = getattr(django_settings, "WIKI_GROUP_MODEL", "auth.Group")
