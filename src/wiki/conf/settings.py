@@ -151,6 +151,11 @@ MESSAGE_TAG_CSS_CLASS = getattr(
     },
 )
 
+#: Weather to append a trailing slash to rendered Wikilinks. Defaults to True
+WIKILINKS_TRAILING_SLASH = getattr(
+    django_settings, "WIKI_WIKILINKS_TRAILING_SLASH", True
+)
+
 ####################################
 # PERMISSIONS AND ACCOUNT HANDLING #
 ####################################
