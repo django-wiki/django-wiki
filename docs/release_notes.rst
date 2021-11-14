@@ -13,6 +13,15 @@ Release plan
 * **0.7.x** Removes Django 2.1 support, adds Django 3.1, 3.2
 
 
+0.7.9
+-----
+
+Security fixes
+~~~~~~~~~~~~~~
+
+* XSS vulnerability: Unescaped HTML in title propagated to notification (WhiteSource Vulnerability Research Team)
+
+
 0.7.8
 -----
 
