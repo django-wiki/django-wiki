@@ -6,11 +6,11 @@ Release plan
 ------------
 
 
-* **0.3.x** series suppors Django 1.11. As with the upstream Django release, 0.3 was be the last series with Python 2.7 support.
-* **0.4.x** supports Django 1.11 and Django 2.1 and Python 3.4+.
-* **0.5.x** Remove Django 1.11 support, adds Django 2.2 and 3.x support. Python 3.5+.
-* **0.6.x** Targets Bootstrap v4, if you are interested in this work, please get in touch on Github!
-* **0.7.x** Removes Django 2.1 support, adds Django 3.1, 3.2
+- **0.3.x** series suppors Django 1.11. As with the upstream Django release, 0.3 was be the last series with Python 2.7 support.
+- **0.4.x** supports Django 1.11 and Django 2.1 and Python 3.4+.
+- **0.5.x** Remove Django 1.11 support, adds Django 2.2 and 3.x support. Python 3.5+.
+- **0.6.x** Targets Bootstrap v4, if you are interested in this work, please get in touch on Github!
+- **0.7.x** Removes Django 2.1 support, adds Django 3.1, 3.2
 
 
 0.7.9
@@ -21,7 +21,7 @@ Released on 2021-11-15.
 Security fixes
 ~~~~~~~~~~~~~~
 
-* XSS vulnerability: Unescaped HTML in title propagated to notification (WhiteSource Vulnerability Research Team)
+- XSS vulnerability: Unescaped HTML in title propagated to notification (WhiteSource Vulnerability Research Team)
 
 
 0.7.8
@@ -32,7 +32,7 @@ Released on 2021-10-25.
 Fixed
 ~~~~~
 
-* Notification menu bug after Bootstrap upgrades :url-issue:`1142` (Fred Dyc)
+- Notification menu bug after Bootstrap upgrades :url-issue:`1142` (Fred Dyc)
 
 
 0.7.7
@@ -43,12 +43,12 @@ Released on 2021-08-28.
 Changed
 ~~~~~~~
 
-* Bundled JQuery upgraded from 3.4.1 to 3.6.0 :url-issue:`1138` (Benjamin Balder Bach)
+- Bundled JQuery upgraded from 3.4.1 to 3.6.0 :url-issue:`1138` (Benjamin Balder Bach)
 
 Fixed
 ~~~~~
 
-* Small notification plugin registration bug introduced in 0.7.6 :url-issue:`1132` (SlyPerdix)
+- Small notification plugin registration bug introduced in 0.7.6 :url-issue:`1132` (SlyPerdix)
 
 
 0.7.6
@@ -59,8 +59,8 @@ Released on 2021-08-01.
 Fixed
 ~~~~~
 
-* Notification menu bug after Bootstrap upgrades :url-issue:`1097` (SlyPerdix)
-* Compatibility with future python-markdown, use ``register`` instead of ``add`` :url-issue:`1099` (Iqbal Abdullah)
+- Notification menu bug after Bootstrap upgrades :url-issue:`1097` (SlyPerdix)
+- Compatibility with future python-markdown, use ``register`` instead of ``add`` :url-issue:`1099` (Iqbal Abdullah)
 
 
 0.7.5
@@ -71,7 +71,7 @@ Released on 2021-04-10.
 Added
 ~~~~~
 
-* Django 3.2 support :url-issue:`1121` (Benjamin Bach)
+- Django 3.2 support :url-issue:`1121` (Benjamin Bach)
 
 
 0.7.4
@@ -82,23 +82,23 @@ Released on 2021-04-10.
 Fixed
 ~~~~~
 
-* Settings page on article broken for non-superusers :url-issue:`1058` (Benjamin Balder Bach)
-* Dependency ``bleach`` is bumped to ``>=3.3.0,<3.4`` after security advisory :url-issue:`1109` (Benjamin Balder Bach)
-* Font-awesome icon on external links was not showing :url-issue:`1111` (Benjamin Balder Bach)
-* Red links were not correctly displaying in some cases :url-issue:`1114` (Gereon Kaiping)
+- Settings page on article broken for non-superusers :url-issue:`1058` (Benjamin Balder Bach)
+- Dependency ``bleach`` is bumped to ``>=3.3.0,<3.4`` after security advisory :url-issue:`1109` (Benjamin Balder Bach)
+- Font-awesome icon on external links was not showing :url-issue:`1111` (Benjamin Balder Bach)
+- Red links were not correctly displaying in some cases :url-issue:`1114` (Gereon Kaiping)
 
 
 Translation updates
 ~~~~~~~~~~~~~~~~~~~
 
-* Chinese: 100% translated, 100% reviewed
-* Czech: 100% translated
-* Dutch: 100% translated, 100% reviewed
-* French: Some syntax fixes, remains 100% translated
-* Hungarian: 100% translated
-* Korean: 100% translated, 96% reviewed
-* Russian: 100% translated
-* Turkish: 100% translated
+- Chinese: 100% translated, 100% reviewed
+- Czech: 100% translated
+- Dutch: 100% translated, 100% reviewed
+- French: Some syntax fixes, remains 100% translated
+- Hungarian: 100% translated
+- Korean: 100% translated, 96% reviewed
+- Russian: 100% translated
+- Turkish: 100% translated
 
 
 0.7.3
@@ -109,7 +109,7 @@ Released on 2021-01-11.
 Fixed
 ~~~~~
 
-* Plugin ``editsection`` failing with unexpected contents :url-issue:`1094` (Teury Diaz, Benjamin Balder Bach, OTR)
+- Plugin ``editsection`` failing with unexpected contents :url-issue:`1094` (Teury Diaz, Benjamin Balder Bach, OTR)
 
 
 0.7.2
@@ -120,7 +120,7 @@ Released on 2021-01-08.
 Fixed
 ~~~~~
 
-* Use ``.iter()`` instead of long deprecated and removed method ``.getiterator`` :url-issue:`1083` (Teury Diaz, Benjamin Balder Bach)
+- Use ``.iter()`` instead of long deprecated and removed method ``.getiterator`` :url-issue:`1083` (Teury Diaz, Benjamin Balder Bach)
 
 
 0.7.1
@@ -131,7 +131,7 @@ Released on 2020-12-28.
 Fixed
 ~~~~~
 
-* Fixed cache key exceptions for ``SafeString` objects ``no attribute append`` :url-issue:`1072` (Gert-Jan Braas)
+- Fixed cache key exceptions for ``SafeString` objects ``no attribute append`` :url-issue:`1072` (Gert-Jan Braas)
 
 
 0.7
@@ -142,24 +142,24 @@ Released on 2020-10-28.
 Added
 ~~~~~
 
-* Django 3.1 support :url-issue:`1061` and :url-issue:`1082` (Mads Jensen, Benjamin Bach)
+- Django 3.1 support :url-issue:`1061` and :url-issue:`1082` (Mads Jensen, Benjamin Bach)
 
 Fixed
 ~~~~~
 
-* Do not fail prematurely during Django checks framework (rare issue) :url-issue:`1059` (Benjamin Bach)
-* Cache keys failing in memcached if username contains space characters (rare) :url-issue:`1065` (Benjamin Bach)
+- Do not fail prematurely during Django checks framework (rare issue) :url-issue:`1059` (Benjamin Bach)
+- Cache keys failing in memcached if username contains space characters (rare) :url-issue:`1065` (Benjamin Bach)
 
 Removed
 ~~~~~~~
 
-* Django 2.1 support removed :url-issue:`1061` (Mads Jensen)
+- Django 2.1 support removed :url-issue:`1061` (Mads Jensen)
 
 Translations
 ~~~~~~~~~~~~
 
-* Japanese (ja): 100% translated
-* Brazilian Portuguese (pt_BR): 100% translated
+- Japanese (ja): 100% translated
+- Brazilian Portuguese (pt_BR): 100% translated
 
 
 0.6
@@ -176,42 +176,42 @@ Released on 2020-06-03.
 Added
 ~~~~~
 
-* Bootstrap 4 replaces Bootstrap 3: Improved default theming. :url-issue:`1035` (slinkymanbyday, Benjamin Bach)
-* Django 3.0 support :url-issue:`1019` (Benjamin Bach, slinkymanbyday)
-* New plugin ``wiki.plugins.editsection`` displays an ``[edit]`` link next to section headers (Frank Loemker) :url-issue:`652`
+- Bootstrap 4 replaces Bootstrap 3: Improved default theming. :url-issue:`1035` (slinkymanbyday, Benjamin Bach)
+- Django 3.0 support :url-issue:`1019` (Benjamin Bach, slinkymanbyday)
+- New plugin ``wiki.plugins.editsection`` displays an ``[edit]`` link next to section headers (Frank Loemker) :url-issue:`652`
 
 Fixed
 ~~~~~
 
-* Python 3.7 issue with notifications plugin main view ``/_plugin/notifications/`` :url-issue:`1000` (Mads Jensen)
-* Broken Delete and Deleted pages :url-issue:`976` (Benjamin Bach)
-* Can't delete article with ``USE_THOUSAND_SEPARATOR = True`` :url-issue:`1014` (tim3towers)
-* Deleting images fails :url-issue:'936' (Gert-Jan Braas, Steckelfisch)
+- Python 3.7 issue with notifications plugin main view ``/_plugin/notifications/`` :url-issue:`1000` (Mads Jensen)
+- Broken Delete and Deleted pages :url-issue:`976` (Benjamin Bach)
+- Can't delete article with ``USE_THOUSAND_SEPARATOR = True`` :url-issue:`1014` (tim3towers)
+- Deleting images fails :url-issue:'936' (Gert-Jan Braas, Steckelfisch)
 
 Changed
 ~~~~~~~
 
-* Use SASS instead of LESS for Stylesheets. The compiler in ``Makefile`` is ``lessc``. :url-issue:`1035` (Benjamin Bach)
-* Removed ``src/wiki/static/wiki/css/wiki-bootstrap.css`` - Only distribute a minified CSS version. :url-issue:`1035` (Benjamin Bach)
-* Test coverage upped from 75 to 80+% :url-issue:`976` (Mads Jensen, Benjamin Bach)
-* PDF attachment Content-Disposition header changed to ``inline`` for browser previewing :url-issue:`1010` (nicolazilio)
-* PyTest upgraded to latest 5.3
-* django-mptt updated from 0.9 to 0.11.0 :url-issue:`1019` (Benjamin Bach, slinkymanbyday)
-* sorl-thumbnail bumped to 12.6.2 :url-issue:`1019` (Benjamin Bach, slinkymanbyday)
-* Upgrade bleach from 2.1 to 3.1 :url-issue:`1020` (slinkymanbyday)
-* Python-Markdown 3.2 compatibility (Benjamin Bach)
+- Use SASS instead of LESS for Stylesheets. The compiler in ``Makefile`` is ``lessc``. :url-issue:`1035` (Benjamin Bach)
+- Removed ``src/wiki/static/wiki/css/wiki-bootstrap.css`` - Only distribute a minified CSS version. :url-issue:`1035` (Benjamin Bach)
+- Test coverage upped from 75 to 80+% :url-issue:`976` (Mads Jensen, Benjamin Bach)
+- PDF attachment Content-Disposition header changed to ``inline`` for browser previewing :url-issue:`1010` (nicolazilio)
+- PyTest upgraded to latest 5.3
+- django-mptt updated from 0.9 to 0.11.0 :url-issue:`1019` (Benjamin Bach, slinkymanbyday)
+- sorl-thumbnail bumped to 12.6.2 :url-issue:`1019` (Benjamin Bach, slinkymanbyday)
+- Upgrade bleach from 2.1 to 3.1 :url-issue:`1020` (slinkymanbyday)
+- Python-Markdown 3.2 compatibility (Benjamin Bach)
 
 Removed
 ~~~~~~~
 
-* Python 3.4 support more or less definitively removed (no longer supported by test suite PyTest)
-* Removed unmaintained plugin ``wiki.plugins.haystack``
+- Python 3.4 support more or less definitively removed (no longer supported by test suite PyTest)
+- Removed unmaintained plugin ``wiki.plugins.haystack``
 
 Translations
 ~~~~~~~~~~~~
 
-* Dutch translation 100% completed :url-issue:`1037` (Gert-Jan Braas)
-* Polish 100% completed
+- Dutch translation 100% completed :url-issue:`1037` (Gert-Jan Braas)
+- Polish 100% completed
 
 0.5
 ---
@@ -221,18 +221,18 @@ Translations
 Changed
 ~~~~~~~
 
-* Update to Markdown >= 3.1 :url-issue:`920` (Don Bowman, Benjamin Bach)
-* Several code-cleanups, test improvements and test
+- Update to Markdown >= 3.1 :url-issue:`920` (Don Bowman, Benjamin Bach)
+- Several code-cleanups, test improvements and test
 
 Added
 ~~~~~
 
-* Django 2.2
+- Django 2.2
 
 Removed
 ~~~~~~~
 
-* Django 1.11 support
+- Django 1.11 support
 
 Translations
 ~~~~~~~~~~~~
@@ -248,12 +248,12 @@ encouraged to create new languages if you would like to translate to a language 
 Fixed
 ~~~~~
 
-* Django admin error when uploading images: Column 'revision_number' cannot be null :url-issue:`950` (Benjamin Bach)
+- Django admin error when uploading images: Column 'revision_number' cannot be null :url-issue:`950` (Benjamin Bach)
 
 Translations
 ~~~~~~~~~~~~
 
-* Added: Romanian ``ro``
+- Added: Romanian ``ro``
 
 
 0.4.4
@@ -262,8 +262,8 @@ Translations
 Fixed
 ~~~~~
 
-* Projects fail to load with custom ``User`` models without a ``username`` field :url-issue:`865` (trevorpeacock)
-* Use ``User.get_username()`` for article cache instead of ``User.__str__`` :url-issue:`931` (Ole Anders Stokker)
+- Projects fail to load with custom ``User`` models without a ``username`` field :url-issue:`865` (trevorpeacock)
+- Use ``User.get_username()`` for article cache instead of ``User.__str__`` :url-issue:`931` (Ole Anders Stokker)
 
 
 0.4.3
@@ -271,7 +271,7 @@ Fixed
 
 Discarded release due to git errors (the actual fixes were not merged in).
 
-* Automated language updates from Transifex
+- Automated language updates from Transifex
 
 
 0.4.2
@@ -280,7 +280,7 @@ Discarded release due to git errors (the actual fixes were not merged in).
 Fixed
 ~~~~~
 
-* Using customized ``MESSAGE_TAGS`` setting caused ``KEY_ERROR`` :url-issue:`922` (Benjamin Bach)
+- Using customized ``MESSAGE_TAGS`` setting caused ``KEY_ERROR`` :url-issue:`922` (Benjamin Bach)
 
 
 0.4.1
@@ -289,7 +289,7 @@ Fixed
 Security
 ~~~~~~~~
 
-* jQuery upgrade from 1.12.4 to 3.3.1. jQuery UI also upgraded (for dynamic resizing of modals) :url-issue:`882` (Benjamin Bach)
+- jQuery upgrade from 1.12.4 to 3.3.1. jQuery UI also upgraded (for dynamic resizing of modals) :url-issue:`882` (Benjamin Bach)
 
 0.4
 ---
@@ -297,80 +297,80 @@ Security
 Added
 ~~~~~
 
-* Django 2.0 and 2.1 support :url-issue:`755` (Raffaele Salmaso & Mads Jensen)
-* Python 3.7 support
-* Added ``wiki.sites.WikiSite`` for easy customization :url-issue:`827`
-* Automatic link highlighting of URLs handles lots of new patterns :url-issue:`816` (Branko Majic)
-* Red links: Internal links turn red and link to Create Page (Mathias Rav)  :url-issue:`889`
+- Django 2.0 and 2.1 support :url-issue:`755` (Raffaele Salmaso & Mads Jensen)
+- Python 3.7 support
+- Added ``wiki.sites.WikiSite`` for easy customization :url-issue:`827`
+- Automatic link highlighting of URLs handles lots of new patterns :url-issue:`816` (Branko Majic)
+- Red links: Internal links turn red and link to Create Page (Mathias Rav)  :url-issue:`889`
 
 Translations
 ~~~~~~~~~~~~
 
-* Merged ``pt`` and ``pt_PT``, then deleted ``pt`` and linked it to ``pt_PT`` :url-issue:`858`
-* Linked ``zh_Hans`` to ``zh_CN`` :url-issue:`711`
+- Merged ``pt`` and ``pt_PT``, then deleted ``pt`` and linked it to ``pt_PT`` :url-issue:`858`
+- Linked ``zh_Hans`` to ``zh_CN`` :url-issue:`711`
 
 Complete / almost complete:
 
-* Chinese (China)	``zh_CN``	100.00%
-* Danish	``da``	100.00%
-* Dutch	``nl``	94.32%
-* French	``fr``	97.95%
-* German	``de``	95.00%
-* Korean (Korea)	``ko_KR``	95.00%
-* Polish (Poland)	``pl_PL``	98.18%
-* Portuguese (Brazil)	``pt_BR``	95.00%
-* Russian	``ru``	99.55%
-* Slovak	``sk``	94.77%
-* Spanish	``es``	94.77%
+- Chinese (China)	``zh_CN``	100.00%
+- Danish	``da``	100.00%
+- Dutch	``nl``	94.32%
+- French	``fr``	97.95%
+- German	``de``	95.00%
+- Korean (Korea)	``ko_KR``	95.00%
+- Polish (Poland)	``pl_PL``	98.18%
+- Portuguese (Brazil)	``pt_BR``	95.00%
+- Russian	``ru``	99.55%
+- Slovak	``sk``	94.77%
+- Spanish	``es``	94.77%
 
 Well under way, `need support <https://www.transifex.com/django-wiki/django-wiki/languages/>`__:
 
-* Chinese (Taiwan)	``zh_TW``	34.55%
-* Czech	``cs``	35.45%
-* Finnish	``fi``	81.14%
-* Italian	``it``	47.05%
-* Japanese	``ja``	79.77%
-* Norwegian Bokmål (Norway)	``nb_NO``	34.77%
-* Portuguese (Portugal)	``pt_PT``	79.32%
-* Turkish (Turkey)	``tr_TR``	30.68%
+- Chinese (Taiwan)	``zh_TW``	34.55%
+- Czech	``cs``	35.45%
+- Finnish	``fi``	81.14%
+- Italian	``it``	47.05%
+- Japanese	``ja``	79.77%
+- Norwegian Bokmål (Norway)	``nb_NO``	34.77%
+- Portuguese (Portugal)	``pt_PT``	79.32%
+- Turkish (Turkey)	``tr_TR``	30.68%
 
 Changed
 ~~~~~~~
 
-* Dependency for escaping HTML and safeguarding against injections ``bleach`` upgraded ``>=2.1,<2.2`` (last-partizan) :url-issue:`702`
-* Use full path names for ``MARKDOWN_KWARGS['extensions']`` as short names support wil be removed in ``Markdown 2.7`` :url-issue:`823`
-* Support for ``include('wiki.urls')`` for urls instantiation :url-issue:`827`
-* Use Django's 'checks.py' pattern to test configuration (Raffaele Salmaso & Mads Jensen) :url-issue:`830` :url-issue:`807`
-* Test coverage added: Images plugin + Account handling (Mads Jensen) :url-issue:`804`
-* Last couple of non-CBVs (Class Based Views) refactored to CBV (Raffaele Salmaso & Mads Jensen) :url-issue:`788` :url-issue:`819` :url-issue:`808`
-* Big cleanup: Deprecating lots of Python 2.7 specific code (Mads Jensen & Raffaele Salmaso) `See: >30 PRs <https://github.com/django-wiki/django-wiki/pulls?q=is%3Apr+is%3Aclosed+label%3Aclean-up>`__
-* Search term highligting tweaked, first match is now highlighted instead of last (Mathias Rav)  :url-issue:`901`
-* Markdown parsing for ``[image]``, ``[article_list]`` and macros rewritten and improved to allow escaping (Mathias Rav) :url-issue:`896`
+- Dependency for escaping HTML and safeguarding against injections ``bleach`` upgraded ``>=2.1,<2.2`` (last-partizan) :url-issue:`702`
+- Use full path names for ``MARKDOWN_KWARGS['extensions']`` as short names support wil be removed in ``Markdown 2.7`` :url-issue:`823`
+- Support for ``include('wiki.urls')`` for urls instantiation :url-issue:`827`
+- Use Django's 'checks.py' pattern to test configuration (Raffaele Salmaso & Mads Jensen) :url-issue:`830` :url-issue:`807`
+- Test coverage added: Images plugin + Account handling (Mads Jensen) :url-issue:`804`
+- Last couple of non-CBVs (Class Based Views) refactored to CBV (Raffaele Salmaso & Mads Jensen) :url-issue:`788` :url-issue:`819` :url-issue:`808`
+- Big cleanup: Deprecating lots of Python 2.7 specific code (Mads Jensen & Raffaele Salmaso) `See: >30 PRs <https://github.com/django-wiki/django-wiki/pulls?q=is%3Apr+is%3Aclosed+label%3Aclean-up>`__
+- Search term highligting tweaked, first match is now highlighted instead of last (Mathias Rav)  :url-issue:`901`
+- Markdown parsing for ``[image]``, ``[article_list]`` and macros rewritten and improved to allow escaping (Mathias Rav) :url-issue:`896`
 
 Fixed
 ~~~~~
 
-* Use ``user.is_authenticated/is_anonymous`` as a boolean :url-issue:`790` (Raffaele Salmaso)
-* Use ``simple_tag`` for assignment tag :url-issue:`791` (Raffaele Salmaso)
-* Direct invocation of ``pytest`` fixed (removing ``runtests.py``) :url-issue:`781` (Branko Majic)
-* Line breaks in help texts for macros :url-issue:`851` (Mathias Dannesbo)
-* Table of contents now has a header by default, and several built-in django-wiki extensions can be configured using ``WIKI_MARKDOWN_KWARGS`` :url-issue:`881` (Mathias Rav)
-* S3 Storage engine image deletion bug :url-issue:`907` (Andrea Maschio & Benjamin Bach)
-* Back link on "permission denied" page should point to parent article on read errors :url-issue:`915` (Benjamin Bach & Christian Duvholt)
+- Use ``user.is_authenticated/is_anonymous`` as a boolean :url-issue:`790` (Raffaele Salmaso)
+- Use ``simple_tag`` for assignment tag :url-issue:`791` (Raffaele Salmaso)
+- Direct invocation of ``pytest`` fixed (removing ``runtests.py``) :url-issue:`781` (Branko Majic)
+- Line breaks in help texts for macros :url-issue:`851` (Mathias Dannesbo)
+- Table of contents now has a header by default, and several built-in django-wiki extensions can be configured using ``WIKI_MARKDOWN_KWARGS`` :url-issue:`881` (Mathias Rav)
+- S3 Storage engine image deletion bug :url-issue:`907` (Andrea Maschio & Benjamin Bach)
+- Back link on "permission denied" page should point to parent article on read errors :url-issue:`915` (Benjamin Bach & Christian Duvholt)
 
 Deprecated/Removed
 ~~~~~~~~~~~~~~~~~~
 
-* Django < 1.11 support is dropped :url-issue:`779`
-* Python < 3.3 support is dropped :url-issue:`779` and :url-issue:`792`
-* Deprecate ``wiki.urls.get_pattern`` and ``URL_CONFIG_CLASS`` setting :url-issue:`799`
-* Removed ``SEARCH_VIEW`` setting, replaced by ``WikiSite`` override :url-issue:`837`
+- Django < 1.11 support is dropped :url-issue:`779`
+- Python < 3.3 support is dropped :url-issue:`779` and :url-issue:`792`
+- Deprecate ``wiki.urls.get_pattern`` and ``URL_CONFIG_CLASS`` setting :url-issue:`799`
+- Removed ``SEARCH_VIEW`` setting, replaced by ``WikiSite`` override :url-issue:`837`
 
 
 0.3.1
 -----
 
-* Fix error messages of missing migrations due to inconsistent change of ``on_delete`` on some model fields :url-issue:`776`
+- Fix error messages of missing migrations due to inconsistent change of ``on_delete`` on some model fields :url-issue:`776`
 
 
 0.3
@@ -379,7 +379,7 @@ Deprecated/Removed
 Translation updates from Transifex
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* Languages that `need support <https://www.transifex.com/django-wiki/django-wiki/languages/>`__:
+- Languages that `need support <https://www.transifex.com/django-wiki/django-wiki/languages/>`__:
 
   * Dutch 88%
   * Finnish 85%
@@ -390,120 +390,120 @@ Translation updates from Transifex
   * Czech 13%
   * Italian 8%
 
-* >90% completed: Chinese, French, German, Russian, Spanish, Danish, Korean, Polish, Portuguese (Brazilian), Slovak, Spanish
+- >90% completed: Chinese, French, German, Russian, Spanish, Danish, Korean, Polish, Portuguese (Brazilian), Slovak, Spanish
 
 Added
 ~~~~~
 
-* Search choice between either current or global tree (Christian Duvholt) :url-issue:`580` :url-issue:`731`
-* New bootstrapped image insert dialog (Frank Loemker) :url-issue:`628`
-* Allow the HTML tag ``<hr>`` (Frank Loemker) :url-issue:`629`
-* Global History overview of page revisions (Frank Loemker and Maximilien Cuony) :url-issue:`627`
-* Move article support with redirects (Frank Loemker) :url-issue:`640`
-* Django 1.11 compatibility (Luke Plant) :url-issue:`634`
-* Crop paginator window when there are >9 pages in a list (Frank Loemker) :url-issue:`646`
-* Extended syntax for attachment macro: ``[attachment:id title:"text" size]`` (Frank Loemker) :url-issue:`678`
-* Add Sphinx documentation for plugin settings (Frank Loemker) :url-issue:`681`
-* Show "log out" in menu when account handling is disabled (jenda1) :url-issue:`691`
-* Markdown tag with wiki paths now support fragments like
+- Search choice between either current or global tree (Christian Duvholt) :url-issue:`580` :url-issue:`731`
+- New bootstrapped image insert dialog (Frank Loemker) :url-issue:`628`
+- Allow the HTML tag ``<hr>`` (Frank Loemker) :url-issue:`629`
+- Global History overview of page revisions (Frank Loemker and Maximilien Cuony) :url-issue:`627`
+- Move article support with redirects (Frank Loemker) :url-issue:`640`
+- Django 1.11 compatibility (Luke Plant) :url-issue:`634`
+- Crop paginator window when there are >9 pages in a list (Frank Loemker) :url-issue:`646`
+- Extended syntax for attachment macro: ``[attachment:id title:"text" size]`` (Frank Loemker) :url-issue:`678`
+- Add Sphinx documentation for plugin settings (Frank Loemker) :url-issue:`681`
+- Show "log out" in menu when account handling is disabled (jenda1) :url-issue:`691`
+- Markdown tag with wiki paths now support fragments like
   ``[Click Here](wiki:/path#header)`` (Frank Loemker) :url-issue:`701`
 
 Changed
 ~~~~~~~
 
-* Test refactor: Use django-functest and separate WebTest from Selenium (Luke Plant) :url-issue:`634`
-* Repo refactor: Moved ``wiki`` package to ``src/`` folder and test code to ``tests/`` :url-issue:`631`
-* Render django.contrib.messages with template tag and inclusion template: Configurable and bootstrap 3 compatible (Benjamin Bach and Frank Loemker) :url-issue:`654`
-* Don't hardcode redirect url in account update view (Benjamin Bach) :url-issue:`650`
-* Python 3.6 support added to test matrix (Benjamin Bach) :url-issue:`664`
-* Keep CSS global namespace clean, refactor CSS rule ``label`` -> ``.wiki-label label`` (Christian Duvholt) :url-issue:`679`
-* Plugins can whitelist HTML tags and attributes (jenda1) :url-issue:`700`
-* Optimizations to fundamental permission lookup managers (Christian Duvholt) :url-issue:`714`
-* Code quality upgrade, remove obsolete code, linting and tidying up (Mads Jensen) :url-issue:`797`, :url-issue:`705`, :url-issue:`707`, :url-issue:`716`, :url-issue:`717`, :url-issue:`718`, :url-issue:`719`, :url-issue:`720`, :url-issue:`721`, :url-issue:`722`, :url-issue:`724`, :url-issue:`725`, :url-issue:`726`, :url-issue:`727`, :url-issue:`728`, :url-issue:`730`, :url-issue:`732`, :url-issue:`733`, :url-issue:`735`, :url-issue:`736`, :url-issue:`737`, :url-issue:`738`, :url-issue:`741`, :url-issue:`743`, :url-issue:`743`, :url-issue:`756`, :url-issue:`757`
-* Added ``AppConfig`` class for all plugins (Raffaele Salmaso) :url-issue:`758`
-* Explicit ``on_delete`` for all ``ForeignKey`` fields (Raffaele Salmaso) :url-issue:`759`
-* Django 2.0 preparation: ``atomic=False`` for 3 migrations that rename tables/fields (Raffaele Salmaso) :url-issue:`760`
-* Set dependency ``django-nyt<1.1`` to avoid future breakage (Benjamin Bach) :url-issue:`761`
+- Test refactor: Use django-functest and separate WebTest from Selenium (Luke Plant) :url-issue:`634`
+- Repo refactor: Moved ``wiki`` package to ``src/`` folder and test code to ``tests/`` :url-issue:`631`
+- Render django.contrib.messages with template tag and inclusion template: Configurable and bootstrap 3 compatible (Benjamin Bach and Frank Loemker) :url-issue:`654`
+- Don't hardcode redirect url in account update view (Benjamin Bach) :url-issue:`650`
+- Python 3.6 support added to test matrix (Benjamin Bach) :url-issue:`664`
+- Keep CSS global namespace clean, refactor CSS rule ``label`` -> ``.wiki-label label`` (Christian Duvholt) :url-issue:`679`
+- Plugins can whitelist HTML tags and attributes (jenda1) :url-issue:`700`
+- Optimizations to fundamental permission lookup managers (Christian Duvholt) :url-issue:`714`
+- Code quality upgrade, remove obsolete code, linting and tidying up (Mads Jensen) :url-issue:`797`, :url-issue:`705`, :url-issue:`707`, :url-issue:`716`, :url-issue:`717`, :url-issue:`718`, :url-issue:`719`, :url-issue:`720`, :url-issue:`721`, :url-issue:`722`, :url-issue:`724`, :url-issue:`725`, :url-issue:`726`, :url-issue:`727`, :url-issue:`728`, :url-issue:`730`, :url-issue:`732`, :url-issue:`733`, :url-issue:`735`, :url-issue:`736`, :url-issue:`737`, :url-issue:`738`, :url-issue:`741`, :url-issue:`743`, :url-issue:`743`, :url-issue:`756`, :url-issue:`757`
+- Added ``AppConfig`` class for all plugins (Raffaele Salmaso) :url-issue:`758`
+- Explicit ``on_delete`` for all ``ForeignKey`` fields (Raffaele Salmaso) :url-issue:`759`
+- Django 2.0 preparation: ``atomic=False`` for 3 migrations that rename tables/fields (Raffaele Salmaso) :url-issue:`760`
+- Set dependency ``django-nyt<1.1`` to avoid future breakage (Benjamin Bach) :url-issue:`761`
 
 
 Fixed
 ~~~~~
 
-* Removed exception catch all in ``URLPath.delete_subtree`` which silenced errors while delete articles with descendents
-* Fix article settings page in Django 1.11 (Frank Loemker) :url-issue:`682`
-* Fix upstream MPTT breaking deletion of articles from django-admin (Frank Loemker) :url-issue:`683`
-* Wrong HTML attribute 'type' on search result page (Geoff Clapp) :url-issue:`698`
-* Fix restoring of attachments and other RevisionPlugin types after deletion (Frank Loemker) :url-issue:`672`
-* Allowing ``<sup>`` because of footnotes (Frank Loemker) :url-issue:`750`
-* Hunted down unclosed HTML tags :url-issue:`750` (Mads Jensen) :url-issue:`741`
+- Removed exception catch all in ``URLPath.delete_subtree`` which silenced errors while delete articles with descendents
+- Fix article settings page in Django 1.11 (Frank Loemker) :url-issue:`682`
+- Fix upstream MPTT breaking deletion of articles from django-admin (Frank Loemker) :url-issue:`683`
+- Wrong HTML attribute 'type' on search result page (Geoff Clapp) :url-issue:`698`
+- Fix restoring of attachments and other RevisionPlugin types after deletion (Frank Loemker) :url-issue:`672`
+- Allowing ``<sup>`` because of footnotes (Frank Loemker) :url-issue:`750`
+- Hunted down unclosed HTML tags :url-issue:`750` (Mads Jensen) :url-issue:`741`
 
 
 0.2.5
 -----
 
-* Set dependency ``django-nyt<1.1`` to avoid future breakage (Benjamin Bach) :url-issue:`761`
+- Set dependency ``django-nyt<1.1`` to avoid future breakage (Benjamin Bach) :url-issue:`761`
 
 
 0.2.4
 -----
 
-* Hot-fix because of missing woff2 files :url-issue:`625`
+- Hot-fix because of missing woff2 files :url-issue:`625`
 
 
 0.2.3
 -----
 
-* Pulled Transifex translations and pushed source translations.
-* Fix support for Py2 unicode in code blocks (Benjamin Bach) :url-issue:`607`
-* Support for Github style fenced codeblocks (Benjamin Bach) :url-issue:`618`
-* Cached articles showing up in wrong language (Benjamin Bach) :url-issue:`592`
-* Upgraded Bootstrap from 3.3.1 to 3.3.7 (Benjamin Bach) :url-issue:`620`
-* Upgraded bundled jQuery to 1.12.4 (Benjamin Bach) :url-issue:`620`
-* Setting ``WIKI_MARKDOWN_HTML_STYLES`` for allowing ``style='..'`` in user code (Benjamin Bach) :url-issue:`603`
-* Strip Markdown code in search result snippets (Benjamin Bach) :url-issue:`42`
+- Pulled Transifex translations and pushed source translations.
+- Fix support for Py2 unicode in code blocks (Benjamin Bach) :url-issue:`607`
+- Support for Github style fenced codeblocks (Benjamin Bach) :url-issue:`618`
+- Cached articles showing up in wrong language (Benjamin Bach) :url-issue:`592`
+- Upgraded Bootstrap from 3.3.1 to 3.3.7 (Benjamin Bach) :url-issue:`620`
+- Upgraded bundled jQuery to 1.12.4 (Benjamin Bach) :url-issue:`620`
+- Setting ``WIKI_MARKDOWN_HTML_STYLES`` for allowing ``style='..'`` in user code (Benjamin Bach) :url-issue:`603`
+- Strip Markdown code in search result snippets (Benjamin Bach) :url-issue:`42`
 
 
 0.2.2
 -----
 
-* Remove ``wiki.decorators.json_view``, fixes server errors when resolving 404 links :url-issue:`604`
-* Replace usage of ``render_to_response()`` with ``render()`` :url-issue:`606`
-* Fix memory leak :url-issue:`609` and :url-issue:`611` (obtroston)
-* Scroll bars and display area fixed for code blocks :url-issue:`601` and :url-issue:`608` (Branko Majic)
-* Option ``WIKI_MARKDOWN_SANITIZE_HTML`` skips Bleach (warning: Don't use for untrusted code) :url-issue:`610` (Michal Hozza)
-* Allow the HTML tag ``<br>``. :url-issue:`613` (Frank Loemker)
-* Add thumbnail size directive (example: ``[image:123 size:large]``). :url-issue:`612` (Frank Loemker and @inflrscns)
-* Fix error with absolute paths in wiki links (example: ``[Sub-root](wiki:/sub-root)``) :url-issue:`616` (Benoit C. Sirois)
-* Require ``Django<1.11`` :url-issue:`616` (Benoit C. Sirois)
+- Remove ``wiki.decorators.json_view``, fixes server errors when resolving 404 links :url-issue:`604`
+- Replace usage of ``render_to_response()`` with ``render()`` :url-issue:`606`
+- Fix memory leak :url-issue:`609` and :url-issue:`611` (obtroston)
+- Scroll bars and display area fixed for code blocks :url-issue:`601` and :url-issue:`608` (Branko Majic)
+- Option ``WIKI_MARKDOWN_SANITIZE_HTML`` skips Bleach (warning: Don't use for untrusted code) :url-issue:`610` (Michal Hozza)
+- Allow the HTML tag ``<br>``. :url-issue:`613` (Frank Loemker)
+- Add thumbnail size directive (example: ``[image:123 size:large]``). :url-issue:`612` (Frank Loemker and @inflrscns)
+- Fix error with absolute paths in wiki links (example: ``[Sub-root](wiki:/sub-root)``) :url-issue:`616` (Benoit C. Sirois)
+- Require ``Django<1.11`` :url-issue:`616` (Benoit C. Sirois)
 
 
 0.2.1
 -----
 
-* Lowercase slugs when creating new pages with ``[[Like This]]`` :url-issue:`595` (Eric Clack)
-* Fix issues related to Bleach before Markdown processing esp. pertaining ``>`` characters. :url-issue:`596`
-* Remove ``wiki.plugins.mediawikiimport`` :url-issue:`597`
-* Pretty up the highligted code's line enumeration :url-issue:`598`
-* Customize codehilite in order to wrap highlighted code with scrollbars :url-issue:`598`
+- Lowercase slugs when creating new pages with ``[[Like This]]`` :url-issue:`595` (Eric Clack)
+- Fix issues related to Bleach before Markdown processing esp. pertaining ``>`` characters. :url-issue:`596`
+- Remove ``wiki.plugins.mediawikiimport`` :url-issue:`597`
+- Pretty up the highligted code's line enumeration :url-issue:`598`
+- Customize codehilite in order to wrap highlighted code with scrollbars :url-issue:`598`
 
 
 0.2
 ---
 
-* Translation updates from Transifex
+- Translation updates from Transifex
 
   * Danish translation from 39% to 100% (Bo Holm-Rasmussen)
   * Updated languages since 0.1: Chinese, French, German, German, Russian, Spanish
 
-* Added Django 1.10 support :url-issue:`563`
-* Security: Do not depend on markdown ``safe_mode``, instead use ``bleach``.
-* Fix duplicate search results when logged in :url-issue:`582` (duvholt)
-* Do not allow slugs only consisting of numbers :url-issue:`558`
-* Copy in urlify.js and fix auto-population of slug field in Django 1.9+ :url-issue:`554`
-* Fix memory leak in markdown extensions setting :url-issue:`564`
-* Updated translations - Languages > 90% completed: Chinese (China), Portuguese (Brazil), Korean (Korea), French, Slovak, Spanish, Dutch, German, Russian, Finnish.
-* Taiwanese Chinese added (39% completed)
-* Cleanup documentation structure :url-issue:`575`
+- Added Django 1.10 support :url-issue:`563`
+- Security: Do not depend on markdown ``safe_mode``, instead use ``bleach``.
+- Fix duplicate search results when logged in :url-issue:`582` (duvholt)
+- Do not allow slugs only consisting of numbers :url-issue:`558`
+- Copy in urlify.js and fix auto-population of slug field in Django 1.9+ :url-issue:`554`
+- Fix memory leak in markdown extensions setting :url-issue:`564`
+- Updated translations - Languages > 90% completed: Chinese (China), Portuguese (Brazil), Korean (Korea), French, Slovak, Spanish, Dutch, German, Russian, Finnish.
+- Taiwanese Chinese added (39% completed)
+- Cleanup documentation structure :url-issue:`575`
 
 HTML contents
 ~~~~~~~~~~~~~
@@ -530,33 +530,33 @@ Python and Django support
 
 Support has been removed for:
 
-* Python 2.6
-* Django < 1.8
-* South
+- Python 2.6
+- Django < 1.8
+- South
 
 0.1.2
 -----
 
-* Remove unwanted items from default menu when ``WIKI_ACCOUNT_HANDLING = False``. :url-issue:`545`
-* Fix broken soft-deletion and restoring of images, and "set revision" functionality :url-issue:`533`
-* Added responsiveness to tables by use of Bootstrap table-responsive class :url-issue:`552`
+- Remove unwanted items from default menu when ``WIKI_ACCOUNT_HANDLING = False``. :url-issue:`545`
+- Fix broken soft-deletion and restoring of images, and "set revision" functionality :url-issue:`533`
+- Added responsiveness to tables by use of Bootstrap table-responsive class :url-issue:`552`
 
 
 0.1.1
 -----
 
-* Several languages updated from Transifex
+- Several languages updated from Transifex
 
   * Slovak added **Thanks M Hozza**
   * Portuguese also added, but as copy of PT-BR (make changes as desired in Transifex)
 
-* Brand new Account Settings page (email / password) **Thanks inflrscns**
-* Testproject turned into Django 1.9 layout
-* Replace context-processor dependent use of ``{{ STATIC_URL }}`` with ``{% static %}``
-* Bugfix for ``pip install wiki`` in an empty (no Django installed) virtualenv
-* Precommit hooks added in repository
-* Import statements sorted and codebase re-pep8'thed
-* Log in page is now called "Log in" in ``<title>`` tag - **Thanks Eugene Obukhov**
+- Brand new Account Settings page (email / password) **Thanks inflrscns**
+- Testproject turned into Django 1.9 layout
+- Replace context-processor dependent use of ``{{ STATIC_URL }}`` with ``{% static %}``
+- Bugfix for ``pip install wiki`` in an empty (no Django installed) virtualenv
+- Precommit hooks added in repository
+- Import statements sorted and codebase re-pep8'thed
+- Log in page is now called "Log in" in ``<title>`` tag - **Thanks Eugene Obukhov**
 
 
 0.1
@@ -586,9 +586,9 @@ Support has been removed for:
 
 **Supported**
 
-* Python 2.7, 3.3, 3.4, 3.5 (3.2 is not supported)
-* Django 1.5, 1.6, 1.7, 1.8, 1.9
-* Django < 1.7 still needs South, and migration trees are kept until next major
+- Python 2.7, 3.3, 3.4, 3.5 (3.2 is not supported)
+- Django 1.5, 1.6, 1.7, 1.8, 1.9
+- Django < 1.7 still needs South, and migration trees are kept until next major
   release.
 
 
@@ -625,9 +625,9 @@ the final release.
 
 **Compatibility**
 
-* Django 1.5, 1.6 (That means Django 1.7 is **not** yet fully supported)
-* South 1.0+ (if you are on an older South, you **need** to upgrade)
-* Python 2.6, 2.7, 3.3, 3.4
+- Django 1.5, 1.6 (That means Django 1.7 is **not** yet fully supported)
+- South 1.0+ (if you are on an older South, you **need** to upgrade)
+- Python 2.6, 2.7, 3.3, 3.4
 
 
 Upgrading
