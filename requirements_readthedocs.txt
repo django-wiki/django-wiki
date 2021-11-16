@@ -3,5 +3,5 @@
 # dependency expressions (>=1.0b1 failes to find dist)
 Django>=3.1.13
 bleach>=3.3.0,<3.4
-sphinx
+sphinx>=3
 sphinx_rtd_theme
