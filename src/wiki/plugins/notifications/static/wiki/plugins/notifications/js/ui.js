@@ -19,11 +19,19 @@ function notify_update() {
         n = data.objects[i];
         notify_latest_id = n.pk>notify_latest_id ? n.pk:notify_latest_id;
         notify_oldest_id = (n.pk<notify_oldest_id || notify_oldest_id==0) ? n.pk:notify_oldest_id;
+        var element_outer_div = $("<div />");
+        var element_a = $("<a />", {href: URL_NOTIFY_GOTO + n.pk + "/"});
+        var element_message_div;
+        var element_since_div;
         if (n.occurrences > 1) {
-          element = $('<div><a href="'+URL_NOTIFY_GOTO+n.pk+'/"><div>'+n.message+'</div><div class="since">'+n.occurrences_msg+' - ' + n.since + '</div></a></div>')
+          element_message_div = $("<div />", {text: n.message});
+          element_since_div = $("<div />", {text: n.occurrences_msg+' - ' + n.since, class: "since"});
         } else {
-          element = $('<div><a href="'+URL_NOTIFY_GOTO+n.pk+'/"><div>'+n.message+'</div><div class="since">'+n.since+'</div></a></div>');
+          element_message_div = $("<div />", {text: n.message});
+          element_since_div = $("<div />", {text: n.since, class: "since"});
         }
+        element_a.append(element_message_div).append(element_since_div);
+        element = element_outer_div.append(element_a);
         element.addClass('dropdown-item notification-item');
         element.insertAfter('.notification-before-list');
       }
