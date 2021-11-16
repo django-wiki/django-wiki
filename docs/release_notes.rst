@@ -16,6 +16,8 @@ Release plan
 0.7.9
 -----
 
+Released on 2021-11-15.
+
 Security fixes
 ~~~~~~~~~~~~~~
 
