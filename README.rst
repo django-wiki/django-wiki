@@ -13,7 +13,7 @@ django-wiki
    :target: https://pypi.org/project/wiki/
 .. |Downloads| image:: https://img.shields.io/pypi/dm/wiki.svg
    :target: https://pypi.org/project/wiki/
-.. |IRC| image:: https://img.shields.io/badge/irc-%23django--wiki%20on%20freenode-blue.svg
+.. |IRC| image:: https://img.shields.io/badge/irc-%23django--wiki%20on%20libera.chat-blue.svg
    :target: https://webchat.freenode.net?channels=%23django-wiki
 
 Django support
