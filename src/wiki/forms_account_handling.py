@@ -65,6 +65,7 @@ class UserCreationForm(UserCreationForm):
             )
 
     def clean(self):
+        super().clean()
         for fieldname in self.honeypot_fieldnames:
             if self.cleaned_data[fieldname]:
                 raise forms.ValidationError(
