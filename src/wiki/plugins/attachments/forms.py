@@ -121,8 +121,10 @@ class AttachmentArchiveForm(AttachmentForm):
         if self.cleaned_data["unzip_archive"]:
             new_attachments = []
             try:
+                uploaded_file = self.cleaned_data.get("file", None)  # added, was missing
+                self.zipfile = zipfile.ZipFile(uploaded_file.file, mode="r")  # added, was missing
                 for zipinfo in self.zipfile.filelist:
-                    f = tempfile.NamedTemporaryFile(mode="r+w")
+                    f = tempfile.NamedTemporaryFile(mode="w+b")  # fixed, the previous mode 'r+w' was incorrect
                     f.write(self.zipfile.read(zipinfo.filename))
                     f = File(f, name=zipinfo.filename)
                     try:
