@@ -13,14 +13,14 @@ Release plan
 - **0.7.x** Removes Django 2.1 support, adds Django 3.1, 3.2
 
 
-0.7.10
-------
+0.7.10 (unreleased)
+-------------------
 
 Fixed
 ~~~~~
 
 - Missing validation for username uniqueness in in signup view :url-issue:`1152` (Benjamin Balder Bach)
-
+- Uploading and unpacking .zip files as attachments was broken :url-issue:`1159` (kylecapricious2)
 
 
 0.7.9
