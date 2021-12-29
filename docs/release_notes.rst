@@ -13,8 +13,10 @@ Release plan
 - **0.7.x** Removes Django 2.1 support, adds Django 3.1, 3.2
 
 
-0.7.10 (unreleased)
--------------------
+0.7.10
+------
+
+Released on 2021-12-29
 
 Fixed
 ~~~~~
