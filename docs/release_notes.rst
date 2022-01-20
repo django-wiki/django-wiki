@@ -13,6 +13,15 @@ Release plan
 - **0.7.x** Removes Django 2.1 support, adds Django 3.1, 3.2
 
 
+0.7.11 (unreleased)
+-------------------
+
+Fixed
+~~~~~
+
+- Attachment search failing if files exceptionally missing on server :url-issue:`1162` (Benjamin Balder Bach)
+
+
 0.7.10
 ------
 

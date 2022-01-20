@@ -46,7 +46,7 @@
     <td>
       {% include "wiki/includes/revision_info.html" with revision=attachment.current_revision hidedate=1 hidenumber=1 %}
     </td>
-    <td>{{ attachment.current_revision.file.size|filesizeformat }}</td>
+    <td>{{ attachment.current_revision.get_size|filesizeformat }}</td>
     <td style="text-align: right">
       <form method="POST" action="{% url 'wiki:attachments_add' path=urlpath.path article_id=article.id attachment_id=attachment.id %}">
         {% csrf_token %}
