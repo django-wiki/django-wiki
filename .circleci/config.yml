@@ -60,5 +60,11 @@ workflows:
           tox_env: "py39-django32"
           python_version: "3.9"
       - tox:
+          tox_env: "py310-django32"
+          python_version: "3.10"
+      - tox:
+          tox_env: "py310-django40"
+          python_version: "3.10"
+      - tox:
           tox_env: "lint"
           python_version: "3.8"
