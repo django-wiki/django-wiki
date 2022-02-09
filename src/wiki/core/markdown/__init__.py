@@ -34,7 +34,7 @@ class ArticleMarkdown(markdown.Markdown):
                 settings.MARKDOWN_HTML_WHITELIST + plugin_registry.get_html_whitelist()
             )
 
-            attrs = dict()
+            attrs = {}
             attrs.update(settings.MARKDOWN_HTML_ATTRIBUTES)
             attrs.update(plugin_registry.get_html_attributes().items())
 

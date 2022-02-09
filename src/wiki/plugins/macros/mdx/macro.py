@@ -69,32 +69,32 @@ class MacroPattern(markdown.inlinepatterns.Pattern):
         )
         return self.markdown.htmlStash.store(html)
 
-    article_list.meta = dict(
-        short_description=_("Article list"),
-        help_text=_("Insert a list of articles in this level."),
-        example_code="[article_list depth:2]",
-        args={"depth": _("Maximum depth to show levels for.")},
-    )
+    article_list.meta = {
+        "short_description": _("Article list"),
+        "help_text": _("Insert a list of articles in this level."),
+        "example_code": "[article_list depth:2]",
+        "args": {"depth": _("Maximum depth to show levels for.")},
+    }
 
     def toc(self):
         return "[TOC]"
 
-    toc.meta = dict(
-        short_description=_("Table of contents"),
-        help_text=_("Insert a table of contents matching the headings."),
-        example_code="[TOC]",
-        args={},
-    )
+    toc.meta = {
+        "short_description": _("Table of contents"),
+        "help_text": _("Insert a table of contents matching the headings."),
+        "example_code": "[TOC]",
+        "args": {},
+    }
 
     def wikilink(self):
         return ""
 
-    wikilink.meta = dict(
-        short_description=_("WikiLinks"),
-        help_text=_("Insert a link to another wiki page with a short notation."),
-        example_code="[[WikiLink]]",
-        args={},
-    )
+    wikilink.meta = {
+        "short_description": _("WikiLinks"),
+        "help_text": _("Insert a link to another wiki page with a short notation."),
+        "example_code": "[[WikiLink]]",
+        "args": {},
+    }
 
 
 def makeExtension(*args, **kwargs):

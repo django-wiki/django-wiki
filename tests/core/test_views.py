@@ -733,7 +733,7 @@ class SettingsViewTests(
         self.root_article.refresh_from_db()
         self.assertEqual(self.root_article.group, group)
         self.assertEqual(self.root_article.owner, self.superuser1)
-        messages = [m for m in get_messages(response.wsgi_request)]
+        messages = get_messages(response.wsgi_request)
         self.assertEqual(len(messages), 1)
         message = messages[0]
         self.assertEqual(message.level, constants.SUCCESS)
@@ -769,7 +769,7 @@ class SettingsViewTests(
             form_values,
             follow=True,
         )
-        messages = [m for m in get_messages(response.wsgi_request)]
+        messages = get_messages(response.wsgi_request)
         self.assertEqual(len(messages), 1)
         message = messages[0]
         self.assertEqual(message.level, constants.SUCCESS)

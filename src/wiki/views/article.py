@@ -742,7 +742,7 @@ class Settings(ArticleMixin, TemplateView):
         settings_forms = []
         if permissions.can_change_permissions(self.article, self.request.user):
             settings_forms.append(self.permission_form_class)
-        plugin_forms = [F for F in plugin_registry.get_settings_forms()]
+        plugin_forms = plugin_registry.get_settings_forms()
         plugin_forms.sort(key=lambda form: form.settings_order)
         settings_forms += plugin_forms
         for i in range(len(settings_forms)):
