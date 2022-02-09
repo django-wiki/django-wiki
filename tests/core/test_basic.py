@@ -19,7 +19,7 @@ class URLPathTests(TestCase):
         root = URLPath.create_root()
         child = URLPath.create_urlpath(root, "child")
 
-        self.assertEqual(root.parent, None)
+        self.assertIsNone(root.parent)
         self.assertEqual(list(root.children.all().active()), [child])
 
 

@@ -442,7 +442,7 @@ class EditViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
 
         response = self.client.post(resolve_url("wiki:preview", path=""), example_data)
 
-        self.assertEquals(response.get("X-Frame-Options"), "SAMEORIGIN")
+        self.assertEqual(response.get("X-Frame-Options"), "SAMEORIGIN")
 
     def test_revision_conflict(self):
         """
