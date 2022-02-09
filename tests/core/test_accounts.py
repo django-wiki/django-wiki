@@ -83,7 +83,7 @@ class UpdateProfileViewTest(
 
         test_auth = authenticate(username="admin", password="newPass")
 
-        self.assertNotEqual(test_auth, None)
+        self.assertIsNotNone(test_auth)
         self.assertEqual(test_auth.email, "test@test.com")
 
 
