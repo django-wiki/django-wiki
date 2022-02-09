@@ -44,6 +44,7 @@ htmlcov
 .tox
 .cache
 htmlcov
+coverage.xml
 
 #Eclipse
 .project
