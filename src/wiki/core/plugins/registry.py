@@ -38,7 +38,7 @@ def register(PluginClass):
 
     _html_whitelist.extend(getattr(PluginClass, "html_whitelist", []))
 
-    _html_attributes.update(getattr(PluginClass, "html_attributes", dict()))
+    _html_attributes.update(getattr(PluginClass, "html_attributes", {}))
 
 
 def get_plugins():
