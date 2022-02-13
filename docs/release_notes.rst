@@ -13,8 +13,18 @@ Release plan
 - **0.7.x** Removes Django 2.1 support, adds Django 3.1, 3.2
 
 
-0.7.11 (unreleased)
--------------------
+0.8 (unreleased)
+----------------
+
+Added
+~~~~~
+
+- Support for Django 4.0 and Python 3.10 :url-issue:`1165` (Mads Jensen)
+
+Changed
+~~~~~~~
+
+- Bump dependency versions of sorl-thumbnail, django-nyt, django-mptt and django-functest :url-issue:`1165` (Benjamin Balder Bach)
 
 Fixed
 ~~~~~
