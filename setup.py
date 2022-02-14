@@ -22,18 +22,18 @@ def get_path(fname):
 
 
 install_requirements = [
-    "Django>=2.1,<3.3",
+    "Django>=2.1,<4.1",
     "bleach>=3.3.0,<3.4",
     "Pillow",
-    "django-nyt>=1.2,<1.3",
-    "django-mptt>=0.11,<0.12",
+    "django-nyt>=1.2.2,<1.3",
+    "django-mptt>=0.13,<0.14",
     "django-sekizai>=0.10",
-    "sorl-thumbnail>=12.6.2,<13",
+    "sorl-thumbnail>=12.8,<13",
     "Markdown>=3.1,<3.3",
 ]
 
 test_requirements = [
-    "django-functest>=1.0.3,<1.1",
+    "django-functest>=1.2,<1.3",
     "pytest>=6.2.5,<6.3",
     "pytest-django",
     "pytest-cov",
@@ -95,6 +95,7 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
         "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
