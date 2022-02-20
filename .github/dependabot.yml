@@ -2,7 +2,7 @@ version: 2
 
 updates:
   - package-ecosystem: "pip"
-    directory: "src/"
+    directory: "/src/"
     open-pull-requests-limit: 5
     schedule:
       interval: "daily"
