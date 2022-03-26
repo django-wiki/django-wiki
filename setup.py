@@ -44,7 +44,7 @@ test_requirements = [
 ]
 
 test_lint_requirements = [
-    "flake8>=3.7,<3.8",
+    "flake8>=3.7,<4.1",
     # Somewhat pin black, such that older code bases can
     # be verified CI without linting them lots
     "black>=20.8b1,<20.9",
