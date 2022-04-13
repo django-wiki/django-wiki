@@ -23,6 +23,11 @@ Changed
 
 * Python-Markdown updated to 3.3 :url-issue:`1180` (Benjamin Balder Bach)
 
+Fixed
+~~~~~
+
+- Support for revision history w/ IP Address from ``HTTP_X_REAL_IP`` :url-issue:`1184` (David van Rijn)
+
 
 0.8.1
 -----
