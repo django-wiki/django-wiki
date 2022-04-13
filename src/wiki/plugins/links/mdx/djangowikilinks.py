@@ -125,7 +125,7 @@ class WikiPath(markdown.inlinepatterns.Pattern):
         return a
 
     def _getMeta(self):
-        """ Return meta data or config data. """
+        """Return meta data or config data."""
         base_url = self.config["base_url"][0]
         html_class = self.config["html_class"][0]
         if hasattr(self.md, "Meta"):
