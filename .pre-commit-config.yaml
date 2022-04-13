@@ -1,11 +1,11 @@
 repos:
   - repo: https://gitlab.com/pycqa/flake8
-    rev: ''  # pick a git hash / tag to point to
+    rev: '3.9.2'  # pick a git hash / tag to point to
     hooks:
     -   id: flake8
         exclude: "^(.*/migrations/|testproject/testproject/settings/)"
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.4.0
+    rev: v4.2.0
     hooks:
     -   id: trailing-whitespace
         exclude: "^.tx/"
@@ -14,12 +14,12 @@ repos:
     -   id: end-of-file-fixer
         exclude: "^(.tx/.*|.*\\.map)$"
   - repo: https://github.com/psf/black
-    rev: 20.8b1
+    rev: 22.3.0
     hooks:
     - id: black
       language_version: python3
 
   - repo: https://github.com/asottile/reorder_python_imports
-    rev: v2.4.0
+    rev: v3.0.1
     hooks:
     -   id: reorder-python-imports
