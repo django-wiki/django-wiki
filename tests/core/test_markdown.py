@@ -67,7 +67,7 @@ class CodehiliteTests(TestCase):
             else (
                 """<p>Code:</p>\n"""
                 """<div class="codehilite-wrap"><pre class="codehilite"><code class="language-python">echo 'line 1'\n"""
-                """echo 'line 2'</code></pre>\n"""
+                """echo 'line 2'\n</code></pre>\n"""
                 """</div>"""
             )
         )
@@ -106,7 +106,7 @@ class CodehiliteTests(TestCase):
                 """<div class="codehilite-wrap"><pre class="codehilite"><code class="language-python linenums">#!/usr/bin/python\n"""
                 """print('line 1')\n"""
                 """print('line 2')\n"""
-                """print('æøå')</code></pre>\n"""
+                """print('æøå')\n</code></pre>\n"""
                 """</div>"""
             )
         )
