@@ -16,7 +16,7 @@ Release plan
 0.8.2
 -----
 
-Unreleased
+Released on 2022-05-07
 
 Changed
 ~~~~~~~
