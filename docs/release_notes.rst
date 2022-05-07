@@ -13,6 +13,17 @@ Release plan
 - **0.7.x** Removes Django 2.1 support, adds Django 3.1, 3.2
 
 
+0.8.2
+-----
+
+Unreleased
+
+Changed
+~~~~~~~
+
+* Python-Markdown updated to 3.3 :url-issue:`1180` (Benjamin Balder Bach)
+
+
 0.8.1
 -----
 
