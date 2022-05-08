@@ -1,5 +1,6 @@
 import bleach
 import markdown
+from bleach.css_sanitizer import CSSSanitizer
 from wiki.conf import settings
 from wiki.core.plugins import registry as plugin_registry
 
@@ -34,6 +35,10 @@ class ArticleMarkdown(markdown.Markdown):
                 settings.MARKDOWN_HTML_WHITELIST + plugin_registry.get_html_whitelist()
             )
 
+            css_sanitizer = CSSSanitizer(
+                allowed_css_properties=settings.MARKDOWN_HTML_STYLES
+            )
+
             attrs = {}
             attrs.update(settings.MARKDOWN_HTML_ATTRIBUTES)
             attrs.update(plugin_registry.get_html_attributes().items())
@@ -42,7 +47,7 @@ class ArticleMarkdown(markdown.Markdown):
                 html,
                 tags=tags,
                 attributes=attrs,
-                styles=settings.MARKDOWN_HTML_STYLES,
+                css_sanitizer=css_sanitizer,
                 strip=True,
             )
         return html
