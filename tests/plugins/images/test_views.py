@@ -109,7 +109,7 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         expected = re.compile(
             r'<figure class="thumbnail">'
             r'<a href="' + re.escape(image_rev.image.url) + '">'
-            r'<img alt="test\.gif" src="/?cache/.*\.jpg">'
+            r'<img src="/?cache/.*\.jpg" alt="test\.gif">'
             r'</a><figcaption class="caption"></figcaption></figure>'
         )
         self.assertRegex(output, expected)
@@ -120,7 +120,7 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         expected = re.compile(
             r'<figure class="thumbnail float-right">'
             r'<a href="' + re.escape(image_rev.image.url) + '">'
-            r'<img alt="test\.gif" src="/?cache/.*\.jpg"></a>'
+            r'<img src="/?cache/.*\.jpg" alt="test\.gif"></a>'
             r'<figcaption class="caption"></figcaption></figure>'
         )
         self.assertRegex(output, expected)
@@ -131,7 +131,7 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         expected = (
             '<figure class="thumbnail">'
             '<a href="' + image_rev.image.url + '">'
-            '<img alt="test.gif" src="' + image_rev.image.url + '"></a>'
+            '<img src="' + image_rev.image.url + '" alt="test.gif"></a>'
             '<figcaption class="caption"></figcaption></figure>'
         )
         self.assertEqual(output, expected)

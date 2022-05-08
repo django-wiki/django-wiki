@@ -24,18 +24,6 @@ workflows:
   main:
     jobs:
       - tox:
-          tox_env: "py36-django22"
-          python_version: "3.6"
-      - tox:
-          tox_env: "py36-django30"
-          python_version: "3.6"
-      - tox:
-          tox_env: "py36-django31"
-          python_version: "3.6"
-      - tox:
-          tox_env: "py36-django32"
-          python_version: "3.6"
-      - tox:
           tox_env: "py37-django22"
           python_version: "3.7"
       - tox:
