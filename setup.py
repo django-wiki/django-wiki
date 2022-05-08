@@ -29,7 +29,7 @@ install_requirements = [
     "django-mptt>=0.13,<0.14",
     "django-sekizai>=0.10",
     "sorl-thumbnail>=12.8,<13",
-    "Markdown>=3.1,<3.3",
+    "Markdown>=3.3,<3.4",
 ]
 
 test_requirements = [
@@ -47,7 +47,7 @@ test_lint_requirements = [
     "flake8>=3.7,<4.1",
     # Somewhat pin black, such that older code bases can
     # be verified CI without linting them lots
-    "black>=20.8b1,<20.9",
+    "black>=22.3.0,<22.4",
     "pre-commit",
 ]
 

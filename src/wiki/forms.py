@@ -125,7 +125,9 @@ class SpamProtectionMixin:
         if request.user.is_authenticated:
             user = request.user
         else:
-            ip_address = request.META.get("REMOTE_ADDR", None)
+            ip_address = request.META.get("HTTP_X_REAL_IP", None) or request.META.get(
+                "REMOTE_ADDR", None
+            )
 
         if not (user or ip_address):
             raise forms.ValidationError(

@@ -1,24 +1,44 @@
 {% load i18n %}
 {% if is_paginated %}
-<ul class="pagination">
-    {% if page_obj.has_previous %}
-        <li><a class="prev btn btn-info" href="?{% if search_query %}q={{ search_query  }}&{% endif %}page={{ page_obj.previous_page_number }}{% if appended_key %}&{{ appended_key }}={{ appended_value }}{% endif %}">&laquo;</a></li>
-    {% else %}
-        <li class="disabled"><span>&laquo;</span></li>
-    {% endif %}
+  <nav aria-label="Pagination" class="mt-2">
+    <ul class="pagination justify-content-center">
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" aria-label="Previous" href="?{% if search_query %}q={{ search_query }}&{% endif %}page=
+          {{ page_obj.previous_page_number }}{% if appended_key %}&{{ appended_key }}={{ appended_value }}{% endif %}">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <span class="page-link" aria-hidden="true">&laquo;</span>
+        </li>
+      {% endif %}
 
-    {% for pc in paginator.page_range %}
+      {% for pc in paginator.page_range %}
         {% if pc == 0 %}
-            <li class="disabled"><span>...</span></li>
+          <li class="page-item">
+            <span class="page-link">...</span>
+          </li>
         {% else %}
-            <li class="{% if pc == page_obj.number %} active{% endif %}"><a href="?{% if search_query %}q={{ search_query  }}&{% endif %}page={{ pc }}{% if appended_key %}&{{ appended_key }}={{ appended_value }}{% endif %}">{{ pc }}</a></li>
+          <li class="page-item {% if pc == page_obj.number %} active" aria-current="page{% endif %}" >
+            <a class="page-link" href="?{% if search_query %}q={{ search_query }}&{% endif %}page=
+              {{ pc }}{% if appended_key %}&{{ appended_key }}={{ appended_value }}{% endif %}">{{ pc }}</a>
+          </li>
         {% endif %}
-    {% endfor %}
+      {% endfor %}
 
-    {% if page_obj.has_next %}
-        <li><a class="next btn btn-info" href="?{% if search_query %}q={{ search_query  }}&{% endif %}page={{ page_obj.next_page_number }}{% if appended_key %}&{{ appended_key }}={{ appended_value }}{% endif %}">&raquo;</a></li>
-    {% else %}
-        <li class="disabled"><span>&raquo;</span></li>
-    {% endif %}
-</ul>
+      {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?{% if search_query %}q={{ search_query }}&{% endif %}page=
+        {{ page_obj.next_page_number }}{% if appended_key %}&{{ appended_key }}={{ appended_value }}{% endif %}">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+        <span class="page-link" >&raquo;</span>
+      {% endif %}
+    </ul>
+  </nav>
 {% endif %}

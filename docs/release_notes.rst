@@ -13,6 +13,34 @@ Release plan
 - **0.7.x** Removes Django 2.1 support, adds Django 3.1, 3.2
 
 
+0.8.2
+-----
+
+Released on 2022-05-07
+
+Changed
+~~~~~~~
+
+* Python-Markdown updated to 3.3 :url-issue:`1180` (Benjamin Balder Bach)
+
+Fixed
+~~~~~
+
+- Support for revision history w/ IP Address from ``HTTP_X_REAL_IP`` :url-issue:`1184` (David van Rijn)
+
+
+0.8.1
+-----
+
+Released on 2022-04-25
+
+Fixed
+~~~~~
+
+* Bootstrap pagination is updated to render as intended :url-issue:`1187` (Alexander Johan Arntzen)
+* Toolchain updates: pre-commit, black, pytest, flake8, django-functests, bleach :url-issue:`1187` (Benjamin Balder Bach)
+
+
 0.8
 ---
 
