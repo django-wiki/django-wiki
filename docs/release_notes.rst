@@ -17,12 +17,17 @@ Release plan
 0.9
 ---
 
-Unreleased
+Released on 2022-06-27
 
 Changed
 ~~~~~~~
 
 * Upgrade to ``bleach>=5``, adds ``tinycss2`` dependency, drops Python 3.5 and 3.6 support :url-issue:`1183` (Benjamin Balder Bach)
+
+Fixed
+~~~~~
+
+* Double-escaping in ``codehilite`` Markdown extension :url-issue:`945` (Benbb96 and jenda1)
 
 
 0.8.2
