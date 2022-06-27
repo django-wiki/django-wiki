@@ -76,12 +76,24 @@ class WikiFencedBlockPreprocessor(Preprocessor):
 class HiliteTreeprocessor(Treeprocessor):
     """Hilight source code in code blocks."""
 
+    def code_unescape(self, text):
+        """Unescape &, <, > and " characters."""
+        text = text.replace("&amp;", "&")
+        text = text.replace("&lt;", "<")
+        text = text.replace("&gt;", ">")
+        text = text.replace("&quot;", '"')
+        return text
+
     def run(self, root):
         """Find code blocks and store in htmlStash."""
         blocks = root.iter("pre")
         for block in blocks:
             if len(block) == 1 and block[0].tag == "code":
-                html = highlight(block[0].text, self.config, self.markdown.tab_length)
+                html = highlight(
+                    self.code_unescape(block[0].text),
+                    self.config,
+                    self.markdown.tab_length,
+                )
                 placeholder = self.markdown.htmlStash.store(html)
                 # Clear codeblock in etree instance
                 block.clear()
