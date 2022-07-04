@@ -34,7 +34,7 @@ install_requirements = [
 ]
 
 test_requirements = [
-    "django-functest>=1.2,<1.4",
+    "django-functest>=1.2,<1.5",
     "pytest>=6.2.5,<7.2",
     "pytest-django",
     "pytest-cov",
