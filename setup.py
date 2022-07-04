@@ -48,7 +48,7 @@ test_lint_requirements = [
     "flake8>=3.7,<4.1",
     # Somewhat pin black, such that older code bases can
     # be verified CI without linting them lots
-    "black>=22.3.0,<22.4",
+    "black>=22.3.0,<22.7",
     "pre-commit",
 ]
 
