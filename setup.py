@@ -22,7 +22,7 @@ def get_path(fname):
 
 
 install_requirements = [
-    "Django>=2.1,<4.1",
+    "Django>=2.1,<4.2",
     "bleach[css]>=5",
     "tinycss2",  # bleach complains ModuleNotFoundError: No module named 'tinycss2'
     "Pillow",
