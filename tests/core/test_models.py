@@ -1,3 +1,5 @@
+from time import time
+
 from django.apps import apps
 from django.contrib.auth import get_user_model
 from django.contrib.sites.models import Site
@@ -148,3 +150,40 @@ class ArticleModelTest(TestCase):
         ar2.save()
 
         self.assertEqual(ar2.previous_revision, ar1)
+
+    def test_article_performance(self):
+        for i in range(0, 500):
+            a = Article.objects.create()
+            ar = ArticleRevision.objects.create(article=a, title=f"test{i}")
+            a.add_revision(ar)
+        normal_query = ArticleRevision.objects.all()
+        start = time()
+        for i in normal_query:
+            # do something
+            x = i.article
+            x = str(x) + "test"
+        end = time()
+        normal_runtime = end - start
+        optimized_query = ArticleRevision.objects.select_related("article").all()
+        start = time()
+        for i in optimized_query:
+            # do something
+            x = i.article
+            x = str(x) + "test"
+        end = time()
+        optimized_runtime = end - start
+        print(f"Object Count: {normal_query.count()}")
+        print(f"Normal Query took, {normal_runtime} seconds to run")
+        print(f"Optimized Query took {optimized_runtime} seconds to run")
+        try:
+            red_in_time = ((normal_runtime - optimized_runtime) / normal_runtime) * 100
+            incr_in_pemr = (
+                (normal_runtime - optimized_runtime) / (optimized_runtime)
+            ) * 100
+
+            times_faster = optimized_runtime / normal_runtime
+            print(f"Reduction in time: {red_in_time:.2f}%")
+            print(f"Increase in performance: {incr_in_pemr:.2f}%")
+            print(f"Times faster: {times_faster:.2f}")
+        except ZeroDivisionError:
+            pass
