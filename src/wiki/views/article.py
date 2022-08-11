@@ -597,8 +597,10 @@ class History(ListView, ArticleMixin):
     paginate_by = 10
 
     def get_queryset(self):
-        return models.ArticleRevision.objects.filter(article=self.article).order_by(
-            "-created"
+        return (
+            models.ArticleRevision.objects.select_related("article")
+            .filter(article=self.article)
+            .order_by("-created")
         )
 
     def get_context_data(self, **kwargs):
