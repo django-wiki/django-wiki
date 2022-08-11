@@ -1,6 +1,6 @@
 {% load wiki_tags %}
 
-<li class="{% if current_path.path|starts_with:urlpath.path %}disabled{% endif%} {% if current_path.children.count %}dropdown-submenu{% endif %}">
+<li class="dropdown-item {% if current_path.path|starts_with:urlpath.path %}disabled{% endif%} {% if current_path.children.count %}dropdown-submenu{% endif %}">
   <a tabindex="-1" href="#"
     {% if not current_path.path|starts_with:urlpath.path %}
         onclick="select_path('{{current_path.pk}}', '{{current_path.path|escapejs}}');" {% endif %}>
