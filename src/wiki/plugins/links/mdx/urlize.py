@@ -38,7 +38,7 @@ import markdown
 #   in whitespace, ')', or '>'. If ')', then must match with '(' in
 #   BEGIN. If '>', then must match with '<' in BEGIN.
 #
-# It should be noted that there are some inconsitencies with the below
+# It should be noted that there are some inconsistencies with the below
 # regex, mainly that:
 #
 # - No IPv4 or IPv6 address validation is performed.

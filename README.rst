@@ -64,7 +64,7 @@ very easy, you don't even need to be a programmer.
 Some languages...
 
 * Just need a little push, as they are almost fully complete
-* Got initiatied and need a new instigator to carry on the ambitions
+* Got initiated and need a new instigator to carry on the ambitions
 * Do not exist yet - but you can request them and become the coordinator.
 
 `Visit the django-wiki project on Transifex <https://www.transifex.com/django-wiki/django-wiki/>`__
