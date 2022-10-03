@@ -27,7 +27,7 @@ install_requirements = [
     "tinycss2",  # bleach complains ModuleNotFoundError: No module named 'tinycss2'
     "Pillow",
     "django-nyt>=1.2.2,<1.3",
-    "django-mptt>=0.13,<0.14",
+    "django-mptt>=0.13,<0.15",
     "django-sekizai>=0.10",
     "sorl-thumbnail>=12.8,<13",
     "Markdown>=3.3,<3.4",
