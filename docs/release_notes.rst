@@ -14,6 +14,12 @@ Release plan
 - **0.9.x** Definitely Removes Python 3.5 and 3.6 support
 
 
+0.10 (unreleased)
+-----------------
+
+* Removed direct dependency on ``tinycss2``, inherited from ``bleach`` - due to old versions of pip unable to resolve
+
+
 0.9
 ---
 
