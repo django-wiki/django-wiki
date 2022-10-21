@@ -92,7 +92,7 @@ class Create(FormView, ArticleMixin):
                 self.urlpath,
                 form.cleaned_data["slug"],
                 form.cleaned_data["title"],
-                form.cleaned_data["content"],
+                self.sanitize_html(form.cleaned_data["content"]),
                 form.cleaned_data["summary"],
             )
             messages.success(
@@ -370,7 +370,7 @@ class Edit(ArticleMixin, FormView):
         revision = models.ArticleRevision()
         revision.inherit_predecessor(self.article)
         revision.title = form.cleaned_data["title"]
-        revision.content = form.cleaned_data["content"]
+        revision.content = self.sanitize_html(form.cleaned_data["content"])
         revision.user_message = form.cleaned_data["summary"]
         revision.deleted = False
         revision.set_from_request(self.request)

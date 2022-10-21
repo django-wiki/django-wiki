@@ -3,6 +3,8 @@ import logging
 from django.views.generic.base import TemplateResponseMixin
 from wiki.conf import settings
 from wiki.core.plugins import registry
+import bleach
+from bleach.css_sanitizer import CSSSanitizer
 
 log = logging.getLogger(__name__)
 
@@ -41,3 +43,26 @@ class ArticleMixin(TemplateResponseMixin):
         kwargs["children_slice_more"] = len(self.children_slice) > 20
         kwargs["plugins"] = registry.get_plugins()
         return kwargs
+
+    def sanitize_html(self, html):
+        if settings.MARKDOWN_SANITIZE_HTML:
+            tags = (
+                settings.MARKDOWN_HTML_WHITELIST + registry.get_html_whitelist()
+            )
+
+            css_sanitizer = CSSSanitizer(
+                allowed_css_properties=settings.MARKDOWN_HTML_STYLES
+            )
+
+            attrs = {}
+            attrs.update(settings.MARKDOWN_HTML_ATTRIBUTES)
+            attrs.update(registry.get_html_attributes().items())
+
+            html = bleach.clean(
+                html,
+                tags=tags,
+                attributes=attrs,
+                css_sanitizer=css_sanitizer,
+                strip=True,
+            )
+        return html

@@ -30,26 +30,26 @@ class ArticleMarkdown(markdown.Markdown):
 
     def convert(self, text, *args, **kwargs):
         html = super().convert(text, *args, **kwargs)
-        if settings.MARKDOWN_SANITIZE_HTML:
-            tags = (
-                settings.MARKDOWN_HTML_WHITELIST + plugin_registry.get_html_whitelist()
-            )
+        # if settings.MARKDOWN_SANITIZE_HTML:
+        #     tags = (
+        #         settings.MARKDOWN_HTML_WHITELIST + plugin_registry.get_html_whitelist()
+        #     )
 
-            css_sanitizer = CSSSanitizer(
-                allowed_css_properties=settings.MARKDOWN_HTML_STYLES
-            )
+        #     css_sanitizer = CSSSanitizer(
+        #         allowed_css_properties=settings.MARKDOWN_HTML_STYLES
+        #     )
 
-            attrs = {}
-            attrs.update(settings.MARKDOWN_HTML_ATTRIBUTES)
-            attrs.update(plugin_registry.get_html_attributes().items())
+        #     attrs = {}
+        #     attrs.update(settings.MARKDOWN_HTML_ATTRIBUTES)
+        #     attrs.update(plugin_registry.get_html_attributes().items())
 
-            html = bleach.clean(
-                html,
-                tags=tags,
-                attributes=attrs,
-                css_sanitizer=css_sanitizer,
-                strip=True,
-            )
+        #     html = bleach.clean(
+        #         html,
+        #         tags=tags,
+        #         attributes=attrs,
+        #         css_sanitizer=css_sanitizer,
+        #         strip=True,
+        #     )
         return html
 
 
