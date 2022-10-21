@@ -1,7 +1,7 @@
 import bleach
 import markdown
-from bleach.css_sanitizer import CSSSanitizer
-from wiki.conf import settings
+# from bleach.css_sanitizer import CSSSanitizer
+# from wiki.conf import settings
 from wiki.core.plugins import registry as plugin_registry
 
 
