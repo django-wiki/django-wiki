@@ -171,11 +171,12 @@ def on_revision_delete(instance, *args, **kwargs):
     # Clean up empty directories
 
     # Check for empty folders in the path. Delete the first two.
-    if len(path[-1]) == 32:
-        # Path was (most likely) obscurified so we should look 2 levels down
-        max_depth = 2
-    else:
-        max_depth = 1
+    max_depth = 1
+    if len(path) != 0:
+        if len(path[-1]) == 32:
+            # Path was (most likely) obscurified so we should look 2 levels down
+            max_depth = 2
+
     for depth in range(0, max_depth):
         delete_path = "/".join(path[:-depth] if depth > 0 else path)
         try:
