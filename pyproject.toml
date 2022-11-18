@@ -1,0 +1,128 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "wiki"
+description = "A wiki system written for the Django framework."
+readme = "README.rst"
+requires-python = ">=3.7"
+license = "GPLv3"
+keywords = ["django", "wiki", "markdown"]
+authors = [
+  { name = "Benjamin Bach", email = "benjamin@overtag.dk" },
+]
+maintainers = [
+  { name = "Oscar Cortez", email = "om.cortez.2010@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+  "Environment :: Web Environment",
+  "Framework :: Django",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+  "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+  "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: Wiki",
+  "Topic :: Software Development",
+  "Topic :: Software Development :: Libraries :: Application Frameworks",
+]
+dependencies = [
+  "Django>=2.1,<4.2",
+  "bleach[css]>=5",
+  "Pillow",
+  "django-nyt>=1.2.2",
+  "django-mptt>=0.13,<0.15",
+  "django-sekizai>=0.10",
+  "sorl-thumbnail>=12.8,<13",
+  "Markdown>=3.3,<3.4",
+]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "http://www.django-wiki.org",
+Documentation = "https://django-wiki.readthedocs.io/en/latest/"
+Tracker = "https://github.com/django-wiki/django-wiki/issues"
+Source = "https://github.com/django-wiki/django-wiki"
+
+[project.optional-dependencies]
+devel = [
+  "black>=22.3.0,<22.11",
+  "codecov",
+  "coverage",
+  "ddt",
+  "django-functest>=1.2,<1.6",
+  "flake8>=3.7,<5.1",
+  "pre-commit",
+  "pytest-cov",
+  "pytest-django",
+  "pytest-pythonpath",
+  "pytest>=6.2.5,<7.3",
+]
+test = [
+  "codecov",
+  "coverage",
+  "ddt",
+  "django-functest>=1.2,<1.6",
+  "pytest-cov",
+  "pytest-django",
+  "pytest-pythonpath",
+  "pytest>=6.2.5,<7.3",
+]
+testlint = [
+  "black>=22.3.0,<22.11",
+  "flake8>=3.7,<5.1",
+  "pre-commit",
+]
+transifex = [
+  "transifex-client",
+]
+
+
+[tool.hatch.version]
+path = "wiki/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+]
+
+[tool.hatch.envs.default]
+dependencies = [
+  "pytest",
+  "pytest-cov",
+]
+
+[tool.hatch.envs.default.scripts]
+cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=django_wiki --cov=tests {args}"
+no-cov = "cov --no-cov {args}"
+
+[tool.hatch.publish.index]
+disable = true
+
+[[tool.hatch.envs.test.matrix]]
+python = ["37", "38", "39", "310", "311"]
+
+[tool.coverage.run]
+branch = true
+parallel = true
+omit = [
+  "src/__about__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
