@@ -49,44 +49,13 @@ dependencies = [
 dynamic = ["version"]
 
 [project.urls]
-Homepage = "http://www.django-wiki.org",
+Homepage = "http://www.django-wiki.org"
 Documentation = "https://django-wiki.readthedocs.io/en/latest/"
 Tracker = "https://github.com/django-wiki/django-wiki/issues"
 Source = "https://github.com/django-wiki/django-wiki"
 
-[project.optional-dependencies]
-devel = [
-  "black>=22.3.0,<22.11",
-  "codecov",
-  "coverage",
-  "ddt",
-  "django-functest>=1.2,<1.6",
-  "flake8>=3.7,<5.1",
-  "pre-commit",
-  "pytest-cov",
-  "pytest-django",
-  "pytest-pythonpath",
-  "pytest>=6.2.5,<7.3",
-]
-test = [
-  "codecov",
-  "coverage",
-  "ddt",
-  "django-functest>=1.2,<1.6",
-  "pytest-cov",
-  "pytest-django",
-  "pytest-pythonpath",
-  "pytest>=6.2.5,<7.3",
-]
-testlint = [
-  "black>=22.3.0,<22.11",
-  "flake8>=3.7,<5.1",
-  "pre-commit",
-]
-transifex = [
-  "transifex-client",
-]
-
+[tool.hatch.publish.index]
+disable = true
 
 [tool.hatch.version]
 path = "wiki/__init__.py"
@@ -98,19 +67,71 @@ include = [
 
 [tool.hatch.envs.default]
 dependencies = [
-  "pytest",
+  "black>=22.3.0,<22.11",
+  "codecov",
+  "coverage",
+  "ddt",
+  "django-functest>=1.2,<1.6",
+  "flake8>=3.7,<5.1",
+  "pre-commit",
   "pytest-cov",
+  "pytest-django",
+  "pytest-pythonpath",
+  "pytest>=6.2.5,<7.3",
 ]
 
 [tool.hatch.envs.default.scripts]
-cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=django_wiki --cov=tests {args}"
+cov = "coverage run --source wiki setup.py test && coverage report -m"
 no-cov = "cov --no-cov {args}"
+lint = "flake8 src/wiki tests/"
+clean-build = "rm -fr build/ && rm -fr dist/ && rm -fr .eggs/ && find . -name '*.egg-info' -exec rm -fr {} + && find . -name '*.egg' -exec rm -f {} +"
+clean-pyc = "find . -name '*.pyc' -exec rm -f {} && find . -name '*.pyo' -exec rm -f {} && find . -name '*~' -exec rm -f {} && find . -name '__pycache__' -exec rm -fr {}"
+assets = "sassc --style compressed src/wiki/static/wiki/bootstrap/scss/wiki/wiki-bootstrap.scss src/wiki/static/wiki/bootstrap/css/wiki-bootstrap.min.css"
 
-[tool.hatch.publish.index]
-disable = true
+[tools.hatch.envs.test]
+dependencies = [
+  "codecov",
+  "coverage",
+  "ddt",
+  "django-functest>=1.2,<1.6",
+  "pytest-cov",
+  "pytest-django",
+  "pytest-pythonpath",
+  "pytest>=6.2.5,<7.3",
+  "black>=22.3.0,<22.11",
+  "flake8>=3.7,<5.1",
+  "pre-commit",
+]
+
+[tools.hatch.envs.test.scripts]
+test = "pytest"
+test-all = "tox"
+lint = "flake8 src/wiki tests/"
+clean = "rm -fr .tox/ && rm -f .coverage && rm -fr htmlcov/"
 
 [[tool.hatch.envs.test.matrix]]
 python = ["37", "38", "39", "310", "311"]
+
+[tool.hatch.envs.transifex]
+dependencies = [
+  "transifex-client",
+]
+
+[tool.hatch.envs.transifex.scripts]
+push = "cd src/wiki && django-admin makemessages -l en && cd .. && tx push -s"
+pull = "tx pull -a && cd src/wiki && django-admin compilemessages"
+
+[tool.hatch.envs.docs]
+dependencies = [
+  "Django>=3.1.13",
+  "bleach>=3.3.0,<5.1",
+  "sphinx>=3",
+  "sphinx_rtd_theme==1.1.1",
+]
+
+[tool.hatch.envs.docs.scripts]
+build = "make -C docs clean && rm -f docs/wiki*.rst && rm -f docs/modules.rst && sphinx-apidoc -o docs/ src/wiki && make -C docs html"
+linkcheck = "sphinx-build -b linkcheck ./docs ./docs/_build"
 
 [tool.coverage.run]
 branch = true
