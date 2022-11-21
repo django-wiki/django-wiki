@@ -7,7 +7,7 @@ name = "wiki"
 description = "A wiki system written for the Django framework."
 readme = "README.rst"
 requires-python = ">=3.7"
-license = "GPLv3"
+license = "GPL-3.0"
 keywords = ["django", "wiki", "markdown"]
 authors = [
   { name = "Benjamin Bach", email = "benjamin@overtag.dk" },
@@ -58,7 +58,7 @@ Source = "https://github.com/django-wiki/django-wiki"
 disable = true
 
 [tool.hatch.version]
-path = "wiki/__init__.py"
+path = "src/wiki/__about__.py"
 
 [tool.hatch.build.targets.sdist]
 include = [
