@@ -212,7 +212,16 @@ build = [
     "rm -f docs/modules.rst",
     "sphinx-apidoc -o docs/ src/wiki",
     "hatch run docs:html {args}",
-    #"$(BROWSER) docs/_build/html/index.html",
+    """
+    python -c '
+import os, webbrowser, sys
+try:
+  from urllib import pathname2url
+except:
+  from urllib.request import pathname2url
+
+  webbrowser.open(\"file://\" + pathname2url(os.path.abspath(\"docs/_build/html/index.html\")))
+    '"""
 ]
 link-check = "sphinx-build -b linkcheck ./docs ./docs/_build"
 
