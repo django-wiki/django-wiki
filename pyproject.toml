@@ -10,41 +10,41 @@ requires-python = ">=3.7"
 license = "GPL-3.0"
 keywords = ["django", "wiki", "markdown"]
 authors = [
-  { name = "Benjamin Bach", email = "benjamin@overtag.dk" },
+    { name = "Benjamin Bach", email = "benjamin@overtag.dk" },
 ]
 maintainers = [
-  { name = "Oscar Cortez", email = "om.cortez.2010@gmail.com" },
+    { name = "Oscar Cortez", email = "om.cortez.2010@gmail.com" },
 ]
 classifiers = [
-  "Development Status :: 5 - Production/Stable",
-  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
-  "Environment :: Web Environment",
-  "Framework :: Django",
-  "Intended Audience :: Developers",
-  "Operating System :: OS Independent",
-  "Programming Language :: Python",
-  "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.7",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: Implementation :: CPython",
-  "Programming Language :: Python :: Implementation :: PyPy",
-  "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
-  "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: Wiki",
-  "Topic :: Software Development",
-  "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: Wiki",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
 ]
 dependencies = [
-  "Django>=2.1,<4.2",
-  "bleach[css]>=5",
-  "Pillow",
-  "django-nyt>=1.2.2",
-  "django-mptt>=0.13,<0.15",
-  "django-sekizai>=0.10",
-  "sorl-thumbnail>=12.8,<13",
-  "Markdown>=3.3,<3.4",
+    "Django>=2.1,<4.2",
+    "bleach[css]>=5",
+    "Pillow",
+    "django-nyt>=1.2.2",
+    "django-mptt>=0.13,<0.15",
+    "django-sekizai>=0.10",
+    "sorl-thumbnail>=12.8,<13",
+    "Markdown>=3.3,<3.4",
 ]
 dynamic = ["version"]
 
@@ -67,47 +67,62 @@ include = [
 
 [tool.hatch.envs.default]
 dependencies = [
-  "black>=22.3.0,<22.11",
-  "codecov",
-  "coverage",
-  "ddt",
-  "django-functest>=1.2,<1.6",
-  "flake8>=3.7,<5.1",
-  "pre-commit",
-  "pytest-cov",
-  "pytest-django",
-  "pytest-pythonpath",
-  "pytest>=6.2.5,<7.3",
+    "black>=22.3.0,<22.11",
+    "codecov",
+    "coverage",
+    "ddt",
+    "django-functest>=1.2,<1.6",
+    "flake8>=3.7,<5.1",
+    "pre-commit",
+    "pytest-cov",
+    "pytest-django",
+    "pytest-pythonpath",
+    "pytest>=6.2.5,<7.3",
 ]
 
 [tool.hatch.envs.default.scripts]
 cov = "coverage run --source wiki setup.py test && coverage report -m"
 no-cov = "cov --no-cov {args}"
 lint = "flake8 src/wiki tests/"
-clean-build = "rm -fr build/ && rm -fr dist/ && rm -fr .eggs/ && find . -name '*.egg-info' -exec rm -fr {} + && find . -name '*.egg' -exec rm -f {} +"
-clean-pyc = "find . -name '*.pyc' -exec rm -f {} && find . -name '*.pyo' -exec rm -f {} && find . -name '*~' -exec rm -f {} && find . -name '__pycache__' -exec rm -fr {}"
+clean-build = [
+    "rm -fr build",
+    "rm -fr dist",
+    "rm -fr .eggs",
+    "find . -name '*.egg-info' -exec rm -fr {{}} +",
+    "find . -name '*.egg' -exec rm -f {{}} +",
+]
+clean-pyc = [
+    "find . -name '*.pyc' -exec rm -f {{}} +",
+    "find . -name '*.pyo' -exec rm -f {{}} +",
+    "find . -name '*~' -exec rm -f {{}} +",
+    "find . -name '__pycache__' -exec rm -fr {{}} +",
+]
 assets = "sassc --style compressed src/wiki/static/wiki/bootstrap/scss/wiki/wiki-bootstrap.scss src/wiki/static/wiki/bootstrap/css/wiki-bootstrap.min.css"
 
 [tools.hatch.envs.test]
 dependencies = [
-  "codecov",
-  "coverage",
-  "ddt",
-  "django-functest>=1.2,<1.6",
-  "pytest-cov",
-  "pytest-django",
-  "pytest-pythonpath",
-  "pytest>=6.2.5,<7.3",
-  "black>=22.3.0,<22.11",
-  "flake8>=3.7,<5.1",
-  "pre-commit",
+    "codecov",
+    "coverage",
+    "ddt",
+    "django-functest>=1.2,<1.6",
+    "pytest-cov",
+    "pytest-django",
+    "pytest-pythonpath",
+    "pytest>=6.2.5,<7.3",
+    "black>=22.3.0,<22.11",
+    "flake8>=3.7,<5.1",
+    "pre-commit",
 ]
 
 [tools.hatch.envs.test.scripts]
 test = "pytest"
 test-all = "tox"
 lint = "flake8 src/wiki tests/"
-clean = "rm -fr .tox/ && rm -f .coverage && rm -fr htmlcov/"
+clean = [
+    "rm -fr .tox/",
+    "rm -f .coverage",
+    "rm -fr htmlcov/",
+]
 
 [[tool.hatch.envs.test.matrix]]
 python = ["37", "38", "39", "310", "311"]
@@ -118,32 +133,121 @@ dependencies = [
 ]
 
 [tool.hatch.envs.transifex.scripts]
-push = "cd src/wiki && django-admin makemessages -l en && cd .. && tx push -s"
-pull = "tx pull -a && cd src/wiki && django-admin compilemessages"
+push = [
+    "cd src/wiki && django-admin makemessages -l en",
+    "cd ..",
+    "tx push -s",
+]
+pull = [
+    "tx pull -a",
+    "cd src/wiki && django-admin compilemessages",
+]
 
 [tool.hatch.envs.docs]
 dependencies = [
-  "Django>=3.1.13",
-  "bleach>=3.3.0,<5.1",
-  "sphinx>=3",
-  "sphinx_rtd_theme==1.1.1",
+    "Django>=3.1.13",
+    "bleach>=3.3.0,<5.1",
+    "sphinx>=3",
+    "sphinx_rtd_theme==1.1.1",
 ]
 
 [tool.hatch.envs.docs.scripts]
-build = "make -C docs clean && rm -f docs/wiki*.rst && rm -f docs/modules.rst && sphinx-apidoc -o docs/ src/wiki && make -C docs html"
-linkcheck = "sphinx-build -b linkcheck ./docs ./docs/_build"
+clean = "rm -rf docs/_build/*"
+html = "sphinx-build -b html -d docs/_build/doctrees -D latex_paper_size={args} . docs/_build/html"
+dirhtml = "sphinx-build -b dirhtml -d docs/_build/doctrees -D latex_paper_size={args} . docs/_build/dirhtml"
+singlehtml = "sphinx-build -b singlehtml -d docs/_build/doctrees -D latex_paper_size={args} . docs/_build/singlehtml"
+pickle = "sphinx-build -b pickle -d docs/_build/doctrees -D latex_paper_size={args} . docs/_build/pickle"
+json = "sphinx-build -b json -d docs/_build/doctrees -D latex_paper_size={args} . docs/_build/json"
+htmlhelp = [
+    "sphinx-build -b htmlhelp -d docs/_build/doctrees -D latex_paper_size={args} . docs/_build/htmlhelp",
+    "echo 'Build finished; now you can run HTML Help Workshop with the .hhp project file in docs/_build/htmlhelp.'",
+]
+qthelp = [
+    "sphinx-build -b qthelp -d docs/_build/doctrees -D latex_paper_size={args} . docs/_build/qthelp",
+    "echo 'Build finished; now you can run qcollectiongenerator with the .qhcp project file in docs/_build/qthelp, like this:'",
+    "echo '# qcollectiongenerator docs/_build/qthelp/django-wiki.qhcp'",
+    "echo 'To view the help file:'",
+    "echo '# assistant -collectionFile docs/_build/qthelp/django-wiki.qhc'",
+]
+devhelp = [
+    "sphinx-build -b devhelp -d docs/_build/doctrees -D latex_paper_size={args} . docs/_build/devhelp",
+    "echo 'Build finished.'",
+    "echo 'To view the help file:'",
+    "echo '# mkdir -p $$HOME/.local/share/devhelp/django-wiki'",
+    "echo '# ln -s docs/_build/devhelp $$HOME/.local/share/devhelp/django-wiki'",
+    "echo '# devhelp'",
+]
+epub = "sphinx-build -b epub -d docs/_build/doctrees -D latex_paper_size={args} . docs/_build/epub"
+latex = [
+    "echo 'Build finished; the LaTeX files are in docs/_build/latex.'",
+    "echo 'Run `make` in that directory to run these through (pdf)latex'",
+    "echo '(use `make latexpdf` here to do that automatically).'",
+]
+latexpdf = [
+    "sphinx-build -b latex -d docs/_build/doctrees -D latex_paper_size={args} . docs/_build/latext",
+    "echo 'Running LaTeX files through pdflatex...'",
+    "make -C docs/_build/latex all-pdf",
+    "echo 'pdflatex finished; the PDF files are in docs/_build/latex.'",
+]
+text = "sphinx-build -b text -d docs/_build/doctrees -D latex_paper_size={args} . docs/_build/text"
+man = "sphinx-build -b man -d docs/_build/doctrees -D latex_paper_size={args} . docs/_build/man"
+texinfo = [
+    "echo 'Build finished. The Texinfo files are in docs/_build/texinfo.'",
+    "echo 'Run `make` in that directory to run these through makeinfo'",
+    "echo '(use `make info` here to do that automatically).'",
+]
+info = [
+    "sphinx-build -b texinfo -d docs/_build/doctrees -D latex_paper_size={args} . docs/_build/texinfo",
+    "echo 'Running Texinfo files through makeinfo...'",
+    "make -C docs/_build/texinfo info",
+    "echo 'makeinfo finished; the Info files are in docs/_build/texinfo.'",
+]
+gettext = "sphinx-build -b gettext -D latex_paper_size={args} docs/_build/locale"
+changes = "sphinx-build -b changes -d docs/_build/doctrees -D latex_paper_size={args} . docs/_build/changes"
+link-check2 = "sphinx-build -b linkcheck -d docs/_build/doctrees -D latex_paper_size={args} . docs/_build/linkcheck"
+doctest = "sphinx-build -b doctest -d docs/_build/doctrees -D latex_paper_size={args} . docs/_build/doctest"
+build = [
+    "hatch run docs:clean",
+    "rm -f docs/wiki*.rst",
+    "rm -f docs/modules.rst",
+    "sphinx-apidoc -o docs/ src/wiki",
+    "hatch run docs:html {args}",
+    #"$(BROWSER) docs/_build/html/index.html",
+]
+link-check = "sphinx-build -b linkcheck ./docs ./docs/_build"
 
 [tool.coverage.run]
 branch = true
 parallel = true
 omit = [
-  "src/__about__.py",
+    "src/wiki/__about__.py",
 ]
 
 [tool.coverage.report]
 exclude_lines = [
-  "no cov",
-  "if __name__ == .__main__.:",
-  "if TYPE_CHECKING:",
+    "no cov",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
 ]
 
+[tool.black]
+line-length = 88
+include = '\.pyi?$'
+exclude = '''
+
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | env
+    | _build
+    | buck-out
+    | build
+    | dist
+  )/
+)
+'''
