@@ -1,7 +1,0 @@
-include COPYING
-include README.rst
-include setup.cfg
-recursive-include src *.html *.txt *.png *.js *.css *.gif *.scss *.mo *.po *.svg *.woff *.woff2 *.eot *.ttf *.map
-
-# Exclude compiled version of source language, it's meaningless
-exclude src/wiki/locale/en/LC_MESSAGES/django.mo

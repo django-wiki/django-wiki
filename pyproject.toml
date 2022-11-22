@@ -62,14 +62,19 @@ path = "src/wiki/__about__.py"
 
 [tool.hatch.build.targets.sdist]
 include = [
+    "COPYING",
+    "README.rst",
     "/src",
+]
+exclude = [
+    "src/wiki/locale/en/LC_MESSAGES/django.mo",
 ]
 
 [tool.hatch.envs.default]
 dependencies = [
     "black>=22.3.0,<22.11",
     "codecov",
-    "coverage",
+    "coverage[toml]",
     "ddt",
     "django-functest>=1.2,<1.6",
     "flake8>=3.7,<5.1",
@@ -81,7 +86,7 @@ dependencies = [
 ]
 
 [tool.hatch.envs.default.scripts]
-cov = "coverage run --source wiki setup.py test && coverage report -m"
+cov = "coverage --cov-config=pyproject.toml run --source wiki test && coverage report -m"
 no-cov = "cov --no-cov {args}"
 lint = "flake8 src/wiki tests/"
 clean-build = [
@@ -99,10 +104,10 @@ clean-pyc = [
 ]
 assets = "sassc --style compressed src/wiki/static/wiki/bootstrap/scss/wiki/wiki-bootstrap.scss src/wiki/static/wiki/bootstrap/css/wiki-bootstrap.min.css"
 
-[tools.hatch.envs.test]
+[tool.hatch.envs.test]
 dependencies = [
     "codecov",
-    "coverage",
+    "coverage[toml]",
     "ddt",
     "django-functest>=1.2,<1.6",
     "pytest-cov",
@@ -114,10 +119,14 @@ dependencies = [
     "pre-commit",
 ]
 
-[tools.hatch.envs.test.scripts]
-test = "pytest"
-test-all = "tox"
-lint = "flake8 src/wiki tests/"
+[tool.hatch.envs.test.scripts]
+all = "pytest"
+lint = [
+    "flake8 src/wiki/",
+    "flake8 tests/",
+    "pre-commit install -f --install-hooks",
+    "pre-commit run --all-files --show-diff-on-failure",
+]
 clean = [
     "rm -fr .tox/",
     "rm -f .coverage",
@@ -262,3 +271,18 @@ exclude = '''
   )/
 )
 '''
+
+[tool.pytest.ini_options]
+django_find_project = false
+testpaths = [
+    "tests",
+]
+norecursedirs = [
+    "testproject",
+    ".svn",
+    "_build",
+    "tmp*",
+    "dist",
+    "*.egg-info",
+]
+DJANGO_SETTINGS_MODULE = "tests.settings"
