@@ -18,7 +18,7 @@ Release plan
 -----------------
 
 * Removed direct dependency on ``tinycss2``, inherited from ``bleach`` - due to old versions of pip unable to resolve
-
+* Fixed wrong CSS class for collapse elements in Bootstrap 4 :url-issue:`1208` (Oscar Cortez)
 
 0.9
 ---
