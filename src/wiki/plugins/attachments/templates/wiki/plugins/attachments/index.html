@@ -75,8 +75,7 @@
             <p class="card-title"><span class="fa fa-fw fa-upload"></span> {% trans "Upload new file" %}</p>
           </a>
         </div>
-
-        <div id="collapse_upload" class="card-collapse collapse{% if form.errors %} in{% endif %}">
+        <div id="collapse_upload" class="card-collapse collapse{% if form.errors %} show{% endif %}">
           <div class="card-body">
             {% if anonymous_disallowed %}
               {% include "wiki/includes/anonymous_blocked.html" %}
