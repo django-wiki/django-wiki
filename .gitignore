@@ -57,6 +57,7 @@ coverage.xml
 #Virtualenv
 virtualenv
 .venv
+env/
 
 #Mr Developer
 .mr.developer.cfg
@@ -65,4 +66,5 @@ virtualenv
 *~
 *.swp
 
+*.db
 __pycache__
