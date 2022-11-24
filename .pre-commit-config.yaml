@@ -8,11 +8,20 @@ repos:
     rev: v4.3.0
     hooks:
     -   id: trailing-whitespace
-        exclude: "^.tx/"
+        exclude: |
+          (?x)^(
+              .tx/|
+              src/wiki/static/wiki/bootstrap/js/.*
+          )$
     -   id: check-added-large-files
     -   id: debug-statements
     -   id: end-of-file-fixer
-        exclude: "^(.tx/.*|.*\\.map)$"
+        exclude: |
+          (?x)^(
+              .tx/|
+              src/wiki/static/wiki/bootstrap/js/.*|
+              .*\.map
+          )$
   - repo: https://github.com/psf/black
     rev: 22.10.0
     hooks:
