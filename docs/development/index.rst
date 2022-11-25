@@ -4,6 +4,7 @@ Developer guide
 .. toctree::
    :maxdepth: 1
 
+   hatch
    environment
    testproject
    testing
@@ -66,16 +67,11 @@ Ready to contribute? Here's how to set up `django-wiki` for local development.
 
     $ git clone git@github.com:your_name_here/django-wiki.git
 
-#. Go to your fork and install our pre-commit hooks which verify the code for errors::
+#. Go to your fork and install ``hatch`` which is the tool we use manage django-wiki
+#. Install your local copy into a new environment. Assuming you have ``hatch`` installed, this is how you set up your fork for local development::
 
-    $ pip install pre-commit
-    $ pre-commit install
-
-#. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
-
-    $ mkvirtualenv django-wiki
     $ cd django-wiki/
-    $ pip install -e '.[devel]'
+    $ hatch env create
 
 #. Create a branch for local development::
 
@@ -86,19 +82,18 @@ Ready to contribute? Here's how to set up `django-wiki` for local development.
 #. As you are making changes you may want to verify that changes are
    passing all the relevant functional/unit tests::
 
-    $ pytest
+    $ hatch run test:all
 
 #. If you made changes related to the style sheets (SCSS), you need to install `sassc <https://sass-lang.com/libsass>`__ (``sudo apt install sassc``) and run this to compile css::
 
-    $ make assets
+    $ hatch run assets
 
 #. When you're done making changes, perform one final round of
    testing, and also ensure relevant tests pass with all supported
-   Python versions with tox::
+   Python versions with our matrix::
 
-    $ pytest
-    $ # Necessary to run "pip install tox" firstly
-    $ tox # Runs all tests that pytest would run, just with various Python/Django combinations
+    $ hatch run test
+    $ hatch run test:all # Runs all tests that pytest would run, just with various Python/Django combinations
 
 #. Commit your changes and push your branch to GitHub::
 
@@ -125,9 +120,9 @@ Tips
 
 To run a subset of tests::
 
-    $ pytest tests/core/test_basic.py # All tests from a single file.
-    $ pytest tests/core/test_basic.py::URLPathTests # All tests from a single class.
-    $ pytest tests/core/test_basic.py::URLPathTests::test_manager # Just one test.
+    $ hatch run test:all tests/core/test_basic.py # All tests from a single file.
+    $ hatch run test:all tests/core/test_basic.py::URLPathTests # All tests from a single class.
+    $ hatch run test:all tests/core/test_basic.py::URLPathTests::test_manager # Just one test.
 
 
 Roadmap

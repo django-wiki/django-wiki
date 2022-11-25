@@ -131,7 +131,7 @@ dependencies = [
 ]
 
 [tool.hatch.envs.test.scripts]
-all = "pytest"
+all = "pytest {args}"
 lint = [
     "flake8 src/wiki/",
     "flake8 tests/",

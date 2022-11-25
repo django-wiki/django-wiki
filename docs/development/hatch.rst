@@ -1,0 +1,207 @@
+pyproject.toml and hatch
+========================
+
+Time ago django-wiki core dev's introduced the possibility to start using the
+new ``pyproject.toml`` and drop the old ``setup.py`` proposed in the issue
+:url-issue:`1199`, this was due to The Python packaging ecosystem has
+standardized on the interface for build backends
+(`PEP 517 <https://peps.python.org/pep-0517/>`_/`PEP 660 <https://peps.python.org/pep-0660/>`_)
+and the format for metadata declaration (`PEP 621 <https://peps.python.org/pep-0621/>`_/`PEP 631 <https://peps.python.org/pep-0631/>`_).
+As a result, the execution of ``setup.py`` files is now `deprecated <https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html>`_.
+
+The discussion for this feature and the steps to mark this as completed are
+happening `in this discussion <https://github.com/django-wiki/django-wiki/discussions/1226>`_,
+and as well the development process is `here <https://github.com/django-wiki/django-wiki/pull/1227>`_.
+
+As a result of this work, the maintainers opted to use ``hatch`` to manage the
+development process of django-wiki, you can read more about it in their
+`official docs <https://hatch.pypa.io/latest/>`_.
+
+Assuming you have installed ``hatch`` in your environment, the first thing that
+you have to do in a fresh copy of ``django-wiki`` is to initilize the
+environments, for that you have to execute ``hatch env create`` in the root of
+``django-wiki`` codebase.
+
+This will add a set of available commands, and different environment that are
+used in the development process, here's a list generated with ``hatch env show``::
+
+                             Standalone
+  +-----------+---------+---------------------------+-------------+
+  | Name      | Type    | Dependencies              | Scripts     |
+  +===========+=========+===========================+=============+
+  | test      | virtual | black<22.11,>=22.3.0      | all         |
+  |           |         | codecov                   | assets      |
+  |           |         | coverage[toml]            | clean       |
+  |           |         | ddt                       | clean-build |
+  |           |         | django-functest<1.6,>=1.2 | clean-pyc   |
+  |           |         | flake8<5.1,>=3.7          | cov         |
+  |           |         | pre-commit                | lint        |
+  |           |         | pytest-cov                | no-cov      |
+  |           |         | pytest-django             | test        |
+  |           |         | pytest-pythonpath         |             |
+  |           |         | pytest<7.3,>=6.2.5        |             |
+  +-----------+---------+---------------------------+-------------+
+  | transifex | virtual | transifex-client          | assets      |
+  |           |         |                           | clean-build |
+  |           |         |                           | clean-pyc   |
+  |           |         |                           | cov         |
+  |           |         |                           | lint        |
+  |           |         |                           | no-cov      |
+  |           |         |                           | pull        |
+  |           |         |                           | push        |
+  |           |         |                           | test        |
+  +-----------+---------+---------------------------+-------------+
+  | docs      | virtual | bleach<5.1,>=3.3.0        | assets      |
+  |           |         | django>=3.1.13            | build       |
+  |           |         | sphinx-rtd-theme==1.1.1   | changes     |
+  |           |         | sphinx>=3                 | clean       |
+  |           |         |                           | clean-build |
+  |           |         |                           | clean-pyc   |
+  |           |         |                           | cov         |
+  |           |         |                           | devhelp     |
+  |           |         |                           | dirhtml     |
+  |           |         |                           | doctest     |
+  |           |         |                           | epub        |
+  |           |         |                           | gettext     |
+  |           |         |                           | html        |
+  |           |         |                           | htmlhelp    |
+  |           |         |                           | info        |
+  |           |         |                           | json        |
+  |           |         |                           | latex       |
+  |           |         |                           | latexpdf    |
+  |           |         |                           | link-check  |
+  |           |         |                           | link-check2 |
+  |           |         |                           | lint        |
+  |           |         |                           | man         |
+  |           |         |                           | no-cov      |
+  |           |         |                           | pickle      |
+  |           |         |                           | qthelp      |
+  |           |         |                           | singlehtml  |
+  |           |         |                           | test        |
+  |           |         |                           | texinfo     |
+  |           |         |                           | text        |
+  +-----------+---------+---------------------------+-------------+
+                                    Matrices
+  +---------+---------+------------+---------------------------+-------------+
+  | Name    | Type    | Envs       | Dependencies              | Scripts     |
+  +=========+=========+============+===========================+=============+
+  | default | virtual | py3.7-2.2  | black<22.11,>=22.3.0      | assets      |
+  |         |         | py3.7-3.0  | codecov                   | clean-build |
+  |         |         | py3.7-3.1  | coverage[toml]            | clean-pyc   |
+  |         |         | py3.7-3.2  | ddt                       | cov         |
+  |         |         | py3.8-3.0  | django-functest<1.6,>=1.2 | lint        |
+  |         |         | py3.8-3.1  | flake8<5.1,>=3.7          | no-cov      |
+  |         |         | py3.8-3.2  | pre-commit                | test        |
+  |         |         | py3.9-3.0  | pytest-cov                |             |
+  |         |         | py3.9-3.1  | pytest-django             |             |
+  |         |         | py3.9-3.2  | pytest-pythonpath         |             |
+  |         |         | py3.10-3.2 | pytest<7.3,>=6.2.5        |             |
+  |         |         | py3.7-4.0  |                           |             |
+  |         |         | py3.8-4.0  |                           |             |
+  |         |         | py3.9-4.0  |                           |             |
+  +---------+---------+------------+---------------------------+-------------+
+
+We have 4 different environments declared in the configuration file, each one
+has his own purpose::
+
+* ``default``: The development environment for django-wiki.
+
+* ``test``: where we ensure that the code works on different Django and Python versions.
+
+* ``docs``: Used for generate the page you're reading at this moment.
+
+* ``transifex``: Used only for the translation side of the project.
+
+We use heavily on the scripts functionality provided by ``hatch`` (`read more <https://hatch.pypa.io/latest/environment/#scripts>`_)
+that's why we have included some commands that will make the development
+process more easier. Some commands are only available at certain environments,
+so for example at the ``transifex`` environment you see ``pull`` and ``push``
+commands that are not present in any other environment declared above. For
+executing the command you have to follow this simple formula::
+
+  $ hatch run <environment name>:<command name>
+
+Then applied to the ``push`` command on the ``transifex`` environment will be::
+
+  $ hatch run transifex:pull
+
+You can use the same logic for execute the available commands in the app, but
+heres a detailed list of the commands ordered by environments, so you can
+understand the purpose of each one::
+
+* ``cov``: Check coverage status.
+
+* ``no-cov``: Check places pending to add coverage.
+
+* ``lint``: Make sure the code changes follow our guidelines and conventions.
+
+* ``clean-build``: Remove the files generated after the project is built.
+
+* ``clean-pyc``: Remove pyc generated files.
+
+* ``assets``: Generate the static files used by django-wiki frontend.
+
+* ``test``: Test the changes in the current environment.
+
+* ``test:all``: Test the changes across our supported Python and Django versions.
+
+* ``test:lint``: Make sure the code changes follows our guidelines and conventions.
+
+* ``test:clean``: Remove the files generated via the testing process.
+
+* ``transifex:push``: Push the translation files to Transifex.
+
+* ``transifex:pull``: Pull the translation files from Transifex.
+
+* ``docs:clean``: Remove the generated documentation files.
+
+* List of docs commands used to generate the documentation in different formats:
+
+  * Please refer to the `Builder documentation of SPHINX <https://www.sphinx-doc.org/en/master/usage/builders/index.html>`_
+    to understand more about the purpose of each builder and the expected output.
+
+  * ``docs:html``
+
+  * ``docs:dirhtml``
+
+  * ``docs:singlehtml``
+
+  * ``docs:pickle``
+
+  * ``docs:json``
+
+  * ``docs:htmlhelp``
+
+  * ``docs:qthelp``
+
+  * ``docs:devhelp``
+
+  * ``docs:epub``
+
+  * ``docs:latex``
+
+  * ``docs:latexpdf``
+
+  * ``docs:text``
+
+  * ``docs:man``
+
+  * ``docs:texinfo``
+
+  * ``docs:info``
+
+  * ``docs:gettext``
+
+  * ``docs:changes``
+
+  * ``docs:link-check2``
+
+  * ``docs:doctest``
+
+
+* ``docs:build``: Generate the documentation in HTML format.
+
+* ``docs:link-check``: Checks for external links across the documentation.
+
+We hope that this document helps you to understand more about the development
+process, if something is not clear please open an issue.
