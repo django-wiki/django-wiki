@@ -205,3 +205,53 @@ understand the purpose of each one::
 
 We hope that this document helps you to understand more about the development
 process, if something is not clear please open an issue.
+
+FAQ
+---
+
+1. **Whats the difference between test and test:all?**
+
+   When you execute ``hatch run test`` this will check your changes in the
+   active environment, this means it will run over an specific Python version
+   and an specific Django Version; in the other hand ``test:all`` will run the
+   test suite in the whole matrix of the supported versions of Python and Django.
+
+2. **What Python Versions are currently used?**
+
+   Right now, ``django-wiki`` runs on Python 3.7.X until 3.10.X and for Django
+   it runs in version 2.2 until version 4.0.
+
+3. **hatch is unable to create a test environment with an specific Python Version?**
+
+   If after you execute ``hatch env create`` you receive a message like this in
+   your terminal ``py3.8-4.0 -> cannot locate Python: 3.8`` this means that
+   ``hatch`` was unable to locate that Python version, in the end it depends on
+   what program do you use for manage your Python version, the most
+   important part is that the versions must be available in your ``PATH``.
+
+4. **How to manage different Python Versions?**
+
+   There's a lot of options outside, the most important piece is that as stated
+   above, the versions are able to be located in your system ``PATH``. Dor
+   example, if you're a user of `pyenv <https://github.com/pyenv/pyenv>`_ you
+   can set multiple Python version using ``pyenv local <version> <version>``.
+
+   ``pyenv local 3.7.12 3.8.12 3.9.13 3.10.2``
+
+ 5. **There's an error when init an environment?**
+
+   If you see and error message like ``Environment default defines a matrix, choose one of the following instead:``
+   and then a list of all of the available environments, you need to set the
+   environment name on the shell command like this ``hatch <env_name> shell``
+
+   ``hatch -e py3.10-3.2 shell``
+
+   This way you can switch environments by an specific Python and Django version.
+
+ 6. **How do I switch default shell versions?**
+
+    By default django-wiki runs on the latest supported Python and Django
+    version, if you want to swich to another environment, say for example
+    Python 3.9.13 with Django 3.0 then execute the following command:
+
+    ``hatch -e py3.9-3.0 shell``

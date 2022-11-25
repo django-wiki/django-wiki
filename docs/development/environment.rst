@@ -2,7 +2,7 @@ Setting up a development environment
 ====================================
 
 * Fork and clone the ``django-wiki`` repo from Github, ``cd`` into it.
-* Install ``hatch`` with your favorite package manager.
+* Install `hatch <https://hatch.pypa.io/latest/install/>`_ with your favorite package manager.
 * Inside ``django-wiki`` directory, initialize the environment::
 
     $ hatch env create
