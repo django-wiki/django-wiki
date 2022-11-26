@@ -22,7 +22,7 @@
       </a>
     </div>
 
-    <div id="collapse_{{ plugin.slug }}" class="card-collapse collapse{% if plugin_form.errors %} in{% endif %}">
+    <div id="collapse_{{ plugin.slug }}" class="card-collapse collapse{% if plugin_form.errors %} show{% endif %}">
       <div class="card-body form-vertical">
         {% if plugin.sidebar.template %}
           {% with plugin_form as form and plugin as plugin %}

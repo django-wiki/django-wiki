@@ -153,4 +153,4 @@ WIKI_ANONYMOUS_CREATE = False
 
 SESSION_COOKIE_SECURE = True
 
-DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
