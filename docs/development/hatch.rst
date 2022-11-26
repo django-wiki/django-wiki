@@ -244,7 +244,7 @@ FAQ
    and then a list of all of the available environments, you need to set the
    environment name on the shell command like this ``hatch <env_name> shell``
 
-   ``hatch -e py3.10-3.2 shell``
+   ``hatch -e py3.10-dj3.2 shell``
 
    This way you can switch environments by an specific Python and Django version.
 
@@ -254,4 +254,4 @@ FAQ
     version, if you want to swich to another environment, say for example
     Python 3.9.13 with Django 3.0 then execute the following command:
 
-    ``hatch -e py3.9-3.0 shell``
+    ``hatch -e py3.9-dj3.0 shell``

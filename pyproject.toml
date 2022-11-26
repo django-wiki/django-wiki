@@ -110,7 +110,7 @@ test = [
     "codecov",
 ]
 
-[tool.hatch.envs.default.overrides]
+[tool.hatch.envs.test.overrides]
 matrix.django.dependencies = [
     { value = "django~={matrix:django}.0" },
 ]
@@ -129,6 +129,7 @@ dependencies = [
     "flake8>=3.7,<5.1",
     "pre-commit",
 ]
+matrix-name-format = "dj{value}"
 
 [tool.hatch.envs.test.scripts]
 all = "pytest {args}"
@@ -144,20 +145,16 @@ clean = [
     "rm -fr htmlcov/",
 ]
 
-[[tool.hatch.envs.default.matrix]]
-python = ["3.7"]
-django = ["2.2"]
-
-[[tool.hatch.envs.default.matrix]]
+[[tool.hatch.envs.test.matrix]]
 python = ["3.7", "3.8", "3.9"]
-django = ["3.0", "3.1", "3.2"]
+django = ["2.2", "3.0", "3.1", "3.2"]
 
-[[tool.hatch.envs.default.matrix]]
+[[tool.hatch.envs.test.matrix]]
 python = ["3.10"]
 django = ["3.2"]
 
-[[tool.hatch.envs.default.matrix]]
-python = ["3.7", "3.8", "3.9"]
+[[tool.hatch.envs.test.matrix]]
+python = ["3.8", "3.9", "3.10"]
 django = ["4.0"]
 
 [tool.hatch.envs.transifex]
