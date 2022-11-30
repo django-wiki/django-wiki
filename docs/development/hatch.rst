@@ -125,7 +125,7 @@ Then applied to the ``push`` command on the ``transifex`` environment will be::
 
   $ hatch run transifex:pull
 
-You can use the same logic for execute the available commands in the app, but
+You can use the same logic to execute the available commands in the app, but
 heres a detailed list of the commands ordered by environments, so you can
 understand the purpose of each one::
 
