@@ -29,15 +29,15 @@ used in the development process, here's a list generated with ``hatch env show``
   +-----------+---------+---------------------------+-------------+
   | Name      | Type    | Dependencies              | Scripts     |
   +===========+=========+===========================+=============+
-  | test      | virtual | black<22.11,>=22.3.0      | all         |
-  |           |         | codecov                   | assets      |
-  |           |         | coverage[toml]            | clean       |
-  |           |         | ddt                       | clean-build |
-  |           |         | django-functest<1.6,>=1.2 | clean-pyc   |
-  |           |         | flake8<5.1,>=3.7          | cov         |
-  |           |         | pre-commit                | lint        |
-  |           |         | pytest-cov                | no-cov      |
-  |           |         | pytest-django             | test        |
+  | default   | virtual | black<22.11,>=22.3.0      | assets      |
+  |           |         | codecov                   | clean-build |
+  |           |         | coverage[toml]            | clean-pyc   |
+  |           |         | ddt                       | cov         |
+  |           |         | django-functest<1.6,>=1.2 | lint        |
+  |           |         | flake8<5.1,>=3.7          | no-cov      |
+  |           |         | pre-commit                | test        |
+  |           |         | pytest-cov                |             |
+  |           |         | pytest-django             |             |
   |           |         | pytest-pythonpath         |             |
   |           |         | pytest<7.3,>=6.2.5        |             |
   +-----------+---------+---------------------------+-------------+
@@ -81,28 +81,31 @@ used in the development process, here's a list generated with ``hatch env show``
   |           |         |                           | texinfo     |
   |           |         |                           | text        |
   +-----------+---------+---------------------------+-------------+
-                                    Matrices
-  +---------+---------+------------+---------------------------+-------------+
-  | Name    | Type    | Envs       | Dependencies              | Scripts     |
-  +=========+=========+============+===========================+=============+
-  | default | virtual | py3.7-2.2  | black<22.11,>=22.3.0      | assets      |
-  |         |         | py3.7-3.0  | codecov                   | clean-build |
-  |         |         | py3.7-3.1  | coverage[toml]            | clean-pyc   |
-  |         |         | py3.7-3.2  | ddt                       | cov         |
-  |         |         | py3.8-3.0  | django-functest<1.6,>=1.2 | lint        |
-  |         |         | py3.8-3.1  | flake8<5.1,>=3.7          | no-cov      |
-  |         |         | py3.8-3.2  | pre-commit                | test        |
-  |         |         | py3.9-3.0  | pytest-cov                |             |
-  |         |         | py3.9-3.1  | pytest-django             |             |
-  |         |         | py3.9-3.2  | pytest-pythonpath         |             |
-  |         |         | py3.10-3.2 | pytest<7.3,>=6.2.5        |             |
-  |         |         | py3.7-4.0  |                           |             |
-  |         |         | py3.8-4.0  |                           |             |
-  |         |         | py3.9-4.0  |                           |             |
-  +---------+---------+------------+---------------------------+-------------+
+                                      Matrices
+  +------+---------+-------------------+---------------------------+-------------+
+  | Name | Type    | Envs              | Dependencies              | Scripts     |
+  +======+=========+===================+===========================+=============+
+  | test | virtual | test.py3.7-dj2.2  | black<22.11,>=22.3.0      | all         |
+  |      |         | test.py3.7-dj3.0  | codecov                   | assets      |
+  |      |         | test.py3.7-dj3.1  | coverage[toml]            | clean       |
+  |      |         | test.py3.7-dj3.2  | ddt                       | clean-build |
+  |      |         | test.py3.8-dj2.2  | django-functest<1.6,>=1.2 | clean-pyc   |
+  |      |         | test.py3.8-dj3.0  | flake8<5.1,>=3.7          | cov         |
+  |      |         | test.py3.8-dj3.1  | pre-commit                | lint        |
+  |      |         | test.py3.8-dj3.2  | pytest-cov                | no-cov      |
+  |      |         | test.py3.9-dj2.2  | pytest-django             | test        |
+  |      |         | test.py3.9-dj3.0  | pytest-pythonpath         |             |
+  |      |         | test.py3.9-dj3.1  | pytest<7.3,>=6.2.5        |             |
+  |      |         | test.py3.9-dj3.2  |                           |             |
+  |      |         | test.py3.10-dj3.2 |                           |             |
+  |      |         | test.py3.8-dj4.0  |                           |             |
+  |      |         | test.py3.9-dj4.0  |                           |             |
+  |      |         | test.py3.10-dj4.0 |                           |             |
+  +------+---------+-------------------+---------------------------+-------------+
+
 
 We have 4 different environments declared in the configuration file, each one
-has his own purpose::
+has his own purpose:
 
 * ``default``: The development environment for django-wiki.
 
@@ -127,7 +130,7 @@ Then applied to the ``push`` command on the ``transifex`` environment will be::
 
 You can use the same logic to execute the available commands in the app, but
 heres a detailed list of the commands ordered by environments, so you can
-understand the purpose of each one::
+understand the purpose of each one:
 
 * ``cov``: Check coverage status.
 
@@ -216,12 +219,7 @@ FAQ
    and an specific Django Version; in the other hand ``test:all`` will run the
    test suite in the whole matrix of the supported versions of Python and Django.
 
-2. **What Python Versions are currently used?**
-
-   Right now, ``django-wiki`` runs on Python 3.7.X until 3.10.X and for Django
-   it runs in version 2.2 until version 4.0.
-
-3. **hatch is unable to create a test environment with an specific Python Version?**
+2. **hatch is unable to create a test environment with an specific Python Version?**
 
    If after you execute ``hatch env create`` you receive a message like this in
    your terminal ``py3.8-4.0 -> cannot locate Python: 3.8`` this means that
@@ -229,26 +227,26 @@ FAQ
    what program do you use for manage your Python version, the most
    important part is that the versions must be available in your ``PATH``.
 
-4. **How to manage different Python Versions?**
+3. **How to manage different Python Versions?**
 
    There's a lot of options outside, the most important piece is that as stated
-   above, the versions are able to be located in your system ``PATH``. Dor
+   above, the versions need to able to be located in your system ``PATH``. for
    example, if you're a user of `pyenv <https://github.com/pyenv/pyenv>`_ you
    can set multiple Python version using ``pyenv local <version> <version>``.
 
    ``pyenv local 3.7.12 3.8.12 3.9.13 3.10.2``
 
- 5. **There's an error when init an environment?**
+ 4. **There's an error when init an environment?**
 
    If you see and error message like ``Environment default defines a matrix, choose one of the following instead:``
    and then a list of all of the available environments, you need to set the
-   environment name on the shell command like this ``hatch <env_name> shell``
+   environment name on the shell command like this ``hatch -e <env_name> shell``
 
-   ``hatch -e py3.10-dj3.2 shell``
+   ``hatch -e test.py3.10-dj3.2 shell``
 
    This way you can switch environments by an specific Python and Django version.
 
- 6. **How do I switch default shell versions?**
+ 5. **How do I switch default shell versions?**
 
     By default django-wiki runs on the latest supported Python and Django
     version, if you want to swich to another environment, say for example
