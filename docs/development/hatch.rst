@@ -112,7 +112,7 @@ has his own purpose::
 
 * ``transifex``: Used only for the translation side of the project.
 
-We use heavily on the scripts functionality provided by ``hatch`` (`read more <https://hatch.pypa.io/latest/environment/#scripts>`_)
+We center around the entrypoints provided by ``hatch`` (`read more <https://hatch.pypa.io/latest/environment/#scripts>`_)
 that's why we have included some commands that will make the development
 process more easier. Some commands are only available at certain environments,
 so for example at the ``transifex`` environment you see ``pull`` and ``push``
