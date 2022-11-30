@@ -3,6 +3,7 @@ repos:
     rev: '5.0.4'  # pick a git hash / tag to point to
     hooks:
     -   id: flake8
+        args: ["--max-line-length=213", "--extend-ignore=E203", "--max-complexity=10"]
         exclude: "^(.*/migrations/|testproject/testproject/settings/)"
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.3.0

@@ -4,55 +4,78 @@ orbs:
   python: circleci/python@0.2.1
 
 jobs:
-  tox:
+  hatch:
     parameters:
-      tox_env:
-        description: "Name of Tox environment to run"
-        default: "py38"
+      hatch_env:
+        description: "Name of Hatch environment to run"
+        default: "py3.8-dj3.2"
         type: string
       python_version:
         description: "Python version string"
         default: "3.8"
         type: string
-    description: "Reusable job for invoking tox"
+    description: "Reusable job for invoking hatch"
     docker:
-    - image: circleci/python:<<parameters.python_version>>
+      - image: circleci/python:<<parameters.python_version>>
     steps:
       - checkout
-      - run: pip install tox && tox -e <<parameters.tox_env>>
+      - run: pip install hatch && python -m hatch --env test.<<parameters.hatch_env>> run all
+  lint:
+    description: "Simple job for linting the pushed code"
+    docker:
+      - image: circleci/python:3.8
+    steps:
+      - checkout
+      - run: pip install hatch && python -m hatch --env test.py3.8-dj4.0 run lint
+
 workflows:
   main:
     jobs:
-      - tox:
-          tox_env: "py37-django22"
+      - hatch:
+          hatch_env: "py3.7-dj2.2"
           python_version: "3.7"
-      - tox:
-          tox_env: "py37-django30"
+      - hatch:
+          hatch_env: "py3.7-dj3.0"
           python_version: "3.7"
-      - tox:
-          tox_env: "py37-django31"
+      - hatch:
+          hatch_env: "py3.7-dj3.1"
           python_version: "3.7"
-      - tox:
-          tox_env: "py37-django32"
+      - hatch:
+          hatch_env: "py3.7-dj3.2"
           python_version: "3.7"
-      - tox:
-          tox_env: "py38-django30"
+      - hatch:
+          hatch_env: "py3.8-dj2.2"
           python_version: "3.8"
-      - tox:
-          tox_env: "py38-django31"
+      - hatch:
+          hatch_env: "py3.8-dj3.0"
           python_version: "3.8"
-      - tox:
-          tox_env: "py38-django32"
+      - hatch:
+          hatch_env: "py3.8-dj3.1"
+      - hatch:
+          hatch_env: "py3.8-dj3.2"
           python_version: "3.8"
-      - tox:
-          tox_env: "py39-django32"
+      - hatch:
+          hatch_env: "py3.8-dj4.0"
+          python_version: "3.8"
+      - hatch:
+          hatch_env: "py3.9-dj2.2"
           python_version: "3.9"
-      - tox:
-          tox_env: "py310-django32"
+      - hatch:
+          hatch_env: "py3.9-dj3.0"
+          python_version: "3.9"
+      - hatch:
+          hatch_env: "py3.9-dj3.1"
+          python_version: "3.9"
+      - hatch:
+          hatch_env: "py3.9-dj3.2"
+          python_version: "3.9"
+      - hatch:
+          hatch_env: "py3.9-dj4.0"
+          python_version: "3.9"
+      - hatch:
+          hatch_env: "py3.10-dj3.2"
           python_version: "3.10"
-      - tox:
-          tox_env: "py310-django40"
+      - hatch:
+          hatch_env: "py3.10-dj4.0"
           python_version: "3.10"
-      - tox:
-          tox_env: "lint"
-          python_version: "3.8"
+      - lint

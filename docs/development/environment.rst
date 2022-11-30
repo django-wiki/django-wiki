@@ -1,11 +1,14 @@
 Setting up a development environment
 ====================================
 
-* Fork and clone the django-wiki repo from Github, ``cd`` into it.
-* Create and activate a virtualenv for developing django-wiki.
-  Ensure you are using recent setuptools and pip.
-* Install the requirements::
+* Fork and clone the ``django-wiki`` repo from Github, ``cd`` into it.
+* Install `hatch <https://hatch.pypa.io/latest/install/>`_ with your favorite package manager.
+* Inside ``django-wiki`` directory, initialize the environment::
 
-    $ pip install --upgrade pip setuptools
-    $ pip install -e .[devel]
-    $ pip install tox
+    $ hatch env create
+
+* Launch a new shell session in order to activate the environment::
+
+    $ hatch shell
+
+* And done, you can start developing in ``django-wiki``.
