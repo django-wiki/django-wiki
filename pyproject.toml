@@ -89,7 +89,7 @@ dependencies = [
 [tool.hatch.envs.default.scripts]
 cov = "coverage --cov-config=pyproject.toml run --source wiki test && coverage report -m"
 no-cov = "cov --no-cov {args}"
-lint = "flake8 src/wiki tests/"
+lint = "flake8 --max-line-length=213 --extend-ignore=E203 --max-complexity=10 --exclude=.svn,CVS,.bzr,.hg,.git,__pycache__,.tox,.eggs,*.egg,*/*migrations,testproject src/wiki tests/"
 clean-build = [
     "rm -fr build",
     "rm -fr dist",
@@ -134,8 +134,7 @@ matrix-name-format = "dj{value}"
 [tool.hatch.envs.test.scripts]
 all = "pytest {args}"
 lint = [
-    "flake8 src/wiki/",
-    "flake8 tests/",
+    "flake8 --max-line-length=213 --extend-ignore=E203 --max-complexity=10 --exclude=.svn,CVS,.bzr,.hg,.git,__pycache__,.tox,.eggs,*.egg,*/*migrations,testproject src/wiki tests/",
     "pre-commit install -f --install-hooks",
     "pre-commit run --all-files --show-diff-on-failure",
 ]
