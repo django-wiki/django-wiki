@@ -134,7 +134,7 @@ sys.path = [os.path.join(path, "wiki")] + sys.path
 
 
 import wiki  # noqa
-from wiki import __about__
+from wiki import __about__  # noqa
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
