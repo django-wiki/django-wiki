@@ -113,8 +113,8 @@ has his own purpose::
 * ``transifex``: Used only for the translation side of the project.
 
 We center around the entrypoints provided by ``hatch`` (`read more <https://hatch.pypa.io/latest/environment/#scripts>`_)
-that's why we have included some commands that will make the development
-process more easier. Some commands are only available at certain environments,
+that's why we have documented commands that make development easier.
+Some commands are only available in certain environments,
 so for example at the ``transifex`` environment you see ``pull`` and ``push``
 commands that are not present in any other environment declared above. For
 executing the command you have to follow this simple formula::
