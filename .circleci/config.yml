@@ -16,10 +16,18 @@ jobs:
         type: string
     description: "Reusable job for invoking hatch"
     docker:
-    - image: circleci/python:<<parameters.python_version>>
+      - image: circleci/python:<<parameters.python_version>>
     steps:
       - checkout
-      - run: pip install hatch && python -m hatch --env test.<<parameters.hatch_env>> run test
+      - run: pip install hatch && python -m hatch --env test.<<parameters.hatch_env>> run all
+  lint:
+    description: "Simple job for linting the pushed code"
+    docker:
+      - image: circleci/python:3.8
+    steps:
+      - checkout
+      - run: pip install hatch && python -m hatch --env test.py3.8-dj4.0 run lint
+
 workflows:
   main:
     jobs:
@@ -70,3 +78,4 @@ workflows:
       - hatch:
           hatch_env: "py3.10-dj4.0"
           python_version: "3.10"
+      - lint
