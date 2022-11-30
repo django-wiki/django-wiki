@@ -1,9 +1,9 @@
 pyproject.toml and hatch
 ========================
 
-Time ago django-wiki core dev's introduced the possibility to start using the
-new ``pyproject.toml`` and drop the old ``setup.py`` proposed in the issue
-:url-issue:`1199`, this was due to The Python packaging ecosystem has
+Initially, django-wiki core devs opted to use the
+new ``pyproject.toml`` and drop the old ``setup.py`` (see
+:url-issue:`1199`). The Python packaging ecosystem has
 standardized on the interface for build backends
 (`PEP 517 <https://peps.python.org/pep-0517/>`_/`PEP 660 <https://peps.python.org/pep-0660/>`_)
 and the format for metadata declaration (`PEP 621 <https://peps.python.org/pep-0621/>`_/`PEP 631 <https://peps.python.org/pep-0631/>`_).
