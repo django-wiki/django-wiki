@@ -84,7 +84,6 @@ dependencies = [
     "pytest-pythonpath",
     "pytest>=6.2.5,<7.3",
 ]
-#dev-mode = false
 
 [tool.hatch.envs.default.scripts]
 cov = "coverage --cov-config=pyproject.toml run --source wiki test && coverage report -m"
