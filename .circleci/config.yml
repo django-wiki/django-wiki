@@ -19,7 +19,7 @@ jobs:
       - image: circleci/python:<<parameters.python_version>>
     steps:
       - checkout
-      - run: pip install hatch && python -m hatch --env test.<<parameters.hatch_env>> run ci_test
+      - run: pip install hatch && python -m hatch --env test.<<parameters.hatch_env>> run all
   lint:
     description: "Simple job for linting the pushed code"
     docker:
