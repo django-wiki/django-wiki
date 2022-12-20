@@ -86,8 +86,11 @@ dependencies = [
 ]
 
 [tool.hatch.envs.default.scripts]
-cov = "coverage --cov-config=pyproject.toml run --source wiki test && coverage report -m"
-no-cov = "cov --no-cov {args}"
+# Ignore this entrypoint for now, as it's not fully implemented
+cov = [
+    "coverage run",
+    "coverage report -m",
+]
 lint = "flake8 --max-line-length=213 --extend-ignore=E203 --max-complexity=10 --exclude=.svn,CVS,.bzr,.hg,.git,__pycache__,.tox,.eggs,*.egg,*/*migrations,testproject src/wiki tests/"
 clean-build = [
     "rm -fr build",
@@ -103,11 +106,7 @@ clean-pyc = [
     "find . -name '__pycache__' -exec rm -fr {{}} +",
 ]
 assets = "sassc --style compressed src/wiki/static/wiki/bootstrap/scss/wiki/wiki-bootstrap.scss src/wiki/static/wiki/bootstrap/css/wiki-bootstrap.min.css"
-test = [
-    "sh -c 'testproject/manage.py makemigrations --check'",
-    "pytest --ds=tests.settings --cov-config .coveragerc {args}",
-    "codecov",
-]
+test = "pytest {args}"
 
 [tool.hatch.envs.test.overrides]
 matrix.django.dependencies = [
@@ -131,7 +130,11 @@ dependencies = [
 matrix-name-format = "dj{value}"
 
 [tool.hatch.envs.test.scripts]
-all = "pytest {args}"
+all = [
+    "sh -c 'testproject/manage.py makemigrations --check'",
+    "pytest --cov=wiki tests/ {args}",
+    "codecov",
+]
 lint = [
     "flake8 --max-line-length=213 --extend-ignore=E203 --max-complexity=10 --exclude=.svn,CVS,.bzr,.hg,.git,__pycache__,.tox,.eggs,*.egg,*/*migrations,testproject src/wiki tests/",
     "pre-commit install -f --install-hooks",
@@ -256,9 +259,14 @@ except:
 link-check = "sphinx-build -b linkcheck ./docs ./docs/_build"
 
 [tool.coverage.run]
+disable_warnings = ['no-data-collected']
 branch = true
 parallel = true
+source = [
+    "src/",
+]
 omit = [
+    "*/tests/*",
     "src/wiki/__about__.py",
 ]
 
