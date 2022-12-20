@@ -86,6 +86,7 @@ dependencies = [
 ]
 
 [tool.hatch.envs.default.scripts]
+# Ignore this entrypoint for now, as it's not fully implemented
 cov = [
     "coverage run",
     "coverage report -m",
