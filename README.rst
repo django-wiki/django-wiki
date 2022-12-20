@@ -14,7 +14,7 @@ django-wiki
 .. |Downloads| image:: https://img.shields.io/pypi/dm/wiki.svg
    :target: https://pypi.org/project/wiki/
 .. |IRC| image:: https://img.shields.io/badge/irc-%23django--wiki%20on%20libera.chat-blue.svg
-   :target: https://webchat.freenode.net?channels=%23django-wiki
+   :target: https://web.libera.chat/?channel=#django-wiki
 
 Django support
 --------------
@@ -85,7 +85,7 @@ Please use our IRC or mailing list (google group) for getting in touch
 on development and support. Please do not email developers asking for
 personal support.
 
-- #django-wiki on irc.freenode.net
+- `#django-wiki on libera.chat <https://web.libera.chat/?channel=#django-wiki>`__
 - `django-wiki@googlegroups.com <https://groups.google.com/forum/#!forum/django-wiki>`__
 - `twitter:djangowiki <https://twitter.com/djangowiki>`__
 

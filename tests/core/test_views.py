@@ -9,6 +9,7 @@ from django.utils import translation
 from django.utils.html import escape
 from django_functest import FuncBaseMixin
 from wiki import models
+from wiki.conf import settings as wiki_settings
 from wiki.forms import PermissionsForm
 from wiki.forms import validate_slug_numbers
 from wiki.models import ArticleRevision
@@ -149,12 +150,40 @@ class ArticleViewViewTests(
         response = self.client.get(reverse("wiki:get", kwargs={"path": ""}))
         self.assertEqual(response.status_code, 200)
 
+    def test_show_max_children(self):
+        response = self.client.post(
+            resolve_url("wiki:create", path=""),
+            {"title": "Main", "slug": "WikiRoot", "content": "Content level 1"},
+        )
+        self.assertRedirects(response, resolve_url("wiki:get", path="wikiroot/"))
+        response = self.client.get(reverse("wiki:get", kwargs={"path": "wikiroot/"}))
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.context["children_slice"], list)
+        self.assertEqual(len(response.context["children_slice"]), 0)
+        for idx in range(1, 40):
+            response = self.client.post(
+                resolve_url("wiki:create", path="wikiroot/"),
+                {
+                    "title": "Sub Article {0}".format(idx),
+                    "slug": "SubArticle{0}".format(idx),
+                    "content": "Sub Article {0}".format(idx),
+                },
+            )
+            self.assertRedirects(
+                response,
+                resolve_url("wiki:get", path="wikiroot/subarticle{0}/".format(idx)),
+            )
+        response = self.client.get(reverse("wiki:get", kwargs={"path": "wikiroot/"}))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            len(response.context["children_slice"]), wiki_settings.SHOW_MAX_CHILDREN
+        )
+
 
 class CreateViewTest(
     RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase
 ):
     def test_create_nested_article_in_article(self):
-
         response = self.client.post(
             resolve_url("wiki:create", path=""),
             {"title": "Level 1", "slug": "Level1", "content": "Content level 1"},
