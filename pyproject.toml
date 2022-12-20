@@ -132,6 +132,11 @@ matrix-name-format = "dj{value}"
 
 [tool.hatch.envs.test.scripts]
 all = "pytest {args}"
+ci_test = [
+    "sh -c 'testproject/manage.py makemigrations --check'",
+    "pytest {args} --cov-config .coveragerc {args}",
+    "codecov",
+]
 lint = [
     "flake8 --max-line-length=213 --extend-ignore=E203 --max-complexity=10 --exclude=.svn,CVS,.bzr,.hg,.git,__pycache__,.tox,.eggs,*.egg,*/*migrations,testproject src/wiki tests/",
     "pre-commit install -f --install-hooks",
