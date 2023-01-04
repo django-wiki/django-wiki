@@ -33,9 +33,11 @@ class MacroPattern(markdown.inlinepatterns.Pattern):
     [some_macro (kw:arg)*] references."""
 
     def __init__(self, pattern, md=None):
-        """ Override init in order to add IGNORECASE flag """
+        """Override init in order to add IGNORECASE flag"""
         self.pattern = pattern
-        self.compiled_re = re.compile(r"^(.*?)%s(.*)$" % pattern, flags=re.DOTALL | re.UNICODE | re.IGNORECASE)
+        self.compiled_re = re.compile(
+            r"^(.*?)%s(.*)$" % pattern, flags=re.DOTALL | re.UNICODE | re.IGNORECASE
+        )
         self.md = md
 
     def handleMatch(self, m):
