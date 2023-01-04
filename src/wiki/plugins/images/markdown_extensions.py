@@ -57,12 +57,11 @@ class ImagePattern(markdown.inlinepatterns.Pattern):
 
     def __init__(self, pattern, md=None):
         """Override init in order to add IGNORECASE and MULTILINE flags"""
-        self.pattern = pattern
+        super().__init__(pattern, md=md)
         self.compiled_re = re.compile(
             r"^(.*?)%s(.*)$" % pattern,
             flags=re.DOTALL | re.UNICODE | re.IGNORECASE | re.MULTILINE,
         )
-        self.md = md
 
     def handleMatch(self, m):
         image = None
