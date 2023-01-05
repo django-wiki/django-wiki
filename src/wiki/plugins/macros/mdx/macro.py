@@ -10,7 +10,7 @@ from wiki.plugins.macros import settings
 # http://stackoverflow.com/questions/430759/regex-for-managing-escaped-characters-for-items-like-string-literals
 re_sq_short = r"'([^'\\]*(?:\\.[^'\\]*)*)'"
 
-MACRO_RE = r"((?i)\[(?P<macro>\w+)(?P<kwargs>\s\w+\:.+)*\])"
+MACRO_RE = r"(\[(?P<macro>\w+)(?P<kwargs>\s\w+\:.+)*\])"
 KWARG_RE = re.compile(
     r"\s*(?P<arg>\w+)(:(?P<value>([^\']+|%s)))?" % re_sq_short, re.IGNORECASE
 )
@@ -31,6 +31,13 @@ class MacroPattern(markdown.inlinepatterns.Pattern):
 
     """django-wiki macro preprocessor - parse text for various [some_macro] and
     [some_macro (kw:arg)*] references."""
+
+    def __init__(self, pattern, md=None):
+        """Override init in order to add IGNORECASE flag"""
+        super().__init__(pattern, md=md)
+        self.compiled_re = re.compile(
+            r"^(.*?)%s(.*)$" % pattern, flags=re.DOTALL | re.UNICODE | re.IGNORECASE
+        )
 
     def handleMatch(self, m):
         macro = m.group("macro").strip()

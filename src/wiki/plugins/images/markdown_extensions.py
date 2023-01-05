@@ -1,3 +1,5 @@
+import re
+
 import markdown
 from django.template.loader import render_to_string
 from wiki.core.markdown import add_to_registry
@@ -5,7 +7,7 @@ from wiki.plugins.images import models
 from wiki.plugins.images import settings
 
 IMAGE_RE = (
-    r"(?:(?im)"
+    r"(?:"
     +
     # Match '[image:N'
     r"\[image\:(?P<id>[0-9]+)"
@@ -52,6 +54,14 @@ class ImagePattern(markdown.inlinepatterns.Pattern):
 
     So: Remember that the caption text is fully valid markdown!
     """
+
+    def __init__(self, pattern, md=None):
+        """Override init in order to add IGNORECASE and MULTILINE flags"""
+        super().__init__(pattern, md=md)
+        self.compiled_re = re.compile(
+            r"^(.*?)%s(.*)$" % pattern,
+            flags=re.DOTALL | re.UNICODE | re.IGNORECASE | re.MULTILINE,
+        )
 
     def handleMatch(self, m):
         image = None
