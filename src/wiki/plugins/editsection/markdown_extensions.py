@@ -1,7 +1,5 @@
 import logging
 import re
-from wiki.core.markdown import add_to_registry
-from wiki.plugins.macros.mdx.toc import wiki_slugify
 from xml.etree import ElementTree as etree
 
 from django.urls import reverse
@@ -9,6 +7,8 @@ from markdown import Extension
 from markdown.blockprocessors import HashHeaderProcessor
 from markdown.blockprocessors import SetextHeaderProcessor
 from markdown.treeprocessors import Treeprocessor
+from wiki.core.markdown import add_to_registry
+from wiki.plugins.macros.mdx.toc import wiki_slugify
 
 from . import settings
 

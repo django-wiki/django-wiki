@@ -1,8 +1,8 @@
 import re
-from wiki.models import URLPath
 
 from django.urls import reverse
 from django_functest import FuncBaseMixin
+from wiki.models import URLPath
 
 from ...base import DjangoClientTestBase
 from ...base import RequireRootArticleMixin

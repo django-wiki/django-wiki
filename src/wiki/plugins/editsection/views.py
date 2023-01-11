@@ -1,13 +1,12 @@
-from wiki import models
-from wiki.core.markdown import article_markdown
-from wiki.decorators import get_article
-from wiki.views.article import Edit as EditView
-
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy
+from wiki import models
+from wiki.core.markdown import article_markdown
+from wiki.decorators import get_article
+from wiki.views.article import Edit as EditView
 
 
 ERROR_SECTION_CHANGED = gettext_lazy(
