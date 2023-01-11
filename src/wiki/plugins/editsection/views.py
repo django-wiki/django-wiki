@@ -1,12 +1,13 @@
+from wiki import models
+from wiki.core.markdown import article_markdown
+from wiki.decorators import get_article
+from wiki.views.article import Edit as EditView
+
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy
-from wiki import models
-from wiki.core.markdown import article_markdown
-from wiki.decorators import get_article
-from wiki.views.article import Edit as EditView
 
 
 ERROR_SECTION_CHANGED = gettext_lazy(
@@ -24,21 +25,20 @@ ERROR_TRY_AGAIN = gettext_lazy("Please try again.")
 
 
 class EditSection(EditView):
-
     def locate_section(self, article, content):
         """
         locate the section to be edited, returning index of start and end
         """
         # render article to get the headers
         article_markdown(content, article)
-        headers = getattr(article, '_found_headers', [])
+        headers = getattr(article, "_found_headers", [])
 
         # find start
         start, end = None, None
         while len(headers):
             header = headers.pop(0)
-            if header['slug'] == self.header_id:
-                if content[header['position']:].startswith(header['source']):
+            if header["slug"] == self.header_id:
+                if content[header["position"] :].startswith(header["source"]):
                     start = header
                     break
         if start is None:
@@ -48,15 +48,19 @@ class EditSection(EditView):
         # we have the beginning, now find next section with same or higher level
         while len(headers):
             header = headers.pop(0)
-            if header['level'] <= start['level']:
-                if content[header['position']:].startswith(header['source']):
+            if header["level"] <= start["level"]:
+                if content[header["position"] :].startswith(header["source"]):
                     end = header
                     break
                 else:
                     # there should be a matching header, but we did not find it.
                     # better be safe.
                     return None, None
-        return (start['position'], end['position']) if end else (start['position'], len(content))
+        return (
+            (start["position"], end["position"])
+            if end
+            else (start["position"], len(content))
+        )
 
     def _redirect_to_article(self):
         if self.urlpath:
