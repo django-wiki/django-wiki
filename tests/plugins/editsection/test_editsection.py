@@ -123,6 +123,36 @@ class EditSectionTests(RequireRootArticleMixin, DjangoClientTestBase):
         expected = "# Section 2\r\nSection 2 Lorem ipsum dolor sit amet\r\n"
         self.assertEqual(actual, expected)
 
+    def test_nonunique_headers(self):
+        """ test whether non-unique headers will be handled properly """
+        source = """# Investigation 1\n\n## Date\n2023-01-01\n\n# Investigation 2\n\n## Date\n2023-01-02"""
+        URLPath.create_urlpath(
+            URLPath.root(), "testedit_src", title="TestEditSourceComment", content=source
+        )
+        url = reverse(
+            "wiki:editsection",
+            kwargs={
+                "path": "testedit_src/",
+                "header": "wiki-toc-date"
+            },
+        )
+        response = self.client.get(url)
+        actual = self.get_section_content(response)
+        expected = "## Date\r\n2023-01-01\r\n\r\n"
+
+        self.assertEqual(actual, expected)
+        url = reverse(
+            "wiki:editsection",
+            kwargs={
+                "path": "testedit_src/",
+                "header": "wiki-toc-date_1"
+            },
+        )
+        response = self.client.get(url)
+        actual = self.get_section_content(response)
+        expected = "## Date\r\n2023-01-02"
+        self.assertEqual(actual, expected)
+
 
 class EditSectionEditBase(RequireRootArticleMixin, FuncBaseMixin):
     pass

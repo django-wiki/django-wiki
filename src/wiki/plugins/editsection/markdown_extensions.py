@@ -136,6 +136,7 @@ class EditSectionProcessor(Treeprocessor):
                 if start == -1:
                     # not found in source, ignore
                     continue
+                self.last_start = start + 1
 
                 # ensure that the node has a unique id
                 slug = self.ensure_unique_id(child)
