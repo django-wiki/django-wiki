@@ -108,7 +108,7 @@ class EditSectionTests(RequireRootArticleMixin, DjangoClientTestBase):
 
     def test_sourceblock_with_comment(self):
         # https://github.com/django-wiki/django-wiki/issues/1246
-        urlpath = URLPath.create_urlpath(
+        URLPath.create_urlpath(
             URLPath.root(), "testedit_src", title="TestEditSourceComment", content=TEST_CONTENT_SRC_COMMENT
         )
         url = reverse(

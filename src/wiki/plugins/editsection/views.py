@@ -56,7 +56,7 @@ class EditSection(EditView):
                     # there should be a matching header, but we did not find it.
                     # better be safe.
                     return None, None
-        return ( start['position'], end['position'] ) if end else ( start['position'], len(content) )
+        return (start['position'], end['position']) if end else (start['position'], len(content))
 
     def _redirect_to_article(self):
         if self.urlpath:

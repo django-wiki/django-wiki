@@ -3,7 +3,8 @@ import re, logging
 from django.urls import reverse
 from markdown import Extension
 from markdown.treeprocessors import Treeprocessor
-from markdown.blockprocessors import HashHeaderProcessor, SetextHeaderProcessor
+from markdown.blockprocessors import HashHeaderProcessor
+from markdown.blockprocessors import SetextHeaderProcessor
 from xml.etree import ElementTree as etree
 from wiki.core.markdown import add_to_registry
 from wiki.plugins.macros.mdx.toc import wiki_slugify
@@ -131,7 +132,7 @@ class EditSectionProcessor(Treeprocessor):
                 link.text = settings.LINK_TEXT
                 link.attrib["class"] = "article-edit-title-link"
 
-                 # Build the URL
+                # Build the URL
                 url_kwargs = self.md.article.get_url_kwargs()
                 url_kwargs["header"] = child.attrib['id']
                 link.attrib["href"] = reverse("wiki:editsection", kwargs=url_kwargs)
