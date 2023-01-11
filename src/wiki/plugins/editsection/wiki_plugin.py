@@ -13,7 +13,7 @@ class EditSectionPlugin(BasePlugin):
     urlpatterns = {
         "article": [
             url(
-                r"^(?P<location>[0-9-]+)/header/(?P<header>\w+)/$",
+                r"^header/(?P<header>[\w-]+)/$",
                 views.EditSection.as_view(),
                 name="editsection",
             ),
