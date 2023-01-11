@@ -1,4 +1,5 @@
-import re, logging
+import re
+import logging
 
 from django.urls import reverse
 from markdown import Extension
