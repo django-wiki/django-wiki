@@ -1,7 +1,8 @@
 import re
+from wiki.models import URLPath
+
 from django.urls import reverse
 from django_functest import FuncBaseMixin
-from wiki.models import URLPath
 
 from ...base import DjangoClientTestBase
 from ...base import RequireRootArticleMixin
@@ -100,23 +101,27 @@ class EditSectionTests(RequireRootArticleMixin, DjangoClientTestBase):
 
     def get_section_content(self, response):
         # extract actual section content from response (editor)
-        m = re.search(r'<textarea[^>]+>(?P<content>[^<]+)</textarea>', response.rendered_content, re.DOTALL)
+        m = re.search(
+            r"<textarea[^>]+>(?P<content>[^<]+)</textarea>",
+            response.rendered_content,
+            re.DOTALL,
+        )
         if m:
-            return m.group('content')
+            return m.group("content")
         else:
-            return ''
+            return ""
 
     def test_sourceblock_with_comment(self):
         # https://github.com/django-wiki/django-wiki/issues/1246
         URLPath.create_urlpath(
-            URLPath.root(), "testedit_src", title="TestEditSourceComment", content=TEST_CONTENT_SRC_COMMENT
+            URLPath.root(),
+            "testedit_src",
+            title="TestEditSourceComment",
+            content=TEST_CONTENT_SRC_COMMENT,
         )
         url = reverse(
             "wiki:editsection",
-            kwargs={
-                "path": "testedit_src/",
-                "header": "wiki-toc-section-2"
-            },
+            kwargs={"path": "testedit_src/", "header": "wiki-toc-section-2"},
         )
         response = self.client.get(url)
         actual = self.get_section_content(response)
@@ -124,17 +129,17 @@ class EditSectionTests(RequireRootArticleMixin, DjangoClientTestBase):
         self.assertEqual(actual, expected)
 
     def test_nonunique_headers(self):
-        """ test whether non-unique headers will be handled properly """
+        """test whether non-unique headers will be handled properly"""
         source = """# Investigation 1\n\n## Date\n2023-01-01\n\n# Investigation 2\n\n## Date\n2023-01-02"""
         URLPath.create_urlpath(
-            URLPath.root(), "testedit_src", title="TestEditSourceComment", content=source
+            URLPath.root(),
+            "testedit_src",
+            title="TestEditSourceComment",
+            content=source,
         )
         url = reverse(
             "wiki:editsection",
-            kwargs={
-                "path": "testedit_src/",
-                "header": "wiki-toc-date"
-            },
+            kwargs={"path": "testedit_src/", "header": "wiki-toc-date"},
         )
         response = self.client.get(url)
         actual = self.get_section_content(response)
@@ -143,10 +148,7 @@ class EditSectionTests(RequireRootArticleMixin, DjangoClientTestBase):
         self.assertEqual(actual, expected)
         url = reverse(
             "wiki:editsection",
-            kwargs={
-                "path": "testedit_src/",
-                "header": "wiki-toc-date_1"
-            },
+            kwargs={"path": "testedit_src/", "header": "wiki-toc-date_1"},
         )
         response = self.client.get(url)
         actual = self.get_section_content(response)
