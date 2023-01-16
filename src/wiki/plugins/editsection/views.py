@@ -1,5 +1,3 @@
-import re
-
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
@@ -7,12 +5,9 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy
 from wiki import models
 from wiki.core.markdown import article_markdown
-from wiki.core.plugins.registry import get_markdown_extensions
 from wiki.decorators import get_article
-from wiki.plugins.editsection.markdown_extensions import EditSectionExtension
 from wiki.views.article import Edit as EditView
 
-from . import settings
 
 ERROR_SECTION_CHANGED = gettext_lazy(
     "Unable to find the selected section. The article was modified meanwhile."
@@ -28,86 +23,43 @@ ERROR_ARTICLE_CHANGED = gettext_lazy(
 ERROR_TRY_AGAIN = gettext_lazy("Please try again.")
 
 
-class FindHeader:
-    """Locate the start, header text, and end of the header text of the next
-    possible section starting from pos. Finds too many occurrences for SeText
-    headers which are filtered out later in the markdown extension.
-    Returns: start pos header sure_header level"""
-
-    SETEXT_RE_TEXT = r"(?P<header1>.*?)\n(?P<level1>[=-])+[ ]*(\n|$)"
-    SETEXT_RE = re.compile(r"\n%s" % SETEXT_RE_TEXT, re.MULTILINE)
-    HEADER_RE = re.compile(
-        r"((\A ?\n?|\n(?![^\n]{0,3}\w).*?\n)%s"
-        r"|(\A|\n)(?P<level2>#{1,6})(?P<header2>.*?)#*(\n|$))" % SETEXT_RE_TEXT,
-        re.MULTILINE,
-    )
-    ATTR_RE = re.compile(r"[ ]+\{\:?([^\}\n]*)\}[ ]*$")
-
-    def __init__(self, text, pos):
-        self.sure_header = False
-        match = self.SETEXT_RE.match(text, pos)
-        if match:
-            self.sure_header = True
-        else:
-            match = self.HEADER_RE.search(text, pos)
-            if not match:
-                self.start = len(text) + 1
-                self.pos = self.start
-                return
-        self.pos = match.end() - 1
-
-        # Get level and header text of the section
-        token = match.group("level1")
-        if token:
-            self.header = match.group("header1").strip()
-            self.start = match.start("header1")
-        else:
-            token = match.group("level2")
-            self.header = match.group("header2").strip()
-            self.start = match.start("level2")
-            self.sure_header = True
-        # Remove attribute definitions from the header text
-        match = self.ATTR_RE.search(self.header)
-        if match:
-            self.header = self.header[: match.start()].rstrip("#").rstrip()
-        # Get level of the section
-        if token[0] == "=":
-            self.level = 1
-        elif token[0] == "-":
-            self.level = 2
-        else:
-            self.level = len(token)
-
-
 class EditSection(EditView):
-    def locate_section(self, article, text):
-        """Search for the header self.location (which is not deeper than settings.MAX_LEVEL)
-        in text, compare the header text with self.header_id, and return the start position
-        and the end position+1 of the complete section started by the header.
+    def locate_section(self, article, content):
         """
-        text = text.replace("\r\n", " \n").replace("\r", "\n") + "\n\n"
-        text_len = len(text)
+        locate the section to be edited, returning index of start and end
+        """
+        # render article to get the headers
+        article_markdown(content, article)
+        headers = getattr(article, "_found_headers", [])
 
-        headers = []
-        pos = 0
-        while pos < text_len:
-            # Get meta information and start position of the next section
-            header = FindHeader(text, pos)
-            pos = header.pos
-            if pos >= text_len:
-                break
-            if header.level > settings.MAX_LEVEL:
-                continue
-            headers.append(header)
+        # find start
+        start, end = None, None
+        while len(headers):
+            header = headers.pop(0)
+            if header["slug"] == self.header_id:
+                if content[header["position"] :].startswith(header["source"]):
+                    start = header
+                    break
+        if start is None:
+            # start section not found
+            return None, None
 
-        for e in get_markdown_extensions():
-            if isinstance(e, EditSectionExtension):
-                e.config["headers"] = headers
-                e.config["location"] = self.location
-                e.config["header_id"] = self.header_id
-                article_markdown(text, article)
-                return e.config["location"]
-        return None
+        # we have the beginning, now find next section with same or higher level
+        while len(headers):
+            header = headers.pop(0)
+            if header["level"] <= start["level"]:
+                if content[header["position"] :].startswith(header["source"]):
+                    end = header
+                    break
+                else:
+                    # there should be a matching header, but we did not find it.
+                    # better be safe.
+                    return None, None
+        return (
+            (start["position"], end["position"])
+            if end
+            else (start["position"], len(content))
+        )
 
     def _redirect_to_article(self):
         if self.urlpath:
@@ -116,18 +68,15 @@ class EditSection(EditView):
 
     @method_decorator(get_article(can_write=True, not_locked=True))
     def dispatch(self, request, article, *args, **kwargs):
-        self.location = kwargs.pop("location", 0)
         self.header_id = kwargs.pop("header", 0)
-
         self.urlpath = kwargs.get("urlpath")
         kwargs["path"] = self.urlpath.path
+        content = article.current_revision.content
 
         if request.method == "GET":
-            text = article.current_revision.content
-            location = self.locate_section(article, text)
-            if location:
-                self.orig_section = text[location[0] : location[1]]
-                # Pass the to be used content to EditSection
+            start, end = self.locate_section(article, content)
+            if start is not None and end is not None:
+                self.orig_section = content[start:end]
                 kwargs["content"] = self.orig_section
                 request.session["editsection_content"] = self.orig_section
             else:
@@ -147,15 +96,16 @@ class EditSection(EditView):
         section = self.article.current_revision.content
         if not section.endswith("\n"):
             section += "\r\n\r\n"
-        text = get_object_or_404(
+        content = get_object_or_404(
             models.ArticleRevision,
             article=self.article,
             id=self.article.current_revision.previous_revision.id,
         ).content
-
-        location = self.locate_section(self.article, text)
-        if location:
-            if self.orig_section != text[location[0] : location[1]]:
+        start, end = self.locate_section(self.article, content)
+        if start is not None and end is not None:
+            # compare saved original section with last version, so we
+            # can detect if someone else changed it in the meantime
+            if self.orig_section != content[start:end]:
                 messages.warning(
                     self.request,
                     "{} {} {}".format(
@@ -164,7 +114,7 @@ class EditSection(EditView):
                 )
             # Include the edited section into the complete previous article
             self.article.current_revision.content = (
-                text[0 : location[0]] + section + text[location[1] :]
+                content[0:start] + section + content[end:]
             )
             self.article.current_revision.save()
         else:

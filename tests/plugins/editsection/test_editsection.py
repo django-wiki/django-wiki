@@ -1,3 +1,5 @@
+import re
+
 from django.urls import reverse
 from django_functest import FuncBaseMixin
 from wiki.models import URLPath
@@ -21,6 +23,20 @@ TEST_CONTENT = (
 )
 
 
+TEST_CONTENT_SRC_COMMENT = """
+# Section 1
+Section 1 Lorem ipsum dolor sit amet
+
+```python
+# hello world
+print("hello world")
+```
+
+# Section 2
+Section 2 Lorem ipsum dolor sit amet
+"""
+
+
 class EditSectionTests(RequireRootArticleMixin, DjangoClientTestBase):
     def test_editsection(self):
         # Test creating links to allow editing all sections individually
@@ -30,19 +46,19 @@ class EditSectionTests(RequireRootArticleMixin, DjangoClientTestBase):
         output = urlpath.article.render()
         expected = (
             r"(?s)"
-            r'Title 1<a class="article-edit-title-link" href="/testedit/_plugin/editsection/1-0-0/header/T1/">\[edit\]</a>.*'
-            r'Title 2<a class="article-edit-title-link" href="/testedit/_plugin/editsection/1-1-0/header/T2/">\[edit\]</a>.*'
-            r'Title 3<a class="article-edit-title-link" href="/testedit/_plugin/editsection/1-2-0/header/T3/">\[edit\]</a>.*'
-            r'Title 4<a class="article-edit-title-link" href="/testedit/_plugin/editsection/1-2-1/header/T4/">\[edit\]</a>.*'
-            r'Title 5<a class="article-edit-title-link" href="/testedit/_plugin/editsection/1-3-0/header/T5/">\[edit\]</a>.*'
-            r'Title 6<a class="article-edit-title-link" href="/testedit/_plugin/editsection/2-0-0/header/T6/">\[edit\]</a>.*'
+            r'Title 1<a class="article-edit-title-link" href="/testedit/_plugin/editsection/header/wiki-toc-title-1/">\[edit\]</a>.*'
+            r'Title 2<a class="article-edit-title-link" href="/testedit/_plugin/editsection/header/wiki-toc-title-2/">\[edit\]</a>.*'
+            r'Title 3<a class="article-edit-title-link" href="/testedit/_plugin/editsection/header/wiki-toc-title-3/">\[edit\]</a>.*'
+            r'Title 4<a class="article-edit-title-link" href="/testedit/_plugin/editsection/header/wiki-toc-title-4/">\[edit\]</a>.*'
+            r'Title 5<a class="article-edit-title-link" href="/testedit/_plugin/editsection/header/wiki-toc-title-5/">\[edit\]</a>.*'
+            r'Title 6<a class="article-edit-title-link" href="/testedit/_plugin/editsection/header/wiki-toc-title-6/">\[edit\]</a>.*'
         )
         self.assertRegex(output, expected)
 
         # Test wrong header text. Editing should fail with a redirect.
         url = reverse(
             "wiki:editsection",
-            kwargs={"path": "testedit/", "location": "1-2-1", "header": "Test"},
+            kwargs={"path": "testedit/", "header": "does-not-exist"},
         )
         response = self.client.get(url)
         self.assertRedirects(
@@ -52,7 +68,7 @@ class EditSectionTests(RequireRootArticleMixin, DjangoClientTestBase):
         # Test extracting sections for editing
         url = reverse(
             "wiki:editsection",
-            kwargs={"path": "testedit/", "location": "1-2-1", "header": "T4"},
+            kwargs={"path": "testedit/", "header": "wiki-toc-title-4"},
         )
         response = self.client.get(url)
         expected = ">### Title 4[\r\n]*" "<"
@@ -60,7 +76,7 @@ class EditSectionTests(RequireRootArticleMixin, DjangoClientTestBase):
 
         url = reverse(
             "wiki:editsection",
-            kwargs={"path": "testedit/", "location": "1-2-0", "header": "T3"},
+            kwargs={"path": "testedit/", "header": "wiki-toc-title-3"},
         )
         response = self.client.get(url)
         expected = (
@@ -83,6 +99,62 @@ class EditSectionTests(RequireRootArticleMixin, DjangoClientTestBase):
         output = urlpath.article.render()
         print(output)
 
+    def get_section_content(self, response):
+        # extract actual section content from response (editor)
+        m = re.search(
+            r"<textarea[^>]+>(?P<content>[^<]+)</textarea>",
+            response.rendered_content,
+            re.DOTALL,
+        )
+        if m:
+            return m.group("content")
+        else:
+            return ""
+
+    def test_sourceblock_with_comment(self):
+        # https://github.com/django-wiki/django-wiki/issues/1246
+        URLPath.create_urlpath(
+            URLPath.root(),
+            "testedit_src",
+            title="TestEditSourceComment",
+            content=TEST_CONTENT_SRC_COMMENT,
+        )
+        url = reverse(
+            "wiki:editsection",
+            kwargs={"path": "testedit_src/", "header": "wiki-toc-section-2"},
+        )
+        response = self.client.get(url)
+        actual = self.get_section_content(response)
+        expected = "# Section 2\r\nSection 2 Lorem ipsum dolor sit amet\r\n"
+        self.assertEqual(actual, expected)
+
+    def test_nonunique_headers(self):
+        """test whether non-unique headers will be handled properly"""
+        source = """# Investigation 1\n\n## Date\n2023-01-01\n\n# Investigation 2\n\n## Date\n2023-01-02"""
+        URLPath.create_urlpath(
+            URLPath.root(),
+            "testedit_src",
+            title="TestEditSourceComment",
+            content=source,
+        )
+        url = reverse(
+            "wiki:editsection",
+            kwargs={"path": "testedit_src/", "header": "wiki-toc-date"},
+        )
+        response = self.client.get(url)
+        actual = self.get_section_content(response)
+        expected = "## Date\r\n2023-01-01\r\n\r\n"
+
+        self.assertEqual(actual, expected)
+        url = reverse(
+            "wiki:editsection",
+            kwargs={"path": "testedit_src/", "header": "wiki-toc-date_1"},
+        )
+        response = self.client.get(url)
+        actual = self.get_section_content(response)
+        expected = "## Date\r\n2023-01-02"
+        self.assertEqual(actual, expected)
+
 
 class EditSectionEditBase(RequireRootArticleMixin, FuncBaseMixin):
     pass
@@ -99,19 +171,19 @@ class EditSectionEditTests(EditSectionEditBase, WebTestBase):
         self.get_literal_url(
             reverse(
                 "wiki:editsection",
-                kwargs={"path": "testedit/", "location": "1-2-0", "header": "T3"},
+                kwargs={"path": "testedit/", "header": "wiki-toc-title-3"},
             )
         )
         self.fill({"#id_content": "# Header 1\nContent of the new section"})
         self.submit("#id_save")
         expected = (
             r"(?s)"
-            r'Title 1<a class="article-edit-title-link" href="/testedit/_plugin/editsection/1-0-0/header/T1/">\[edit\]</a>.*'
-            r'Title 2<a class="article-edit-title-link" href="/testedit/_plugin/editsection/1-1-0/header/T2/">\[edit\]</a>.*'
-            r'Header 1<a class="article-edit-title-link" href="/testedit/_plugin/editsection/2-0-0/header/H1/">\[edit\]</a>.*'
+            r'Title 1<a class="article-edit-title-link" href="/testedit/_plugin/editsection/header/wiki-toc-title-1/">\[edit\]</a>.*'
+            r'Title 2<a class="article-edit-title-link" href="/testedit/_plugin/editsection/header/wiki-toc-title-2/">\[edit\]</a>.*'
+            r'Header 1<a class="article-edit-title-link" href="/testedit/_plugin/editsection/header/wiki-toc-header-1/">\[edit\]</a>.*'
             r"Content of the new section.*"
-            r'Title 5<a class="article-edit-title-link" href="/testedit/_plugin/editsection/2-1-0/header/T5/">\[edit\]</a>.*'
-            r'Title 6<a class="article-edit-title-link" href="/testedit/_plugin/editsection/3-0-0/header/T6/">\[edit\]</a>.*'
+            r'Title 5<a class="article-edit-title-link" href="/testedit/_plugin/editsection/header/wiki-toc-title-5/">\[edit\]</a>.*'
+            r'Title 6<a class="article-edit-title-link" href="/testedit/_plugin/editsection/header/wiki-toc-title-6/">\[edit\]</a>.*'
         )
         self.assertRegex(self.last_response.content.decode("utf-8"), expected)
 

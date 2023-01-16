@@ -13,6 +13,7 @@ class ArticleMarkdown(markdown.Markdown):
         self.article = article
         self.preview = preview
         self.user = user
+        self.source = None
 
     def core_extensions(self):
         """List of core extensions found in the mdx folder"""
@@ -29,6 +30,8 @@ class ArticleMarkdown(markdown.Markdown):
         return extensions
 
     def convert(self, text, *args, **kwargs):
+        # store source in instance, for extensions which might need it
+        self.source = text
         html = super().convert(text, *args, **kwargs)
         if settings.MARKDOWN_SANITIZE_HTML:
             tags = (
