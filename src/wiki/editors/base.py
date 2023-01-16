@@ -11,10 +11,10 @@ class BaseEditor:
     media_admin = ()
     media_frontend = ()
 
-    def __init__(self, instance=None):
-        self.instance = instance
+    def get_admin_widget(self, revision=None):
+        return forms.Textarea()
 
-    def get_admin_widget(self):
+    def get_widget(self, revision=None):
         return forms.Textarea()
 
     class AdminMedia:

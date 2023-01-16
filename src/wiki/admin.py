@@ -24,7 +24,7 @@ class ArticleRevisionForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         # TODO: This pattern is too weird
         editor = editors.getEditor()
-        self.fields["content"].widget = editor.get_admin_widget()
+        self.fields["content"].widget = editor.get_admin_widget(self.instance)
 
 
 class ArticleRevisionAdmin(admin.ModelAdmin):

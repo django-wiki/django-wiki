@@ -26,10 +26,10 @@ class MarkItUpAdminWidget(MarkItUpWidget):
 class MarkItUp(BaseEditor):
     editor_id = "markitup"
 
-    def get_admin_widget(self, instance=None):
+    def get_admin_widget(self, revision=None):
         return MarkItUpAdminWidget()
 
-    def get_widget(self, instance=None):
+    def get_widget(self, revision=None):
         return MarkItUpWidget()
 
     class AdminMedia:

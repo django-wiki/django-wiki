@@ -227,9 +227,7 @@ class EditForm(forms.Form, SpamProtectionMixin):
     title = forms.CharField(
         label=_("Title"),
     )
-    content = forms.CharField(
-        label=_("Contents"), required=False, widget=getEditor().get_widget()
-    )  # @UndefinedVariable
+    content = forms.CharField(label=_("Contents"), required=False)  # @UndefinedVariable
 
     summary = forms.CharField(
         label=pgettext_lazy("Revision comment", "Summary"),
@@ -294,6 +292,7 @@ class EditForm(forms.Form, SpamProtectionMixin):
             kwargs["initial"] = initial
 
         super().__init__(*args, **kwargs)
+        self.fields["content"].widget = getEditor().get_widget(current_revision)
 
     def clean_title(self):
         title = self.cleaned_data.get("title", None)
