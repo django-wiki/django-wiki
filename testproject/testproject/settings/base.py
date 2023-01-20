@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "wiki.plugins.attachments.apps.AttachmentsConfig",
     "wiki.plugins.notifications.apps.NotificationsConfig",
     "wiki.plugins.editsection.apps.EditSectionConfig",
+    "wiki.plugins.linknetwork.apps.LinkNetworkConfig",
     "wiki.plugins.globalhistory.apps.GlobalHistoryConfig",
     "mptt",
 ]

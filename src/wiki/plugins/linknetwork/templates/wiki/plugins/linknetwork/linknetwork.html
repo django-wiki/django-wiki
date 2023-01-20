@@ -1,0 +1,70 @@
+{% extends "wiki/base.html" %}
+{% load wiki_tags i18n humanize %}
+
+{% block wiki_pagetitle %}{% trans "Link Network" %}{% endblock %}
+
+{% block wiki_contents %}
+
+<h1>{% trans "Link Network" %}</h1>
+
+{% spaceless %}
+<div class="row">
+  <div class="lead col-xs-8">
+    {% with paginator.count as cnt %}
+      {% blocktrans count cnt=cnt trimmed %}
+        List of <strong>{{ cnt }} internal link</strong> in the wiki.
+        {% plural %}
+        List of <strong>{{ cnt }} internal links</strong> in the wiki.
+      {% endblocktrans %}
+    {% endwith %}
+  </div>
+</div>
+
+<div class="row">
+  {% if linknetwork %}
+    <table class="table table-striped table-condensed table-hover">
+      <thead>
+        <tr>
+          <th>{% trans "From Article" %}</th>
+          <th>{% trans "To Article" %}</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for internal_link in linknetwork %}
+          <tr>
+            <td>
+              <a href="{{ internal_link.from_article.get_absolute_url }}">
+                {{ internal_link.from_article }}
+              </a>
+            </td>
+            <td>
+              {% if internal_link.to_article %}
+                <a href="{{ internal_link.to_article.get_absolute_url }}">
+                {{ internal_link.to_article }}
+                </a>
+              {% else %}
+                <a href="{{ internal_link.to_nonexistant_url }}">
+                {{ internal_link.to_nonexistant_url }}
+                </a>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="alert alert-info">
+      {% if page %}
+        {% trans "No more links to display !" %}
+        <a href="?page={{page|add:"-1"}}">{% trans "Go back to previous page" %}</a>
+      {% else %}
+        {% trans "No links to display !" %}
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {% include "wiki/includes/pagination.html" %}
+</div>
+{% endspaceless %}
+{% endblock %}

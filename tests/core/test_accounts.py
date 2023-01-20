@@ -48,7 +48,7 @@ class AccountUpdateTest(
             response, "Passwords don", status_code=200
         )  # Django 2/3 output different escaped versions of single quote in don't
 
-        # Now check that we don't succeed with unmatching passwords
+        # Now check that we do succeed with matching passwords
         example_data = {
             "password1": "abcdef",
             "password2": "abcdef",
