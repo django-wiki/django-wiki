@@ -37,13 +37,26 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Application Frameworks",
 ]
 dependencies = [
+    # Django version support is added one minor release at a time
     "Django>=2.1,<4.2",
-    "bleach[css]>=5",
+    # bleach has been pretty stable, hence the loose pin
+    "bleach[css]>=5,<6",
+    # Pillow is used very little and has never broken
     "Pillow",
+    # django-nyt is maintained by django-wiki maintainers, so we can
+    # control breakage and pinning ourselves
     "django-nyt>=1.2.2",
+    # django-mptt has had several breaking changes
     "django-mptt>=0.13,<0.15",
+    # django-sekizai is basically only releasing every time
+    # it needs to restore support for a new Django/Python version
     "django-sekizai>=0.10",
+    # sorl-thumbnail is maintained by jazzband so it might be
+    # very stable but it might also suddenly invite breaking changes
     "sorl-thumbnail>=12.8,<13",
+    # django-wiki's integration with Markdown is really detailed,
+    # several extensions have imported internal APIs, so be very
+    # careful here.
     "Markdown>=3.3,<3.4",
 ]
 dynamic = ["version"]
