@@ -1,4 +1,4 @@
-title: "[Feature] "
+title: "[Feature]: "
 labels: ["Ideas"]
 body:
   - type: checkboxes
@@ -9,8 +9,8 @@ body:
     attributes:
       label: Is your feature request related to a problem?
       options:
-        - Yes
-        - No
+        - 'Yes'
+        - 'No'
   - type: markdown
       attributes:
         label: Please describe your feature.

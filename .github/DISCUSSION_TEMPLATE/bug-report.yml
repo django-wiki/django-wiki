@@ -1,5 +1,5 @@
-title: "[Bug] "
-labels: ["Q&A"]
+title: "[Bug]: "
+labels: ["Bug"]
 body:
   - type: markdown
     attributes:
@@ -14,7 +14,7 @@ body:
         1. Go to '...'
         2. Click on '....'
         3. Scroll down to '....'
-      ...
+        '...'
     validations:
       required: true
   - type: markdown
