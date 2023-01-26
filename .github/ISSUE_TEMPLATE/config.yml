@@ -4,8 +4,8 @@ contact_links:
     url: https://github.com/django-wiki/django-wiki/discussions/new?category=bug&title=[Bug]:&labels=bug
     about: Submit a GitHub issue
   - name: Feature Request
-    url: https://github.com/django-wiki/django-wiki/discussions/new?category=ideas&title=[Feature]:
+    url: https://github.com/django-wiki/django-wiki/discussions/new?category=ideas&title=[Feature]:&labels=enhancement
     about: Request or share ideas for new features to be added to Django Wiki
   - name: Ask a Question
-    url: https://github.com/django-wiki/django-wiki/discussions/new?category=q-a&title=[Question]:
+    url: https://github.com/django-wiki/django-wiki/discussions/new?category=q-a&title=[Question]
     about: Ask questions and discuss with other community members
