@@ -99,7 +99,7 @@ LOGIN_REDIRECT_URL = reverse_lazy("wiki:get", kwargs={"path": ""})
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(PROJECT_DIR, "db", "prepopulated.db"),
+        "NAME": os.path.join(PROJECT_DIR, "db.sqlite3"),
     }
 }
 
