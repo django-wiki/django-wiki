@@ -34,8 +34,8 @@ class ArticleMarkdown(markdown.Markdown):
         self.source = text
         html = super().convert(text, *args, **kwargs)
         if settings.MARKDOWN_SANITIZE_HTML:
-            tags = (
-                settings.MARKDOWN_HTML_WHITELIST + plugin_registry.get_html_whitelist()
+            tags = settings.MARKDOWN_HTML_WHITELIST.union(
+                plugin_registry.get_html_whitelist()
             )
 
             css_sanitizer = CSSSanitizer(

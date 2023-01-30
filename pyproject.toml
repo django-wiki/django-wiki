@@ -40,7 +40,7 @@ dependencies = [
     # Django version support is added one minor release at a time
     "Django>=2.1,<4.2",
     # bleach has been pretty stable, hence the loose pin
-    "bleach[css]>=5,<6",
+    "bleach[css]>=5,<7",
     # Pillow is used very little and has never broken
     "Pillow",
     # django-nyt is maintained by django-wiki maintainers, so we can
@@ -123,7 +123,7 @@ test = "pytest {args}"
 
 [tool.hatch.envs.test.overrides]
 matrix.django.dependencies = [
-    { value = "django~={matrix:django}.0" },
+    { value = "django~={matrix:django}" },
 ]
 
 [tool.hatch.envs.test]
@@ -190,7 +190,7 @@ pull = [
 [tool.hatch.envs.docs]
 dependencies = [
     "Django>=3.1.13",
-    "bleach>=3.3.0,<5.1",
+    "bleach>=3.3.0,<7",
     "sphinx>=3",
     "sphinx_rtd_theme==1.1.1",
 ]
