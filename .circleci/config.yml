@@ -58,7 +58,7 @@ workflows:
           hatch_env: "py3.8-dj4.0"
           python_version: "3.8"
       - hatch:
-          hatch_env: "py3.8-dj-4.1"
+          hatch_env: "py3.8-dj4.1"
           python_version: "3.8"
       - hatch:
           hatch_env: "py3.9-dj2.2"
