@@ -40,7 +40,7 @@ dependencies = [
     # Django version support is added one minor release at a time
     "Django>=2.1,<4.2",
     # bleach has been pretty stable, hence the loose pin
-    "bleach[css]>=5,<7",
+    "bleach[css]>=6,<7",
     # Pillow is used very little and has never broken
     "Pillow",
     # django-nyt is maintained by django-wiki maintainers, so we can
