@@ -67,4 +67,5 @@ env/
 *.swp
 
 *.db
+*.sqlite3
 __pycache__
