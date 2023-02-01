@@ -2,9 +2,8 @@ from .base import *  # noqa
 
 DEBUG = False
 
-INTERNAL_IPS = []
-ALLOWED_HOSTS = ["django-wiki.org"]
-SESSION_COOKIE_DOMAIN = ".django-wiki.org"
+ALLOWED_HOSTS = [".demo.django-wiki.org"]
+SESSION_COOKIE_DOMAIN = ".demo.django-wiki.org"
 SESSION_COOKIE_SECURE = True
 
 MIDDLEWARE += ["testproject.middleware.DemoMiddleware"]

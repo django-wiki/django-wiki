@@ -119,7 +119,7 @@
       "model": "auth.user",
       "pk": 1,
       "fields": {
-          "password": "pbkdf2_sha256$390000$IICRDKwC5zBSkzbCfpkUpx$xxVdvVYU2BkEXRbmoyDBcy2paLXAGrkt4COJslZBOgU=",
+          "password": "",
           "last_login": "2023-01-31T22:26:17Z",
           "is_superuser": true,
           "username": "djangowiki",
@@ -155,7 +155,7 @@
       "model": "sites.site",
       "pk": 1,
       "fields": {
-          "domain": "django-wiki.org",
+          "domain": "demo.django-wiki.org",
           "name": "Django Wiki"
       }
   },
