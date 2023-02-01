@@ -194,7 +194,7 @@ pull = [
 [tool.hatch.envs.docs]
 dependencies = [
     "Django>=3.1.13",
-    "bleach>=3.3.0,<7",
+    "bleach>=6,<7",
     "sphinx>=3",
     "sphinx_rtd_theme==1.1.1",
 ]
