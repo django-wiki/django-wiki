@@ -74,7 +74,7 @@ Some languages...
 Demo
 ----
 
-A demo running the latest ``main`` is available here:
+A demo running the latest ``main`` branch is available here:
 
 https://demo.django-wiki.org
 
