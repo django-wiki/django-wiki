@@ -14,12 +14,30 @@ Release plan
 - **0.9.x** Definitely Removes Python 3.5 and 3.6 support
 
 
-0.10 (unreleased)
------------------
+0.10b1
+------
 
+Released on 2022-01-25
+
+Welcome onboard to new co-maintainer `Oscar Cortez <https://github.com/oscarmcm>`__ 🎉️
+
+Changed / added
+~~~~~~~~~~~~~~~
+
+* "Edit Section" plugin fixed and patterns for finding headings rewritten url-issue:`1247` url-issue:`1246` (Chris Vigelius)
+* Python 3.11 compatiblity: Fix "global flags not at the start of the expression" :url-issue:`1243` (Benbb96)
 * Removed direct dependency on ``tinycss2``, inherited from ``bleach`` - due to old versions of pip unable to resolve
+* Pass current revision to ``Editor.get_widget()`` and ``get_admin_widget()`` :url-issue:`1249` (Chris Vigelius)
+* Refactor package setup to use ``pyproject.toml`` and `Hatch <https://pypi.org/project/hatch/>`__ :url-issue:`1227` (Oscar Cortez)
+
+Fixed
+~~~~~
+
+* Use ``SHOW_MAX_CHILDREN`` in ``ArticleMixin`` :url-issue:`1240` (Oscar Cortez)
 * Fixed wrong CSS class for collapse elements in Bootstrap 4 :url-issue:`1208` (Oscar Cortez)
 * Fixed wrong version of Popper.js and update Bootstrap to v4.6.2 :url-issue:`1124` (Oscar Cortez)
+* Added upper bound on dependency ``bleach>=0.5,<6`` :url-issue:`1253` (Benjamin Balder Bach)
+
 
 0.9
 ---
