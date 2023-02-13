@@ -7,8 +7,8 @@ django-wiki
    :target: https://django-wiki.readthedocs.io/
 .. |Build status| image:: https://circleci.com/gh/django-wiki/django-wiki.svg?style=shield
    :target: https://circleci.com/gh/django-wiki/django-wiki
-.. |Coverage Status| image:: https://codecov.io/github/django-wiki/django-wiki/coverage.svg?branch=master
-   :target: https://codecov.io/github/django-wiki/django-wiki?branch=master
+.. |Coverage Status| image:: https://codecov.io/github/django-wiki/django-wiki/coverage.svg?branch=main
+   :target: https://codecov.io/github/django-wiki/django-wiki?branch=main
 .. |PyPi| image:: https://badge.fury.io/py/wiki.svg
    :target: https://pypi.org/project/wiki/
 .. |Downloads| image:: https://img.shields.io/pypi/dm/wiki.svg
@@ -74,11 +74,15 @@ Some languages...
 Demo
 ----
 
-A demo running the latest ``master`` is available here, sign up for an
-account to see the notification system, or you can log in with
-user:``test`` and password:``test``.
+A demo running the latest ``main`` is available here:
 
 https://demo.django-wiki.org
+
+Sign up for an account to see the notification system,
+or you can log in with the existing account:
+
+- user: ``admin``
+- password:``admin``
 
 Community
 ---------
