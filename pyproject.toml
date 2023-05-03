@@ -38,7 +38,7 @@ classifiers = [
 ]
 dependencies = [
     # Django version support is added one minor release at a time
-    "Django>=2.1,<4.2",
+    "Django>=2.2,<4.3",
     # bleach has been pretty stable, hence the loose pin
     "bleach[css]>=6,<7",
     # Pillow is used very little and has never broken
@@ -173,7 +173,7 @@ django = ["4.0"]
 
 [[tool.hatch.envs.test.matrix]]
 python = ["3.8", "3.9", "3.10", "3.11"]
-django = ["4.1"]
+django = ["4.1", "4.2"]
 
 [tool.hatch.envs.transifex]
 dependencies = [
