@@ -17,7 +17,7 @@ Release plan
 0.10b1
 ------
 
-Released on 2022-01-25
+Released on 2023-01-25
 
 Welcome onboard to new co-maintainer `Oscar Cortez <https://github.com/oscarmcm>`__ 🎉️
 
