@@ -61,6 +61,14 @@ dependencies = [
 ]
 dynamic = ["version"]
 
+[project.optional-dependencies]
+docs = [
+    "Django>=3.1.13",
+    "bleach>=6,<7",
+    "sphinx>=6,<8",
+    "sphinx_rtd_theme==1.2.0",
+]
+
 [project.urls]
 Homepage = "http://www.django-wiki.org"
 Documentation = "https://django-wiki.readthedocs.io/en/latest/"
@@ -195,8 +203,8 @@ pull = [
 dependencies = [
     "Django>=3.1.13",
     "bleach>=6,<7",
-    "sphinx>=3",
-    "sphinx_rtd_theme==1.1.1",
+    "sphinx>=6,<8",
+    "sphinx_rtd_theme==1.2.0",
 ]
 
 [tool.hatch.envs.docs.scripts]
