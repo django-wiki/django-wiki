@@ -1,7 +1,7 @@
 [main]
 host = https://www.transifex.com
 
-[django-wiki.core]
+[o:django-wiki:p:django-wiki:r:core]
 file_filter = src/wiki/locale/<lang>/LC_MESSAGES/django.po
 source_file = src/wiki/locale/en/LC_MESSAGES/django.po
 source_lang = en

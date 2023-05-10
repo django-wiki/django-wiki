@@ -184,18 +184,20 @@ python = ["3.8", "3.9", "3.10", "3.11"]
 django = ["4.1", "4.2"]
 
 [tool.hatch.envs.transifex]
-dependencies = [
-    "transifex-client",
-]
+dependencies = []
 
 [tool.hatch.envs.transifex.scripts]
 push = [
-    "cd src/wiki && django-admin makemessages -l en",
-    "cd ..",
-    "tx push -s",
+    "touch ~/.transifexrc",
+    # Recipe: https://github.com/transifex/cli#running-from-docker-beta
+    "docker run --rm -i -t -v `pwd`:/app -v ~/.transifexrc:/.transifexrc -v /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt transifex/txcli --root-config /.transifexrc push -s",
 ]
 pull = [
-    "tx pull -a",
+    "touch ~/.transifexrc",
+    # Recipe: https://github.com/transifex/cli#running-from-docker-beta
+    "docker run --rm -i -t -v `pwd`:/app -v ~/.transifexrc:/.transifexrc -v /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt transifex/txcli --root-config /.transifexrc pull -a",
+    # This can have permission errors because of Docker
+    # In this case, run chown -R USERNAME:USERGROUP src/wiki/locale
     "cd src/wiki && django-admin compilemessages",
 ]
 
