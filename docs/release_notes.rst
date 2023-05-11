@@ -39,6 +39,12 @@ Fixed
 * Added upper bound on dependency ``bleach>=0.5,<6`` :url-issue:`1253` (Benjamin Balder Bach)
 
 
+Translation updates
+~~~~~~~~~~~~~~~~~~~
+
+- New: Portuguese ``pt_PT``: 100% translated, 100% reviewed. This comes in addition to ``pt_BR`` which was already finalized.
+
+
 0.9
 ---
 
