@@ -66,7 +66,7 @@ docs = [
     "Django>=3.1.13",
     "bleach>=6,<7",
     "sphinx>=6,<8",
-    "sphinx_rtd_theme==1.2.0",
+    "sphinx_rtd_theme==1.2.1",
 ]
 
 [project.urls]
@@ -206,7 +206,7 @@ dependencies = [
     "Django>=3.1.13",
     "bleach>=6,<7",
     "sphinx>=6,<8",
-    "sphinx_rtd_theme==1.2.0",
+    "sphinx_rtd_theme==1.2.1",
 ]
 
 [tool.hatch.envs.docs.scripts]
