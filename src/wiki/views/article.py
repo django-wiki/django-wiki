@@ -910,6 +910,7 @@ class MergeView(View):
     template_error_name = "wiki/error.html"
     urlpath = None
 
+    @method_decorator(xframe_options_sameorigin)
     @method_decorator(get_article(can_write=True))
     def dispatch(self, request, article, revision_id, *args, **kwargs):
         return super().dispatch(request, article, revision_id, *args, **kwargs)
