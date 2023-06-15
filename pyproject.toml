@@ -94,8 +94,6 @@ exclude = [
 [tool.hatch.envs.default]
 dependencies = [
     "black>=22.3.0,<22.11",
-    "codecov",
-    "coverage[toml]",
     "ddt",
     "django-functest>=1.2,<1.6",
     "flake8>=3.7,<5.1",
@@ -108,10 +106,6 @@ dependencies = [
 
 [tool.hatch.envs.default.scripts]
 # Ignore this entrypoint for now, as it's not fully implemented
-cov = [
-    "coverage run",
-    "coverage report -m",
-]
 lint = "flake8 --max-line-length=213 --extend-ignore=E203 --max-complexity=10 --exclude=.svn,CVS,.bzr,.hg,.git,__pycache__,.tox,.eggs,*.egg,*/*migrations,testproject src/wiki tests/"
 clean-build = [
     "rm -fr build",
@@ -136,8 +130,6 @@ matrix.django.dependencies = [
 
 [tool.hatch.envs.test]
 dependencies = [
-    "codecov",
-    "coverage[toml]",
     "ddt",
     "django-functest>=1.2,<1.6",
     "pytest-cov",
@@ -154,7 +146,6 @@ matrix-name-format = "dj{value}"
 all = [
     "sh -c 'testproject/manage.py makemigrations --check'",
     "pytest --cov=wiki tests/ {args}",
-    "codecov",
 ]
 lint = [
     "flake8 --max-line-length=213 --extend-ignore=E203 --max-complexity=10 --exclude=.svn,CVS,.bzr,.hg,.git,__pycache__,.tox,.eggs,*.egg,*/*migrations,testproject src/wiki tests/",
@@ -163,7 +154,6 @@ lint = [
 ]
 clean = [
     "rm -fr .tox/",
-    "rm -f .coverage",
     "rm -fr htmlcov/",
 ]
 
