@@ -129,7 +129,7 @@
           "is_staff": true,
           "is_active": true,
           "date_joined": "2023-01-31T22:25:55Z",
-          "groups": [],
+          "groups": [1],
           "user_permissions": []
       }
   },
@@ -139,15 +139,15 @@
       "fields": {
           "password": "pbkdf2_sha256$390000$1qTkKmWW2h6zE8lKTDtwYo$2WlKlalmK5iNBa+KZzfDo+hFZWoBhSECf8MtM7BseQQ=",
           "last_login": "2023-01-31T22:29:59Z",
-          "is_superuser": false,
+          "is_superuser": true,
           "username": "admin",
           "first_name": "Public",
           "last_name": "Test",
           "email": "test@django-wiki.org",
-          "is_staff": false,
+          "is_staff": true,
           "is_active": true,
           "date_joined": "2023-01-31T22:18:24Z",
-          "groups": [],
+          "groups": [1],
           "user_permissions": []
       }
   },
