@@ -21,6 +21,7 @@ jobs:
     steps:
       - checkout
       - run: pip install hatch && python -m hatch --env test.<<parameters.hatch_env>> run all
+
   lint:
     description: "Simple job for linting the pushed code"
     docker:
@@ -36,9 +37,10 @@ jobs:
     steps:
       - checkout
       - run: pip install coverage[toml]
-      - run: python -m coverage run
+      - run: pip install hatch && python -m hatch --env test.py3.9-dj4.0 run all
       - run: python -m coverage report -m
       - run: python -m coverage xml
+      - codecov/upload
 
 
 workflows:
@@ -117,7 +119,3 @@ workflows:
           python_version: "3.11"
       - lint
       - coverage
-      - upload-to-codecov:
-          jobs:
-              - checkout
-              - codecov/upload

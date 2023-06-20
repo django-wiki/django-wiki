@@ -283,6 +283,7 @@ source = [
     "src/",
 ]
 omit = [
+    ".DS_Store",
     "*/tests/*",
     "src/wiki/__about__.py",
 ]
