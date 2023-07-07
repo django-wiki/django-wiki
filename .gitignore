@@ -39,12 +39,13 @@ testproject/testproject/media/*
 pip-log.txt
 
 # Unit test / coverage reports
+htmlcov/
 .coverage
-htmlcov
+.coverage.*
 .tox
 .cache
-htmlcov
 coverage.xml
+*.cover
 
 #Eclipse
 .project
