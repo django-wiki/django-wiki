@@ -56,9 +56,8 @@ MARKDOWN_KWARGS = {
 }
 MARKDOWN_KWARGS.update(getattr(django_settings, "WIKI_MARKDOWN_KWARGS", {}))
 
-_default_tag_whitelists = (
-    bleach.ALLOWED_TAGS
-    + [
+_default_tag_whitelists = bleach.ALLOWED_TAGS.union(
+    {
         "figure",
         "figcaption",
         "br",
@@ -78,14 +77,15 @@ _default_tag_whitelists = (
         "dl",
         "dt",
         "dd",
-    ]
-    + ["h{}".format(n) for n in range(1, 7)]
-)
+    }
+).union({"h{}".format(n) for n in range(1, 7)})
 
 
 #: List of allowed tags in Markdown article contents.
 MARKDOWN_HTML_WHITELIST = _default_tag_whitelists
-MARKDOWN_HTML_WHITELIST += getattr(django_settings, "WIKI_MARKDOWN_HTML_WHITELIST", [])
+MARKDOWN_HTML_WHITELIST.union(
+    getattr(django_settings, "WIKI_MARKDOWN_HTML_WHITELIST", frozenset())
+)
 
 _default_attribute_whitelist = bleach.ALLOWED_ATTRIBUTES
 for tag in MARKDOWN_HTML_WHITELIST:

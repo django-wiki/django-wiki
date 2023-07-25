@@ -7,8 +7,8 @@ django-wiki
    :target: https://django-wiki.readthedocs.io/
 .. |Build status| image:: https://circleci.com/gh/django-wiki/django-wiki.svg?style=shield
    :target: https://circleci.com/gh/django-wiki/django-wiki
-.. |Coverage Status| image:: https://codecov.io/github/django-wiki/django-wiki/coverage.svg?branch=master
-   :target: https://codecov.io/github/django-wiki/django-wiki?branch=master
+.. |Coverage Status| image:: https://codecov.io/github/django-wiki/django-wiki/coverage.svg?branch=main
+   :target: https://codecov.io/github/django-wiki/django-wiki?branch=main
 .. |PyPi| image:: https://badge.fury.io/py/wiki.svg
    :target: https://pypi.org/project/wiki/
 .. |Downloads| image:: https://img.shields.io/pypi/dm/wiki.svg
@@ -57,26 +57,32 @@ Notes <https://django-wiki.readthedocs.io/en/latest/release_notes.html>`__
 Translations (Transifex)
 ------------------------
 
-Django-wiki has almost fully translated into 12 languages, apart from the
-default (English). But please help out in adding more languages! It's
-very easy, you don't even need to be a programmer.
+Django-wiki is fully translated into 13 languages, apart from the
+default (English) and some additional languages underway.
+
+But please help out in adding more languages!
+It's very easy and you don't even need to be a programmer.
 
 Some languages...
 
-* Just need a little push, as they are almost fully complete
-* Got initiated and need a new instigator to carry on the ambitions
-* Do not exist yet - but you can request them and become the coordinator.
+* ...just need a little push, as they are almost fully complete
+* ...got initiated and need a new instigator to carry on the ambitions
+* ...do not exist yet - but you can request them and become the coordinator
 
 `Visit the django-wiki project on Transifex <https://www.transifex.com/django-wiki/django-wiki/>`__
 
 Demo
 ----
 
-A demo running the latest ``master`` is available here, sign up for an
-account to see the notification system, or you can log in with
-user:``test`` and password:``test``.
+A demo running the latest ``main`` branch is available here:
 
 https://demo.django-wiki.org
+
+Sign up for an account to see the notification system,
+or you can log in with the existing account:
+
+- user: ``admin``
+- password:``admin``
 
 Community
 ---------
@@ -85,31 +91,43 @@ Please use our IRC or mailing list (google group) for getting in touch
 on development and support. Please do not email developers asking for
 personal support.
 
+- Discussions on GitHub: `<https://github.com/django-wiki/django-wiki/discussions>`__
 - `#django-wiki on libera.chat <https://web.libera.chat/?channel=#django-wiki>`__
 - `django-wiki@googlegroups.com <https://groups.google.com/forum/#!forum/django-wiki>`__
 - `twitter:djangowiki <https://twitter.com/djangowiki>`__
 
-*THIS IS A WORK IN PROGRE...*
+*Always a work in progr...*
 -----------------------------
 
-Currently, the model API is subject to smaller changes, and the plugin
-API seems pretty stable.
+On a number of factors,
+this project has proven itself useful and stable.
 
-In order to customize the wiki, best idea is to override templates and create
-your own template tags. Do not make your own hard copy of this repository in
-order to fiddle with internal parts of the wiki -- this strategy will lead you
-to lose out on future updates with highly improved features and plugins.
-Possibly security updates as well!
+- There won't be changes that are expected to cause loss of data without a proper upgrade path.
+- The model API has been very stable and is only subject to smaller changes.
+- The plugin API seems pretty stable.
+- You can maintain the latest version of django-wiki through PyPi (package name: ``wiki``), using `SemVer <https://semver.org/>`__ versioning schema.
 
-The release cycle has already begun, so you can administer django-wiki
-through Pypi and pip.
+What should I customize? What can break?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-All views are class-based, however don't take it as an encouragement to
-extend them, unless you are prepared to modify both templates and view
-classes every time there is an update.
+You will need to learn a bit of Django to customize django-wiki.
+
+The simplest is to override templates and create your own template tags.
+Do not make your own hard copy of this repository in order to fiddle with internal parts of the wiki,
+this strategy will lead you to lose out on future updates with highly improved features, plugins and security fixes.
+
+You can also override the whole Bootstrap theming.
+At present,
+you're best off maintaining your own Bootstrap SCSS and hard-copying, then overriding django-wiki's rules.
+
+All Python views are class-based.
+However for most cases overriding views and URLs shouldn't be the best place to start
+since most customization can be achieved through plugins, templates and SCSS.
 
 Contributing
 ------------
+
+Contributions are welcome! ❤️
 
 Please read our
 `Developer Guide <https://django-wiki.readthedocs.io/en/latest/development/index.html>`__
@@ -173,7 +191,7 @@ Q&A
 
 -  **Why is the module named just** ``wiki`` **?** Because when we tried
    ``pip install wiki``, it returned "No distributions at all found
-   for wiki", so we had to make up for that!
+   for wiki", so we had to make up for that! ...oh, and django-wiki was occupied.
 -  **What markup language will you use?**
    `Markdown <https://pypi.python.org/pypi/Markdown>`__. The markup
    renderer is not a pluggable part but has been internalized into core
@@ -189,22 +207,6 @@ Q&A
    discussion: https://github.com/django-wiki/django-wiki/issues/63
 
 
-Requirements
-------------
-
-Please refer to current release to see exact version dependencies. And
-make note that Pillow needs to have certain build dependencies satisfied
-on your host system.
-
--  `Django <https://www.djangoproject.com>`__
--  `Markdown <https://github.com/waylan/Python-Markdown>`__
--  `django-mptt <https://github.com/django-mptt/django-mptt>`__
--  `django-sekizai <https://github.com/ojii/django-sekizai/>`__
--  `sorl-thumbnail <https://github.com/mariocesar/sorl-thumbnail>`__
--  `Pillow (Python Imaging Library) <https://pillow.readthedocs.io/en/latest/installation.html>`__
--  Python>=3.5
-
-
 Docker tl;dr
 ------------
 
@@ -216,13 +218,14 @@ Acknowledgements
 
 -  The people at `edX <https://www.edx.org/>`__ & MIT for finding
    and supporting the project both financially and with ideas.
--  `django-cms <https://github.com/divio/django-cms>`__ for venturing
-   where no django app has gone before in terms of well-planned features
-   and high standards. It's a very big inspiration.
 -  `django-mptt <https://github.com/django-mptt/django-mptt>`__, a
    wonderful utility for inexpensively using tree structures in Django
    with a relational database backend.
--  `spookylukey <https://github.com/spookylukey>`__,
+-  `oscarmcm <https://github.com/oscarmcm>`__,
+   `atombrella <https://github.com/atombrella>`__,
+   `floemker <https://github.com/floemker>`__,
+   `rsalmaso <https://github.com/rsalmaso>`__,
+   `spookylukey <https://github.com/spookylukey>`__,
    `jluttine <https://github.com/jluttine>`__,
    `duvholt <https://github.com/duvholt>`__,
    `valberg <https://github.com/valberg>`__,
@@ -233,3 +236,6 @@ Acknowledgements
    `crazyzubr <https://github.com/crazyzubr>`__, and `everyone
    else <https://github.com/django-wiki/django-wiki/graphs/contributors>`__
    involved!
+
+Original source of inspiration back in 2009 was django-cms,
+and since then Wagtail has also done a tremendous amount of work to promote Django models as a fundamental structure and enabler for application design.

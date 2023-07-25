@@ -1,11 +1,11 @@
-blank_issues_enabled: false
+blank_issues_enabled: true
 contact_links:
   - name: Bug Report
-    url: https://github.com/django-wiki/django-wiki/discussions/new
+    url: https://github.com/django-wiki/django-wiki/discussions/new?category=bug&title=[Bug]:&labels=bug
     about: Submit a GitHub issue
   - name: Feature Request
-    url: https://github.com/django-wiki/django-wiki/discussions/new
-    about: Request a feature to be added to the platform
+    url: https://github.com/django-wiki/django-wiki/discussions/new?category=ideas&title=[Feature]:&labels=enhancement
+    about: Request or share ideas for new features to be added to Django Wiki
   - name: Ask a Question
-    url: https://github.com/django-wiki/django-wiki/discussions/new
+    url: https://github.com/django-wiki/django-wiki/discussions/new?category=q-a&title=[Question]
     about: Ask questions and discuss with other community members

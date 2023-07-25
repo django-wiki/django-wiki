@@ -92,7 +92,7 @@ def process_docstring(app, what, name, obj, options, lines):
 
 
 extlinks = {
-    "url-issue": ("https://github.com/django-wiki/django-wiki/issues/%s", "#"),
+    "url-issue": ("https://github.com/django-wiki/django-wiki/issues/%s", "#%s"),
 }
 
 
@@ -108,6 +108,8 @@ extensions = [
     "sphinx.ext.extlinks",
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
+    # Fix: https://github.com/readthedocs/sphinx_rtd_theme/issues/1452
+    "sphinxcontrib.jquery",
 ]
 
 # Add any paths that contain templates here, relative to this directory.

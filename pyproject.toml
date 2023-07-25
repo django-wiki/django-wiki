@@ -37,16 +37,37 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Application Frameworks",
 ]
 dependencies = [
-    "Django>=2.1,<4.2",
-    "bleach[css]>=5",
+    # Django version support is added one minor release at a time
+    "Django>=2.2,<4.3",
+    # bleach has been pretty stable, hence the loose pin
+    "bleach[css]>=6,<7",
+    # Pillow is used very little and has never broken
     "Pillow",
+    # django-nyt is maintained by django-wiki maintainers, so we can
+    # control breakage and pinning ourselves
     "django-nyt>=1.2.2",
+    # django-mptt has had several breaking changes
     "django-mptt>=0.13,<0.15",
+    # django-sekizai is basically only releasing every time
+    # it needs to restore support for a new Django/Python version
     "django-sekizai>=0.10",
+    # sorl-thumbnail is maintained by jazzband so it might be
+    # very stable but it might also suddenly invite breaking changes
     "sorl-thumbnail>=12.8,<13",
+    # django-wiki's integration with Markdown is really detailed,
+    # several extensions have imported internal APIs, so be very
+    # careful here.
     "Markdown>=3.3,<3.4",
 ]
 dynamic = ["version"]
+
+[project.optional-dependencies]
+docs = [
+    "Django>=3.1.13",
+    "bleach>=6,<7",
+    "sphinx>=6,<8",
+    "sphinx_rtd_theme==1.2.2",
+]
 
 [project.urls]
 Homepage = "http://www.django-wiki.org"
@@ -73,8 +94,6 @@ exclude = [
 [tool.hatch.envs.default]
 dependencies = [
     "black>=22.3.0,<22.11",
-    "codecov",
-    "coverage[toml]",
     "ddt",
     "django-functest>=1.2,<1.6",
     "flake8>=3.7,<5.1",
@@ -87,10 +106,6 @@ dependencies = [
 
 [tool.hatch.envs.default.scripts]
 # Ignore this entrypoint for now, as it's not fully implemented
-cov = [
-    "coverage run",
-    "coverage report -m",
-]
 lint = "flake8 --max-line-length=213 --extend-ignore=E203 --max-complexity=10 --exclude=.svn,CVS,.bzr,.hg,.git,__pycache__,.tox,.eggs,*.egg,*/*migrations,testproject src/wiki tests/"
 clean-build = [
     "rm -fr build",
@@ -110,13 +125,11 @@ test = "pytest {args}"
 
 [tool.hatch.envs.test.overrides]
 matrix.django.dependencies = [
-    { value = "django~={matrix:django}.0" },
+    { value = "django~={matrix:django}" },
 ]
 
 [tool.hatch.envs.test]
 dependencies = [
-    "codecov",
-    "coverage[toml]",
     "ddt",
     "django-functest>=1.2,<1.6",
     "pytest-cov",
@@ -133,7 +146,6 @@ matrix-name-format = "dj{value}"
 all = [
     "sh -c 'testproject/manage.py makemigrations --check'",
     "pytest --cov=wiki tests/ {args}",
-    "codecov",
 ]
 lint = [
     "flake8 --max-line-length=213 --extend-ignore=E203 --max-complexity=10 --exclude=.svn,CVS,.bzr,.hg,.git,__pycache__,.tox,.eggs,*.egg,*/*migrations,testproject src/wiki tests/",
@@ -142,7 +154,6 @@ lint = [
 ]
 clean = [
     "rm -fr .tox/",
-    "rm -f .coverage",
     "rm -fr htmlcov/",
 ]
 
@@ -158,28 +169,34 @@ django = ["3.2"]
 python = ["3.8", "3.9", "3.10"]
 django = ["4.0"]
 
+[[tool.hatch.envs.test.matrix]]
+python = ["3.8", "3.9", "3.10", "3.11"]
+django = ["4.1", "4.2"]
+
 [tool.hatch.envs.transifex]
-dependencies = [
-    "transifex-client",
-]
+dependencies = []
 
 [tool.hatch.envs.transifex.scripts]
 push = [
-    "cd src/wiki && django-admin makemessages -l en",
-    "cd ..",
-    "tx push -s",
+    "touch ~/.transifexrc",
+    # Recipe: https://github.com/transifex/cli#running-from-docker-beta
+    "docker run --rm -i -t -v `pwd`:/app -v ~/.transifexrc:/.transifexrc -v /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt transifex/txcli --root-config /.transifexrc push -s",
 ]
 pull = [
-    "tx pull -a",
+    "touch ~/.transifexrc",
+    # Recipe: https://github.com/transifex/cli#running-from-docker-beta
+    "docker run --rm -i -t -v `pwd`:/app -v ~/.transifexrc:/.transifexrc -v /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt transifex/txcli --root-config /.transifexrc pull -a",
+    # This can have permission errors because of Docker
+    # In this case, run chown -R USERNAME:USERGROUP src/wiki/locale
     "cd src/wiki && django-admin compilemessages",
 ]
 
 [tool.hatch.envs.docs]
 dependencies = [
     "Django>=3.1.13",
-    "bleach>=3.3.0,<5.1",
-    "sphinx>=3",
-    "sphinx_rtd_theme==1.1.1",
+    "bleach>=6,<7",
+    "sphinx>=6,<8",
+    "sphinx_rtd_theme==1.2.2",
 ]
 
 [tool.hatch.envs.docs.scripts]
@@ -266,6 +283,7 @@ source = [
     "src/",
 ]
 omit = [
+    ".DS_Store",
     "*/tests/*",
     "src/wiki/__about__.py",
 ]

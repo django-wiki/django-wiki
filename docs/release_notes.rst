@@ -5,21 +5,80 @@ Release notes
 Release plan
 ------------
 
-
-- **0.3.x** series suppors Django 1.11. As with the upstream Django release, 0.3 was be the last series with Python 2.7 support.
-- **0.4.x** supports Django 1.11 and Django 2.1 and Python 3.4+.
-- **0.5.x** Remove Django 1.11 support, adds Django 2.2 and 3.x support. Python 3.5+.
-- **0.6.x** Targets Bootstrap v4, if you are interested in this work, please get in touch on Github!
-- **0.7.x** Removes Django 2.1 support, adds Django 3.1, 3.2
+- **0.11.x** Update bootstrap to v5 and removes Python 3.7 support.
+- **0.10.x** Uses Hatch as the new build system and has upgrades for Django 4.x and Python 3.11.
 - **0.9.x** Definitely Removes Python 3.5 and 3.6 support
+- **0.7.x** Removes Django 2.1 support, adds Django 3.1, 3.2
+- **0.6.x** Targets Bootstrap v4, if you are interested in this work, please get in touch on Github!
+- **0.5.x** Remove Django 1.11 support, adds Django 2.2 and 3.x support. Python 3.5+.
+- **0.4.x** supports Django 1.11 and Django 2.1 and Python 3.4+.
+- **0.3.x** series suppors Django 1.11. As with the upstream Django release, 0.3 was be the last series with Python 2.7 support.
 
 
-0.10 (unreleased)
------------------
+0.10
+----
 
+Released on 2023-05-15
+
+Changed
+~~~~~~~
+
+* Removed sqlite database and use fixtures url-issue:`1260` (Oscar Cortez)
+* Improved settings and middleware for demo url-issue:`1267` (Oscar Cortez)
+* Updated languages and use the new Transifex client with Docker (Benjamin Balder Bach)
+* Updated django requirement from <4.2,>=2.1 to >=2.1,<4.3 :url-issue:`1275` (Oscar Cortez)
+* Upgraded for Sphinx 6 on Read the Docs :url-issue:`1270` (Benjamin Balder Bach)
+* Improved Read The Docs configuration :url-issue:`1283` (Oscar Cortez)
+
+Added
+~~~~~
+
+* New milestone for v0.11 (https://github.com/django-wiki/django-wiki/milestone/13)
+* Added support for the latest Bleach package version :url-issue:`1264` (Oscar Cortez)
+* Added environments for Python 3.11 and Django 4.1 :url-issue:`1265` (Oscar Cortez)
+* Use the new Transifex client in Docker :url-issue:`1284` (Benjamin Balder Bach)
+* Improve discussion forms :url-issue:`1262` (Oscar Cortez)
+
+Fixed
+~~~~~
+
+* Bleach is deprecated :url-issue:`1259` (Oscar Cortez)
+* TypeError: unsupported operand type(s) for +: 'frozenset' and 'list' url-issue:`1257` and :url-issue:`1251`  (Oscar Cortez)
+* Editing the demo without a login :url-issue:`1263` (Oscar Cortez)
+* jQuery broken on docs pages :url-issue:`1281` (Benjamin Balder Bach)
+* Solve yml issues and improve issue templates :url-issue:`1261` (Oscar Cortez)
+* Fix Release Date for 0.10b1 :url-issue:`1282` (Thomas Rinklin)
+
+0.10b1
+------
+
+Released on 2023-01-25
+
+Welcome onboard to new co-maintainer `Oscar Cortez <https://github.com/oscarmcm>`__ 🎉️
+
+Changed / added
+~~~~~~~~~~~~~~~
+
+* "Edit Section" plugin fixed and patterns for finding headings rewritten url-issue:`1247` url-issue:`1246` (Chris Vigelius)
+* Python 3.11 compatiblity: Fix "global flags not at the start of the expression" :url-issue:`1243` (Benbb96)
 * Removed direct dependency on ``tinycss2``, inherited from ``bleach`` - due to old versions of pip unable to resolve
+* Pass current revision to ``Editor.get_widget()`` and ``get_admin_widget()`` :url-issue:`1249` (Chris Vigelius)
+* Refactor package setup to use ``pyproject.toml`` and `Hatch <https://pypi.org/project/hatch/>`__ :url-issue:`1227` (Oscar Cortez)
+
+Fixed
+~~~~~
+
+* Use ``SHOW_MAX_CHILDREN`` in ``ArticleMixin`` :url-issue:`1240` (Oscar Cortez)
 * Fixed wrong CSS class for collapse elements in Bootstrap 4 :url-issue:`1208` (Oscar Cortez)
 * Fixed wrong version of Popper.js and update Bootstrap to v4.6.2 :url-issue:`1124` (Oscar Cortez)
+* Added upper bound on dependency ``bleach>=0.5,<6`` :url-issue:`1253` (Benjamin Balder Bach)
+
+
+Translation updates
+~~~~~~~~~~~~~~~~~~~
+
+- New: Portuguese ``pt_PT``: 100% translated, 100% reviewed. This comes in addition to ``pt_BR`` which was already finalized.
+
 
 0.9
 ---
