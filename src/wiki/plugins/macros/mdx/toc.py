@@ -7,12 +7,12 @@ HEADER_ID_PREFIX = "wiki-toc-"
 
 
 def process_toc_depth(toc_depth):
-    if isinstance(toc_depth, str) and '-' in toc_depth:
-        toc_top, toc_bottom = [int(x) for x in toc_depth.split('-')]
+    if isinstance(toc_depth, str) and "-" in toc_depth:
+        toc_top, toc_bottom = [int(x) for x in toc_depth.split("-")]
     else:
         toc_top = 1
         toc_bottom = int(toc_depth)
-    return {'toc_top': toc_top, 'toc_bottom': toc_bottom}
+    return {"toc_top": toc_top, "toc_bottom": toc_bottom}
 
 
 def process_value(org_val, new_val):
@@ -31,9 +31,9 @@ def wiki_slugify(*args, **kwargs):
 
 
 class WikiTreeProcessorClass(TocTreeprocessor):
-    CACHED_KWARGS = dict()
+    CACHED_KWARGS = dict()  # Used to cache arguments parsed by the MacroPattern
+    # Used to map the keyword arguments to the Class Objects attribute name.
     TOC_CONFIG_VALUES = {
-        "marker": "marker",
         "title": "title",
         "baselevel": "base_level",
         "separator": "sep",
@@ -51,22 +51,39 @@ class WikiTreeProcessorClass(TocTreeprocessor):
         # Necessary because self.title is set to a LazyObject via gettext_lazy
         if self.title:
             self.title = str(self.title)
-        # Set config
+        # Set config and save defaults to tmp
         tmp_kwargs = dict()
         for k, v in WikiTreeProcessorClass.CACHED_KWARGS.items():
             if k in WikiTreeProcessorClass.TOC_CONFIG_VALUES:
                 if callable(WikiTreeProcessorClass.TOC_CONFIG_VALUES[k]):
-                    for tock, tocv in WikiTreeProcessorClass.TOC_CONFIG_VALUES[k](v).items():
-                        tmp_kwargs[tock] = getattr(self, WikiTreeProcessorClass.TOC_CONFIG_VALUES[tock])
-                        setattr(self, WikiTreeProcessorClass.TOC_CONFIG_VALUES[tock], process_value(tmp_kwargs[tock], tocv))
+                    for tock, tocv in WikiTreeProcessorClass.TOC_CONFIG_VALUES[k](
+                        v
+                    ).items():
+                        tmp_kwargs[tock] = getattr(
+                            self, WikiTreeProcessorClass.TOC_CONFIG_VALUES[tock]
+                        )
+                        setattr(
+                            self,
+                            WikiTreeProcessorClass.TOC_CONFIG_VALUES[tock],
+                            process_value(tmp_kwargs[tock], tocv),
+                        )
                 else:
-                    tmp_kwargs[WikiTreeProcessorClass.TOC_CONFIG_VALUES[k]] = getattr(self, WikiTreeProcessorClass.TOC_CONFIG_VALUES[k])
-                    setattr(self, WikiTreeProcessorClass.TOC_CONFIG_VALUES[k], process_value(tmp_kwargs[WikiTreeProcessorClass.TOC_CONFIG_VALUES[k]],v))
+                    tmp_kwargs[WikiTreeProcessorClass.TOC_CONFIG_VALUES[k]] = getattr(
+                        self, WikiTreeProcessorClass.TOC_CONFIG_VALUES[k]
+                    )
+                    setattr(
+                        self,
+                        WikiTreeProcessorClass.TOC_CONFIG_VALUES[k],
+                        process_value(
+                            tmp_kwargs[WikiTreeProcessorClass.TOC_CONFIG_VALUES[k]], v
+                        ),
+                    )
         super().run(doc)
+        # Use tmp to reset values
         for k, v in tmp_kwargs.items():
             if hasattr(self, k):
                 setattr(self, k, v)
-        # Unset config
+        # Unset cached kwargs
         WikiTreeProcessorClass.CACHED_KWARGS = dict()
 
 
