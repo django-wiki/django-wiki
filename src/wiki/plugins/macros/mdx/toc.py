@@ -16,23 +16,18 @@ def process_toc_depth(toc_depth):
 
 
 def process_bool_value(bool_val, org_val):
-    if type(bool_val) is str:
-        if bool_val.lower() == "false" or bool_val == "0":
-            return False
-        elif bool_val.lower() == "true" or bool_val == "1":
-            return True
-        else:
-            return org_val
+    if bool_val.lower() == "false" or bool_val == "0":
+        return False
+    elif bool_val.lower() == "true" or bool_val == "1":
+        return True
     else:
-        return process_bool_value(str(bool_val), org_val)
+        return org_val
 
 
 def process_value(org_val, new_val):
     try:
         if type(new_val) is str:
             new_val = new_val.lstrip("'").rstrip("'")
-        elif type(new_val) is not bool and type(new_val) is not int:
-            return org_val
 
         if type(org_val) is bool:
             return process_bool_value(new_val, org_val)
@@ -41,11 +36,9 @@ def process_value(org_val, new_val):
         elif type(org_val) is str:
             return new_val
         else:
-            new_val = org_val
+            return org_val
     except Exception:
         return org_val
-    else:
-        return new_val
 
 
 def wiki_slugify(*args, **kwargs):
