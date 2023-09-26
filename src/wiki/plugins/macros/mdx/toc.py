@@ -1,5 +1,3 @@
-import json
-
 from markdown.extensions.toc import slugify
 from markdown.extensions.toc import TocExtension
 from markdown.extensions.toc import TocTreeprocessor
@@ -17,14 +15,42 @@ def process_toc_depth(toc_depth):
     return {"toc_top": toc_top, "toc_bottom": toc_bottom}
 
 
+def process_bool_value(bool_val, org_val):
+    if type(bool_val) is str:
+        if bool_val.lower() == "false":
+            return False
+        elif bool_val.lower() == "true":
+            return True
+        else:
+            return org_val
+    elif type(bool_val) is int:
+        if bool_val == 1:
+            return True
+        elif bool_val == 0:
+            return False
+        else:
+            return org_val
+    elif type(bool_val) is bool:
+        return bool_val
+    else:
+        return org_val
+
+
 def process_value(org_val, new_val):
     try:
         if type(new_val) is str:
             new_val = new_val.lstrip("'").rstrip("'")
-            if type(org_val) is not str:
-                new_val = json.loads(new_val.lower())
-        elif type(new_val) is not type(org_val):
-            new_val = type(org_val)(new_val)
+        elif type(new_val) is not bool and type(new_val) is not int:
+            return org_val
+
+        if type(org_val) is bool:
+            return process_bool_value(new_val, org_val)
+        elif type(org_val) is int:
+            return int(new_val)
+        elif type(org_val) is str:
+            return new_val
+        else:
+            new_val = org_val
     except Exception:
         return org_val
     else:
@@ -58,34 +84,37 @@ class WikiTreeProcessorClass(TocTreeprocessor):
             self.title = str(self.title)
 
         tmp_kwargs = dict()
+
+        def _helper_swap_values(key, value):
+            # Saves the existing attribute value to a dictionary
+            tmp_kwargs[WikiTreeProcessorClass.TOC_CONFIG_VALUES[key]] = getattr(
+                self, WikiTreeProcessorClass.TOC_CONFIG_VALUES[key]
+            )
+            # This sets the value to a TocTreeprocessor attribute of its corresponding name
+            setattr(
+                self,
+                WikiTreeProcessorClass.TOC_CONFIG_VALUES[key],
+                process_value(
+                    tmp_kwargs[WikiTreeProcessorClass.TOC_CONFIG_VALUES[key]],
+                    value,
+                ),
+            )
+
         try:
-            # Set config and save defaults to tmp
+            # Iterator through CACHED_KWARGS to set attributes values and save defaults attribute values to tmp_kwargs
             for k, v in WikiTreeProcessorClass.CACHED_KWARGS.items():
-                if k in WikiTreeProcessorClass.TOC_CONFIG_VALUES:
-                    if callable(WikiTreeProcessorClass.TOC_CONFIG_VALUES[k]):
+                if (
+                    k in WikiTreeProcessorClass.TOC_CONFIG_VALUES
+                ):  # Map of keyword names to their respected object attribute names
+                    if callable(
+                        WikiTreeProcessorClass.TOC_CONFIG_VALUES[k]
+                    ):  # Some values in the dictionary are functions to further process values
                         for tock, tocv in WikiTreeProcessorClass.TOC_CONFIG_VALUES[k](
                             v
                         ).items():
-                            tmp_kwargs[tock] = getattr(
-                                self, WikiTreeProcessorClass.TOC_CONFIG_VALUES[tock]
-                            )
-                            setattr(
-                                self,
-                                WikiTreeProcessorClass.TOC_CONFIG_VALUES[tock],
-                                process_value(tmp_kwargs[tock], tocv),
-                            )
+                            _helper_swap_values(tock, tocv)
                     else:
-                        tmp_kwargs[
-                            WikiTreeProcessorClass.TOC_CONFIG_VALUES[k]
-                        ] = getattr(self, WikiTreeProcessorClass.TOC_CONFIG_VALUES[k])
-                        setattr(
-                            self,
-                            WikiTreeProcessorClass.TOC_CONFIG_VALUES[k],
-                            process_value(
-                                tmp_kwargs[WikiTreeProcessorClass.TOC_CONFIG_VALUES[k]],
-                                v,
-                            ),
-                        )
+                        _helper_swap_values(k, v)
             super().run(doc)
         finally:
             # Use tmp to reset values
