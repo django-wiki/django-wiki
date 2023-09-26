@@ -17,23 +17,14 @@ def process_toc_depth(toc_depth):
 
 def process_bool_value(bool_val, org_val):
     if type(bool_val) is str:
-        if bool_val.lower() == "false":
+        if bool_val.lower() == "false" or bool_val == "0":
             return False
-        elif bool_val.lower() == "true":
+        elif bool_val.lower() == "true" or bool_val == "1":
             return True
         else:
             return org_val
-    elif type(bool_val) is int:
-        if bool_val == 1:
-            return True
-        elif bool_val == 0:
-            return False
-        else:
-            return org_val
-    elif type(bool_val) is bool:
-        return bool_val
     else:
-        return org_val
+        return process_bool_value(str(bool_val), org_val)
 
 
 def process_value(org_val, new_val):

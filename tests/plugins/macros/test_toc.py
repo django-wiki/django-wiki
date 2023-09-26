@@ -215,3 +215,99 @@ class TocMacroTestsInWiki(RequireRootArticleMixin, TestBase):
             "<p>Paragraph 2</p>"
         )
         self.assertEqual(md.convert(text), expected_output)
+
+    def test_toc_renders_table_of_content_in_wiki_test_bool_one(self):
+        # Test if the integer is 1 and should be True
+        md = markdown.ArticleMarkdown(article=self.root_article)
+        text = (
+            "[TOC anchorlink:1]\n"
+            "\n"
+            "# First title.\n"
+            "\n"
+            "Paragraph 1\n"
+            "\n"
+            "## Subsection\n"
+            "\n"
+            "Paragraph 2"
+        )
+        expected_output = (
+            '<div class="toc"><span class="toctitle">Contents</span><ul>\n'
+            '<li><a href="#wiki-toc-first-title">First title.</a><ul>\n'
+            '<li><a href="#wiki-toc-subsection">Subsection</a></li>\n'
+            "</ul>\n"
+            "</li>\n"
+            "</ul>\n"
+            "</div>\n"
+            '<h1 id="wiki-toc-first-title"><a class="toclink" '
+            'href="#wiki-toc-first-title">First title.</a><a '
+            'class="article-edit-title-link" '
+            'href="/_plugin/editsection/header/wiki-toc-first-title/">[edit]</a></h1>\n'
+            "<p>Paragraph 1</p>\n"
+            '<h2 id="wiki-toc-subsection"><a class="toclink" '
+            'href="#wiki-toc-subsection">Subsection</a><a class="article-edit-title-link" '
+            'href="/_plugin/editsection/header/wiki-toc-subsection/">[edit]</a></h2>\n'
+            "<p>Paragraph 2</p>"
+        )
+        self.assertEqual(md.convert(text), expected_output)
+
+    def test_toc_renders_table_of_content_in_wiki_test_bool_zero(self):
+        # Test if the integer is zero and should be false
+        md = markdown.ArticleMarkdown(article=self.root_article)
+        text = (
+            "[TOC anchorlink:0]\n"
+            "\n"
+            "# First title.\n"
+            "\n"
+            "Paragraph 1\n"
+            "\n"
+            "## Subsection\n"
+            "\n"
+            "Paragraph 2"
+        )
+        expected_output = (
+            '<div class="toc"><span class="toctitle">Contents</span><ul>\n'
+            '<li><a href="#wiki-toc-first-title">First title.</a><ul>\n'
+            '<li><a href="#wiki-toc-subsection">Subsection</a></li>\n'
+            "</ul>\n"
+            "</li>\n"
+            "</ul>\n"
+            "</div>\n"
+            '<h1 id="wiki-toc-first-title">First title.<a class="article-edit-title-link" '
+            'href="/_plugin/editsection/header/wiki-toc-first-title/">[edit]</a></h1>\n'
+            "<p>Paragraph 1</p>\n"
+            '<h2 id="wiki-toc-subsection">Subsection<a class="article-edit-title-link" '
+            'href="/_plugin/editsection/header/wiki-toc-subsection/">[edit]</a></h2>\n'
+            "<p>Paragraph 2</p>"
+        )
+        self.assertEqual(md.convert(text), expected_output)
+
+    def test_toc_renders_table_of_content_in_wiki_test_bool_wrong(self):
+        # Test if the integer is wrong value
+        md = markdown.ArticleMarkdown(article=self.root_article)
+        text = (
+            "[TOC anchorlink:5]\n"
+            "\n"
+            "# First title.\n"
+            "\n"
+            "Paragraph 1\n"
+            "\n"
+            "## Subsection\n"
+            "\n"
+            "Paragraph 2"
+        )
+        expected_output = (
+            '<div class="toc"><span class="toctitle">Contents</span><ul>\n'
+            '<li><a href="#wiki-toc-first-title">First title.</a><ul>\n'
+            '<li><a href="#wiki-toc-subsection">Subsection</a></li>\n'
+            "</ul>\n"
+            "</li>\n"
+            "</ul>\n"
+            "</div>\n"
+            '<h1 id="wiki-toc-first-title">First title.<a class="article-edit-title-link" '
+            'href="/_plugin/editsection/header/wiki-toc-first-title/">[edit]</a></h1>\n'
+            "<p>Paragraph 1</p>\n"
+            '<h2 id="wiki-toc-subsection">Subsection<a class="article-edit-title-link" '
+            'href="/_plugin/editsection/header/wiki-toc-subsection/">[edit]</a></h2>\n'
+            "<p>Paragraph 2</p>"
+        )
+        self.assertEqual(md.convert(text), expected_output)
