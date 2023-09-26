@@ -1,3 +1,5 @@
+import json
+
 from markdown.extensions.toc import slugify
 from markdown.extensions.toc import TocExtension
 from markdown.extensions.toc import TocTreeprocessor
@@ -19,7 +21,10 @@ def process_value(org_val, new_val):
     try:
         if type(new_val) is str:
             new_val = new_val.lstrip("'").rstrip("'")
-        new_val = type(org_val)(new_val)
+            if type(org_val) is not str:
+                new_val = json.loads(new_val.lower())
+        elif type(new_val) is not type(org_val):
+            new_val = type(org_val)(new_val)
     except Exception:
         return org_val
     else:
@@ -51,40 +56,44 @@ class WikiTreeProcessorClass(TocTreeprocessor):
         # Necessary because self.title is set to a LazyObject via gettext_lazy
         if self.title:
             self.title = str(self.title)
-        # Set config and save defaults to tmp
+
         tmp_kwargs = dict()
-        for k, v in WikiTreeProcessorClass.CACHED_KWARGS.items():
-            if k in WikiTreeProcessorClass.TOC_CONFIG_VALUES:
-                if callable(WikiTreeProcessorClass.TOC_CONFIG_VALUES[k]):
-                    for tock, tocv in WikiTreeProcessorClass.TOC_CONFIG_VALUES[k](
-                        v
-                    ).items():
-                        tmp_kwargs[tock] = getattr(
-                            self, WikiTreeProcessorClass.TOC_CONFIG_VALUES[tock]
-                        )
+        try:
+            # Set config and save defaults to tmp
+            for k, v in WikiTreeProcessorClass.CACHED_KWARGS.items():
+                if k in WikiTreeProcessorClass.TOC_CONFIG_VALUES:
+                    if callable(WikiTreeProcessorClass.TOC_CONFIG_VALUES[k]):
+                        for tock, tocv in WikiTreeProcessorClass.TOC_CONFIG_VALUES[k](
+                            v
+                        ).items():
+                            tmp_kwargs[tock] = getattr(
+                                self, WikiTreeProcessorClass.TOC_CONFIG_VALUES[tock]
+                            )
+                            setattr(
+                                self,
+                                WikiTreeProcessorClass.TOC_CONFIG_VALUES[tock],
+                                process_value(tmp_kwargs[tock], tocv),
+                            )
+                    else:
+                        tmp_kwargs[
+                            WikiTreeProcessorClass.TOC_CONFIG_VALUES[k]
+                        ] = getattr(self, WikiTreeProcessorClass.TOC_CONFIG_VALUES[k])
                         setattr(
                             self,
-                            WikiTreeProcessorClass.TOC_CONFIG_VALUES[tock],
-                            process_value(tmp_kwargs[tock], tocv),
+                            WikiTreeProcessorClass.TOC_CONFIG_VALUES[k],
+                            process_value(
+                                tmp_kwargs[WikiTreeProcessorClass.TOC_CONFIG_VALUES[k]],
+                                v,
+                            ),
                         )
-                else:
-                    tmp_kwargs[WikiTreeProcessorClass.TOC_CONFIG_VALUES[k]] = getattr(
-                        self, WikiTreeProcessorClass.TOC_CONFIG_VALUES[k]
-                    )
-                    setattr(
-                        self,
-                        WikiTreeProcessorClass.TOC_CONFIG_VALUES[k],
-                        process_value(
-                            tmp_kwargs[WikiTreeProcessorClass.TOC_CONFIG_VALUES[k]], v
-                        ),
-                    )
-        super().run(doc)
-        # Use tmp to reset values
-        for k, v in tmp_kwargs.items():
-            if hasattr(self, k):
-                setattr(self, k, v)
-        # Unset cached kwargs
-        WikiTreeProcessorClass.CACHED_KWARGS = dict()
+            super().run(doc)
+        finally:
+            # Use tmp to reset values
+            for k, v in tmp_kwargs.items():
+                if hasattr(self, k):
+                    setattr(self, k, v)
+            # Unset cached kwargs
+            WikiTreeProcessorClass.CACHED_KWARGS = dict()
 
 
 class WikiTocExtension(TocExtension):
