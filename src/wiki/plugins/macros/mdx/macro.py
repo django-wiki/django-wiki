@@ -5,6 +5,7 @@ from django.template.loader import render_to_string
 from django.utils.translation import gettext as _
 from wiki.core.markdown import add_to_registry
 from wiki.plugins.macros import settings
+from wiki.plugins.macros.mdx import toc
 
 # See:
 # http://stackoverflow.com/questions/430759/regex-for-managing-escaped-characters-for-items-like-string-literals
@@ -40,7 +41,7 @@ class MacroPattern(markdown.inlinepatterns.Pattern):
         )
 
     def handleMatch(self, m):
-        macro = m.group("macro").strip()
+        macro = m.group("macro").strip().lower()
         if macro not in settings.METHODS or not hasattr(self, macro):
             return m.group(2)
 
@@ -83,7 +84,8 @@ class MacroPattern(markdown.inlinepatterns.Pattern):
         "args": {"depth": _("Maximum depth to show levels for.")},
     }
 
-    def toc(self):
+    def toc(self, **kwargs):
+        toc.WikiTreeProcessorClass.CACHED_KWARGS = kwargs
         return "[TOC]"
 
     toc.meta = {
