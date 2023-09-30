@@ -1,6 +1,14 @@
 Installation
 ============
 
+django-wiki is an application for Django.
+This means that you need to setup a basic Django project in order to use django-wiki.
+
+.. seealso::
+
+   Read more about setting up your first Django project in the
+   `official Django tutorial <https://docs.djangoproject.com/en/4.2/intro/tutorial01/>`__.
+
 Pre-requisite: Pillow
 ---------------------
 
