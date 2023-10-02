@@ -47,7 +47,7 @@ dependencies = [
     # control breakage and pinning ourselves
     "django-nyt>=1.2.2",
     # django-mptt has had several breaking changes
-    "django-mptt>=0.13,<0.15",
+    "django-mptt>=0.13,<0.16",
     # django-sekizai is basically only releasing every time
     # it needs to restore support for a new Django/Python version
     "django-sekizai>=0.10",
