@@ -57,7 +57,7 @@ dependencies = [
     # django-wiki's integration with Markdown is really detailed,
     # several extensions have imported internal APIs, so be very
     # careful here.
-    "Markdown>=3.3,<3.4",
+    "Markdown>=3.4,<3.5",
 ]
 dynamic = ["version"]
 

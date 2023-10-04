@@ -17,11 +17,13 @@ Dependencies:
 * [Markdown 2.6+](https://pypi.python.org/pypi/Markdown)
 """
 from os import path as os_path
+from xml.etree import ElementTree as etree
 
 import markdown
-from markdown.util import etree
 from wiki import models
 from wiki.conf import settings
+
+# from markdown.util import etree
 
 
 class WikiPathExtension(markdown.extensions.Extension):
@@ -47,7 +49,9 @@ class WikiPathExtension(markdown.extensions.Extension):
         WIKI_RE = r"\[(?P<label>[^\]]+?)\]\(wiki:(?P<wikipath>[a-zA-Z0-9\./_-]*?)(?P<fragment>#[a-zA-Z0-9\./_-]*)?\)"
         wikiPathPattern = WikiPath(WIKI_RE, self.config, md=md)
         wikiPathPattern.md = md
-        md.inlinePatterns.add("djangowikipath", wikiPathPattern, "<reference")
+        md.inlinePatterns.register(
+            wikiPathPattern, "djangowikipath", 171
+        )  # 171 is hardcoded value to put it ahead of reference
 
 
 class WikiPath(markdown.inlinepatterns.Pattern):

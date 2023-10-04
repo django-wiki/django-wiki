@@ -64,9 +64,9 @@ class WikiFencedBlockPreprocessor(Preprocessor):
                 if m.group("lang"):
                     lang = m.group("lang")
                 html = highlight(
-                    m.group("code"), self.config, self.markdown.tab_length, lang=lang
+                    m.group("code"), self.config, self.md.tab_length, lang=lang
                 )
-                placeholder = self.markdown.htmlStash.store(html)
+                placeholder = self.md.htmlStash.store(html)
                 text = "%s\n%s\n%s" % (text[: m.start()], placeholder, text[m.end() :])
             else:
                 break
@@ -92,9 +92,9 @@ class HiliteTreeprocessor(Treeprocessor):
                 html = highlight(
                     self.code_unescape(block[0].text),
                     self.config,
-                    self.markdown.tab_length,
+                    self.md.tab_length,
                 )
-                placeholder = self.markdown.htmlStash.store(html)
+                placeholder = self.md.htmlStash.store(html)
                 # Clear codeblock in etree instance
                 block.clear()
                 # Change to p element which will later
@@ -119,7 +119,8 @@ class WikiCodeHiliteExtension(CodeHiliteExtension):
                 "Replacing existing 'hilite' extension - please remove "
                 "'codehilite' from WIKI_MARKDOWN_KWARGS"
             )
-            del md.treeprocessors["hilite"]
+            # del md.treeprocessors["hilite"]
+            md.treeprocessors.deregister("hilite")
 
         add_to_registry(md.treeprocessors, "hilite", hiliter, "<inline")
 
@@ -128,7 +129,8 @@ class WikiCodeHiliteExtension(CodeHiliteExtension):
                 "Replacing existing 'fenced_code_block' extension - please remove "
                 "'fenced_code_block' or 'extras' from WIKI_MARKDOWN_KWARGS"
             )
-            del md.preprocessors["fenced_code_block"]
+            # del md.preprocessors["fenced_code_block"]
+            md.preprocessors.deregister("fenced_code_block")
         hiliter = WikiFencedBlockPreprocessor(md)
         hiliter.config = self.getConfigs()
 
