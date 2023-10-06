@@ -13,7 +13,7 @@ jobs:
         type: string
       python_version:
         description: "Python version string"
-        default: "3.9"
+        default: "3.11"
         type: string
     description: "Reusable job for invoking hatch"
     docker:
@@ -25,7 +25,7 @@ jobs:
   lint:
     description: "Simple job for linting the pushed code"
     docker:
-      - image: cimg/python:3.9
+      - image: cimg/python:3.11
     steps:
       - checkout
       - run: pip install hatch && python -m hatch --env test.py3.11-dj4.2 run lint
@@ -33,7 +33,7 @@ jobs:
   coverage:
     description: "Job to check the coverage"
     docker:
-      - image: cimg/python:3.9
+      - image: cimg/python:3.11
     steps:
       - checkout
       - run: pip install coverage[toml]
