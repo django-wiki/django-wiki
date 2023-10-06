@@ -83,7 +83,7 @@ _default_tag_whitelists = bleach.ALLOWED_TAGS.union(
 
 #: List of allowed tags in Markdown article contents.
 MARKDOWN_HTML_WHITELIST = _default_tag_whitelists
-MARKDOWN_HTML_WHITELIST.union(
+MARKDOWN_HTML_WHITELIST = MARKDOWN_HTML_WHITELIST.union(
     getattr(django_settings, "WIKI_MARKDOWN_HTML_WHITELIST", frozenset())
 )
 
