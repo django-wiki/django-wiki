@@ -1,0 +1,42 @@
+@mixin admon-color($color) {
+  color: darken($color, 15%);
+  background-color: lighten($color, 25%);
+  border-color: $color;
+}
+
+.admonition {
+  padding: 0 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  text-align: left;
+  @include admon-color($gray-600);
+  &-title {
+    font-weight: bold;
+    text-align: left;
+  }
+  &.note {
+    @include admon-color($cyan);
+  }
+  &.attention {
+    @include admon-color($warning);
+  }
+  &.caution {
+    @include admon-color($red);
+  }
+  &.critical {
+    @include admon-color($orange);
+  }
+  &.danger{
+    @include admon-color($danger);
+  }
+  &.tips {
+    @include admon-color($info);
+  }
+  &.warning{
+    @include admon-color($warning);
+  }
+  &.important {
+    @include admon-color($pink);
+  }
+}
