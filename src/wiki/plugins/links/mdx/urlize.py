@@ -1,4 +1,5 @@
 import re
+import xml
 
 import markdown
 
@@ -139,15 +140,18 @@ class UrlizePattern(markdown.inlinepatterns.Pattern):
             url = "http://" + url
 
         # Convenience link to distinguish external links more easily.
-        icon = markdown.util.etree.Element("span")
+        # icon = markdown.util.etree.Element("span")
+        icon = xml.etree.ElementTree.Element("span")
         icon.set("class", "fa fa-external-link-alt")
 
         # Link text.
-        span_text = markdown.util.etree.Element("span")
+        # span_text = markdown.util.etree.Element("span")
+        span_text = xml.etree.ElementTree.Element("span")
         span_text.text = markdown.util.AtomicString(" " + text)
 
         # Set-up link itself.
-        el = markdown.util.etree.Element("a")
+        # el = markdown.util.etree.Element("a")
+        el = xml.etree.ElementTree.Element("a")
         el.set("href", url)
         el.set("target", "_blank")
         el.set("rel", "nofollow")
@@ -165,7 +169,10 @@ class UrlizeExtension(markdown.extensions.Extension):
 
     def extendMarkdown(self, md):
         """Replace autolink with UrlizePattern"""
-        md.inlinePatterns["autolink"] = UrlizePattern(URLIZE_RE, md)
+        # md.inlinePatterns["autolink"] = UrlizePattern(URLIZE_RE, md)
+        md.inlinePatterns.register(
+            UrlizePattern(URLIZE_RE, md), "autolink", 91
+        )  # 91 is hardcoded value to put it ahead of html
 
 
 def makeExtension(*args, **kwargs):

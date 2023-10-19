@@ -57,6 +57,7 @@ class WikiTreeProcessorClass(TocTreeprocessor):
         "permalink": "use_permalinks",
         "permalink_class": "permalink_class",
         "permalink_title": "permalink_title",
+        "toc_class": "toc_class",
         "toc_depth": process_toc_depth,
         "toc_top": "toc_top",
         "toc_bottom": "toc_bottom",

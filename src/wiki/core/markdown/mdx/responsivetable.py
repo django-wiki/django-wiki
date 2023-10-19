@@ -1,6 +1,7 @@
+from xml.etree import ElementTree as etree
+
 import markdown
 from markdown.treeprocessors import Treeprocessor
-from markdown.util import etree
 from wiki.core.markdown import add_to_registry
 
 

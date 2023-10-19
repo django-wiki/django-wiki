@@ -2,8 +2,8 @@
 Extend the shipped Markdown extension 'wikilinks'
 """
 import re
+import xml.etree.ElementTree
 
-import markdown
 from django.urls import reverse
 from markdown.extensions import Extension
 from markdown.extensions import wikilinks
@@ -51,7 +51,8 @@ class WikiLinks(wikilinks.WikiLinksInlineProcessor):
         base_url, end_url, html_class = self._getMeta()
         label = m.group(1).strip()
         url = self.config["build_url"](label, base_url, end_url, self.md)
-        a = markdown.util.etree.Element("a")
+        # a = markdown.util.etree.Element("a")
+        a = xml.etree.ElementTree.Element("a")
         a.text = label
         a.set("href", url)
         if html_class:
