@@ -99,6 +99,36 @@ class TocMacroTestsInWiki(RequireRootArticleMixin, TestBase):
         )
         self.assertEqual(md.convert(text), expected_output)
 
+    def test_toc_renders_table_of_content_with_toc_class(self):
+        md = markdown.ArticleMarkdown(article=self.root_article)
+        text = (
+            "[TOC toc_class:'nontoc test']\n"
+            "\n"
+            "# First title.\n"
+            "\n"
+            "Paragraph 1\n"
+            "\n"
+            "## Subsection\n"
+            "\n"
+            "Paragraph 2"
+        )
+        expected_output = (
+            '<div class="nontoc test"><span class="toctitle">Contents</span><ul>\n'
+            '<li><a href="#wiki-toc-first-title">First title.</a><ul>\n'
+            '<li><a href="#wiki-toc-subsection">Subsection</a></li>\n'
+            "</ul>\n"
+            "</li>\n"
+            "</ul>\n"
+            "</div>\n"
+            '<h1 id="wiki-toc-first-title">First title.<a class="article-edit-title-link" '
+            'href="/_plugin/editsection/header/wiki-toc-first-title/">[edit]</a></h1>\n'
+            "<p>Paragraph 1</p>\n"
+            '<h2 id="wiki-toc-subsection">Subsection<a class="article-edit-title-link" '
+            'href="/_plugin/editsection/header/wiki-toc-subsection/">[edit]</a></h2>\n'
+            "<p>Paragraph 2</p>"
+        )
+        self.assertEqual(md.convert(text), expected_output)
+
     def test_toc_renders_table_of_content_in_wiki_with_kwargs(self):
         md = markdown.ArticleMarkdown(article=self.root_article)
         text = (

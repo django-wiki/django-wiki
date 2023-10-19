@@ -69,13 +69,13 @@ class MacroPattern(markdown.inlinepatterns.Pattern):
         html = render_to_string(
             "wiki/plugins/macros/article_list.html",
             context={
-                "article_children": self.markdown.article.get_children(
+                "article_children": self.md.article.get_children(
                     article__current_revision__deleted=False
                 ),
                 "depth": int(depth) + 1,
             },
         )
-        return self.markdown.htmlStash.store(html)
+        return self.md.htmlStash.store(html)
 
     article_list.meta = {
         "short_description": _("Article list"),
