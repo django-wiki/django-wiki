@@ -26,14 +26,14 @@ def process_bool_value(bool_val, org_val):
 
 def process_value(org_val, new_val):
     try:
-        if type(new_val) is str:
+        if isinstance(new_val, str):
             new_val = new_val.lstrip("'").rstrip("'")
 
-        if type(org_val) is bool:
+        if isinstance(org_val, bool):
             return process_bool_value(new_val, org_val)
-        elif type(org_val) is int:
+        elif isinstance(org_val, int):
             return int(new_val)
-        elif type(org_val) is str:
+        elif isinstance(org_val, str):
             return new_val
         else:
             return org_val
