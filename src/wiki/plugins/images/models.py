@@ -24,7 +24,6 @@ def upload_path(instance, filename):
 
 
 class Image(RevisionPlugin):
-
     # The plugin system is so awesome that the inheritor doesn't need to do
     # anything! :D
 
@@ -43,16 +42,12 @@ class Image(RevisionPlugin):
 
     def __str__(self):
         if self.current_revision:
-            return (
-                gettext("Image: %s")
-                % self.current_revision.imagerevision.get_filename()
-            )
+            return gettext("Image: %s") % self.current_revision.imagerevision.get_filename()
         else:
             return gettext("Current revision not set!!")
 
 
 class ImageRevision(RevisionPluginRevision):
-
     image = models.ImageField(
         upload_to=upload_path,
         max_length=2000,
@@ -155,7 +150,7 @@ def on_image_revision_delete(instance, *args, **kwargs):  # noqa: max-complexity
         except OSError:
             # Path does not exist, so let's not try to remove it...
             dir_list = None
-        if not (dir_list is None) and len(dir_list) == 0:
+        if dir_list is not None and len(dir_list) == 0:
             os.rmdir(delete_path)
 
 

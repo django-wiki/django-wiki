@@ -57,8 +57,7 @@ def check_for_obsolete_installed_apps(app_configs, **kwargs):
         if apps.is_installed(app[0]):
             errors.append(
                 Error(
-                    "You need to change from %s to %s in INSTALLED_APPS and your urlconfig."
-                    % (app[0], app[1]),
+                    "You need to change from %s to %s in INSTALLED_APPS and your urlconfig." % (app[0], app[1]),
                     id="wiki.%s" % app[2],
                 )
             )
@@ -85,8 +84,7 @@ def check_for_context_processors(app_configs, **kwargs):
             if context_processor[0] not in context_processors:
                 errors.append(
                     Error(
-                        "needs %s in TEMPLATES[*]['OPTIONS']['context_processors']"
-                        % context_processor[0],
+                        "needs %s in TEMPLATES[*]['OPTIONS']['context_processors']" % context_processor[0],
                         id="wiki.%s" % context_processor[1],
                     )
                 )

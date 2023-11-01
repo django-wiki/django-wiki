@@ -38,7 +38,6 @@ log = logging.getLogger(__name__)
 
 
 class ArticleView(ArticleMixin, TemplateView):
-
     template_name = "wiki/view.html"
 
     @method_decorator(get_article(can_read=True))
@@ -74,12 +73,8 @@ class Create(FormView, ArticleMixin):
             attrs={
                 # Make patterns force lowercase if we are case insensitive to bless the user with a
                 # bit of strictness, anyways
-                "pattern": "[a-z0-9_-]+"
-                if not settings.URL_CASE_SENSITIVE
-                else "[a-zA-Z0-9_-]+",
-                "title": "Lowercase letters, numbers, hyphens and underscores"
-                if not settings.URL_CASE_SENSITIVE
-                else "Letters, numbers, hyphens and underscores",
+                "pattern": "[a-z0-9_-]+" if not settings.URL_CASE_SENSITIVE else "[a-zA-Z0-9_-]+",
+                "title": "Lowercase letters, numbers, hyphens and underscores" if not settings.URL_CASE_SENSITIVE else "Letters, numbers, hyphens and underscores",
             },
         )
         return form
@@ -97,8 +92,7 @@ class Create(FormView, ArticleMixin):
             )
             messages.success(
                 self.request,
-                _("New article '%s' created.")
-                % self.newpath.article.current_revision.title,
+                _("New article '%s' created.") % self.newpath.article.current_revision.title,
             )
         # TODO: Handle individual exceptions better and give good feedback.
         except Exception as e:
@@ -109,9 +103,7 @@ class Create(FormView, ArticleMixin):
                     _("There was an error creating this article: %s") % str(e),
                 )
             else:
-                messages.error(
-                    self.request, _("There was an error creating this article.")
-                )
+                messages.error(self.request, _("There was an error creating this article."))
             return redirect("wiki:get", "")
 
         return self.get_success_url()
@@ -130,7 +122,6 @@ class Create(FormView, ArticleMixin):
 
 
 class Delete(FormView, ArticleMixin):
-
     form_class = forms.DeleteForm
     template_name = "wiki/delete.html"
 
@@ -192,9 +183,7 @@ class Delete(FormView, ArticleMixin):
         if self.cannot_delete_root or cannot_delete_children:
             messages.error(
                 self.request,
-                _(
-                    "This article cannot be deleted because it has children or is a root article."
-                ),
+                _("This article cannot be deleted because it has children or is a root article."),
             )
             return redirect("wiki:get", article_id=self.article.id)
 
@@ -205,9 +194,7 @@ class Delete(FormView, ArticleMixin):
             self.article.delete()
             messages.success(
                 self.request,
-                _(
-                    "This article together with all its contents are now completely gone! Thanks!"
-                ),
+                _("This article together with all its contents are now completely gone! Thanks!"),
             )
         else:
             revision = models.ArticleRevision()
@@ -217,10 +204,7 @@ class Delete(FormView, ArticleMixin):
             self.article.add_revision(revision)
             messages.success(
                 self.request,
-                _(
-                    'The article "%s" is now marked as deleted! Thanks for keeping the site free from unwanted material!'
-                )
-                % revision.title,
+                _('The article "%s" is now marked as deleted! Thanks for keeping the site free from unwanted material!') % revision.title,
             )
         return self.get_success_url()
 
@@ -274,10 +258,7 @@ class Edit(ArticleMixin, FormView):
         if form_class is None:
             form_class = self.get_form_class()
         kwargs = self.get_form_kwargs()
-        if (
-            self.request.POST.get("save", "") != "1"
-            and self.request.POST.get("preview") != "1"
-        ):
+        if self.request.POST.get("save", "") != "1" and self.request.POST.get("preview") != "1":
             kwargs["data"] = None
             kwargs["files"] = None
             kwargs["no_clean"] = True
@@ -326,30 +307,19 @@ class Edit(ArticleMixin, FormView):
                         if usermessage:
                             messages.success(self.request, usermessage)
                         else:
-                            messages.success(
-                                self.request, _("Your changes were saved.")
-                            )
+                            messages.success(self.request, _("Your changes were saved."))
 
                         title = form.cleaned_data["unsaved_article_title"]
                         content = form.cleaned_data["unsaved_article_content"]
                         orig_content = self.orig_content
                         if not orig_content:
                             orig_content = self.article.current_revision.content
-                        if (
-                            title != self.article.current_revision.title
-                            or content != orig_content
-                        ):
-                            request.session[
-                                "unsaved_article_title_%d" % self.article.id
-                            ] = title
-                            request.session[
-                                "unsaved_article_content_%d" % self.article.id
-                            ] = content
+                        if title != self.article.current_revision.title or content != orig_content:
+                            request.session["unsaved_article_title_%d" % self.article.id] = title
+                            request.session["unsaved_article_content_%d" % self.article.id] = content
                             messages.warning(
                                 request,
-                                _(
-                                    "Please note that your article text has not yet been saved!"
-                                ),
+                                _("Please note that your article text has not yet been saved!"),
                             )
 
                         if self.urlpath:
@@ -375,9 +345,7 @@ class Edit(ArticleMixin, FormView):
         revision.deleted = False
         revision.set_from_request(self.request)
         self.article.add_revision(revision)
-        messages.success(
-            self.request, _("A new revision of the article was successfully added.")
-        )
+        messages.success(self.request, _("A new revision of the article was successfully added."))
         return self.get_success_url()
 
     def get_success_url(self):
@@ -396,7 +364,6 @@ class Edit(ArticleMixin, FormView):
 
 
 class Move(ArticleMixin, FormView):
-
     form_class = forms.MoveForm
     template_name = "wiki/move.html"
 
@@ -425,9 +392,7 @@ class Move(ArticleMixin, FormView):
             )
             return redirect("wiki:get", article_id=self.article.id)
 
-        dest_path = get_object_or_404(
-            models.URLPath, pk=form.cleaned_data["destination"]
-        )
+        dest_path = get_object_or_404(models.URLPath, pk=form.cleaned_data["destination"])
         tmp_path = dest_path
 
         while tmp_path.parent:
@@ -454,9 +419,7 @@ class Move(ArticleMixin, FormView):
         self.urlpath = models.URLPath.objects.get(pk=self.urlpath.pk)
 
         # Use a copy of ourself (to avoid cache) and update article links again
-        for ancestor in models.Article.objects.get(
-            pk=self.article.pk
-        ).ancestor_objects():
+        for ancestor in models.Article.objects.get(pk=self.article.pk).ancestor_objects():
             ancestor.article.clear_cache()
 
         # Create a redirect page for every moved article
@@ -464,11 +427,8 @@ class Move(ArticleMixin, FormView):
         # /old-slug/child
         # /old-slug/child/grand-child
         if form.cleaned_data["redirect"]:
-
             # NB! Includes self!
-            descendants = list(
-                self.urlpath.get_descendants(include_self=True).order_by("level")
-            )
+            descendants = list(self.urlpath.get_descendants(include_self=True).order_by("level"))
 
             root_len = len(descendants[0].path)
 
@@ -521,7 +481,6 @@ class Deleted(Delete):
 
     @method_decorator(get_article(can_read=True, deleted_contents=True))
     def dispatch(self, request, article, *args, **kwargs):
-
         self.urlpath = kwargs.get("urlpath", None)
         self.article = article
 
@@ -540,9 +499,7 @@ class Deleted(Delete):
 
         # Restore
         if request.GET.get("restore", False):
-            can_restore = not article.current_revision.locked and article.can_delete(
-                request.user
-            )
+            can_restore = not article.current_revision.locked and article.can_delete(request.user)
             can_restore = can_restore or article.can_moderate(request.user)
 
             if can_restore:
@@ -554,8 +511,7 @@ class Deleted(Delete):
                 self.article.add_revision(revision)
                 messages.success(
                     request,
-                    _('The article "%s" and its children are now restored.')
-                    % revision.title,
+                    _('The article "%s" and its children are now restored.') % revision.title,
                 )
                 if self.urlpath:
                     return redirect("wiki:get", path=self.urlpath.path)
@@ -589,7 +545,6 @@ class Source(ArticleMixin, TemplateView):
 
 
 class History(ListView, ArticleMixin):
-
     template_name = "wiki/history.html"
     allow_empty = True
     context_object_name = "revisions"
@@ -597,11 +552,7 @@ class History(ListView, ArticleMixin):
     paginate_by = 10
 
     def get_queryset(self):
-        return (
-            models.ArticleRevision.objects.select_related("article")
-            .filter(article=self.article)
-            .order_by("-created")
-        )
+        return models.ArticleRevision.objects.select_related("article").filter(article=self.article).order_by("-created")
 
     def get_context_data(self, **kwargs):
         # Is this a bit of a hack? Use better inheritance?
@@ -618,7 +569,6 @@ class History(ListView, ArticleMixin):
 
 
 class Dir(ListView, ArticleMixin):
-
     template_name = "wiki/dir.html"
     allow_empty = True
     context_object_name = "directory"
@@ -638,15 +588,10 @@ class Dir(ListView, ArticleMixin):
     def get_queryset(self):
         children = self.urlpath.get_children().can_read(self.request.user)
         if self.query:
-            children = children.filter(
-                Q(article__current_revision__title__icontains=self.query)
-                | Q(slug__icontains=self.query)
-            )
+            children = children.filter(Q(article__current_revision__title__icontains=self.query) | Q(slug__icontains=self.query))
         if not self.article.can_moderate(self.request.user):
             children = children.active()
-        children = children.select_related_common().order_by(
-            "article__current_revision__title"
-        )
+        children = children.select_related_common().order_by("article__current_revision__title")
         return children
 
     def get_context_data(self, **kwargs):
@@ -668,7 +613,6 @@ class Dir(ListView, ArticleMixin):
 
 
 class SearchView(ListView):
-
     template_name = "wiki/search.html"
     paginator_class = WikiPaginator
     paginate_by = 25
@@ -694,19 +638,12 @@ class SearchView(ListView):
         if path:
             try:
                 self.urlpath = models.URLPath.get_by_path(path)
-                article_ids = self.urlpath.get_descendants(
-                    include_self=True
-                ).values_list("article_id")
+                article_ids = self.urlpath.get_descendants(include_self=True).values_list("article_id")
                 articles = articles.filter(id__in=article_ids)
             except (NoRootURL, models.URLPath.DoesNotExist):
                 raise Http404
-        articles = articles.filter(
-            Q(current_revision__title__icontains=self.query)
-            | Q(current_revision__content__icontains=self.query)
-        )
-        if not permissions.can_moderate(
-            models.URLPath.root().article, self.request.user
-        ):
+        articles = articles.filter(Q(current_revision__title__icontains=self.query) | Q(current_revision__content__icontains=self.query))
+        if not permissions.can_moderate(models.URLPath.root().article, self.request.user):
             articles = articles.active().can_read(self.request.user)
         return articles.order_by("-current_revision__created")
 
@@ -728,7 +665,6 @@ class Plugin(View):
 
 
 class Settings(ArticleMixin, TemplateView):
-
     permission_form_class = forms.PermissionsForm
     template_name = "wiki/settings.html"
 
@@ -797,7 +733,6 @@ class Settings(ArticleMixin, TemplateView):
 
 
 class ChangeRevisionView(RedirectView):
-
     permanent = False
 
     @method_decorator(get_article(can_write=True, not_locked=True))
@@ -815,22 +750,16 @@ class ChangeRevisionView(RedirectView):
             return reverse("wiki:history", kwargs={"article_id": self.article.id})
 
     def change_revision(self):
-        revision = get_object_or_404(
-            models.ArticleRevision, article=self.article, id=self.kwargs["revision_id"]
-        )
+        revision = get_object_or_404(models.ArticleRevision, article=self.article, id=self.kwargs["revision_id"])
         self.article.current_revision = revision
         self.article.save()
         messages.success(
             self.request,
-            _(
-                "The article %(title)s is now set to display revision #%(revision_number)d"
-            )
-            % {"title": revision.title, "revision_number": revision.revision_number},
+            _("The article %(title)s is now set to display revision #%(revision_number)d") % {"title": revision.title, "revision_number": revision.revision_number},
         )
 
 
 class Preview(ArticleMixin, TemplateView):
-
     template_name = "wiki/preview_inline.html"
 
     @method_decorator(xframe_options_sameorigin)
@@ -847,17 +776,13 @@ class Preview(ArticleMixin, TemplateView):
                 # ValueError only happens because someone put garbage in the
                 # querystring
                 raise Http404()
-            self.revision = get_object_or_404(
-                models.ArticleRevision, article=article, id=revision_id
-            )
+            self.revision = get_object_or_404(models.ArticleRevision, article=article, id=revision_id)
         else:
             self.revision = None
         return super().dispatch(request, article, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        edit_form = forms.EditForm(
-            request, self.article.current_revision, request.POST, preview=True
-        )
+        edit_form = forms.EditForm(request, self.article.current_revision, request.POST, preview=True)
         if edit_form.is_valid():
             self.title = edit_form.cleaned_data["title"]
             self.content = edit_form.cleaned_data["content"]
@@ -891,17 +816,13 @@ class DiffView(DetailView):
         newText = revision.content
 
         differ = difflib.Differ(charjunk=difflib.IS_CHARACTER_JUNK)
-        diff = differ.compare(
-            baseText.splitlines(keepends=True), newText.splitlines(keepends=True)
-        )
+        diff = differ.compare(baseText.splitlines(keepends=True), newText.splitlines(keepends=True))
         other_changes = []
 
         if not other_revision or other_revision.title != revision.title:
             other_changes.append((_("New title"), revision.title))
 
-        return object_to_json_response(
-            {"diff": list(diff), "other_changes": other_changes}
-        )
+        return object_to_json_response({"diff": list(diff), "other_changes": other_changes})
 
 
 class MergeView(View):
@@ -916,13 +837,9 @@ class MergeView(View):
         return super().dispatch(request, article, revision_id, *args, **kwargs)
 
     def get(self, request, article, revision_id, *args, **kwargs):
-        revision = get_object_or_404(
-            models.ArticleRevision, article=article, id=revision_id
-        )
+        revision = get_object_or_404(models.ArticleRevision, article=article, id=revision_id)
 
-        current_text = (
-            article.current_revision.content if article.current_revision else ""
-        )
+        current_text = article.current_revision.content if article.current_revision else ""
         new_text = revision.content
 
         content = simple_merge(current_text, new_text)
@@ -945,9 +862,7 @@ class MergeView(View):
             new_revision.locked = False
             new_revision.title = article.current_revision.title
             new_revision.content = content
-            new_revision.automatic_log = _(
-                "Merge between revision #%(r1)d and revision #%(r2)d"
-            ) % {"r1": revision.revision_number, "r2": old_revision.revision_number}
+            new_revision.automatic_log = _("Merge between revision #%(r1)d and revision #%(r2)d") % {"r1": revision.revision_number, "r2": old_revision.revision_number}
             article.add_revision(new_revision, save=True)
 
             old_revision.simpleplugin_set.all().update(article_revision=new_revision)
@@ -955,10 +870,7 @@ class MergeView(View):
 
             messages.success(
                 request,
-                _(
-                    "A new revision was created: Merge between revision #%(r1)d and revision #%(r2)d"
-                )
-                % {"r1": revision.revision_number, "r2": old_revision.revision_number},
+                _("A new revision was created: Merge between revision #%(r1)d and revision #%(r2)d") % {"r1": revision.revision_number, "r2": old_revision.revision_number},
             )
             if self.urlpath:
                 return redirect("wiki:edit", path=self.urlpath.path)

@@ -70,19 +70,13 @@ class CustomSetextHeaderProcessor(SetextHeaderProcessor):
 
 class EditSectionExtension(Extension):
     def __init__(self, *args, **kwargs):
-        self.config = {
-            "level": [settings.MAX_LEVEL, "Allow to edit sections until this level"]
-        }
+        self.config = {"level": [settings.MAX_LEVEL, "Allow to edit sections until this level"]}
         super().__init__(**kwargs)
 
     def extendMarkdown(self, md):
         # replace HashHeader/SetextHeader processors with our custom variants
-        md.parser.blockprocessors.register(
-            CustomHashHeaderProcessor(md.parser), "hashheader", 70
-        )
-        md.parser.blockprocessors.register(
-            CustomSetextHeaderProcessor(md.parser), "setextheader", 60
-        )
+        md.parser.blockprocessors.register(CustomHashHeaderProcessor(md.parser), "hashheader", 70)
+        md.parser.blockprocessors.register(CustomSetextHeaderProcessor(md.parser), "setextheader", 60)
         # the tree processor adds the actual edit links
         add_to_registry(
             md.treeprocessors,
@@ -165,9 +159,7 @@ class EditSectionProcessor(Treeprocessor):
         self.level = self.config.get("level")[0]
         self.article = self.md.article
         self.source = self.md.source
-        self.HEADER_RE = re.compile(
-            "^h([" + "".join(map(str, range(1, self.level + 1))) + "])"
-        )
+        self.HEADER_RE = re.compile("^h([" + "".join(map(str, range(1, self.level + 1))) + "])")
         headers = self.add_links(root)
         # store found headers at article, for use in edit view
         self.article._found_headers = headers

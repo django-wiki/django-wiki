@@ -7,7 +7,6 @@ from . import views
 
 
 class GlobalHistoryPlugin(BasePlugin):
-
     slug = settings.SLUG
     urlpatterns = {
         "root": [

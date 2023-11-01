@@ -33,13 +33,8 @@ class ImageExtension(markdown.Extension):
     """Images plugin markdown extension for django-wiki."""
 
     def extendMarkdown(self, md):
-
-        add_to_registry(
-            md.inlinePatterns, "dw-images", ImagePattern(IMAGE_RE, md), ">link"
-        )
-        add_to_registry(
-            md.postprocessors, "dw-images-cleanup", ImagePostprocessor(md), ">raw_html"
-        )
+        add_to_registry(md.inlinePatterns, "dw-images", ImagePattern(IMAGE_RE, md), ">link")
+        add_to_registry(md.postprocessors, "dw-images-cleanup", ImagePostprocessor(md), ">raw_html")
 
 
 class ImagePattern(markdown.inlinepatterns.Pattern):

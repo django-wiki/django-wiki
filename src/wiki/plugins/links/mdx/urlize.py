@@ -122,16 +122,7 @@ class UrlizePattern(markdown.inlinepatterns.Pattern):
         else:
             end_delimeter = ""
 
-        if (
-            begin_delimeter == "<"
-            and end_delimeter != ">"
-            or begin_delimeter == "("
-            and end_delimeter != ")"
-            or end_delimeter == ")"
-            and begin_delimeter != "("
-            or end_delimeter == ">"
-            and begin_delimeter != "<"
-        ):
+        if begin_delimeter == "<" and end_delimeter != ">" or begin_delimeter == "(" and end_delimeter != ")" or end_delimeter == ")" and begin_delimeter != "(" or end_delimeter == ">" and begin_delimeter != "<":
             return url
 
         # If no supported protocol is specified, assume plaintext http
@@ -170,9 +161,7 @@ class UrlizeExtension(markdown.extensions.Extension):
     def extendMarkdown(self, md):
         """Replace autolink with UrlizePattern"""
         # md.inlinePatterns["autolink"] = UrlizePattern(URLIZE_RE, md)
-        md.inlinePatterns.register(
-            UrlizePattern(URLIZE_RE, md), "autolink", 91
-        )  # 91 is hardcoded value to put it ahead of html
+        md.inlinePatterns.register(UrlizePattern(URLIZE_RE, md), "autolink", 91)  # 91 is hardcoded value to put it ahead of html
 
 
 def makeExtension(*args, **kwargs):

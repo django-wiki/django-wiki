@@ -26,10 +26,7 @@ class ArticleMixin(TemplateResponseMixin):
                 ):
                     self.children_slice.append(child)
             except AttributeError as e:
-                log.error(
-                    "Attribute error most likely caused by wrong MPTT version. Use 0.5.3+.\n\n"
-                    + str(e)
-                )
+                log.error("Attribute error most likely caused by wrong MPTT version. Use 0.5.3+.\n\n" + str(e))
                 raise
         return super().dispatch(request, *args, **kwargs)
 

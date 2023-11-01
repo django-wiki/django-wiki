@@ -4,7 +4,6 @@ from wiki.core.plugins.base import BasePlugin
 
 
 class HelpPlugin(BasePlugin):
-
     slug = "help"
 
     sidebar = {

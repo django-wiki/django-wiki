@@ -20,9 +20,7 @@ SIGNUP_TEST_USERNAME = "wiki"
 SIGNUP_TEST_PASSWORD = "wiki1234567"
 
 
-class AccountUpdateTest(
-    RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase
-):
+class AccountUpdateTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
     def test_password_change(self):
         """
         Test that we can make a successful password change via the update form
@@ -44,9 +42,7 @@ class AccountUpdateTest(
 
         # save a new revision
         response = self.client.post(resolve_url("wiki:profile_update"), example_data)
-        self.assertContains(
-            response, "Passwords don", status_code=200
-        )  # Django 2/3 output different escaped versions of single quote in don't
+        self.assertContains(response, "Passwords don", status_code=200)  # Django 2/3 output different escaped versions of single quote in don't
 
         # Now check that we don't succeed with unmatching passwords
         example_data = {
@@ -65,15 +61,11 @@ class AccountUpdateTest(
 
         self.assertEqual(
             self.superuser1,
-            authenticate(
-                username=self.superuser1.username, password=example_data["password1"]
-            ),
+            authenticate(username=self.superuser1.username, password=example_data["password1"]),
         )
 
 
-class UpdateProfileViewTest(
-    RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase
-):
+class UpdateProfileViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
     def test_update_profile(self):
         self.client.post(
             resolve_url("wiki:profile_update"),

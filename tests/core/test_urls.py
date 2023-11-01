@@ -54,7 +54,6 @@ class ArticleModelReverseMethodTest(TestCase):
         self.assertEqual(url, expected)
 
     def test_get_absolute_url_if_urlpath_set_is_exists__no_root_urlconf(self):
-
         a1 = Article.objects.create()
         s1 = Site.objects.create(domain="something.com", name="something.com")
         u1 = URLPath.objects.create(article=a1, site=s1)

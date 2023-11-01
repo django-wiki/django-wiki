@@ -15,7 +15,6 @@ User = get_user_model()
 
 
 class GetContentSnippet(TemplateTestCase):
-
     template = """
         {% load wiki_tags %}
         {{ some_content|get_content_snippet:"keyword, max_words" }}
@@ -24,10 +23,7 @@ class GetContentSnippet(TemplateTestCase):
     def test_keyword_at_the_end_of_the_content(self):
         text = "lorem " * 80
         content = text + " list"
-        expected = (
-            "lorem lorem lorem lorem lorem lorem lorem lorem lorem "
-            "lorem lorem lorem lorem lorem lorem <strong>list</strong>"
-        )
+        expected = "lorem lorem lorem lorem lorem lorem lorem lorem lorem " "lorem lorem lorem lorem lorem lorem <strong>list</strong>"
 
         output = get_content_snippet(content, "list")
 
@@ -57,11 +53,7 @@ class GetContentSnippet(TemplateTestCase):
 
     def test_keyword_is_not_in_a_content(self):
         content = "lorem " * 80
-        expected = (
-            "lorem lorem lorem lorem lorem lorem lorem lorem lorem "
-            "lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem "
-            "lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem"
-        )
+        expected = "lorem lorem lorem lorem lorem lorem lorem lorem lorem " "lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem " "lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem"
 
         output = get_content_snippet(content, "list")
 
@@ -135,7 +127,6 @@ class GetContentSnippet(TemplateTestCase):
         self.assertEqual(output, "")
 
     def test_strip_tags(self):
-
         keyword = "maybe"
 
         content = """
@@ -144,26 +135,19 @@ class GetContentSnippet(TemplateTestCase):
         or django documentation. Maybe.
         """
 
-        expected = (
-            "I should citate Shakespeare or Byron. "
-            "Or <strong>maybe</strong> copy paste from python "
-            "or django documentation. <strong>Maybe.</strong>"
-        )
+        expected = "I should citate Shakespeare or Byron. " "Or <strong>maybe</strong> copy paste from python " "or django documentation. <strong>Maybe.</strong>"
 
         output = get_content_snippet(content, keyword, 30)
 
         self.assertEqual(output, expected)
 
     def test_max_words_arg(self):
-
         keyword = "eggs"
 
         content = """
         knight eggs spam ham eggs guido python eggs circus
         """
-        expected = (
-            "knight <strong>eggs</strong> spam ham " "<strong>eggs</strong> guido"
-        )
+        expected = "knight <strong>eggs</strong> spam ham " "<strong>eggs</strong> guido"
 
         output = get_content_snippet(content, keyword, 5)
 
@@ -171,10 +155,7 @@ class GetContentSnippet(TemplateTestCase):
 
         output = get_content_snippet(content, keyword, 0)
 
-        expected = (
-            "knight <strong>eggs</strong> spam ham "
-            "<strong>eggs</strong> guido python <strong>eggs</strong>"
-        )
+        expected = "knight <strong>eggs</strong> spam ham " "<strong>eggs</strong> guido python <strong>eggs</strong>"
         self.assertEqual(output, expected)
 
     def test_content_case_preserved(self):
@@ -187,7 +168,6 @@ class GetContentSnippet(TemplateTestCase):
 
 
 class CanRead(TemplateTestCase):
-
     template = """
         {% load wiki_tags %}
         {{ article|can_read:user }}
@@ -195,7 +175,6 @@ class CanRead(TemplateTestCase):
 
     @wiki_override_settings(WIKI_CAN_READ=lambda *args: True)
     def test_user_have_permission(self):
-
         a = Article.objects.create()
 
         u = User.objects.create(username="Nobody", password="pass")
@@ -208,7 +187,6 @@ class CanRead(TemplateTestCase):
 
     @wiki_override_settings(WIKI_CAN_READ=lambda *args: False)
     def test_user_dont_have_permission(self):
-
         a = Article.objects.create()
         u = User.objects.create(username="Noman", password="pass")
 
@@ -220,7 +198,6 @@ class CanRead(TemplateTestCase):
 
 
 class CanWrite(TemplateTestCase):
-
     template = """
         {% load wiki_tags %}
         {{ article|can_write:user }}
@@ -228,7 +205,6 @@ class CanWrite(TemplateTestCase):
 
     @wiki_override_settings(WIKI_CAN_DELETE=lambda *args: True)
     def test_user_have_permission(self):
-
         a = Article.objects.create()
 
         u = User.objects.create(username="Nobody", password="pass")
@@ -241,7 +217,6 @@ class CanWrite(TemplateTestCase):
 
     @wiki_override_settings(WIKI_CAN_WRITE=lambda *args: False)
     def test_user_dont_have_permission(self):
-
         a = Article.objects.create()
         u = User.objects.create(username="Noman", password="pass")
 
@@ -253,7 +228,6 @@ class CanWrite(TemplateTestCase):
 
 
 class CanDelete(TemplateTestCase):
-
     template = """
         {% load wiki_tags %}
         {{ article|can_delete:user }}
@@ -261,7 +235,6 @@ class CanDelete(TemplateTestCase):
 
     @wiki_override_settings(WIKI_CAN_DELETE=lambda *args: True)
     def test_user_have_permission(self):
-
         a = Article.objects.create()
 
         u = User.objects.create(username="Nobody", password="pass")
@@ -274,7 +247,6 @@ class CanDelete(TemplateTestCase):
 
     @wiki_override_settings(WIKI_CAN_WRITE=lambda *args: False)
     def test_user_dont_have_permission(self):
-
         a = Article.objects.create()
         u = User.objects.create(username="Noman", password="pass")
 
@@ -286,7 +258,6 @@ class CanDelete(TemplateTestCase):
 
 
 class CanModerate(TemplateTestCase):
-
     template = """
         {% load wiki_tags %}
         {{ article|can_moderate:user }}
@@ -294,7 +265,6 @@ class CanModerate(TemplateTestCase):
 
     @wiki_override_settings(WIKI_CAN_MODERATE=lambda *args: True)
     def test_user_have_permission(self):
-
         a = Article.objects.create()
 
         u = User.objects.create(username="Nobody", password="pass")
@@ -306,7 +276,6 @@ class CanModerate(TemplateTestCase):
         self.assertIn("True", output)
 
     def test_user_dont_have_permission(self):
-
         a = Article.objects.create()
         u = User.objects.create(username="Noman", password="pass")
 
@@ -318,14 +287,12 @@ class CanModerate(TemplateTestCase):
 
 
 class IsLocked(TemplateTestCase):
-
     template = """
         {% load wiki_tags %}
         {{ article|is_locked }}
     """
 
     def test_no_current_revision(self):
-
         a = Article.objects.create()
 
         output = is_locked(a)
@@ -335,7 +302,6 @@ class IsLocked(TemplateTestCase):
         self.assertIn("None", output)
 
     def test_have_current_revision_and_not_locked(self):
-
         a = Article.objects.create()
         ArticleRevision.objects.create(article=a, locked=False)
 
@@ -352,7 +318,6 @@ class IsLocked(TemplateTestCase):
         self.assertIn("False", output)
 
     def test_have_current_revision_and_locked(self):
-
         a = Article.objects.create()
         ArticleRevision.objects.create(article=a, locked=True)
 
@@ -364,7 +329,6 @@ class IsLocked(TemplateTestCase):
 
 
 class PluginEnabled(TemplateTestCase):
-
     template = """
         {% load wiki_tags %}
         {% if "wiki.plugins.attachments"|plugin_enabled %}It is enabled{% endif %}
@@ -376,7 +340,6 @@ class PluginEnabled(TemplateTestCase):
 
 
 class WikiSettings(TemplateTestCase):
-
     template = """
         {% load wiki_tags %}
         {% if "ACCOUNT_HANDLING"|wiki_settings %}It is enabled{% endif %}

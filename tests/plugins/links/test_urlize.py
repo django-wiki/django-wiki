@@ -6,15 +6,7 @@ from wiki.plugins.links.mdx.urlize import makeExtension
 from wiki.plugins.links.mdx.urlize import UrlizeExtension
 
 # Template accepts two strings - href value and link text value.
-EXPECTED_LINK_TEMPLATE = (
-    '<a href="%s" rel="nofollow" target="_blank">'
-    '<span class="fa fa-external-link-alt">'
-    "</span>"
-    "<span>"
-    " %s"
-    "</span>"
-    "</a>"
-)
+EXPECTED_LINK_TEMPLATE = '<a href="%s" rel="nofollow" target="_blank">' '<span class="fa fa-external-link-alt">' "</span>" "<span>" " %s" "</span>" "</a>"
 
 # Template accepts two strings - href value and link text value.
 EXPECTED_PARAGRAPH_TEMPLATE = "<p>%s</p>" % EXPECTED_LINK_TEMPLATE
@@ -24,15 +16,11 @@ FIXTURE_POSITIVE_MATCHES = [
     # Test surrounding begin/end characters.
     (
         "(example.com)",
-        "<p>("
-        + EXPECTED_LINK_TEMPLATE % ("http://example.com", "example.com")
-        + ")</p>",
+        "<p>(" + EXPECTED_LINK_TEMPLATE % ("http://example.com", "example.com") + ")</p>",
     ),
     (
         "<example.com>",
-        "<p>&lt;"
-        + EXPECTED_LINK_TEMPLATE % ("http://example.com", "example.com")
-        + "&gt;</p>",
+        "<p>&lt;" + EXPECTED_LINK_TEMPLATE % ("http://example.com", "example.com") + "&gt;</p>",
     ),
     # Test protocol specification.
     (
@@ -61,8 +49,7 @@ FIXTURE_POSITIVE_MATCHES = [
     ),
     (
         "onion9+.-://example.com",
-        EXPECTED_PARAGRAPH_TEMPLATE
-        % ("onion9+.-://example.com", "onion9+.-://example.com"),
+        EXPECTED_PARAGRAPH_TEMPLATE % ("onion9+.-://example.com", "onion9+.-://example.com"),
     ),
     # Test various supported host variations.
     ("10.10.1.1", EXPECTED_PARAGRAPH_TEMPLATE % ("http://10.10.1.1", "10.10.1.1")),
@@ -96,8 +83,7 @@ FIXTURE_POSITIVE_MATCHES = [
     ),
     (
         "my.long.domain.example.com",
-        EXPECTED_PARAGRAPH_TEMPLATE
-        % ("http://my.long.domain.example.com", "my.long.domain.example.com"),
+        EXPECTED_PARAGRAPH_TEMPLATE % ("http://my.long.domain.example.com", "my.long.domain.example.com"),
     ),
     # Test port section.
     (
@@ -111,8 +97,7 @@ FIXTURE_POSITIVE_MATCHES = [
     ),
     (
         "http://example.com/my/path",
-        EXPECTED_PARAGRAPH_TEMPLATE
-        % ("http://example.com/my/path", "http://example.com/my/path"),
+        EXPECTED_PARAGRAPH_TEMPLATE % ("http://example.com/my/path", "http://example.com/my/path"),
     ),
     (
         "http://example.com/my/path?param1=value1&param2=value2",
@@ -125,27 +110,19 @@ FIXTURE_POSITIVE_MATCHES = [
     # Link positioned somewhere within the text, but around whitespace boundary.
     (
         "This is link myhost.example.com",
-        "<p>This is link "
-        + EXPECTED_LINK_TEMPLATE % ("http://myhost.example.com", "myhost.example.com")
-        + "</p>",
+        "<p>This is link " + EXPECTED_LINK_TEMPLATE % ("http://myhost.example.com", "myhost.example.com") + "</p>",
     ),
     (
         "myhost.example.com is the link",
-        "<p>"
-        + EXPECTED_LINK_TEMPLATE % ("http://myhost.example.com", "myhost.example.com")
-        + " is the link</p>",
+        "<p>" + EXPECTED_LINK_TEMPLATE % ("http://myhost.example.com", "myhost.example.com") + " is the link</p>",
     ),
     (
         "I have best myhost.example.com link ever",
-        "<p>I have best "
-        + EXPECTED_LINK_TEMPLATE % ("http://myhost.example.com", "myhost.example.com")
-        + " link ever</p>",
+        "<p>I have best " + EXPECTED_LINK_TEMPLATE % ("http://myhost.example.com", "myhost.example.com") + " link ever</p>",
     ),
     (
         "I have best\nmyhost.example.com link ever",
-        "<p>I have best\n"
-        + EXPECTED_LINK_TEMPLATE % ("http://myhost.example.com", "myhost.example.com")
-        + " link ever</p>",
+        "<p>I have best\n" + EXPECTED_LINK_TEMPLATE % ("http://myhost.example.com", "myhost.example.com") + " link ever</p>",
     ),
 ]
 
@@ -217,24 +194,12 @@ class TestUrlizeExtension:
         assert self.md.convert(markdown_text) == expected_output
 
     def test_url_with_non_matching_begin_and_end_ignored(self):
-        assert self.md.convert("(example.com>") == "<p>%s</p>" % html.escape(
-            "(example.com>"
-        )
-        assert self.md.convert("<example.com)") == "<p>%s</p>" % html.escape(
-            "<example.com)"
-        )
-        assert self.md.convert("(example.com") == "<p>%s</p>" % html.escape(
-            "(example.com"
-        )
-        assert self.md.convert("example.com)") == "<p>%s</p>" % html.escape(
-            "example.com)"
-        )
-        assert self.md.convert("<example.com") == "<p>%s</p>" % html.escape(
-            "<example.com"
-        )
-        assert self.md.convert("example.com>") == "<p>%s</p>" % html.escape(
-            "example.com>"
-        )
+        assert self.md.convert("(example.com>") == "<p>%s</p>" % html.escape("(example.com>")
+        assert self.md.convert("<example.com)") == "<p>%s</p>" % html.escape("<example.com)")
+        assert self.md.convert("(example.com") == "<p>%s</p>" % html.escape("(example.com")
+        assert self.md.convert("example.com)") == "<p>%s</p>" % html.escape("example.com)")
+        assert self.md.convert("<example.com") == "<p>%s</p>" % html.escape("<example.com")
+        assert self.md.convert("example.com>") == "<p>%s</p>" % html.escape("example.com>")
 
 
 def test_makeExtension_return_value():

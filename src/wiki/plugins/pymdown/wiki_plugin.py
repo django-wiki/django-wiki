@@ -4,7 +4,6 @@ from wiki.plugins.pymdown import settings
 
 
 class Plugin(BasePlugin):
-
     # Skipping tabs as for now they do not work
     markdown_extensions = [
         "pymdownx.blocks.admonition",

@@ -15,7 +15,6 @@ from ..testdata.models import CustomGroup
 
 class URLPathTests(TestCase):
     def test_manager(self):
-
         root = URLPath.create_root()
         child = URLPath.create_urlpath(root, "child")
 
@@ -35,11 +34,8 @@ class CustomGroupTests(TestCase):
 
 class LineEndingsTests(TestCase):
     def test_manager(self):
-
         article = Article()
-        article.add_revision(
-            ArticleRevision(title="Root", content="Hello\nworld"), save=True
-        )
+        article.add_revision(ArticleRevision(title="Root", content="Hello\nworld"), save=True)
         self.assertEqual("Hello\r\nworld", article.current_revision.content)
 
 

@@ -81,10 +81,7 @@ def process_docstring(app, what, name, obj, options, lines):
             # Add the field's type to the docstring
             if isinstance(field, models.ForeignKey):
                 for to in field.to_fields:
-                    lines.append(
-                        ":type %s: %s to :class:`~%s`"
-                        % (field.attname, type(field).__name__, to)
-                    )
+                    lines.append(":type %s: %s to :class:`~%s`" % (field.attname, type(field).__name__, to))
             else:
                 lines.append(":type %s: %s" % (field.attname, type(field).__name__))
 
@@ -312,9 +309,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    ("index", "django-wiki", "django-wiki Documentation", ["Benjamin Bach"], 1)
-]
+man_pages = [("index", "django-wiki", "django-wiki Documentation", ["Benjamin Bach"], 1)]
 
 # If true, show URL addresses after external links.
 # man_show_urls = False

@@ -10,7 +10,6 @@ from wiki.plugins.links.mdx.urlize import makeExtension as urlize_makeExtension
 
 
 class LinkPlugin(BasePlugin):
-
     slug = "links"
     urlpatterns = {
         "article": [

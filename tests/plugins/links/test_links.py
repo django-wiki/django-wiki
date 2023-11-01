@@ -104,9 +104,7 @@ class WikiPathExtensionTests(TestCase):
     @wiki_override_settings(WIKI_WIKILINKS_TRAILING_SLASH=False)
     @data(*FIXTURE_POSITIVE_MATCHES_NO_TRAILING_SLASH)
     @unpack
-    def test_works_with_lazy_functions_no_slashes(
-        self, markdown_input, expected_output
-    ):
+    def test_works_with_lazy_functions_no_slashes(self, markdown_input, expected_output):
         self.assertEqual(
             self.md.convert(markdown_input),
             expected_output,

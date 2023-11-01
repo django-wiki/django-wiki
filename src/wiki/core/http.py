@@ -48,8 +48,6 @@ def send_file(request, filepath, last_modified=None, filename=None):
         if "pdf" in mimetype.lower():
             response["Content-Disposition"] = "inline; filename=%s" % filename_escaped
         else:
-            response["Content-Disposition"] = (
-                "attachment; filename=%s" % filename_escaped
-            )
+            response["Content-Disposition"] = "attachment; filename=%s" % filename_escaped
 
     return response

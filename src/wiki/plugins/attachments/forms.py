@@ -11,7 +11,6 @@ from wiki.plugins.attachments.models import IllegalFileExtension
 
 
 class AttachmentForm(forms.ModelForm):
-
     description = forms.CharField(
         label=_("Description"),
         help_text=_("A short summary of what the file contains"),
@@ -64,27 +63,21 @@ class AttachmentForm(forms.ModelForm):
 
 
 class AttachmentReplaceForm(AttachmentForm):
-
     replace = forms.BooleanField(
         label=_("Remove previous"),
-        help_text=_(
-            "Remove previous attachment revisions and their files (to " "save space)?"
-        ),
+        help_text=_("Remove previous attachment revisions and their files (to " "save space)?"),
         required=False,
     )
 
 
 class AttachmentArchiveForm(AttachmentForm):
-
     file = forms.FileField(  # @ReservedAssignment
         label=_("File or zip archive"), required=True
     )
 
     unzip_archive = forms.BooleanField(
         label=_("Unzip file"),
-        help_text=_(
-            "Create individual attachments for files in a .zip file - directories do not work."
-        ),
+        help_text=_("Create individual attachments for files in a .zip file - directories do not work."),
         required=False,
     )
 
@@ -107,13 +100,10 @@ class AttachmentArchiveForm(AttachmentForm):
     def clean(self):
         super().clean()
         if not can_moderate(self.article, self.request.user):
-            raise forms.ValidationError(
-                gettext("User not allowed to moderate this article")
-            )
+            raise forms.ValidationError(gettext("User not allowed to moderate this article"))
         return self.cleaned_data
 
     def save(self, *args, **kwargs):
-
         # This is not having the intended effect
         if "file" not in self._meta.fields:
             self._meta.fields.append("file")
@@ -135,9 +125,7 @@ class AttachmentArchiveForm(AttachmentForm):
                         attachment.articles.add(self.article)
                         attachment_revision = models.AttachmentRevision()
                         attachment_revision.file = f
-                        attachment_revision.description = self.cleaned_data[
-                            "description"
-                        ]
+                        attachment_revision.description = self.cleaned_data["description"]
                         attachment_revision.attachment = attachment
                         attachment_revision.set_from_request(self.request)
                         attachment_revision.save()
@@ -169,7 +157,6 @@ class DeleteForm(forms.Form):
 
 
 class SearchForm(forms.Form):
-
     query = forms.CharField(
         label="",
         widget=forms.TextInput(attrs={"class": "search-query form-control"}),

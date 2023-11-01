@@ -13,9 +13,7 @@ class ImageMarkdownTests(RequireRootArticleMixin, TestBase):
     def setUp(self):
         super().setUp()
 
-        self.image_revision = models.ImageRevision(
-            image=self._create_test_gif_file(), width=1, height=1
-        )
+        self.image_revision = models.ImageRevision(image=self._create_test_gif_file(), width=1, height=1)
         self.image = models.Image(article=self.root_article)
         self.image.add_revision(self.image_revision)
         self.assertEqual(1, self.image.id)
@@ -44,9 +42,7 @@ class ImageMarkdownTests(RequireRootArticleMixin, TestBase):
         md_text = md.convert("image: [image:%s align:left]\nadasd" % self.image.id)
         self.assertIn("<figure", md_text)
         self.assertIn("<figcaption", md_text)
-        md_text = md.convert(
-            "image: [image:%s align:right size:medium]\nadasd" % self.image.id
-        )
+        md_text = md.convert("image: [image:%s align:right size:medium]\nadasd" % self.image.id)
         self.assertIn("<figure", md_text)
         self.assertIn("<figcaption", md_text)
         md_text = md.convert("image: [image:123 align:left size:medium]\nadasd")
@@ -55,17 +51,11 @@ class ImageMarkdownTests(RequireRootArticleMixin, TestBase):
 
     def test_caption(self):
         md = markdown.ArticleMarkdown(article=self.root_article)
-        md_text = md.convert(
-            "[image:%s align:left]\n    this is visual" % self.image.id
-        )
+        md_text = md.convert("[image:%s align:left]\n    this is visual" % self.image.id)
         self.assertIn("<figure", md_text)
-        self.assertRegex(
-            md_text, r'<figcaption class="caption">\s*this is visual\s*</figcaption>'
-        )
+        self.assertRegex(md_text, r'<figcaption class="caption">\s*this is visual\s*</figcaption>')
         md = markdown.ArticleMarkdown(article=self.root_article)
-        md_text = md.convert(
-            "[image:%s align:left]\n    this is visual\n    second line" % self.image.id
-        )
+        md_text = md.convert("[image:%s align:left]\n    this is visual\n    second line" % self.image.id)
         self.assertIn("<figure", md_text)
         self.assertRegex(
             md_text,

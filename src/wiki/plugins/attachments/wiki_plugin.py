@@ -12,7 +12,6 @@ from wiki.plugins.notifications.util import truncate_title
 
 
 class AttachmentPlugin(BasePlugin):
-
     slug = settings.SLUG
     urlpatterns = {"article": [re_path("", include("wiki.plugins.attachments.urls"))]}
 
@@ -24,12 +23,7 @@ class AttachmentPlugin(BasePlugin):
     notifications = [
         {
             "model": models.AttachmentRevision,
-            "message": lambda obj: (
-                _("A file was changed: %s")
-                if not obj.deleted
-                else _("A file was deleted: %s")
-            )
-            % truncate_title(obj.get_filename()),
+            "message": lambda obj: (_("A file was changed: %s") if not obj.deleted else _("A file was deleted: %s")) % truncate_title(obj.get_filename()),
             "key": ARTICLE_EDIT,
             "created": True,
             "get_article": lambda obj: obj.attachment.article,

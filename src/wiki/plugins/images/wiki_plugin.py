@@ -12,7 +12,6 @@ from wiki.plugins.notifications.util import truncate_title
 
 
 class ImagePlugin(BasePlugin):
-
     slug = settings.SLUG
     sidebar = {
         "headline": _("Images"),
@@ -27,8 +26,7 @@ class ImagePlugin(BasePlugin):
     notifications = [
         {
             "model": models.ImageRevision,
-            "message": lambda obj: _("An image was added: %s")
-            % truncate_title(obj.get_filename()),
+            "message": lambda obj: _("An image was added: %s") % truncate_title(obj.get_filename()),
             "key": ARTICLE_EDIT,
             "created": False,
             # Ignore if there is a previous revision... the image isn't new

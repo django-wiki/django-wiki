@@ -83,7 +83,6 @@ class LinkTreeprocessor(Treeprocessor):
 
 
 class LinkExtension(Extension):
-
     TreeProcessorClass = LinkTreeprocessor
 
     def __init__(self, *args, **kwargs):

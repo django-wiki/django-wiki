@@ -63,9 +63,7 @@ class WikiFencedBlockPreprocessor(Preprocessor):
                 lang = ""
                 if m.group("lang"):
                     lang = m.group("lang")
-                html = highlight(
-                    m.group("code"), self.config, self.md.tab_length, lang=lang
-                )
+                html = highlight(m.group("code"), self.config, self.md.tab_length, lang=lang)
                 placeholder = self.md.htmlStash.store(html)
                 text = "%s\n%s\n%s" % (text[: m.start()], placeholder, text[m.end() :])
             else:
@@ -115,28 +113,20 @@ class WikiCodeHiliteExtension(CodeHiliteExtension):
         hiliter = HiliteTreeprocessor(md)
         hiliter.config = self.getConfigs()
         if "hilite" in md.treeprocessors:
-            logger.warning(
-                "Replacing existing 'hilite' extension - please remove "
-                "'codehilite' from WIKI_MARKDOWN_KWARGS"
-            )
+            logger.warning("Replacing existing 'hilite' extension - please remove " "'codehilite' from WIKI_MARKDOWN_KWARGS")
             # del md.treeprocessors["hilite"]
             md.treeprocessors.deregister("hilite")
 
         add_to_registry(md.treeprocessors, "hilite", hiliter, "<inline")
 
         if "fenced_code_block" in md.preprocessors:
-            logger.warning(
-                "Replacing existing 'fenced_code_block' extension - please remove "
-                "'fenced_code_block' or 'extras' from WIKI_MARKDOWN_KWARGS"
-            )
+            logger.warning("Replacing existing 'fenced_code_block' extension - please remove " "'fenced_code_block' or 'extras' from WIKI_MARKDOWN_KWARGS")
             # del md.preprocessors["fenced_code_block"]
             md.preprocessors.deregister("fenced_code_block")
         hiliter = WikiFencedBlockPreprocessor(md)
         hiliter.config = self.getConfigs()
 
-        add_to_registry(
-            md.preprocessors, "fenced_code_block", hiliter, ">normalize_whitespace"
-        )
+        add_to_registry(md.preprocessors, "fenced_code_block", hiliter, ">normalize_whitespace")
 
         md.registerExtension(self)
 

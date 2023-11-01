@@ -10,7 +10,6 @@ from . import models
 
 
 class NotificationSettings(FormView):
-
     template_name = "wiki/plugins/notifications/settings.html"
     form_class = forms.SettingsFormSet
 
@@ -23,10 +22,7 @@ class NotificationSettings(FormView):
             settings = form.save()
             messages.info(
                 self.request,
-                _(
-                    "You will receive notifications %(interval)s for "
-                    "%(articles)d articles"
-                )
+                _("You will receive notifications %(interval)s for " "%(articles)d articles")
                 % {
                     "interval": settings.get_interval_display(),
                     "articles": self.get_article_subscriptions(form.instance).count(),
@@ -55,7 +51,5 @@ class NotificationSettings(FormView):
         context["formset"] = context["form"]
         for form in context["formset"]:
             if form.instance:
-                form.instance.articlesubscriptions = self.get_article_subscriptions(
-                    form.instance
-                )
+                form.instance.articlesubscriptions = self.get_article_subscriptions(form.instance)
         return context

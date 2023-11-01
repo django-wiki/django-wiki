@@ -8,7 +8,6 @@ from . import views
 
 
 class EditSectionPlugin(BasePlugin):
-
     slug = settings.SLUG
     urlpatterns = {
         "article": [

@@ -8,7 +8,6 @@ class PreviewLinksExtension(markdown.Extension):
     """Markdown Extension that sets all anchor targets to _blank when in preview mode"""
 
     def extendMarkdown(self, md):
-
         add_to_registry(md.treeprocessors, "previewlinks", PreviewLinksTree(md), "_end")
 
 

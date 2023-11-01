@@ -5,7 +5,6 @@ from wiki.plugins.macros import settings
 
 
 class MacroPlugin(BasePlugin):
-
     slug = settings.SLUG
 
     sidebar = {

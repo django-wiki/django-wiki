@@ -124,10 +124,7 @@ def get_article(  # noqa: max-complexity 19
                 )
                 path = "/".join(pathlist[:-1])
                 parent = models.URLPath.get_by_path(path)
-                return HttpResponseRedirect(
-                    reverse("wiki:create", kwargs={"path": parent.path})
-                    + "?slug=%s" % pathlist[-1].lower()
-                )
+                return HttpResponseRedirect(reverse("wiki:create", kwargs={"path": parent.path}) + "?slug=%s" % pathlist[-1].lower())
             except models.URLPath.DoesNotExist:
                 return HttpResponseNotFound(
                     render_to_string(
@@ -155,9 +152,7 @@ def get_article(  # noqa: max-complexity 19
         if (can_write or can_create) and not article.can_write(request.user):
             return response_forbidden(request, article, urlpath)
 
-        if can_create and not (
-            request.user.is_authenticated or settings.ANONYMOUS_CREATE
-        ):
+        if can_create and not (request.user.is_authenticated or settings.ANONYMOUS_CREATE):
             return response_forbidden(request, article, urlpath)
 
         if can_delete and not article.can_delete(request.user):

@@ -28,7 +28,6 @@ __all__ = [
 
 
 class Article(models.Model):
-
     objects = managers.ArticleManager()
 
     current_revision = models.OneToOneField(
@@ -38,9 +37,7 @@ class Article(models.Model):
         null=True,
         related_name="current_set",
         on_delete=models.CASCADE,
-        help_text=_(
-            "The revision being displayed for this article. If you need to do a roll-back, simply change the value of this field."
-        ),
+        help_text=_("The revision being displayed for this article. If you need to do a roll-back, simply change the value of this field."),
     )
 
     created = models.DateTimeField(
@@ -59,9 +56,7 @@ class Article(models.Model):
         blank=True,
         null=True,
         related_name="owned_articles",
-        help_text=_(
-            "The owner of the article, usually the creator. The owner always has both read and write access."
-        ),
+        help_text=_("The owner of the article, usually the creator. The owner always has both read and write access."),
         on_delete=models.SET_NULL,
     )
 
@@ -70,20 +65,14 @@ class Article(models.Model):
         verbose_name=_("group"),
         blank=True,
         null=True,
-        help_text=_(
-            "Like in a UNIX file system, permissions can be given to a user according to group membership. Groups are handled through the Django auth system."
-        ),
+        help_text=_("Like in a UNIX file system, permissions can be given to a user according to group membership. Groups are handled through the Django auth system."),
         on_delete=models.SET_NULL,
     )
 
     group_read = models.BooleanField(default=True, verbose_name=_("group read access"))
-    group_write = models.BooleanField(
-        default=True, verbose_name=_("group write access")
-    )
+    group_write = models.BooleanField(default=True, verbose_name=_("group write access"))
     other_read = models.BooleanField(default=True, verbose_name=_("others read access"))
-    other_write = models.BooleanField(
-        default=True, verbose_name=_("others write access")
-    )
+    other_write = models.BooleanField(default=True, verbose_name=_("others write access"))
 
     # PERMISSIONS
     def can_read(self, user):
@@ -116,11 +105,7 @@ class Article(models.Model):
         cnt = 0
         for obj in self.articleforobject_set.filter(is_mptt=True):
             if user_can_read:
-                objects = (
-                    obj.content_object.get_children()
-                    .filter(**kwargs)
-                    .can_read(user_can_read)
-                )
+                objects = obj.content_object.get_children().filter(**kwargs).can_read(user_can_read)
             else:
                 objects = obj.content_object.get_children().filter(**kwargs)
             for child in objects.order_by("articles__article__current_revision__title"):
@@ -158,11 +143,7 @@ class Article(models.Model):
         Sets the properties of a revision and ensures its the current
         revision.
         """
-        assert self.id or save, (
-            "Article.add_revision: Sorry, you cannot add a"
-            "revision to an article that has not been saved "
-            "without using save=True"
-        )
+        assert self.id or save, "Article.add_revision: Sorry, you cannot add a" "revision to an article that has not been saved " "without using save=True"
         if not self.id:
             self.save()
         revisions = self.articlerevision_set.all()
@@ -214,27 +195,19 @@ class Article(models.Model):
             content = preview_content
         else:
             content = self.current_revision.content
-        return mark_safe(
-            article_markdown(
-                content, self, preview=preview_content is not None, user=user
-            )
-        )
+        return mark_safe(article_markdown(content, self, preview=preview_content is not None, user=user))
 
     def get_cache_key(self):
         """Returns per-article cache key."""
         lang = translation.get_language()
 
-        key_raw = "wiki-article-{id}-{lang}".format(
-            id=self.current_revision.id if self.current_revision else self.id, lang=lang
-        )
+        key_raw = "wiki-article-{id}-{lang}".format(id=self.current_revision.id if self.current_revision else self.id, lang=lang)
         # https://github.com/django-wiki/django-wiki/issues/1065
         return slugify(key_raw, allow_unicode=True)
 
     def get_cache_content_key(self, user=None):
         """Returns per-article-user cache key."""
-        key_raw = "{key}-{user}".format(
-            key=self.get_cache_key(), user=user.get_username() if user else "-anonymous"
-        )
+        key_raw = "{key}-{user}".format(key=self.get_cache_key(), user=user.get_username() if user else "-anonymous")
         # https://github.com/django-wiki/django-wiki/issues/1065
         return slugify(key_raw, allow_unicode=True)
 
@@ -282,7 +255,6 @@ class Article(models.Model):
 
 
 class ArticleForObject(models.Model):
-
     objects = managers.ArticleFkManager()
 
     article = models.ForeignKey("Article", on_delete=models.CASCADE)
@@ -313,9 +285,7 @@ class BaseRevisionMixin(models.Model):
     """This is an abstract model used as a mixin: Do not override any of the
     core model methods but respect the inheritor's freedom to do so itself."""
 
-    revision_number = models.IntegerField(
-        editable=False, verbose_name=_("revision number")
-    )
+    revision_number = models.IntegerField(editable=False, verbose_name=_("revision number"))
 
     user_message = models.TextField(
         blank=True,
@@ -337,9 +307,7 @@ class BaseRevisionMixin(models.Model):
     modified = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
-    previous_revision = models.ForeignKey(
-        "self", blank=True, null=True, on_delete=models.SET_NULL
-    )
+    previous_revision = models.ForeignKey("self", blank=True, null=True, on_delete=models.SET_NULL)
 
     # NOTE! The semantics of these fields are not related to the revision itself
     # but the actual related object. If the latest revision says "deleted=True" then
@@ -386,9 +354,7 @@ class ArticleRevision(BaseRevisionMixin, models.Model):
 
     objects = managers.ArticleFkManager()
 
-    article = models.ForeignKey(
-        "Article", on_delete=models.CASCADE, verbose_name=_("article")
-    )
+    article = models.ForeignKey("Article", on_delete=models.CASCADE, verbose_name=_("article"))
 
     # This is where the content goes, with whatever markup language is used
     content = models.TextField(blank=True, verbose_name=_("article contents"))
@@ -400,9 +366,7 @@ class ArticleRevision(BaseRevisionMixin, models.Model):
         verbose_name=_("article title"),
         null=False,
         blank=False,
-        help_text=_(
-            "Each revision contains a title field that must be filled out, even if the title has not changed"
-        ),
+        help_text=_("Each revision contains a title field that must be filled out, even if the title has not changed"),
     )
 
     # TODO:
@@ -444,6 +408,7 @@ class ArticleRevision(BaseRevisionMixin, models.Model):
 # SIGNAL HANDLERS
 ######################################################
 
+
 # clear the ancestor cache when saving or deleting articles so things like
 # article_lists will be refreshed
 def _clear_ancestor_cache(article):
@@ -466,12 +431,7 @@ def on_article_delete_clear_cache(instance, **kwargs):
 def on_article_revision_pre_save(**kwargs):
     instance = kwargs["instance"]
     if instance._state.adding:
-        revision_changed = (
-            not instance.previous_revision
-            and instance.article
-            and instance.article.current_revision
-            and instance.article.current_revision != instance
-        )
+        revision_changed = not instance.previous_revision and instance.article and instance.article.current_revision and instance.article.current_revision != instance
         if revision_changed:
             instance.previous_revision = instance.article.current_revision
 
@@ -485,7 +445,6 @@ def on_article_revision_pre_save(**kwargs):
 
 @disable_signal_for_loaddata
 def on_article_revision_post_save(**kwargs):
-
     instance = kwargs["instance"]
     if not instance.article.current_revision:
         # If I'm saved from Django admin, then article.current_revision is

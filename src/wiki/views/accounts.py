@@ -55,9 +55,7 @@ class Signup(CreateView):
         return context
 
     def get_success_url(self, *args):
-        messages.success(
-            self.request, _("You are now signed up... and now you can sign in!")
-        )
+        messages.success(self.request, _("You are now signed up... and now you can sign in!"))
         return reverse("wiki:login")
 
 
@@ -74,7 +72,6 @@ class Logout(View):
 
 
 class Login(FormView):
-
     form_class = AuthenticationForm
     template_name = "wiki/accounts/login.html"
 

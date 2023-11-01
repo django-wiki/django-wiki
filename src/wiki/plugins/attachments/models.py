@@ -21,7 +21,6 @@ class IllegalFileExtension(Exception):
 
 
 class Attachment(ReusablePlugin):
-
     objects = managers.ArticleFkManager()
 
     current_revision = models.OneToOneField(
@@ -31,14 +30,10 @@ class Attachment(ReusablePlugin):
         null=True,
         related_name="current_set",
         on_delete=models.CASCADE,
-        help_text=_(
-            "The revision of this attachment currently in use (on all articles using the attachment)"
-        ),
+        help_text=_("The revision of this attachment currently in use (on all articles using the attachment)"),
     )
 
-    original_filename = models.CharField(
-        max_length=256, verbose_name=_("original filename"), blank=True, null=True
-    )
+    original_filename = models.CharField(max_length=256, verbose_name=_("original filename"), blank=True, null=True)
 
     def can_write(self, user):
         if not settings.ANONYMOUS and (not user or user.is_anonymous):
@@ -71,15 +66,10 @@ def extension_allowed(filename):
         extension = filename.split(".")[-1]
     except IndexError:
         # No extension
+        raise IllegalFileExtension(gettext("No file extension found in filename. That's not okay!"))
+    if extension.lower() not in map(lambda x: x.lower(), settings.FILE_EXTENSIONS):
         raise IllegalFileExtension(
-            gettext("No file extension found in filename. That's not okay!")
-        )
-    if not extension.lower() in map(lambda x: x.lower(), settings.FILE_EXTENSIONS):
-        raise IllegalFileExtension(
-            gettext(
-                "The following filename is illegal: {filename:s}. Extension "
-                "has to be one of {extensions:s}"
-            ).format(filename=filename, extensions=", ".join(settings.FILE_EXTENSIONS))
+            gettext("The following filename is illegal: {filename:s}. Extension " "has to be one of {extensions:s}").format(filename=filename, extensions=", ".join(settings.FILE_EXTENSIONS))
         )
 
     return extension
@@ -92,10 +82,7 @@ def upload_path(instance, filename):
     if instance.id and instance.attachment and instance.attachment.original_filename:
         original_extension = instance.attachment.original_filename.split(".")[-1]
         if not extension.lower() == original_extension:
-            raise IllegalFileExtension(
-                "File extension has to be '%s', not '%s'."
-                % (original_extension, extension.lower())
-            )
+            raise IllegalFileExtension("File extension has to be '%s', not '%s'." % (original_extension, extension.lower()))
     elif instance.attachment:
         instance.attachment.original_filename = filename
 
@@ -114,7 +101,6 @@ def upload_path(instance, filename):
 
 
 class AttachmentRevision(BaseRevisionMixin, models.Model):
-
     attachment = models.ForeignKey("Attachment", on_delete=models.CASCADE)
 
     file = models.FileField(
@@ -180,10 +166,7 @@ def on_revision_delete(instance, *args, **kwargs):
     for depth in range(0, max_depth):
         delete_path = "/".join(path[:-depth] if depth > 0 else path)
         try:
-            if (
-                len(os.listdir(os.path.join(django_settings.MEDIA_ROOT, delete_path)))
-                == 0
-            ):
+            if len(os.listdir(os.path.join(django_settings.MEDIA_ROOT, delete_path))) == 0:
                 os.rmdir(delete_path)
         except OSError:
             # Raised by os.listdir if directory is missing
@@ -194,12 +177,7 @@ def on_revision_delete(instance, *args, **kwargs):
 def on_attachment_revision_pre_save(**kwargs):
     instance = kwargs["instance"]
     if instance._state.adding:
-        update_previous_revision = (
-            not instance.previous_revision
-            and instance.attachment
-            and instance.attachment.current_revision
-            and instance.attachment.current_revision != instance
-        )
+        update_previous_revision = not instance.previous_revision and instance.attachment and instance.attachment.current_revision and instance.attachment.current_revision != instance
         if update_previous_revision:
             instance.previous_revision = instance.attachment.current_revision
 

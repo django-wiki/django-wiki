@@ -4,7 +4,6 @@ from wiki import models
 
 
 class DeletedListView(TemplateView):
-
     template_name = "wiki/deleted_list.html"
 
     def dispatch(self, request, *args, **kwargs):

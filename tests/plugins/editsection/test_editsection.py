@@ -8,19 +8,7 @@ from ...base import DjangoClientTestBase
 from ...base import RequireRootArticleMixin
 from ...base import WebTestBase
 
-TEST_CONTENT = (
-    "Title 1\n"
-    "=======\n"
-    "## Title 2\n"
-    "Title 3\n"
-    "-------\n"
-    "a\n"
-    "Paragraph\n"
-    "-------\n"
-    "### Title 4\n"
-    "## Title 5\n"
-    "# Title 6\n"
-)
+TEST_CONTENT = "Title 1\n" "=======\n" "## Title 2\n" "Title 3\n" "-------\n" "a\n" "Paragraph\n" "-------\n" "### Title 4\n" "## Title 5\n" "# Title 6\n"
 
 
 TEST_CONTENT_SRC_COMMENT = """
@@ -40,9 +28,7 @@ Section 2 Lorem ipsum dolor sit amet
 class EditSectionTests(RequireRootArticleMixin, DjangoClientTestBase):
     def test_editsection(self):
         # Test creating links to allow editing all sections individually
-        urlpath = URLPath.create_urlpath(
-            URLPath.root(), "testedit", title="TestEdit", content=TEST_CONTENT
-        )
+        urlpath = URLPath.create_urlpath(URLPath.root(), "testedit", title="TestEdit", content=TEST_CONTENT)
         output = urlpath.article.render()
         expected = (
             r"(?s)"
@@ -61,9 +47,7 @@ class EditSectionTests(RequireRootArticleMixin, DjangoClientTestBase):
             kwargs={"path": "testedit/", "header": "does-not-exist"},
         )
         response = self.client.get(url)
-        self.assertRedirects(
-            response, reverse("wiki:get", kwargs={"path": "testedit/"})
-        )
+        self.assertRedirects(response, reverse("wiki:get", kwargs={"path": "testedit/"}))
 
         # Test extracting sections for editing
         url = reverse(
@@ -79,23 +63,13 @@ class EditSectionTests(RequireRootArticleMixin, DjangoClientTestBase):
             kwargs={"path": "testedit/", "header": "wiki-toc-title-3"},
         )
         response = self.client.get(url)
-        expected = (
-            ">Title 3[\r\n]*"
-            "-------[\r\n]*"
-            "a[\r\n]*"
-            "Paragraph[\r\n]*"
-            "-------[\r\n]*"
-            "### Title 4[\r\n]*"
-            "<"
-        )
+        expected = ">Title 3[\r\n]*" "-------[\r\n]*" "a[\r\n]*" "Paragraph[\r\n]*" "-------[\r\n]*" "### Title 4[\r\n]*" "<"
         self.assertRegex(response.rendered_content, expected)
 
     def test_broken_content(self):
         # Regression test for https://github.com/django-wiki/django-wiki/issues/1094
         TEST_CONTENT = "### [Here we go](#anchor)"
-        urlpath = URLPath.create_urlpath(
-            URLPath.root(), "testedit", title="TestEdit", content=TEST_CONTENT
-        )
+        urlpath = URLPath.create_urlpath(URLPath.root(), "testedit", title="TestEdit", content=TEST_CONTENT)
         output = urlpath.article.render()
         print(output)
 
@@ -161,9 +135,7 @@ class EditSectionTests(RequireRootArticleMixin, DjangoClientTestBase):
         # specify the ID using the {#custom_id_value} syntax. As HTML5 only requires ID
         # values not to contain whitespace, we should be able to handle any valid HTML5 ID, too.
         source = """# Title 1 {#some_id_with.dot}\n\n"""
-        urlpath = URLPath.create_urlpath(
-            URLPath.root(), "testedit", title="TestEdit", content=source
-        )
+        urlpath = URLPath.create_urlpath(URLPath.root(), "testedit", title="TestEdit", content=source)
         # rendering causes NoReverseMatch without the fix
         actual = urlpath.article.render()
         expected = '<h1 id="some_id_with.dot">Title 1<a class="article-edit-title-link" href="/testedit/_plugin/editsection/header/some_id_with.dot/">[edit]</a></h1>'
@@ -177,9 +149,7 @@ class EditSectionEditBase(RequireRootArticleMixin, FuncBaseMixin):
 class EditSectionEditTests(EditSectionEditBase, WebTestBase):
     # Test editing a section
     def test_editsection_edit(self):
-        urlpath = URLPath.create_urlpath(
-            URLPath.root(), "testedit", title="TestEdit", content=TEST_CONTENT
-        )
+        urlpath = URLPath.create_urlpath(URLPath.root(), "testedit", title="TestEdit", content=TEST_CONTENT)
         old_number = urlpath.article.current_revision.revision_number
 
         self.get_literal_url(
@@ -201,7 +171,5 @@ class EditSectionEditTests(EditSectionEditBase, WebTestBase):
         )
         self.assertRegex(self.last_response.content.decode("utf-8"), expected)
 
-        new_number = URLPath.objects.get(
-            slug="testedit"
-        ).article.current_revision.revision_number
+        new_number = URLPath.objects.get(slug="testedit").article.current_revision.revision_number
         self.assertEqual(new_number, old_number + 1)

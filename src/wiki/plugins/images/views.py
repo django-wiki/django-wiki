@@ -21,7 +21,6 @@ logger = logging.getLogger(__name__)
 
 
 class ImageView(ArticleMixin, ListView):
-
     template_name = "wiki/plugins/images/index.html"
     allow_empty = True
     context_object_name = "images"
@@ -33,14 +32,10 @@ class ImageView(ArticleMixin, ListView):
         return super().dispatch(request, article, *args, **kwargs)
 
     def get_queryset(self):
-        if self.article.can_moderate(self.request.user) or self.article.can_delete(
-            self.request.user
-        ):
+        if self.article.can_moderate(self.request.user) or self.article.can_delete(self.request.user):
             images = models.Image.objects.filter(article=self.article)
         else:
-            images = models.Image.objects.filter(
-                article=self.article, current_revision__deleted=False
-            )
+            images = models.Image.objects.filter(article=self.article, current_revision__deleted=False)
         images.select_related()
         return images.order_by("-current_revision__imagerevision__created")
 
@@ -50,44 +45,30 @@ class ImageView(ArticleMixin, ListView):
 
 
 class DeleteView(ArticleMixin, RedirectView):
-
     permanent = False
 
     @method_decorator(get_article(can_write=True, not_locked=True))
     def dispatch(self, request, article, *args, **kwargs):
-        self.image = get_object_or_404(
-            models.Image, article=article, id=kwargs.get("image_id", None)
-        )
+        self.image = get_object_or_404(models.Image, article=article, id=kwargs.get("image_id", None))
         self.restore = kwargs.get("restore", False)
         return ArticleMixin.dispatch(self, request, article, *args, **kwargs)
 
     def get_redirect_url(self, **kwargs):
-
         if not self.image.current_revision:
-            logger.critical(
-                "Encountered an image without current revision set, ID: {}".format(
-                    self.image.id
-                )
-            )
-            latest_revision = RevisionPluginRevision.objects.filter(
-                plugin=self.image
-            ).latest("pk")
+            logger.critical("Encountered an image without current revision set, ID: {}".format(self.image.id))
+            latest_revision = RevisionPluginRevision.objects.filter(plugin=self.image).latest("pk")
             self.image.current_revision = latest_revision
 
         new_revision = models.ImageRevision()
         new_revision.inherit_predecessor(self.image)
         new_revision.set_from_request(self.request)
-        new_revision.revision_number = RevisionPluginRevision.objects.filter(
-            plugin=self.image
-        ).count()
+        new_revision.revision_number = RevisionPluginRevision.objects.filter(plugin=self.image).count()
         new_revision.deleted = not self.restore
         new_revision.save()
         self.image.current_revision = new_revision
         self.image.save()
         if self.restore:
-            messages.info(
-                self.request, _("%s has been restored") % new_revision.get_filename()
-            )
+            messages.info(self.request, _("%s has been restored") % new_revision.get_filename())
         else:
             messages.info(
                 self.request,
@@ -99,20 +80,16 @@ class DeleteView(ArticleMixin, RedirectView):
 
 
 class PurgeView(ArticleMixin, FormView):
-
     template_name = "wiki/plugins/images/purge.html"
     permanent = False
     form_class = forms.PurgeForm
 
     @method_decorator(get_article(can_write=True, can_moderate=True))
     def dispatch(self, request, article, *args, **kwargs):
-        self.image = get_object_or_404(
-            models.Image, article=article, id=kwargs.get("image_id", None)
-        )
+        self.image = get_object_or_404(models.Image, article=article, id=kwargs.get("image_id", None))
         return super().dispatch(request, article, *args, **kwargs)
 
     def form_valid(self, form):
-
         for revision in self.image.revision_set.all().select_related("imagerevision"):
             revision.imagerevision.image.delete(save=False)
             revision.imagerevision.delete()
@@ -132,21 +109,15 @@ class PurgeView(ArticleMixin, FormView):
 
 
 class RevisionChangeView(ArticleMixin, RedirectView):
-
     permanent = False
 
     @method_decorator(get_article(can_write=True, not_locked=True))
     def dispatch(self, request, article, *args, **kwargs):
-        self.image = get_object_or_404(
-            models.Image, article=article, id=kwargs.get("image_id", None)
-        )
-        self.revision = get_object_or_404(
-            models.ImageRevision, plugin__article=article, id=kwargs.get("rev_id", None)
-        )
+        self.image = get_object_or_404(models.Image, article=article, id=kwargs.get("image_id", None))
+        self.revision = get_object_or_404(models.ImageRevision, plugin__article=article, id=kwargs.get("rev_id", None))
         return ArticleMixin.dispatch(self, request, article, *args, **kwargs)
 
     def get_redirect_url(self, **kwargs):
-
         self.image.current_revision = self.revision
         self.image.save()
         messages.info(
@@ -163,15 +134,12 @@ class RevisionChangeView(ArticleMixin, RedirectView):
 
 
 class RevisionAddView(ArticleMixin, FormView):
-
     template_name = "wiki/plugins/images/revision_add.html"
     form_class = forms.RevisionForm
 
     @method_decorator(get_article(can_write=True, not_locked=True))
     def dispatch(self, request, article, *args, **kwargs):
-        self.image = get_object_or_404(
-            models.Image, article=article, id=kwargs.get("image_id", None)
-        )
+        self.image = get_object_or_404(models.Image, article=article, id=kwargs.get("image_id", None))
         if not self.image.can_write(request.user):
             return redirect(wiki_settings.LOGIN_URL)
         return ArticleMixin.dispatch(self, request, article, *args, **kwargs)
@@ -195,8 +163,7 @@ class RevisionAddView(ArticleMixin, FormView):
         form.save()
         messages.info(
             self.request,
-            _("%(file)s has been saved.")
-            % {"file": self.image.current_revision.imagerevision.get_filename()},
+            _("%(file)s has been saved.") % {"file": self.image.current_revision.imagerevision.get_filename()},
         )
         if self.urlpath:
             return redirect("wiki:edit", path=self.urlpath.path)

@@ -61,17 +61,12 @@ class URLPath(MPTTModel):
         Article,
         on_delete=models.CASCADE,
         verbose_name=_("article"),
-        help_text=_(
-            "This field is automatically updated, but you need to populate "
-            "it when creating a new URL path."
-        ),
+        help_text=_("This field is automatically updated, but you need to populate " "it when creating a new URL path."),
     )
 
     SLUG_MAX_LENGTH = 50
 
-    slug = models.SlugField(
-        verbose_name=_("slug"), null=True, blank=True, max_length=SLUG_MAX_LENGTH
-    )
+    slug = models.SlugField(verbose_name=_("slug"), null=True, blank=True, max_length=SLUG_MAX_LENGTH)
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
     parent = TreeForeignKey(
         "self",
@@ -126,9 +121,7 @@ class URLPath(MPTTModel):
             return ""
 
         # All ancestors except roots
-        ancestors = list(
-            filter(lambda ancestor: ancestor.parent is not None, self.cached_ancestors)
-        )
+        ancestors = list(filter(lambda ancestor: ancestor.parent is not None, self.cached_ancestors))
         slugs = [obj.slug if obj.slug else "" for obj in ancestors + [self]]
 
         return "/".join(slugs) + "/"
@@ -178,9 +171,7 @@ class URLPath(MPTTModel):
         return path if path else gettext("(root)")
 
     def delete(self, *args, **kwargs):
-        assert not (
-            self.parent and self.get_children()
-        ), "You cannot delete a root article with children."
+        assert not (self.parent and self.get_children()), "You cannot delete a root article with children."
         super().delete(*args, **kwargs)
 
     class Meta:
@@ -190,16 +181,12 @@ class URLPath(MPTTModel):
 
     def clean(self, *args, **kwargs):
         if self.slug and not self.parent:
-            raise ValidationError(
-                _("Sorry but you cannot have a root article with a slug.")
-            )
+            raise ValidationError(_("Sorry but you cannot have a root article with a slug."))
         if not self.slug and self.parent:
             raise ValidationError(_("A non-root note must always have a slug."))
         if not self.parent:
             if URLPath.objects.root_nodes().filter(site=self.site).exclude(id=self.id):
-                raise ValidationError(
-                    _("There is already a root node on %s") % self.site
-                )
+                raise ValidationError(_("There is already a root node on %s") % self.site)
 
     @classmethod
     def get_by_path(cls, path, select_related=False):
@@ -228,9 +215,7 @@ class URLPath(MPTTModel):
                 child.cached_ancestors = parent.cached_ancestors + [parent]
                 parent = child
             else:
-                child = (
-                    parent.get_children().select_related_common().get(slug__iexact=slug)
-                )
+                child = parent.get_children().select_related_common().get(slug__iexact=slug)
                 child.cached_ancestors = parent.cached_ancestors + [parent]
                 parent = child
             level += 1
@@ -260,17 +245,7 @@ class URLPath(MPTTModel):
 
     @classmethod
     @transaction.atomic
-    def create_urlpath(
-        cls,
-        parent,
-        slug,
-        site=None,
-        title="Root",
-        article_kwargs={},
-        request=None,
-        article_w_permissions=None,
-        **revision_kwargs
-    ):
+    def create_urlpath(cls, parent, slug, site=None, title="Root", article_kwargs={}, request=None, article_w_permissions=None, **revision_kwargs):
         """
         Utility function:
         Creates a new urlpath with an article and a new revision for the
@@ -283,16 +258,12 @@ class URLPath(MPTTModel):
         article = Article(**article_kwargs)
         article.add_revision(ArticleRevision(title=title, **revision_kwargs), save=True)
         article.save()
-        newpath = cls.objects.create(
-            site=site, parent=parent, slug=slug, article=article
-        )
+        newpath = cls.objects.create(site=site, parent=parent, slug=slug, article=article)
         article.add_object_relation(newpath)
         return newpath
 
     @classmethod
-    def _create_urlpath_from_request(
-        cls, request, perm_article, parent_urlpath, slug, title, content, summary
-    ):
+    def _create_urlpath_from_request(cls, request, perm_article, parent_urlpath, slug, title, content, summary):
         """
         Creates a new URLPath, using meta data from ``request`` and copies in
         the permissions from ``perm_article``.
@@ -382,19 +353,13 @@ def on_article_delete(instance, *args, **kwargs):
         if ns.lost_and_found:
             return ns.lost_and_found
         try:
-            ns.lost_and_found = URLPath.objects.get(
-                slug=settings.LOST_AND_FOUND_SLUG, parent=URLPath.root(), site=site
-            )
+            ns.lost_and_found = URLPath.objects.get(slug=settings.LOST_AND_FOUND_SLUG, parent=URLPath.root(), site=site)
         except URLPath.DoesNotExist:
-            article = Article(
-                group_read=True, group_write=False, other_read=False, other_write=False
-            )
+            article = Article(group_read=True, group_write=False, other_read=False, other_write=False)
             article.add_revision(
                 ArticleRevision(
                     content=_(
-                        "Articles who lost their parents\n"
-                        "===============================\n\n"
-                        "The children of this article have had their parents deleted. You should probably find a new home for them."
+                        "Articles who lost their parents\n" "===============================\n\n" "The children of this article have had their parents deleted. You should probably find a new home for them."
                     ),
                     title=_("Lost and found"),
                 )

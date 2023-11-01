@@ -6,9 +6,7 @@ from tests.base import DjangoClientTestBase
 from tests.base import RequireRootArticleMixin
 
 
-class NotificationSettingsTests(
-    RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase
-):
+class NotificationSettingsTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
     def setUp(self):
         super().setUp()
 
@@ -23,9 +21,7 @@ class NotificationSettingsTests(
         self.assertTemplateUsed(response, "wiki/plugins/notifications/settings.html")
 
     def test_change_settings(self):
-        self.settings, __ = Settings.objects.get_or_create(
-            user=self.superuser1, is_default=True
-        )
+        self.settings, __ = Settings.objects.get_or_create(user=self.superuser1, is_default=True)
 
         url = resolve_url("wiki:notification_settings")
 
@@ -46,9 +42,7 @@ class NotificationSettingsTests(
             # retrieve all the fields
             for field_name in current_form.fields:
                 value = current_form[field_name].value()
-                data["%s-%s" % (current_form.prefix, field_name)] = (
-                    value if value is not None else ""
-                )
+                data["%s-%s" % (current_form.prefix, field_name)] = value if value is not None else ""
 
         data["form-TOTAL_FORMS"] = 1
         data["form-0-email"] = 2
@@ -60,9 +54,7 @@ class NotificationSettingsTests(
         self.assertEqual(len(response.context.get("messages")), 1)
 
         message = response.context.get("messages")._loaded_messages[0]
-        self.assertIn(
-            message.message, "You will receive notifications instantly for 0 articles"
-        )
+        self.assertIn(message.message, "You will receive notifications instantly for 0 articles")
 
         # Ensure we didn't create redundant Settings objects
         assert self.superuser1.nyt_settings.all().count() == 1

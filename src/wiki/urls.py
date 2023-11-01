@@ -72,9 +72,7 @@ class WikiURLPatterns:
                 name="root",
                 kwargs={"path": ""},
             ),
-            re_path(
-                r"^create-root/$", article.CreateRootView.as_view(), name="root_create"
-            ),
+            re_path(r"^create-root/$", article.CreateRootView.as_view(), name="root_create"),
             re_path(
                 r"^missing-root/$",
                 article.MissingRootView.as_view(),
@@ -91,9 +89,7 @@ class WikiURLPatterns:
 
     def get_deleted_list_urls(self):
         urlpatterns = [
-            re_path(
-                "^_admin/$", self.deleted_list_view_class.as_view(), name="deleted_list"
-            ),
+            re_path("^_admin/$", self.deleted_list_view_class.as_view(), name="deleted_list"),
         ]
         return urlpatterns
 
@@ -110,9 +106,7 @@ class WikiURLPatterns:
                     self.logout_view_class.as_view(),
                     name="logout",
                 ),
-                re_path(
-                    r"^_accounts/login/$", self.login_view_class.as_view(), name="login"
-                ),
+                re_path(r"^_accounts/login/$", self.login_view_class.as_view(), name="login"),
                 re_path(
                     r"^_accounts/settings/$",
                     self.profile_update_view_class.as_view(),

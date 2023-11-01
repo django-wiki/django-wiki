@@ -43,9 +43,7 @@ class ArticlePlugin(models.Model):
     clean. Furthermore, it's possible to list all plugins and maintain generic
     properties in the future..."""
 
-    article = models.ForeignKey(
-        "wiki.Article", on_delete=models.CASCADE, verbose_name=_("article")
-    )
+    article = models.ForeignKey("wiki.Article", on_delete=models.CASCADE, verbose_name=_("article"))
 
     deleted = models.BooleanField(default=False)
 
@@ -134,9 +132,7 @@ class SimplePlugin(ArticlePlugin):
     """
 
     # The article revision that this plugin is attached to
-    article_revision = models.ForeignKey(
-        "wiki.ArticleRevision", on_delete=models.CASCADE
-    )
+    article_revision = models.ForeignKey("wiki.ArticleRevision", on_delete=models.CASCADE)
 
     def __init__(self, *args, **kwargs):
         article = kwargs.pop("article", None)
@@ -170,10 +166,7 @@ class RevisionPlugin(ArticlePlugin):
         null=True,
         on_delete=models.CASCADE,
         related_name="plugin_set",
-        help_text=_(
-            "The revision being displayed for this plugin. "
-            "If you need to do a roll-back, simply change the value of this field."
-        ),
+        help_text=_("The revision being displayed for this plugin. " "If you need to do a roll-back, simply change the value of this field."),
     )
 
     def add_revision(self, new_revision, save=True):
@@ -181,11 +174,7 @@ class RevisionPlugin(ArticlePlugin):
         Sets the properties of a revision and ensures its the current
         revision.
         """
-        assert self.id or save, (
-            "RevisionPluginRevision.add_revision: Sorry, you cannot add a"
-            "revision to a plugin that has not been saved "
-            "without using save=True"
-        )
+        assert self.id or save, "RevisionPluginRevision.add_revision: Sorry, you cannot add a" "revision to a plugin that has not been saved " "without using save=True"
         if not self.id:
             self.save()
         revisions = self.revision_set.all()
@@ -211,9 +200,7 @@ class RevisionPluginRevision(BaseRevisionMixin, models.Model):
     (this class is very much copied from wiki.models.article.ArticleRevision
     """
 
-    plugin = models.ForeignKey(
-        RevisionPlugin, on_delete=models.CASCADE, related_name="revision_set"
-    )
+    plugin = models.ForeignKey(RevisionPlugin, on_delete=models.CASCADE, related_name="revision_set")
 
     class Meta:
         # Override this setting with app_label = '' in your extended model
@@ -238,9 +225,7 @@ def update_simple_plugins(**kwargs):
     plugins to match this article revision"""
     instance = kwargs["instance"]
     if kwargs.get("created", False):
-        p_revisions = SimplePlugin.objects.filter(
-            article=instance.article, deleted=False
-        )
+        p_revisions = SimplePlugin.objects.filter(article=instance.article, deleted=False)
         # TODO: This was breaking things. SimplePlugin doesn't have a revision?
         p_revisions.update(article_revision=instance)
 
@@ -250,9 +235,7 @@ def on_simple_plugins_pre_save(**kwargs):
     instance = kwargs["instance"]
     if instance._state.adding:
         if not instance.article.current_revision:
-            raise SimplePluginCreateError(
-                "Article does not have a current_revision set."
-            )
+            raise SimplePluginCreateError("Article does not have a current_revision set.")
         new_revision = ArticleRevision()
         new_revision.inherit_predecessor(instance.article)
         new_revision.automatic_log = instance.get_logmessage()
@@ -297,12 +280,7 @@ def on_revision_plugin_revision_post_save(**kwargs):
 def on_revision_plugin_revision_pre_save(**kwargs):
     instance = kwargs["instance"]
     if instance._state.adding:
-        update_previous_revision = (
-            not instance.previous_revision
-            and instance.plugin
-            and instance.plugin.current_revision
-            and instance.plugin.current_revision != instance
-        )
+        update_previous_revision = not instance.previous_revision and instance.plugin and instance.plugin.current_revision and instance.plugin.current_revision != instance
         if update_previous_revision:
             instance.previous_revision = instance.plugin.current_revision
 

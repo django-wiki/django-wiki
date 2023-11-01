@@ -41,9 +41,7 @@ class EditorTest(RequireRootArticleMixin, WebTestBase):
     @wiki_override_settings(WIKI_EDITOR="wiki.editors.base.BaseEditor")
     def test_editor_widget_base(self):
         response = self.get_url("wiki:edit", path="")
-        self.assertContains(
-            response, '<textarea name="content" cols="40" rows="10" id="id_content">'
-        )
+        self.assertContains(response, '<textarea name="content" cols="40" rows="10" id="id_content">')
 
     @wiki_override_settings(WIKI_EDITOR="wiki.editors.base.BaseEditor")
     def test_admin_widget_base(self):
@@ -51,18 +49,14 @@ class EditorTest(RequireRootArticleMixin, WebTestBase):
             "admin:wiki_articlerevision_change",
             object_id=self.root_article.current_revision.id,
         )
-        self.assertContains(
-            response, '<textarea name="content" cols="40" rows="10" id="id_content">'
-        )
+        self.assertContains(response, '<textarea name="content" cols="40" rows="10" id="id_content">')
 
     @wiki_override_settings(WIKI_EDITOR="tests.core.test_editor.CustomEditor")
     def test_editor_widget_custom(self):
         response = self.get_url("wiki:edit", path="")
         self.assertContains(
             response,
-            '<textarea name="content" cols="40" rows="10" data-revision="{}" id="id_content">'.format(
-                self.root_article.current_revision.id
-            ),
+            '<textarea name="content" cols="40" rows="10" data-revision="{}" id="id_content">'.format(self.root_article.current_revision.id),
         )
 
     @wiki_override_settings(WIKI_EDITOR="tests.core.test_editor.CustomEditor")
@@ -73,7 +67,5 @@ class EditorTest(RequireRootArticleMixin, WebTestBase):
         )
         self.assertContains(
             response,
-            '<textarea name="content" cols="40" rows="10" data-revision="{}" id="id_content">'.format(
-                self.root_article.current_revision.id
-            ),
+            '<textarea name="content" cols="40" rows="10" data-revision="{}" id="id_content">'.format(self.root_article.current_revision.id),
         )
