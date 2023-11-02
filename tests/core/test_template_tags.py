@@ -70,7 +70,9 @@ class ArticleForObjectTemplatetagTest(TemplateTestCase):
 
         a = Article.objects.create()
         content_type = ContentType.objects.get_for_model(a)
-        ArticleForObject.objects.create(article=a, content_type=content_type, object_id=1)
+        ArticleForObject.objects.create(
+            article=a, content_type=content_type, object_id=1
+        )
 
         output = article_for_object({}, a)
 
@@ -109,7 +111,9 @@ class ArticleForObjectTemplatetagTest(TemplateTestCase):
     def test_obj_in__cache_and_articleforobjec_is_exist(self):
         article = Article.objects.create()
         content_type = ContentType.objects.get_for_model(article)
-        ArticleForObject.objects.create(article=article, content_type=content_type, object_id=1)
+        ArticleForObject.objects.create(
+            article=article, content_type=content_type, object_id=1
+        )
 
         from wiki.templatetags import wiki_tags
 
@@ -144,7 +148,14 @@ class WikiRenderTest(TemplateTestCase):
         registry._cache = {}
         super().tearDown()
 
-    keys = ["article", "content", "preview", "plugins", "STATIC_URL", "CACHE_TIMEOUT"]
+    keys = [
+        "article",
+        "content",
+        "preview",
+        "plugins",
+        "STATIC_URL",
+        "CACHE_TIMEOUT",
+    ]
 
     def test_if_preview_content_is_none(self):
         # monkey patch
@@ -169,13 +180,28 @@ class WikiRenderTest(TemplateTestCase):
         # Additional check
         self.render({"article": article, "pc": None})
 
-    def test_called_with_preview_content_and_article_have_current_revision(self):
+    def test_called_with_preview_content_and_article_have_current_revision(
+        self
+    ):
         article = Article.objects.create()
-        ArticleRevision.objects.create(article=article, title="Test title", content="Some beauty test text")
+        ArticleRevision.objects.create(
+            article=article,
+            title="Test title",
+            content="Some beauty test text",
+        )
 
-        content = """This is a normal paragraph\n""" """\n""" """Headline\n""" """========\n"""
+        content = (
+            """This is a normal paragraph\n"""
+            """\n"""
+            """Headline\n"""
+            """========\n"""
+        )
 
-        expected = """(?s).*<p>This is a normal paragraph</p>\n""" """<h1 id="wiki-toc-headline">Headline""" """.*</h1>.*"""
+        expected = (
+            """(?s).*<p>This is a normal paragraph</p>\n"""
+            """<h1 id="wiki-toc-headline">Headline"""
+            """.*</h1>.*"""
+        )
 
         # monkey patch
         from wiki.core.plugins import registry
@@ -194,10 +220,17 @@ class WikiRenderTest(TemplateTestCase):
         output = self.render({"article": article, "pc": content})
         self.assertRegexpMatches(output, expected)
 
-    def test_called_with_preview_content_and_article_dont_have_current_revision(self):
+    def test_called_with_preview_content_and_article_dont_have_current_revision(
+        self
+    ):
         article = Article.objects.create()
 
-        content = """This is a normal paragraph\n""" """\n""" """Headline\n""" """========\n"""
+        content = (
+            """This is a normal paragraph\n"""
+            """\n"""
+            """Headline\n"""
+            """========\n"""
+        )
 
         # monkey patch
         from wiki.core.plugins import registry
@@ -308,7 +341,10 @@ class LoginUrlTest(TemplateTestCase):
 
         output = login_url(context)
 
-        expected = "/_accounts/login/" "?next=best/test/page/ever/%3Ftitle%3DMain_page%26action%3Draw"
+        expected = (
+            "/_accounts/login/"
+            "?next=best/test/page/ever/%3Ftitle%3DMain_page%26action%3Draw"
+        )
 
         self.assertEqual(output, expected)
 

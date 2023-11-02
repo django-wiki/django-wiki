@@ -15,10 +15,14 @@ from wiki.plugins.notifications.settings import ARTICLE_EDIT
 
 class SettingsModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
-        return gettext("Receive notifications %(interval)s") % {"interval": obj.get_interval_display()}
+        return gettext("Receive notifications %(interval)s") % {
+            "interval": obj.get_interval_display()
+        }
 
 
-class ArticleSubscriptionModelMultipleChoiceField(forms.ModelMultipleChoiceField):
+class ArticleSubscriptionModelMultipleChoiceField(
+    forms.ModelMultipleChoiceField
+):
     def label_from_instance(self, obj):
         return gettext("%(title)s - %(url)s") % {
             "title": obj.article.current_revision.title,
@@ -34,14 +38,18 @@ class SettingsModelForm(forms.ModelForm):
         self.__editing_instance = False
         if instance:
             self.__editing_instance = True
-            self.fields["delete_subscriptions"] = ArticleSubscriptionModelMultipleChoiceField(
+            self.fields[
+                "delete_subscriptions"
+            ] = ArticleSubscriptionModelMultipleChoiceField(
                 models.ArticleSubscription.objects.filter(
                     subscription__settings=instance,
                     article__current_revision__deleted=False,
                 ),
                 label=gettext("Remove subscriptions"),
                 required=False,
-                help_text=gettext("Select article subscriptions to remove from notifications"),
+                help_text=gettext(
+                    "Select article subscriptions to remove from notifications"
+                ),
                 initial=models.ArticleSubscription.objects.none(),
             )
             self.fields["email"] = forms.TypedChoiceField(
@@ -79,7 +87,9 @@ class BaseSettingsFormSet(BaseModelFormSet):
         self.user = kwargs.pop("user")
 
         # Ensure that at least 1 default settings object exists
-        all_settings = Settings.objects.filter(user=self.user).order_by("is_default")
+        all_settings = Settings.objects.filter(user=self.user).order_by(
+            "is_default"
+        )
         if not all_settings.exists():
             Settings.objects.create(user=self.user, is_default=True)
         else:
@@ -119,19 +129,32 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
     settings_order = 1
     settings_write_access = False
 
-    settings = SettingsModelChoiceField(None, empty_label=None, label=_("Settings"))
-    edit = forms.BooleanField(required=False, label=_("When this article is edited"))
+    settings = SettingsModelChoiceField(
+        None, empty_label=None, label=_("Settings")
+    )
+    edit = forms.BooleanField(
+        required=False, label=_("When this article is edited")
+    )
     edit_email = forms.BooleanField(
         required=False,
         label=_("Also receive emails about article edits"),
-        widget=forms.CheckboxInput(attrs={"onclick": mark_safe("$('#id_edit').attr('checked', $(this).is(':checked'));")}),
+        widget=forms.CheckboxInput(
+            attrs={
+                "onclick": mark_safe(
+                    "$('#id_edit').attr('checked', $(this).is(':checked'));"
+                )
+            }
+        ),
     )
 
     def __init__(self, article, request, *args, **kwargs):
         self.article = article
         self.user = request.user
         initial = kwargs.pop("initial", None)
-        self.notification_type = NotificationType.objects.get_or_create(key=ARTICLE_EDIT, content_type=ContentType.objects.get_for_model(article))[0]
+        self.notification_type = NotificationType.objects.get_or_create(
+            key=ARTICLE_EDIT,
+            content_type=ContentType.objects.get_for_model(article),
+        )[0]
         self.edit_notifications = models.ArticleSubscription.objects.filter(
             article=article,
             subscription__notification_type=self.notification_type,
@@ -139,11 +162,17 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
         )
         self.default_settings = Settings.get_default_setting(request.user)
         if self.edit_notifications:
-            self.default_settings = self.edit_notifications[0].subscription.settings
+            self.default_settings = self.edit_notifications[
+                0
+            ].subscription.settings
         if not initial:
             initial = {
                 "edit": bool(self.edit_notifications),
-                "edit_email": bool(self.edit_notifications.filter(subscription__send_emails=True)),
+                "edit_email": bool(
+                    self.edit_notifications.filter(
+                        subscription__send_emails=True
+                    )
+                ),
                 "settings": self.default_settings,
             }
         kwargs["initial"] = initial
@@ -156,7 +185,9 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
         if self.changed_data:
             return _("Your notification settings were updated.")
         else:
-            return _("Your notification settings were unchanged, so nothing saved.")
+            return _(
+                "Your notification settings were unchanged, so nothing saved."
+            )
 
     def save(self, *args, **kwargs):
         if not self.changed_data:
@@ -168,7 +199,9 @@ class SubscriptionForm(PluginSettingsFormMixin, forms.Form):
                     article=self.article,
                     subscription__settings=self.cleaned_data["settings"],
                 )
-                edit_notification.subscription.send_emails = self.cleaned_data["edit_email"]
+                edit_notification.subscription.send_emails = self.cleaned_data[
+                    "edit_email"
+                ]
                 edit_notification.subscription.save()
             except models.ArticleSubscription.DoesNotExist:
                 subscription, __ = Subscription.objects.get_or_create(

@@ -34,7 +34,10 @@ class LinkPlugin(BasePlugin):
         ("default_level", settings.LOOKUP_LEVEL),
     ]
 
-    markdown_extensions = [urlize_makeExtension(), WikiPathExtension(wikipath_config)]
+    markdown_extensions = [
+        urlize_makeExtension(),
+        WikiPathExtension(wikipath_config),
+    ]
 
 
 registry.register(LinkPlugin)

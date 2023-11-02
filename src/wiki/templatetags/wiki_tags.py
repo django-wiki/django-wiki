@@ -24,7 +24,10 @@ _cache = {}
 @register.simple_tag(takes_context=True)
 def article_for_object(context, obj):
     if not isinstance(obj, Model):
-        raise TypeError("A Wiki article can only be associated to a Django Model " "instance, not %s" % type(obj))
+        raise TypeError(
+            "A Wiki article can only be associated to a Django Model "
+            "instance, not %s" % type(obj)
+        )
 
     content_type = ContentType.objects.get_for_model(obj)
 
@@ -32,7 +35,9 @@ def article_for_object(context, obj):
     # Maybe store cache in the request object?
     if True or obj not in _cache:
         try:
-            article = models.ArticleForObject.objects.get(content_type=content_type, object_id=obj.pk).article
+            article = models.ArticleForObject.objects.get(
+                content_type=content_type, object_id=obj.pk
+            ).article
         except models.ArticleForObject.DoesNotExist:
             article = None
         _cache[obj] = article
@@ -64,7 +69,9 @@ def wiki_render(context, article, preview_content=None):
 @register.inclusion_tag("wiki/includes/form.html", takes_context=True)
 def wiki_form(context, form_obj):
     if not isinstance(form_obj, BaseForm):
-        raise TypeError("Error including form, it's not a form, it's a %s" % type(form_obj))
+        raise TypeError(
+            "Error including form, it's not a form, it's a %s" % type(form_obj)
+        )
     context.update({"form": form_obj})
     return context
 

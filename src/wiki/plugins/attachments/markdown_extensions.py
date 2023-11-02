@@ -87,7 +87,12 @@ class AttachmentPreprocessor(markdown.preprocessors.Preprocessor):
                 )
                 line = self.md.htmlStash.store(html)
             except models.Attachment.DoesNotExist:
-                html = ("""<span class="attachment attachment-deleted">Attachment with ID """ """#{} is deleted.</span>""").format(attachment_id)
-                line = line.replace("[" + m.group(2) + "]", self.md.htmlStash.store(html))
+                html = (
+                    """<span class="attachment attachment-deleted">Attachment with ID """
+                    """#{} is deleted.</span>"""
+                ).format(attachment_id)
+                line = line.replace(
+                    "[" + m.group(2) + "]", self.md.htmlStash.store(html)
+                )
             new_text.append(before + line + after)
         return new_text

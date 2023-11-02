@@ -7,7 +7,9 @@ from ...base import DjangoClientTestBase
 from ...base import RequireRootArticleMixin
 
 
-class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
+class GlobalhistoryTests(
+    RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase
+):
     def test_history(self):
         url = reverse("wiki:globalhistory")
         url0 = reverse("wiki:globalhistory", kwargs={"only_last": "0"})
@@ -25,7 +27,9 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
             user_message="Comment 1",
         )
         response = self.client.get(url)
-        expected = "(?s).*TestHistory1.*Comment 1.*" "Root Article.*no log message.*"
+        expected = (
+            "(?s).*TestHistory1.*Comment 1.*" "Root Article.*no log message.*"
+        )
         self.assertRegexpMatches(response.rendered_content, expected)
 
         urlpath = URLPath.create_urlpath(
@@ -35,7 +39,11 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
             content="a page",
             user_message="Comment 2",
         )
-        expected = "(?s).*TestHistory2.*Comment 2.*" "TestHistory1.*Comment 1.*" "Root Article.*no log message.*"
+        expected = (
+            "(?s).*TestHistory2.*Comment 2.*"
+            "TestHistory1.*Comment 1.*"
+            "Root Article.*no log message.*"
+        )
         response = self.client.get(url)
         self.assertRegexpMatches(response.rendered_content, expected)
 
@@ -57,14 +65,23 @@ class GlobalhistoryTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoCli
             },
         )
 
-        expected = "(?s).*TestHistory2Mod.*Testing Revision.*" "TestHistory2.*Comment 2.*" "TestHistory1.*Comment 1.*" "Root Article.*no log message.*"
+        expected = (
+            "(?s).*TestHistory2Mod.*Testing Revision.*"
+            "TestHistory2.*Comment 2.*"
+            "TestHistory1.*Comment 1.*"
+            "Root Article.*no log message.*"
+        )
         response = self.client.get(url)
         self.assertRegexpMatches(response.rendered_content, expected)
 
         response = self.client.get(url0)
         self.assertRegexpMatches(response.rendered_content, expected)
 
-        expected = "(?s).*TestHistory2Mod.*Testing Revision.*" "TestHistory1.*Comment 1.*" "Root Article.*no log message.*"
+        expected = (
+            "(?s).*TestHistory2Mod.*Testing Revision.*"
+            "TestHistory1.*Comment 1.*"
+            "Root Article.*no log message.*"
+        )
         response = self.client.get(url1)
         self.assertRegexpMatches(response.rendered_content, expected)
 

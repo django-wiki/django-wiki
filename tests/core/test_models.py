@@ -77,8 +77,12 @@ class ArticleModelTest(TestCase):
         u1 = URLPath.objects.create(article=a1, site=s1)
 
         a2 = Article.objects.create()
-        s2 = Site.objects.create(domain="somethingelse.com", name="somethingelse.com")
-        URLPath.objects.create(article=a2, site=s2, parent=u1, slug="test_slug")
+        s2 = Site.objects.create(
+            domain="somethingelse.com", name="somethingelse.com"
+        )
+        URLPath.objects.create(
+            article=a2, site=s2, parent=u1, slug="test_slug"
+        )
 
         url = a2.get_absolute_url()
 
@@ -120,7 +124,9 @@ class ArticleModelTest(TestCase):
 
     def test_cache(self):
         a = Article.objects.create()
-        ArticleRevision.objects.create(article=a, title="test", content="# header")
+        ArticleRevision.objects.create(
+            article=a, title="test", content="# header"
+        )
         expected = """<h1 id="wiki-toc-header">header""" """.*</h1>"""
         # cached content does not exist yet. this will create it
         self.assertRegexpMatches(a.get_cached_content(), expected)

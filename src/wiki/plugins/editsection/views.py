@@ -9,10 +9,17 @@ from wiki.decorators import get_article
 from wiki.views.article import Edit as EditView
 
 
-ERROR_SECTION_CHANGED = gettext_lazy("Unable to find the selected section. The article was modified meanwhile.")
-ERROR_SECTION_UNSAVED = gettext_lazy("Your changes must be re-applied in the new section structure of the " "article.")
+ERROR_SECTION_CHANGED = gettext_lazy(
+    "Unable to find the selected section. The article was modified meanwhile."
+)
+ERROR_SECTION_UNSAVED = gettext_lazy(
+    "Your changes must be re-applied in the new section structure of the "
+    "article."
+)
 ERROR_ARTICLE_CHANGED = gettext_lazy(
-    "Unable to find the selected section in the current article. The article " "was changed in between. Your changed section is still available as the " "last now inactive revision of this article."
+    "Unable to find the selected section in the current article. The article "
+    "was changed in between. Your changed section is still available as the "
+    "last now inactive revision of this article."
 )
 ERROR_TRY_AGAIN = gettext_lazy("Please try again.")
 
@@ -49,7 +56,11 @@ class EditSection(EditView):
                     # there should be a matching header, but we did not find it.
                     # better be safe.
                     return None, None
-        return (start["position"], end["position"]) if end else (start["position"], len(content))
+        return (
+            (start["position"], end["position"])
+            if end
+            else (start["position"], len(content))
+        )
 
     def _redirect_to_article(self):
         if self.urlpath:
@@ -70,7 +81,10 @@ class EditSection(EditView):
                 kwargs["content"] = self.orig_section
                 request.session["editsection_content"] = self.orig_section
             else:
-                messages.error(request, "{} {}".format(ERROR_SECTION_CHANGED, ERROR_TRY_AGAIN))
+                messages.error(
+                    request,
+                    "{} {}".format(ERROR_SECTION_CHANGED, ERROR_TRY_AGAIN),
+                )
                 return self._redirect_to_article()
         else:
             kwargs["content"] = request.session.get("editsection_content")
@@ -96,15 +110,26 @@ class EditSection(EditView):
             if self.orig_section != content[start:end]:
                 messages.warning(
                     self.request,
-                    "{} {} {}".format(ERROR_SECTION_CHANGED, ERROR_SECTION_UNSAVED, ERROR_TRY_AGAIN),
+                    "{} {} {}".format(
+                        ERROR_SECTION_CHANGED,
+                        ERROR_SECTION_UNSAVED,
+                        ERROR_TRY_AGAIN,
+                    ),
                 )
             # Include the edited section into the complete previous article
-            self.article.current_revision.content = content[0:start] + section + content[end:]
+            self.article.current_revision.content = (
+                content[0:start] + section + content[end:]
+            )
             self.article.current_revision.save()
         else:
             # Back to the version before replacing the article with the section
-            self.article.current_revision = self.article.current_revision.previous_revision
+            self.article.current_revision = (
+                self.article.current_revision.previous_revision
+            )
             self.article.save()
-            messages.error(self.request, "{} {}".format(ERROR_ARTICLE_CHANGED, ERROR_TRY_AGAIN))
+            messages.error(
+                self.request,
+                "{} {}".format(ERROR_ARTICLE_CHANGED, ERROR_TRY_AGAIN),
+            )
 
         return self._redirect_to_article()

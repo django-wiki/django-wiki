@@ -25,7 +25,9 @@ class RequireSuperuserMixin:
 
         User = get_user_model()
 
-        self.superuser1 = User.objects.create_superuser(SUPERUSER1_USERNAME, "nobody@example.com", SUPERUSER1_PASSWORD)
+        self.superuser1 = User.objects.create_superuser(
+            SUPERUSER1_USERNAME, "nobody@example.com", SUPERUSER1_PASSWORD
+        )
 
 
 class RequireBasicData(RequireSuperuserMixin):
@@ -40,7 +42,9 @@ class RequireBasicData(RequireSuperuserMixin):
 
         User = get_user_model()
 
-        self.normaluser1 = User.objects.create_user(NORMALUSER1_USERNAME, "nobody@example.com", NORMALUSER1_PASSWORD)
+        self.normaluser1 = User.objects.create_user(
+            NORMALUSER1_USERNAME, "nobody@example.com", NORMALUSER1_PASSWORD
+        )
 
 
 class TestBase(RequireBasicData, TestCase):
@@ -70,7 +74,9 @@ class DjangoClientTestBase(TestBase):
     def setUp(self):
         super().setUp()
 
-        self.client.login(username=SUPERUSER1_USERNAME, password=SUPERUSER1_PASSWORD)
+        self.client.login(
+            username=SUPERUSER1_USERNAME, password=SUPERUSER1_PASSWORD
+        )
 
 
 class WebTestCommonMixin(RequireBasicData, django_functest.ShortcutLoginMixin):
@@ -81,10 +87,14 @@ class WebTestCommonMixin(RequireBasicData, django_functest.ShortcutLoginMixin):
     def setUp(self):
         super().setUp()
 
-        self.shortcut_login(username=SUPERUSER1_USERNAME, password=SUPERUSER1_PASSWORD)
+        self.shortcut_login(
+            username=SUPERUSER1_USERNAME, password=SUPERUSER1_PASSWORD
+        )
 
 
-class WebTestBase(WebTestCommonMixin, django_functest.FuncWebTestMixin, TestCase):
+class WebTestBase(
+    WebTestCommonMixin, django_functest.FuncWebTestMixin, TestCase
+):
     pass
 
 
@@ -92,7 +102,11 @@ INCLUDE_SELENIUM_TESTS = os.environ.get("INCLUDE_SELENIUM_TESTS", "0") == "1"
 
 
 @unittest.skipUnless(INCLUDE_SELENIUM_TESTS, "Skipping Selenium tests")
-class SeleniumBase(WebTestCommonMixin, django_functest.FuncSeleniumMixin, StaticLiveServerTestCase):
+class SeleniumBase(
+    WebTestCommonMixin,
+    django_functest.FuncSeleniumMixin,
+    StaticLiveServerTestCase,
+):
     driver_name = "Chrome"
     display = os.environ.get("SELENIUM_SHOW_BROWSER", "0") == "1"
 

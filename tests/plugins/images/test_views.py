@@ -17,7 +17,9 @@ from ...base import RequireRootArticleMixin
 from ...base import wiki_override_settings
 
 
-class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
+class ImageTests(
+    RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase
+):
     def setUp(self):
         super().setUp()
         self.article = self.root_article
@@ -37,7 +39,9 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         filename = kwargs.get("filename", "test.gif")
         data = base64.b64decode(str_base64)
         filedata = BytesIO(data)
-        filestream = InMemoryUploadedFile(filedata, None, filename, "image", len(data), None)
+        filestream = InMemoryUploadedFile(
+            filedata, None, filename, "image", len(data), None
+        )
         return filestream
 
     def _create_test_image(self, path):
@@ -47,7 +51,9 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
             if isinstance(plugin_instance, ImagePlugin):
                 plugin_index = cnt
                 break
-        self.assertGreaterEqual(plugin_index, 0, msg="Image plugin not activated")
+        self.assertGreaterEqual(
+            plugin_index, 0, msg="Image plugin not activated"
+        )
         base_edit_url = reverse("wiki:edit", kwargs={"path": path})
         url = base_edit_url + "?f=form{0:d}".format(plugin_index)
         filestream = self._create_gif_filestream_from_base64(self.test_data)
@@ -80,24 +86,35 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         image = models.Image.objects.get()
         image_revision = image.current_revision.imagerevision
         self.assertEqual(image_revision.get_filename(), "test.gif")
-        self.assertEqual(image_revision.image.file.read(), base64.b64decode(self.test_data))
+        self.assertEqual(
+            image_revision.image.file.read(), base64.b64decode(self.test_data)
+        )
 
     def get_article(self, cont, image):
-        urlpath = URLPath.create_urlpath(URLPath.root(), "html_image", title="TestImage", content=cont)
+        urlpath = URLPath.create_urlpath(
+            URLPath.root(), "html_image", title="TestImage", content=cont
+        )
         if image:
             self._create_test_image(urlpath.path)
         return urlpath.article.render()
 
     def test_image_missing(self):
         output = self.get_article("[image:1]", False)
-        expected = '<figure class="thumbnail"><a href="">' '<div class="caption"><em>Image not found</em></div>' '</a><figcaption class="caption"></figcaption></figure>'
+        expected = (
+            '<figure class="thumbnail"><a href="">'
+            '<div class="caption"><em>Image not found</em></div>'
+            '</a><figcaption class="caption"></figcaption></figure>'
+        )
         self.assertEqual(output, expected)
 
     def test_image_default(self):
         output = self.get_article("[image:1]", True)
         image_rev = models.Image.objects.get().current_revision.imagerevision
         expected = re.compile(
-            r'<figure class="thumbnail">' r'<a href="' + re.escape(image_rev.image.url) + '">' r'<img src="/?cache/.*\.jpg" alt="test\.gif">' r'</a><figcaption class="caption"></figcaption></figure>'
+            r'<figure class="thumbnail">'
+            r'<a href="' + re.escape(image_rev.image.url) + '">'
+            r'<img src="/?cache/.*\.jpg" alt="test\.gif">'
+            r'</a><figcaption class="caption"></figcaption></figure>'
         )
         self.assertRegex(output, expected)
 
@@ -105,14 +122,22 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         output = self.get_article("[image:1 align:right size:large]", True)
         image_rev = models.Image.objects.get().current_revision.imagerevision
         expected = re.compile(
-            r'<figure class="thumbnail float-right">' r'<a href="' + re.escape(image_rev.image.url) + '">' r'<img src="/?cache/.*\.jpg" alt="test\.gif"></a>' r'<figcaption class="caption"></figcaption></figure>'
+            r'<figure class="thumbnail float-right">'
+            r'<a href="' + re.escape(image_rev.image.url) + '">'
+            r'<img src="/?cache/.*\.jpg" alt="test\.gif"></a>'
+            r'<figcaption class="caption"></figcaption></figure>'
         )
         self.assertRegex(output, expected)
 
     def test_image_orig(self):
         output = self.get_article("[image:1 size:orig]", True)
         image_rev = models.Image.objects.get().current_revision.imagerevision
-        expected = '<figure class="thumbnail">' '<a href="' + image_rev.image.url + '">' '<img src="' + image_rev.image.url + '" alt="test.gif"></a>' '<figcaption class="caption"></figcaption></figure>'
+        expected = (
+            '<figure class="thumbnail">'
+            '<a href="' + image_rev.image.url + '">'
+            '<img src="' + image_rev.image.url + '" alt="test.gif"></a>'
+            '<figcaption class="caption"></figcaption></figure>'
+        )
         self.assertEqual(output, expected)
 
     # https://gist.github.com/guillaumepiot/817a70706587da3bd862835c59ef584e
@@ -140,10 +165,15 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
             ),
             data={"image": self.generate_photo_file()},
         )
-        self.assertRedirects(response, reverse("wiki:edit", kwargs={"path": ""}))
+        self.assertRedirects(
+            response, reverse("wiki:edit", kwargs={"path": ""})
+        )
         image = models.Image.objects.get()
         self.assertEqual(models.Image.objects.count(), 1)
-        self.assertEqual(image.current_revision.previous_revision.revision_number, before_edit_rev)
+        self.assertEqual(
+            image.current_revision.previous_revision.revision_number,
+            before_edit_rev,
+        )
 
     def test_delete_restore_revision(self):
         self._create_test_image(path="")
@@ -160,10 +190,15 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
                 },
             ),
         )
-        self.assertRedirects(response, reverse("wiki:images_index", kwargs={"path": ""}))
+        self.assertRedirects(
+            response, reverse("wiki:images_index", kwargs={"path": ""})
+        )
         image = models.Image.objects.get()
         self.assertEqual(models.Image.objects.count(), 1)
-        self.assertEqual(image.current_revision.previous_revision.revision_number, before_edit_rev)
+        self.assertEqual(
+            image.current_revision.previous_revision.revision_number,
+            before_edit_rev,
+        )
         self.assertIs(image.current_revision.deleted, True)
 
         # RESTORE
@@ -178,10 +213,15 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
                 },
             ),
         )
-        self.assertRedirects(response, reverse("wiki:images_index", kwargs={"path": ""}))
+        self.assertRedirects(
+            response, reverse("wiki:images_index", kwargs={"path": ""})
+        )
         image = models.Image.objects.get()
         self.assertEqual(models.Image.objects.count(), 1)
-        self.assertEqual(image.current_revision.previous_revision.revision_number, before_edit_rev)
+        self.assertEqual(
+            image.current_revision.previous_revision.revision_number,
+            before_edit_rev,
+        )
         self.assertFalse(image.current_revision.deleted)
 
     def test_purge(self):
@@ -206,7 +246,9 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
             ),
             data={"confirm": True},
         )
-        self.assertRedirects(response, reverse("wiki:images_index", kwargs={"path": ""}))
+        self.assertRedirects(
+            response, reverse("wiki:images_index", kwargs={"path": ""})
+        )
         self.assertEqual(models.Image.objects.count(), 0)
         self.assertIs(os.path.exists(f_path), False)
 
@@ -234,7 +276,9 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
             ),
             data={"confirm": True},
         )
-        self.assertRedirects(response, reverse("wiki:images_index", kwargs={"path": ""}))
+        self.assertRedirects(
+            response, reverse("wiki:images_index", kwargs={"path": ""})
+        )
         self.assertEqual(models.Image.objects.count(), 0)
         self.assertIs(os.path.exists(f_path), False)
 
@@ -245,7 +289,15 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         image = models.Image.objects.get()
         url = reverse(
             "wiki:images_add_revision",
-            kwargs={"article_id": self.root_article, "image_id": image.pk, "path": ""},
+            kwargs={
+                "article_id": self.root_article,
+                "image_id": image.pk,
+                "path": "",
+            },
         )
-        response = self.client.post(url, data={"image": self.generate_photo_file()})
-        self.assertRedirects(response, "{}?next={}".format(reverse("wiki:login"), url))
+        response = self.client.post(
+            url, data={"image": self.generate_photo_file()}
+        )
+        self.assertRedirects(
+            response, "{}?next={}".format(reverse("wiki:login"), url)
+        )

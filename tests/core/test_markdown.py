@@ -27,7 +27,12 @@ class ArticleMarkdownTests(ArticleTestBase):
         self.assertEqual(len(extensions), number_of_extensions)
 
     def test_html_removal(self):
-        urlpath = URLPath.create_urlpath(self.root, "html_removal", title="Test 1", content="</html>only_this")
+        urlpath = URLPath.create_urlpath(
+            self.root,
+            "html_removal",
+            title="Test 1",
+            content="</html>only_this",
+        )
 
         self.assertEqual(urlpath.article.render(), "<p>only_this</p>")
 
@@ -35,19 +40,32 @@ class ArticleMarkdownTests(ArticleTestBase):
 class ResponsiveTableExtensionTests(TestCase):
     def setUp(self):
         super().setUp()
-        self.md = markdown.Markdown(extensions=["extra", ResponsiveTableExtension()])
+        self.md = markdown.Markdown(
+            extensions=["extra", ResponsiveTableExtension()]
+        )
         self.md_without = markdown.Markdown(extensions=["extra"])
 
     def test_wrapping(self):
         text = "|th|th|\n|--|--|\n|td|td|"
-        expected = '<div class="table-responsive">\n' + self.md_without.convert(text) + "\n</div>"
+        expected = (
+            '<div class="table-responsive">\n'
+            + self.md_without.convert(text)
+            + "\n</div>"
+        )
         self.assertEqual(self.md.convert(text), expected)
 
 
 class CodehiliteTests(TestCase):
     def test_fenced_code(self):
         md = markdown.Markdown(extensions=["extra", WikiCodeHiliteExtension()])
-        text = "Code:\n" "\n" "```python\n" "echo 'line 1'\n" "echo 'line 2'\n" "```\n"
+        text = (
+            "Code:\n"
+            "\n"
+            "```python\n"
+            "echo 'line 1'\n"
+            "echo 'line 2'\n"
+            "```\n"
+        )
         result = (
             (
                 """<p>Code:</p>\n"""
@@ -57,7 +75,12 @@ class CodehiliteTests(TestCase):
                 """</div>"""
             )
             if pygments
-            else ("""<p>Code:</p>\n""" """<div class="codehilite-wrap"><pre class="codehilite"><code class="language-python">echo 'line 1'\n""" """echo 'line 2'\n</code></pre>\n""" """</div>""")
+            else (
+                """<p>Code:</p>\n"""
+                """<div class="codehilite-wrap"><pre class="codehilite"><code class="language-python">echo 'line 1'\n"""
+                """echo 'line 2'\n</code></pre>\n"""
+                """</div>"""
+            )
         )
         self.assertEqual(
             md.convert(text),
@@ -66,7 +89,15 @@ class CodehiliteTests(TestCase):
 
     def test_indented_code(self):
         md = markdown.Markdown(extensions=["extra", WikiCodeHiliteExtension()])
-        text = "Code:\n" "\n" "    #!/usr/bin/python\n" "    print('line 1')\n" "    print('line 2')\n" "    print('æøå')\n" "\n"
+        text = (
+            "Code:\n"
+            "\n"
+            "    #!/usr/bin/python\n"
+            "    print('line 1')\n"
+            "    print('line 2')\n"
+            "    print('æøå')\n"
+            "\n"
+        )
         result = (
             (
                 """<p>Code:</p>\n"""

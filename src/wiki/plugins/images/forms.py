@@ -13,7 +13,12 @@ class SidebarForm(PluginSidebarFormMixin):
         self.fields["image"].required = True
 
     def get_usermessage(self):
-        return gettext("New image %s was successfully uploaded. You can use it by selecting it from the list of available images.") % self.instance.get_filename()
+        return (
+            gettext(
+                "New image %s was successfully uploaded. You can use it by selecting it from the list of available images."
+            )
+            % self.instance.get_filename()
+        )
 
     def save(self, *args, **kwargs):
         if not self.instance.id:

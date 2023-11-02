@@ -9,7 +9,9 @@ from ...base import DjangoClientTestBase
 from ...base import RequireRootArticleMixin
 
 
-class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
+class AttachmentTests(
+    RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase
+):
     def setUp(self):
         super().setUp()
         self.article = self.root_article
@@ -29,7 +31,9 @@ class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClient
         filename = kwargs.get("filename", "test.txt")
         data = strData.encode("utf-8")
         filedata = BytesIO(data)
-        filestream = InMemoryUploadedFile(filedata, None, filename, "text", len(data), None)
+        filestream = InMemoryUploadedFile(
+            filedata, None, filename, "text", len(data), None
+        )
         return filestream
 
     def _create_test_attachment(self, path):
@@ -37,7 +41,11 @@ class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClient
         filestream = self._createTxtFilestream(self.test_data)
         response = self.client.post(
             url,
-            {"description": self.test_description, "file": filestream, "save": "1"},
+            {
+                "description": self.test_description,
+                "file": filestream,
+                "save": "1",
+            },
         )
         self.assertRedirects(response, url)
 
@@ -51,7 +59,10 @@ class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClient
         # Check the object was created.
         attachment = self.article.shared_plugins_set.all()[0].attachment
         self.assertEqual(attachment.original_filename, "test.txt")
-        self.assertEqual(attachment.current_revision.file.file.read(), self.test_data.encode("utf-8"))
+        self.assertEqual(
+            attachment.current_revision.file.file.read(),
+            self.test_data.encode("utf-8"),
+        )
 
     def test_replace(self):
         """
@@ -63,7 +74,9 @@ class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClient
         url = reverse("wiki:attachments_index", kwargs={"path": ""})
         data = "This is a plain text file"
         filestream = self._createTxtFilestream(data)
-        self.client.post(url, {"description": "My file", "file": filestream, "save": "1"})
+        self.client.post(
+            url, {"description": "My file", "file": filestream, "save": "1"}
+        )
         attachment = self.article.shared_plugins_set.all()[0].attachment
 
         # uploading for the first time should mean that there is only one revision.
@@ -72,13 +85,22 @@ class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClient
         # Change url to replacement page.
         url = reverse(
             "wiki:attachments_replace",
-            kwargs={"attachment_id": attachment.id, "article_id": self.article.id},
+            kwargs={
+                "attachment_id": attachment.id,
+                "article_id": self.article.id,
+            },
         )
 
         # Upload replacement without removing revisions
         replacement_data = data + " And this is my edit"
         replacement_filestream = self._createTxtFilestream(replacement_data)
-        self.client.post(url, {"description": "Replacement upload", "file": replacement_filestream})
+        self.client.post(
+            url,
+            {
+                "description": "Replacement upload",
+                "file": replacement_filestream,
+            },
+        )
         attachment = self.article.shared_plugins_set.all()[0].attachment
         # Revision count should be two
         self.assertEqual(attachment.attachmentrevision_set.count(), 2)
@@ -111,7 +133,9 @@ class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClient
             replacement_data2.encode("utf-8"),
         )
         # The first replacement should no longer be in the filehistory
-        self.assertNotIn(first_replacement, attachment.attachmentrevision_set.all())
+        self.assertNotIn(
+            first_replacement, attachment.attachmentrevision_set.all()
+        )
 
     def test_search(self):
         """
@@ -123,13 +147,18 @@ class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClient
         self.assertContains(response, self.test_description)
 
     def get_article(self, cont):
-        urlpath = URLPath.create_urlpath(URLPath.root(), "html_attach", title="TestAttach", content=cont)
+        urlpath = URLPath.create_urlpath(
+            URLPath.root(), "html_attach", title="TestAttach", content=cont
+        )
         self._create_test_attachment(urlpath.path)
         return urlpath.article.render()
 
     def test_render(self):
         output = self.get_article("[attachment:1]")
-        expected = r'<span class="attachment"><a href=".*attachments/download/1/"' r' title="Click to download test\.txt">\s*test\.txt\s*</a>'
+        expected = (
+            r'<span class="attachment"><a href=".*attachments/download/1/"'
+            r' title="Click to download test\.txt">\s*test\.txt\s*</a>'
+        )
         self.assertRegexpMatches(output, expected)
 
     def test_render_missing(self):
@@ -139,10 +168,16 @@ class AttachmentTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClient
 
     def test_render_title(self):
         output = self.get_article('[attachment:1 title:"Test title"]')
-        expected = r'<span class="attachment"><a href=".*attachments/download/1/"' r' title="Click to download test\.txt">\s*Test title\s*</a>'
+        expected = (
+            r'<span class="attachment"><a href=".*attachments/download/1/"'
+            r' title="Click to download test\.txt">\s*Test title\s*</a>'
+        )
         self.assertRegexpMatches(output, expected)
 
     def test_render_title_size(self):
         output = self.get_article('[attachment:1 title:"Test title 2" size]')
-        expected = r'<span class="attachment"><a href=".*attachments/download/1/"' r' title="Click to download test\.txt">\s*Test title 2 \[25[^b]bytes\]\s*</a>'
+        expected = (
+            r'<span class="attachment"><a href=".*attachments/download/1/"'
+            r' title="Click to download test\.txt">\s*Test title 2 \[25[^b]bytes\]\s*</a>'
+        )
         self.assertRegexpMatches(output, expected)

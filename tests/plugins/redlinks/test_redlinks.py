@@ -25,7 +25,9 @@ class RedlinksTests(RequireRootArticleMixin, TestBase):
         self.assert_internal(self.child, "[Child](../child)")
 
     def test_root_to_outside(self):
-        self.assert_external(self.root, "[Outside](http://outside.example.org/)")
+        self.assert_external(
+            self.root, "[Outside](http://outside.example.org/)"
+        )
 
     def test_absolute_external(self):
         if reverse("wiki:get", kwargs={"path": ""}) == "/":

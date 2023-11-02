@@ -72,13 +72,19 @@ class WikiURLPatterns:
                 name="root",
                 kwargs={"path": ""},
             ),
-            re_path(r"^create-root/$", article.CreateRootView.as_view(), name="root_create"),
+            re_path(
+                r"^create-root/$",
+                article.CreateRootView.as_view(),
+                name="root_create",
+            ),
             re_path(
                 r"^missing-root/$",
                 article.MissingRootView.as_view(),
                 name="root_missing",
             ),
-            re_path(r"^_search/$", self.search_view_class.as_view(), name="search"),
+            re_path(
+                r"^_search/$", self.search_view_class.as_view(), name="search"
+            ),
             re_path(
                 r"^_revision/diff/(?P<revision_id>[0-9]+)/$",
                 self.article_diff_view_class.as_view(),
@@ -89,7 +95,11 @@ class WikiURLPatterns:
 
     def get_deleted_list_urls(self):
         urlpatterns = [
-            re_path("^_admin/$", self.deleted_list_view_class.as_view(), name="deleted_list"),
+            re_path(
+                "^_admin/$",
+                self.deleted_list_view_class.as_view(),
+                name="deleted_list",
+            ),
         ]
         return urlpatterns
 
@@ -106,7 +116,11 @@ class WikiURLPatterns:
                     self.logout_view_class.as_view(),
                     name="logout",
                 ),
-                re_path(r"^_accounts/login/$", self.login_view_class.as_view(), name="login"),
+                re_path(
+                    r"^_accounts/login/$",
+                    self.login_view_class.as_view(),
+                    name="login",
+                ),
                 re_path(
                     r"^_accounts/settings/$",
                     self.profile_update_view_class.as_view(),
@@ -279,7 +293,11 @@ class WikiURLPatterns:
                 name="plugin",
             ),
             # This should always go last!
-            re_path(r"^(?P<path>.+/|)$", self.article_view_class.as_view(), name="get"),
+            re_path(
+                r"^(?P<path>.+/|)$",
+                self.article_view_class.as_view(),
+                name="get",
+            ),
         ]
         return urlpatterns
 
@@ -302,7 +320,9 @@ class WikiURLPatterns:
                 ]
                 root_urlpatterns = plugin.urlpatterns.get("root", [])
                 urlpatterns += [
-                    re_path(r"^_plugin/" + slug + "/", include(root_urlpatterns)),
+                    re_path(
+                        r"^_plugin/" + slug + "/", include(root_urlpatterns)
+                    ),
                 ]
         return urlpatterns
 

@@ -15,7 +15,11 @@ class ArticleQuerySet(QuerySet):
         if user.is_anonymous:
             q = self.filter(other_read=True)
         else:
-            q = self.filter(Q(other_read=True) | Q(owner=user) | (Q(group__user=user) & Q(group_read=True))).annotate(Count("id"))
+            q = self.filter(
+                Q(other_read=True)
+                | Q(owner=user)
+                | (Q(group__user=user) & Q(group_read=True))
+            ).annotate(Count("id"))
         return q
 
     def can_write(self, user):
@@ -26,7 +30,11 @@ class ArticleQuerySet(QuerySet):
         if user.is_anonymous:
             q = self.filter(other_write=True)
         else:
-            q = self.filter(Q(other_write=True) | Q(owner=user) | (Q(group__user=user) & Q(group_write=True)))
+            q = self.filter(
+                Q(other_write=True)
+                | Q(owner=user)
+                | (Q(group__user=user) & Q(group_write=True))
+            )
         return q
 
     def active(self):
@@ -54,7 +62,11 @@ class ArticleFkQuerySetMixin:
             q = self.filter(article__other_read=True)
         else:
             # https://github.com/django-wiki/django-wiki/issues/67
-            q = self.filter(Q(article__other_read=True) | Q(article__owner=user) | (Q(article__group__user=user) & Q(article__group_read=True))).annotate(Count("id"))
+            q = self.filter(
+                Q(article__other_read=True)
+                | Q(article__owner=user)
+                | (Q(article__group__user=user) & Q(article__group_read=True))
+            ).annotate(Count("id"))
         return q
 
     def can_write(self, user):
@@ -66,7 +78,11 @@ class ArticleFkQuerySetMixin:
             q = self.filter(article__other_write=True)
         else:
             # https://github.com/django-wiki/django-wiki/issues/67
-            q = self.filter(Q(article__other_write=True) | Q(article__owner=user) | (Q(article__group__user=user) & Q(article__group_write=True))).annotate(Count("id"))
+            q = self.filter(
+                Q(article__other_write=True)
+                | Q(article__owner=user)
+                | (Q(article__group__user=user) & Q(article__group_write=True))
+            ).annotate(Count("id"))
         return q
 
     def active(self):
@@ -136,7 +152,9 @@ class URLPathEmptyQuerySet(EmptyQuerySet, ArticleFkEmptyQuerySetMixin):
 
 class URLPathQuerySet(QuerySet, ArticleFkQuerySetMixin):
     def select_related_common(self):
-        return self.select_related("parent", "article__current_revision", "article__owner")
+        return self.select_related(
+            "parent", "article__current_revision", "article__owner"
+        )
 
     def default_order(self):
         """Returns elements by there article order"""
@@ -149,7 +167,9 @@ class URLPathManager(TreeManager):
 
     def get_queryset(self):
         """Return a QuerySet with the same ordering as the TreeManager."""
-        return URLPathQuerySet(self.model, using=self._db).order_by(self.tree_id_attr, self.left_attr)
+        return URLPathQuerySet(self.model, using=self._db).order_by(
+            self.tree_id_attr, self.left_attr
+        )
 
     def select_related_common(self):
         return self.get_queryset().common_select_related()

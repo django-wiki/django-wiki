@@ -15,7 +15,9 @@ def upload_path(instance, filename):
     # Has to match original extension filename
 
     upload_path = settings.IMAGE_PATH
-    upload_path = upload_path.replace("%aid", str(instance.plugin.image.article.id))
+    upload_path = upload_path.replace(
+        "%aid", str(instance.plugin.image.article.id)
+    )
     if settings.IMAGE_PATH_OBSCURIFY:
         import uuid
 
@@ -42,7 +44,10 @@ class Image(RevisionPlugin):
 
     def __str__(self):
         if self.current_revision:
-            return gettext("Image: %s") % self.current_revision.imagerevision.get_filename()
+            return (
+                gettext("Image: %s")
+                % self.current_revision.imagerevision.get_filename()
+            )
         else:
             return gettext("Current revision not set!!")
 
@@ -146,7 +151,9 @@ def on_image_revision_delete(instance, *args, **kwargs):  # noqa: max-complexity
     for depth in range(0, max_depth):
         delete_path = "/".join(path[:-depth] if depth > 0 else path)
         try:
-            dir_list = os.listdir(os.path.join(django_settings.MEDIA_ROOT, delete_path))
+            dir_list = os.listdir(
+                os.path.join(django_settings.MEDIA_ROOT, delete_path)
+            )
         except OSError:
             # Path does not exist, so let's not try to remove it...
             dir_list = None

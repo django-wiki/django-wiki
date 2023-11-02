@@ -10,9 +10,13 @@ from tests.base import RequireRootArticleMixin
 class DeleteFormTests(RequireRootArticleMixin, DjangoClientTestBase):
     def test_not_sure(self):
         data = {"purge": True, "confirm": False}
-        form = DeleteForm(article=self.root_article, has_children=True, data=data)
+        form = DeleteForm(
+            article=self.root_article, has_children=True, data=data
+        )
         self.assertIs(form.is_valid(), False)
-        self.assertEqual(form.errors["__all__"], [gettext("You are not sure enough!")])
+        self.assertEqual(
+            form.errors["__all__"], [gettext("You are not sure enough!")]
+        )
 
 
 class UserCreationFormTests(TestCase):
@@ -29,5 +33,7 @@ class UserCreationFormTests(TestCase):
         self.assertIs(form.is_valid(), False)
         self.assertEqual(
             form.errors["__all__"],
-            ["Thank you, non-human visitor. Please keep trying to fill in the form."],
+            [
+                "Thank you, non-human visitor. Please keep trying to fill in the form."
+            ],
         )

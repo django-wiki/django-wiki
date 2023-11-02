@@ -43,7 +43,9 @@ class ArticlePlugin(models.Model):
     clean. Furthermore, it's possible to list all plugins and maintain generic
     properties in the future..."""
 
-    article = models.ForeignKey("wiki.Article", on_delete=models.CASCADE, verbose_name=_("article"))
+    article = models.ForeignKey(
+        "wiki.Article", on_delete=models.CASCADE, verbose_name=_("article")
+    )
 
     deleted = models.BooleanField(default=False)
 
@@ -86,11 +88,15 @@ class ReusablePlugin(ArticlePlugin):
     # Used to apply permissions.
     ArticlePlugin.article.on_delete = models.SET_NULL
     ArticlePlugin.article.verbose_name = _("original article")
-    ArticlePlugin.article.help_text = _("Permissions are inherited from this article")
+    ArticlePlugin.article.help_text = _(
+        "Permissions are inherited from this article"
+    )
     ArticlePlugin.article.null = True
     ArticlePlugin.article.blank = True
 
-    articles = models.ManyToManyField("wiki.Article", related_name="shared_plugins_set")
+    articles = models.ManyToManyField(
+        "wiki.Article", related_name="shared_plugins_set"
+    )
 
     # Since the article relation may be None, we have to check for this
     # before handling permissions....
@@ -132,13 +138,17 @@ class SimplePlugin(ArticlePlugin):
     """
 
     # The article revision that this plugin is attached to
-    article_revision = models.ForeignKey("wiki.ArticleRevision", on_delete=models.CASCADE)
+    article_revision = models.ForeignKey(
+        "wiki.ArticleRevision", on_delete=models.CASCADE
+    )
 
     def __init__(self, *args, **kwargs):
         article = kwargs.pop("article", None)
         super().__init__(*args, **kwargs)
         if not self.pk and not article:
-            raise SimplePluginCreateError("Keyword argument 'article' expected.")
+            raise SimplePluginCreateError(
+                "Keyword argument 'article' expected."
+            )
         elif self.pk:
             self.article = self.article_revision.article
         else:
@@ -166,7 +176,10 @@ class RevisionPlugin(ArticlePlugin):
         null=True,
         on_delete=models.CASCADE,
         related_name="plugin_set",
-        help_text=_("The revision being displayed for this plugin. " "If you need to do a roll-back, simply change the value of this field."),
+        help_text=_(
+            "The revision being displayed for this plugin. "
+            "If you need to do a roll-back, simply change the value of this field."
+        ),
     )
 
     def add_revision(self, new_revision, save=True):
@@ -174,12 +187,18 @@ class RevisionPlugin(ArticlePlugin):
         Sets the properties of a revision and ensures its the current
         revision.
         """
-        assert self.id or save, "RevisionPluginRevision.add_revision: Sorry, you cannot add a" "revision to a plugin that has not been saved " "without using save=True"
+        assert self.id or save, (
+            "RevisionPluginRevision.add_revision: Sorry, you cannot add a"
+            "revision to a plugin that has not been saved "
+            "without using save=True"
+        )
         if not self.id:
             self.save()
         revisions = self.revision_set.all()
         try:
-            new_revision.revision_number = revisions.latest().revision_number + 1
+            new_revision.revision_number = (
+                revisions.latest().revision_number + 1
+            )
         except RevisionPluginRevision.DoesNotExist:
             new_revision.revision_number = 0
         new_revision.plugin = self
@@ -200,7 +219,9 @@ class RevisionPluginRevision(BaseRevisionMixin, models.Model):
     (this class is very much copied from wiki.models.article.ArticleRevision
     """
 
-    plugin = models.ForeignKey(RevisionPlugin, on_delete=models.CASCADE, related_name="revision_set")
+    plugin = models.ForeignKey(
+        RevisionPlugin, on_delete=models.CASCADE, related_name="revision_set"
+    )
 
     class Meta:
         # Override this setting with app_label = '' in your extended model
@@ -225,7 +246,9 @@ def update_simple_plugins(**kwargs):
     plugins to match this article revision"""
     instance = kwargs["instance"]
     if kwargs.get("created", False):
-        p_revisions = SimplePlugin.objects.filter(article=instance.article, deleted=False)
+        p_revisions = SimplePlugin.objects.filter(
+            article=instance.article, deleted=False
+        )
         # TODO: This was breaking things. SimplePlugin doesn't have a revision?
         p_revisions.update(article_revision=instance)
 
@@ -235,7 +258,9 @@ def on_simple_plugins_pre_save(**kwargs):
     instance = kwargs["instance"]
     if instance._state.adding:
         if not instance.article.current_revision:
-            raise SimplePluginCreateError("Article does not have a current_revision set.")
+            raise SimplePluginCreateError(
+                "Article does not have a current_revision set."
+            )
         new_revision = ArticleRevision()
         new_revision.inherit_predecessor(instance.article)
         new_revision.automatic_log = instance.get_logmessage()
@@ -280,7 +305,12 @@ def on_revision_plugin_revision_post_save(**kwargs):
 def on_revision_plugin_revision_pre_save(**kwargs):
     instance = kwargs["instance"]
     if instance._state.adding:
-        update_previous_revision = not instance.previous_revision and instance.plugin and instance.plugin.current_revision and instance.plugin.current_revision != instance
+        update_previous_revision = (
+            not instance.previous_revision
+            and instance.plugin
+            and instance.plugin.current_revision
+            and instance.plugin.current_revision != instance
+        )
         if update_previous_revision:
             instance.previous_revision = instance.plugin.current_revision
 
@@ -302,8 +332,12 @@ def on_reusable_plugin_post_save(**kwargs):
 signals.post_save.connect(update_simple_plugins, ArticleRevision)
 signals.post_save.connect(on_article_plugin_post_save, ArticlePlugin)
 signals.post_save.connect(on_reusable_plugin_post_save, ReusablePlugin)
-signals.post_save.connect(on_revision_plugin_revision_post_save, RevisionPluginRevision)
+signals.post_save.connect(
+    on_revision_plugin_revision_post_save, RevisionPluginRevision
+)
 
 signals.pre_save.connect(on_reusable_plugin_pre_save, ReusablePlugin)
-signals.pre_save.connect(on_revision_plugin_revision_pre_save, RevisionPluginRevision)
+signals.pre_save.connect(
+    on_revision_plugin_revision_pre_save, RevisionPluginRevision
+)
 signals.pre_save.connect(on_simple_plugins_pre_save, SimplePlugin)

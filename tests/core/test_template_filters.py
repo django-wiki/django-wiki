@@ -23,7 +23,10 @@ class GetContentSnippet(TemplateTestCase):
     def test_keyword_at_the_end_of_the_content(self):
         text = "lorem " * 80
         content = text + " list"
-        expected = "lorem lorem lorem lorem lorem lorem lorem lorem lorem " "lorem lorem lorem lorem lorem lorem <strong>list</strong>"
+        expected = (
+            "lorem lorem lorem lorem lorem lorem lorem lorem lorem "
+            "lorem lorem lorem lorem lorem lorem <strong>list</strong>"
+        )
 
         output = get_content_snippet(content, "list")
 
@@ -53,7 +56,11 @@ class GetContentSnippet(TemplateTestCase):
 
     def test_keyword_is_not_in_a_content(self):
         content = "lorem " * 80
-        expected = "lorem lorem lorem lorem lorem lorem lorem lorem lorem " "lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem " "lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem"
+        expected = (
+            "lorem lorem lorem lorem lorem lorem lorem lorem lorem "
+            "lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem "
+            "lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem"
+        )
 
         output = get_content_snippet(content, "list")
 
@@ -135,7 +142,11 @@ class GetContentSnippet(TemplateTestCase):
         or django documentation. Maybe.
         """
 
-        expected = "I should citate Shakespeare or Byron. " "Or <strong>maybe</strong> copy paste from python " "or django documentation. <strong>Maybe.</strong>"
+        expected = (
+            "I should citate Shakespeare or Byron. "
+            "Or <strong>maybe</strong> copy paste from python "
+            "or django documentation. <strong>Maybe.</strong>"
+        )
 
         output = get_content_snippet(content, keyword, 30)
 
@@ -147,7 +158,10 @@ class GetContentSnippet(TemplateTestCase):
         content = """
         knight eggs spam ham eggs guido python eggs circus
         """
-        expected = "knight <strong>eggs</strong> spam ham " "<strong>eggs</strong> guido"
+        expected = (
+            "knight <strong>eggs</strong> spam ham "
+            "<strong>eggs</strong> guido"
+        )
 
         output = get_content_snippet(content, keyword, 5)
 
@@ -155,7 +169,10 @@ class GetContentSnippet(TemplateTestCase):
 
         output = get_content_snippet(content, keyword, 0)
 
-        expected = "knight <strong>eggs</strong> spam ham " "<strong>eggs</strong> guido python <strong>eggs</strong>"
+        expected = (
+            "knight <strong>eggs</strong> spam ham "
+            "<strong>eggs</strong> guido python <strong>eggs</strong>"
+        )
         self.assertEqual(output, expected)
 
     def test_content_case_preserved(self):

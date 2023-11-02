@@ -30,10 +30,17 @@ class Attachment(ReusablePlugin):
         null=True,
         related_name="current_set",
         on_delete=models.CASCADE,
-        help_text=_("The revision of this attachment currently in use (on all articles using the attachment)"),
+        help_text=_(
+            "The revision of this attachment currently in use (on all articles using the attachment)"
+        ),
     )
 
-    original_filename = models.CharField(max_length=256, verbose_name=_("original filename"), blank=True, null=True)
+    original_filename = models.CharField(
+        max_length=256,
+        verbose_name=_("original filename"),
+        blank=True,
+        null=True,
+    )
 
     def can_write(self, user):
         if not settings.ANONYMOUS and (not user or user.is_anonymous):
@@ -66,10 +73,20 @@ def extension_allowed(filename):
         extension = filename.split(".")[-1]
     except IndexError:
         # No extension
-        raise IllegalFileExtension(gettext("No file extension found in filename. That's not okay!"))
-    if extension.lower() not in map(lambda x: x.lower(), settings.FILE_EXTENSIONS):
         raise IllegalFileExtension(
-            gettext("The following filename is illegal: {filename:s}. Extension " "has to be one of {extensions:s}").format(filename=filename, extensions=", ".join(settings.FILE_EXTENSIONS))
+            gettext("No file extension found in filename. That's not okay!")
+        )
+    if extension.lower() not in map(
+        lambda x: x.lower(), settings.FILE_EXTENSIONS
+    ):
+        raise IllegalFileExtension(
+            gettext(
+                "The following filename is illegal: {filename:s}. Extension "
+                "has to be one of {extensions:s}"
+            ).format(
+                filename=filename,
+                extensions=", ".join(settings.FILE_EXTENSIONS),
+            )
         )
 
     return extension
@@ -79,20 +96,33 @@ def upload_path(instance, filename):
     extension = extension_allowed(filename)
 
     # Has to match original extension filename
-    if instance.id and instance.attachment and instance.attachment.original_filename:
-        original_extension = instance.attachment.original_filename.split(".")[-1]
+    if (
+        instance.id
+        and instance.attachment
+        and instance.attachment.original_filename
+    ):
+        original_extension = instance.attachment.original_filename.split(".")[
+            -1
+        ]
         if not extension.lower() == original_extension:
-            raise IllegalFileExtension("File extension has to be '%s', not '%s'." % (original_extension, extension.lower()))
+            raise IllegalFileExtension(
+                "File extension has to be '%s', not '%s'."
+                % (original_extension, extension.lower())
+            )
     elif instance.attachment:
         instance.attachment.original_filename = filename
 
     upload_path = settings.UPLOAD_PATH
-    upload_path = upload_path.replace("%aid", str(instance.attachment.article.id))
+    upload_path = upload_path.replace(
+        "%aid", str(instance.attachment.article.id)
+    )
     if settings.UPLOAD_PATH_OBSCURIFY:
         import random
         import hashlib
 
-        m = hashlib.md5(str(random.randint(0, 100000000000000)).encode("ascii"))
+        m = hashlib.md5(
+            str(random.randint(0, 100000000000000)).encode("ascii")
+        )
         upload_path = os.path.join(upload_path, m.hexdigest())
 
     if settings.APPEND_EXTENSION:
@@ -166,7 +196,14 @@ def on_revision_delete(instance, *args, **kwargs):
     for depth in range(0, max_depth):
         delete_path = "/".join(path[:-depth] if depth > 0 else path)
         try:
-            if len(os.listdir(os.path.join(django_settings.MEDIA_ROOT, delete_path))) == 0:
+            if (
+                len(
+                    os.listdir(
+                        os.path.join(django_settings.MEDIA_ROOT, delete_path)
+                    )
+                )
+                == 0
+            ):
                 os.rmdir(delete_path)
         except OSError:
             # Raised by os.listdir if directory is missing
@@ -177,13 +214,20 @@ def on_revision_delete(instance, *args, **kwargs):
 def on_attachment_revision_pre_save(**kwargs):
     instance = kwargs["instance"]
     if instance._state.adding:
-        update_previous_revision = not instance.previous_revision and instance.attachment and instance.attachment.current_revision and instance.attachment.current_revision != instance
+        update_previous_revision = (
+            not instance.previous_revision
+            and instance.attachment
+            and instance.attachment.current_revision
+            and instance.attachment.current_revision != instance
+        )
         if update_previous_revision:
             instance.previous_revision = instance.attachment.current_revision
 
     if not instance.revision_number:
         try:
-            previous_revision = instance.attachment.attachmentrevision_set.latest()
+            previous_revision = (
+                instance.attachment.attachmentrevision_set.latest()
+            )
             instance.revision_number = previous_revision.revision_number + 1
         # NB! The above should not raise the below exception, but somehow
         # it does.

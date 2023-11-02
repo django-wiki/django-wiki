@@ -23,7 +23,9 @@ class Command(BaseCommand):
 
             def subscribe_to_article(article, user):
                 if user not in settings_map:
-                    settings_map[user], __ = Settings.objects.get_or_create(user=user)
+                    settings_map[user], __ = Settings.objects.get_or_create(
+                        user=user
+                    )
 
                 return subscribe(
                     settings_map[user],
@@ -37,13 +39,22 @@ class Command(BaseCommand):
             for article in articles:
                 if article.owner:
                     subscription = subscribe_to_article(article, article.owner)
-                    models.ArticleSubscription.objects.get_or_create(article=article, subscription=subscription)
+                    models.ArticleSubscription.objects.get_or_create(
+                        article=article, subscription=subscription
+                    )
                     subs += 1
-                for revision in article.articlerevision_set.exclude(user=article.owner).exclude(user=None).values("user").distinct():
+                for revision in (
+                    article.articlerevision_set.exclude(user=article.owner)
+                    .exclude(user=None)
+                    .values("user")
+                    .distinct()
+                ):
                     user = get_user_model().objects.get(id=revision["user"])
                     subs += 1
                     subscription = subscribe_to_article(article, user)
-                    models.ArticleSubscription.objects.get_or_create(article=article, subscription=subscription)
+                    models.ArticleSubscription.objects.get_or_create(
+                        article=article, subscription=subscription
+                    )
 
             self.stdout.write(
                 "Created {subs:d} subscriptions on  {arts:d} articles".format(

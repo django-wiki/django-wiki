@@ -277,7 +277,7 @@ exclude_lines = [
 [tool.ruff]
 exclude = ["env", "_build", "CVS", "__pycache__", ".eggs", "*.egg", "*/*migrations", "testproject"]
 extend-ignore = ["E203"]
-line-length = 213
+line-length = 79
 
 [tool.ruff.mccabe]
 max-complexity = 10

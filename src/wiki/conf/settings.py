@@ -13,11 +13,15 @@ WIKI_LANGUAGE = "markdown"
 
 #: The editor class to use -- maybe a 3rd party or your own...? You can always
 #: extend the built-in editor and customize it!
-EDITOR = getattr(django_settings, "WIKI_EDITOR", "wiki.editors.markitup.MarkItUp")
+EDITOR = getattr(
+    django_settings, "WIKI_EDITOR", "wiki.editors.markitup.MarkItUp"
+)
 
 #: Whether to use Bleach or not. It's not recommended to turn this off unless
 #: you know what you're doing and you don't want to use the other options.
-MARKDOWN_SANITIZE_HTML = getattr(django_settings, "WIKI_MARKDOWN_SANITIZE_HTML", True)
+MARKDOWN_SANITIZE_HTML = getattr(
+    django_settings, "WIKI_MARKDOWN_SANITIZE_HTML", True
+)
 
 #: Arguments for the Markdown instance, as a dictionary. The "extensions" key
 #: should be a list of extra extensions to use besides the built-in django-wiki
@@ -52,7 +56,9 @@ MARKDOWN_KWARGS = {
         "markdown.extensions.abbr",
         "markdown.extensions.sane_lists",
     ],
-    "extension_configs": {"wiki.plugins.macros.mdx.toc": {"title": _("Contents")}},
+    "extension_configs": {
+        "wiki.plugins.macros.mdx.toc": {"title": _("Contents")}
+    },
 }
 MARKDOWN_KWARGS.update(getattr(django_settings, "WIKI_MARKDOWN_KWARGS", {}))
 
@@ -83,7 +89,9 @@ _default_tag_whitelists = bleach.ALLOWED_TAGS.union(
 
 #: List of allowed tags in Markdown article contents.
 MARKDOWN_HTML_WHITELIST = _default_tag_whitelists
-MARKDOWN_HTML_WHITELIST = MARKDOWN_HTML_WHITELIST.union(getattr(django_settings, "WIKI_MARKDOWN_HTML_WHITELIST", frozenset()))
+MARKDOWN_HTML_WHITELIST = MARKDOWN_HTML_WHITELIST.union(
+    getattr(django_settings, "WIKI_MARKDOWN_HTML_WHITELIST", frozenset())
+)
 
 _default_attribute_whitelist = bleach.ALLOWED_ATTRIBUTES
 for tag in MARKDOWN_HTML_WHITELIST:
@@ -100,13 +108,19 @@ _default_attribute_whitelist["td"].append("align")
 
 #: Dictionary of allowed attributes in Markdown article contents.
 MARKDOWN_HTML_ATTRIBUTES = _default_attribute_whitelist
-MARKDOWN_HTML_ATTRIBUTES.update(getattr(django_settings, "WIKI_MARKDOWN_HTML_ATTRIBUTES", {}))
+MARKDOWN_HTML_ATTRIBUTES.update(
+    getattr(django_settings, "WIKI_MARKDOWN_HTML_ATTRIBUTES", {})
+)
 
 #: Allowed inline styles in Markdown article contents, default is no styles
 #: (empty list).
-MARKDOWN_HTML_STYLES = getattr(django_settings, "WIKI_MARKDOWN_HTML_STYLES", [])
+MARKDOWN_HTML_STYLES = getattr(
+    django_settings, "WIKI_MARKDOWN_HTML_STYLES", []
+)
 
-_project_defined_attrs = getattr(django_settings, "WIKI_MARKDOWN_HTML_ATTRIBUTE_WHITELIST", False)
+_project_defined_attrs = getattr(
+    django_settings, "WIKI_MARKDOWN_HTML_ATTRIBUTE_WHITELIST", False
+)
 
 # If styles are allowed but no custom attributes are defined, we allow styles
 # for all kinds of tags.
@@ -117,11 +131,15 @@ if MARKDOWN_HTML_STYLES and not _project_defined_attrs:
 #: This slug is used in URLPath if an article has been deleted. The children of the
 #: URLPath of that article are moved to lost and found. They keep their permissions
 #: and all their content.
-LOST_AND_FOUND_SLUG = getattr(django_settings, "WIKI_LOST_AND_FOUND_SLUG", "lost-and-found")
+LOST_AND_FOUND_SLUG = getattr(
+    django_settings, "WIKI_LOST_AND_FOUND_SLUG", "lost-and-found"
+)
 
 #: When True, this blocks new slugs that resolve to non-wiki views, stopping
 #: users creating articles that conflict with overlapping URLs from other apps.
-CHECK_SLUG_URL_AVAILABLE = getattr(django_settings, "WIKI_CHECK_SLUG_URL_AVAILABLE", True)
+CHECK_SLUG_URL_AVAILABLE = getattr(
+    django_settings, "WIKI_CHECK_SLUG_URL_AVAILABLE", True
+)
 
 #: Do we want to log IPs of anonymous users?
 LOG_IPS_ANONYMOUS = getattr(django_settings, "WIKI_LOG_IPS_ANONYMOUS", True)
@@ -143,7 +161,9 @@ MESSAGE_TAG_CSS_CLASS = getattr(
 )
 
 #: Weather to append a trailing slash to rendered Wikilinks. Defaults to True
-WIKILINKS_TRAILING_SLASH = getattr(django_settings, "WIKI_WIKILINKS_TRAILING_SLASH", True)
+WIKILINKS_TRAILING_SLASH = getattr(
+    django_settings, "WIKI_WIKILINKS_TRAILING_SLASH", True
+)
 
 ####################################
 # PERMISSIONS AND ACCOUNT HANDLING #
@@ -175,7 +195,9 @@ CAN_ASSIGN_OWNER = getattr(django_settings, "WIKI_ASSIGN_OWNER", None)
 
 #: A function returning True/False if a user has permission to change
 #: read/write access for groups and others.
-CAN_CHANGE_PERMISSIONS = getattr(django_settings, "WIKI_CAN_CHANGE_PERMISSIONS", None)
+CAN_CHANGE_PERMISSIONS = getattr(
+    django_settings, "WIKI_CAN_CHANGE_PERMISSIONS", None
+)
 
 #: Specifies if a user has access to soft deletion of articles.
 CAN_DELETE = getattr(django_settings, "WIKI_CAN_DELETE", None)
@@ -197,7 +219,9 @@ ANONYMOUS_WRITE = getattr(django_settings, "WIKI_ANONYMOUS_WRITE", False)
 
 #: Globally enable create access for anonymous users.
 #: Defaults to ``ANONYMOUS_WRITE``.
-ANONYMOUS_CREATE = getattr(django_settings, "WIKI_ANONYMOUS_CREATE", ANONYMOUS_WRITE)
+ANONYMOUS_CREATE = getattr(
+    django_settings, "WIKI_ANONYMOUS_CREATE", ANONYMOUS_WRITE
+)
 
 #: Default setting to allow anonymous users upload access. Used in
 #: plugins.attachments and plugins.images, and can be overwritten in
@@ -209,7 +233,9 @@ ACCOUNT_HANDLING = getattr(django_settings, "WIKI_ACCOUNT_HANDLING", True)
 
 #: Signup allowed? If it's not allowed, logged in superusers can still access
 #: the signup page to create new users.
-ACCOUNT_SIGNUP_ALLOWED = ACCOUNT_HANDLING and getattr(django_settings, "WIKI_ACCOUNT_SIGNUP_ALLOWED", True)
+ACCOUNT_SIGNUP_ALLOWED = ACCOUNT_HANDLING and getattr(
+    django_settings, "WIKI_ACCOUNT_SIGNUP_ALLOWED", True
+)
 
 if ACCOUNT_HANDLING:
     LOGIN_URL = reverse_lazy("wiki:login")
@@ -230,7 +256,9 @@ else:
 SHOW_MAX_CHILDREN = getattr(django_settings, "WIKI_SHOW_MAX_CHILDREN", 20)
 
 #: User Bootstrap's select widget. Switch off if you're not using Bootstrap!
-USE_BOOTSTRAP_SELECT_WIDGET = getattr(django_settings, "WIKI_USE_BOOTSTRAP_SELECT_WIDGET", True)
+USE_BOOTSTRAP_SELECT_WIDGET = getattr(
+    django_settings, "WIKI_USE_BOOTSTRAP_SELECT_WIDGET", True
+)
 
 #: Dotted name of the class used to construct urlpatterns for the wiki.
 #: Default is wiki.urls.WikiURLPatterns. To customize urls or view handlers,
@@ -253,24 +281,34 @@ GROUP_MODEL = getattr(django_settings, "WIKI_GROUP_MODEL", "auth.Group")
 REVISIONS_PER_HOUR = getattr(django_settings, "WIKI_REVISIONS_PER_HOUR", 60)
 
 #: Maximum allowed revisions per minute for any given user or IP.
-REVISIONS_PER_MINUTES = getattr(django_settings, "WIKI_REVISIONS_PER_MINUTES", 5)
+REVISIONS_PER_MINUTES = getattr(
+    django_settings, "WIKI_REVISIONS_PER_MINUTES", 5
+)
 
 #: Maximum allowed revisions per hour for any anonymous user and any IP.
-REVISIONS_PER_HOUR_ANONYMOUS = getattr(django_settings, "WIKI_REVISIONS_PER_HOUR_ANONYMOUS", 10)
+REVISIONS_PER_HOUR_ANONYMOUS = getattr(
+    django_settings, "WIKI_REVISIONS_PER_HOUR_ANONYMOUS", 10
+)
 
 #: Maximum allowed revisions per minute for any anonymous user and any IP.
-REVISIONS_PER_MINUTES_ANONYMOUS = getattr(django_settings, "WIKI_REVISIONS_PER_MINUTES_ANONYMOUS", 2)
+REVISIONS_PER_MINUTES_ANONYMOUS = getattr(
+    django_settings, "WIKI_REVISIONS_PER_MINUTES_ANONYMOUS", 2
+)
 
 #: Number of minutes to look back for looking up ``REVISIONS_PER_MINUTES``
 #: and ``REVISIONS_PER_MINUTES_ANONYMOUS``.
-REVISIONS_MINUTES_LOOKBACK = getattr(django_settings, "WIKI_REVISIONS_MINUTES_LOOKBACK", 2)
+REVISIONS_MINUTES_LOOKBACK = getattr(
+    django_settings, "WIKI_REVISIONS_MINUTES_LOOKBACK", 2
+)
 
 ###########
 # STORAGE #
 ###########
 
 #: Default Django storage backend to use for images, attachments etc.
-STORAGE_BACKEND = getattr(django_settings, "WIKI_STORAGE_BACKEND", default_storage)
+STORAGE_BACKEND = getattr(
+    django_settings, "WIKI_STORAGE_BACKEND", default_storage
+)
 
 #: Use django-sendfile for sending out files? Otherwise the whole file is
 #: first read into memory and than send with a mime type based on the file.

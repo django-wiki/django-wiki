@@ -42,8 +42,15 @@ class Signup(CreateView):
         if not settings.ACCOUNT_HANDLING:
             return redirect(settings.SIGNUP_URL)
         # Allow superusers to use signup page...
-        if not request.user.is_superuser and not settings.ACCOUNT_SIGNUP_ALLOWED:
-            c = {"error_msg": _("Account signup is only allowed for administrators.")}
+        if (
+            not request.user.is_superuser
+            and not settings.ACCOUNT_SIGNUP_ALLOWED
+        ):
+            c = {
+                "error_msg": _(
+                    "Account signup is only allowed for administrators."
+                )
+            }
             return render(request, "wiki/error.html", context=c)
 
         return super().dispatch(request, *args, **kwargs)
@@ -55,7 +62,10 @@ class Signup(CreateView):
         return context
 
     def get_success_url(self, *args):
-        messages.success(self.request, _("You are now signed up... and now you can sign in!"))
+        messages.success(
+            self.request,
+            _("You are now signed up... and now you can sign in!"),
+        )
         return reverse("wiki:login")
 
 

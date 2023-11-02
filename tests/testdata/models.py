@@ -10,7 +10,10 @@ class CustomUser(AbstractUser):
         "CustomGroup",
         verbose_name="groups",
         blank=True,
-        help_text=("The groups this user belongs to. A user will get all permissions " "granted to each of their groups."),
+        help_text=(
+            "The groups this user belongs to. A user will get all permissions "
+            "granted to each of their groups."
+        ),
         related_name="user_set",
         related_query_name="user",
     )

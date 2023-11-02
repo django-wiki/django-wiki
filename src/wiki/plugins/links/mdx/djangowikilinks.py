@@ -49,7 +49,9 @@ class WikiPathExtension(markdown.extensions.Extension):
         WIKI_RE = r"\[(?P<label>[^\]]+?)\]\(wiki:(?P<wikipath>[a-zA-Z0-9\./_-]*?)(?P<fragment>#[a-zA-Z0-9\./_-]*)?\)"
         wikiPathPattern = WikiPath(WIKI_RE, self.config, md=md)
         wikiPathPattern.md = md
-        md.inlinePatterns.register(wikiPathPattern, "djangowikipath", 171)  # 171 is hardcoded value to put it ahead of reference
+        md.inlinePatterns.register(
+            wikiPathPattern, "djangowikipath", 171
+        )  # 171 is hardcoded value to put it ahead of reference
 
 
 class WikiPath(markdown.inlinepatterns.Pattern):
@@ -94,7 +96,9 @@ class WikiPath(markdown.inlinepatterns.Pattern):
 
             lookup = models.URLPath.objects.none()
             if urlpath.parent:
-                lookup = urlpath.parent.get_descendants().filter(slug=wiki_path)
+                lookup = urlpath.parent.get_descendants().filter(
+                    slug=wiki_path
+                )
             else:
                 lookup = urlpath.get_descendants().filter(slug=wiki_path)
 

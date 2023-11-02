@@ -34,9 +34,13 @@ class ArticleMarkdown(markdown.Markdown):
         self.source = text
         html = super().convert(text, *args, **kwargs)
         if settings.MARKDOWN_SANITIZE_HTML:
-            tags = settings.MARKDOWN_HTML_WHITELIST.union(plugin_registry.get_html_whitelist())
+            tags = settings.MARKDOWN_HTML_WHITELIST.union(
+                plugin_registry.get_html_whitelist()
+            )
 
-            css_sanitizer = CSSSanitizer(allowed_css_properties=settings.MARKDOWN_HTML_STYLES)
+            css_sanitizer = CSSSanitizer(
+                allowed_css_properties=settings.MARKDOWN_HTML_STYLES
+            )
 
             attrs = {}
             attrs.update(settings.MARKDOWN_HTML_ATTRIBUTES)
@@ -106,5 +110,8 @@ def add_to_registry(processor, key, value, location):
                 after = before - 10
         priority = before - ((before - after) / 2)
     else:
-        raise ValueError('Not a valid location: "%s". Location key ' 'must start with a ">" or "<".' % location)
+        raise ValueError(
+            'Not a valid location: "%s". Location key '
+            'must start with a ">" or "<".' % location
+        )
     processor.register(value, key, priority)

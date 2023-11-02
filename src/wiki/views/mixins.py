@@ -26,7 +26,10 @@ class ArticleMixin(TemplateResponseMixin):
                 ):
                     self.children_slice.append(child)
             except AttributeError as e:
-                log.error("Attribute error most likely caused by wrong MPTT version. Use 0.5.3+.\n\n" + str(e))
+                log.error(
+                    "Attribute error most likely caused by wrong MPTT version. Use 0.5.3+.\n\n"
+                    + str(e)
+                )
                 raise
         return super().dispatch(request, *args, **kwargs)
 
@@ -34,7 +37,9 @@ class ArticleMixin(TemplateResponseMixin):
         kwargs["urlpath"] = self.urlpath
         kwargs["article"] = self.article
         kwargs["article_tabs"] = registry.get_article_tabs()
-        kwargs["children_slice"] = self.children_slice[: settings.SHOW_MAX_CHILDREN]
+        kwargs["children_slice"] = self.children_slice[
+            : settings.SHOW_MAX_CHILDREN
+        ]
         kwargs["children_slice_more"] = len(self.children_slice) > 20
         kwargs["plugins"] = registry.get_plugins()
         return kwargs
