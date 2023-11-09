@@ -18,8 +18,9 @@ ALLOWED_HOSTS = [
 
 # Removed.
 # See: https://forum.djangoproject.com/t/why-are-cookie-secure-settings-defaulted-to-false/1133/4
+# and https://github.com/django-wiki/django-wiki/pull/1325
 # SESSION_COOKIE_DOMAIN = ".localhost"
-# SESSION_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
 
 try:
     import debug_toolbar  # @UnusedImport
