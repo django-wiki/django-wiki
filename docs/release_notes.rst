@@ -23,8 +23,8 @@ Released on 2023-05-15
 Changed
 ~~~~~~~
 
-* Removed sqlite database and use fixtures url-issue:`1260` (Oscar Cortez)
-* Improved settings and middleware for demo url-issue:`1267` (Oscar Cortez)
+* Removed sqlite database and use fixtures :url-issue:`1260` (Oscar Cortez)
+* Improved settings and middleware for demo :url-issue:`1267` (Oscar Cortez)
 * Updated languages and use the new Transifex client with Docker (Benjamin Balder Bach)
 * Updated django requirement from <4.2,>=2.1 to >=2.1,<4.3 :url-issue:`1275` (Oscar Cortez)
 * Upgraded for Sphinx 6 on Read the Docs :url-issue:`1270` (Benjamin Balder Bach)
@@ -43,7 +43,7 @@ Fixed
 ~~~~~
 
 * Bleach is deprecated :url-issue:`1259` (Oscar Cortez)
-* TypeError: unsupported operand type(s) for +: 'frozenset' and 'list' url-issue:`1257` and :url-issue:`1251`  (Oscar Cortez)
+* TypeError: unsupported operand type(s) for +: 'frozenset' and 'list' :url-issue:`1257` and :url-issue:`1251`  (Oscar Cortez)
 * Editing the demo without a login :url-issue:`1263` (Oscar Cortez)
 * jQuery broken on docs pages :url-issue:`1281` (Benjamin Balder Bach)
 * Solve yml issues and improve issue templates :url-issue:`1261` (Oscar Cortez)
@@ -59,7 +59,7 @@ Welcome onboard to new co-maintainer `Oscar Cortez <https://github.com/oscarmcm>
 Changed / added
 ~~~~~~~~~~~~~~~
 
-* "Edit Section" plugin fixed and patterns for finding headings rewritten url-issue:`1247` url-issue:`1246` (Chris Vigelius)
+* "Edit Section" plugin fixed and patterns for finding headings rewritten :url-issue:`1247` :url-issue:`1246` (Chris Vigelius)
 * Python 3.11 compatiblity: Fix "global flags not at the start of the expression" :url-issue:`1243` (Benbb96)
 * Removed direct dependency on ``tinycss2``, inherited from ``bleach`` - due to old versions of pip unable to resolve
 * Pass current revision to ``Editor.get_widget()`` and ``get_admin_widget()`` :url-issue:`1249` (Chris Vigelius)
