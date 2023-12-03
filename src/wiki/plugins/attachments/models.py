@@ -160,7 +160,7 @@ class AttachmentRevision(BaseRevisionMixin, models.Model):
 
 
 @disable_signal_for_loaddata
-def on_revision_delete(instance, *args, **kwargs):
+def on_revision_delete(instance, *args, **kwargs):  # noqa: max-complexity=13
     if not instance.file:
         return
 
@@ -182,7 +182,7 @@ def on_revision_delete(instance, *args, **kwargs):
         # This backend storage doesn't implement 'path' so there is no path to delete
         # or some other error (ValueError)
         return
-        
+
     # Clean up empty directories
 
     # Check for empty folders in the path. Delete the first two.
