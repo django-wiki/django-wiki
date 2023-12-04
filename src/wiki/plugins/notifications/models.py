@@ -12,7 +12,6 @@ from wiki.plugins.notifications.util import get_title
 
 
 class ArticleSubscription(ArticlePlugin):
-
     subscription = models.OneToOneField(Subscription, on_delete=models.CASCADE)
 
     def __str__(self):

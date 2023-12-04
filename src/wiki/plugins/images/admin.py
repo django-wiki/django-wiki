@@ -12,7 +12,9 @@ class ImageForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.instance.pk:
-            revisions = models.ImageRevision.objects.filter(plugin=self.instance)
+            revisions = models.ImageRevision.objects.filter(
+                plugin=self.instance
+            )
             self.fields["current_revision"].queryset = revisions
         else:
             self.fields[

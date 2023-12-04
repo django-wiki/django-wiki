@@ -43,7 +43,9 @@ class WikiLinkExtension(Extension):
         wikilinkPattern = WikiLinks(WIKILINK_RE, self.getConfigs())
         wikilinkPattern.md = md
 
-        add_to_registry(md.inlinePatterns, "wikilink", wikilinkPattern, "<not_strong")
+        add_to_registry(
+            md.inlinePatterns, "wikilink", wikilinkPattern, "<not_strong"
+        )
 
 
 class WikiLinks(wikilinks.WikiLinksInlineProcessor):

@@ -20,7 +20,9 @@ class WikiConfig(AppConfig):
             checks.check_for_obsolete_installed_apps,
             checks.Tags.obsolete_installed_apps,
         )
-        register(checks.check_for_context_processors, checks.Tags.context_processors)
+        register(
+            checks.check_for_context_processors, checks.Tags.context_processors
+        )
         register(
             checks.check_for_fields_in_custom_user_model,
             checks.Tags.fields_in_custom_user_model,

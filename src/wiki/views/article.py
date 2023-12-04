@@ -38,7 +38,6 @@ log = logging.getLogger(__name__)
 
 
 class ArticleView(ArticleMixin, TemplateView):
-
     template_name = "wiki/view.html"
 
     @method_decorator(get_article(can_read=True))
@@ -110,7 +109,8 @@ class Create(FormView, ArticleMixin):
                 )
             else:
                 messages.error(
-                    self.request, _("There was an error creating this article.")
+                    self.request,
+                    _("There was an error creating this article."),
                 )
             return redirect("wiki:get", "")
 
@@ -130,11 +130,12 @@ class Create(FormView, ArticleMixin):
 
 
 class Delete(FormView, ArticleMixin):
-
     form_class = forms.DeleteForm
     template_name = "wiki/delete.html"
 
-    @method_decorator(get_article(can_write=True, not_locked=True, can_delete=True))
+    @method_decorator(
+        get_article(can_write=True, not_locked=True, can_delete=True)
+    )
     def dispatch(self, request, article, *args, **kwargs):
         return self.dispatch1(request, article, *args, **kwargs)
 
@@ -146,7 +147,9 @@ class Delete(FormView, ArticleMixin):
         self.next = ""
         self.cannot_delete_root = False
         if urlpath and urlpath.parent:
-            self.next = reverse("wiki:get", kwargs={"path": urlpath.parent.path})
+            self.next = reverse(
+                "wiki:get", kwargs={"path": urlpath.parent.path}
+            )
         elif urlpath:
             # We are a urlpath with no parent. This is the root
             self.cannot_delete_root = True
@@ -156,7 +159,9 @@ class Delete(FormView, ArticleMixin):
                 if art_obj.content_object.parent:
                     self.next = reverse(
                         "wiki:get",
-                        kwargs={"article_id": art_obj.content_object.parent.article.id},
+                        kwargs={
+                            "article_id": art_obj.content_object.parent.article.id
+                        },
                     )
                 else:
                     self.cannot_delete_root = True
@@ -229,7 +234,9 @@ class Delete(FormView, ArticleMixin):
 
     def get_context_data(self, **kwargs):
         cannot_delete_children = False
-        if self.children_slice and not self.article.can_moderate(self.request.user):
+        if self.children_slice and not self.article.can_moderate(
+            self.request.user
+        ):
             cannot_delete_children = True
 
         kwargs["delete_form"] = self.get_form()
@@ -259,7 +266,10 @@ class Edit(ArticleMixin, FormView):
         initial = FormView.get_initial(self)
 
         for field_name in ["title", "content"]:
-            session_key = "unsaved_article_%s_%d" % (field_name, self.article.id)
+            session_key = "unsaved_article_%s_%d" % (
+                field_name,
+                self.article.id,
+            )
             if session_key in self.request.session:
                 content = self.request.session[session_key]
                 initial[field_name] = content
@@ -282,7 +292,9 @@ class Edit(ArticleMixin, FormView):
             kwargs["files"] = None
             kwargs["no_clean"] = True
             kwargs["content"] = self.orig_content
-        return form_class(self.request, self.article.current_revision, **kwargs)
+        return form_class(
+            self.request, self.article.current_revision, **kwargs
+        )
 
     def get_sidebar_form_classes(self):
         """Returns dictionary of form classes for the sidebar. If no form class is
@@ -334,7 +346,9 @@ class Edit(ArticleMixin, FormView):
                         content = form.cleaned_data["unsaved_article_content"]
                         orig_content = self.orig_content
                         if not orig_content:
-                            orig_content = self.article.current_revision.content
+                            orig_content = (
+                                self.article.current_revision.content
+                            )
                         if (
                             title != self.article.current_revision.title
                             or content != orig_content
@@ -353,8 +367,12 @@ class Edit(ArticleMixin, FormView):
                             )
 
                         if self.urlpath:
-                            return redirect("wiki:edit", path=self.urlpath.path)
-                        return redirect("wiki:edit", article_id=self.article.id)
+                            return redirect(
+                                "wiki:edit", path=self.urlpath.path
+                            )
+                        return redirect(
+                            "wiki:edit", article_id=self.article.id
+                        )
 
                 else:
                     form = Form(self.article, self.request)
@@ -376,7 +394,8 @@ class Edit(ArticleMixin, FormView):
         revision.set_from_request(self.request)
         self.article.add_revision(revision)
         messages.success(
-            self.request, _("A new revision of the article was successfully added.")
+            self.request,
+            _("A new revision of the article was successfully added."),
         )
         return self.get_success_url()
 
@@ -396,7 +415,6 @@ class Edit(ArticleMixin, FormView):
 
 
 class Move(ArticleMixin, FormView):
-
     form_class = forms.MoveForm
     template_name = "wiki/move.html"
 
@@ -421,7 +439,9 @@ class Move(ArticleMixin, FormView):
         if not self.urlpath.parent:
             messages.error(
                 self.request,
-                _("This article cannot be moved because it is a root article."),
+                _(
+                    "This article cannot be moved because it is a root article."
+                ),
             )
             return redirect("wiki:get", article_id=self.article.id)
 
@@ -464,10 +484,11 @@ class Move(ArticleMixin, FormView):
         # /old-slug/child
         # /old-slug/child/grand-child
         if form.cleaned_data["redirect"]:
-
             # NB! Includes self!
             descendants = list(
-                self.urlpath.get_descendants(include_self=True).order_by("level")
+                self.urlpath.get_descendants(include_self=True).order_by(
+                    "level"
+                )
             )
 
             root_len = len(descendants[0].path)
@@ -482,7 +503,9 @@ class Move(ArticleMixin, FormView):
                 src_len = len(src_path)
                 pos = src_path.rfind("/", 0, src_len - 1)
                 slug = src_path[pos + 1 : src_len - 1]
-                parent_urlpath = models.URLPath.get_by_path(src_path[0 : max(pos, 0)])
+                parent_urlpath = models.URLPath.get_by_path(
+                    src_path[0 : max(pos, 0)]
+                )
 
                 link = "[wiki:/{path}](wiki:/{path})".format(path=dst_path)
                 urlpath_new = models.URLPath._create_urlpath_from_request(
@@ -521,7 +544,6 @@ class Deleted(Delete):
 
     @method_decorator(get_article(can_read=True, deleted_contents=True))
     def dispatch(self, request, article, *args, **kwargs):
-
         self.urlpath = kwargs.get("urlpath", None)
         self.article = article
 
@@ -540,8 +562,9 @@ class Deleted(Delete):
 
         # Restore
         if request.GET.get("restore", False):
-            can_restore = not article.current_revision.locked and article.can_delete(
-                request.user
+            can_restore = (
+                not article.current_revision.locked
+                and article.can_delete(request.user)
             )
             can_restore = can_restore or article.can_moderate(request.user)
 
@@ -589,7 +612,6 @@ class Source(ArticleMixin, TemplateView):
 
 
 class History(ListView, ArticleMixin):
-
     template_name = "wiki/history.html"
     allow_empty = True
     context_object_name = "revisions"
@@ -618,7 +640,6 @@ class History(ListView, ArticleMixin):
 
 
 class Dir(ListView, ArticleMixin):
-
     template_name = "wiki/dir.html"
     allow_empty = True
     context_object_name = "directory"
@@ -668,7 +689,6 @@ class Dir(ListView, ArticleMixin):
 
 
 class SearchView(ListView):
-
     template_name = "wiki/search.html"
     paginator_class = WikiPaginator
     paginate_by = 25
@@ -688,7 +708,9 @@ class SearchView(ListView):
 
     def get_queryset(self):
         if not self.query:
-            return models.Article.objects.none().order_by("-current_revision__created")
+            return models.Article.objects.none().order_by(
+                "-current_revision__created"
+            )
         articles = models.Article.objects
         path = self.kwargs.get("path", None)
         if path:
@@ -728,7 +750,6 @@ class Plugin(View):
 
 
 class Settings(ArticleMixin, TemplateView):
-
     permission_form_class = forms.PermissionsForm
     template_name = "wiki/settings.html"
 
@@ -759,15 +780,21 @@ class Settings(ArticleMixin, TemplateView):
         self.forms = []
         for form_class in self.get_form_classes():
             if form_class.action == self.request.GET.get("f", None):
-                form = form_class(self.article, self.request, self.request.POST)
+                form = form_class(
+                    self.article, self.request, self.request.POST
+                )
                 if form.is_valid():
                     form.save()
                     usermessage = form.get_usermessage()
                     if usermessage:
                         messages.success(self.request, usermessage)
                     if self.urlpath:
-                        return redirect("wiki:settings", path=self.urlpath.path)
-                    return redirect("wiki:settings", article_id=self.article.id)
+                        return redirect(
+                            "wiki:settings", path=self.urlpath.path
+                        )
+                    return redirect(
+                        "wiki:settings", article_id=self.article.id
+                    )
             else:
                 form = form_class(self.article, self.request)
             self.forms.append(form)
@@ -797,7 +824,6 @@ class Settings(ArticleMixin, TemplateView):
 
 
 class ChangeRevisionView(RedirectView):
-
     permanent = False
 
     @method_decorator(get_article(can_write=True, not_locked=True))
@@ -812,11 +838,15 @@ class ChangeRevisionView(RedirectView):
         if self.urlpath:
             return reverse("wiki:history", kwargs={"path": self.urlpath.path})
         else:
-            return reverse("wiki:history", kwargs={"article_id": self.article.id})
+            return reverse(
+                "wiki:history", kwargs={"article_id": self.article.id}
+            )
 
     def change_revision(self):
         revision = get_object_or_404(
-            models.ArticleRevision, article=self.article, id=self.kwargs["revision_id"]
+            models.ArticleRevision,
+            article=self.article,
+            id=self.kwargs["revision_id"],
         )
         self.article.current_revision = revision
         self.article.save()
@@ -825,12 +855,14 @@ class ChangeRevisionView(RedirectView):
             _(
                 "The article %(title)s is now set to display revision #%(revision_number)d"
             )
-            % {"title": revision.title, "revision_number": revision.revision_number},
+            % {
+                "title": revision.title,
+                "revision_number": revision.revision_number,
+            },
         )
 
 
 class Preview(ArticleMixin, TemplateView):
-
     template_name = "wiki/preview_inline.html"
 
     @method_decorator(xframe_options_sameorigin)
@@ -892,7 +924,8 @@ class DiffView(DetailView):
 
         differ = difflib.Differ(charjunk=difflib.IS_CHARACTER_JUNK)
         diff = differ.compare(
-            baseText.splitlines(keepends=True), newText.splitlines(keepends=True)
+            baseText.splitlines(keepends=True),
+            newText.splitlines(keepends=True),
         )
         other_changes = []
 
@@ -921,7 +954,9 @@ class MergeView(View):
         )
 
         current_text = (
-            article.current_revision.content if article.current_revision else ""
+            article.current_revision.content
+            if article.current_revision
+            else ""
         )
         new_text = revision.content
 
@@ -947,18 +982,28 @@ class MergeView(View):
             new_revision.content = content
             new_revision.automatic_log = _(
                 "Merge between revision #%(r1)d and revision #%(r2)d"
-            ) % {"r1": revision.revision_number, "r2": old_revision.revision_number}
+            ) % {
+                "r1": revision.revision_number,
+                "r2": old_revision.revision_number,
+            }
             article.add_revision(new_revision, save=True)
 
-            old_revision.simpleplugin_set.all().update(article_revision=new_revision)
-            revision.simpleplugin_set.all().update(article_revision=new_revision)
+            old_revision.simpleplugin_set.all().update(
+                article_revision=new_revision
+            )
+            revision.simpleplugin_set.all().update(
+                article_revision=new_revision
+            )
 
             messages.success(
                 request,
                 _(
                     "A new revision was created: Merge between revision #%(r1)d and revision #%(r2)d"
                 )
-                % {"r1": revision.revision_number, "r2": old_revision.revision_number},
+                % {
+                    "r1": revision.revision_number,
+                    "r2": old_revision.revision_number,
+                },
             )
             if self.urlpath:
                 return redirect("wiki:edit", path=self.urlpath.path)

@@ -65,12 +65,18 @@ class WikiSlugField(forms.CharField):
 
 def _clean_slug(slug, urlpath):
     if slug.startswith("_"):
-        raise forms.ValidationError(gettext("A slug may not begin with an underscore."))
+        raise forms.ValidationError(
+            gettext("A slug may not begin with an underscore.")
+        )
     if slug == "admin":
-        raise forms.ValidationError(gettext("'admin' is not a permitted slug name."))
+        raise forms.ValidationError(
+            gettext("'admin' is not a permitted slug name.")
+        )
 
     if settings.URL_CASE_SENSITIVE:
-        already_existing_slug = models.URLPath.objects.filter(slug=slug, parent=urlpath)
+        already_existing_slug = models.URLPath.objects.filter(
+            slug=slug, parent=urlpath
+        )
     else:
         slug = slug.lower()
         already_existing_slug = models.URLPath.objects.filter(
@@ -78,14 +84,18 @@ def _clean_slug(slug, urlpath):
         )
     if already_existing_slug:
         already_urlpath = already_existing_slug[0]
-        if already_urlpath.article and already_urlpath.article.current_revision.deleted:
+        if (
+            already_urlpath.article
+            and already_urlpath.article.current_revision.deleted
+        ):
             raise forms.ValidationError(
                 gettext('A deleted article with slug "%s" already exists.')
                 % already_urlpath.slug
             )
         else:
             raise forms.ValidationError(
-                gettext('A slug named "%s" already exists.') % already_urlpath.slug
+                gettext('A slug named "%s" already exists.')
+                % already_urlpath.slug
             )
 
     if settings.CHECK_SLUG_URL_AVAILABLE:
@@ -125,9 +135,9 @@ class SpamProtectionMixin:
         if request.user.is_authenticated:
             user = request.user
         else:
-            ip_address = request.META.get("HTTP_X_REAL_IP", None) or request.META.get(
-                "REMOTE_ADDR", None
-            )
+            ip_address = request.META.get(
+                "HTTP_X_REAL_IP", None
+            ) or request.META.get("REMOTE_ADDR", None)
 
         if not (user or ip_address):
             raise forms.ValidationError(
@@ -185,7 +195,6 @@ class SpamProtectionMixin:
 
 
 class CreateRootForm(forms.Form):
-
     title = forms.CharField(
         label=_("Title"),
         help_text=_(
@@ -203,7 +212,6 @@ class CreateRootForm(forms.Form):
 
 
 class MoveForm(forms.Form):
-
     destination = forms.CharField(label=_("Destination"))
     slug = WikiSlugField(max_length=models.URLPath.SLUG_MAX_LENGTH)
     redirect = forms.BooleanField(
@@ -223,11 +231,12 @@ class MoveForm(forms.Form):
 
 
 class EditForm(forms.Form, SpamProtectionMixin):
-
     title = forms.CharField(
         label=_("Title"),
     )
-    content = forms.CharField(label=_("Contents"), required=False)  # @UndefinedVariable
+    content = forms.CharField(
+        label=_("Contents"), required=False
+    )  # @UndefinedVariable
 
     summary = forms.CharField(
         label=pgettext_lazy("Revision comment", "Summary"),
@@ -237,10 +246,11 @@ class EditForm(forms.Form, SpamProtectionMixin):
         required=False,
     )
 
-    current_revision = forms.IntegerField(required=False, widget=forms.HiddenInput())
+    current_revision = forms.IntegerField(
+        required=False, widget=forms.HiddenInput()
+    )
 
     def __init__(self, request, current_revision, *args, **kwargs):
-
         self.request = request
         self.no_clean = kwargs.pop("no_clean", False)
         self.preview = kwargs.pop("preview", False)
@@ -271,7 +281,9 @@ class EditForm(forms.Form, SpamProtectionMixin):
                 data = kwargs.get("data", None)
             if data:
                 self.presumed_revision = data.get("current_revision", None)
-                if not str(self.presumed_revision) == str(self.initial_revision.id):
+                if not str(self.presumed_revision) == str(
+                    self.initial_revision.id
+                ):
                     newdata = {}
                     for k, v in data.items():
                         newdata[k] = v
@@ -292,7 +304,9 @@ class EditForm(forms.Form, SpamProtectionMixin):
             kwargs["initial"] = initial
 
         super().__init__(*args, **kwargs)
-        self.fields["content"].widget = getEditor().get_widget(current_revision)
+        self.fields["content"].widget = getEditor().get_widget(
+            current_revision
+        )
 
     def clean_title(self):
         title = self.cleaned_data.get("title", None)
@@ -321,7 +335,9 @@ class EditForm(forms.Form, SpamProtectionMixin):
             and self.cleaned_data["title"] == self.initial_revision.title
             and self.cleaned_data["content"] == self.initial_revision.content
         ):
-            raise forms.ValidationError(gettext("No changes made. Nothing to save."))
+            raise forms.ValidationError(
+                gettext("No changes made. Nothing to save.")
+            )
         self.check_spam()
         return self.cleaned_data
 
@@ -408,7 +424,9 @@ class DeleteForm(forms.Form):
         ),
     )
     revision = forms.ModelChoiceField(
-        models.ArticleRevision.objects.all(), widget=HiddenInput(), required=False
+        models.ArticleRevision.objects.all(),
+        widget=HiddenInput(),
+        required=False,
     )
 
     def clean(self):
@@ -424,7 +442,6 @@ class DeleteForm(forms.Form):
 
 
 class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
-
     locked = forms.BooleanField(
         label=_("Lock article"),
         help_text=_("Deny all users access to edit this article."),
@@ -478,7 +495,9 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
         if self.changed_data:
             return _("Permission settings for the article were updated.")
         else:
-            return _("Your permission settings were unchanged, so nothing saved.")
+            return _(
+                "Your permission settings were unchanged, so nothing saved."
+            )
 
     def __init__(self, article, request, *args, **kwargs):
         self.article = article
@@ -497,7 +516,9 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
             self.can_change_groups = True
             self.fields["group"].queryset = Group.objects.all()
         elif permissions.can_assign_owner(article, request.user):
-            self.fields["group"].queryset = Group.objects.filter(user=request.user)
+            self.fields["group"].queryset = Group.objects.filter(
+                user=request.user
+            )
             self.can_change_groups = True
         else:
             # Quick-fix...
@@ -526,7 +547,9 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
             self.fields["locked"].widget = forms.HiddenInput()
 
         self.fields["owner_username"].initial = (
-            getattr(article.owner, User.USERNAME_FIELD) if article.owner else ""
+            getattr(article.owner, User.USERNAME_FIELD)
+            if article.owner
+            else ""
         )
 
     def clean_owner_username(self):
@@ -537,7 +560,9 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
                     kwargs = {User.USERNAME_FIELD: username}
                     user = User.objects.get(**kwargs)
                 except User.DoesNotExist:
-                    raise forms.ValidationError(gettext("No user with that username"))
+                    raise forms.ValidationError(
+                        gettext("No user with that username")
+                    )
             else:
                 user = None
         else:
@@ -567,14 +592,20 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
                 article.set_owner_recursive()
             if self.cleaned_data["recursive_group"]:
                 article.set_group_recursive()
-            if self.cleaned_data["locked"] and not article.current_revision.locked:
+            if (
+                self.cleaned_data["locked"]
+                and not article.current_revision.locked
+            ):
                 revision = models.ArticleRevision()
                 revision.inherit_predecessor(self.article)
                 revision.set_from_request(self.request)
                 revision.automatic_log = _("Article locked for editing")
                 revision.locked = True
                 self.article.add_revision(revision)
-            elif not self.cleaned_data["locked"] and article.current_revision.locked:
+            elif (
+                not self.cleaned_data["locked"]
+                and article.current_revision.locked
+            ):
                 revision = models.ArticleRevision()
                 revision.inherit_predecessor(self.article)
                 revision.set_from_request(self.request)
@@ -602,7 +633,6 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
 
 
 class DirFilterForm(forms.Form):
-
     query = forms.CharField(
         widget=forms.TextInput(
             attrs={"placeholder": _("Filter..."), "class": "search-query"}
@@ -612,7 +642,6 @@ class DirFilterForm(forms.Form):
 
 
 class SearchForm(forms.Form):
-
     q = forms.CharField(
         widget=forms.TextInput(
             attrs={"placeholder": _("Search..."), "class": "search-query"}

@@ -86,13 +86,18 @@ def process_docstring(app, what, name, obj, options, lines):
                         % (field.attname, type(field).__name__, to)
                     )
             else:
-                lines.append(":type %s: %s" % (field.attname, type(field).__name__))
+                lines.append(
+                    ":type %s: %s" % (field.attname, type(field).__name__)
+                )
 
     return lines
 
 
 extlinks = {
-    "url-issue": ("https://github.com/django-wiki/django-wiki/issues/%s", "#%s"),
+    "url-issue": (
+        "https://github.com/django-wiki/django-wiki/issues/%s",
+        "#%s",
+    ),
 }
 
 

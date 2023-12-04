@@ -143,14 +143,19 @@ def get_article(  # noqa: max-complexity 19
                 if urlpath.is_deleted():  # This also checks all ancestors
                     return redirect("wiki:deleted", path=urlpath.path)
             else:
-                if article.current_revision and article.current_revision.deleted:
+                if (
+                    article.current_revision
+                    and article.current_revision.deleted
+                ):
                     return redirect("wiki:deleted", article_id=article.id)
 
         if article.current_revision.locked and not_locked:
             return response_forbidden(request, article, urlpath)
 
         if can_read and not article.can_read(request.user):
-            return response_forbidden(request, article, urlpath, read_denied=True)
+            return response_forbidden(
+                request, article, urlpath, read_denied=True
+            )
 
         if (can_write or can_create) and not article.can_write(request.user):
             return response_forbidden(request, article, urlpath)

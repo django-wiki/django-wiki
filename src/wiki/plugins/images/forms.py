@@ -60,7 +60,6 @@ class RevisionForm(forms.ModelForm):
 
 
 class PurgeForm(forms.Form):
-
     confirm = forms.BooleanField(label=_("Are you sure?"), required=False)
 
     def clean_confirm(self):

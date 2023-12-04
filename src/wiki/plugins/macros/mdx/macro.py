@@ -22,7 +22,6 @@ class MacroExtension(markdown.Extension):
     """Macro plugin markdown extension for django-wiki."""
 
     def extendMarkdown(self, md):
-
         add_to_registry(
             md.inlinePatterns, "dw-macros", MacroPattern(MACRO_RE, md), ">link"
         )
@@ -37,7 +36,8 @@ class MacroPattern(markdown.inlinepatterns.Pattern):
         """Override init in order to add IGNORECASE flag"""
         super().__init__(pattern, md=md)
         self.compiled_re = re.compile(
-            r"^(.*?)%s(.*)$" % pattern, flags=re.DOTALL | re.UNICODE | re.IGNORECASE
+            r"^(.*?)%s(.*)$" % pattern,
+            flags=re.DOTALL | re.UNICODE | re.IGNORECASE,
         )
 
     def handleMatch(self, m):
@@ -128,7 +128,9 @@ class MacroPattern(markdown.inlinepatterns.Pattern):
 
     wikilink.meta = {
         "short_description": _("WikiLinks"),
-        "help_text": _("Insert a link to another wiki page with a short notation."),
+        "help_text": _(
+            "Insert a link to another wiki page with a short notation."
+        ),
         "example_code": "[[WikiLink]]",
         "args": {},
     }

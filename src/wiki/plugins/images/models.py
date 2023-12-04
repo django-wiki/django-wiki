@@ -15,7 +15,9 @@ def upload_path(instance, filename):
     # Has to match original extension filename
 
     upload_path = settings.IMAGE_PATH
-    upload_path = upload_path.replace("%aid", str(instance.plugin.image.article.id))
+    upload_path = upload_path.replace(
+        "%aid", str(instance.plugin.image.article.id)
+    )
     if settings.IMAGE_PATH_OBSCURIFY:
         import uuid
 
@@ -24,7 +26,6 @@ def upload_path(instance, filename):
 
 
 class Image(RevisionPlugin):
-
     # The plugin system is so awesome that the inheritor doesn't need to do
     # anything! :D
 
@@ -52,7 +53,6 @@ class Image(RevisionPlugin):
 
 
 class ImageRevision(RevisionPluginRevision):
-
     image = models.ImageField(
         upload_to=upload_path,
         max_length=2000,
@@ -151,11 +151,13 @@ def on_image_revision_delete(instance, *args, **kwargs):  # noqa: max-complexity
     for depth in range(0, max_depth):
         delete_path = "/".join(path[:-depth] if depth > 0 else path)
         try:
-            dir_list = os.listdir(os.path.join(django_settings.MEDIA_ROOT, delete_path))
+            dir_list = os.listdir(
+                os.path.join(django_settings.MEDIA_ROOT, delete_path)
+            )
         except OSError:
             # Path does not exist, so let's not try to remove it...
             dir_list = None
-        if not (dir_list is None) and len(dir_list) == 0:
+        if dir_list is not None and len(dir_list) == 0:
             os.rmdir(delete_path)
 
 

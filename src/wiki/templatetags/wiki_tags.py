@@ -46,7 +46,6 @@ def article_for_object(context, obj):
 
 @register.inclusion_tag("wiki/includes/render.html", takes_context=True)
 def wiki_render(context, article, preview_content=None):
-
     if preview_content:
         content = article.render(preview_content=preview_content)
     elif article.current_revision:
@@ -79,7 +78,6 @@ def wiki_form(context, form_obj):
 
 @register.inclusion_tag("wiki/includes/messages.html", takes_context=True)
 def wiki_messages(context):
-
     messages = context.get("messages", [])
     for message in messages:
         message.css_class = settings.MESSAGE_TAG_CSS_CLASS[message.level]

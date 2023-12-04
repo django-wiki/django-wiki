@@ -88,11 +88,15 @@ class ReusablePlugin(ArticlePlugin):
     # Used to apply permissions.
     ArticlePlugin.article.on_delete = models.SET_NULL
     ArticlePlugin.article.verbose_name = _("original article")
-    ArticlePlugin.article.help_text = _("Permissions are inherited from this article")
+    ArticlePlugin.article.help_text = _(
+        "Permissions are inherited from this article"
+    )
     ArticlePlugin.article.null = True
     ArticlePlugin.article.blank = True
 
-    articles = models.ManyToManyField("wiki.Article", related_name="shared_plugins_set")
+    articles = models.ManyToManyField(
+        "wiki.Article", related_name="shared_plugins_set"
+    )
 
     # Since the article relation may be None, we have to check for this
     # before handling permissions....
@@ -142,7 +146,9 @@ class SimplePlugin(ArticlePlugin):
         article = kwargs.pop("article", None)
         super().__init__(*args, **kwargs)
         if not self.pk and not article:
-            raise SimplePluginCreateError("Keyword argument 'article' expected.")
+            raise SimplePluginCreateError(
+                "Keyword argument 'article' expected."
+            )
         elif self.pk:
             self.article = self.article_revision.article
         else:
@@ -190,7 +196,9 @@ class RevisionPlugin(ArticlePlugin):
             self.save()
         revisions = self.revision_set.all()
         try:
-            new_revision.revision_number = revisions.latest().revision_number + 1
+            new_revision.revision_number = (
+                revisions.latest().revision_number + 1
+            )
         except RevisionPluginRevision.DoesNotExist:
             new_revision.revision_number = 0
         new_revision.plugin = self
@@ -324,8 +332,12 @@ def on_reusable_plugin_post_save(**kwargs):
 signals.post_save.connect(update_simple_plugins, ArticleRevision)
 signals.post_save.connect(on_article_plugin_post_save, ArticlePlugin)
 signals.post_save.connect(on_reusable_plugin_post_save, ReusablePlugin)
-signals.post_save.connect(on_revision_plugin_revision_post_save, RevisionPluginRevision)
+signals.post_save.connect(
+    on_revision_plugin_revision_post_save, RevisionPluginRevision
+)
 
 signals.pre_save.connect(on_reusable_plugin_pre_save, ReusablePlugin)
-signals.pre_save.connect(on_revision_plugin_revision_pre_save, RevisionPluginRevision)
+signals.pre_save.connect(
+    on_revision_plugin_revision_pre_save, RevisionPluginRevision
+)
 signals.pre_save.connect(on_simple_plugins_pre_save, SimplePlugin)

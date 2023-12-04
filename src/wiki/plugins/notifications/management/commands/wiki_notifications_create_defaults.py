@@ -18,13 +18,14 @@ class Command(BaseCommand):
         from django.conf import settings
 
         with translation.override(language=settings.LANGUAGE_CODE):
-
             # User: Settings
             settings_map = {}
 
             def subscribe_to_article(article, user):
                 if user not in settings_map:
-                    settings_map[user], __ = Settings.objects.get_or_create(user=user)
+                    settings_map[user], __ = Settings.objects.get_or_create(
+                        user=user
+                    )
 
                 return subscribe(
                     settings_map[user],

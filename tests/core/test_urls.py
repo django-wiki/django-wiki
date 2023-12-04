@@ -35,7 +35,10 @@ class WikiCustomUrlPatterns(WikiURLPatterns):
 
 urlpatterns = [
     re_path(r"^notify/", include("django_nyt.urls")),
-    re_path(r"^elsewhere/", get_wiki_pattern(url_config_class=WikiCustomUrlPatterns)),
+    re_path(
+        r"^elsewhere/",
+        get_wiki_pattern(url_config_class=WikiCustomUrlPatterns),
+    ),
 ] + static("/static/", document_root="./")
 
 
@@ -44,7 +47,9 @@ urlpatterns = [
     ROOT_URLCONF="tests.core.test_urls",
 )
 class ArticleModelReverseMethodTest(TestCase):
-    def test_get_absolute_url_if_urlpath_set_is_not_exists__no_root_urlconf(self):
+    def test_get_absolute_url_if_urlpath_set_is_not_exists__no_root_urlconf(
+        self
+    ):
         a = Article.objects.create()
 
         url = a.get_absolute_url()
@@ -54,14 +59,17 @@ class ArticleModelReverseMethodTest(TestCase):
         self.assertEqual(url, expected)
 
     def test_get_absolute_url_if_urlpath_set_is_exists__no_root_urlconf(self):
-
         a1 = Article.objects.create()
         s1 = Site.objects.create(domain="something.com", name="something.com")
         u1 = URLPath.objects.create(article=a1, site=s1)
 
         a2 = Article.objects.create()
-        s2 = Site.objects.create(domain="somethingelse.com", name="somethingelse.com")
-        URLPath.objects.create(article=a2, site=s2, parent=u1, slug="test_slug")
+        s2 = Site.objects.create(
+            domain="somethingelse.com", name="somethingelse.com"
+        )
+        URLPath.objects.create(
+            article=a2, site=s2, parent=u1, slug="test_slug"
+        )
 
         url = a2.get_absolute_url()
 

@@ -9,4 +9,6 @@ MAX_LEVEL = getattr(django_settings, "WIKI_EDITSECTION_MAX_LEVEL", 3)
 
 #: Text used for the section edit links which will appear next to section
 #: headers. These links allow editing only the text of one particular section.
-LINK_TEXT = getattr(django_settings, "WIKI_EDITSECTION_LINK_TEXT", gettext("[edit]"))
+LINK_TEXT = getattr(
+    django_settings, "WIKI_EDITSECTION_LINK_TEXT", gettext("[edit]")
+)

@@ -13,7 +13,8 @@ ERROR_SECTION_CHANGED = gettext_lazy(
     "Unable to find the selected section. The article was modified meanwhile."
 )
 ERROR_SECTION_UNSAVED = gettext_lazy(
-    "Your changes must be re-applied in the new section structure of the " "article."
+    "Your changes must be re-applied in the new section structure of the "
+    "article."
 )
 ERROR_ARTICLE_CHANGED = gettext_lazy(
     "Unable to find the selected section in the current article. The article "
@@ -81,7 +82,8 @@ class EditSection(EditView):
                 request.session["editsection_content"] = self.orig_section
             else:
                 messages.error(
-                    request, "{} {}".format(ERROR_SECTION_CHANGED, ERROR_TRY_AGAIN)
+                    request,
+                    "{} {}".format(ERROR_SECTION_CHANGED, ERROR_TRY_AGAIN),
                 )
                 return self._redirect_to_article()
         else:
@@ -109,7 +111,9 @@ class EditSection(EditView):
                 messages.warning(
                     self.request,
                     "{} {} {}".format(
-                        ERROR_SECTION_CHANGED, ERROR_SECTION_UNSAVED, ERROR_TRY_AGAIN
+                        ERROR_SECTION_CHANGED,
+                        ERROR_SECTION_UNSAVED,
+                        ERROR_TRY_AGAIN,
                     ),
                 )
             # Include the edited section into the complete previous article
@@ -124,7 +128,8 @@ class EditSection(EditView):
             )
             self.article.save()
             messages.error(
-                self.request, "{} {}".format(ERROR_ARTICLE_CHANGED, ERROR_TRY_AGAIN)
+                self.request,
+                "{} {}".format(ERROR_ARTICLE_CHANGED, ERROR_TRY_AGAIN),
             )
 
         return self._redirect_to_article()

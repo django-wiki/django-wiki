@@ -27,7 +27,9 @@ class GlobalhistoryTests(
             user_message="Comment 1",
         )
         response = self.client.get(url)
-        expected = "(?s).*TestHistory1.*Comment 1.*" "Root Article.*no log message.*"
+        expected = (
+            "(?s).*TestHistory1.*Comment 1.*" "Root Article.*no log message.*"
+        )
         self.assertRegexpMatches(response.rendered_content, expected)
 
         urlpath = URLPath.create_urlpath(

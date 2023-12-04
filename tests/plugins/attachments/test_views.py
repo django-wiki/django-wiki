@@ -41,7 +41,11 @@ class AttachmentTests(
         filestream = self._createTxtFilestream(self.test_data)
         response = self.client.post(
             url,
-            {"description": self.test_description, "file": filestream, "save": "1"},
+            {
+                "description": self.test_description,
+                "file": filestream,
+                "save": "1",
+            },
         )
         self.assertRedirects(response, url)
 
@@ -56,7 +60,8 @@ class AttachmentTests(
         attachment = self.article.shared_plugins_set.all()[0].attachment
         self.assertEqual(attachment.original_filename, "test.txt")
         self.assertEqual(
-            attachment.current_revision.file.file.read(), self.test_data.encode("utf-8")
+            attachment.current_revision.file.file.read(),
+            self.test_data.encode("utf-8"),
         )
 
     def test_replace(self):
@@ -80,14 +85,21 @@ class AttachmentTests(
         # Change url to replacement page.
         url = reverse(
             "wiki:attachments_replace",
-            kwargs={"attachment_id": attachment.id, "article_id": self.article.id},
+            kwargs={
+                "attachment_id": attachment.id,
+                "article_id": self.article.id,
+            },
         )
 
         # Upload replacement without removing revisions
         replacement_data = data + " And this is my edit"
         replacement_filestream = self._createTxtFilestream(replacement_data)
         self.client.post(
-            url, {"description": "Replacement upload", "file": replacement_filestream}
+            url,
+            {
+                "description": "Replacement upload",
+                "file": replacement_filestream,
+            },
         )
         attachment = self.article.shared_plugins_set.all()[0].attachment
         # Revision count should be two
@@ -121,7 +133,9 @@ class AttachmentTests(
             replacement_data2.encode("utf-8"),
         )
         # The first replacement should no longer be in the filehistory
-        self.assertNotIn(first_replacement, attachment.attachmentrevision_set.all())
+        self.assertNotIn(
+            first_replacement, attachment.attachmentrevision_set.all()
+        )
 
     def test_search(self):
         """

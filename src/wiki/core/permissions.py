@@ -33,7 +33,10 @@ def can_read(article, user):
         if user == article.owner:
             return True
         if article.group_read:
-            if article.group and user.groups.filter(id=article.group.id).exists():
+            if (
+                article.group
+                and user.groups.filter(id=article.group.id).exists()
+            ):
                 return True
         if article.can_moderate(user):
             return True
@@ -53,7 +56,11 @@ def can_write(article, user):
     if user == article.owner:
         return True
     if article.group_write:
-        if article.group and user and user.groups.filter(id=article.group.id).exists():
+        if (
+            article.group
+            and user
+            and user.groups.filter(id=article.group.id).exists()
+        ):
             return True
     if article.can_moderate(user):
         return True

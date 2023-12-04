@@ -13,11 +13,15 @@ WIKI_LANGUAGE = "markdown"
 
 #: The editor class to use -- maybe a 3rd party or your own...? You can always
 #: extend the built-in editor and customize it!
-EDITOR = getattr(django_settings, "WIKI_EDITOR", "wiki.editors.markitup.MarkItUp")
+EDITOR = getattr(
+    django_settings, "WIKI_EDITOR", "wiki.editors.markitup.MarkItUp"
+)
 
 #: Whether to use Bleach or not. It's not recommended to turn this off unless
 #: you know what you're doing and you don't want to use the other options.
-MARKDOWN_SANITIZE_HTML = getattr(django_settings, "WIKI_MARKDOWN_SANITIZE_HTML", True)
+MARKDOWN_SANITIZE_HTML = getattr(
+    django_settings, "WIKI_MARKDOWN_SANITIZE_HTML", True
+)
 
 #: Arguments for the Markdown instance, as a dictionary. The "extensions" key
 #: should be a list of extra extensions to use besides the built-in django-wiki
@@ -52,7 +56,9 @@ MARKDOWN_KWARGS = {
         "markdown.extensions.abbr",
         "markdown.extensions.sane_lists",
     ],
-    "extension_configs": {"wiki.plugins.macros.mdx.toc": {"title": _("Contents")}},
+    "extension_configs": {
+        "wiki.plugins.macros.mdx.toc": {"title": _("Contents")}
+    },
 }
 MARKDOWN_KWARGS.update(getattr(django_settings, "WIKI_MARKDOWN_KWARGS", {}))
 
@@ -108,7 +114,9 @@ MARKDOWN_HTML_ATTRIBUTES.update(
 
 #: Allowed inline styles in Markdown article contents, default is no styles
 #: (empty list).
-MARKDOWN_HTML_STYLES = getattr(django_settings, "WIKI_MARKDOWN_HTML_STYLES", [])
+MARKDOWN_HTML_STYLES = getattr(
+    django_settings, "WIKI_MARKDOWN_HTML_STYLES", []
+)
 
 _project_defined_attrs = getattr(
     django_settings, "WIKI_MARKDOWN_HTML_ATTRIBUTE_WHITELIST", False
@@ -187,7 +195,9 @@ CAN_ASSIGN_OWNER = getattr(django_settings, "WIKI_ASSIGN_OWNER", None)
 
 #: A function returning True/False if a user has permission to change
 #: read/write access for groups and others.
-CAN_CHANGE_PERMISSIONS = getattr(django_settings, "WIKI_CAN_CHANGE_PERMISSIONS", None)
+CAN_CHANGE_PERMISSIONS = getattr(
+    django_settings, "WIKI_CAN_CHANGE_PERMISSIONS", None
+)
 
 #: Specifies if a user has access to soft deletion of articles.
 CAN_DELETE = getattr(django_settings, "WIKI_CAN_DELETE", None)
@@ -209,7 +219,9 @@ ANONYMOUS_WRITE = getattr(django_settings, "WIKI_ANONYMOUS_WRITE", False)
 
 #: Globally enable create access for anonymous users.
 #: Defaults to ``ANONYMOUS_WRITE``.
-ANONYMOUS_CREATE = getattr(django_settings, "WIKI_ANONYMOUS_CREATE", ANONYMOUS_WRITE)
+ANONYMOUS_CREATE = getattr(
+    django_settings, "WIKI_ANONYMOUS_CREATE", ANONYMOUS_WRITE
+)
 
 #: Default setting to allow anonymous users upload access. Used in
 #: plugins.attachments and plugins.images, and can be overwritten in
@@ -269,7 +281,9 @@ GROUP_MODEL = getattr(django_settings, "WIKI_GROUP_MODEL", "auth.Group")
 REVISIONS_PER_HOUR = getattr(django_settings, "WIKI_REVISIONS_PER_HOUR", 60)
 
 #: Maximum allowed revisions per minute for any given user or IP.
-REVISIONS_PER_MINUTES = getattr(django_settings, "WIKI_REVISIONS_PER_MINUTES", 5)
+REVISIONS_PER_MINUTES = getattr(
+    django_settings, "WIKI_REVISIONS_PER_MINUTES", 5
+)
 
 #: Maximum allowed revisions per hour for any anonymous user and any IP.
 REVISIONS_PER_HOUR_ANONYMOUS = getattr(
@@ -292,7 +306,9 @@ REVISIONS_MINUTES_LOOKBACK = getattr(
 ###########
 
 #: Default Django storage backend to use for images, attachments etc.
-STORAGE_BACKEND = getattr(django_settings, "WIKI_STORAGE_BACKEND", default_storage)
+STORAGE_BACKEND = getattr(
+    django_settings, "WIKI_STORAGE_BACKEND", default_storage
+)
 
 #: Use django-sendfile for sending out files? Otherwise the whole file is
 #: first read into memory and than send with a mime type based on the file.

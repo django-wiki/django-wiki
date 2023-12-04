@@ -14,7 +14,9 @@ SLUG = "attachments"
 #: ``WIKI_ATTACHMENTS_ANONYMOUS`` can override this, otherwise the default
 #: in ``wiki.conf.settings`` is used.
 ANONYMOUS = getattr(
-    django_settings, "WIKI_ATTACHMENTS_ANONYMOUS", wiki_settings.ANONYMOUS_UPLOAD
+    django_settings,
+    "WIKI_ATTACHMENTS_ANONYMOUS",
+    wiki_settings.ANONYMOUS_UPLOAD,
 )
 
 # Maximum file sizes: Please use something like LimitRequestBody on
@@ -45,19 +47,25 @@ UPLOAD_PATH_OBSCURIFY = getattr(
 #: to allow. For your own safety.
 #: Note: this setting is called WIKI_ATTACHMENTS_EXTENSIONS not WIKI_ATTACHMENTS_FILE_EXTENTIONS
 FILE_EXTENSIONS = getattr(
-    django_settings, "WIKI_ATTACHMENTS_EXTENSIONS", ["pdf", "doc", "odt", "docx", "txt"]
+    django_settings,
+    "WIKI_ATTACHMENTS_EXTENSIONS",
+    ["pdf", "doc", "odt", "docx", "txt"],
 )
 
 #: Storage backend to use, default is to use the same as the rest of the
 #: wiki, which is set in ``WIKI_STORAGE_BACKEND``, but you can override it
 #: with ``WIKI_ATTACHMENTS_STORAGE_BACKEND``.
 STORAGE_BACKEND = getattr(
-    django_settings, "WIKI_ATTACHMENTS_STORAGE_BACKEND", wiki_settings.STORAGE_BACKEND
+    django_settings,
+    "WIKI_ATTACHMENTS_STORAGE_BACKEND",
+    wiki_settings.STORAGE_BACKEND,
 )
 
 #: Store files always with an appended .upload extension to be sure that
 #: something nasty does not get executed on the server. SAFETY FIRST!
-APPEND_EXTENSION = getattr(django_settings, "WIKI_ATTACHMENTS_APPEND_EXTENSION", True)
+APPEND_EXTENSION = getattr(
+    django_settings, "WIKI_ATTACHMENTS_APPEND_EXTENSION", True
+)
 
 #: Important for e.g. S3 backends: If your storage backend does not have a .path
 #: attribute for the file, but only a .url attribute, you should use False.

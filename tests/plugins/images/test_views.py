@@ -17,7 +17,9 @@ from ...base import RequireRootArticleMixin
 from ...base import wiki_override_settings
 
 
-class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
+class ImageTests(
+    RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase
+):
     def setUp(self):
         super().setUp()
         self.article = self.root_article
@@ -49,7 +51,9 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
             if isinstance(plugin_instance, ImagePlugin):
                 plugin_index = cnt
                 break
-        self.assertGreaterEqual(plugin_index, 0, msg="Image plugin not activated")
+        self.assertGreaterEqual(
+            plugin_index, 0, msg="Image plugin not activated"
+        )
         base_edit_url = reverse("wiki:edit", kwargs={"path": path})
         url = base_edit_url + "?f=form{0:d}".format(plugin_index)
         filestream = self._create_gif_filestream_from_base64(self.test_data)
@@ -161,11 +165,14 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
             ),
             data={"image": self.generate_photo_file()},
         )
-        self.assertRedirects(response, reverse("wiki:edit", kwargs={"path": ""}))
+        self.assertRedirects(
+            response, reverse("wiki:edit", kwargs={"path": ""})
+        )
         image = models.Image.objects.get()
         self.assertEqual(models.Image.objects.count(), 1)
         self.assertEqual(
-            image.current_revision.previous_revision.revision_number, before_edit_rev
+            image.current_revision.previous_revision.revision_number,
+            before_edit_rev,
         )
 
     def test_delete_restore_revision(self):
@@ -189,7 +196,8 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         image = models.Image.objects.get()
         self.assertEqual(models.Image.objects.count(), 1)
         self.assertEqual(
-            image.current_revision.previous_revision.revision_number, before_edit_rev
+            image.current_revision.previous_revision.revision_number,
+            before_edit_rev,
         )
         self.assertIs(image.current_revision.deleted, True)
 
@@ -211,7 +219,8 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         image = models.Image.objects.get()
         self.assertEqual(models.Image.objects.count(), 1)
         self.assertEqual(
-            image.current_revision.previous_revision.revision_number, before_edit_rev
+            image.current_revision.previous_revision.revision_number,
+            before_edit_rev,
         )
         self.assertFalse(image.current_revision.deleted)
 
@@ -280,7 +289,15 @@ class ImageTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestB
         image = models.Image.objects.get()
         url = reverse(
             "wiki:images_add_revision",
-            kwargs={"article_id": self.root_article, "image_id": image.pk, "path": ""},
+            kwargs={
+                "article_id": self.root_article,
+                "image_id": image.pk,
+                "path": "",
+            },
         )
-        response = self.client.post(url, data={"image": self.generate_photo_file()})
-        self.assertRedirects(response, "{}?next={}".format(reverse("wiki:login"), url))
+        response = self.client.post(
+            url, data={"image": self.generate_photo_file()}
+        )
+        self.assertRedirects(
+            response, "{}?next={}".format(reverse("wiki:login"), url)
+        )

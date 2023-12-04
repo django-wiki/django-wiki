@@ -42,7 +42,8 @@ class EditorTest(RequireRootArticleMixin, WebTestBase):
     def test_editor_widget_base(self):
         response = self.get_url("wiki:edit", path="")
         self.assertContains(
-            response, '<textarea name="content" cols="40" rows="10" id="id_content">'
+            response,
+            '<textarea name="content" cols="40" rows="10" id="id_content">',
         )
 
     @wiki_override_settings(WIKI_EDITOR="wiki.editors.base.BaseEditor")
@@ -52,7 +53,8 @@ class EditorTest(RequireRootArticleMixin, WebTestBase):
             object_id=self.root_article.current_revision.id,
         )
         self.assertContains(
-            response, '<textarea name="content" cols="40" rows="10" id="id_content">'
+            response,
+            '<textarea name="content" cols="40" rows="10" id="id_content">',
         )
 
     @wiki_override_settings(WIKI_EDITOR="tests.core.test_editor.CustomEditor")

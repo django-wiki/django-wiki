@@ -7,7 +7,6 @@ from wiki.core.paginator import WikiPaginator
 
 
 class GlobalHistory(ListView):
-
     template_name = "wiki/plugins/globalhistory/globalhistory.html"
     paginator_class = WikiPaginator
     paginate_by = 30
@@ -27,7 +26,9 @@ class GlobalHistory(ListView):
                 .order_by("-modified")
             )
         else:
-            return self.model.objects.can_read(self.request.user).order_by("-modified")
+            return self.model.objects.can_read(self.request.user).order_by(
+                "-modified"
+            )
 
     def get_context_data(self, **kwargs):
         kwargs["only_last"] = self.only_last

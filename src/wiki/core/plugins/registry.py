@@ -34,7 +34,9 @@ def register(PluginClass):
     if getattr(PluginClass, "sidebar", None):
         _sidebar.append(plugin)
 
-    _markdown_extensions.extend(getattr(PluginClass, "markdown_extensions", []))
+    _markdown_extensions.extend(
+        getattr(PluginClass, "markdown_extensions", [])
+    )
 
     _html_whitelist.extend(getattr(PluginClass, "html_whitelist", []))
 

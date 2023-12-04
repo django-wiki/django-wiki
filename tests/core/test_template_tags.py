@@ -22,7 +22,6 @@ if not django_settings.configured:
 
 # XXX article_for_object accepts context, but not using it
 class ArticleForObjectTemplatetagTest(TemplateTestCase):
-
     template = """
         {% load wiki_tags %}
         {% article_for_object obj as anything %}
@@ -36,7 +35,6 @@ class ArticleForObjectTemplatetagTest(TemplateTestCase):
         wiki_tags._cache = {}
 
     def test_obj_arg_is_not_a_django_model(self):
-
         from wiki.templatetags import wiki_tags
 
         with self.assertRaises(TypeError):
@@ -90,7 +88,6 @@ class ArticleForObjectTemplatetagTest(TemplateTestCase):
         self.assertEqual(len(cache), 1)
 
     def test_obj_in__cache_and_articleforobject_is_not_exist(self):
-
         model = Article.objects.create()
 
         from wiki.templatetags import wiki_tags
@@ -112,7 +109,6 @@ class ArticleForObjectTemplatetagTest(TemplateTestCase):
         self.assertNotIn("spam", wiki_tags._cache.values())
 
     def test_obj_in__cache_and_articleforobjec_is_exist(self):
-
         article = Article.objects.create()
         content_type = ContentType.objects.get_for_model(article)
         ArticleForObject.objects.create(
@@ -141,7 +137,6 @@ class ArticleForObjectTemplatetagTest(TemplateTestCase):
 
 # TODO manage plugins in template
 class WikiRenderTest(TemplateTestCase):
-
     template = """
         {% load wiki_tags %}
         {% wiki_render article pc %}
@@ -153,10 +148,16 @@ class WikiRenderTest(TemplateTestCase):
         registry._cache = {}
         super().tearDown()
 
-    keys = ["article", "content", "preview", "plugins", "STATIC_URL", "CACHE_TIMEOUT"]
+    keys = [
+        "article",
+        "content",
+        "preview",
+        "plugins",
+        "STATIC_URL",
+        "CACHE_TIMEOUT",
+    ]
 
     def test_if_preview_content_is_none(self):
-
         # monkey patch
         from wiki.core.plugins import registry
 
@@ -179,11 +180,14 @@ class WikiRenderTest(TemplateTestCase):
         # Additional check
         self.render({"article": article, "pc": None})
 
-    def test_called_with_preview_content_and_article_have_current_revision(self):
-
+    def test_called_with_preview_content_and_article_have_current_revision(
+        self
+    ):
         article = Article.objects.create()
         ArticleRevision.objects.create(
-            article=article, title="Test title", content="Some beauty test text"
+            article=article,
+            title="Test title",
+            content="Some beauty test text",
         )
 
         content = (
@@ -216,8 +220,9 @@ class WikiRenderTest(TemplateTestCase):
         output = self.render({"article": article, "pc": content})
         self.assertRegexpMatches(output, expected)
 
-    def test_called_with_preview_content_and_article_dont_have_current_revision(self):
-
+    def test_called_with_preview_content_and_article_dont_have_current_revision(
+        self
+    ):
         article = Article.objects.create()
 
         content = (
@@ -249,14 +254,12 @@ class WikiRenderTest(TemplateTestCase):
 
 
 class WikiFormTest(TemplateTestCase):
-
     template = """
         {% load wiki_tags %}
         {% wiki_form form_obj %}
     """
 
     def test_form_obj_is_not_baseform_instance(self):
-
         context = {"test_key": "test_value"}
         form_obj = "ham"
 
@@ -271,7 +274,6 @@ class WikiFormTest(TemplateTestCase):
         self.assertEqual(context, {"test_key": "test_value"})
 
     def test_form_obj_is_baseform_instance(self):
-
         context = {"test_key": "test_value"}
 
         # not by any special reasons, just a form
@@ -287,7 +289,6 @@ class WikiFormTest(TemplateTestCase):
 
 
 class LoginUrlTest(TemplateTestCase):
-
     template = """
         {% load wiki_tags %}
         {% login_url as some_url %}
@@ -295,7 +296,6 @@ class LoginUrlTest(TemplateTestCase):
     """
 
     def test_no_request_in_context(self):
-
         with self.assertRaises(KeyError):
             login_url({})
 
@@ -303,7 +303,6 @@ class LoginUrlTest(TemplateTestCase):
             self.render({})
 
     def test_login_url_if_no_query_string_in_request(self):
-
         r = HttpRequest()
         r.META = {}
         r.path = "best/test/page/ever/"
@@ -319,7 +318,6 @@ class LoginUrlTest(TemplateTestCase):
         self.assertIn(expected, output)
 
     def test_login_url_if_query_string_is_empty(self):
-
         r = HttpRequest()
         r.META = {"QUERY_STRING": ""}
         r.path = "best/test/page/ever/"
@@ -335,7 +333,6 @@ class LoginUrlTest(TemplateTestCase):
         self.assertIn(expected, output)
 
     def test_login_url_if_query_string_is_not_empty(self):
-
         r = HttpRequest()
         r.META = {"QUERY_STRING": "title=Main_page&action=raw"}
         r.path = "best/test/page/ever/"

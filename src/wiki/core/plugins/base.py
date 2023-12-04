@@ -50,8 +50,9 @@ class BasePlugin:
 
 
 class PluginSidebarFormMixin(forms.ModelForm):
-
-    unsaved_article_title = forms.CharField(widget=forms.HiddenInput(), required=True)
+    unsaved_article_title = forms.CharField(
+        widget=forms.HiddenInput(), required=True
+    )
     unsaved_article_content = forms.CharField(
         widget=forms.HiddenInput(), required=False
     )

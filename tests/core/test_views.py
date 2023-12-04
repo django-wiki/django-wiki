@@ -38,7 +38,12 @@ class RootArticleViewTestsBase(FuncBaseMixin):
         """
         self.get_url("wiki:root")
         self.assertUrlsEqual(resolve_url("wiki:root_create"))
-        self.fill({"#id_content": "test heading h1\n====\n", "#id_title": "Wiki Test"})
+        self.fill(
+            {
+                "#id_content": "test heading h1\n====\n",
+                "#id_title": "Wiki Test",
+            }
+        )
         self.submit('button[name="save_changes"]')
         self.assertUrlsEqual("/")
         self.assertTextPresent("test heading h1")
@@ -74,17 +79,16 @@ class ArticleViewViewTests(
             pprint.pprint(list(klass.objects.values()), width=240)
 
     def test_redirects_to_create_if_the_slug_is_unknown(self):
-
         response = self.get_by_path("unknown/")
         self.assertRedirects(
             response, resolve_url("wiki:create", path="") + "?slug=unknown"
         )
 
     def test_redirects_to_create_with_lowercased_slug(self):
-
         response = self.get_by_path("Unknown_Linked_Page/")
         self.assertRedirects(
-            response, resolve_url("wiki:create", path="") + "?slug=unknown_linked_page"
+            response,
+            resolve_url("wiki:create", path="") + "?slug=unknown_linked_page",
         )
 
     def test_article_list_update(self):
@@ -94,12 +98,16 @@ class ArticleViewViewTests(
 
         root_data = {
             "content": "[article_list depth:2]",
-            "current_revision": str(URLPath.root().article.current_revision.id),
+            "current_revision": str(
+                URLPath.root().article.current_revision.id
+            ),
             "preview": "1",
             "title": "Root Article",
         }
 
-        response = self.client.post(resolve_url("wiki:edit", path=""), root_data)
+        response = self.client.post(
+            resolve_url("wiki:edit", path=""), root_data
+        )
         self.assertRedirects(response, resolve_url("wiki:root"))
 
         # verify the new article is added to article_list
@@ -108,7 +116,9 @@ class ArticleViewViewTests(
             {"title": "Sub Article 1", "slug": "SubArticle1"},
         )
 
-        self.assertRedirects(response, resolve_url("wiki:get", path="subarticle1/"))
+        self.assertRedirects(
+            response, resolve_url("wiki:get", path="subarticle1/")
+        )
         self.assertContains(self.get_by_path(""), "Sub Article 1")
         self.assertContains(self.get_by_path(""), "subarticle1/")
 
@@ -119,7 +129,9 @@ class ArticleViewViewTests(
                 "confirm": "on",
                 "purge": "on",
                 "revision": str(
-                    URLPath.objects.get(slug="subarticle1").article.current_revision.id
+                    URLPath.objects.get(
+                        slug="subarticle1"
+                    ).article.current_revision.id
                 ),
             },
         )
@@ -142,7 +154,9 @@ class ArticleViewViewTests(
         self.assertEqual(response.status_code, 200)
 
     def test_normaluser_root(self):
-        self.client.login(username=NORMALUSER1_USERNAME, password=NORMALUSER1_PASSWORD)
+        self.client.login(
+            username=NORMALUSER1_USERNAME, password=NORMALUSER1_PASSWORD
+        )
         response = self.client.get(
             reverse("wiki:get", kwargs={"article_id": self.root_article.pk})
         )
@@ -153,10 +167,18 @@ class ArticleViewViewTests(
     def test_show_max_children(self):
         response = self.client.post(
             resolve_url("wiki:create", path=""),
-            {"title": "Main", "slug": "WikiRoot", "content": "Content level 1"},
+            {
+                "title": "Main",
+                "slug": "WikiRoot",
+                "content": "Content level 1",
+            },
         )
-        self.assertRedirects(response, resolve_url("wiki:get", path="wikiroot/"))
-        response = self.client.get(reverse("wiki:get", kwargs={"path": "wikiroot/"}))
+        self.assertRedirects(
+            response, resolve_url("wiki:get", path="wikiroot/")
+        )
+        response = self.client.get(
+            reverse("wiki:get", kwargs={"path": "wikiroot/"})
+        )
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response.context["children_slice"], list)
         self.assertEqual(len(response.context["children_slice"]), 0)
@@ -171,12 +193,17 @@ class ArticleViewViewTests(
             )
             self.assertRedirects(
                 response,
-                resolve_url("wiki:get", path="wikiroot/subarticle{0}/".format(idx)),
+                resolve_url(
+                    "wiki:get", path="wikiroot/subarticle{0}/".format(idx)
+                ),
             )
-        response = self.client.get(reverse("wiki:get", kwargs={"path": "wikiroot/"}))
+        response = self.client.get(
+            reverse("wiki:get", kwargs={"path": "wikiroot/"})
+        )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            len(response.context["children_slice"]), wiki_settings.SHOW_MAX_CHILDREN
+            len(response.context["children_slice"]),
+            wiki_settings.SHOW_MAX_CHILDREN,
         )
 
 
@@ -186,25 +213,38 @@ class CreateViewTest(
     def test_create_nested_article_in_article(self):
         response = self.client.post(
             resolve_url("wiki:create", path=""),
-            {"title": "Level 1", "slug": "Level1", "content": "Content level 1"},
+            {
+                "title": "Level 1",
+                "slug": "Level1",
+                "content": "Content level 1",
+            },
         )
         self.assertRedirects(response, resolve_url("wiki:get", path="level1/"))
         response = self.client.post(
             resolve_url("wiki:create", path="Level1/"),
             {"title": "test", "slug": "Test", "content": "Content on level 2"},
         )
-        self.assertRedirects(response, resolve_url("wiki:get", path="level1/test/"))
+        self.assertRedirects(
+            response, resolve_url("wiki:get", path="level1/test/")
+        )
         response = self.client.post(
             resolve_url("wiki:create", path=""),
-            {"title": "test", "slug": "Test", "content": "Other content on level 1"},
+            {
+                "title": "test",
+                "slug": "Test",
+                "content": "Other content on level 1",
+            },
         )
 
         self.assertRedirects(response, resolve_url("wiki:get", path="test/"))
-        self.assertContains(self.get_by_path("Test/"), "Other content on level 1")
-        self.assertContains(self.get_by_path("Level1/Test/"), "Content")  # on level 2')
+        self.assertContains(
+            self.get_by_path("Test/"), "Other content on level 1"
+        )
+        self.assertContains(
+            self.get_by_path("Level1/Test/"), "Content"
+        )  # on level 2')
 
     def test_illegal_slug(self):
-
         # A slug cannot be '123' because it gets confused with an article ID.
         response = self.client.post(
             resolve_url("wiki:create", path=""),
@@ -213,7 +253,9 @@ class CreateViewTest(
         self.assertContains(response, escape(validate_slug_numbers.message))
 
 
-class MoveViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
+class MoveViewTest(
+    RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase
+):
     def test_illegal_slug(self):
         # A slug cannot be '123' because it gets confused with an article ID.
         response = self.client.post(
@@ -242,7 +284,11 @@ class MoveViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
         )
         self.client.post(
             resolve_url("wiki:create", path="test1/test10/"),
-            {"title": "Test100", "slug": "test100", "content": "Content .100."},
+            {
+                "title": "Test100",
+                "slug": "test100",
+                "content": "Content .100.",
+            },
         )
 
         # Move /test1 => /test0 (an already existing destination slug!)
@@ -258,12 +304,16 @@ class MoveViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
         self.assertContains(response, "already exists.")
 
         # Move /test1 >= /test2 (valid slug), no redirect
-        test0_id = URLPath.objects.get(slug="test0").article.current_revision.id
+        test0_id = URLPath.objects.get(
+            slug="test0"
+        ).article.current_revision.id
         response = self.client.post(
             resolve_url("wiki:move", path="test1/"),
             {"destination": str(test0_id), "slug": "test2", "redirect": ""},
         )
-        self.assertRedirects(response, resolve_url("wiki:get", path="test0/test2/"))
+        self.assertRedirects(
+            response, resolve_url("wiki:get", path="test0/test2/")
+        )
 
         # Check that there is no article displayed in this path anymore
         response = self.get_by_path("test1/")
@@ -272,7 +322,11 @@ class MoveViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
         # Create /test0/test2/test020
         response = self.client.post(
             resolve_url("wiki:create", path="test0/test2/"),
-            {"title": "Test020", "slug": "test020", "content": "Content .020."},
+            {
+                "title": "Test020",
+                "slug": "test020",
+                "content": "Content .020.",
+            },
         )
         # Move /test0/test2 => /test1new + create redirect
         response = self.client.post(
@@ -283,7 +337,9 @@ class MoveViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
                 "redirect": "true",
             },
         )
-        self.assertRedirects(response, resolve_url("wiki:get", path="test1new/"))
+        self.assertRedirects(
+            response, resolve_url("wiki:get", path="test1new/")
+        )
 
         # Check that /test1new is a valid path
         response = self.get_by_path("test1new/")
@@ -295,12 +351,15 @@ class MoveViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
 
         response = self.get_by_path("test0/test2/")
         self.assertContains(response, "Moved: Test1")
-        self.assertRegex(response.rendered_content, r"moved to <a[^>]*>wiki:/test1new/")
+        self.assertRegex(
+            response.rendered_content, r"moved to <a[^>]*>wiki:/test1new/"
+        )
 
         response = self.get_by_path("test0/test2/test020/")
         self.assertContains(response, "Moved: Test020")
         self.assertRegex(
-            response.rendered_content, r"moved to <a[^>]*>wiki:/test1new/test020"
+            response.rendered_content,
+            r"moved to <a[^>]*>wiki:/test1new/test020",
         )
 
         # Check that moved_to was correctly set
@@ -340,7 +399,11 @@ class DeleteViewTest(
         """
         self.client.post(
             resolve_url("wiki:create", path=""),
-            {"title": "Test delete", "slug": "testdelete", "content": "To be deleted"},
+            {
+                "title": "Test delete",
+                "slug": "testdelete",
+                "content": "To be deleted",
+            },
         )
         response = self.client.get(
             resolve_url("wiki:delete", path="testdelete/"),
@@ -349,16 +412,21 @@ class DeleteViewTest(
         self.assertContains(response, "Delete article")
 
     def test_articles_cache_is_cleared_after_deleting(self):
-
         # That bug is tested by one individual test, otherwise it could be
         # revealed only by sequence of tests in some particular order
 
         response = self.client.post(
             resolve_url("wiki:create", path=""),
-            {"title": "Test cache", "slug": "testcache", "content": "Content 1"},
+            {
+                "title": "Test cache",
+                "slug": "testcache",
+                "content": "Content 1",
+            },
         )
 
-        self.assertRedirects(response, resolve_url("wiki:get", path="testcache/"))
+        self.assertRedirects(
+            response, resolve_url("wiki:get", path="testcache/")
+        )
 
         response = self.client.post(
             resolve_url("wiki:delete", path="testcache/"),
@@ -366,7 +434,9 @@ class DeleteViewTest(
                 "confirm": "on",
                 "purge": "on",
                 "revision": str(
-                    URLPath.objects.get(slug="testcache").article.current_revision.id
+                    URLPath.objects.get(
+                        slug="testcache"
+                    ).article.current_revision.id
                 ),
             },
         )
@@ -374,10 +444,16 @@ class DeleteViewTest(
         self.assertRedirects(response, resolve_url("wiki:get", path=""))
         response = self.client.post(
             resolve_url("wiki:create", path=""),
-            {"title": "Test cache", "slug": "TestCache", "content": "Content 2"},
+            {
+                "title": "Test cache",
+                "slug": "TestCache",
+                "content": "Content 2",
+            },
         )
 
-        self.assertRedirects(response, resolve_url("wiki:get", path="testcache/"))
+        self.assertRedirects(
+            response, resolve_url("wiki:get", path="testcache/")
+        )
         self.assertContains(self.get_by_path("TestCache/"), "Content 2")
 
     def test_deleted_view(self):
@@ -388,7 +464,11 @@ class DeleteViewTest(
         # 1. Create the article
         self.client.post(
             resolve_url("wiki:create", path=""),
-            {"title": "Test delete", "slug": "testdelete", "content": "To be deleted"},
+            {
+                "title": "Test delete",
+                "slug": "testdelete",
+                "content": "To be deleted",
+            },
         )
         # 2. Soft delete it
         self.client.post(
@@ -397,7 +477,9 @@ class DeleteViewTest(
                 "confirm": "on",
                 "purge": "",
                 "revision": str(
-                    URLPath.objects.get(slug="testdelete").article.current_revision.id
+                    URLPath.objects.get(
+                        slug="testdelete"
+                    ).article.current_revision.id
                 ),
             },
         )
@@ -416,7 +498,9 @@ class DeleteViewTest(
                 "confirm": "on",
                 "purge": "on",
                 "revision": str(
-                    URLPath.objects.get(slug="testdelete").article.current_revision.id
+                    URLPath.objects.get(
+                        slug="testdelete"
+                    ).article.current_revision.id
                 ),
             },
         )
@@ -438,13 +522,17 @@ class DeleteViewTest(
     #    Article.objects.create()
 
 
-class EditViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
+class EditViewTest(
+    RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase
+):
     def test_preview_save(self):
         """Test edit preview, edit save and messages."""
 
         example_data = {
             "content": "The modified text",
-            "current_revision": str(URLPath.root().article.current_revision.id),
+            "current_revision": str(
+                URLPath.root().article.current_revision.id
+            ),
             "preview": "1",
             # 'save': '1',  # probably not too important
             "summary": "why edited",
@@ -453,7 +541,8 @@ class EditViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
 
         # test preview
         response = self.client.post(
-            resolve_url("wiki:preview", path=""), example_data  # url: '/_preview/'
+            resolve_url("wiki:preview", path=""),
+            example_data,  # url: '/_preview/'
         )
 
         self.assertContains(response, "The modified text")
@@ -463,13 +552,17 @@ class EditViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
 
         example_data = {
             "content": "The modified text",
-            "current_revision": str(URLPath.root().article.current_revision.id),
+            "current_revision": str(
+                URLPath.root().article.current_revision.id
+            ),
             "preview": "1",
             "summary": "why edited",
             "title": "wiki test",
         }
 
-        response = self.client.post(resolve_url("wiki:preview", path=""), example_data)
+        response = self.client.post(
+            resolve_url("wiki:preview", path=""), example_data
+        )
 
         self.assertEqual(response.get("X-Frame-Options"), "SAMEORIGIN")
 
@@ -480,28 +573,37 @@ class EditViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTes
 
         example_data = {
             "content": "More modifications",
-            "current_revision": str(URLPath.root().article.current_revision.id),
+            "current_revision": str(
+                URLPath.root().article.current_revision.id
+            ),
             "preview": "0",
             "save": "1",
             "summary": "why edited",
             "title": "wiki test",
         }
 
-        response = self.client.post(resolve_url("wiki:edit", path=""), example_data)
+        response = self.client.post(
+            resolve_url("wiki:edit", path=""), example_data
+        )
 
         self.assertRedirects(response, resolve_url("wiki:root"))
 
-        response = self.client.post(resolve_url("wiki:edit", path=""), example_data)
+        response = self.client.post(
+            resolve_url("wiki:edit", path=""), example_data
+        )
 
         self.assertContains(
-            response, "While you were editing, someone else changed the revision."
+            response,
+            "While you were editing, someone else changed the revision.",
         )
 
 
 class DiffViewTests(RequireRootArticleMixin, DjangoClientTestBase):
     def setUp(self):
         super().setUp()
-        self.root_article.add_revision(ArticleRevision(title="New Revision"), save=True)
+        self.root_article.add_revision(
+            ArticleRevision(title="New Revision"), save=True
+        )
         self.new_revision = self.root_article.current_revision
 
     def test_diff(self):
@@ -533,7 +635,9 @@ class EditViewTestsBase(RequireRootArticleMixin, FuncBaseMixin):
         self.assertTextPresent("successfully added")
         new_revision = URLPath.root().article.current_revision
         self.assertIn("Something 2", new_revision.content)
-        self.assertEqual(new_revision.revision_number, old_revision.revision_number + 1)
+        self.assertEqual(
+            new_revision.revision_number, old_revision.revision_number + 1
+        )
 
 
 class EditViewTestsWebTest(EditViewTestsBase, WebTestBase):
@@ -541,7 +645,6 @@ class EditViewTestsWebTest(EditViewTestsBase, WebTestBase):
 
 
 class EditViewTestsSelenium(EditViewTestsBase, SeleniumBase):
-
     # Javascript only tests:
     def test_preview_and_save(self):
         self.get_url("wiki:edit", path="")
@@ -562,17 +665,16 @@ class SearchViewTest(
     RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase
 ):
     def test_query_string(self):
-
-        response = self.client.get(resolve_url("wiki:search"), {"q": "Article"})
+        response = self.client.get(
+            resolve_url("wiki:search"), {"q": "Article"}
+        )
         self.assertContains(response, "Root Article")
 
     def test_empty_query_string(self):
-
         response = self.client.get(resolve_url("wiki:search"), {"q": ""})
         self.assertFalse(response.context["articles"])
 
     def test_hierarchy_search(self):
-
         c = self.client
 
         c.post(
@@ -585,7 +687,11 @@ class SearchViewTest(
         )
         c.post(
             resolve_url("wiki:create", path="test0/"),
-            {"title": "Subtest0", "slug": "subtest0", "content": "Content test2"},
+            {
+                "title": "Subtest0",
+                "slug": "subtest0",
+                "content": "Content test2",
+            },
         )
 
         response = c.get(
@@ -594,14 +700,15 @@ class SearchViewTest(
         articles = response.context["articles"]
 
         def contains_title(articles, title):
-            return any(article.current_revision.title == title for article in articles)
+            return any(
+                article.current_revision.title == title for article in articles
+            )
 
         self.assertIs(contains_title(articles, "Test0"), True)
         self.assertIs(contains_title(articles, "Test1"), False)
         self.assertIs(contains_title(articles, "Subtest0"), True)
 
     def test_hierarchy_search_404(self):
-
         c = self.client
 
         response = c.get(
@@ -617,10 +724,16 @@ class DeletedListViewTest(
     def test_deleted_articles_list(self):
         response = self.client.post(
             resolve_url("wiki:create", path=""),
-            {"title": "Delete Me", "slug": "deleteme", "content": "delete me please!"},
+            {
+                "title": "Delete Me",
+                "slug": "deleteme",
+                "content": "delete me please!",
+            },
         )
 
-        self.assertRedirects(response, resolve_url("wiki:get", path="deleteme/"))
+        self.assertRedirects(
+            response, resolve_url("wiki:get", path="deleteme/")
+        )
 
         response = self.client.post(
             resolve_url("wiki:delete", path="deleteme/"),
@@ -638,7 +751,9 @@ class DeletedListViewTest(
         self.assertContains(response, "Delete Me")
 
 
-class MergeViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
+class MergeViewTest(
+    RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase
+):
     def test_merge_preview(self):
         """Test merge preview"""
 
@@ -669,10 +784,12 @@ class MergeViewTest(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTe
 
         self.assertContains(response, "Previewing merge between:")
         self.assertContains(
-            response, "#{rev_number}".format(rev_number=first_revision.revision_number)
+            response,
+            "#{rev_number}".format(rev_number=first_revision.revision_number),
         )
         self.assertContains(
-            response, "#{rev_number}".format(rev_number=new_revision.revision_number)
+            response,
+            "#{rev_number}".format(rev_number=new_revision.revision_number),
         )
 
 
@@ -707,25 +824,32 @@ class HistoryViewTests(
 ):
     def test_can_read_permission(self):
         response = self.client.get(
-            reverse("wiki:history", kwargs={"article_id": self.root_article.pk})
+            reverse(
+                "wiki:history", kwargs={"article_id": self.root_article.pk}
+            )
         )
         self.assertEqual(response.status_code, 200)
 
     def test_content(self):
         response = self.client.get(
-            reverse("wiki:history", kwargs={"article_id": self.root_article.pk})
+            reverse(
+                "wiki:history", kwargs={"article_id": self.root_article.pk}
+            )
         )
         self.assertContains(response, "History:")
         self.assertEqual(response.context["selected_tab"], "history")
 
 
-class DirViewTests(RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase):
+class DirViewTests(
+    RequireRootArticleMixin, ArticleWebTestUtils, DjangoClientTestBase
+):
     def test_browse_root(self):
         response = self.client.get(
             reverse("wiki:dir", kwargs={"path": ""}),
         )
         self.assertRegex(
-            response.rendered_content, r'Browsing\s+<strong><a href=".+">/</a></strong>'
+            response.rendered_content,
+            r'Browsing\s+<strong><a href=".+">/</a></strong>',
         )
 
     def test_browse_root_query(self):
@@ -755,7 +879,8 @@ class SettingsViewTests(
     def test_change_group(self):
         group = CustomGroup.objects.create()
         response = self.client.post(
-            resolve_url("wiki:settings", article_id=self.root_article.pk) + "?f=form0",
+            resolve_url("wiki:settings", article_id=self.root_article.pk)
+            + "?f=form0",
             {"group": group.pk, "owner_username": SUPERUSER1_USERNAME},
             follow=True,
         )
@@ -767,13 +892,15 @@ class SettingsViewTests(
         message = messages[0]
         self.assertEqual(message.level, constants.SUCCESS)
         self.assertEqual(
-            message.message, "Permission settings for the article were updated."
+            message.message,
+            "Permission settings for the article were updated.",
         )
 
     def test_change_invalid_owner(self):
         self.assertIsNone(self.root_article.owner)
         response = self.client.post(
-            resolve_url("wiki:settings", article_id=self.root_article.pk) + "?f=form0",
+            resolve_url("wiki:settings", article_id=self.root_article.pk)
+            + "?f=form0",
             {"owner_username": "invalid"},
             follow=True,
         )
@@ -794,7 +921,8 @@ class SettingsViewTests(
         form_values = {field.html_name: field.value() or "" for field in form}
         # 4. Send an unchanged form
         response = self.client.post(
-            resolve_url("wiki:settings", article_id=self.root_article.pk) + "?f=form0",
+            resolve_url("wiki:settings", article_id=self.root_article.pk)
+            + "?f=form0",
             form_values,
             follow=True,
         )
@@ -811,14 +939,18 @@ class SettingsViewTests(
     def test_login_required(self):
         self.client.logout()
         response = self.client.get(
-            reverse("wiki:settings", kwargs={"article_id": self.root_article.pk})
+            reverse(
+                "wiki:settings", kwargs={"article_id": self.root_article.pk}
+            )
         )
         # it's redirecting
         self.assertEqual(response.status_code, 302)
 
     def test_auth_user(self):
         response = self.client.get(
-            reverse("wiki:settings", kwargs={"article_id": self.root_article.pk})
+            reverse(
+                "wiki:settings", kwargs={"article_id": self.root_article.pk}
+            )
         )
         self.assertEqual(response.status_code, 200)
 
@@ -829,14 +961,24 @@ class SettingsViewTests(
         """
         response = self.client.post(
             resolve_url("wiki:create", path=""),
-            {"title": "Level 1", "slug": "Level1", "content": "Content level 1"},
+            {
+                "title": "Level 1",
+                "slug": "Level1",
+                "content": "Content level 1",
+            },
         )
-        self.client.login(username=NORMALUSER1_USERNAME, password=NORMALUSER1_PASSWORD)
-        response = self.client.get(reverse("wiki:settings", kwargs={"path": "level1/"}))
+        self.client.login(
+            username=NORMALUSER1_USERNAME, password=NORMALUSER1_PASSWORD
+        )
+        response = self.client.get(
+            reverse("wiki:settings", kwargs={"path": "level1/"})
+        )
         self.assertEqual(response.status_code, 200)
 
     def test_content(self):
         response = self.client.get(
-            reverse("wiki:settings", kwargs={"article_id": self.root_article.pk})
+            reverse(
+                "wiki:settings", kwargs={"article_id": self.root_article.pk}
+            )
         )
         self.assertEqual(response.context["selected_tab"], "settings")

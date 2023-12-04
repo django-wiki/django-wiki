@@ -96,7 +96,9 @@ class WikiPath(markdown.inlinepatterns.Pattern):
 
             lookup = models.URLPath.objects.none()
             if urlpath.parent:
-                lookup = urlpath.parent.get_descendants().filter(slug=wiki_path)
+                lookup = urlpath.parent.get_descendants().filter(
+                    slug=wiki_path
+                )
             else:
                 lookup = urlpath.get_descendants().filter(slug=wiki_path)
 

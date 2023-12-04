@@ -26,14 +26,14 @@ def process_bool_value(bool_val, org_val):
 
 def process_value(org_val, new_val):
     try:
-        if type(new_val) is str:
+        if isinstance(new_val, str):
             new_val = new_val.lstrip("'").rstrip("'")
 
-        if type(org_val) is bool:
+        if isinstance(org_val, bool):
             return process_bool_value(new_val, org_val)
-        elif type(org_val) is int:
+        elif isinstance(org_val, int):
             return int(new_val)
-        elif type(org_val) is str:
+        elif isinstance(org_val, str):
             return new_val
         else:
             return org_val
@@ -46,7 +46,9 @@ def wiki_slugify(*args, **kwargs):
 
 
 class WikiTreeProcessorClass(TocTreeprocessor):
-    CACHED_KWARGS = dict()  # Used to cache arguments parsed by the MacroPattern
+    CACHED_KWARGS = (
+        dict()
+    )  # Used to cache arguments parsed by the MacroPattern
     # Used to map the keyword arguments to the Class Objects attribute name.
     TOC_CONFIG_VALUES = {
         "title": "title",
@@ -72,9 +74,9 @@ class WikiTreeProcessorClass(TocTreeprocessor):
 
         def _helper_swap_values(key, value):
             # Saves the existing attribute value to a dictionary
-            tmp_kwargs[WikiTreeProcessorClass.TOC_CONFIG_VALUES[key]] = getattr(
-                self, WikiTreeProcessorClass.TOC_CONFIG_VALUES[key]
-            )
+            tmp_kwargs[
+                WikiTreeProcessorClass.TOC_CONFIG_VALUES[key]
+            ] = getattr(self, WikiTreeProcessorClass.TOC_CONFIG_VALUES[key])
             # This sets the value to a TocTreeprocessor attribute of its corresponding name
             setattr(
                 self,
@@ -94,7 +96,10 @@ class WikiTreeProcessorClass(TocTreeprocessor):
                     if callable(
                         WikiTreeProcessorClass.TOC_CONFIG_VALUES[k]
                     ):  # Some values in the dictionary are functions to further process values
-                        for tock, tocv in WikiTreeProcessorClass.TOC_CONFIG_VALUES[k](
+                        for (
+                            tock,
+                            tocv,
+                        ) in WikiTreeProcessorClass.TOC_CONFIG_VALUES[k](
                             v
                         ).items():
                             _helper_swap_values(tock, tocv)

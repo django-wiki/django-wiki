@@ -10,7 +10,6 @@ from wiki.plugins.links.mdx.urlize import makeExtension as urlize_makeExtension
 
 
 class LinkPlugin(BasePlugin):
-
     slug = "links"
     urlpatterns = {
         "article": [
@@ -35,7 +34,10 @@ class LinkPlugin(BasePlugin):
         ("default_level", settings.LOOKUP_LEVEL),
     ]
 
-    markdown_extensions = [urlize_makeExtension(), WikiPathExtension(wikipath_config)]
+    markdown_extensions = [
+        urlize_makeExtension(),
+        WikiPathExtension(wikipath_config),
+    ]
 
 
 registry.register(LinkPlugin)

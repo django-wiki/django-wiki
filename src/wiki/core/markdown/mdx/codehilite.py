@@ -67,7 +67,11 @@ class WikiFencedBlockPreprocessor(Preprocessor):
                     m.group("code"), self.config, self.md.tab_length, lang=lang
                 )
                 placeholder = self.md.htmlStash.store(html)
-                text = "%s\n%s\n%s" % (text[: m.start()], placeholder, text[m.end() :])
+                text = "%s\n%s\n%s" % (
+                    text[: m.start()],
+                    placeholder,
+                    text[m.end() :],
+                )
             else:
                 break
         return text.split("\n")
@@ -135,7 +139,10 @@ class WikiCodeHiliteExtension(CodeHiliteExtension):
         hiliter.config = self.getConfigs()
 
         add_to_registry(
-            md.preprocessors, "fenced_code_block", hiliter, ">normalize_whitespace"
+            md.preprocessors,
+            "fenced_code_block",
+            hiliter,
+            ">normalize_whitespace",
         )
 
         md.registerExtension(self)

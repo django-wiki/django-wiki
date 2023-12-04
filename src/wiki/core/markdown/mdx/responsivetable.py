@@ -9,9 +9,11 @@ class ResponsiveTableExtension(markdown.Extension):
     """Wraps all tables with Bootstrap's table-responsive class"""
 
     def extendMarkdown(self, md):
-
         add_to_registry(
-            md.treeprocessors, "responsivetable", ResponsiveTableTree(md), "_end"
+            md.treeprocessors,
+            "responsivetable",
+            ResponsiveTableTree(md),
+            "_end",
         )
 
 

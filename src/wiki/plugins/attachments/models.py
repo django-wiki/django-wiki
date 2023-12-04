@@ -21,7 +21,6 @@ class IllegalFileExtension(Exception):
 
 
 class Attachment(ReusablePlugin):
-
     objects = managers.ArticleFkManager()
 
     current_revision = models.OneToOneField(
@@ -37,7 +36,10 @@ class Attachment(ReusablePlugin):
     )
 
     original_filename = models.CharField(
-        max_length=256, verbose_name=_("original filename"), blank=True, null=True
+        max_length=256,
+        verbose_name=_("original filename"),
+        blank=True,
+        null=True,
     )
 
     def can_write(self, user):
@@ -74,12 +76,17 @@ def extension_allowed(filename):
         raise IllegalFileExtension(
             gettext("No file extension found in filename. That's not okay!")
         )
-    if not extension.lower() in map(lambda x: x.lower(), settings.FILE_EXTENSIONS):
+    if extension.lower() not in map(
+        lambda x: x.lower(), settings.FILE_EXTENSIONS
+    ):
         raise IllegalFileExtension(
             gettext(
                 "The following filename is illegal: {filename:s}. Extension "
                 "has to be one of {extensions:s}"
-            ).format(filename=filename, extensions=", ".join(settings.FILE_EXTENSIONS))
+            ).format(
+                filename=filename,
+                extensions=", ".join(settings.FILE_EXTENSIONS),
+            )
         )
 
     return extension
@@ -89,8 +96,14 @@ def upload_path(instance, filename):
     extension = extension_allowed(filename)
 
     # Has to match original extension filename
-    if instance.id and instance.attachment and instance.attachment.original_filename:
-        original_extension = instance.attachment.original_filename.split(".")[-1]
+    if (
+        instance.id
+        and instance.attachment
+        and instance.attachment.original_filename
+    ):
+        original_extension = instance.attachment.original_filename.split(".")[
+            -1
+        ]
         if not extension.lower() == original_extension:
             raise IllegalFileExtension(
                 "File extension has to be '%s', not '%s'."
@@ -100,12 +113,16 @@ def upload_path(instance, filename):
         instance.attachment.original_filename = filename
 
     upload_path = settings.UPLOAD_PATH
-    upload_path = upload_path.replace("%aid", str(instance.attachment.article.id))
+    upload_path = upload_path.replace(
+        "%aid", str(instance.attachment.article.id)
+    )
     if settings.UPLOAD_PATH_OBSCURIFY:
         import random
         import hashlib
 
-        m = hashlib.md5(str(random.randint(0, 100000000000000)).encode("ascii"))
+        m = hashlib.md5(
+            str(random.randint(0, 100000000000000)).encode("ascii")
+        )
         upload_path = os.path.join(upload_path, m.hexdigest())
 
     if settings.APPEND_EXTENSION:
@@ -114,7 +131,6 @@ def upload_path(instance, filename):
 
 
 class AttachmentRevision(BaseRevisionMixin, models.Model):
-
     attachment = models.ForeignKey("Attachment", on_delete=models.CASCADE)
 
     file = models.FileField(
@@ -181,7 +197,11 @@ def on_revision_delete(instance, *args, **kwargs):
         delete_path = "/".join(path[:-depth] if depth > 0 else path)
         try:
             if (
-                len(os.listdir(os.path.join(django_settings.MEDIA_ROOT, delete_path)))
+                len(
+                    os.listdir(
+                        os.path.join(django_settings.MEDIA_ROOT, delete_path)
+                    )
+                )
                 == 0
             ):
                 os.rmdir(delete_path)
@@ -205,7 +225,9 @@ def on_attachment_revision_pre_save(**kwargs):
 
     if not instance.revision_number:
         try:
-            previous_revision = instance.attachment.attachmentrevision_set.latest()
+            previous_revision = (
+                instance.attachment.attachmentrevision_set.latest()
+            )
             instance.revision_number = previous_revision.revision_number + 1
         # NB! The above should not raise the below exception, but somehow
         # it does.

@@ -82,7 +82,9 @@ class WikiPathExtensionTests(TestCase):
 
     def setUp(self):
         config = (("base_url", reverse_lazy("wiki:get", kwargs={"path": ""})),)
-        self.md = markdown.Markdown(extensions=["extra", WikiPathExtension(config)])
+        self.md = markdown.Markdown(
+            extensions=["extra", WikiPathExtension(config)]
+        )
         URLPath.create_root()
         URLPath.create_urlpath(
             URLPath.root(),
@@ -95,7 +97,9 @@ class WikiPathExtensionTests(TestCase):
     @wiki_override_settings(WIKI_WIKILINKS_TRAILING_SLASH=True)
     @data(*FIXTURE_POSITIVE_MATCHES_TRAILING_SLASH)
     @unpack
-    def test_works_with_lazy_functions_slashes(self, markdown_input, expected_output):
+    def test_works_with_lazy_functions_slashes(
+        self, markdown_input, expected_output
+    ):
         self.assertEqual(
             self.md.convert(markdown_input),
             expected_output,
