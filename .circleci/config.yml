@@ -20,7 +20,9 @@ jobs:
       - image: cimg/python:<<parameters.python_version>>
     steps:
       - checkout
-      - run: pip install hatch && python -m hatch --env test.<<parameters.hatch_env>> run all
+      - run: pip install coverage[toml] hatch
+      - run: python -m hatch --env test.<<parameters.hatch_env>> run all
+      - codecov/upload
 
   lint:
     description: "Simple job for linting the pushed code"
@@ -29,18 +31,6 @@ jobs:
     steps:
       - checkout
       - run: pip install hatch && python -m hatch --env test.py3.11-dj4.2 run lint
-
-  coverage:
-    description: "Job to check the coverage"
-    docker:
-      - image: cimg/python:3.11
-    steps:
-      - checkout
-      - run: pip install coverage[toml]
-      - run: pip install hatch && python -m hatch --env test.py3.11-dj4.2 run all
-      - run: python -m coverage report -m
-      - run: python -m coverage xml
-      - codecov/upload
 
 
 workflows:
@@ -77,4 +67,3 @@ workflows:
           hatch_env: "py3.11-dj4.2"
           python_version: "3.11"
       - lint
-      - coverage
