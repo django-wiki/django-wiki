@@ -39,7 +39,7 @@ classifiers = [
 ]
 dependencies = [
     # Django version support is added one minor release at a time
-    "Django>=3.2,<4.3",
+    "Django>=3.2,<5.1",
     # bleach has been pretty stable, hence the loose pin
     "bleach[css]>=6,<7",
     # Pillow is used very little and has never broken
