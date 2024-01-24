@@ -1,9 +1,20 @@
+from django.utils.translation import gettext as _
 from wiki.core.plugins import registry
 from wiki.core.plugins.base import BasePlugin
 from wiki.plugins.pymdown import settings
 
 
-class Plugin(BasePlugin):
+class PymdownPlugin(BasePlugin):
+    slug = settings.SLUG
+
+    sidebar = {
+        "headline": _("PyMDown Macros"),
+        "icon_class": "fa-play",
+        "template": "wiki/plugins/pymdown/sidebar.html",
+        "form_class": None,
+        "get_form_kwargs": (lambda a: {}),
+    }
+
     # Skipping tabs as for now they do not work
     markdown_extensions = [
         "pymdownx.blocks.admonition",
@@ -15,4 +26,4 @@ class Plugin(BasePlugin):
 
 settings.update_whitelist()
 
-registry.register(Plugin)
+registry.register(PymdownPlugin)
