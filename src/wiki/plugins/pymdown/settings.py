@@ -2,7 +2,7 @@ from django.utils.translation import gettext as _
 from django.conf import settings as django_settings
 from wiki.conf import settings
 
-SLUG = "PyMdown"
+SLUG = "pymdown"
 APP_LABEL = "wiki"
 
 
@@ -37,7 +37,7 @@ pymdown_docs = [
     {
         "short_description": _("Admonition"),
         "help_text": _(
-            "Insert an Admonition html tag More information: https://facelessuser.github.io/pymdown-extensions/extensions/blocks/plugins/admonition/"
+            """Insert an Admonition html tag. <a href="https://facelessuser.github.io/pymdown-extensions/extensions/blocks/plugins/admonition/" target="_blank">Open external docs ↗</a>"""
         ),
         "example_code": """
 /// admonition | Some title
@@ -56,7 +56,7 @@ Some content
     {
         "short_description": _("Definition"),
         "help_text": _(
-            "Insert a Definition html tag. More information: https://facelessuser.github.io/pymdown-extensions/extensions/blocks/plugins/definition/"
+            """Insert a Definition html tag. <a href="https://facelessuser.github.io/pymdown-extensions/extensions/blocks/plugins/admonition/" target="_blank">Open external docs ↗</a>"""
         ),
         "example_code": """
 /// define
@@ -72,7 +72,7 @@ Apple
     {
         "short_description": _("Details"),
         "help_text": _(
-            "Insert a Details html tag. More information: https://facelessuser.github.io/pymdown-extensions/extensions/blocks/plugins/details/"
+            """Insert a Details html tag. <a href="https://facelessuser.github.io/pymdown-extensions/extensions/blocks/plugins/admonition/" target="_blank">Open external docs ↗</a>"""
         ),
         "example_code": """
 /// details | Some Summary
@@ -92,7 +92,7 @@ Apple
     {
         "short_description": _("HTML"),
         "help_text": _(
-            "Insert a HTML html tag. NOTE: The wiki ues bleach to clean both HTML tags and certain attributes. More information: https://facelessuser.github.io/pymdown-extensions/extensions/blocks/plugins/html/"
+            """Insert a HTML html tag. NOTE: The wiki ues bleach to clean both HTML tags and certain attributes. <a href="https://facelessuser.github.io/pymdown-extensions/extensions/blocks/plugins/admonition/" target="_blank">Open external docs ↗</a>"""
         ),
         "example_code": """
 /// html | div[style='border: 1px solid red;']

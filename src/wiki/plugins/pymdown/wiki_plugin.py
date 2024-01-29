@@ -8,7 +8,7 @@ class PymdownPlugin(BasePlugin):
     slug = settings.SLUG
 
     sidebar = {
-        "headline": _("PyMDown Macros"),
+        "headline": _("PyMdown Macros"),
         "icon_class": "fa-play",
         "template": "wiki/plugins/pymdown/sidebar.html",
         "form_class": None,
