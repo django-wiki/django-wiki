@@ -19,11 +19,16 @@
 }
 
 .admonition {
-  padding: 0 15px;
+  padding: 15px;
   margin-bottom: 20px;
   border: 1px solid transparent;
   border-radius: 4px;
   text-align: left;
+
+  > p:last-child {
+    margin-bottom: 0;
+  }
+
   @include admonition_colors_default($gray-600);
   &-title {
     font-weight: bold;

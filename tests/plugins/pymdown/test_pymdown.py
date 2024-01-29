@@ -15,7 +15,7 @@ class TocMacroTests(TestCase):
 
     def test_pymdown_renders_block_details(self):
         extensions = ["extra"]
-        extensions.extend(wiki_plugin.Plugin.markdown_extensions)
+        extensions.extend(wiki_plugin.PymdownPlugin.markdown_extensions)
         md = Markdown(extensions=extensions)
         text = "/// details | Some summary\n" "\n" "Some content\b" "///\n"
         expected_output = (
@@ -28,7 +28,7 @@ class TocMacroTests(TestCase):
 
     def test_pymdown_renders_block_details_with_type(self):
         extensions = ["extra"]
-        extensions.extend(wiki_plugin.Plugin.markdown_extensions)
+        extensions.extend(wiki_plugin.PymdownPlugin.markdown_extensions)
         md = Markdown(extensions=extensions)
         text = (
             "/// details | Some summary\n"
@@ -47,7 +47,7 @@ class TocMacroTests(TestCase):
 
     def test_pymdown_renders_block_admonition(self):
         extensions = ["extra"]
-        extensions.extend(wiki_plugin.Plugin.markdown_extensions)
+        extensions.extend(wiki_plugin.PymdownPlugin.markdown_extensions)
         md = Markdown(extensions=extensions)
         text = "/// admonition | Some summary\n" "Some content\b" "///\n"
         expected_output = (
@@ -60,7 +60,7 @@ class TocMacroTests(TestCase):
 
     def test_pymdown_renders_block_admonition_with_type(self):
         extensions = ["extra"]
-        extensions.extend(wiki_plugin.Plugin.markdown_extensions)
+        extensions.extend(wiki_plugin.PymdownPlugin.markdown_extensions)
         md = Markdown(extensions=extensions)
         text = (
             "/// admonition | Some summary\n"
@@ -78,7 +78,7 @@ class TocMacroTests(TestCase):
 
     def test_pymdown_renders_block_definition(self):
         extensions = ["extra"]
-        extensions.extend(wiki_plugin.Plugin.markdown_extensions)
+        extensions.extend(wiki_plugin.PymdownPlugin.markdown_extensions)
         md = Markdown(extensions=extensions)
         text = (
             "/// define\n"
@@ -98,7 +98,7 @@ class TocMacroTests(TestCase):
 
     def test_pymdown_renders_block_definition_multiples(self):
         extensions = ["extra"]
-        extensions.extend(wiki_plugin.Plugin.markdown_extensions)
+        extensions.extend(wiki_plugin.PymdownPlugin.markdown_extensions)
         md = Markdown(extensions=extensions)
         text = (
             "/// define\n"
@@ -124,7 +124,7 @@ class TocMacroTests(TestCase):
 
     def test_pymdown_renders_block_definition_multiple_terms(self):
         extensions = ["extra"]
-        extensions.extend(wiki_plugin.Plugin.markdown_extensions)
+        extensions.extend(wiki_plugin.PymdownPlugin.markdown_extensions)
         md = Markdown(extensions=extensions)
         text = (
             "/// define\n"
@@ -151,7 +151,7 @@ class TocMacroTests(TestCase):
 
     def test_pymdown_renders_block_html_wrap(self):
         extensions = ["extra"]
-        extensions.extend(wiki_plugin.Plugin.markdown_extensions)
+        extensions.extend(wiki_plugin.PymdownPlugin.markdown_extensions)
         md = Markdown(extensions=extensions)
         text = (
             "/// html | div[stype='border: 1px solid red;']\n"
@@ -171,7 +171,7 @@ class TocMacroTestsInWiki(RequireRootArticleMixin, TestBase):
         wiki_plugin.settings.update_whitelist()  # Fixes testing bug
         md = markdown.ArticleMarkdown(
             article=self.root_article,
-            extensions=wiki_plugin.Plugin.markdown_extensions,
+            extensions=wiki_plugin.PymdownPlugin.markdown_extensions,
         )
         text = "/// details | Some summary\n" "\n" "Some content\n" "///\n"
         expected_output = (
@@ -186,7 +186,7 @@ class TocMacroTestsInWiki(RequireRootArticleMixin, TestBase):
         wiki_plugin.settings.update_whitelist()  # Fixes testing bug
         md = markdown.ArticleMarkdown(
             article=self.root_article,
-            extensions=wiki_plugin.Plugin.markdown_extensions,
+            extensions=wiki_plugin.PymdownPlugin.markdown_extensions,
         )
         text = (
             "/// details | Some summary\n"
@@ -205,7 +205,7 @@ class TocMacroTestsInWiki(RequireRootArticleMixin, TestBase):
     def test_pymdown_in_wiki_renders_block_admonition(self):
         md = markdown.ArticleMarkdown(
             article=self.root_article,
-            extensions=wiki_plugin.Plugin.markdown_extensions,
+            extensions=wiki_plugin.PymdownPlugin.markdown_extensions,
         )
         text = "/// admonition | Some summary\n" "Some content.\n" "///\n"
         expected_output = (
@@ -219,7 +219,7 @@ class TocMacroTestsInWiki(RequireRootArticleMixin, TestBase):
     def test_pymdown_in_wiki_renders_block_admonition_with_type(self):
         md = markdown.ArticleMarkdown(
             article=self.root_article,
-            extensions=wiki_plugin.Plugin.markdown_extensions,
+            extensions=wiki_plugin.PymdownPlugin.markdown_extensions,
         )
         text = (
             "/// admonition | Some summary\n"
@@ -238,7 +238,7 @@ class TocMacroTestsInWiki(RequireRootArticleMixin, TestBase):
     def test_pymdown_in_wiki_renders_block_definition(self):
         md = markdown.ArticleMarkdown(
             article=self.root_article,
-            extensions=wiki_plugin.Plugin.markdown_extensions,
+            extensions=wiki_plugin.PymdownPlugin.markdown_extensions,
         )
         text = (
             "/// define\n"
@@ -259,7 +259,7 @@ class TocMacroTestsInWiki(RequireRootArticleMixin, TestBase):
     def test_pymdown_in_wiki_renders_block_definition_multiples(self):
         md = markdown.ArticleMarkdown(
             article=self.root_article,
-            extensions=wiki_plugin.Plugin.markdown_extensions,
+            extensions=wiki_plugin.PymdownPlugin.markdown_extensions,
         )
         text = (
             "/// define\n"
@@ -286,7 +286,7 @@ class TocMacroTestsInWiki(RequireRootArticleMixin, TestBase):
     def test_pymdown_in_wiki_renders_block_definition_multiple_terms(self):
         md = markdown.ArticleMarkdown(
             article=self.root_article,
-            extensions=wiki_plugin.Plugin.markdown_extensions,
+            extensions=wiki_plugin.PymdownPlugin.markdown_extensions,
         )
         text = (
             "/// define\n"
@@ -314,7 +314,7 @@ class TocMacroTestsInWiki(RequireRootArticleMixin, TestBase):
     def test_pymdown_in_wiki_renders_block_html_wrap(self):
         md = markdown.ArticleMarkdown(
             article=self.root_article,
-            extensions=wiki_plugin.Plugin.markdown_extensions,
+            extensions=wiki_plugin.PymdownPlugin.markdown_extensions,
         )
         text = "/// html | div.my-class\n" "some *markdown* content\n" "///\n"
         expected_output = '<div class="my-class">\n<p>some <em>markdown</em> content</p>\n</div>'
@@ -326,7 +326,7 @@ class TocMacroTestsInWiki(RequireRootArticleMixin, TestBase):
         """
         md = markdown.ArticleMarkdown(
             article=self.root_article,
-            extensions=wiki_plugin.Plugin.markdown_extensions,
+            extensions=wiki_plugin.PymdownPlugin.markdown_extensions,
         )
         text = (
             "/// html | div[stype='border: 1px solid red;']\n"
