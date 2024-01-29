@@ -31,14 +31,15 @@ INSTALLED_APPS = [
     "sorl.thumbnail",
     "django_nyt.apps.DjangoNytConfig",
     "wiki.apps.WikiConfig",
-    "wiki.plugins.macros.apps.MacrosConfig",
-    "wiki.plugins.help.apps.HelpConfig",
-    "wiki.plugins.links.apps.LinksConfig",
     "wiki.plugins.images.apps.ImagesConfig",
+    "wiki.plugins.links.apps.LinksConfig",
+    "wiki.plugins.macros.apps.MacrosConfig",
     "wiki.plugins.attachments.apps.AttachmentsConfig",
     "wiki.plugins.notifications.apps.NotificationsConfig",
     "wiki.plugins.editsection.apps.EditSectionConfig",
     "wiki.plugins.globalhistory.apps.GlobalHistoryConfig",
+    "wiki.plugins.pymdown.apps.PyMdownConfig",
+    "wiki.plugins.help.apps.HelpConfig",
     "mptt",
 ]
 
