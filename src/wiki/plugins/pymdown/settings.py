@@ -47,7 +47,9 @@ Some content
 ///
         """,
         "args": {
-            "type": _("These are Bootstrap alert levels. "),
+            "type": _(
+                "These are Bootstrap alert levels. Possible values: note, attention, caution, danger, error, tip, hint, warning"
+            ),
             "attrs": _(
                 "These are attributes that are added to the admonition html tag. Example: {class: class-name: id: id-name}"
             ),
