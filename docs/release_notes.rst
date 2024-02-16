@@ -5,7 +5,8 @@ Release notes
 Release plan
 ------------
 
-- **0.11.x** Update bootstrap to v5 and removes Python 3.7 support.
+- **0.12.x** Update bootstrap to v5
+- **0.11.x** Adds Django 5.x support and Python 3.12
 - **0.10.x** Uses Hatch as the new build system and has upgrades for Django 4.x and Python 3.11.
 - **0.9.x** Definitely Removes Python 3.5 and 3.6 support
 - **0.7.x** Removes Django 2.1 support, adds Django 3.1, 3.2
@@ -13,6 +14,11 @@ Release plan
 - **0.5.x** Remove Django 1.11 support, adds Django 2.2 and 3.x support. Python 3.5+.
 - **0.4.x** supports Django 1.11 and Django 2.1 and Python 3.4+.
 - **0.3.x** series suppors Django 1.11. As with the upstream Django release, 0.3 was be the last series with Python 2.7 support.
+
+0.10
+----
+
+Released on 2023-05-15
 
 
 0.10

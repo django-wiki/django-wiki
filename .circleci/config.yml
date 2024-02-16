@@ -84,4 +84,8 @@ workflows:
           name: "Python 3.11, Django 5.0"
           hatch_env: "py3.11-dj5.0"
           python_version: "3.11"
+      - hatch:
+          name: "Python 3.12, Django 5.0"
+          hatch_env: "py3.12-dj5.0"
+          python_version: "3.12"
       - lint

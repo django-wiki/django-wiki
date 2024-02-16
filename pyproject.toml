@@ -31,6 +31,7 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
@@ -156,7 +157,7 @@ python = ["3.9", "3.10", "3.11"]
 django = ["4.1", "4.2"]
 
 [[tool.hatch.envs.test.matrix]]
-python = ["3.10", "3.11"]
+python = ["3.10", "3.11", "3.12"]
 django = ["5.0"]
 
 [tool.hatch.envs.transifex]
