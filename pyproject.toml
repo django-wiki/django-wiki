@@ -23,6 +23,7 @@ classifiers = [
     "Framework :: Django :: 3.2",
     "Framework :: Django :: 4.1",
     "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.0",
     "Intended Audience :: Developers",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
@@ -39,14 +40,14 @@ classifiers = [
 ]
 dependencies = [
     # Django version support is added one minor release at a time
-    "Django>=3.2,<4.3",
+    "Django>=3.2,<5.1",
     # bleach has been pretty stable, hence the loose pin
     "bleach[css]>=6,<7",
     # Pillow is used very little and has never broken
     "Pillow",
     # django-nyt is maintained by django-wiki maintainers, so we can
     # control breakage and pinning ourselves
-    "django-nyt>=1.2.2",
+    "django-nyt>=1.4",
     # django-mptt has had several breaking changes
     "django-mptt>=0.13,<0.17",
     # django-sekizai is basically only releasing every time
@@ -153,6 +154,10 @@ django = ["3.2", "4.0"]
 [[tool.hatch.envs.test.matrix]]
 python = ["3.9", "3.10", "3.11"]
 django = ["4.1", "4.2"]
+
+[[tool.hatch.envs.test.matrix]]
+python = ["3.10", "3.11"]
+django = ["5.0"]
 
 [tool.hatch.envs.transifex]
 dependencies = []
