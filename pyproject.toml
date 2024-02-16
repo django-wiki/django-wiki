@@ -48,7 +48,7 @@ dependencies = [
     "Pillow",
     # django-nyt is maintained by django-wiki maintainers, so we can
     # control breakage and pinning ourselves
-    "django-nyt>=1.4",
+    "django-nyt>=1.4,1.5",
     # django-mptt has had several breaking changes
     "django-mptt>=0.13,<0.17",
     # django-sekizai is basically only releasing every time
