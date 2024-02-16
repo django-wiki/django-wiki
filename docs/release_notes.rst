@@ -15,10 +15,57 @@ Release plan
 - **0.4.x** supports Django 1.11 and Django 2.1 and Python 3.4+.
 - **0.3.x** series suppors Django 1.11. As with the upstream Django release, 0.3 was be the last series with Python 2.7 support.
 
-0.10
-----
+0.11rc1
+-------
 
-Released on 2023-05-15
+Added
+~~~~~
+
+* ``[TOC]`` Markdown extension now accepts several arguments, ``toc_depth``, ``title`` and more :url-issue:`1304` (Ryan Henrichson)
+* Pymdown-extensions support is gradually added:
+
+  * `PyMDown Blocks <https://facelessuser.github.io/pymdown-extensions/extensions/blocks/>`__ are now supported :url-issue:`1316` (Ryan Henrichson)
+  * Sidebar documentation for new plugin (enable by adding ``wiki.plugins.pymdown.apps.PyMdownConfig`` to your installed apps :url-issue:`1334` (Ryan Henrichson, Benjamin Balder Bach)
+
+* Add support for Django 5.0 :url-issue:`1337` (Benjamin Balder Bach)
+* Add support for Python 3.12 :url-issue:`1337` (Benjamin Balder Bach)
+* Markdown 3.4 and 3.5 support :url-issue:`1313` (Ryan Henrichson)
+
+Fixed
+~~~~~
+
+* Fix xframe_options_sameorigin bug in MergeView :url-issue:`1294` (liuxiawei 刘夏唯)
+* Read the Docs configuration, setup and theme upgraded (Benjamin Balder Bach)
+* CodeCov setup restored  :url-issue:`1295` (Oscar Cortez)
+* Editsection plugin: Relax path regex (fixing NoReverseMatch) + tests :url-issue:`1299` (Chris Vigelius)
+* Fixed extending ``WIKI_MARKDOWN_HTML_WHITELIST`` :url-issue:`1314` (Ryan Henrichson)
+
+Changed
+~~~~~~~
+
+* ``align`` attributes in ``<td>`` tags are allowed in generated HTML  :url-issue:`1320` (yengip)
+* Codebase linted with ruff (Black and flake8 removed) :url-issue:`1321` (Oscar Cortez)
+* Dependencies bumped:
+
+  * django-nyt 1.4
+  * django-mptt 0.16
+  * Markdown 3.5
+
+* Dependency added:
+
+  * pymdown-extensions 10.5
+
+Translations
+~~~~~~~~~~~~
+
+*
+
+
+Removed
+~~~~~~~
+
+* Removes support for Django 2.2, 3.0, 3.1
+* Removes support for Python 3.7, 3.8, 3.9
 
 
 0.10
