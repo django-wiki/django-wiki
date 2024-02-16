@@ -129,9 +129,9 @@ class ArticleModelTest(TestCase):
         )
         expected = """<h1 id="wiki-toc-header">header""" """.*</h1>"""
         # cached content does not exist yet. this will create it
-        self.assertRegexpMatches(a.get_cached_content(), expected)
+        self.assertRegex(a.get_cached_content(), expected)
         # actual cached content test
-        self.assertRegexpMatches(a.get_cached_content(), expected)
+        self.assertRegex(a.get_cached_content(), expected)
 
     def test_articlerevision_presave_signals(self):
         a = Article.objects.create()
