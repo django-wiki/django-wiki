@@ -34,9 +34,10 @@ jobs:
 
 
 workflows:
-  main:
+  test:
     jobs:
       - hatch:
+          name: "Python 3.9, Django 3.2"
           hatch_env: "py3.9-dj3.2"
           python_version: "3.9"
       - hatch:
