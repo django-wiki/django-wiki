@@ -173,7 +173,9 @@
       "fields": {
           "user": 1,
           "interval": 0,
-          "is_default": true
+          "is_default": true,
+          "created": "2023-01-31T22:18:24Z",
+          "modified": "2023-01-31T22:18:24Z"
       }
   },
   {
@@ -182,7 +184,9 @@
       "fields": {
           "user": 2,
           "interval": 0,
-          "is_default": true
+          "is_default": true,
+          "created": "2023-01-31T22:18:24Z",
+          "modified": "2023-01-31T22:18:24Z"
       }
   },
   {
@@ -193,7 +197,10 @@
           "notification_type": "article_edit",
           "object_id": "1",
           "send_emails": true,
-          "latest": null
+          "latest": null,
+          "created": "2023-01-31T22:18:24Z",
+          "modified": "2023-01-31T22:18:24Z",
+          "last_sent": null
       }
   },
   {
