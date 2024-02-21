@@ -22,7 +22,6 @@ class DemoMiddleware:
             if str(message) == MSG:
                 demo_message_exists = True
         storage.used = False
-        print(demo_message_exists)
         if not demo_message_exists:
             messages.add_message(request, messages.WARNING, MSG)
 
