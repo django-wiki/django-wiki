@@ -1,4 +1,5 @@
 from .base import *  # noqa @UnusedWildImport
+from .demo import *  # noqa @UnusedWildImport
 
 DEBUG = True
 
