@@ -5,8 +5,6 @@ If you want to import articles from Mediawiki, you can create an XML dump of the
 a Django management command to import it.
 The management command is not provided as part of django-wiki, but we'll show you how to build on for your own Django app.
 
-The following management command code should work fine with the latest django-wiki version and
-latest mediawiki version.
 It uses the lxml library to parse the mediawiki xml
 and the unidecode to convert non-latin characters to ascii (so as to create their slug). Finally it
 uses pandoc to do the actual markdown -> github flavored markdown convert (I have tested it on windows and it works great).
