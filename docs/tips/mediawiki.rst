@@ -13,7 +13,6 @@ For the lxml and unidecode you can install them with ``pip install lxml unidecod
 download it from https://pandoc.org/installing.html (make sure the pandoc binary is in your PATH).
 
 The following snippet of code should be placed in ``<your-app>/management/commands/import_mediawiki_dump.py``:
-``python manage.py import_mediawiki_dump <mediawiki-xml-dump-file>``
 
 
 ..  code-block:: python
