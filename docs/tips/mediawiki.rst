@@ -1,8 +1,9 @@
 Mediawiki
 =========
 
-If you want to import from Mediawiki you can create an XML dump of the pages and then use
-a management command for your app to import it.
+If you want to import articles from Mediawiki, you can create an XML dump of the pages and then use
+a Django management command to import it.
+The management command is not provided as part of django-wiki, but we'll show you how to build on for your own Django app.
 
 The following management command code should work fine with the latest django-wiki version and
 latest mediawiki version.
