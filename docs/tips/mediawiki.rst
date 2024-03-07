@@ -129,6 +129,15 @@ The following snippet of code should be placed in ``<your-app>/management/comman
                     user,
             )
 
+Usage
+-----
+
+Once the management command is provided by your Django application, you can invoke it from the command-line:
+
+.. code-block:: console
+
+   python manage.py import_mediawiki_dump <mediawiki-xml-dump-file>``
+
 Please notice that this tries to find a ``root`` user to assign the owner of the imported pages
 (you can leave that as None or add your own user).
 Also I haven't tested if it works fine when you've got multiple revisions of each page;
