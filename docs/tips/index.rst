@@ -6,6 +6,7 @@ Tips & FAQ
 
    faq
    disqus
+   mediawiki
 
 Quick tips
 ----------
