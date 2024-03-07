@@ -7,7 +7,7 @@ The management command is not provided as part of django-wiki, but we'll show yo
 
 In the management command, we are going to use the lxml library to parse the MediaWiki XML
 and the unidecode to convert non-latin characters to ascii (so as to create their slug). Finally it
-uses pandoc to do the actual markdown -> github flavored markdown convert (I have tested it on windows and it works great).
+uses pandoc to do conversion from MediaWiki markup to GitHub Flavored Markdown (which in this case renders fine in django-wiki).
 
 For the lxml and unidecode you can install them with ``pip install lxml unidecode`` and for pandoc you can
 download it from https://pandoc.org/installing.html (make sure the pandoc binary is in your PATH).
