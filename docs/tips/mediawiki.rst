@@ -138,12 +138,14 @@ Once the management command is provided by your Django application, you can invo
 
    python manage.py import_mediawiki_dump <mediawiki-xml-dump-file>``
 
-Please notice that this tries to find a ``root`` user to assign the owner of the imported pages
-(you can leave that as None or add your own user).
-Also I haven't tested if it works fine when you've got multiple revisions of each page;
-it tries to pick the text of the latest one (``text = revision.xpath('*[local-name()="text"]')[-1].text``)
-but I'm not sure it will work properly. Better to be safe by including only the latest revision of each
-article on your mediawiki dump. Of course you can modify the code to add all the revisions of each page
-if you want instead of only the latest one.
+Further work and customizing
+----------------------------
 
-Also you can pass True or False to import_page in order to replace or skip existing pages.
+Please note the following:
+
+- The script defines a ``root`` user to assign the owner of the imported pages
+(you can leave that as None or add your own user).
+
+- Multiple revisions of each page have not been implemented. Instead, the script tries to pick the text of the latest one (``text = revision.xpath('*[local-name()="text"]')[-1].text``). Because of this, it's recommended to only include the latest revision of each article on your MediaWiki dump.
+
+- You can pass ``True`` or ``False`` to ``import_page()`` in order to replace or skip existing pages.
