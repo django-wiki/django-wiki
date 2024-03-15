@@ -211,14 +211,14 @@ class WikiRenderTest(TemplateTestCase):
         output = wiki_render({}, article, preview_content=content)
         self.assertCountEqual(self.keys, output)
         self.assertEqual(output["article"], article)
-        self.assertRegexpMatches(output["content"], expected)
+        self.assertRegex(output["content"], expected)
         self.assertIs(output["preview"], True)
         self.assertEqual(output["plugins"], {"spam": "eggs"})
         self.assertEqual(output["STATIC_URL"], django_settings.STATIC_URL)
         self.assertEqual(output["CACHE_TIMEOUT"], settings.CACHE_TIMEOUT)
 
         output = self.render({"article": article, "pc": content})
-        self.assertRegexpMatches(output, expected)
+        self.assertRegex(output, expected)
 
     def test_called_with_preview_content_and_article_dont_have_current_revision(
         self

@@ -34,36 +34,58 @@ jobs:
 
 
 workflows:
-  main:
+  test:
     jobs:
       - hatch:
+          name: "Python 3.9, Django 3.2"
           hatch_env: "py3.9-dj3.2"
           python_version: "3.9"
       - hatch:
+          name: "Python 3.9, Django 4.0"
           hatch_env: "py3.9-dj4.0"
           python_version: "3.9"
       - hatch:
+          name: "Python 3.9, Django 4.1"
           hatch_env: "py3.9-dj4.1"
           python_version: "3.9"
       - hatch:
+          name: "Python 3.9, Django 4.2"
           hatch_env: "py3.9-dj4.2"
           python_version: "3.9"
       - hatch:
+          name: "Python 3.10, Django 3.2"
           hatch_env: "py3.10-dj3.2"
           python_version: "3.10"
       - hatch:
+          name: "Python 3.10, Django 4.0"
           hatch_env: "py3.10-dj4.0"
           python_version: "3.10"
       - hatch:
+          name: "Python 3.10, Django 4.1"
           hatch_env: "py3.10-dj4.1"
           python_version: "3.10"
       - hatch:
+          name: "Python 3.10, Django 4.2"
           hatch_env: "py3.10-dj4.2"
           python_version: "3.10"
       - hatch:
+          name: "Python 3.10, Django 5.0"
+          hatch_env: "py3.10-dj5.0"
+          python_version: "3.10"
+      - hatch:
+          name: "Python 3.11, Django 4.1"
           hatch_env: "py3.11-dj4.1"
           python_version: "3.11"
       - hatch:
+          name: "Python 3.11, Django 4.2"
           hatch_env: "py3.11-dj4.2"
           python_version: "3.11"
+      - hatch:
+          name: "Python 3.11, Django 5.0"
+          hatch_env: "py3.11-dj5.0"
+          python_version: "3.11"
+      - hatch:
+          name: "Python 3.12, Django 5.0"
+          hatch_env: "py3.12-dj5.0"
+          python_version: "3.12"
       - lint
