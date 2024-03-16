@@ -1,3 +1,5 @@
+from textwrap import dedent
+
 import logging
 import re
 
@@ -6,6 +8,7 @@ from markdown.extensions.codehilite import CodeHiliteExtension
 from markdown.preprocessors import Preprocessor
 from markdown.treeprocessors import Treeprocessor
 from wiki.core.markdown import add_to_registry
+
 
 logger = logging.getLogger(__name__)
 
@@ -35,14 +38,17 @@ class WikiFencedBlockPreprocessor(Preprocessor):
     """
 
     FENCED_BLOCK_RE = re.compile(
-        r"""
-(?P<fence>^(?:~{3,}|`{3,}))[ ]*         # Opening ``` or ~~~
-(\{?\.?(?P<lang>[a-zA-Z0-9_+-]*))?[ ]*  # Optional {, and lang
-# Optional highlight lines, single- or double-quote-delimited
-(hl_lines=(?P<quot>"|')(?P<hl_lines>.*?)(?P=quot))?[ ]*
-}?[ ]*\n                                # Optional closing }
-(?P<code>.*?)(?<=\n)
-(?P=fence)[ ]*$""",
+        dedent(
+            r"""
+            (?P<fence>^(?:~{3,}|`{3,}))[ ]*                          # opening fence
+            ((\{(?P<attrs>[^\}\n]*)\})|                              # (optional {attrs} or
+            (\.?(?P<lang>[\w#.+-]*)[ ]*)?                            # optional (.)lang
+            (hl_lines=(?P<quot>"|')(?P<hl_lines>.*?)(?P=quot)[ ]*)?) # optional hl_lines)
+            \n                                                       # newline (end of opening fence)
+            (?P<code>.*?)(?<=\n)                                     # the code block
+            (?P=fence)[ ]*$                                          # closing fence
+        """
+        ),
         re.MULTILINE | re.DOTALL | re.VERBOSE,
     )
     CODE_WRAP = "<pre>%s</pre>"

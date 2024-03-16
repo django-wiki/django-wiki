@@ -11,7 +11,11 @@ from wiki.plugins.macros.mdx import toc
 # http://stackoverflow.com/questions/430759/regex-for-managing-escaped-characters-for-items-like-string-literals
 re_sq_short = r"'([^'\\]*(?:\\.[^'\\]*)*)'"
 
-MACRO_RE = r"(\[(?P<macro>\w+)(?P<kwargs>\s\w+\:.+)*\])"
+
+MACRO_RE = (
+    r"""\[(?P<macro>\w+)(?P<kwargs>(\s+\w+\:([^\:\]\s]+|'[^']+'))+)*\]"""
+)
+
 KWARG_RE = re.compile(
     r"\s*(?P<arg>\w+)(:(?P<value>([^\']+|%s)))?" % re_sq_short, re.IGNORECASE
 )
@@ -48,10 +52,12 @@ class MacroPattern(markdown.inlinepatterns.Pattern):
         kwargs = m.group("kwargs")
         if not kwargs:
             return getattr(self, macro)()
+
         kwargs_dict = {}
         for kwarg in KWARG_RE.finditer(kwargs):
             arg = kwarg.group("arg")
             value = kwarg.group("value")
+
             if value is None:
                 value = True
             if isinstance(value, str):
