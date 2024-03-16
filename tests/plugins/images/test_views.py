@@ -55,7 +55,7 @@ class ImageTests(
             plugin_index, 0, msg="Image plugin not activated"
         )
         base_edit_url = reverse("wiki:edit", kwargs={"path": path})
-        url = base_edit_url + "?f=form{0:d}".format(plugin_index)
+        url = base_edit_url + f"?f=form{plugin_index:d}"
         filestream = self._create_gif_filestream_from_base64(self.test_data)
         response = self.client.post(
             url,

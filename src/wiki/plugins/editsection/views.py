@@ -83,7 +83,7 @@ class EditSection(EditView):
             else:
                 messages.error(
                     request,
-                    "{} {}".format(ERROR_SECTION_CHANGED, ERROR_TRY_AGAIN),
+                    f"{ERROR_SECTION_CHANGED} {ERROR_TRY_AGAIN}",
                 )
                 return self._redirect_to_article()
         else:
@@ -129,7 +129,7 @@ class EditSection(EditView):
             self.article.save()
             messages.error(
                 self.request,
-                "{} {}".format(ERROR_ARTICLE_CHANGED, ERROR_TRY_AGAIN),
+                f"{ERROR_ARTICLE_CHANGED} {ERROR_TRY_AGAIN}",
             )
 
         return self._redirect_to_article()

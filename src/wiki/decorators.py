@@ -113,7 +113,7 @@ def get_article(  # noqa: max-complexity 19
         except NoRootURL:
             return redirect("wiki:root_create")
         except models.Article.DoesNotExist:
-            raise Http404("Article id {:} not found".format(article_id))
+            raise Http404(f"Article id {article_id} not found")
         except models.URLPath.DoesNotExist:
             try:
                 pathlist = list(

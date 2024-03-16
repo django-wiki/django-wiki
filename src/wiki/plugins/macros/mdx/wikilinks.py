@@ -21,7 +21,7 @@ def build_url(label, base, end, md):
         if urlpath.children.filter(slug=clean_label).exists():
             base = ""
             break
-    return "%s%s%s" % (base, clean_label, end)
+    return f"{base}{clean_label}{end}"
 
 
 class WikiLinkExtension(Extension):

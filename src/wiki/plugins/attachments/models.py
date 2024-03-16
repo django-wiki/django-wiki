@@ -60,7 +60,7 @@ class Attachment(ReusablePlugin):
         from wiki.models import Article
 
         try:
-            return "%s: %s" % (
+            return "{}: {}".format(
                 self.article.current_revision.title,
                 self.original_filename,
             )

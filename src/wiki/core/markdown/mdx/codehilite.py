@@ -26,7 +26,7 @@ def highlight(code, config, tab_length, lang=None):
         lang=lang,
     )
     html = code.hilite()
-    html = """<div class="codehilite-wrap">{}</div>""".format(html)
+    html = f"""<div class="codehilite-wrap">{html}</div>"""
     return html
 
 
@@ -73,7 +73,7 @@ class WikiFencedBlockPreprocessor(Preprocessor):
                     m.group("code"), self.config, self.md.tab_length, lang=lang
                 )
                 placeholder = self.md.htmlStash.store(html)
-                text = "%s\n%s\n%s" % (
+                text = "{}\n{}\n{}".format(
                     text[: m.start()],
                     placeholder,
                     text[m.end() :],
