@@ -8,6 +8,8 @@ from tests.base import TestBase
 
 
 class TocMacroTests(TestCase):
+    maxDiff = None
+
     def test_toc_renders_table_of_content(self):
         """Verifies that the [TOC] wiki code renders a Table of Content"""
         md = Markdown(extensions=["extra", WikiTocExtension()])

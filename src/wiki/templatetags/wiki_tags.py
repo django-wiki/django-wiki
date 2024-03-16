@@ -129,7 +129,7 @@ def get_content_snippet(content, keyword, max_words=30):
         before = " ".join(before_words)
         after = " ".join(after_words)
         html = ("%s %s %s" % (before, striptags(match), after)).strip()
-        kw_p = re.compile(r"(\S*%s\S*)" % keyword, re.IGNORECASE)
+        kw_p = re.compile(r"(\S*%s\S*)" % re.escape(keyword), re.IGNORECASE)
         html = kw_p.sub(r"<strong>\1</strong>", html)
 
         return mark_safe(html)

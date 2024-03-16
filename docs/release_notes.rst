@@ -68,6 +68,17 @@ Removed
 * Removes support for Python 3.7, 3.8, 3.9
 
 
+0.10.1
+------
+
+Released on 2024-03-16
+
+Security
+~~~~~~~~
+
+* Fixes reDOS issues: Denial of Service possible through unsafe regular expressions `GHSA-wj85-w4f4-xh8h <https://github.com/django-wiki/django-wiki/security/advisories/GHSA-wj85-w4f4-xh8h>`__ (Santos Gallegos, Benjamin Balder Bach)
+
+
 0.10
 ----
 
