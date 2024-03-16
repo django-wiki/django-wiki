@@ -4,6 +4,8 @@ from wiki.plugins.macros.mdx.toc import WikiTocExtension
 
 
 class TocMacroTests(TestCase):
+    maxDiff = None
+
     def test_toc_renders_table_of_content(self):
         """Verifies that the [TOC] wiki code renders a Table of Content"""
         md = markdown.Markdown(extensions=["extra", WikiTocExtension()])

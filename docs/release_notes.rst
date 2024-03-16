@@ -15,6 +15,17 @@ Release plan
 - **0.3.x** series suppors Django 1.11. As with the upstream Django release, 0.3 was be the last series with Python 2.7 support.
 
 
+0.10.1
+------
+
+Released on 2024-03-16
+
+Security
+~~~~~~~~
+
+* Fixes reDOS issues: Denial of Service possible through unsafe regular expressions `GHSA-wj85-w4f4-xh8h <https://github.com/django-wiki/django-wiki/security/advisories/GHSA-wj85-w4f4-xh8h>`__ (Santos Gallegos, Benjamin Balder Bach)
+
+
 0.10
 ----
 
