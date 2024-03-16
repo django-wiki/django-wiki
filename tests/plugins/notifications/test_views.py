@@ -44,9 +44,7 @@ class NotificationSettingsTests(
             "MIN_NUM_FORMS",
             "MAX_NUM_FORMS",
         ):
-            data["%s-%s" % (management_form.prefix, i)] = management_form[
-                i
-            ].value()
+            data[f"{management_form.prefix}-{i}"] = management_form[i].value()
 
         for i in range(response.context["form"].total_form_count()):
             # get form index 'i'
@@ -55,7 +53,7 @@ class NotificationSettingsTests(
             # retrieve all the fields
             for field_name in current_form.fields:
                 value = current_form[field_name].value()
-                data["%s-%s" % (current_form.prefix, field_name)] = (
+                data[f"{current_form.prefix}-{field_name}"] = (
                     value if value is not None else ""
                 )
 

@@ -100,7 +100,7 @@ class ImageRevision(RevisionPluginRevision):
                 self.image = predecessor.image
                 self.width = predecessor.width
                 self.height = predecessor.height
-            except IOError:
+            except OSError:
                 self.image = None
 
     class Meta:

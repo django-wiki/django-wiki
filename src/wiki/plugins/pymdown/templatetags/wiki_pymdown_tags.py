@@ -6,5 +6,4 @@ register = template.Library()
 
 @register.simple_tag
 def allowed_pymdown_macros():
-    for method in settings.pymdown_docs:
-        yield method
+    yield from settings.pymdown_docs

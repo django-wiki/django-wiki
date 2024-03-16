@@ -8,7 +8,7 @@ HEADER_ID_PREFIX = "wiki-toc-"
 
 def process_toc_depth(toc_depth):
     if isinstance(toc_depth, str) and "-" in toc_depth:
-        toc_top, toc_bottom = [int(x) for x in toc_depth.split("-")]
+        toc_top, toc_bottom = (int(x) for x in toc_depth.split("-"))
     else:
         toc_top = 1
         toc_bottom = int(toc_depth)

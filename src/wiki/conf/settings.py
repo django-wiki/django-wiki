@@ -84,7 +84,7 @@ _default_tag_whitelists = bleach.ALLOWED_TAGS.union(
         "dt",
         "dd",
     }
-).union({"h{}".format(n) for n in range(1, 7)})
+).union({f"h{n}" for n in range(1, 7)})
 
 
 #: List of allowed tags in Markdown article contents.

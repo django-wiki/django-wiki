@@ -70,12 +70,12 @@ class ArticleViewViewTests(
     def dump_db_status(self, message=""):
         """Debug printing of the complete important database content."""
 
-        print("*** db status *** {}".format(message))
+        print(f"*** db status *** {message}")
 
         from wiki.models import Article, ArticleRevision
 
         for klass in (Article, ArticleRevision, URLPath):
-            print("* {} *".format(klass.__name__))
+            print(f"* {klass.__name__} *")
             pprint.pprint(list(klass.objects.values()), width=240)
 
     def test_redirects_to_create_if_the_slug_is_unknown(self):
@@ -186,16 +186,14 @@ class ArticleViewViewTests(
             response = self.client.post(
                 resolve_url("wiki:create", path="wikiroot/"),
                 {
-                    "title": "Sub Article {0}".format(idx),
-                    "slug": "SubArticle{0}".format(idx),
-                    "content": "Sub Article {0}".format(idx),
+                    "title": f"Sub Article {idx}",
+                    "slug": f"SubArticle{idx}",
+                    "content": f"Sub Article {idx}",
                 },
             )
             self.assertRedirects(
                 response,
-                resolve_url(
-                    "wiki:get", path="wikiroot/subarticle{0}/".format(idx)
-                ),
+                resolve_url("wiki:get", path=f"wikiroot/subarticle{idx}/"),
             )
         response = self.client.get(
             reverse("wiki:get", kwargs={"path": "wikiroot/"})
@@ -785,11 +783,11 @@ class MergeViewTest(
         self.assertContains(response, "Previewing merge between:")
         self.assertContains(
             response,
-            "#{rev_number}".format(rev_number=first_revision.revision_number),
+            f"#{first_revision.revision_number}",
         )
         self.assertContains(
             response,
-            "#{rev_number}".format(rev_number=new_revision.revision_number),
+            f"#{new_revision.revision_number}",
         )
 
 

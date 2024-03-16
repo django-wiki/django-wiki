@@ -117,7 +117,7 @@ class EditSectionProcessor(Treeprocessor):
         candidate = slug
         i = 1
         while candidate in self.slugs:
-            candidate = "{}_{}".format(slug, i)
+            candidate = f"{slug}_{i}"
             i += 1
         self.slugs[candidate] = True
         node.attrib["id"] = candidate
