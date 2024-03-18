@@ -29,7 +29,7 @@ Added
 
 * Add support for Django 5.0 :url-issue:`1337` (Benjamin Balder Bach)
 * Add support for Python 3.12 :url-issue:`1337` (Benjamin Balder Bach)
-* Markdown 3.4 and 3.5 support :url-issue:`1313` (Ryan Henrichson)
+* Markdown 3.4, 3.5 and 3.6 support :url-issue:`1313` (Ryan Henrichson)
 
 Fixed
 ~~~~~
