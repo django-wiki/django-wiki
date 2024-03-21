@@ -101,7 +101,8 @@ personal support.
 - Discussions on GitHub: `<https://github.com/django-wiki/django-wiki/discussions>`__
 - `#django-wiki on libera.chat <https://web.libera.chat/?channel=#django-wiki>`__
 - `django-wiki@googlegroups.com <https://groups.google.com/forum/#!forum/django-wiki>`__
-- `twitter:djangowiki <https://twitter.com/djangowiki>`__
+- `Fediverse: @djangowiki@fosstodon.org <https://fosstodon.org/@djangowiki>`__
+- `Twitter: @djangowiki <https://twitter.com/djangowiki>`__
 
 *Always a work in progr...*
 -----------------------------
