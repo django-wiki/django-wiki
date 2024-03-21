@@ -101,7 +101,8 @@ personal support.
 - Discussions on GitHub: `<https://github.com/django-wiki/django-wiki/discussions>`__
 - `#django-wiki on libera.chat <https://web.libera.chat/?channel=#django-wiki>`__
 - `django-wiki@googlegroups.com <https://groups.google.com/forum/#!forum/django-wiki>`__
-- `twitter:djangowiki <https://twitter.com/djangowiki>`__
+- `Fediverse: @djangowiki@fosstodon.org <https://fosstodon.org/@djangowiki>`__
+- `Twitter: @djangowiki <https://twitter.com/djangowiki>`__
 
 *Always a work in progr...*
 -----------------------------
@@ -246,3 +247,9 @@ Acknowledgements
 
 Original source of inspiration back in 2009 was django-cms,
 and since then Wagtail has also done a tremendous amount of work to promote Django models as a fundamental structure and enabler for application design.
+
+
+.. Adds a hidden link for the purpose of validating our Mastodon profile
+.. raw:: html
+
+   <a style="display: none;" rel="me" href="https://fosstodon.org/@djangowiki">Mastodon</a>
