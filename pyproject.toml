@@ -186,31 +186,31 @@ dependencies = [
 
 [tool.hatch.envs.docs.scripts]
 clean = "rm -rf docs/_build/*"
-html = "sphinx-build -c docs -b html -d docs/_build/doctrees -D latex_paper_size={args} docs/ docs/_build/html"
-dirhtml = "sphinx-build -c docs -b dirhtml -d docs/_build/doctrees -D latex_paper_size={args} docs/ docs/_build/dirhtml"
-singlehtml = "sphinx-build -c docs -b singlehtml -d docs/_build/doctrees -D latex_paper_size={args} docs/ docs/_build/singlehtml"
-pickle = "sphinx-build -c docs -b pickle -d docs/_build/doctrees -D latex_paper_size={args} docs/ docs/_build/pickle"
-json = "sphinx-build -c docs -b json -d docs/_build/doctrees -D latex_paper_size={args} docs/ docs/_build/json"
+html = "sphinx-build -c docs -b html -d docs/_build/doctrees docs/ docs/_build/html"
+dirhtml = "sphinx-build -c docs -b dirhtml -d docs/_build/doctrees docs/ docs/_build/dirhtml"
+singlehtml = "sphinx-build -c docs -b singlehtml -d docs/_build/doctrees docs/ docs/_build/singlehtml"
+pickle = "sphinx-build -c docs -b pickle -d docs/_build/doctrees docs/ docs/_build/pickle"
+json = "sphinx-build -c docs -b json -d docs/_build/doctrees docs/ docs/_build/json"
 htmlhelp = [
-    "sphinx-build -c docs -b htmlhelp -d docs/_build/doctrees -D latex_paper_size={args} docs/ docs/_build/htmlhelp",
+    "sphinx-build -c docs -b htmlhelp -d docs/_build/doctrees docs/ docs/_build/htmlhelp",
     "echo 'Build finished; now you can run HTML Help Workshop with the .hhp project file in docs/_build/htmlhelp.'",
 ]
 qthelp = [
-    "sphinx-build -c docs -b qthelp -d docs/_build/doctrees -D latex_paper_size={args} docs/ docs/_build/qthelp",
+    "sphinx-build -c docs -b qthelp -d docs/_build/doctrees docs/ docs/_build/qthelp",
     "echo 'Build finished; now you can run qcollectiongenerator with the .qhcp project file in docs/_build/qthelp, like this:'",
     "echo '# qcollectiongenerator docs/_build/qthelp/django-wiki.qhcp'",
     "echo 'To view the help file:'",
     "echo '# assistant -collectionFile docs/_build/qthelp/django-wiki.qhc'",
 ]
 devhelp = [
-    "sphinx-build -c docs -b devhelp -d docs/_build/doctrees -D latex_paper_size={args} docs/ docs/_build/devhelp",
+    "sphinx-build -c docs -b devhelp -d docs/_build/doctrees docs/ docs/_build/devhelp",
     "echo 'Build finished.'",
     "echo 'To view the help file:'",
     "echo '# mkdir -p $$HOME/.local/share/devhelp/django-wiki'",
     "echo '# ln -s docs/_build/devhelp $$HOME/.local/share/devhelp/django-wiki'",
     "echo '# devhelp'",
 ]
-epub = "sphinx-build -c docs -b epub -d docs/_build/doctrees -D latex_paper_size={args} docs/ docs/_build/epub"
+epub = "sphinx-build -c docs -b epub -d docs/_build/doctrees docs/ docs/_build/epub"
 latex = [
     "sphinx-build -c docs -b latex -d docs/_build/doctrees -D latex_paper_size={args} docs/ docs/_build/latext",
     "echo 'Build finished; the LaTeX files are in docs/_build/latex.'",
@@ -223,24 +223,24 @@ latexpdf = [
     "make -C docs/_build/latex all-pdf",
     "echo 'pdflatex finished; the PDF files are in docs/_build/latex.'",
 ]
-text = "sphinx-build -c docs -b text -d docs/_build/doctrees -D latex_paper_size={args} docs/ docs/_build/text"
-man = "sphinx-build -c docs -b man -d docs/_build/doctrees -D latex_paper_size={args} docs/ docs/_build/man"
+text = "sphinx-build -c docs -b text -d docs/_build/doctrees  docs/ docs/_build/text"
+man = "sphinx-build -c docs -b man -d docs/_build/doctrees  docs/ docs/_build/man"
 texinfo = [
-    "sphinx-build -c docs -b text -d docs/_build/doctrees -D latex_paper_size={args} docs/ docs/_build/text",
+    "sphinx-build -c docs -b text -d docs/_build/doctrees  docs/ docs/_build/text",
     "echo 'Build finished. The Texinfo files are in docs/_build/texinfo.'",
     "echo 'Run `make` in that directory to run these through makeinfo'",
     "echo '(use `make info` here to do that automatically).'",
 ]
 info = [
-    "sphinx-build -c docs -b texinfo -d docs/_build/doctrees -D latex_paper_size={args} docs/ docs/_build/texinfo",
+    "sphinx-build -c docs -b texinfo -d docs/_build/doctrees  docs/ docs/_build/texinfo",
     "echo 'Running Texinfo files through makeinfo...'",
     "make -C docs/_build/texinfo info",
     "echo 'makeinfo finished; the Info files are in docs/_build/texinfo.'",
 ]
-gettext = "sphinx-build -c docs -b gettext -D latex_paper_size={args} docs/_build/locale"
-changes = "sphinx-build -c docs -b changes -d docs/_build/doctrees -D latex_paper_size={args} docs/ docs/_build/changes"
-link-check2 = "sphinx-build -c docs -b linkcheck -d docs/_build/doctrees -D latex_paper_size={args} docs/ docs/_build/linkcheck"
-doctest = "sphinx-build -c docs -b doctest -d docs/_build/doctrees -D latex_paper_size={args} docs/ docs/_build/doctest"
+gettext = "sphinx-build -c docs -b gettext  docs/_build/locale"
+changes = "sphinx-build -c docs -b changes -d docs/_build/doctrees  docs/ docs/_build/changes"
+link-check2 = "sphinx-build -c docs -b linkcheck -d docs/_build/doctrees  docs/ docs/_build/linkcheck"
+doctest = "sphinx-build -c docs -b doctest -d docs/_build/doctrees  docs/ docs/_build/doctest"
 build = [
     "hatch run docs:clean",
     "rm -f docs/wiki*.rst",

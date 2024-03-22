@@ -5,7 +5,9 @@ Release notes
 Release plan
 ------------
 
+- **0.13.x** New editor? REST API? Please get in touch on Github! **UPCOMING ⏳️**
 - **0.12.x** Update bootstrap to v5, if you are interested in this work, please get in touch on Github! **UPCOMING ⏳️**
+
 - **0.11.x** Adds Django 5.x support and Python 3.12 **DONE 🏁️**
 - **0.10.x** Uses Hatch as the new build system and has upgrades for Django 4.x and Python 3.11 **DONE 🏁️**
 - **0.9.x** Definitely Removes Python 3.5 and 3.6 support **DONE 🏁️**
