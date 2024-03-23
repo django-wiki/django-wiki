@@ -5,15 +5,21 @@ Release notes
 Release plan
 ------------
 
-- **0.12.x** Update bootstrap to v5, if you are interested in this work, please get in touch on Github! **UPCOMING ⏳️**
-- **0.11.x** Adds Django 5.x support and Python 3.12 **DONE 🏁️**
-- **0.10.x** Uses Hatch as the new build system and has upgrades for Django 4.x and Python 3.11 **DONE 🏁️**
-- **0.9.x** Definitely Removes Python 3.5 and 3.6 support **DONE 🏁️**
-- **0.7.x** Removes Django 2.1 support, adds Django 3.1, 3.2 **DONE 🏁️**
-- **0.6.x** Targets Bootstrap v4 **DONE 🏁️**
-- **0.5.x** Remove Django 1.11 support, adds Django 2.2 and 3.x support. Python 3.5+ **DONE 🏁️**
-- **0.4.x** supports Django 1.11 and Django 2.1 and Python 3.4+ **DONE 🏁️**
-- **0.3.x** series suppors Django 1.11. As with the upstream Django release, 0.3 was be the last series with Python 2.7 support **DONE 🏁️**
+**UPCOMING ⏳**
+
+- **0.13.x** New visual editor? REST API? Post your ideas on `GitHub Discussions <https://github.com/django-wiki/django-wiki/discussions>`__.
+- **0.12.x** Update bootstrap to v5, if you are interested in this work, please help us out - see :url-issue:`1358`.
+
+**DONE 🏁**
+
+- **0.11.x** Adds Django 5.x support and Python 3.12.
+- **0.10.x** Uses Hatch as the new build system and has upgrades for Django 4.x and Python 3.11.
+- **0.9.x** Definitely Removes Python 3.5 and 3.6 support.
+- **0.7.x** Removes Django 2.1 support, adds Django 3.1, 3.2.
+- **0.6.x** Targets Bootstrap v4.
+- **0.5.x** Remove Django 1.11 support, adds Django 2.2 and 3.x support. Python 3.5+.
+- **0.4.x** supports Django 1.11 and Django 2.1 and Python 3.4+.
+- **0.3.x** series suppors Django 1.11. As with the upstream Django release, 0.3 was be the last series with Python 2.7 support.
 
 0.11
 ----

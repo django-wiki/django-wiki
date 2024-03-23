@@ -143,8 +143,7 @@ Further work and customizing
 
 Please note the following:
 
-- The script defines a ``root`` user to assign the owner of the imported pages
-(you can leave that as None or add your own user).
+- The script defines a ``root`` user to assign the owner of the imported pages (you can leave that as None or add your own user).
 
 - Multiple revisions of each page have not been implemented. Instead, the script tries to pick the text of the latest one (``text = revision.xpath('*[local-name()="text"]')[-1].text``). Because of this, it's recommended to only include the latest revision of each article on your MediaWiki dump.
 
