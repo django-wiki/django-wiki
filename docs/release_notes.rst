@@ -7,8 +7,8 @@ Release plan
 
 **UPCOMING ⏳**
 
-- **0.13.x** New visual editor? REST API? Please get in touch on Github!
-- **0.12.x** Update bootstrap to v5, if you are interested in this work, please get in touch on Github!
+- **0.13.x** New visual editor? REST API? Post your ideas on `GitHub Discussions <https://github.com/django-wiki/django-wiki/discussions>`__.
+- **0.12.x** Update bootstrap to v5, if you are interested in this work, please help us out - see :url-issue:`1358`.
 
 **DONE 🏁**
 
