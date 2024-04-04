@@ -84,7 +84,7 @@ class WikiPath(markdown.inlinepatterns.Pattern):
             except models.URLPath.DoesNotExist:
                 pass
         else:
-            urlpath = models.URLPath.objects.get(article=self.markdown.article)
+            urlpath = models.URLPath.objects.get(article=self.md.article)
             source_components = urlpath.path.strip("/").split("/")
             # We take the first (self.config['default_level'] - 1) components, so adding
             # one more component would make a path of length
