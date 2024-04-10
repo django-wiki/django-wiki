@@ -247,9 +247,3 @@ Acknowledgements
 
 Original source of inspiration back in 2009 was django-cms,
 and since then Wagtail has also done a tremendous amount of work to promote Django models as a fundamental structure and enabler for application design.
-
-
-.. Adds a hidden link for the purpose of validating our Mastodon profile
-.. raw:: html
-
-   <a style="display: none;" rel="me" href="https://fosstodon.org/@djangowiki">Mastodon</a>
