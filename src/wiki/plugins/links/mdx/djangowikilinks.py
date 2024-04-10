@@ -83,6 +83,7 @@ class WikiPath(markdown.inlinepatterns.Pattern):
                 path = urlpath.get_absolute_url()
             except models.URLPath.DoesNotExist:
                 pass
+        # Treat as relative path, meaning relative to the markdown instance's article
         else:
             urlpath = models.URLPath.objects.get(article=self.md.article)
             source_components = urlpath.path.strip("/").split("/")

@@ -51,6 +51,11 @@ FIXTURE_POSITIVE_MATCHES_NO_TRAILING_SLASH = [
         '<p><a class="wikipath" href="/linktest">Test link</a></p>',
     ),
     (
+        # Relative path
+        "[Test link](wiki:linktest)",
+        '<p><a class="wikipath" href="/linktest">Test link</a></p>',
+    ),
+    (
         # Link with an empty fragment
         "[Test link](wiki:/linktest#)",
         '<p><a class="wikipath" href="/linktest/#">Test link</a></p>',
@@ -82,17 +87,19 @@ class WikiPathExtensionTests(TestCase):
 
     def setUp(self):
         config = (("base_url", reverse_lazy("wiki:get", kwargs={"path": ""})),)
-        self.md = markdown.Markdown(
-            extensions=["extra", WikiPathExtension(config)]
-        )
         URLPath.create_root()
-        URLPath.create_urlpath(
+        urlpath = URLPath.create_urlpath(
             URLPath.root(),
             "linktest",
             title="LinkTest",
             content="A page\n#A section\nA line",
             user_message="Comment1",
         )
+        # TODO: Use wiki.core.markdown.article_markdown
+        self.md = markdown.Markdown(
+            extensions=["extra", WikiPathExtension(config)]
+        )
+        self.md.article = urlpath.article
 
     @wiki_override_settings(WIKI_WIKILINKS_TRAILING_SLASH=True)
     @data(*FIXTURE_POSITIVE_MATCHES_TRAILING_SLASH)
