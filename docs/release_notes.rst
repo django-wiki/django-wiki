@@ -21,6 +21,17 @@ Release plan
 - **0.4.x** supports Django 1.11 and Django 2.1 and Python 3.4+.
 - **0.3.x** series suppors Django 1.11. As with the upstream Django release, 0.3 was be the last series with Python 2.7 support.
 
+0.11.1
+------
+
+Released on 2024-04-10
+
+Fixed
+~~~~~
+
+* Markdown upgrade caused regressions in relative `wiki:` links :url-issue:`1359` (Henrik Hørlück Berg)
+
+
 0.11
 ----
 
