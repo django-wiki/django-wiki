@@ -20,7 +20,7 @@ jobs:
       - image: cimg/python:<<parameters.python_version>>
     steps:
       - checkout
-      - run: pip install coverage[toml] hatch pysassc
+      - run: pip install coverage[toml] hatch libsass
       - run: python -m hatch --env test.<<parameters.hatch_env>> run all
       - codecov/upload
 
