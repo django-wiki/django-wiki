@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "hatch-build-scripts"]
 build-backend = "hatchling.build"
 
 [project]
@@ -78,6 +78,17 @@ Documentation = "https://django-wiki.readthedocs.io/en/latest/"
 Tracker = "https://github.com/django-wiki/django-wiki/issues"
 Source = "https://github.com/django-wiki/django-wiki"
 
+[[tool.hatch.build.hooks.build-scripts.scripts]]
+out_dir = "src/wiki/static/wiki/bootstrap/css/"
+commands = [
+    "pysassc --style compressed src/wiki/static/wiki/bootstrap/scss/wiki/wiki-bootstrap.scss src/wiki/static/wiki/bootstrap/css/wiki-bootstrap.min.css",
+]
+artifacts = [
+    "wiki-bootstrap.min.css",
+]
+clean_artifacts = true
+clean_out_dir = true
+
 [tool.hatch.publish.index]
 disable = true
 
@@ -104,6 +115,7 @@ dependencies = [
     "pytest-django",
     "pytest-pythonpath",
     "pytest>=6.2.5,<7.3",
+    "hatch-build-scripts==0.0.4",
 ]
 
 [tool.hatch.envs.default.scripts]
@@ -131,7 +143,6 @@ clean-pyc = [
     "find . -name '*~' -exec rm -f {{}} +",
     "find . -name '__pycache__' -exec rm -fr {{}} +",
 ]
-assets = "sassc --style compressed src/wiki/static/wiki/bootstrap/scss/wiki/wiki-bootstrap.scss src/wiki/static/wiki/bootstrap/css/wiki-bootstrap.min.css"
 test = "pytest {args}"
 
 [tool.hatch.envs.test.overrides]
