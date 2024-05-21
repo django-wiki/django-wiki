@@ -70,6 +70,7 @@ dynamic = ["version"]
 docs = [
     "sphinx>=6,<8",
     "sphinx_rtd_theme==2.0.0",
+    "libsass",
 ]
 
 [project.urls]

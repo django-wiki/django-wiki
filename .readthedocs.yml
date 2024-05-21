@@ -8,8 +8,6 @@ sphinx:
 python:
    install:
    - method: pip
-       - libsass
-   - method: pip
      path: .
      extra_requirements:
        - docs
