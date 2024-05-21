@@ -30,7 +30,7 @@ jobs:
       - image: cimg/python:3.11
     steps:
       - checkout
-      - run: pip install hatch && python -m hatch --env test.py3.11-dj4.2 run lint
+      - run: pip install hatch libsass && python -m hatch --env test.py3.11-dj4.2 run lint
 
 
 workflows:

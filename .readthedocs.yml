@@ -11,3 +11,4 @@ python:
      path: .
      extra_requirements:
        - docs
+       - libsass
