@@ -7,8 +7,9 @@ sphinx:
    configuration: docs/conf.py
 python:
    install:
+    - method: pip
+       - libsass
    - method: pip
      path: .
      extra_requirements:
        - docs
-       - libsass
