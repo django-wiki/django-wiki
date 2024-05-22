@@ -81,7 +81,7 @@ Source = "https://github.com/django-wiki/django-wiki"
 [[tool.hatch.build.hooks.build-scripts.scripts]]
 out_dir = "src/wiki/static/wiki/bootstrap/css/"
 commands = [
-    "[[ -z $READTHEDOCS_VIRTUALENV_PATH ]] && pysassc --style compressed src/wiki/static/wiki/bootstrap/scss/wiki/wiki-bootstrap.scss src/wiki/static/wiki/bootstrap/css/wiki-bootstrap.min.css",
+    "[[ -z $READTHEDOCS_VIRTUALENV_PATH ]] && pysassc --style compressed src/wiki/static/wiki/bootstrap/scss/wiki/wiki-bootstrap.scss src/wiki/static/wiki/bootstrap/css/wiki-bootstrap.min.css || true",
 ]
 artifacts = [
     "wiki-bootstrap.min.css",
