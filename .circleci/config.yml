@@ -20,7 +20,7 @@ jobs:
       - image: cimg/python:<<parameters.python_version>>
     steps:
       - checkout
-      - run: pip install coverage[toml] hatch
+      - run: pip install coverage[toml] hatch libsass
       - run: python -m hatch --env test.<<parameters.hatch_env>> run all
       - codecov/upload
 
@@ -30,7 +30,7 @@ jobs:
       - image: cimg/python:3.11
     steps:
       - checkout
-      - run: pip install hatch && python -m hatch --env test.py3.11-dj4.2 run lint
+      - run: pip install hatch libsass && python -m hatch --env test.py3.11-dj4.2 run lint
 
 
 workflows:
