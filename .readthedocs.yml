@@ -3,9 +3,6 @@ build:
   os: ubuntu-20.04
   tools:
     python: "3.11"
-  jobs:
-    post_create_environment:
-      - pip install libsass
 sphinx:
    configuration: docs/conf.py
 python:
