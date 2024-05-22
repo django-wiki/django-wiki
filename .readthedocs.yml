@@ -3,11 +3,13 @@ build:
   os: ubuntu-20.04
   tools:
     python: "3.11"
+  jobs:
+    pre_install:
+      - pip install libsass
 sphinx:
    configuration: docs/conf.py
 python:
    install:
-   - requirements: docs/requirements_preinstall.txt
    - method: pip
      path: .
      extra_requirements:

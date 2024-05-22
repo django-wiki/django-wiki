@@ -1,2 +1,0 @@
-libsass==0.23.0
-pysass==0.1.0
