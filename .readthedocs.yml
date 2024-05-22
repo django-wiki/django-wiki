@@ -5,7 +5,7 @@ build:
     python: "3.11"
   jobs:
     post_create_environment:
-      - pip install libsassc
+      - pip install libsass
 sphinx:
    configuration: docs/conf.py
 python:
