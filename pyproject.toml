@@ -64,7 +64,7 @@ dependencies = [
     # Set of extensions for Python Markdown.
     "pymdown-extensions>=10.5,<10.6",
     # pysass - A pysassc wrapper to help support compiling SCSS on both windows and unix based systems
-    pysass==0.1.0
+    "pysass==0.1.0"
 ]
 dynamic = ["version"]
 
