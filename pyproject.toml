@@ -63,6 +63,8 @@ dependencies = [
     "Markdown>=3.4,<3.7",
     # Set of extensions for Python Markdown.
     "pymdown-extensions>=10.5,<10.6",
+    # pysass - A pysassc wrapper to help support compiling SCSS on both windows and unix based systems
+    pysass==0.1.0
 ]
 dynamic = ["version"]
 
@@ -81,13 +83,16 @@ Source = "https://github.com/django-wiki/django-wiki"
 [[tool.hatch.build.hooks.build-scripts.scripts]]
 out_dir = "src/wiki/static/wiki/bootstrap/css/"
 commands = [
-    "[[ -z $READTHEDOCS_VIRTUALENV_PATH ]] && pysassc --style compressed src/wiki/static/wiki/bootstrap/scss/wiki/wiki-bootstrap.scss src/wiki/static/wiki/bootstrap/css/wiki-bootstrap.min.css || true",
+    "pysass --style compressed src/wiki/static/wiki/bootstrap/scss/wiki/wiki-bootstrap.scss src/wiki/static/wiki/bootstrap/css/wiki-bootstrap.min.css"
 ]
 artifacts = [
     "wiki-bootstrap.min.css",
 ]
 clean_artifacts = true
 clean_out_dir = true
+
+[tool.hatch.metadata]
+allow-direct-references = true
 
 [tool.hatch.publish.index]
 disable = true
