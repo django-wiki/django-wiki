@@ -81,7 +81,32 @@ Source = "https://github.com/django-wiki/django-wiki"
 [[tool.hatch.build.hooks.build-scripts.scripts]]
 out_dir = "src/wiki/static/wiki/bootstrap/css/"
 commands = [
-    "[[ -z $READTHEDOCS_VIRTUALENV_PATH ]] && pysassc --style compressed src/wiki/static/wiki/bootstrap/scss/wiki/wiki-bootstrap.scss src/wiki/static/wiki/bootstrap/css/wiki-bootstrap.min.css || true",
+    """
+    python -c "import os, subprocess, shutil;
+readthedocs_env = os.environ.get('READTHEDOCS_VIRTUALENV_PATH');
+print('Building SCSS files.');
+if readthedocs_env:
+    print('READTHEDOCS_VIRTUALENV_PATH is set, skipping SASS compilation');
+elif shutil.which('pysassc') is None:
+    print('pysassc not found, please install it to proceed.');
+else:
+    result = subprocess.run(
+        [
+            'pysassc',
+            '--style',
+            'compressed',
+            'src/wiki/static/wiki/bootstrap/scss/wiki/wiki-bootstrap.scss',
+            'src/wiki/static/wiki/bootstrap/css/wiki-bootstrap.min.css'
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    );
+    if result.returncode != 0:
+        print('Error during SASS compilation:', result.stderr);
+        exit(result.returncode);
+    "
+    """
 ]
 artifacts = [
     "wiki-bootstrap.min.css",
