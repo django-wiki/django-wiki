@@ -21,6 +21,28 @@ Release plan
 - **0.4.x** supports Django 1.11 and Django 2.1 and Python 3.4+.
 - **0.3.x** series suppors Django 1.11. As with the upstream Django release, 0.3 was be the last series with Python 2.7 support.
 
+
+0.11.2
+------
+
+Released on 2024-08-21
+
+Added
+~~~~~
+
+* Django 5.1 support :url-issue:`1372` (Benjamin Balder Bach)
+
+Fixed
+~~~~~
+
+* Development environment Windows issues :url-issue:`1359` (Oscar Cortez)
+
+Changed
+~~~~~~~
+
+* CSS artifacts are automatically built in the Hatch environment :url-issue:`1363` (Oscar Cortez)
+
+
 0.11.1
 ------
 
