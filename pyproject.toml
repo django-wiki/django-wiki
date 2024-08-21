@@ -75,7 +75,7 @@ Tracker = "https://github.com/django-wiki/django-wiki/issues"
 Source = "https://github.com/django-wiki/django-wiki"
 
 [[tool.hatch.build.hooks.build-scripts.scripts]]
-out_dir = "src/wiki/static/wiki/bootstrap/css/"
+out_dir = "."
 commands = [
     """
     python -c "import os, subprocess, shutil;
@@ -92,7 +92,7 @@ else:
             '--style',
             'compressed',
             'src/wiki/static/wiki/bootstrap/scss/wiki/wiki-bootstrap.scss',
-            'src/wiki/static/wiki/bootstrap/css/wiki-bootstrap.min.css'
+            'src/wiki/static/wiki/bootstrap/scss/wiki/wiki-bootstrap.min.css'
         ],
         check=False,
         capture_output=True,
@@ -105,10 +105,10 @@ else:
     """
 ]
 artifacts = [
-    "wiki-bootstrap.min.css",
+#    "wiki-bootstrap.min.css",
 ]
-clean_artifacts = true
-clean_out_dir = true
+clean_artifacts = false
+# clean_out_dir = true
 
 [tool.hatch.publish.index]
 disable = true
