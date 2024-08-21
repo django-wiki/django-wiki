@@ -92,7 +92,7 @@ else:
             '--style',
             'compressed',
             'src/wiki/static/wiki/bootstrap/scss/wiki/wiki-bootstrap.scss',
-            'src/wiki/static/wiki/bootstrap/scss/wiki/wiki-bootstrap.min.css'
+            'src/wiki/static/wiki/bootstrap/css/wiki-bootstrap.min.css'
         ],
         check=False,
         capture_output=True,
