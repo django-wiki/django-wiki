@@ -67,6 +67,9 @@ docs = [
     "sphinx>=6,<8",
     "sphinx_rtd_theme==2.0.0",
 ]
+pygments = [
+    "Pygments<=2.19.0"
+]
 
 [project.urls]
 Homepage = "http://www.django-wiki.org"

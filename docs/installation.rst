@@ -52,6 +52,10 @@ To install the latest stable release::
 
     pip install wiki
 
+Install w/Pygments library (for codehilite)::
+
+    pip install 'wiki[pygments]'
+
 Install the latest pre-release (alpha, beta or rc)::
 
     pip install --pre wiki
