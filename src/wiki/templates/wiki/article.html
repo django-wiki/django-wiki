@@ -16,7 +16,7 @@
     <li class="float-left nav-item" id="article-title-li">
         <h1 id="article-title">
           {{ article.current_revision.title }}
-          <small style="font-size: 14px;">
+          <small class="fs-6">
             {% if urlpath.parent %}
             <a href="{% url 'wiki:get' path=urlpath.path %}" class="nav-link"><span class="fa fa-bookmark"></span> {{ urlpath.slug }}</a>
             {% endif %}

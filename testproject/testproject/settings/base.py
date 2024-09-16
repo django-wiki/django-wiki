@@ -16,6 +16,16 @@ DEBUG = False
 
 ALLOWED_HOSTS = []
 
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+)
+
+COMPRESS_PRECOMPILERS = (
+    ('text/x-scss', 'django_libsass.SassCompiler'),
+)
+
 
 INSTALLED_APPS = [
     "django.contrib.humanize.apps.HumanizeConfig",
@@ -41,6 +51,7 @@ INSTALLED_APPS = [
     "wiki.plugins.pymdown.apps.PyMdownConfig",
     "wiki.plugins.help.apps.HelpConfig",
     "mptt",
+    "compressor",
 ]
 
 TEST_RUNNER = "django.test.runner.DiscoverRunner"

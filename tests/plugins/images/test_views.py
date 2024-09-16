@@ -122,7 +122,7 @@ class ImageTests(
         output = self.get_article("[image:1 align:right size:large]", True)
         image_rev = models.Image.objects.get().current_revision.imagerevision
         expected = re.compile(
-            r'<figure class="thumbnail float-right">'
+            r'<figure class="thumbnail float-end">'
             r'<a href="' + re.escape(image_rev.image.url) + '">'
             r'<img src="/?cache/.*\.jpg" alt="test\.gif"></a>'
             r'<figcaption class="caption"></figcaption></figure>'

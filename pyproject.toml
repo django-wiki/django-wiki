@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling", "hatch-build-scripts"]
+requires = ["hatchling", ]
 build-backend = "hatchling.build"
 
 [project]
@@ -59,6 +59,9 @@ dependencies = [
     "Markdown>=3.4,<3.7",
     # Set of extensions for Python Markdown.
     "pymdown-extensions>=10.5,<10.6",
+    # Support SCSS compiling
+    "django_compressor>=4.0",
+    "django-libsass>=0.9",
 ]
 dynamic = ["version"]
 
@@ -76,42 +79,6 @@ Homepage = "http://www.django-wiki.org"
 Documentation = "https://django-wiki.readthedocs.io/en/latest/"
 Tracker = "https://github.com/django-wiki/django-wiki/issues"
 Source = "https://github.com/django-wiki/django-wiki"
-
-[[tool.hatch.build.hooks.build-scripts.scripts]]
-out_dir = "."
-commands = [
-    """
-    python -c "import os, subprocess, shutil;
-readthedocs_env = os.environ.get('READTHEDOCS_VIRTUALENV_PATH');
-print('Building SCSS files.');
-if readthedocs_env:
-    print('READTHEDOCS_VIRTUALENV_PATH is set, skipping SASS compilation');
-elif shutil.which('pysassc') is None:
-    print('pysassc not found, please install it to proceed.');
-else:
-    result = subprocess.run(
-        [
-            'pysassc',
-            '--style',
-            'compressed',
-            'src/wiki/static/wiki/bootstrap/scss/wiki/wiki-bootstrap.scss',
-            'src/wiki/static/wiki/bootstrap/css/wiki-bootstrap.min.css'
-        ],
-        check=False,
-        capture_output=True,
-        text=True,
-    );
-    if result.returncode != 0:
-        print('Error during SASS compilation:', result.stderr);
-        exit(result.returncode);
-    "
-    """
-]
-artifacts = [
-#    "wiki-bootstrap.min.css",
-]
-clean_artifacts = false
-# clean_out_dir = true
 
 [tool.hatch.publish.index]
 disable = true
@@ -139,7 +106,6 @@ dependencies = [
     "pytest-django",
     "pytest-pythonpath",
     "pytest>=6.2.5,<7.3",
-    "hatch-build-scripts==0.0.4",
 ]
 
 [tool.hatch.envs.default.scripts]

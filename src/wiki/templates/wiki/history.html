@@ -62,7 +62,7 @@
                 <i class="fa fa-plus"></i>
               {% endif %}
               {% include "wiki/includes/revision_info.html" with current_revision=article.current_revision %}
-              <div class="text-muted">
+              <div class="text-muted-light">
                 <small>
                 {% if revision.user_message %}
                   {{ revision.user_message }}
@@ -77,7 +77,7 @@
             <div class="progress progress-striped active" style="display: none; width: 40px; float: left; margin-top: 7px; margin-bottom: -7px;">
               <div class="bar" style="width: 100%;"></div>
             </div>
-            <div class="float-right" style="vertical-align: middle; margin: 8px 8px;">
+            <div class="float-end" style="vertical-align: middle; margin: 8px 8px;">
               {% if revision == article.current_revision %}
               <a href="#" class="btn btn-secondary disabled">
                 <span class="fa fa-lock fa-fw"></span>
@@ -123,7 +123,7 @@
     {% if revisions.count > 1 and article|can_write:user and not article.current_revision.locked %}
 
     <div class="form-group form-actions">
-      <div class="float-right">
+      <div class="float-end">
         <button type="submit" name="preview" value="1" class="btn btn-secondary" onclick="$('#mergeModal').modal('show'); this.form.target='mergeWindow'; this.form.action=$('input[type=radio]:checked').attr('merge-button-href'); $('.merge-revision-commit').attr('href', $('input[type=radio]:checked').attr('merge-button-commit-href'))">
           <span class="fa fa-random"></span>
           {% trans "Merge selected with current..." %}
@@ -147,7 +147,7 @@
           <iframe name="previewWindow" frameborder="0"></iframe>
         </div>
         <div class="modal-footer">
-          <a href="#" class="btn btn-secondary btn-lg" data-dismiss="modal">
+          <a href="#" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">
             <span class="fa fa-arrow-circle-left"></span>
             {% trans "Back to history view" %}
           </a>
@@ -178,7 +178,7 @@
           <iframe name="mergeWindow" frameborder="0" style="min-height: 0;"></iframe>
         </div>
         <div class="modal-footer">
-          <a href="#" class="btn btn-secondary btn-lg" data-dismiss="modal">
+          <a href="#" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">
             <span class="fa fa-arrow-circle-left"></span>
             {% trans "Back to history view" %}
           </a>

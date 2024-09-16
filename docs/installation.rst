@@ -52,10 +52,6 @@ To install the latest stable release::
 
     pip install wiki
 
-Install w/Pygments library (for codehilite)::
-
-    pip install 'wiki[pygments]'
-
 Install the latest pre-release (alpha, beta or rc)::
 
     pip install --pre wiki
@@ -71,8 +67,18 @@ Configuration
 Configure ``settings.INSTALLED_APPS``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The following applications should be listed - NB! it's important to
-maintain the order due to database relational constraints:
+There are several applications that need be listed in ``settings.INSTALLED_APPS``. You need either 'sorl.thumbnail' or 'easythumbnails' library installed.
+See above in the 'Installing' section.
+
+There are a few outside packages required that are outside of this project:
+* `django_nyt <https://github.com/django-wiki/django-nyt>` - Notification System
+* `mptt <https://github.com/django-mptt/django-mptt>` - Modified Pre-order Traversal Tree
+* `sekizai <https://github.com/django-cms/django-sekizai>` - Allows 'placeholders' in template blocks
+* Thumbnail library - two to choose from. Don't ever let anyone tell you how to thumbnail 😉.
+  - `sorl.thumbnail <https://github.com/jazzband/sorl-thumbnail>`
+  - `easythumbnails <https://github.com/SmileyChris/easy-thumbnails>`
+
+NB! it's important to maintain the order due to database relational constraints:
 
 .. code-block:: python
 
@@ -82,6 +88,8 @@ maintain the order due to database relational constraints:
     'mptt',
     'sekizai',
     'sorl.thumbnail',
+    'compressor',
+
     'wiki.apps.WikiConfig',
     'wiki.plugins.attachments.apps.AttachmentsConfig',
     'wiki.plugins.notifications.apps.NotificationsConfig',
@@ -120,6 +128,24 @@ to see the current default setting for this variable.
             },
         },
     ]
+
+Configure STATICFILES_FINDERS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. code-block:: python
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+)
+
+Configure COMPRESS_PRECOMPILERS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. code-block:: python
+
+COMPRESS_PRECOMPILERS = (
+    ('text/x-scss', 'django_libsass.SassCompiler'),
+)
 
 Database
 ~~~~~~~~
@@ -198,3 +224,4 @@ end of your urlconf. You can also put it in */wiki* by putting
 
     Please refer to
     `the Django docs <https://docs.djangoproject.com/en/1.8/howto/static-files/#serving-files-uploaded-by-a-user-during-development>`__.
+
