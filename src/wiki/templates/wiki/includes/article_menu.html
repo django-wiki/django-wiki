@@ -5,7 +5,7 @@
 <li class="nav-item">
   <a href="{% url 'wiki:get' article_id=article.id path=urlpath.path %}" class="px-3 nav-link{% if selected == "view" %} active{% endif %}">
     <span class="fa fa-home"></span>
-    <span class="hidden-xs">{% trans "View" %}</span>
+    <span class="d-none d-sm-inline">{% trans "View" %}</span>
   </a>
 </li>
 
@@ -13,14 +13,14 @@
 <li class="nav-item">
   <a href="{% url 'wiki:edit' article_id=article.id path=urlpath.path %}" class="px-3 nav-link{% if selected == "edit" %} active{% endif %}">
     <span class="fa fa-edit"></span>
-    <span class="hidden-xs">{% trans "Edit" %}</span>
+    <span class="d-none d-sm-inline">{% trans "Edit" %}</span>
   </a>
 </li>
 {% else %}
 <li class="nav-item">
   <a href="{% url 'wiki:source' article_id=article.id path=urlpath.path %}" class="px-3 nav-link{% if selected == "source" %} active{% endif %}">
     <span class="fa fa-lock"></span>
-    <span class="hidden-xs">{% trans "View Source" %}</span>
+    <span class="d-none d-sm-inline">{% trans "View Source" %}</span>
   </a>
 </li>
 {% endif %}
@@ -28,7 +28,7 @@
 <li class="nav-item">
   <a href="{% url 'wiki:history' article_id=article.id path=urlpath.path %}" class="px-3 nav-link{% if selected == "history" %} active{% endif %}">
     <span class="fa fa-clock"></span>
-    <span class="hidden-xs">{% trans "Changes" %}</span>
+    <span class="d-none d-sm-inline">{% trans "Changes" %}</span>
   </a>
 </li>
 
@@ -36,16 +36,16 @@
   <li class="nav-item">
     <a href="{% url 'wiki:plugin' slug=plugin.slug article_id=article.id path=urlpath.path %}" class="px-3 nav-link{% if selected == plugin.slug %} active{% endif %}">
       <span class="{{ plugin.article_tab.1 }}"></span>
-      <span class="hidden-xs">{{ plugin.article_tab.0 }}</span>
+      <span class="d-none d-sm-inline">{{ plugin.article_tab.0 }}</span>
     </a>
   </li>
 {% endfor %}
 
 {% if not user.is_anonymous %}
 <li class="nav-item">
-  <a href="{% url 'wiki:settings' article_id=article.id path=urlpath.path %}" class="px-3 nav-link{% if selected == "settings" %} active{% endif %}">
+  <a href="{% url 'wiki:settings' article_id=article.id path=urlpath.path %}" class="px-3 nav-link{% if selected == "settings" %} active{% endif %}" >
     <span class="fa fa-wrench"></span>
-    <span class="hidden-xs">{% trans "Settings" %}</span>
+    <span class="d-none d-sm-inline">{% trans "Settings" %}</span>
   </a>
 </li>
 {% endif %}

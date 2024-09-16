@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 TESTS_DATA_ROOT = os.path.dirname(__file__)
 
 MEDIA_ROOT = os.path.join(TESTS_DATA_ROOT, "media")
+STATIC_ROOT = os.path.join(TESTS_DATA_ROOT, "static")
 
 DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3"}}
 
@@ -26,6 +27,7 @@ INSTALLED_APPS = [
     "mptt",
     "sekizai",
     "sorl.thumbnail",
+    "compressor",
     "wiki.apps.WikiConfig",
     "wiki.plugins.attachments.apps.AttachmentsConfig",
     "wiki.plugins.editsection.apps.EditSectionConfig",
@@ -67,3 +69,13 @@ TEMPLATES = [
 ]
 
 LOGIN_REDIRECT_URL = reverse_lazy("wiki:get", kwargs={"path": ""})
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+)
+
+COMPRESS_PRECOMPILERS = (
+    ('text/x-scss', 'django_libsass.SassCompiler'),
+)
