@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     "mptt",
     "sekizai",
     "sorl.thumbnail",
+    "compressor",
     "wiki.apps.WikiConfig",
     "wiki.plugins.attachments.apps.AttachmentsConfig",
     "wiki.plugins.editsection.apps.EditSectionConfig",
@@ -67,3 +68,13 @@ TEMPLATES = [
 ]
 
 LOGIN_REDIRECT_URL = reverse_lazy("wiki:get", kwargs={"path": ""})
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+)
+
+COMPRESS_PRECOMPILERS = (
+    ('text/x-scss', 'django_libsass.SassCompiler'),
+)
