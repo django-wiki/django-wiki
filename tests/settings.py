@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 TESTS_DATA_ROOT = os.path.dirname(__file__)
 
 MEDIA_ROOT = os.path.join(TESTS_DATA_ROOT, "media")
+STATIC_ROOT = os.path.join(TESTS_DATA_ROOT, "static")
 
 DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3"}}
 
