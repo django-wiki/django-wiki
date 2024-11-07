@@ -7,7 +7,7 @@ This means that you need to setup a basic Django project in order to use django-
 .. seealso::
 
    Read more about setting up your first Django project in the
-   `official Django tutorial <https://docs.djangoproject.com/en/4.2/intro/tutorial01/>`__.
+   `official Django tutorial <https://docs.djangoproject.com/en/5.1/intro/tutorial01/>`__.
 
 Pre-requisite: Pillow
 ---------------------
@@ -193,4 +193,4 @@ end of your urlconf. You can also put it in */wiki* by putting
         urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
     Please refer to
-    `the Django docs <https://docs.djangoproject.com/en/1.8/howto/static-files/#serving-files-uploaded-by-a-user-during-development>`__.
+    `the Django docs <https://docs.djangoproject.com/en/5.1/howto/static-files/#serving-files-uploaded-by-a-user-during-development>`__.
