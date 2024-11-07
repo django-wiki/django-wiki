@@ -91,7 +91,7 @@ Configure ``context_processors``
 ``django-wiki`` uses the `Django Templates` backend.
 Add ``'sekizai.context_processors.sekizai'`` and ``'django.template.context_processors.debug'`` to
 ``context_processors`` section of your template backend settings.
-Please refer to the `Django templates docs <https://docs.djangoproject.com/en/1.11/topics/templates/#django.template.backends.django.DjangoTemplates/>`_
+Please refer to the `Django templates docs <https://docs.djangoproject.com/en/5.1/topics/templates/#django.template.backends.django.DjangoTemplates/>`_
 to see the current default setting for this variable.
 
 .. code-block:: python
