@@ -7,7 +7,7 @@ This means that you need to setup a basic Django project in order to use django-
 .. seealso::
 
    Read more about setting up your first Django project in the
-   `official Django tutorial <https://docs.djangoproject.com/en/5.1/intro/tutorial01/>`__.
+   `official Django tutorial <https://docs.djangoproject.com/en/dev/intro/tutorial01/>`__.
 
 Pre-requisite: Pillow
 ---------------------
@@ -91,7 +91,7 @@ Configure ``context_processors``
 ``django-wiki`` uses the `Django Templates` backend.
 Add ``'sekizai.context_processors.sekizai'`` and ``'django.template.context_processors.debug'`` to
 ``context_processors`` section of your template backend settings.
-Please refer to the `Django templates docs <https://docs.djangoproject.com/en/5.1/topics/templates/#django.template.backends.django.DjangoTemplates/>`_
+Please refer to the `Django templates docs <https://docs.djangoproject.com/en/dev/topics/templates/#django.template.backends.django.DjangoTemplates/>`_
 to see the current default setting for this variable.
 
 .. code-block:: python
@@ -193,4 +193,4 @@ end of your urlconf. You can also put it in */wiki* by putting
         urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
     Please refer to
-    `the Django docs <https://docs.djangoproject.com/en/5.1/howto/static-files/#serving-files-uploaded-by-a-user-during-development>`__.
+    `the Django docs <https://docs.djangoproject.com/en/dev/howto/static-files/#serving-files-uploaded-by-a-user-during-development>`__.
