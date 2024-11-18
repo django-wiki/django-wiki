@@ -19,7 +19,7 @@ django-wiki
 Django support
 --------------
 
-The below table explains which Django versions are supported.
+The table below explains which Django versions are supported.
 
 +------------------+----------------+--------------+
 | Release          | Django         | Upgrade from |
@@ -65,10 +65,10 @@ Translations (Transifex)
 ------------------------
 
 Django-wiki is fully translated into 13 languages, apart from the
-default (English) and some additional languages underway.
+default (English) and some additional languages are underway.
 
-But please help out in adding more languages!
-It's very easy and you don't even need to be a programmer.
+But please help out by adding more languages!
+It's very easy, and you don't need to be a programmer.
 
 Some languages...
 
@@ -94,7 +94,7 @@ or you can log in with the existing account:
 Community
 ---------
 
-Please use our IRC or mailing list (google group) for getting in touch
+Please use our IRC or mailing list (google group) to get in touch
 on development and support. Please do not email developers asking for
 personal support.
 
@@ -118,19 +118,19 @@ this project has proven itself useful and stable.
 What should I customize? What can break?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You will need to learn a bit of Django to customize django-wiki.
+You will need to learn a bit about Django to customize the django-wiki.
 
 The simplest is to override templates and create your own template tags.
 Do not make your own hard copy of this repository in order to fiddle with internal parts of the wiki,
-this strategy will lead you to lose out on future updates with highly improved features, plugins and security fixes.
+this strategy will lead you to lose out on future updates with highly improved features, plugins, and security fixes.
 
 You can also override the whole Bootstrap theming.
 At present,
 you're best off maintaining your own Bootstrap SCSS and hard-copying, then overriding django-wiki's rules.
 
 All Python views are class-based.
-However for most cases overriding views and URLs shouldn't be the best place to start
-since most customization can be achieved through plugins, templates and SCSS.
+However, for most cases, overriding views and URLs shouldn't be the best place to start
+since most customization can be achieved through plugins, templates, and SCSS.
 
 Contributing
 ------------
@@ -146,7 +146,7 @@ Manifesto
 Django needs a mature wiki system appealing to all kinds of needs, both
 big and small:
 
--  **Be pluggable and light-weight.** Don't integrate optional features
+-  **Be pluggable and lightweight.** Don't integrate optional features
    in the core.
 -  **Be open.** Make an extension API that allows the ecology of the
    wiki to grow in a structured way. Wikipedia consists of over `1100
@@ -155,7 +155,7 @@ big and small:
 -  **Be smart.** `This
    is <https://upload.wikimedia.org/wikipedia/commons/f/f7/MediaWiki_1.24.1_database_schema.svg>`__
    the map of tables in MediaWiki - we'll understand the choices of
-   other wiki projects and make our own. After-all, this is a Django
+   other wiki projects and make our own. After all, this is a Django
    project.
 -  **Be simple.** The source code should *almost* explain itself.
 -  **Be structured.** Markdown is a simple syntax for readability.
@@ -164,7 +164,7 @@ big and small:
    database) and managed through a friendly interface. This gives
    control back to the website developer, and makes knowledge more
    usable. Just ask: Why has Wikipedia never changed? Answer: Because
-   it's knowledge is stored in a complicated way, thus it becomes very
+   its knowledge is stored in a complicated way, thus it becomes very
    static.
 
 Docs
@@ -174,7 +174,7 @@ See the docs/ folder, or read them at:
 
 https://django-wiki.readthedocs.io/en/latest/
 
-If you wish to add something, please ask in the google group or raise an
+If you wish to add something, please ask in the Google group or raise an
 issue if you're in doubt about whether something might change.
 
 Background
@@ -209,7 +209,7 @@ Q&A
    wiki has to grow ambitious, someone will have to optimize its
    behavior, and using a third-party application for something as
    crucial as the revision system is a no-go in this regard.
--  **Any support for multiple wikis?** Yes, in an sense you can just
+-  **Any support for multiple wikis?** Yes, in a sense you can just
    imagine that you always have multiple wikis, because you always have
    hierarchies and full control of their permissions. See this
    discussion: https://github.com/django-wiki/django-wiki/issues/63
@@ -246,4 +246,4 @@ Acknowledgements
    involved!
 
 Original source of inspiration back in 2009 was django-cms,
-and since then Wagtail has also done a tremendous amount of work to promote Django models as a fundamental structure and enabler for application design.
+Since then, Wagtail has also done a tremendous amount of work to promote Django models as a fundamental structure and enabler for application design.
