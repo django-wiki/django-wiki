@@ -22,6 +22,21 @@ Release plan
 - **0.4.x** supports Django 1.11 and Django 2.1 and Python 3.4+.
 - **0.3.x** series suppors Django 1.11. As with the upstream Django release, 0.3 was be the last series with Python 2.7 support.
 
+0.12.0
+------
+
+Released on 2025-05-01
+
+Added
+~~~~~
+
+* Django 5.2 and Python 3.13 support :url-issue:`1393` (Daniel Grießhaber)
+
+Removed
+~~~~~~~
+
+* Django 3.2 support :url-issue:`1393` (Daniel Grießhaber)
+
 
 0.11.2
 ------
