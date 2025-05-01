@@ -7,11 +7,12 @@ Release plan
 
 **UPCOMING ⏳**
 
-- **0.13.x** New visual editor? REST API? Post your ideas on `GitHub Discussions <https://github.com/django-wiki/django-wiki/discussions>`__.
-- **0.12.x** Update bootstrap to v5, if you are interested in this work, please help us out - see :url-issue:`1358`.
+- **0.14.x** New visual editor? REST API? Post your ideas on `GitHub Discussions <https://github.com/django-wiki/django-wiki/discussions>`__.
+- **0.13.x** Update bootstrap to v5, if you are interested in this work, please help us out - see :url-issue:`1358`.
 
 **DONE 🏁**
 
+- **0.12.x** Adds Django 5.2 support and Python 3.13, drops Django 3.2
 - **0.11.x** Adds Django 5.x support and Python 3.12.
 - **0.10.x** Uses Hatch as the new build system and has upgrades for Django 4.x and Python 3.11.
 - **0.9.x** Definitely Removes Python 3.5 and 3.6 support.
