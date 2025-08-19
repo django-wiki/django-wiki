@@ -83,14 +83,22 @@ class LinkTreeprocessor(Treeprocessor):
 
 
 class LinkExtension(Extension):
-
     TreeProcessorClass = LinkTreeprocessor
 
     def __init__(self, *args, **kwargs):
         self.config = {
-            "broken": ["wiki-broken", "CSS class to use for broken internal links"],
-            "internal": ["wiki-internal", "CSS class to use for internal links"],
-            "external": ["wiki-external", "CSS class to use for external links"],
+            "broken": [
+                "wiki-broken",
+                "CSS class to use for broken internal links",
+            ],
+            "internal": [
+                "wiki-internal",
+                "CSS class to use for internal links",
+            ],
+            "external": [
+                "wiki-external",
+                "CSS class to use for external links",
+            ],
         }
         super().__init__(*args, **kwargs)
 

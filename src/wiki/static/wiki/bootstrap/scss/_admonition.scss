@@ -1,0 +1,77 @@
+@mixin admonition_colors_default($color) {
+  color: darken($color, 40%);
+  background-color: lighten($color, 25%);
+  border-color: $color;
+}
+
+@mixin admon-color($background, $border, $color) {
+  color: $color;
+  @include gradient-bg($background);
+  border-color: $border;
+
+  hr {
+    border-top-color: darken($border, 5%);
+  }
+
+  .alert-link {
+    color: darken($color, 10%);
+  }
+}
+
+.admonition {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  text-align: left;
+
+  > p:last-child {
+    margin-bottom: 0;
+  }
+
+  @include admonition_colors_default($gray-600);
+  &-title {
+    font-weight: bold;
+    text-align: left;
+  }
+    &.primary, &.important {
+    @include admon-color(theme-color-level("primary", $alert-bg-level),
+      theme-color-level("primary", $alert-border-level),
+      theme-color-level("primary", $alert-color-level));
+  }
+  &.secondary, &.attention {
+    @include admon-color(theme-color-level("secondary", $alert-bg-level),
+      theme-color-level("secondary", $alert-border-level),
+      theme-color-level("secondary", $alert-color-level));
+  }
+  &.success, &.tip {
+    @include admon-color(theme-color-level("success", $alert-bg-level),
+      theme-color-level("success", $alert-border-level),
+      theme-color-level("success", $alert-color-level));
+  }
+  &.info, &.note, &.hint {
+    @include admon-color(theme-color-level("info", $alert-bg-level),
+      theme-color-level("info", $alert-border-level),
+      theme-color-level("info", $alert-color-level));
+  }
+  &.warning, &.caution {
+    @include admon-color(theme-color-level("warning", $alert-bg-level),
+      theme-color-level("warning", $alert-border-level),
+      theme-color-level("warning", $alert-color-level));
+  }
+  &.danger, &.critical {
+    @include admon-color(theme-color-level("danger", $alert-bg-level),
+      theme-color-level("danger", $alert-border-level),
+      theme-color-level("danger", $alert-color-level));
+  }
+  &.light {
+    @include admon-color(theme-color-level("light", $alert-bg-level),
+      theme-color-level("light", $alert-border-level),
+      theme-color-level("light", $alert-color-level));
+  }
+  &.dark {
+    @include admon-color(theme-color-level("dark", $alert-bg-level),
+      theme-color-level("dark", $alert-border-level),
+      theme-color-level("dark", $alert-color-level));
+  }
+}

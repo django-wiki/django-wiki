@@ -29,7 +29,9 @@ def send_file(request, filepath, last_modified=None, filename=None):
     if settings.USE_SENDFILE:
         response = django_sendfile_response(request, filepath)
     else:
-        response = HttpResponse(open(fullpath, "rb").read(), content_type=mimetype)
+        response = HttpResponse(
+            open(fullpath, "rb").read(), content_type=mimetype
+        )
 
     if not last_modified:
         response["Last-Modified"] = http_date(statobj.st_mtime)
@@ -46,7 +48,9 @@ def send_file(request, filepath, last_modified=None, filename=None):
     if filename:
         filename_escaped = filepath_to_uri(filename)
         if "pdf" in mimetype.lower():
-            response["Content-Disposition"] = "inline; filename=%s" % filename_escaped
+            response["Content-Disposition"] = (
+                "inline; filename=%s" % filename_escaped
+            )
         else:
             response["Content-Disposition"] = (
                 "attachment; filename=%s" % filename_escaped

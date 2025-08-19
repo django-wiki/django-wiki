@@ -36,6 +36,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterUniqueTogether(
             name="articlesubscription",
-            unique_together=set([("subscription", "articleplugin_ptr")]),
+            unique_together={("subscription", "articleplugin_ptr")},
         ),
     ]

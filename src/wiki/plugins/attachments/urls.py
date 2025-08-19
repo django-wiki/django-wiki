@@ -4,7 +4,9 @@ from wiki.plugins.attachments import views
 urlpatterns = [
     re_path(r"^$", views.AttachmentView.as_view(), name="attachments_index"),
     re_path(
-        r"^search/$", views.AttachmentSearchView.as_view(), name="attachments_search"
+        r"^search/$",
+        views.AttachmentSearchView.as_view(),
+        name="attachments_search",
     ),
     re_path(
         r"^add/(?P<attachment_id>[0-9]+)/$",

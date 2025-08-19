@@ -17,7 +17,7 @@ class GlobalhistoryTests(
 
         response = self.client.get(url)
         expected = "(?s).*Root Article.*no log message.*"
-        self.assertRegexpMatches(response.rendered_content, expected)
+        self.assertRegex(response.rendered_content, expected)
 
         URLPath.create_urlpath(
             URLPath.root(),
@@ -27,8 +27,10 @@ class GlobalhistoryTests(
             user_message="Comment 1",
         )
         response = self.client.get(url)
-        expected = "(?s).*TestHistory1.*Comment 1.*" "Root Article.*no log message.*"
-        self.assertRegexpMatches(response.rendered_content, expected)
+        expected = (
+            "(?s).*TestHistory1.*Comment 1.*" "Root Article.*no log message.*"
+        )
+        self.assertRegex(response.rendered_content, expected)
 
         urlpath = URLPath.create_urlpath(
             URLPath.root(),
@@ -43,13 +45,13 @@ class GlobalhistoryTests(
             "Root Article.*no log message.*"
         )
         response = self.client.get(url)
-        self.assertRegexpMatches(response.rendered_content, expected)
+        self.assertRegex(response.rendered_content, expected)
 
         response = self.client.get(url0)
-        self.assertRegexpMatches(response.rendered_content, expected)
+        self.assertRegex(response.rendered_content, expected)
 
         response = self.client.get(url1)
-        self.assertRegexpMatches(response.rendered_content, expected)
+        self.assertRegex(response.rendered_content, expected)
 
         response = self.client.post(
             reverse("wiki:edit", kwargs={"path": "testhistory2/"}),
@@ -70,10 +72,10 @@ class GlobalhistoryTests(
             "Root Article.*no log message.*"
         )
         response = self.client.get(url)
-        self.assertRegexpMatches(response.rendered_content, expected)
+        self.assertRegex(response.rendered_content, expected)
 
         response = self.client.get(url0)
-        self.assertRegexpMatches(response.rendered_content, expected)
+        self.assertRegex(response.rendered_content, expected)
 
         expected = (
             "(?s).*TestHistory2Mod.*Testing Revision.*"
@@ -81,7 +83,7 @@ class GlobalhistoryTests(
             "Root Article.*no log message.*"
         )
         response = self.client.get(url1)
-        self.assertRegexpMatches(response.rendered_content, expected)
+        self.assertRegex(response.rendered_content, expected)
 
     def test_translation(self):
         # Test that translation of "List of %s changes in the wiki." exists.

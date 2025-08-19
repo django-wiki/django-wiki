@@ -20,7 +20,9 @@ class NotificationSettingsTests(
     def test_when_logged_in(self):
         response = self.client.get(resolve_url("wiki:notification_settings"))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "wiki/plugins/notifications/settings.html")
+        self.assertTemplateUsed(
+            response, "wiki/plugins/notifications/settings.html"
+        )
 
     def test_change_settings(self):
         self.settings, __ = Settings.objects.get_or_create(
@@ -36,8 +38,13 @@ class NotificationSettingsTests(
         # management form information, needed because of the formset
         management_form = response.context["form"].management_form
 
-        for i in "TOTAL_FORMS", "INITIAL_FORMS", "MIN_NUM_FORMS", "MAX_NUM_FORMS":
-            data["%s-%s" % (management_form.prefix, i)] = management_form[i].value()
+        for i in (
+            "TOTAL_FORMS",
+            "INITIAL_FORMS",
+            "MIN_NUM_FORMS",
+            "MAX_NUM_FORMS",
+        ):
+            data[f"{management_form.prefix}-{i}"] = management_form[i].value()
 
         for i in range(response.context["form"].total_form_count()):
             # get form index 'i'
@@ -46,7 +53,7 @@ class NotificationSettingsTests(
             # retrieve all the fields
             for field_name in current_form.fields:
                 value = current_form[field_name].value()
-                data["%s-%s" % (current_form.prefix, field_name)] = (
+                data[f"{current_form.prefix}-{field_name}"] = (
                     value if value is not None else ""
                 )
 
@@ -61,7 +68,8 @@ class NotificationSettingsTests(
 
         message = response.context.get("messages")._loaded_messages[0]
         self.assertIn(
-            message.message, "You will receive notifications instantly for 0 articles"
+            message.message,
+            "You will receive notifications instantly for 0 articles",
         )
 
         # Ensure we didn't create redundant Settings objects

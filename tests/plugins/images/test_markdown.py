@@ -26,11 +26,15 @@ class ImageMarkdownTests(RequireRootArticleMixin, TestBase):
         filename = "test.gif"
         data = base64.b64decode(str_base64)
         filedata = BytesIO(data)
-        return InMemoryUploadedFile(filedata, None, filename, "image", len(data), None)
+        return InMemoryUploadedFile(
+            filedata, None, filename, "image", len(data), None
+        )
 
     def test_before_and_after(self):
         md = markdown.ArticleMarkdown(article=self.root_article)
-        md_text = md.convert("before [image:%s align:left] after" % self.image.id)
+        md_text = md.convert(
+            "before [image:%s align:left] after" % self.image.id
+        )
         before_pos = md_text.index("before")
         figure_pos = md_text.index("<figure")
         after_pos = md_text.index("after")
@@ -41,7 +45,9 @@ class ImageMarkdownTests(RequireRootArticleMixin, TestBase):
         md_text = md.convert("[image:%s align:left]" % self.image.id)
         self.assertIn("<figure", md_text)
         self.assertNotIn("[image:%s align:left]" % self.image.id, md_text)
-        md_text = md.convert("image: [image:%s align:left]\nadasd" % self.image.id)
+        md_text = md.convert(
+            "image: [image:%s align:left]\nadasd" % self.image.id
+        )
         self.assertIn("<figure", md_text)
         self.assertIn("<figcaption", md_text)
         md_text = md.convert(
@@ -49,7 +55,9 @@ class ImageMarkdownTests(RequireRootArticleMixin, TestBase):
         )
         self.assertIn("<figure", md_text)
         self.assertIn("<figcaption", md_text)
-        md_text = md.convert("image: [image:123 align:left size:medium]\nadasd")
+        md_text = md.convert(
+            "image: [image:123 align:left size:medium]\nadasd"
+        )
         self.assertIn("Image not found", md_text)
         self.assertIn("<figcaption", md_text)
 
@@ -60,11 +68,13 @@ class ImageMarkdownTests(RequireRootArticleMixin, TestBase):
         )
         self.assertIn("<figure", md_text)
         self.assertRegex(
-            md_text, r'<figcaption class="caption">\s*this is visual\s*</figcaption>'
+            md_text,
+            r'<figcaption class="caption">\s*this is visual\s*</figcaption>',
         )
         md = markdown.ArticleMarkdown(article=self.root_article)
         md_text = md.convert(
-            "[image:%s align:left]\n    this is visual\n    second line" % self.image.id
+            "[image:%s align:left]\n    this is visual\n    second line"
+            % self.image.id
         )
         self.assertIn("<figure", md_text)
         self.assertRegex(

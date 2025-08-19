@@ -5,14 +5,135 @@ Release notes
 Release plan
 ------------
 
-- **0.11.x** Update bootstrap to v5 and removes Python 3.7 support.
+**UPCOMING ⏳**
+
+- **0.14.x** New visual editor? REST API? Post your ideas on `GitHub Discussions <https://github.com/django-wiki/django-wiki/discussions>`__.
+- **0.13.x** Update bootstrap to v5, if you are interested in this work, please help us out - see :url-issue:`1358`.
+
+**DONE 🏁**
+
+- **0.12.x** Adds Django 5.2 support and Python 3.13, drops Django 3.2
+- **0.11.x** Adds Django 5.x support and Python 3.12.
 - **0.10.x** Uses Hatch as the new build system and has upgrades for Django 4.x and Python 3.11.
-- **0.9.x** Definitely Removes Python 3.5 and 3.6 support
-- **0.7.x** Removes Django 2.1 support, adds Django 3.1, 3.2
-- **0.6.x** Targets Bootstrap v4, if you are interested in this work, please get in touch on Github!
+- **0.9.x** Definitely Removes Python 3.5 and 3.6 support.
+- **0.7.x** Removes Django 2.1 support, adds Django 3.1, 3.2.
+- **0.6.x** Targets Bootstrap v4.
 - **0.5.x** Remove Django 1.11 support, adds Django 2.2 and 3.x support. Python 3.5+.
 - **0.4.x** supports Django 1.11 and Django 2.1 and Python 3.4+.
 - **0.3.x** series suppors Django 1.11. As with the upstream Django release, 0.3 was be the last series with Python 2.7 support.
+
+0.12.0
+------
+
+Released on 2025-05-01
+
+Added
+~~~~~
+
+* Django 5.2 and Python 3.13 support :url-issue:`1393` (Daniel Grießhaber)
+
+Removed
+~~~~~~~
+
+* Django 3.2 support :url-issue:`1393` (Daniel Grießhaber)
+
+
+0.11.2
+------
+
+Released on 2024-08-21
+
+Added
+~~~~~
+
+* Django 5.1 support :url-issue:`1372` (Benjamin Balder Bach)
+
+Fixed
+~~~~~
+
+* Development environment Windows issues :url-issue:`1359` (Oscar Cortez)
+
+Changed
+~~~~~~~
+
+* CSS artifacts are automatically built in the Hatch environment :url-issue:`1363` (Oscar Cortez)
+
+
+0.11.1
+------
+
+Released on 2024-04-10
+
+Fixed
+~~~~~
+
+* Markdown upgrade caused regressions in relative `wiki:` links :url-issue:`1359` (Henrik Hørlück Berg)
+
+
+0.11
+----
+
+Released on 2024-03-21
+
+Added
+~~~~~
+
+* ``[TOC]`` Markdown extension now accepts several arguments, ``toc_depth``, ``title`` and more :url-issue:`1304` (Ryan Henrichson)
+* Pymdown-extensions support is gradually added:
+
+  * `PyMDown Blocks <https://facelessuser.github.io/pymdown-extensions/extensions/blocks/>`__ are now supported :url-issue:`1316` (Ryan Henrichson)
+  * Sidebar documentation for new plugin (enable by adding ``wiki.plugins.pymdown.apps.PyMdownConfig`` to your installed apps :url-issue:`1334` (Ryan Henrichson, Benjamin Balder Bach)
+
+* Add support for Django 5.0 :url-issue:`1337` (Benjamin Balder Bach)
+* Add support for Python 3.12 :url-issue:`1337` (Benjamin Balder Bach)
+* Markdown 3.4, 3.5 and 3.6 support :url-issue:`1313` (Ryan Henrichson)
+
+Fixed
+~~~~~
+
+* Fix xframe_options_sameorigin bug in MergeView :url-issue:`1294` (liuxiawei 刘夏唯)
+* Read the Docs configuration, setup and theme upgraded (Benjamin Balder Bach)
+* CodeCov setup restored  :url-issue:`1295` (Oscar Cortez)
+* Editsection plugin: Relax path regex (fixing NoReverseMatch) + tests :url-issue:`1299` (Chris Vigelius)
+* Fixed extending ``WIKI_MARKDOWN_HTML_WHITELIST`` :url-issue:`1314` (Ryan Henrichson)
+
+Changed
+~~~~~~~
+
+* ``align`` attributes in ``<td>`` tags are allowed in generated HTML  :url-issue:`1320` (yengip)
+* Codebase linted with ruff (Black and flake8 removed) :url-issue:`1321` (Oscar Cortez)
+* Dependencies bumped:
+
+  * django-nyt 1.4
+  * django-mptt 0.16
+  * Markdown 3.5
+
+* Dependency added:
+
+  * pymdown-extensions 10.5
+
+Translations
+~~~~~~~~~~~~
+
+* Nothing updated in this release - `contribute on Transifex <https://www.transifex.com/django-wiki/django-wiki/>`__.
+
+
+Removed
+~~~~~~~
+
+* Removes support for Django 2.2, 3.0, 3.1
+* Removes support for Python 3.7, 3.8, 3.9
+
+
+0.10.1
+------
+
+Released on 2024-03-16
+
+Security
+~~~~~~~~
+
+* Fixes reDOS issues: Denial of Service possible through unsafe regular expressions `GHSA-wj85-w4f4-xh8h <https://github.com/django-wiki/django-wiki/security/advisories/GHSA-wj85-w4f4-xh8h>`__ (Santos Gallegos, Benjamin Balder Bach)
 
 
 0.10
@@ -23,8 +144,8 @@ Released on 2023-05-15
 Changed
 ~~~~~~~
 
-* Removed sqlite database and use fixtures url-issue:`1260` (Oscar Cortez)
-* Improved settings and middleware for demo url-issue:`1267` (Oscar Cortez)
+* Removed sqlite database and use fixtures :url-issue:`1260` (Oscar Cortez)
+* Improved settings and middleware for demo :url-issue:`1267` (Oscar Cortez)
 * Updated languages and use the new Transifex client with Docker (Benjamin Balder Bach)
 * Updated django requirement from <4.2,>=2.1 to >=2.1,<4.3 :url-issue:`1275` (Oscar Cortez)
 * Upgraded for Sphinx 6 on Read the Docs :url-issue:`1270` (Benjamin Balder Bach)
@@ -43,7 +164,7 @@ Fixed
 ~~~~~
 
 * Bleach is deprecated :url-issue:`1259` (Oscar Cortez)
-* TypeError: unsupported operand type(s) for +: 'frozenset' and 'list' url-issue:`1257` and :url-issue:`1251`  (Oscar Cortez)
+* TypeError: unsupported operand type(s) for +: 'frozenset' and 'list' :url-issue:`1257` and :url-issue:`1251`  (Oscar Cortez)
 * Editing the demo without a login :url-issue:`1263` (Oscar Cortez)
 * jQuery broken on docs pages :url-issue:`1281` (Benjamin Balder Bach)
 * Solve yml issues and improve issue templates :url-issue:`1261` (Oscar Cortez)
@@ -59,7 +180,7 @@ Welcome onboard to new co-maintainer `Oscar Cortez <https://github.com/oscarmcm>
 Changed / added
 ~~~~~~~~~~~~~~~
 
-* "Edit Section" plugin fixed and patterns for finding headings rewritten url-issue:`1247` url-issue:`1246` (Chris Vigelius)
+* "Edit Section" plugin fixed and patterns for finding headings rewritten :url-issue:`1247` :url-issue:`1246` (Chris Vigelius)
 * Python 3.11 compatiblity: Fix "global flags not at the start of the expression" :url-issue:`1243` (Benbb96)
 * Removed direct dependency on ``tinycss2``, inherited from ``bleach`` - due to old versions of pip unable to resolve
 * Pass current revision to ``Editor.get_widget()`` and ``get_admin_widget()`` :url-issue:`1249` (Chris Vigelius)

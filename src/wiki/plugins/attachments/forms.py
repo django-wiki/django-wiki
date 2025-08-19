@@ -11,7 +11,6 @@ from wiki.plugins.attachments.models import IllegalFileExtension
 
 
 class AttachmentForm(forms.ModelForm):
-
     description = forms.CharField(
         label=_("Description"),
         help_text=_("A short summary of what the file contains"),
@@ -64,18 +63,17 @@ class AttachmentForm(forms.ModelForm):
 
 
 class AttachmentReplaceForm(AttachmentForm):
-
     replace = forms.BooleanField(
         label=_("Remove previous"),
         help_text=_(
-            "Remove previous attachment revisions and their files (to " "save space)?"
+            "Remove previous attachment revisions and their files (to "
+            "save space)?"
         ),
         required=False,
     )
 
 
 class AttachmentArchiveForm(AttachmentForm):
-
     file = forms.FileField(  # @ReservedAssignment
         label=_("File or zip archive"), required=True
     )
@@ -113,7 +111,6 @@ class AttachmentArchiveForm(AttachmentForm):
         return self.cleaned_data
 
     def save(self, *args, **kwargs):
-
         # This is not having the intended effect
         if "file" not in self._meta.fields:
             self._meta.fields.append("file")
@@ -169,7 +166,6 @@ class DeleteForm(forms.Form):
 
 
 class SearchForm(forms.Form):
-
     query = forms.CharField(
         label="",
         widget=forms.TextInput(attrs={"class": "search-query form-control"}),

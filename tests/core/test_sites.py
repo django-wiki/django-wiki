@@ -17,7 +17,9 @@ class WikiCustomSite(sites.WikiSite):
     def get_article_urls(self):
         urlpatterns = [
             re_path(
-                "^some-prefix/(?P<article_id>[0-9]+)/$", self.article_view, name="get"
+                "^some-prefix/(?P<article_id>[0-9]+)/$",
+                self.article_view,
+                name="get",
             ),
         ]
         return urlpatterns
@@ -25,7 +27,9 @@ class WikiCustomSite(sites.WikiSite):
     def get_article_path_urls(self):
         urlpatterns = [
             re_path(
-                "^some-other-prefix/(?P<path>.+/|)$", self.article_view, name="get"
+                "^some-other-prefix/(?P<path>.+/|)$",
+                self.article_view,
+                name="get",
             ),
         ]
         return urlpatterns
@@ -77,7 +81,9 @@ class CustomWikiSiteTest(TestCase):
     def test_use_custom_wiki_site(self):
         self.assertEqual(sites.site.__class__.__name__, "WikiCustomSite")
 
-    def test_get_absolute_url_if_urlpath_set_is_not_exists__no_root_urlconf(self):
+    def test_get_absolute_url_if_urlpath_set_is_not_exists__no_root_urlconf(
+        self
+    ):
         a = Article.objects.create()
 
         self.assertEqual(a.get_absolute_url(), "/some-prefix/1/")
@@ -88,7 +94,13 @@ class CustomWikiSiteTest(TestCase):
         u1 = URLPath.objects.create(article=a1, site=s1)
 
         a2 = Article.objects.create()
-        s2 = Site.objects.create(domain="somethingelse.com", name="somethingelse.com")
-        URLPath.objects.create(article=a2, site=s2, parent=u1, slug="test_slug")
+        s2 = Site.objects.create(
+            domain="somethingelse.com", name="somethingelse.com"
+        )
+        URLPath.objects.create(
+            article=a2, site=s2, parent=u1, slug="test_slug"
+        )
 
-        self.assertEqual(a2.get_absolute_url(), "/some-other-prefix/test_slug/")
+        self.assertEqual(
+            a2.get_absolute_url(), "/some-other-prefix/test_slug/"
+        )

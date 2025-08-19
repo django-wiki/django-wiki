@@ -71,7 +71,10 @@ class CustomSetextHeaderProcessor(SetextHeaderProcessor):
 class EditSectionExtension(Extension):
     def __init__(self, *args, **kwargs):
         self.config = {
-            "level": [settings.MAX_LEVEL, "Allow to edit sections until this level"]
+            "level": [
+                settings.MAX_LEVEL,
+                "Allow to edit sections until this level",
+            ]
         }
         super().__init__(**kwargs)
 
@@ -114,7 +117,7 @@ class EditSectionProcessor(Treeprocessor):
         candidate = slug
         i = 1
         while candidate in self.slugs:
-            candidate = "{}_{}".format(slug, i)
+            candidate = f"{slug}_{i}"
             i += 1
         self.slugs[candidate] = True
         node.attrib["id"] = candidate
@@ -149,7 +152,9 @@ class EditSectionProcessor(Treeprocessor):
                 # Build the URL
                 url_kwargs = self.md.article.get_url_kwargs()
                 url_kwargs["header"] = child.attrib["id"]
-                link.attrib["href"] = reverse("wiki:editsection", kwargs=url_kwargs)
+                link.attrib["href"] = reverse(
+                    "wiki:editsection", kwargs=url_kwargs
+                )
 
                 headers.append(
                     {

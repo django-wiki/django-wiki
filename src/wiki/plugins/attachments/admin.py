@@ -10,7 +10,6 @@ class AttachmentRevisionAdmin(admin.TabularInline):
 
 
 class AttachmentAdmin(admin.ModelAdmin):
-
     inlines = [AttachmentRevisionAdmin]
 
 

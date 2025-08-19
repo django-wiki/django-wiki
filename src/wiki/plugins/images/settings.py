@@ -28,14 +28,18 @@ THUMBNAIL_SIZES = getattr(
 #: wiki, which is set in ``WIKI_STORAGE_BACKEND``, but you can override it
 #: with ``WIKI_IMAGES_STORAGE_BACKEND``.
 STORAGE_BACKEND = getattr(
-    django_settings, "WIKI_IMAGES_STORAGE_BACKEND", wiki_settings.STORAGE_BACKEND
+    django_settings,
+    "WIKI_IMAGES_STORAGE_BACKEND",
+    wiki_settings.STORAGE_BACKEND,
 )
 
 #: Should the upload path be obscurified? If so, a random hash will be added
 #: to the path such that someone can not guess the location of files (if you
 #: have restricted permissions and the files are still located within the
 #: web server's file system).
-IMAGE_PATH_OBSCURIFY = getattr(django_settings, "WIKI_IMAGES_PATH_OBSCURIFY", True)
+IMAGE_PATH_OBSCURIFY = getattr(
+    django_settings, "WIKI_IMAGES_PATH_OBSCURIFY", True
+)
 
 #: Allow anonymous users upload access (not nice on an open network).
 #: ``WIKI_IMAGES_ANONYMOUS`` can override this, otherwise the default

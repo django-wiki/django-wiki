@@ -43,7 +43,9 @@ class AccountUpdateTest(
         }
 
         # save a new revision
-        response = self.client.post(resolve_url("wiki:profile_update"), example_data)
+        response = self.client.post(
+            resolve_url("wiki:profile_update"), example_data
+        )
         self.assertContains(
             response, "Passwords don", status_code=200
         )  # Django 2/3 output different escaped versions of single quote in don't
@@ -56,7 +58,9 @@ class AccountUpdateTest(
         }
 
         # save a new revision
-        response = self.client.post(resolve_url("wiki:profile_update"), example_data)
+        response = self.client.post(
+            resolve_url("wiki:profile_update"), example_data
+        )
 
         # Need to force str() because of:
         # TypeError: coercing to Unicode: need string or buffer, __proxy__
@@ -66,7 +70,8 @@ class AccountUpdateTest(
         self.assertEqual(
             self.superuser1,
             authenticate(
-                username=self.superuser1.username, password=example_data["password1"]
+                username=self.superuser1.username,
+                password=example_data["password1"],
             ),
         )
 
@@ -77,7 +82,11 @@ class UpdateProfileViewTest(
     def test_update_profile(self):
         self.client.post(
             resolve_url("wiki:profile_update"),
-            {"email": "test@test.com", "password1": "newPass", "password2": "newPass"},
+            {
+                "email": "test@test.com",
+                "password1": "newPass",
+                "password2": "newPass",
+            },
             follow=True,
         )
 
@@ -124,7 +133,9 @@ class SignupViewTests(RequireRootArticleMixin, TestBase):
                 "email": "wiki@wiki.com",
             },
         )
-        self.assertIs(CustomUser.objects.filter(email="wiki@wiki.com").exists(), True)
+        self.assertIs(
+            CustomUser.objects.filter(email="wiki@wiki.com").exists(), True
+        )
         self.assertRedirects(response, reverse("wiki:login"))
 
         # Test that signing up the same user again gives a validation error

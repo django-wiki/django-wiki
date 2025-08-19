@@ -28,7 +28,6 @@ __all__ = [
 
 
 class Article(models.Model):
-
     objects = managers.ArticleManager()
 
     current_revision = models.OneToOneField(
@@ -76,11 +75,15 @@ class Article(models.Model):
         on_delete=models.SET_NULL,
     )
 
-    group_read = models.BooleanField(default=True, verbose_name=_("group read access"))
+    group_read = models.BooleanField(
+        default=True, verbose_name=_("group read access")
+    )
     group_write = models.BooleanField(
         default=True, verbose_name=_("group write access")
     )
-    other_read = models.BooleanField(default=True, verbose_name=_("others read access"))
+    other_read = models.BooleanField(
+        default=True, verbose_name=_("others read access")
+    )
     other_write = models.BooleanField(
         default=True, verbose_name=_("others write access")
     )
@@ -123,7 +126,9 @@ class Article(models.Model):
                 )
             else:
                 objects = obj.content_object.get_children().filter(**kwargs)
-            for child in objects.order_by("articles__article__current_revision__title"):
+            for child in objects.order_by(
+                "articles__article__current_revision__title"
+            ):
                 cnt += 1
                 if max_num and cnt > max_num:
                     return
@@ -167,7 +172,9 @@ class Article(models.Model):
             self.save()
         revisions = self.articlerevision_set.all()
         try:
-            new_revision.revision_number = revisions.latest().revision_number + 1
+            new_revision.revision_number = (
+                revisions.latest().revision_number + 1
+            )
         except ArticleRevision.DoesNotExist:
             new_revision.revision_number = 0
         new_revision.article = self
@@ -225,7 +232,8 @@ class Article(models.Model):
         lang = translation.get_language()
 
         key_raw = "wiki-article-{id}-{lang}".format(
-            id=self.current_revision.id if self.current_revision else self.id, lang=lang
+            id=self.current_revision.id if self.current_revision else self.id,
+            lang=lang,
         )
         # https://github.com/django-wiki/django-wiki/issues/1065
         return slugify(key_raw, allow_unicode=True)
@@ -233,7 +241,8 @@ class Article(models.Model):
     def get_cache_content_key(self, user=None):
         """Returns per-article-user cache key."""
         key_raw = "{key}-{user}".format(
-            key=self.get_cache_key(), user=user.get_username() if user else "-anonymous"
+            key=self.get_cache_key(),
+            user=user.get_username() if user else "-anonymous",
         )
         # https://github.com/django-wiki/django-wiki/issues/1065
         return slugify(key_raw, allow_unicode=True)
@@ -282,7 +291,6 @@ class Article(models.Model):
 
 
 class ArticleForObject(models.Model):
-
     objects = managers.ArticleFkManager()
 
     article = models.ForeignKey("Article", on_delete=models.CASCADE)
@@ -325,7 +333,9 @@ class BaseRevisionMixin(models.Model):
         editable=False,
     )
 
-    ip_address = IPAddressField(_("IP address"), blank=True, null=True, editable=False)
+    ip_address = IPAddressField(
+        _("IP address"), blank=True, null=True, editable=False
+    )
     user = models.ForeignKey(
         django_settings.AUTH_USER_MODEL,
         verbose_name=_("user"),
@@ -444,6 +454,7 @@ class ArticleRevision(BaseRevisionMixin, models.Model):
 # SIGNAL HANDLERS
 ######################################################
 
+
 # clear the ancestor cache when saving or deleting articles so things like
 # article_lists will be refreshed
 def _clear_ancestor_cache(article):
@@ -485,7 +496,6 @@ def on_article_revision_pre_save(**kwargs):
 
 @disable_signal_for_loaddata
 def on_article_revision_post_save(**kwargs):
-
     instance = kwargs["instance"]
     if not instance.article.current_revision:
         # If I'm saved from Django admin, then article.current_revision is

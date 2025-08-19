@@ -7,7 +7,6 @@ from . import views
 
 
 class NotifyPlugin(BasePlugin):
-
     slug = settings.SLUG
     urlpatterns = {
         "root": [

@@ -46,7 +46,6 @@ def article_for_object(context, obj):
 
 @register.inclusion_tag("wiki/includes/render.html", takes_context=True)
 def wiki_render(context, article, preview_content=None):
-
     if preview_content:
         content = article.render(preview_content=preview_content)
     elif article.current_revision:
@@ -79,7 +78,6 @@ def wiki_form(context, form_obj):
 
 @register.inclusion_tag("wiki/includes/messages.html", takes_context=True)
 def wiki_messages(context):
-
     messages = context.get("messages", [])
     for message in messages:
         message.css_class = settings.MESSAGE_TAG_CSS_CLASS[message.level]
@@ -130,8 +128,8 @@ def get_content_snippet(content, keyword, max_words=30):
         after_words = all_after[: max_words - len(before_words)]
         before = " ".join(before_words)
         after = " ".join(after_words)
-        html = ("%s %s %s" % (before, striptags(match), after)).strip()
-        kw_p = re.compile(r"(\S*%s\S*)" % keyword, re.IGNORECASE)
+        html = (f"{before} {striptags(match)} {after}").strip()
+        kw_p = re.compile(r"(\S*%s\S*)" % re.escape(keyword), re.IGNORECASE)
         html = kw_p.sub(r"<strong>\1</strong>", html)
 
         return mark_safe(html)

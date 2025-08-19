@@ -61,9 +61,9 @@ class ArticleForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.instance.pk:
-            revisions = models.ArticleRevision.objects.select_related("article").filter(
-                article=self.instance
-            )
+            revisions = models.ArticleRevision.objects.select_related(
+                "article"
+            ).filter(article=self.instance)
             self.fields["current_revision"].queryset = revisions
         else:
             self.fields[

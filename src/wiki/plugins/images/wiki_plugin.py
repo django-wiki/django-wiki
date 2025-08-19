@@ -12,7 +12,6 @@ from wiki.plugins.notifications.util import truncate_title
 
 
 class ImagePlugin(BasePlugin):
-
     slug = settings.SLUG
     sidebar = {
         "headline": _("Images"),

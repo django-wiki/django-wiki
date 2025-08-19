@@ -72,11 +72,11 @@ def process_docstring(app, what, name, obj, options, lines):
             if help_text:
                 # Add the model field to the end of the docstring as a param
                 # using the help text as the description
-                lines.append(":param %s: %s" % (field.attname, help_text))
+                lines.append(f":param {field.attname}: {help_text}")
             else:
                 # Add the model field to the end of the docstring as a param
                 # using the verbose name as the description
-                lines.append(":param %s: %s" % (field.attname, verbose_name))
+                lines.append(f":param {field.attname}: {verbose_name}")
 
             # Add the field's type to the docstring
             if isinstance(field, models.ForeignKey):
@@ -86,13 +86,16 @@ def process_docstring(app, what, name, obj, options, lines):
                         % (field.attname, type(field).__name__, to)
                     )
             else:
-                lines.append(":type %s: %s" % (field.attname, type(field).__name__))
+                lines.append(f":type {field.attname}: {type(field).__name__}")
 
     return lines
 
 
 extlinks = {
-    "url-issue": ("https://github.com/django-wiki/django-wiki/issues/%s", "#%s"),
+    "url-issue": (
+        "https://github.com/django-wiki/django-wiki/issues/%s",
+        "#%s",
+    ),
 }
 
 
@@ -126,7 +129,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "django-wiki"
-copyright = "{}, Benjamin Bach".format(datetime.now().year)  # noqa
+copyright = f"{datetime.now().year}, Benjamin Bach"  # noqa
 
 
 path = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
@@ -188,13 +191,7 @@ linkcheck_ignore = [
 
 # -- Options for HTML output ---------------------------------------------------
 
-on_rtd = os.environ.get("READTHEDOCS", None) == "True"
-if on_rtd:
-    os.system("sphinx-apidoc --doc-project='Python Reference' -f -o . ../wiki")
-if on_rtd:
-    html_theme = "default"
-else:
-    html_theme = "sphinx_rtd_theme"
+html_theme = "sphinx_rtd_theme"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

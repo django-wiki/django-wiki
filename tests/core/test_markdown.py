@@ -27,9 +27,11 @@ class ArticleMarkdownTests(ArticleTestBase):
         self.assertEqual(len(extensions), number_of_extensions)
 
     def test_html_removal(self):
-
         urlpath = URLPath.create_urlpath(
-            self.root, "html_removal", title="Test 1", content="</html>only_this"
+            self.root,
+            "html_removal",
+            title="Test 1",
+            content="</html>only_this",
         )
 
         self.assertEqual(urlpath.article.render(), "<p>only_this</p>")
@@ -38,7 +40,9 @@ class ArticleMarkdownTests(ArticleTestBase):
 class ResponsiveTableExtensionTests(TestCase):
     def setUp(self):
         super().setUp()
-        self.md = markdown.Markdown(extensions=["extra", ResponsiveTableExtension()])
+        self.md = markdown.Markdown(
+            extensions=["extra", ResponsiveTableExtension()]
+        )
         self.md_without = markdown.Markdown(extensions=["extra"])
 
     def test_wrapping(self):
@@ -54,7 +58,14 @@ class ResponsiveTableExtensionTests(TestCase):
 class CodehiliteTests(TestCase):
     def test_fenced_code(self):
         md = markdown.Markdown(extensions=["extra", WikiCodeHiliteExtension()])
-        text = "Code:\n" "\n" "```python\n" "echo 'line 1'\n" "echo 'line 2'\n" "```\n"
+        text = (
+            "Code:\n"
+            "\n"
+            "```python\n"
+            "echo 'line 1'\n"
+            "echo 'line 2'\n"
+            "```\n"
+        )
         result = (
             (
                 """<p>Code:</p>\n"""

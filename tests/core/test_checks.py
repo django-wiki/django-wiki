@@ -19,8 +19,12 @@ def _remove(settings, arg):
 class CheckTests(TestCase):
     def test_required_installed_apps(self):
         for app in REQUIRED_INSTALLED_APPS:
-            with self.settings(INSTALLED_APPS=_remove(settings.INSTALLED_APPS, app[0])):
-                errors = registry.run_checks(tags=[Tags.required_installed_apps])
+            with self.settings(
+                INSTALLED_APPS=_remove(settings.INSTALLED_APPS, app[0])
+            ):
+                errors = registry.run_checks(
+                    tags=[Tags.required_installed_apps]
+                )
                 expected_errors = [
                     Error(
                         "needs %s in INSTALLED_APPS" % app[1],
@@ -74,14 +78,20 @@ class CheckTests(TestCase):
         from django.contrib.auth import get_user_model
 
         with wiki_override_settings(
-            WIKI_ACCOUNT_HANDLING=False, AUTH_USER_MODEL="testdata.VeryCustomUser"
+            WIKI_ACCOUNT_HANDLING=False,
+            AUTH_USER_MODEL="testdata.VeryCustomUser",
         ):
-            errors = registry.run_checks(tags=[Tags.fields_in_custom_user_model])
+            errors = registry.run_checks(
+                tags=[Tags.fields_in_custom_user_model]
+            )
             self.assertEqual(errors, [])
         with wiki_override_settings(
-            WIKI_ACCOUNT_HANDLING=True, AUTH_USER_MODEL="testdata.VeryCustomUser"
+            WIKI_ACCOUNT_HANDLING=True,
+            AUTH_USER_MODEL="testdata.VeryCustomUser",
         ):
-            errors = registry.run_checks(tags=[Tags.fields_in_custom_user_model])
+            errors = registry.run_checks(
+                tags=[Tags.fields_in_custom_user_model]
+            )
             expected_errors = [
                 Error(
                     "%s.%s.%s refers to a field that is not of type %s"
@@ -99,5 +109,7 @@ class CheckTests(TestCase):
             ]
             self.assertEqual(errors, expected_errors)
         with wiki_override_settings(WIKI_ACCOUNT_HANDLING=True):
-            errors = registry.run_checks(tags=[Tags.fields_in_custom_user_model])
+            errors = registry.run_checks(
+                tags=[Tags.fields_in_custom_user_model]
+            )
             self.assertEqual(errors, [])

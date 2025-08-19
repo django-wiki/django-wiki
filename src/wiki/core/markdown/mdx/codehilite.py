@@ -1,3 +1,5 @@
+from textwrap import dedent
+
 import logging
 import re
 
@@ -6,6 +8,7 @@ from markdown.extensions.codehilite import CodeHiliteExtension
 from markdown.preprocessors import Preprocessor
 from markdown.treeprocessors import Treeprocessor
 from wiki.core.markdown import add_to_registry
+
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +26,7 @@ def highlight(code, config, tab_length, lang=None):
         lang=lang,
     )
     html = code.hilite()
-    html = """<div class="codehilite-wrap">{}</div>""".format(html)
+    html = f"""<div class="codehilite-wrap">{html}</div>"""
     return html
 
 
@@ -35,14 +38,17 @@ class WikiFencedBlockPreprocessor(Preprocessor):
     """
 
     FENCED_BLOCK_RE = re.compile(
-        r"""
-(?P<fence>^(?:~{3,}|`{3,}))[ ]*         # Opening ``` or ~~~
-(\{?\.?(?P<lang>[a-zA-Z0-9_+-]*))?[ ]*  # Optional {, and lang
-# Optional highlight lines, single- or double-quote-delimited
-(hl_lines=(?P<quot>"|')(?P<hl_lines>.*?)(?P=quot))?[ ]*
-}?[ ]*\n                                # Optional closing }
-(?P<code>.*?)(?<=\n)
-(?P=fence)[ ]*$""",
+        dedent(
+            r"""
+            (?P<fence>^(?:~{3,}|`{3,}))[ ]*                          # opening fence
+            ((\{(?P<attrs>[^\}\n]*)\})|                              # (optional {attrs} or
+            (\.?(?P<lang>[\w#.+-]*)[ ]*)?                            # optional (.)lang
+            (hl_lines=(?P<quot>"|')(?P<hl_lines>.*?)(?P=quot)[ ]*)?) # optional hl_lines)
+            \n                                                       # newline (end of opening fence)
+            (?P<code>.*?)(?<=\n)                                     # the code block
+            (?P=fence)[ ]*$                                          # closing fence
+        """
+        ),
         re.MULTILINE | re.DOTALL | re.VERBOSE,
     )
     CODE_WRAP = "<pre>%s</pre>"
@@ -64,10 +70,14 @@ class WikiFencedBlockPreprocessor(Preprocessor):
                 if m.group("lang"):
                     lang = m.group("lang")
                 html = highlight(
-                    m.group("code"), self.config, self.markdown.tab_length, lang=lang
+                    m.group("code"), self.config, self.md.tab_length, lang=lang
                 )
-                placeholder = self.markdown.htmlStash.store(html)
-                text = "%s\n%s\n%s" % (text[: m.start()], placeholder, text[m.end() :])
+                placeholder = self.md.htmlStash.store(html)
+                text = "{}\n{}\n{}".format(
+                    text[: m.start()],
+                    placeholder,
+                    text[m.end() :],
+                )
             else:
                 break
         return text.split("\n")
@@ -92,9 +102,9 @@ class HiliteTreeprocessor(Treeprocessor):
                 html = highlight(
                     self.code_unescape(block[0].text),
                     self.config,
-                    self.markdown.tab_length,
+                    self.md.tab_length,
                 )
-                placeholder = self.markdown.htmlStash.store(html)
+                placeholder = self.md.htmlStash.store(html)
                 # Clear codeblock in etree instance
                 block.clear()
                 # Change to p element which will later
@@ -119,7 +129,8 @@ class WikiCodeHiliteExtension(CodeHiliteExtension):
                 "Replacing existing 'hilite' extension - please remove "
                 "'codehilite' from WIKI_MARKDOWN_KWARGS"
             )
-            del md.treeprocessors["hilite"]
+            # del md.treeprocessors["hilite"]
+            md.treeprocessors.deregister("hilite")
 
         add_to_registry(md.treeprocessors, "hilite", hiliter, "<inline")
 
@@ -128,12 +139,16 @@ class WikiCodeHiliteExtension(CodeHiliteExtension):
                 "Replacing existing 'fenced_code_block' extension - please remove "
                 "'fenced_code_block' or 'extras' from WIKI_MARKDOWN_KWARGS"
             )
-            del md.preprocessors["fenced_code_block"]
+            # del md.preprocessors["fenced_code_block"]
+            md.preprocessors.deregister("fenced_code_block")
         hiliter = WikiFencedBlockPreprocessor(md)
         hiliter.config = self.getConfigs()
 
         add_to_registry(
-            md.preprocessors, "fenced_code_block", hiliter, ">normalize_whitespace"
+            md.preprocessors,
+            "fenced_code_block",
+            hiliter,
+            ">normalize_whitespace",
         )
 
         md.registerExtension(self)

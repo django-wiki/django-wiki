@@ -1,6 +1,7 @@
+from xml.etree import ElementTree as etree
+
 import markdown
 from markdown.treeprocessors import Treeprocessor
-from markdown.util import etree
 from wiki.core.markdown import add_to_registry
 
 
@@ -8,9 +9,11 @@ class ResponsiveTableExtension(markdown.Extension):
     """Wraps all tables with Bootstrap's table-responsive class"""
 
     def extendMarkdown(self, md):
-
         add_to_registry(
-            md.treeprocessors, "responsivetable", ResponsiveTableTree(md), "_end"
+            md.treeprocessors,
+            "responsivetable",
+            ResponsiveTableTree(md),
+            "_end",
         )
 
 

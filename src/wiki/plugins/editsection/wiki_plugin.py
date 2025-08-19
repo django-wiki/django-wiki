@@ -8,12 +8,11 @@ from . import views
 
 
 class EditSectionPlugin(BasePlugin):
-
     slug = settings.SLUG
     urlpatterns = {
         "article": [
             url(
-                r"^header/(?P<header>[\w-]+)/$",
+                r"^header/(?P<header>[\S]+)/$",
                 views.EditSection.as_view(),
                 name="editsection",
             ),

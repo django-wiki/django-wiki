@@ -37,19 +37,23 @@ FIXTURE_POSITIVE_MATCHES = [
     # Test protocol specification.
     (
         "http://example.com",
-        EXPECTED_PARAGRAPH_TEMPLATE % ("http://example.com", "http://example.com"),
+        EXPECTED_PARAGRAPH_TEMPLATE
+        % ("http://example.com", "http://example.com"),
     ),
     (
         "https://example.com",
-        EXPECTED_PARAGRAPH_TEMPLATE % ("https://example.com", "https://example.com"),
+        EXPECTED_PARAGRAPH_TEMPLATE
+        % ("https://example.com", "https://example.com"),
     ),
     (
         "ftp://example.com",
-        EXPECTED_PARAGRAPH_TEMPLATE % ("ftp://example.com", "ftp://example.com"),
+        EXPECTED_PARAGRAPH_TEMPLATE
+        % ("ftp://example.com", "ftp://example.com"),
     ),
     (
         "ftps://example.com",
-        EXPECTED_PARAGRAPH_TEMPLATE % ("ftps://example.com", "ftps://example.com"),
+        EXPECTED_PARAGRAPH_TEMPLATE
+        % ("ftps://example.com", "ftps://example.com"),
     ),
     (
         "example.com",
@@ -57,7 +61,8 @@ FIXTURE_POSITIVE_MATCHES = [
     ),
     (
         "onion://example.com",
-        EXPECTED_PARAGRAPH_TEMPLATE % ("onion://example.com", "onion://example.com"),
+        EXPECTED_PARAGRAPH_TEMPLATE
+        % ("onion://example.com", "onion://example.com"),
     ),
     (
         "onion9+.-://example.com",
@@ -65,7 +70,10 @@ FIXTURE_POSITIVE_MATCHES = [
         % ("onion9+.-://example.com", "onion9+.-://example.com"),
     ),
     # Test various supported host variations.
-    ("10.10.1.1", EXPECTED_PARAGRAPH_TEMPLATE % ("http://10.10.1.1", "10.10.1.1")),
+    (
+        "10.10.1.1",
+        EXPECTED_PARAGRAPH_TEMPLATE % ("http://10.10.1.1", "10.10.1.1"),
+    ),
     (
         "1122:3344:5566:7788:9900:aabb:ccdd:eeff",
         EXPECTED_PARAGRAPH_TEMPLATE
@@ -92,7 +100,8 @@ FIXTURE_POSITIVE_MATCHES = [
     ),
     (
         "example.horse",
-        EXPECTED_PARAGRAPH_TEMPLATE % ("http://example.horse", "example.horse"),
+        EXPECTED_PARAGRAPH_TEMPLATE
+        % ("http://example.horse", "example.horse"),
     ),
     (
         "my.long.domain.example.com",
@@ -102,12 +111,14 @@ FIXTURE_POSITIVE_MATCHES = [
     # Test port section.
     (
         "10.1.1.1:8000",
-        EXPECTED_PARAGRAPH_TEMPLATE % ("http://10.1.1.1:8000", "10.1.1.1:8000"),
+        EXPECTED_PARAGRAPH_TEMPLATE
+        % ("http://10.1.1.1:8000", "10.1.1.1:8000"),
     ),
     # Test trailing path specification.
     (
         "http://example.com/",
-        EXPECTED_PARAGRAPH_TEMPLATE % ("http://example.com/", "http://example.com/"),
+        EXPECTED_PARAGRAPH_TEMPLATE
+        % ("http://example.com/", "http://example.com/"),
     ),
     (
         "http://example.com/my/path",
@@ -126,25 +137,29 @@ FIXTURE_POSITIVE_MATCHES = [
     (
         "This is link myhost.example.com",
         "<p>This is link "
-        + EXPECTED_LINK_TEMPLATE % ("http://myhost.example.com", "myhost.example.com")
+        + EXPECTED_LINK_TEMPLATE
+        % ("http://myhost.example.com", "myhost.example.com")
         + "</p>",
     ),
     (
         "myhost.example.com is the link",
         "<p>"
-        + EXPECTED_LINK_TEMPLATE % ("http://myhost.example.com", "myhost.example.com")
+        + EXPECTED_LINK_TEMPLATE
+        % ("http://myhost.example.com", "myhost.example.com")
         + " is the link</p>",
     ),
     (
         "I have best myhost.example.com link ever",
         "<p>I have best "
-        + EXPECTED_LINK_TEMPLATE % ("http://myhost.example.com", "myhost.example.com")
+        + EXPECTED_LINK_TEMPLATE
+        % ("http://myhost.example.com", "myhost.example.com")
         + " link ever</p>",
     ),
     (
         "I have best\nmyhost.example.com link ever",
         "<p>I have best\n"
-        + EXPECTED_LINK_TEMPLATE % ("http://myhost.example.com", "myhost.example.com")
+        + EXPECTED_LINK_TEMPLATE
+        % ("http://myhost.example.com", "myhost.example.com")
         + " link ever</p>",
     ),
 ]
@@ -208,11 +223,15 @@ class TestUrlizeExtension:
     def setup_method(self):
         self.md = markdown.Markdown(extensions=[UrlizeExtension()])
 
-    @pytest.mark.parametrize("markdown_text, expected_output", FIXTURE_POSITIVE_MATCHES)
+    @pytest.mark.parametrize(
+        "markdown_text, expected_output", FIXTURE_POSITIVE_MATCHES
+    )
     def test_positive_matches(self, markdown_text, expected_output):
         assert self.md.convert(markdown_text) == expected_output
 
-    @pytest.mark.parametrize("markdown_text, expected_output", FIXTURE_NEGATIVE_MATCHES)
+    @pytest.mark.parametrize(
+        "markdown_text, expected_output", FIXTURE_NEGATIVE_MATCHES
+    )
     def test_negative_matches(self, markdown_text, expected_output):
         assert self.md.convert(markdown_text) == expected_output
 

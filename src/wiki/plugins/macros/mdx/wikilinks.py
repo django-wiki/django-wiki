@@ -2,8 +2,8 @@
 Extend the shipped Markdown extension 'wikilinks'
 """
 import re
+import xml.etree.ElementTree
 
-import markdown
 from django.urls import reverse
 from markdown.extensions import Extension
 from markdown.extensions import wikilinks
@@ -21,7 +21,7 @@ def build_url(label, base, end, md):
         if urlpath.children.filter(slug=clean_label).exists():
             base = ""
             break
-    return "%s%s%s" % (base, clean_label, end)
+    return f"{base}{clean_label}{end}"
 
 
 class WikiLinkExtension(Extension):
@@ -43,7 +43,9 @@ class WikiLinkExtension(Extension):
         wikilinkPattern = WikiLinks(WIKILINK_RE, self.getConfigs())
         wikilinkPattern.md = md
 
-        add_to_registry(md.inlinePatterns, "wikilink", wikilinkPattern, "<not_strong")
+        add_to_registry(
+            md.inlinePatterns, "wikilink", wikilinkPattern, "<not_strong"
+        )
 
 
 class WikiLinks(wikilinks.WikiLinksInlineProcessor):
@@ -51,7 +53,8 @@ class WikiLinks(wikilinks.WikiLinksInlineProcessor):
         base_url, end_url, html_class = self._getMeta()
         label = m.group(1).strip()
         url = self.config["build_url"](label, base_url, end_url, self.md)
-        a = markdown.util.etree.Element("a")
+        # a = markdown.util.etree.Element("a")
+        a = xml.etree.ElementTree.Element("a")
         a.text = label
         a.set("href", url)
         if html_class:

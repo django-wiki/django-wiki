@@ -33,12 +33,14 @@ class ImageExtension(markdown.Extension):
     """Images plugin markdown extension for django-wiki."""
 
     def extendMarkdown(self, md):
-
         add_to_registry(
             md.inlinePatterns, "dw-images", ImagePattern(IMAGE_RE, md), ">link"
         )
         add_to_registry(
-            md.postprocessors, "dw-images-cleanup", ImagePostprocessor(md), ">raw_html"
+            md.postprocessors,
+            "dw-images-cleanup",
+            ImagePostprocessor(md),
+            ">raw_html",
         )
 
 
@@ -75,7 +77,7 @@ class ImagePattern(markdown.inlinepatterns.Pattern):
             size = settings.THUMBNAIL_SIZES[m.group("size")]
         try:
             image = models.Image.objects.get(
-                article=self.markdown.article,
+                article=self.md.article,
                 id=image_id,
                 current_revision__deleted=False,
             )
@@ -98,8 +100,8 @@ class ImagePattern(markdown.inlinepatterns.Pattern):
             },
         )
         html_before, html_after = html.split(caption_placeholder)
-        placeholder_before = self.markdown.htmlStash.store(html_before)
-        placeholder_after = self.markdown.htmlStash.store(html_after)
+        placeholder_before = self.md.htmlStash.store(html_before)
+        placeholder_after = self.md.htmlStash.store(html_after)
         return placeholder_before + caption + placeholder_after + trailer
 
 

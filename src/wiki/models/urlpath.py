@@ -70,7 +70,10 @@ class URLPath(MPTTModel):
     SLUG_MAX_LENGTH = 50
 
     slug = models.SlugField(
-        verbose_name=_("slug"), null=True, blank=True, max_length=SLUG_MAX_LENGTH
+        verbose_name=_("slug"),
+        null=True,
+        blank=True,
+        max_length=SLUG_MAX_LENGTH,
     )
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
     parent = TreeForeignKey(
@@ -107,7 +110,9 @@ class URLPath(MPTTModel):
         if not self.pk or not self.get_ancestors().exists():
             self._cached_ancestors = []
         if not hasattr(self, "_cached_ancestors"):
-            self._cached_ancestors = list(self.get_ancestors().select_related_common())
+            self._cached_ancestors = list(
+                self.get_ancestors().select_related_common()
+            )
 
         return self._cached_ancestors
 
@@ -127,7 +132,10 @@ class URLPath(MPTTModel):
 
         # All ancestors except roots
         ancestors = list(
-            filter(lambda ancestor: ancestor.parent is not None, self.cached_ancestors)
+            filter(
+                lambda ancestor: ancestor.parent is not None,
+                self.cached_ancestors,
+            )
         )
         slugs = [obj.slug if obj.slug else "" for obj in ancestors + [self]]
 
@@ -147,7 +155,9 @@ class URLPath(MPTTModel):
 
     @transaction.atomic
     def _delete_subtree(self):
-        for descendant in self.get_descendants(include_self=True).order_by("-level"):
+        for descendant in self.get_descendants(include_self=True).order_by(
+            "-level"
+        ):
             descendant.article.delete()
 
     def delete_subtree(self):
@@ -160,14 +170,20 @@ class URLPath(MPTTModel):
     @classmethod
     def root(cls):
         site = Site.objects.get_current()
-        root_nodes = cls.objects.root_nodes().filter(site=site).select_related_common()
+        root_nodes = (
+            cls.objects.root_nodes().filter(site=site).select_related_common()
+        )
         # We fetch the nodes as a list and use len(), not count() because we need
         # to get the result out anyway. This only takes one sql query
         no_paths = len(root_nodes)
         if no_paths == 0:
-            raise NoRootURL("You need to create a root article on site '%s'" % site)
+            raise NoRootURL(
+                "You need to create a root article on site '%s'" % site
+            )
         if no_paths > 1:
-            raise MultipleRootURLs("Somehow you have multiple roots on %s" % site)
+            raise MultipleRootURLs(
+                "Somehow you have multiple roots on %s" % site
+            )
         return root_nodes[0]
 
     class MPTTMeta:
@@ -194,9 +210,15 @@ class URLPath(MPTTModel):
                 _("Sorry but you cannot have a root article with a slug.")
             )
         if not self.slug and self.parent:
-            raise ValidationError(_("A non-root note must always have a slug."))
+            raise ValidationError(
+                _("A non-root note must always have a slug.")
+            )
         if not self.parent:
-            if URLPath.objects.root_nodes().filter(site=self.site).exclude(id=self.id):
+            if (
+                URLPath.objects.root_nodes()
+                .filter(site=self.site)
+                .exclude(id=self.id)
+            ):
                 raise ValidationError(
                     _("There is already a root node on %s") % self.site
                 )
@@ -224,12 +246,18 @@ class URLPath(MPTTModel):
         parent = cls.root()
         for slug in slugs:
             if settings.URL_CASE_SENSITIVE:
-                child = parent.get_children().select_related_common().get(slug=slug)
+                child = (
+                    parent.get_children()
+                    .select_related_common()
+                    .get(slug=slug)
+                )
                 child.cached_ancestors = parent.cached_ancestors + [parent]
                 parent = child
             else:
                 child = (
-                    parent.get_children().select_related_common().get(slug__iexact=slug)
+                    parent.get_children()
+                    .select_related_common()
+                    .get(slug__iexact=slug)
                 )
                 child.cached_ancestors = parent.cached_ancestors + [parent]
                 parent = child
@@ -269,7 +297,7 @@ class URLPath(MPTTModel):
         article_kwargs={},
         request=None,
         article_w_permissions=None,
-        **revision_kwargs
+        **revision_kwargs,
     ):
         """
         Utility function:
@@ -281,7 +309,9 @@ class URLPath(MPTTModel):
         if not site:
             site = Site.objects.get_current()
         article = Article(**article_kwargs)
-        article.add_revision(ArticleRevision(title=title, **revision_kwargs), save=True)
+        article.add_revision(
+            ArticleRevision(title=title, **revision_kwargs), save=True
+        )
         article.save()
         newpath = cls.objects.create(
             site=site, parent=parent, slug=slug, article=article
@@ -291,7 +321,14 @@ class URLPath(MPTTModel):
 
     @classmethod
     def _create_urlpath_from_request(
-        cls, request, perm_article, parent_urlpath, slug, title, content, summary
+        cls,
+        request,
+        perm_article,
+        parent_urlpath,
+        slug,
+        title,
+        content,
+        summary,
     ):
         """
         Creates a new URLPath, using meta data from ``request`` and copies in
@@ -354,7 +391,9 @@ def on_article_relation_save(**kwargs):
     if not urlpath_content_type:
         urlpath_content_type = ContentType.objects.get_for_model(URLPath)
     if instance.content_type == urlpath_content_type:
-        URLPath.objects.filter(id=instance.object_id).update(article=instance.article)
+        URLPath.objects.filter(id=instance.object_id).update(
+            article=instance.article
+        )
 
 
 post_save.connect(on_article_relation_save, ArticleForObject)
@@ -383,11 +422,16 @@ def on_article_delete(instance, *args, **kwargs):
             return ns.lost_and_found
         try:
             ns.lost_and_found = URLPath.objects.get(
-                slug=settings.LOST_AND_FOUND_SLUG, parent=URLPath.root(), site=site
+                slug=settings.LOST_AND_FOUND_SLUG,
+                parent=URLPath.root(),
+                site=site,
             )
         except URLPath.DoesNotExist:
             article = Article(
-                group_read=True, group_write=False, other_read=False, other_write=False
+                group_read=True,
+                group_write=False,
+                other_read=False,
+                other_write=False,
             )
             article.add_revision(
                 ArticleRevision(
@@ -408,7 +452,9 @@ def on_article_delete(instance, *args, **kwargs):
             article.add_object_relation(ns.lost_and_found)
         return ns.lost_and_found
 
-    for urlpath in URLPath.objects.filter(articles__article=instance, site=site):
+    for urlpath in URLPath.objects.filter(
+        articles__article=instance, site=site
+    ):
         # Delete the children
         for child in urlpath.get_children():
             child.move_to(get_lost_and_found())
