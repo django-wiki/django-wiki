@@ -25,7 +25,7 @@
     <td>
       {% include "wiki/includes/revision_info.html" with revision=attachment.current_revision hidedate=1 hidenumber=1 %}
     </td>
-    <td>{{ revision.description|default:_("<em>No description</em>") }}</td>
+    <td>{{ revision.description|default:_("No description") }}</td>
     <td>{{ revision.get_filename }}</td>
     <td>{{ revision.get_size|filesizeformat }}</td>
     <td style="text-align: right">
