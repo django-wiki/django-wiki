@@ -22,6 +22,27 @@ Release plan
 - **0.4.x** supports Django 1.11 and Django 2.1 and Python 3.4+.
 - **0.3.x** series suppors Django 1.11. As with the upstream Django release, 0.3 was be the last series with Python 2.7 support.
 
+0.12.1
+------
+
+Released on 2025-09-15
+
+Security
+~~~~~~~~
+
+* XSS attack possible through attachment revision summary :url-issue:`1399` (ryan-esty)
+
+Fixed
+~~~~~
+
+* Fix history info on logged IPs for anonymous users :url-issue:`1389` (Martin Müller)
+
+Changed
+~~~~~~~
+
+* Python-Markdown upgraded to 3.9 :url-issue:`1401` (Benjamin Balder Bach)
+
+
 0.12.0
 ------
 
