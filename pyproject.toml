@@ -57,7 +57,7 @@ dependencies = [
     # django-wiki's integration with Markdown is really detailed,
     # several extensions have imported internal APIs, so be very
     # careful here.
-    "Markdown>=3.4,<3.9",
+    "Markdown>=3.4,<3.10",
     # Set of extensions for Python Markdown.
     "pymdown-extensions>=10.5,<10.6",
 ]
