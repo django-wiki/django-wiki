@@ -34,7 +34,7 @@
   <tr>
     <td>
       <h4>{{ attachment.original_filename }}</h4>
-      {{ attachment.current_revision.description|default:_("<em>No description</em>")|safe }}
+      {% if attachment.current_revision.description %}{{ attachment.current_revision.description }}{% else %}<em>{% trans "No description" %}</em>{% endif %}
     </td>
     <td>
       <strong>{{ attachment.article.current_revision.title }}</strong>
