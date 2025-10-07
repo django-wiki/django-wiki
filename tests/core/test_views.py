@@ -980,3 +980,69 @@ class SettingsViewTests(
             )
         )
         self.assertEqual(response.context["selected_tab"], "settings")
+class ArticleViewPermissionTests(
+    RequireRootArticleMixin,
+    ArticleWebTestUtils,
+    DjangoClientTestBase
+):
+    """
+    Ensure that users without view permission cannot access private articles.
+    """
+
+    def setUp(self):
+        super().setUp()  # Important to call parent's setUp
+        
+        # Create users (using the existing pattern from the code)
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+        self.viewer = User.objects.create_user(
+            username='viewer', 
+            password='password',
+            email='viewer@example.com'
+        )
+        
+        # Create owner user
+        self.owner = User.objects.create_user(
+            username='owner',
+            password='password',
+            email='owner@example.com'
+        )
+        
+        # Create a private article (using existing patterns from the code)
+        response = self.client.post(
+            resolve_url("wiki:create", path=""),
+            {
+                "title": "Secret Article", 
+                "slug": "secret",
+                "content": "Classified content here.",
+            }
+        )
+        self.private_article = URLPath.objects.get(slug="secret").article
+        
+        # Make article private - using the exact pattern from SettingsViewTests
+        from tests.testdata.models import CustomGroup
+        private_group = CustomGroup.objects.create()  # No 'name' parameter
+        self.private_article.group = private_group
+        self.private_article.owner = self.owner
+        self.private_article.save()
+
+    def test_user_without_permission_cannot_view_article(self):
+        """
+        A normal user without view permissions should not be able to view a private article.
+        """
+        # Login as viewer (does not own the article and no permissions granted)
+        self.client.login(username='viewer', password='password')
+
+        # Try to access the article via path (using existing get_by_path helper)
+        response = self.get_by_path("secret/")
+
+        # Assert forbidden or redirect (matching patterns from other tests)
+        self.assertIn(response.status_code, [302, 403])
+        if response.status_code == 302:
+            self.assertTrue(
+                response.url.startswith('/_create/') or  # Matches redirect pattern from other tests
+                response.url.startswith(reverse('account_login')),
+                "Expected redirect to create or login page"
+            )
+        elif response.status_code == 403:
+            self.assertContains(response, "Permission denied", status_code=403)
