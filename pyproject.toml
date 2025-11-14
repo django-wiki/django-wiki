@@ -59,7 +59,7 @@ dependencies = [
     # careful here.
     "Markdown>=3.4,<3.10",
     # Set of extensions for Python Markdown.
-    "pymdown-extensions>=10.5,<10.6",
+    "pymdown-extensions>=10.8.1,<10.9",
 ]
 dynamic = ["version"]
 
