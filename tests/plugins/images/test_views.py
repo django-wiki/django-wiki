@@ -1,6 +1,5 @@
 import base64
-import os
-import re
+import os, re
 from io import BytesIO
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -52,7 +51,7 @@ class ImageTests(
                 plugin_index = cnt
                 break
         self.assertGreaterEqual(
-            plugin_index, 0, msg="Image plugin not activated"
+            plugin_index, 0, msg="Image plugin not activated!"
         )
         base_edit_url = reverse("wiki:edit", kwargs={"path": path})
         url = base_edit_url + f"?f=form{plugin_index:d}"
