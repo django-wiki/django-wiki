@@ -58,8 +58,11 @@ dependencies = [
     # several extensions have imported internal APIs, so be very
     # careful here.
     "Markdown>=3.4,<3.10",
-    # Set of extensions for Python Markdown.
-    "pymdown-extensions>=10.5,<10.6",
+    # Set of extensions for Python Markdown. The previous <10.6 cap blocked
+    # security releases (e.g. the 10.16.1 ReDoS and 10.21.3 path-traversal
+    # fixes). Only the stable pymdownx.blocks.* extensions are used and their
+    # output is unchanged across 10.5..10.21, so allow the whole 10.x series.
+    "pymdown-extensions>=10.5,<11",
 ]
 dynamic = ["version"]
 
