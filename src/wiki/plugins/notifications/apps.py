@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class NotificationsConfig(AppConfig):
-    default_auto_field = "django.db.models.AutoField"
+    default_auto_field = "django.db.models.BigAutoField"
     name = "wiki.plugins.notifications"
     verbose_name = _("Wiki notifications")
     label = "wiki_notifications"
