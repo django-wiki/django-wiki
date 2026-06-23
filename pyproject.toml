@@ -139,7 +139,7 @@ dependencies = [
     "pytest-cov",
     "pytest-django",
     "pytest-pythonpath",
-    "pytest>=6.2.5,<7.3",
+    "pytest>=9.1,<9.2",
     "hatch-build-scripts==0.0.4",
 ]
 
