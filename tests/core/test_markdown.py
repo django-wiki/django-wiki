@@ -69,9 +69,9 @@ class CodehiliteTests(TestCase):
         result = (
             (
                 """<p>Code:</p>\n"""
-                """<div class="codehilite-wrap"><div class="codehilite"><pre><span></span><span class="n">echo</span> <span class="s1">&#39;line 1&#39;</span>\n"""
+                """<div class="codehilite-wrap"><div class="codehilite"><pre><span></span><code><span class="n">echo</span> <span class="s1">&#39;line 1&#39;</span>\n"""
                 """<span class="n">echo</span> <span class="s1">&#39;line 2&#39;</span>\n"""
-                """</pre></div>\n"""
+                """</code></pre></div>\n"""
                 """</div>"""
             )
             if pygments
@@ -101,15 +101,15 @@ class CodehiliteTests(TestCase):
         result = (
             (
                 """<p>Code:</p>\n"""
-                """<div class="codehilite-wrap"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1\n"""
-                """2\n"""
-                """3\n"""
-                """4</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="ch">#!/usr/bin/python</span>\n"""
-                """<span class="k">print</span><span class="p">(</span><span class="s1">&#39;line 1&#39;</span><span class="p">)</span>\n"""
-                """<span class="k">print</span><span class="p">(</span><span class="s1">&#39;line 2&#39;</span><span class="p">)</span>\n"""
-                """<span class="k">print</span><span class="p">(</span><span class="s1">&#39;æøå&#39;</span><span class="p">)</span>\n"""
-                """</pre></div>\n"""
-                """</td></tr></table></div>"""
+                """<div class="codehilite-wrap"><div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>\n"""
+                """<span class="normal">2</span>\n"""
+                """<span class="normal">3</span>\n"""
+                """<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="ch">#!/usr/bin/python</span>\n"""
+                """<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;line 1&#39;</span><span class="p">)</span>\n"""
+                """<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;line 2&#39;</span><span class="p">)</span>\n"""
+                """<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;æøå&#39;</span><span class="p">)</span>\n"""
+                """</code></pre></div></td></tr></table></div>\n"""
+                """</div>"""
             )
             if pygments
             else (

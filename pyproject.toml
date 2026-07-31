@@ -140,6 +140,9 @@ dependencies = [
     "pytest-django",
     "pytest-pythonpath",
     "pytest>=6.2.5,<7.3",
+    # Pygments is optional for django-wiki itself, but the codehilite tests
+    # assert on its output.
+    "pygments",
     "hatch-build-scripts==0.0.4",
 ]
 

@@ -23,7 +23,6 @@ Quick tips
            'extensions': [
                'footnotes',
                'attr_list',
-               'headerid',
                'extra',
                'codehilite',
            ]
