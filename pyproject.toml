@@ -141,9 +141,7 @@ dependencies = [
     "pytest-pythonpath",
     "pytest>=6.2.5,<7.3",
     # Pygments is optional for django-wiki itself, but the codehilite tests
-    # assert on its output. Without it declared here, whether it is installed
-    # depends on pytest's own dependencies (unconditional since pytest 8.4),
-    # and the Pygments code paths silently go untested.
+    # assert on its output.
     "pygments",
     "hatch-build-scripts==0.0.4",
 ]
