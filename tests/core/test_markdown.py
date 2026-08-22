@@ -69,8 +69,8 @@ class CodehiliteTests(TestCase):
         result = (
             (
                 """<p>Code:</p>\n"""
-                """<div class="codehilite-wrap"><div class="codehilite"><pre><span></span><code><span class="n">echo</span> <span class="s1">&#39;line 1&#39;</span>\n"""
-                """<span class="n">echo</span> <span class="s1">&#39;line 2&#39;</span>\n"""
+                """<div class="codehilite-wrap"><div class="codehilite"><pre><span></span><code><span class="n">echo</span> <span class="s1">'line 1'</span>\n"""
+                """<span class="n">echo</span> <span class="s1">'line 2'</span>\n"""
                 """</code></pre></div>\n"""
                 """</div>"""
             )
@@ -105,9 +105,9 @@ class CodehiliteTests(TestCase):
                 """<span class="normal">2</span>\n"""
                 """<span class="normal">3</span>\n"""
                 """<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="ch">#!/usr/bin/python</span>\n"""
-                """<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;line 1&#39;</span><span class="p">)</span>\n"""
-                """<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;line 2&#39;</span><span class="p">)</span>\n"""
-                """<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;æøå&#39;</span><span class="p">)</span>\n"""
+                """<span class="nb">print</span><span class="p">(</span><span class="s1">'line 1'</span><span class="p">)</span>\n"""
+                """<span class="nb">print</span><span class="p">(</span><span class="s1">'line 2'</span><span class="p">)</span>\n"""
+                """<span class="nb">print</span><span class="p">(</span><span class="s1">'æøå'</span><span class="p">)</span>\n"""
                 """</code></pre></div></td></tr></table></div>\n"""
                 """</div>"""
             )

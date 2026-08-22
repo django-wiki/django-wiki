@@ -143,8 +143,9 @@ dependencies = [
     "pytest-pythonpath",
     "pytest>=9.1,<9.2",
     # Pygments is optional for django-wiki itself, but the codehilite tests
-    # assert on its output.
-    "pygments",
+    # assert on its output, which changes between Pygments feature releases
+    # (2.21 stopped HTML-escaping quotes) — pin so CI doesn't break on drift.
+    "pygments==2.21.*",
     "hatch-build-scripts==0.0.4",
 ]
 
