@@ -7,6 +7,7 @@ from . import checks
 
 
 class WikiConfig(AppConfig):
+    default_auto_field = "django.db.models.BigAutoField"
     default_site = "wiki.sites.WikiSite"
     name = "wiki"
     verbose_name = _("Wiki")
