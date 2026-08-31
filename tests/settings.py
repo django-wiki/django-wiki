@@ -67,3 +67,6 @@ TEMPLATES = [
 ]
 
 LOGIN_REDIRECT_URL = reverse_lazy("wiki:get", kwargs={"path": ""})
+
+# For speed
+PASSWORD_HASHERS = ("django.contrib.auth.hashers.MD5PasswordHasher",)
