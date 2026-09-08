@@ -59,10 +59,12 @@ dependencies = [
     # careful here.
     "Markdown>=3.4,<3.10",
     # Set of extensions for Python Markdown. The previous <10.6 cap blocked
-    # security releases (e.g. the 10.16.1 ReDoS and 10.21.3 path-traversal
-    # fixes). Only the stable pymdownx.blocks.* extensions are used and their
-    # output is unchanged across 10.5..10.21, so allow the whole 10.x series.
-    "pymdown-extensions>=10.5,<11",
+    # security releases and the <11 cap now does the same: the fixes for
+    # GHSA-gm37-52c6-37mw (ReDoS, high) and GHSA-9xwg-3r6f-jcx2 (b64 path
+    # traversal) ship only in 11.0.1. Only the stable pymdownx.blocks.*
+    # extensions are used and 11.0's sole breaking change is in b64 (unused
+    # here), so allow the 11.x series too.
+    "pymdown-extensions>=10.5,<12",
 ]
 dynamic = ["version"]
 
