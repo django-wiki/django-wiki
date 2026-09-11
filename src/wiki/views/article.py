@@ -32,6 +32,7 @@ from wiki.core.paginator import WikiPaginator
 from wiki.core.plugins import registry as plugin_registry
 from wiki.core.utils import object_to_json_response
 from wiki.decorators import get_article
+from wiki.decorators import response_forbidden
 from wiki.views.mixins import ArticleMixin
 
 log = logging.getLogger(__name__)
@@ -917,6 +918,17 @@ class DiffView(DetailView):
 
     def render_to_response(self, context, **response_kwargs):
         revision = self.get_object()
+
+        # A revision is only accessible via a diff if the requesting user is
+        # allowed to read its parent article. Without this check, any visitor
+        # could read the contents of arbitrary (including private or
+        # group-restricted) revisions by iterating over sequential revision ids.
+        article = revision.article
+        if not article.can_read(self.request.user):
+            return response_forbidden(
+                self.request, article, None, read_denied=True
+            )
+
         other_revision = revision.previous_revision
 
         baseText = other_revision.content if other_revision is not None else ""
