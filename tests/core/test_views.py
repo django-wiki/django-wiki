@@ -616,6 +616,63 @@ class DiffViewTests(RequireRootArticleMixin, DjangoClientTestBase):
         self.assertIsInstance(response, JsonResponse)
         self.assertEqual(response.status_code, 200)
 
+    def _create_private_article(self):
+        """Create an article readable only by its owner (superuser1)."""
+        urlpath = URLPath.create_urlpath(
+            self.root,
+            "private",
+            title="Private Article",
+            content="secret content",
+            article_kwargs={
+                "owner": self.superuser1,
+                "other_read": False,
+                "other_write": False,
+                "group_read": False,
+                "group_write": False,
+            },
+        )
+        return urlpath.article
+
+    def test_diff_denied_for_anonymous_on_private_article(self):
+        article = self._create_private_article()
+        self.client.logout()
+        response = self.client.get(
+            reverse(
+                "wiki:diff",
+                kwargs={"revision_id": article.current_revision.pk},
+            )
+        )
+        # Anonymous users are redirected to login, never handed the content.
+        self.assertEqual(response.status_code, 302)
+        self.assertNotContains(response, "secret content", status_code=302)
+
+    def test_diff_denied_for_unauthorized_user_on_private_article(self):
+        article = self._create_private_article()
+        self.client.logout()
+        self.client.login(
+            username=NORMALUSER1_USERNAME, password=NORMALUSER1_PASSWORD
+        )
+        response = self.client.get(
+            reverse(
+                "wiki:diff",
+                kwargs={"revision_id": article.current_revision.pk},
+            )
+        )
+        self.assertEqual(response.status_code, 403)
+        self.assertNotContains(response, "secret content", status_code=403)
+
+    def test_diff_allowed_for_owner_on_private_article(self):
+        article = self._create_private_article()
+        # Still logged in as superuser1 (the owner) from setUp.
+        response = self.client.get(
+            reverse(
+                "wiki:diff",
+                kwargs={"revision_id": article.current_revision.pk},
+            )
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "secret content")
+
 
 class EditViewTestsBase(RequireRootArticleMixin, FuncBaseMixin):
     def test_edit_save(self):
