@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class AttachmentsConfig(AppConfig):
+    default_auto_field = "django.db.models.BigAutoField"
     name = "wiki.plugins.attachments"
     verbose_name = _("Wiki attachments")
     label = "wiki_attachments"
