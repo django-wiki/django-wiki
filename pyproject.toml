@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 name = "wiki"
 description = "A wiki system written for the Django framework."
 readme = "README.rst"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = "GPL-3.0"
 keywords = ["django", "wiki", "markdown"]
 authors = [
@@ -38,14 +38,14 @@ classifiers = [
 ]
 dependencies = [
     # Django version support is added one minor release at a time
-    "Django>=4.0,<5.3",
+    "Django>=4.2,<6.1",
     # bleach has been pretty stable, hence the loose pin
     "bleach[css]>=6,<7",
     # Pillow is used very little and has never broken
     "Pillow",
     # django-nyt is maintained by django-wiki maintainers, so we can
     # control breakage and pinning ourselves
-    "django-nyt>=1.4.2,<1.5",
+    "django-nyt>=1.4.2,<1.7",
     # django-mptt has had several breaking changes
     "django-mptt>=0.13,<0.17",
     # django-sekizai is basically only releasing every time
@@ -59,10 +59,12 @@ dependencies = [
     # careful here.
     "Markdown>=3.4,<3.10",
     # Set of extensions for Python Markdown. The previous <10.6 cap blocked
-    # security releases (e.g. the 10.16.1 ReDoS and 10.21.3 path-traversal
-    # fixes). Only the stable pymdownx.blocks.* extensions are used and their
-    # output is unchanged across 10.5..10.21, so allow the whole 10.x series.
-    "pymdown-extensions>=10.5,<11",
+    # security releases and the <11 cap now does the same: the fixes for
+    # GHSA-gm37-52c6-37mw (ReDoS, high) and GHSA-9xwg-3r6f-jcx2 (b64 path
+    # traversal) ship only in 11.0.1. Only the stable pymdownx.blocks.*
+    # extensions are used and 11.0's sole breaking change is in b64 (unused
+    # here), so allow the 11.x series too.
+    "pymdown-extensions>=10.5,<12",
 ]
 dynamic = ["version"]
 
@@ -139,7 +141,11 @@ dependencies = [
     "pytest-cov",
     "pytest-django",
     "pytest-pythonpath",
-    "pytest>=6.2.5,<7.3",
+    "pytest>=9.1,<9.2",
+    # Pygments is optional for django-wiki itself, but the codehilite tests
+    # assert on its output, which changes between Pygments feature releases
+    # (2.21 stopped HTML-escaping quotes) — pin so CI doesn't break on drift.
+    "pygments==2.21.*",
     "hatch-build-scripts==0.0.4",
 ]
 
@@ -185,16 +191,16 @@ all = [
 ]
 
 [[tool.hatch.envs.test.matrix]]
-python = ["3.9", "3.10"]
-django = ["4.0"]
-
-[[tool.hatch.envs.test.matrix]]
-python = ["3.9", "3.10", "3.11"]
-django = ["4.1", "4.2"]
+python = ["3.10", "3.11"]
+django = ["4.2"]
 
 [[tool.hatch.envs.test.matrix]]
 python = ["3.10", "3.11", "3.12", "3.13"]
-django = ["5.0", "5.1", "5.2"]
+django = ["5.2"]
+
+[[tool.hatch.envs.test.matrix]]
+python = ["3.12", "3.13", "3.14"]
+django = ["6.0"]
 
 [tool.hatch.envs.transifex]
 dependencies = []
