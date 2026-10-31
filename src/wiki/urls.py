@@ -331,7 +331,7 @@ def get_pattern(app_name="wiki", namespace="wiki", url_config_class=None):
     """Every url resolution takes place as "wiki:view_name".
     You should not attempt to have multiple deployments of the wiki in a
     single Django project.
-    https://docs.djangoproject.com/en/dev/topics/http/urls/#topics-http-reversing-url-namespaces
+    https://docs.djangoproject.com/en/stable/topics/http/urls/#topics-http-reversing-url-namespaces
     """
     import warnings
 

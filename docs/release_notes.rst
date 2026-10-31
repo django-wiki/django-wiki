@@ -7,11 +7,13 @@ Release plan
 
 **UPCOMING ⏳**
 
-- **0.13.x** New visual editor? REST API? Post your ideas on `GitHub Discussions <https://github.com/django-wiki/django-wiki/discussions>`__.
-- **0.12.x** Update bootstrap to v5, if you are interested in this work, please help us out - see :url-issue:`1358`.
+- **0.15.x** New visual editor? REST API? Post your ideas on `GitHub Discussions <https://github.com/django-wiki/django-wiki/discussions>`__.
+- **0.14.x** Update bootstrap to v5, if you are interested in this work, please help us out - see :url-issue:`1358`.
 
 **DONE 🏁**
 
+- **0.13.x** Adds Django 6.0 support and Python 3.14, drops Django 4.0, 4.1 and Python 3.9
+- **0.12.x** Adds Django 5.2 support and Python 3.13, drops Django 3.2
 - **0.11.x** Adds Django 5.x support and Python 3.12.
 - **0.10.x** Uses Hatch as the new build system and has upgrades for Django 4.x and Python 3.11.
 - **0.9.x** Definitely Removes Python 3.5 and 3.6 support.
@@ -20,6 +22,78 @@ Release plan
 - **0.5.x** Remove Django 1.11 support, adds Django 2.2 and 3.x support. Python 3.5+.
 - **0.4.x** supports Django 1.11 and Django 2.1 and Python 3.4+.
 - **0.3.x** series suppors Django 1.11. As with the upstream Django release, 0.3 was be the last series with Python 2.7 support.
+
+0.13.0
+------
+
+Released on 2026-07-31
+
+Added
+~~~~~
+
+* Django 6.0 support :url-issue:`1422` (Benjamin Balder Bach)
+
+Changed
+~~~~~~~
+
+* pymdown-extensions upgraded to 10.5+ :url-issue:`1418` (Petr Dlouhý)
+
+Removed
+~~~~~~~
+
+* Django 4.0 and 4.1 support :url-issue:`1422` (Benjamin Balder Bach)
+* Python 3.9 support :url-issue:`1422` (Benjamin Balder Bach)
+
+Security
+~~~~~~~~
+
+* The upgrade of pymdown-extensions fixed several security issues in the dependency.
+
+0.12.2
+------
+
+Released on 2025-10-11
+
+Security
+~~~~~~~~
+
+* XSS attack possible through attachment search :url-issue:`1404` (ryan-esty)
+
+0.12.1
+------
+
+Released on 2025-09-15
+
+Security
+~~~~~~~~
+
+* XSS attack possible through attachment revision summary :url-issue:`1399` (ryan-esty)
+
+Fixed
+~~~~~
+
+* Fix history info on logged IPs for anonymous users :url-issue:`1389` (Martin Müller)
+
+Changed
+~~~~~~~
+
+* Python-Markdown upgraded to 3.9 :url-issue:`1401` (Benjamin Balder Bach)
+
+
+0.12.0
+------
+
+Released on 2025-05-01
+
+Added
+~~~~~
+
+* Django 5.2 and Python 3.13 support :url-issue:`1393` (Daniel Grießhaber)
+
+Removed
+~~~~~~~
+
+* Django 3.2 support :url-issue:`1393` (Daniel Grießhaber)
 
 
 0.11.2

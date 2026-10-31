@@ -8,7 +8,7 @@ APP_LABEL = None
 SLUG = "attachments"
 
 # Please see this note about support for UTF-8 files on django/apache:
-# https://docs.djangoproject.com/en/dev/howto/deployment/wsgi/modwsgi/#if-you-get-a-unicodeencodeerror
+# https://docs.djangoproject.com/en/stable/howto/deployment/wsgi/modwsgi/#if-you-get-a-unicodeencodeerror
 
 #: Allow anonymous users upload access (not nice on an open network)
 #: ``WIKI_ATTACHMENTS_ANONYMOUS`` can override this, otherwise the default

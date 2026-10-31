@@ -8,7 +8,6 @@ WIKI_MARKDOWN_KWARGS = {
         "codehilite",
         "footnotes",
         "attr_list",
-        "headerid",
         "extra",
     ]
 }

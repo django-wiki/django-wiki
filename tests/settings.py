@@ -79,3 +79,5 @@ STATICFILES_FINDERS = (
 COMPRESS_PRECOMPILERS = (
     ('text/x-scss', 'django_libsass.SassCompiler'),
 )
+# For speed
+PASSWORD_HASHERS = ("django.contrib.auth.hashers.MD5PasswordHasher",)

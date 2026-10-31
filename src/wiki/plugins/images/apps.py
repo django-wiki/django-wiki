@@ -6,6 +6,7 @@ from . import checks
 
 
 class ImagesConfig(AppConfig):
+    default_auto_field = "django.db.models.BigAutoField"
     name = "wiki.plugins.images"
     verbose_name = _("Wiki images")
     label = "wiki_images"
