@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100">
+  <style>
+    .text { font-family: 'Verdana', monospace; font-weight: bold; font-size: 40px; }
+  </style>
+  
+<!--  <rect width="400" height="100" fill="#000000"/> -->
+  
+  <g class="glow1" fill="#00FF00">
+    <text x="10" y="60" class="text">djångo-w</text>
+    <text x="205" y="60" class="text">ïk</text>
+  </g>
+  
+  <!-- Blinking cursor -->
+  <rect x="257" y="29" width="4" height="35" fill="#00FF00">
+    <animate attributeName="opacity" values="1;0.2;1" dur="2.0s" repeatCount="1"/>
+  </rect>
+</svg>

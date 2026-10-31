@@ -5,12 +5,15 @@
 <script type="text/javascript">
 function insert_image(data) {
     if (typeof data == "number") {
-        image_id = data;
-        $("#img_title").text(" {{ _("Insert Image")|escapejs }} " + image_id);
-        $("#img_modal").on('shown.bs.modal', function(){
-            $(this).find('#img_caption').focus();
-        });
-        $("#img_modal").modal();
+        image_id = data
+        const img_modal = new bootstrap.Modal('#img_modal');
+        const img_caption = document.getElementById('img_caption');
+        $("#img_title").text(" {{ _("Insert Image")|escapejs }} " + data);
+
+        img_modal._element.addEventListener('shown.bs.modal', () => {
+          img_caption.focus();
+        })
+        img_modal.show();
    } else {
         align = data.img_align.options[data.img_align.selectedIndex].text;
         size = data.img_size.options[data.img_size.selectedIndex].text;
@@ -44,22 +47,22 @@ function add_image(form) {
   <div class="card">
     {% for image in images %}
       {% with image.current_revision.imagerevision as revision %}
-      {% thumbnail revision.image "50x50" crop="center" as thumb %}
-        <p class="card-header">{% trans "Image id" %}: {{ image.id }}</p>
-        <div class="card-body">
+          <p class="card-header">{% trans "Image id" %}: {{ image.id }}</p>
+          <div class="card-body">
             <div class="d-flex flex-wrap">
-            <div class="img-thumbnail">
-              <img src="{{ thumb.url }}" alt="{{ revision.get_filename }}" />
+              <div class="img-thumbnail">
+                {% thumbnail revision.image "50x50" crop="center" as thumb %}
+                  <img src="{{ thumb.url }}" alt="{{ revision.get_filename }}" />
+                {% endthumbnail %}
+              </div>
+              <p class="ml-4">
+                <a href="javascript:void(insert_image({{ image.id }}))"><span class="fa fa-edit"></span> {% trans "Insert" %}</a><br />
+                {% if image|can_write:user %}
+                  <a href="{% url 'wiki:images_add_revision' path=urlpath.path article_id=article.id image_id=image.id %}"><span class="fa fa-upload"></span> {% trans "Replace" %}</a>
+                {% endif %}
+              </p>
             </div>
-           <p class="ml-4">
-              <a href="javascript:void(insert_image({{ image.id }}))"><span class="fa fa-edit"></span> {% trans "Insert" %}</a><br />
-              {% if image|can_write:user %}
-              <a href="{% url 'wiki:images_add_revision' path=urlpath.path article_id=article.id image_id=image.id %}"><span class="fa fa-upload"></span> {% trans "Replace" %}</a>
-              {% endif %}
-            </p>
           </div>
-        </div>
-      {% endthumbnail %}
       {% endwith %}
     {% empty %}
     <tr>
@@ -112,7 +115,7 @@ function add_image(form) {
   </p>
 
   <p>
-    <button type="button" onClick="add_image(this.form)" name="{{ plugin.slug }}_save" value="1" class="btn btn-secondary btn-md">
+    <button type="button" onClick="add_image(this.form.elements)" name="{{ plugin.slug }}_save" value="1" class="btn btn-secondary btn-md">
       <span class="fa fa-upload"></span>
       {% trans "Add image" %}
     </button>
@@ -140,14 +143,13 @@ function add_image(form) {
 </p>
 {% endwith %}
 
-<div class="modal" id="img_modal" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content" style="position:relative !important;">
+<div class="modal" id="img_modal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
       <div class="modal-header">
-        <h4 id="img_title"></h4>
+        <h4 class="modal-title" id="img_title"></h4>
       </div>
       <div class="modal-body">
-        <form role="form">
           <div class="form-group" style="margin-left:0; margin-right:0;">
             <label for="img_align">{% trans "Alignment" %}</label>
             <select class="form-control" id="img_align">
@@ -170,11 +172,10 @@ function add_image(form) {
             <label for="img_caption">{% trans "Caption" %}</label>
             <input type="text" class="form-control" id="img_caption" placeholder="{% trans "Enter caption" %}">
           </div>
-        </form>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-success btn-secondary" data-dismiss="modal" onClick="insert_image(this.form)"> {% trans "Insert image" %} </button>
-        <button class="btn btn-danger" data-dismiss="modal"> {% trans "Cancel" %} </button>
+        <button type="button" data-bs-dismiss="modal" class="btn btn-success btn-secondary" onClick="insert_image(this.form)"> {% trans "Insert image" %} </button>
+        <button class="btn btn-danger" data-bs-dismiss="modal"> {% trans "Cancel" %} </button>
       </div>
     </div>
   </div>

@@ -11,9 +11,11 @@ function notify_update() {
         $('.notifications-empty').hide();
       }
       if (data.total_count > 0) {
-        $('.notification-cnt').addClass('badge-important');
+        $('.notification-cnt').addClass('bg-primary');
+        $('.notification-cnt').removeClass('bg-secondary');
       } else {
-        $('.notification-cnt').removeClass('badge-important');
+        $('.notification-cnt').addClass('bg-secondary');
+        $('.notification-cnt').removeClass('bg-primary');
       }
       for (var i=data.objects.length-1; i >=0 ; i--) {
         n = data.objects[i];

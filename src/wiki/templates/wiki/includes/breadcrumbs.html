@@ -1,57 +1,85 @@
 {% load i18n %}
 {% if urlpath %}
-<div id="article-breadcrumbs" class="row">
-<nav aria-label="breadcrumb">
-<ol class="breadcrumb my-0">
-  {% for ancestor in urlpath.cached_ancestors %}
-    <li class="breadcrumb-item"><a href="{% url 'wiki:get' path=ancestor.path %}">{{ ancestor.article.current_revision.title|truncatechars:25 }}</a></li>
-  {% endfor %}
-  <li class="breadcrumb-item active">{{ article.current_revision.title|truncatechars:25 }}</li>
-</ol>
-</nav>
-  <div class="btn-group" style="margin-left: 10px;">
-    <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#" style="padding: 7px;" type="button"
-            title="{% trans "Sub-articles for" %} {{ article.current_revision.title }}"
-            aria-haspopup="true" aria-expanded="false">
-      <span class="fa fa-sitemap"></span>
-      <span class="caret"></span>
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-      {% for child in children_slice %}
-          <a class="dropdown-item" href="{% url 'wiki:get' path=child.path %}">
-            {{ child.article.current_revision.title }}
+  <nav id="article-breadcrumbs" class="row" aria-label="breadcrumb">
+    <div class="col">
+      <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+        <li class="breadcrumb-item">
+          <a class="link-body-emphasis" href="{% url 'wiki:root' %}">
+            <i class="fa fa-home text-info"></i>
+            <span class="visually-hidden">Home</span>
           </a>
-        {% empty %}
-        <a class="dropdown-item" href="#"><em>{% trans "No sub-articles" %}</em></a>
-      {% endfor %}
-      {% if children_slice_more %}
-      <a class="dropdown-item" href="#"><em>{% trans "...and more" %}</em></a>
-      {% endif %}
-      <div class="dropdown-divider"></div>
-      <a class="dropdown-item" href="{% url 'wiki:dir' path=urlpath.path %}">{% trans "Browse articles in this level" %} &raquo;</a>
+        </li>
+        {% for ancestor in urlpath.cached_ancestors %}
+          <li class="breadcrumb-item">
+            <a class="link-body-emphasis fw-semibold text-decoration-none" href="{% url 'wiki:get' path=ancestor.path %}">{{ ancestor.article.current_revision.title|truncatechars:25 }}</a>
+          </li>
+        {% endfor %}
+        <li class="breadcrumb-item active" aria-current="page">
+          {{ article.current_revision.title|truncatechars:25 }}
+        </li>
+      </ol>
     </div>
-  </div>
-  <div class="btn-group" style="margin-left: 10px;">
-    <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#" style="padding: 7px;" type="button"
-            title="{% trans "Sub-articles for" %} {{ article.current_revision.title }}"
-            aria-haspopup="true" aria-expanded="false">
-      <span class="fa fa-file"></span>
-      <span class="caret"></span>
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        {% if urlpath.parent %}
-        <a class="dropdown-item" href="{% url 'wiki:create' path=urlpath.parent.path %}" style="padding: 7px;">
-          <span class="fa fa-arrow-right"></span>
-          {% blocktrans with article.current_revision.title as title %}New article next to {{ title }}{% endblocktrans %}
-        </a>
-        {% endif %}
-        <a class="dropdown-item" href="{% url 'wiki:create' path=urlpath.path %}" style="padding: 7px;">
-          <span class="fa fa-arrow-down"></span>
-          {% blocktrans with article.current_revision.title as title %}New article below {{ title }}{% endblocktrans %}
-        </a>
-    </div>
-  </div>
+    <div class="col">
+      <div class="btn-group" style="margin-left: 10px;">
+        <button class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" href="#" style="padding: 7px;" type="button"
+                title="{% trans 'Sub-articles for' %} {{ article.current_revision.title }}"
+                aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-sitemap"></i>
+        </button>
+        <ul class="dropdown-menu">
+          {% for child in children_slice %}
+            <li><a class="dropdown-item" href="{% url 'wiki:get' path=child.path %}">{{ child.article.current_revision.title }}</a></li>
+            {% empty %}
+            <li><a class="dropdown-item" href="#"><em>{% trans 'No sub-articles' %}</em></a></li>
+          {% endfor %}
+          {% if children_slice_more %}
+            <li><a class="dropdown-item" href="#"><em>{% trans '...and more' %}</em></a></li>
+          {% endif %}
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="{% url 'wiki:dir' path=urlpath.path %}">{% trans 'Browse articles in this level' %} &raquo;</a></li>
+        </ul>
+      </div>
 
-<div class="clearfix"></div>
-</div>
+      <div class="btn-group" style="margin-left: 10px;">
+        <button class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" href="#" style="padding: 7px;" type="button"
+                title="{% trans 'Sub-articles for' %} {{ article.current_revision.title }}"
+                aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-file"></i>
+        </button>
+        <ul class="dropdown-menu">
+          {% if urlpath.parent %}
+            <li>
+              <a class="dropdown-item" href="{% url 'wiki:create' path=urlpath.parent.path %}" style="padding: 7px;">
+                <i class="fa fa-arrow-right"></i>
+                {% blocktrans with article.current_revision.title as title %}New article next to {{ title }}{% endblocktrans %}
+              </a>
+            </li>
+          {% endif %}
+          <li>
+            <a class="dropdown-item" href="{% url 'wiki:create' path=urlpath.path %}" style="padding: 7px;">
+              <i class="fa fa-arrow-down"></i>
+              {% blocktrans with article.current_revision.title as title %}New article below {{ title }}{% endblocktrans %}
+            </a>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+    {% block wiki_search %}
+      <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" method="GET" action="{% spaceless %}
+            {% if article or urlpath %}
+                {% url 'wiki:search' article_id=article.id path=urlpath.path %}
+              {% else %}
+                {% url 'wiki:search' %}
+              {% endif %}
+            {% endspaceless %}">
+
+        <input name="q" type="search" class="form-control" placeholder="{% spaceless %}
+              {% if article or urlpath %}
+                {% trans "🔎 current article..." %}
+              {% else %}{% trans "🔎 entire wiki..." %}
+              {% endif %}{% endspaceless %}" aria-label="Search">
+      </form>
+    {% endblock wiki_search %}
+  </nav>
 {% endif %}

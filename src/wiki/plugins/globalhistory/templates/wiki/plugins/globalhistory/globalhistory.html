@@ -18,7 +18,7 @@
       {% endblocktrans %}
     {% endwith %}
   </div>
-  <div class="float-right">
+  <div class="float-end">
     <a class="btn btn-secondary"
        {% if only_last == "1" %}
          href="{% url 'wiki:globalhistory' only_last=0 %}">
@@ -65,16 +65,16 @@
                 ({% trans "no log message" %})
               {% endif %}
               {% if article_revision.deleted %}
-                <span class="badge badge-important">{% trans "deleted" %}</span>
+                <span class="badge bg-danger">{% trans "deleted" %}</span>
               {% endif %}
               {% if article_revision.previous_revision.deleted and not article_revision.deleted %}
-                <span class="badge badge-success">{% trans "restored" %}</span>
+                <span class="badge bg-success">{% trans "restored" %}</span>
               {% endif %}
               {% if article_revision.locked %}
-                <span class="badge badge-dark">{% trans "locked" %}</span>
+                <span class="badge bg-dark">{% trans "locked" %}</span>
               {% endif %}
               {% if article_revision.previous_revision.locked and not revision.locked %}
-                <span class="badge badge-dark">{% trans "unlocked" %}</span>
+                <span class="badge bg-dark">{% trans "unlocked" %}</span>
               {% endif %}
             </td>
             <td>

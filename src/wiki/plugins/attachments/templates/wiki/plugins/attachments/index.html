@@ -20,7 +20,7 @@
         <th colspan="4">
           <h4 style="margin-top:0;">
             <a href="{% url 'wiki:attachments_download' path=urlpath.path article_id=article.id attachment_id=attachment.id %}">{{ attachment.current_revision.get_filename }}</a>
-            <span class="badge badge-dark">{{ attachment.current_revision.created|naturaltime }}</span>
+            <span class="badge bg-dark">{{ attachment.current_revision.created|naturaltime }}</span>
             {% if attachment.current_revision.deleted %}
             <span class="badge badge-important">{% trans "deleted" %}</span>
             {% endif %}
@@ -71,7 +71,7 @@
   {% if article|can_write:user and not article|is_locked %}
       <div class="card">
         <div class="card-header pb-0">
-          <a class="card-toggle" href="#collapse_upload" data-toggle="collapse">
+          <a class="card-toggle" href="#collapse_upload" data-bs-toggle="collapse">
             <p class="card-title"><span class="fa fa-fw fa-upload"></span> {% trans "Upload new file" %}</p>
           </a>
         </div>
@@ -93,7 +93,7 @@
 
       <div class="card">
         <div class="card-header pb-0">
-          <a class="card-toggle" data-toggle="collapse" href="#collapse_add">
+          <a class="card-toggle" data-bs-toggle="collapse" href="#collapse_add">
             <p class="card-title"><span class="fa fa-fw fa-plus-circle"></span> {% trans "Search and add file" %}</p>
           </a>
         </div>
@@ -118,7 +118,7 @@
       {% if article|can_write:user %}
         <div class="card">
           <div class="card-header pb-0">
-            <a class="card-toggle" data-toggle="collapse" href="#collapse_restore">
+            <a class="card-toggle" data-bs-toggle="collapse" href="#collapse_restore">
               <p class="card-title"><span class="fa fa-fw fa-trash"></span> {% trans "Restore attachments" %}</p>
             </a>
           </div>

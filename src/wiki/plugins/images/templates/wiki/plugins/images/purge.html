@@ -5,11 +5,11 @@
 {% block wiki_pagetitle %}{% trans "Purge deletion" %}: {{ image }}{% endblock %}
 
 {% block wiki_contents_tab %}
-  {% thumbnail image.current_revision.imagerevision.image "250x250" as thumb %}
-    <p class="thumbnail float-right">
+    <p class="thumbnail float-end">
+      {% thumbnail image.current_revision.imagerevision.image "250x250" as thumb %}
       <img src="{{ thumb.url }}" alt="{{ revision.get_filename }}" />
+      {% endthumbnail %}
     </p>
-  {% endthumbnail %}
   <p class="lead">
     {% trans "Purge image: Completely remove image file and all revisions." %}
   </p>

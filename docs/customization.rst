@@ -32,13 +32,14 @@ wiki. Add the following as ``wiki/base.html`` somewhere in your
    {% block wiki_site_title %} - Wiki{% endblock %}
 
    {% block wiki_header_branding %}
+   <a href="{% url 'wiki:root' %}" class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none">
+      <img height="40" class="me-2" src="{% static 'wiki/img/django-wiki-logo.svg' %}">
+   </a>
    <a class="navbar-brand" href="/">Your brand</a>
    {% endblock %}
 
    {% block wiki_header_navlinks %}
-   <ul class="nav navbar-nav">
-     <li class="active"><a href="{% url 'wiki:root' %}">Wiki</a></li>
-   </ul>
+     <li><a href="https://django-wiki.org" class="nav-link px-2 link-secondary">django-wiki</a></li>
    {% endblock %}
 
 Site
